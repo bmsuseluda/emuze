@@ -5,7 +5,7 @@
   "license": "",
   "scripts": {
     "prepare": "husky install",
-    "build": "npm run build:css && remix build",
+    "build": "remix build",
     "dev": "remix dev",
     "postinstall": "remix setup node",
     "start": "remix-serve build",

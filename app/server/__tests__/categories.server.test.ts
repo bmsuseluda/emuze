@@ -36,7 +36,6 @@ jest.mock("~/server/applications.server", () => ({
 
 jest.mock("fs");
 
-// const igdbRequestMock = jest.fn<GamesResponse, unknown[]>();
 const igdbRequestMock = jest.fn();
 jest.mock("igdb-api-node", () => () => ({
   fields: () => ({

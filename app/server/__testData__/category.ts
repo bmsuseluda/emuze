@@ -61,6 +61,12 @@ export const hugo2: Entry = {
   path: "F:\\games\\Emulation\\roms\\Sony Playstation\\Hugo 2.chd",
 };
 
+export const finalfantasy7: Entry = {
+  id: "finalfantasyvii(J)(disc1)",
+  name: "Final Fantasy VII (J) (Disc 1)",
+  path: "F:\\games\\Emulation\\roms\\Sony Playstation\\Final Fantasy VII (J) (Disc 1).chd",
+};
+
 export const playstation: Category = {
   id: "sonyplaystation",
   name: "Sony Playstation",
@@ -71,4 +77,10 @@ export const playstation: Category = {
   fileExtensions: [".chd", ".cue"],
   platformIds: categoriesDB.sonyplaystation.platformIds,
   entries: [hugo, hugo2],
+};
+
+export const turtles2: Entry = {
+  id: "teenagemutantheroturtlesii-thearcadegame",
+  name: "Teenage Mutant Hero Turtles II - The Arcade Game",
+  path: "F:\\games\\Emulation\\roms\\Nintendo Entertainment System\\Teenage Mutant Hero Turtles II - The Arcade Game.nes",
 };

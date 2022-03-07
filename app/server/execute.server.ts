@@ -14,8 +14,6 @@ export const executeApplication = (category: string, entry: string) => {
       Object.entries(
         applicationData.environmentVariables(categoryData)
       ).forEach(([key, value]) => {
-        console.log("env", key, value);
-
         process.env[key] = value;
       });
     }

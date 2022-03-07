@@ -48,7 +48,6 @@ const normalizeString = (a: string) =>
 const matchName = (a: string, b: string) =>
   normalizeString(a) === normalizeString(b);
 
-// TODO: add tests
 export const fetchCovers = async (platformIds: number[], entries: Entry[]) => {
   try {
     const client = igdb(
