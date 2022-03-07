@@ -32,8 +32,7 @@ const Label = styled("label", {
   variants: {
     "data-imageUrl": {
       false: {
-        background:
-          "linear-gradient(45deg, $backgroundColor, $sidebarBackgroundColor)",
+        background: "$gradiants$default",
       },
     },
   },

@@ -29,7 +29,7 @@ const List = styled("div", {
   overflowY: "auto",
   paddingRight: "$1",
 
-  scrollbarColor: "#4d4d4d transparent",
+  scrollbarColor: "$colors$sidebarBackgroundColor transparent",
 
   "&::-webkit-scrollbar": {
     width: "12px",

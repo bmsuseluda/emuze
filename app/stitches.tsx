@@ -17,6 +17,10 @@ export const { getCssText, styled, createTheme, globalCss } = createStitches({
     radii: {
       1: "10px",
     },
+    gradiants: {
+      default:
+        "linear-gradient(45deg, $colors$backgroundColor, $colors$sidebarBackgroundColor)",
+    },
   },
 });
 
@@ -26,6 +30,10 @@ const darkTheme = createTheme({
     backgroundColor: "black",
     sidebarBackgroundColor: "#4d4d4d",
     accent: "#950909",
+  },
+  gradiants: {
+    default:
+      "linear-gradient(45deg, $colors$backgroundColor, $colors$sidebarBackgroundColor)",
   },
 });
 

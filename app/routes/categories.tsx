@@ -62,7 +62,7 @@ export default function Index() {
     <SidebarMainLayout>
       <SidebarMainLayout.Sidebar
         header={<Header />}
-        headline="Categories"
+        headline="Platforms"
         actions={
           <Form method="post">
             <Button

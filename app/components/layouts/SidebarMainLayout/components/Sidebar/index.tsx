@@ -3,8 +3,7 @@ import { Ul } from "~/components/Ul";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 
 const SidebarWrapper = styled("aside", {
-  background:
-    "linear-gradient(45deg, $backgroundColor, $sidebarBackgroundColor)",
+  background: "$gradiants$default",
   padding: "$2",
   display: "flex",
   flexFlow: "column",
