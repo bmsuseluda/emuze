@@ -1,0 +1,16 @@
+@startuml systems
+
+[applicationsjson]
+note right of [applicationsjson] : imported applications
+
+[categoriesjson]
+note right of [categoriesjson] : imported category names
+
+[categoryjson]
+note right of [categoryjson] : entries for a specific category
+
+[applicationData]
+note right of [applicationData]
+  information about an application like executable, categories
+endnote
+@enduml

@@ -1,0 +1,16 @@
+@startuml import applications
+start
+:read applications from user data;
+
+while (more folders in applications folder?)
+  if (name of application folder is in applicationDB) then (yes)
+    :add data to valid applications;
+  endif
+endwhile
+
+:delete applications from user data;
+while (valid applications?)
+  :write applications file;
+endwhile
+stop
+@enduml
