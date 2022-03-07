@@ -28,6 +28,17 @@ const List = styled("div", {
   flex: 15,
   overflowY: "auto",
   paddingRight: "$1",
+
+  scrollbarColor: "#4d4d4d transparent",
+
+  "&::-webkit-scrollbar": {
+    width: "12px",
+  },
+
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: "$sidebarBackgroundColor",
+    borderRadius: "$1",
+  },
 });
 
 const ActionBar = styled("div", {
