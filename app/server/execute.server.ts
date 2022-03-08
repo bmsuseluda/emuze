@@ -1,6 +1,7 @@
 import { execFileSync } from "child_process";
 import { readCategory } from "~/server/categories.server";
 import { getApplicationData } from "./applicationsDB.server";
+import { openErrorDialog } from "./openDialog.server";
 
 export const executeApplication = (category: string, entry: string) => {
   const categoryData = readCategory(category);
@@ -19,9 +20,11 @@ export const executeApplication = (category: string, entry: string) => {
     const optionParams = applicationData.optionParams
       ? applicationData.optionParams(entryData)
       : [];
+
     try {
       execFileSync(applicationPath, [...optionParams, entryData.path]);
     } catch (error) {
+      openErrorDialog(error, `Launch of ${entryData.name} failed`);
       console.log("error", error);
     }
   }

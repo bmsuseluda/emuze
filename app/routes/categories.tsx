@@ -19,12 +19,7 @@ import { importApplications } from "~/server/applications.server";
 
 type CategoryLinks = Array<{ name: string; to: string }>;
 
-export const loader: LoaderFunction = ({ params }) => {
-  const { category } = params;
-  if (!category) {
-    console.log("category empty");
-  }
-
+export const loader: LoaderFunction = () => {
   const categories = readCategories();
   const categoryLinks = categories.map(({ id, name }) => ({
     to: `/categories/${id}`,

@@ -1,6 +1,7 @@
 import igdb from "igdb-api-node";
 
 import { Entry } from "~/types/category";
+import { openErrorDialog } from "./openDialog.server";
 
 interface Game {
   cover?: {
@@ -84,8 +85,9 @@ export const fetchCovers = async (platformIds: number[], entries: Entry[]) => {
     });
 
     return entriesWithImages;
-  } catch (e) {
-    console.log("igdb error", e);
+  } catch (error) {
+    openErrorDialog(error, `Fetch covers from igdb failed`);
+    console.log("igdb error", error);
     return entries;
   }
 };
