@@ -1,8 +1,15 @@
+import nodepath from "path";
+
 import { readCategory } from "~/server/categories.server";
 import { Category } from "~/types/category";
 
 import { executeApplication } from "../execute.server";
-import { gateofthunder, pcenginecd } from "../__testData__/category";
+import {
+  blazingstar,
+  gateofthunder,
+  neogeo,
+  pcenginecd,
+} from "../__testData__/category";
 
 const execFileMock = jest.fn();
 jest.mock("child_process", () => ({
@@ -15,8 +22,12 @@ jest.mock("~/server/categories.server", () => ({
 }));
 
 describe("execute.server", () => {
+  const env = process.env;
+
   beforeEach(() => {
     jest.resetAllMocks();
+    jest.resetModules();
+    process.env = { ...env };
   });
 
   describe("executeApplication", () => {
@@ -36,6 +47,37 @@ describe("execute.server", () => {
       executeApplication(pcenginecd.id, "unknownEntryId");
 
       expect(execFileMock).toHaveBeenCalledTimes(0);
+    });
+
+    it("Should add optional params", () => {
+      (readCategory as jest.Mock<Category>).mockReturnValueOnce(neogeo);
+      const entryDirname = "F:\\games\\Emulation\\roms\\Neo Geo";
+
+      executeApplication(neogeo.id, blazingstar.id);
+
+      expect(execFileMock).toHaveBeenCalledWith(neogeo.applicationPath, [
+        "-w",
+        "-rompath",
+        entryDirname,
+        "-cfg_directory",
+        nodepath.join(entryDirname, "cfg"),
+        "-nvram_directory",
+        nodepath.join(entryDirname, "nvram"),
+        blazingstar.path,
+      ]);
+    });
+
+    it("Should add environment varables", () => {
+      (readCategory as jest.Mock<Category>).mockReturnValueOnce(pcenginecd);
+
+      executeApplication(pcenginecd.id, gateofthunder.id);
+
+      expect(execFileMock).toHaveBeenCalledWith(pcenginecd.applicationPath, [
+        gateofthunder.path,
+      ]);
+      expect(process.env.MEDNAFEN_HOME).toBe(
+        nodepath.dirname(pcenginecd.applicationPath)
+      );
     });
   });
 });

@@ -100,15 +100,18 @@ const applications: Application[] = [
     name: "Mame",
     fileExtensions: [".zip"],
     categories: [arcade, neogeo],
-    optionParams: ({ path }) => [
-      "-w",
-      "-rompath",
-      nodepath.dirname(path),
-      "-cfg_directory",
-      nodepath.join(nodepath.dirname(path), "cfg"),
-      "-nvram_directory",
-      nodepath.join(nodepath.dirname(path), "nvram"),
-    ],
+    optionParams: ({ path }) => {
+      const entryDirname = nodepath.dirname(path);
+      return [
+        "-w",
+        "-rompath",
+        entryDirname,
+        "-cfg_directory",
+        nodepath.join(entryDirname, "cfg"),
+        "-nvram_directory",
+        nodepath.join(entryDirname, "nvram"),
+      ];
+    },
   },
   {
     id: "ares",

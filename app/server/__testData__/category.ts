@@ -84,3 +84,20 @@ export const turtles2: Entry = {
   name: "Teenage Mutant Hero Turtles II - The Arcade Game",
   path: "F:\\games\\Emulation\\roms\\Nintendo Entertainment System\\Teenage Mutant Hero Turtles II - The Arcade Game.nes",
 };
+
+export const blazingstar: Entry = {
+  id: "blazstar",
+  name: "blazstar",
+  path: "F:\\games\\Emulation\\roms\\Neo Geo\\blazstar.zip",
+};
+
+export const neogeo: Category = {
+  id: "neogeo",
+  name: "Neo Geo",
+  applicationId: "mame",
+  applicationPath: "F:\\games\\Emulation\\emulators\\mame\\mame.exe",
+  entryPath: "F:\\games\\Emulation\\roms\\Neo Geo",
+  fileExtensions: [".zip"],
+  platformIds: categoriesDB.neogeo.platformIds,
+  entries: [blazingstar],
+};
