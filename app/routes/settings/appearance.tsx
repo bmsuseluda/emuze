@@ -92,7 +92,12 @@ export default function Index() {
             <FormBox>
               <FormRow>
                 <Label htmlFor="theme-select">Theme</Label>
-                <Select name="theme" id="theme-select" defaultValue={theme}>
+                <Select
+                  name="theme"
+                  id="theme-select"
+                  defaultValue={theme}
+                  required
+                >
                   {themes.map((entry) => (
                     <option key={entry} value={entry}>
                       {entry}
@@ -108,6 +113,7 @@ export default function Index() {
                     name="applicationsPath"
                     id="applicationsPath"
                     defaultValue={newData?.applicationsPath || applicationsPath}
+                    required
                   />
                   <FileInput.Button
                     type="submit"
@@ -127,6 +133,7 @@ export default function Index() {
                     name="categoriesPath"
                     id="categoriesPath"
                     defaultValue={newData?.categoriesPath || categoriesPath}
+                    required
                   />
                   <FileInput.Button
                     type="submit"

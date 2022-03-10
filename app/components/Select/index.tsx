@@ -27,6 +27,10 @@ const DefaultSelect = styled("select", {
   cursor: "pointer",
   width: "100%",
   boxSizing: "border-box",
+  "&:invalid": {
+    borderColor: "$error",
+    borderStyle: "dashed",
+  },
 });
 
 const Arrow = styled(IoIosArrowDown, {

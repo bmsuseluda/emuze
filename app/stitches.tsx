@@ -7,6 +7,7 @@ export const { getCssText, styled, createTheme, globalCss } = createStitches({
       backgroundColor: "white",
       sidebarBackgroundColor: "#b3b2b2",
       accent: "#f89b9b",
+      error: "#950909",
     },
     space: {
       1: "10px",
@@ -41,6 +42,7 @@ const darkTheme = createTheme({
     backgroundColor: "black",
     sidebarBackgroundColor: "#4d4d4d",
     accent: "#950909",
+    error: "#950909",
   },
   gradiants: {
     default:

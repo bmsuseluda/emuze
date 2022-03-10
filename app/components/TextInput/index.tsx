@@ -14,4 +14,8 @@ export const TextInput = styled("input", {
   "&:focus": {
     borderColor: "$color",
   },
+  "&:invalid": {
+    borderColor: "$error",
+    borderStyle: "dashed",
+  },
 });
