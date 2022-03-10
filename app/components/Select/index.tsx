@@ -4,19 +4,21 @@ import { styled } from "~/stitches";
 
 const Wrapper = styled("div", {
   position: "relative",
-  minWidth: "200px",
-  "&:focus, &:hover": {
+  width: "100%",
+  "&:focus": {
     "> select": {
-      border: "1px solid $color",
+      borderColor: "$color",
     },
   },
 });
 
 const DefaultSelect = styled("select", {
-  border: "1px solid $backgroundColor",
   backgroundColor: "$sidebarBackgroundColor",
   color: "$color",
-  padding: "$2 $4 $2 $2",
+  padding: "$1 $3 $1 $1",
+  borderStyle: "solid",
+  borderWidth: "$2",
+  borderColor: "$backgroundColor",
   borderRadius: "$1",
   outline: "none",
   "-webkit-appearance": "none",
@@ -24,13 +26,14 @@ const DefaultSelect = styled("select", {
   appearance: "none",
   cursor: "pointer",
   width: "100%",
+  boxSizing: "border-box",
 });
 
 const Arrow = styled(IoIosArrowDown, {
   position: "absolute",
-  right: "$2",
-  width: "30px",
-  height: "30px",
+  right: "$1",
+  width: "$2",
+  height: "$2",
   color: "$color",
   top: 0,
   bottom: 0,

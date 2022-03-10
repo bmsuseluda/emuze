@@ -5,16 +5,20 @@ import dialog from "dialog-node";
 import nodepath from "path";
 
 export const openFileDialog = async () => {
-  const config = { type: "open-file" };
-  const directories: string[] = await filedialog(config);
-  const dir = directories[0];
-  const fileName = nodepath.parse(dir).name;
-  const app = {
-    path: dir,
-    id: fileName.toLowerCase(),
-    name: fileName,
-  };
-  return app;
+  try {
+    const config = { type: "directory" };
+    const directories: string[] = await filedialog(config);
+    const dir = nodepath.parse(directories[0]).dir;
+
+    return dir;
+  } catch (error) {
+    return undefined;
+  }
+};
+
+export const openFileDialog2 = () => {
+  dialog.fileselect("Select a directory", "folder", 0);
+  return "";
 };
 
 export const openErrorDialog = (error: unknown, title: string) => {

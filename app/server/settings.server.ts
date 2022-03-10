@@ -1,7 +1,9 @@
-import { Appearance, defaultAppearance } from "~/types/settings/appearance";
+import { Appearance } from "~/types/settings/appearance";
 import { readFile, writeFile } from "./readWriteData.server";
 
 export type Categories = typeof categories;
+
+export const defaultAppearance: Appearance = { theme: "dark" };
 
 export const categories = [
   {

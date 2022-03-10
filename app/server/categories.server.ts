@@ -13,9 +13,7 @@ import { readApplications } from "~/server/applications.server";
 import { convertToId } from "./convertToId.server";
 import { sortCaseInsensitive } from "./sortCaseInsensitive.server";
 import { fetchCovers } from "./igdb.server";
-
-// TODO: extract to settings or open file dialog
-const categoriesFolder = "F:\\games\\Emulation\\roms";
+import { readAppearance } from "./settings.server";
 
 export const paths = {
   categories: "data/categories.json",
@@ -99,57 +97,61 @@ export const importEntries = async (category: string) => {
 };
 
 export const importCategories = async () => {
-  const applications = readApplications();
-  const categoryFolderNames = readDirectorynames(categoriesFolder);
-  categoryFolderNames.sort(sortCaseInsensitive);
+  const { categoriesPath } = readAppearance();
 
-  const supportedCategories = await categoryFolderNames.reduce<
-    Promise<Category[]>
-  >(async (previousValue, categoryFolderName) => {
-    await previousValue;
-    const categoryFolderBasename = nodepath.basename(categoryFolderName);
-    let platformIds;
-    const applicationForCategory = applications.find(({ categories }) =>
-      categories.find(({ names, platformIds: appPlatformIds }) =>
-        names.find((value) => {
-          const match =
-            value.toLowerCase() === categoryFolderBasename.toLowerCase();
-          if (match) {
-            platformIds = appPlatformIds;
-          }
-          return match;
-        })
-      )
-    );
+  if (categoriesPath) {
+    const applications = readApplications();
+    const categoryFolderNames = readDirectorynames(categoriesPath);
+    categoryFolderNames.sort(sortCaseInsensitive);
 
-    if (applicationForCategory && platformIds) {
-      const { id, path, fileExtensions } = applicationForCategory;
-      const entries = await readEntriesWithImages(
-        categoryFolderName,
-        fileExtensions,
-        platformIds
+    const supportedCategories = await categoryFolderNames.reduce<
+      Promise<Category[]>
+    >(async (previousValue, categoryFolderName) => {
+      await previousValue;
+      const categoryFolderBasename = nodepath.basename(categoryFolderName);
+      let platformIds;
+      const applicationForCategory = applications.find(({ categories }) =>
+        categories.find(({ names, platformIds: appPlatformIds }) =>
+          names.find((value) => {
+            const match =
+              value.toLowerCase() === categoryFolderBasename.toLowerCase();
+            if (match) {
+              platformIds = appPlatformIds;
+            }
+            return match;
+          })
+        )
       );
 
-      (await previousValue).push({
-        id: convertToId(categoryFolderBasename),
-        name: categoryFolderBasename,
-        applicationId: id,
-        applicationPath: path,
-        entryPath: categoryFolderName,
-        fileExtensions,
-        platformIds,
-        entries,
-      });
-    }
+      if (applicationForCategory && platformIds) {
+        const { id, path, fileExtensions } = applicationForCategory;
+        const entries = await readEntriesWithImages(
+          categoryFolderName,
+          fileExtensions,
+          platformIds
+        );
 
-    return previousValue;
-  }, Promise.resolve([]));
+        (await previousValue).push({
+          id: convertToId(categoryFolderBasename),
+          name: categoryFolderBasename,
+          applicationId: id,
+          applicationPath: path,
+          entryPath: categoryFolderName,
+          fileExtensions,
+          platformIds,
+          entries,
+        });
+      }
 
-  deleteCategories();
+      return previousValue;
+    }, Promise.resolve([]));
 
-  supportedCategories.forEach((category) => {
-    writeCategory(category);
-  });
+    deleteCategories();
 
-  writeCategories(supportedCategories);
+    supportedCategories.forEach((category) => {
+      writeCategory(category);
+    });
+
+    writeCategories(supportedCategories);
+  }
 };

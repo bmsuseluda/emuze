@@ -21,6 +21,7 @@ import {
 import { Applications } from "~/types/applications";
 import { applications } from "../__testData__/applications";
 import { Category } from "~/types/category";
+import { appearance } from "../__testData__/appearance";
 
 const writeFileMock = jest.fn();
 jest.mock("~/server/readWriteData.server", () => ({
@@ -32,6 +33,10 @@ jest.mock("~/server/readWriteData.server", () => ({
 
 jest.mock("~/server/applications.server", () => ({
   readApplications: jest.fn(),
+}));
+
+jest.mock("~/server/settings.server.ts", () => ({
+  readAppearance: () => appearance,
 }));
 
 jest.mock("fs");
@@ -107,7 +112,6 @@ describe("categories.server", () => {
   });
 
   describe("importEntries", () => {
-    // TODO: add test with covers in response
     it("Should update entries and keep general category data", async () => {
       // evaluate
       (readFile as jest.Mock<Category>).mockReturnValueOnce(playstation);

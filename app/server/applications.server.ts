@@ -10,9 +10,7 @@ import {
 } from "~/server/readWriteData.server";
 import { convertToId } from "./convertToId.server";
 import { sortCaseInsensitive } from "./sortCaseInsensitive.server";
-
-// TODO: extract to settings or open file dialog
-const applicationsFolder = "F:\\games\\Emulation\\emulators";
+import { readAppearance } from "./settings.server";
 
 export const paths = {
   applications: "data/applications.json",
@@ -51,30 +49,34 @@ export const findExecutable = (path: string, id: string): string | null => {
 };
 
 export const importApplications = () => {
-  const applicationFoldernames = readDirectorynames(applicationsFolder);
-  applicationFoldernames.sort(sortCaseInsensitive);
+  const { applicationsPath } = readAppearance();
 
-  const supportedApplications = applicationFoldernames.reduce<Applications>(
-    (previousValue, appFoldername) => {
-      const data = getApplicationData(appFoldername);
-      if (data) {
-        const { categories, fileExtensions, name, id } = data;
+  if (applicationsPath) {
+    const applicationFoldernames = readDirectorynames(applicationsPath);
+    applicationFoldernames.sort(sortCaseInsensitive);
 
-        const executable = findExecutable(appFoldername, id);
-        if (executable) {
-          previousValue.push({
-            categories,
-            path: executable,
-            fileExtensions,
-            id: convertToId(nodepath.basename(appFoldername)),
-            name,
-          });
+    const supportedApplications = applicationFoldernames.reduce<Applications>(
+      (previousValue, appFoldername) => {
+        const data = getApplicationData(appFoldername);
+        if (data) {
+          const { categories, fileExtensions, name, id } = data;
+
+          const executable = findExecutable(appFoldername, id);
+          if (executable) {
+            previousValue.push({
+              categories,
+              path: executable,
+              fileExtensions,
+              id: convertToId(nodepath.basename(appFoldername)),
+              name,
+            });
+          }
         }
-      }
-      return previousValue;
-    },
-    []
-  );
+        return previousValue;
+      },
+      []
+    );
 
-  writeApplications(supportedApplications);
+    writeApplications(supportedApplications);
+  }
 };

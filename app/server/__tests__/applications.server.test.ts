@@ -14,12 +14,17 @@ import {
   readDirectorynames,
   readFilenames,
 } from "~/server/readWriteData.server";
+import { appearance } from "../__testData__/appearance";
 
 const writeFileMock = jest.fn();
 jest.mock("~/server/readWriteData.server", () => ({
   readDirectorynames: jest.fn(),
   readFilenames: jest.fn(),
   writeFile: (object: unknown, path: string) => writeFileMock(object, path),
+}));
+
+jest.mock("~/server/settings.server.ts", () => ({
+  readAppearance: () => appearance,
 }));
 
 describe("applications.server", () => {

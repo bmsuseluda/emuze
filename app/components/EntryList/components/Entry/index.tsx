@@ -16,12 +16,14 @@ const Wrapper = styled("li", {
 
 const Label = styled("label", {
   backgroundColor: "$backgroundColor",
-  border: "2px solid $backgroundColor",
   display: "flex",
   width: "200px",
   height: "266px",
   flexDirection: "column",
   justifyContent: "flex-end",
+  borderStyle: "solid",
+  borderWidth: "$3",
+  borderColor: "$backgroundColor",
   borderRadius: "$1",
   "&:hover, &:focus": {
     borderColor: "$color",

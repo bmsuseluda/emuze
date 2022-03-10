@@ -14,6 +14,17 @@ export const { getCssText, styled, createTheme, globalCss } = createStitches({
       3: "30px",
       4: "50px",
     },
+    sizes: {
+      1: "10px",
+      2: "20px",
+      3: "30px",
+      4: "50px",
+    },
+    borderWidths: {
+      1: "1px",
+      2: "2px",
+      3: "3px",
+    },
     radii: {
       1: "10px",
     },

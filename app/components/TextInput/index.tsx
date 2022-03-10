@@ -1,13 +1,17 @@
 import { styled } from "~/stitches";
 
 export const TextInput = styled("input", {
-  border: "1px solid $backgroundColor",
+  borderStyle: "solid",
+  borderWidth: "$2",
+  borderColor: "$backgroundColor",
   backgroundColor: "$sidebarBackgroundColor",
   color: "$color",
-  padding: "$2",
+  padding: "$1",
   borderRadius: "$1",
   outline: "none",
-  "&:focus, &:hover": {
-    border: "1px solid $color",
+  width: "100%",
+  boxSizing: "border-box",
+  "&:focus": {
+    borderColor: "$color",
   },
 });
