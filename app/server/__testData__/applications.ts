@@ -23,7 +23,7 @@ export const getDirectoryname = (path: string) => {
 export const pcsx2: Application = {
   categories: [sonyplaystation2],
   path: "F:\\games\\Emulation\\emulators\\Pcsx2-v1.7.2242-windows-64bit-AVX2\\pcsx2x64-avx2.exe",
-  fileExtensions: [".chd"],
+  fileExtensions: [".chd", ".iso"],
   id: "pcsx2-v1.7.2242-windows-64bit-avx2",
   name: "PCSX2",
 };
@@ -31,7 +31,7 @@ export const pcsx2: Application = {
 export const pcsx2Old: Application = {
   categories: [sonyplaystation2],
   path: "F:\\games\\Emulation\\emulators\\pcSX2-v1.6.2242-windows-64bit-AVX2\\pcsx2x64-avx2.exe",
-  fileExtensions: [".chd"],
+  fileExtensions: [".chd", ".iso"],
   id: "pcsx2-v1.6.2242-windows-64bit-avx2",
   name: "PCSX2",
 };

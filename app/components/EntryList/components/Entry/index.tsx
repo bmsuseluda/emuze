@@ -77,7 +77,6 @@ export const Entry = ({
         id={id}
         name="entry"
         value={id}
-        required
         onChange={(event) => {
           if (event.currentTarget.checked) {
             onSelect();

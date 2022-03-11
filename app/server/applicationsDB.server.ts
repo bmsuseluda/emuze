@@ -38,7 +38,7 @@ interface Application {
 export const pcsx2 = {
   id: "pcsx2",
   name: "PCSX2",
-  fileExtensions: [".chd"],
+  fileExtensions: [".chd", ".iso"],
   categories: [sonyplaystation2],
 };
 
