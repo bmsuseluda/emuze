@@ -1,4 +1,4 @@
-export type Appearance = {
+export type General = {
   applicationsPath?: string;
   categoriesPath?: string;
 };

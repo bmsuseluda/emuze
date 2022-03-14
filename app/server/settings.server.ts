@@ -1,20 +1,20 @@
-import { Appearance } from "~/types/settings/appearance";
+import { General } from "~/types/settings/general";
 import { readFile, writeFile } from "./readWriteData.server";
 
 export type Categories = typeof categories;
 
 export const categories = [
   {
-    id: "appearance",
-    name: "Appearance",
+    id: "general",
+    name: "General",
   },
 ];
 
 export const paths = {
-  appearance: "data/settings/appearance.json",
+  general: "data/settings/general.json",
 };
 
-export const readAppearance = (): Appearance => readFile(paths.appearance);
+export const readGeneral = (): General => readFile(paths.general);
 
-export const writeAppearance = (appearance: Appearance) =>
-  writeFile(appearance, paths.appearance);
+export const writeGeneral = (general: General) =>
+  writeFile(general, paths.general);

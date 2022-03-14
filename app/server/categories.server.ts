@@ -13,7 +13,7 @@ import { readApplications } from "~/server/applications.server";
 import { convertToId } from "./convertToId.server";
 import { sortCaseInsensitive } from "./sortCaseInsensitive.server";
 import { fetchCovers } from "./igdb.server";
-import { readAppearance } from "./settings.server";
+import { readGeneral } from "./settings.server";
 
 export const paths = {
   categories: "data/categories.json",
@@ -97,7 +97,7 @@ export const importEntries = async (category: string) => {
 };
 
 export const importCategories = async () => {
-  const { categoriesPath } = readAppearance();
+  const { categoriesPath } = readGeneral();
 
   if (categoriesPath) {
     const applications = readApplications();

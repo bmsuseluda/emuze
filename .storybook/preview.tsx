@@ -1,7 +1,6 @@
 import { Story, StoryContext } from "@storybook/react";
 
-import { globalStyles, themes } from "../app/stitches";
-import { themes as themeNames } from "../app/types/settings/appearance";
+import { globalStyles, ThemeName, themes } from "../app/stitches";
 import { Box } from "../app/components/Box";
 
 export const parameters = {
@@ -28,7 +27,7 @@ const getColoredDiv = (color: string) => (
 );
 
 const withThemeProvider = (Story: Story, context: StoryContext) => {
-  const themeName = context.globals.theme;
+  const themeName = context.globals.theme as ThemeName;
   const theme = themes[themeName];
   globalStyles();
   return (
@@ -59,7 +58,7 @@ export const globalTypes = {
     defaultValue: "dark",
     toolbar: {
       icon: "lightning",
-      items: themeNames.map((themeName) => ({
+      items: Object.keys(themes).map((themeName) => ({
         value: themeName,
         title: themeName,
         right: getColoredDiv(themeName === "dark" ? "black" : "white"),

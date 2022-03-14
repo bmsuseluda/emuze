@@ -16,3 +16,8 @@ Basic.args = {
   name: "firstname",
   defaultValue: "Peter",
 };
+
+export const Invalid = Template.bind({});
+Invalid.args = {
+  required: true,
+};

@@ -44,7 +44,7 @@ export const writeFile = (object: unknown, path: string) => {
   // TODO: add success message, validation ...
   const dirname = nodepath.dirname(path);
   if (!fs.existsSync(dirname)) {
-    fs.mkdirSync(dirname);
+    fs.mkdirSync(dirname, { recursive: true });
   }
   fs.writeFileSync(path, JSON.stringify(object));
 };

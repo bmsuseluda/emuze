@@ -52,6 +52,8 @@ const darkTheme = createTheme({
 
 const lightTheme = createTheme({});
 
+export type ThemeName = keyof typeof themes;
+
 export const themes = { dark: darkTheme, light: lightTheme };
 
 export const globalStyles = globalCss({

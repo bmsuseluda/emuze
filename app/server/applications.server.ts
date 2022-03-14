@@ -10,7 +10,7 @@ import {
 } from "~/server/readWriteData.server";
 import { convertToId } from "./convertToId.server";
 import { sortCaseInsensitive } from "./sortCaseInsensitive.server";
-import { readAppearance } from "./settings.server";
+import { readGeneral } from "./settings.server";
 
 export const paths = {
   applications: "data/applications.json",
@@ -49,7 +49,7 @@ export const findExecutable = (path: string, id: string): string | null => {
 };
 
 export const importApplications = () => {
-  const { applicationsPath } = readAppearance();
+  const { applicationsPath } = readGeneral();
 
   if (applicationsPath) {
     const applicationFoldernames = readDirectorynames(applicationsPath);

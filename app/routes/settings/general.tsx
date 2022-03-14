@@ -5,6 +5,7 @@ import {
   ActionFunction,
   useTransition,
   useActionData,
+  redirect,
 } from "remix";
 import { useLoaderData, json } from "remix";
 import { Button } from "~/components/button";
@@ -13,13 +14,15 @@ import { FormBox } from "~/components/FormBox";
 import { FormRow } from "~/components/FormRow";
 import { Label } from "~/components/label";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
+import { importApplications } from "~/server/applications.server";
+import { importCategories } from "~/server/categories.server";
 import { openFileDialog } from "~/server/openDialog.server";
-import { readAppearance, writeAppearance } from "~/server/settings.server";
-import { Appearance } from "~/types/settings/appearance";
+import { readGeneral, writeGeneral } from "~/server/settings.server";
+import { General } from "~/types/settings/general";
 
 export const loader: LoaderFunction = () => {
-  const appearance: Appearance = readAppearance() || {};
-  return json(appearance);
+  const general: General = readGeneral() || {};
+  return json(general);
 };
 
 const actionIds = {
@@ -42,11 +45,14 @@ export const action: ActionFunction = async ({ request }) => {
       throw new Error(`Form not submitted correctly.`);
     }
 
-    const fields: Appearance = {
+    const fields: General = {
       applicationsPath,
       categoriesPath,
     };
-    writeAppearance(fields);
+    writeGeneral(fields);
+    importApplications();
+    await importCategories();
+    return redirect("/categories");
   }
 
   if (_actionId === actionIds.chooseApplicationsPath) {
@@ -73,11 +79,11 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function Index() {
-  const defaultData = useLoaderData<Appearance>();
-  const newData = useActionData<Appearance>();
+  const defaultData = useLoaderData<General>();
+  const newData = useActionData<General>();
 
   const [applicationPath, setApplicationPath] = useState(
-    defaultData.applicationsPath
+    defaultData.applicationsPath || ""
   );
 
   useEffect(() => {
@@ -87,7 +93,7 @@ export default function Index() {
   }, [newData?.applicationsPath]);
 
   const [categoriesPath, setCategoriesPath] = useState(
-    defaultData.categoriesPath
+    defaultData.categoriesPath || ""
   );
 
   useEffect(() => {
@@ -99,7 +105,7 @@ export default function Index() {
   const { state } = useTransition();
 
   return (
-    <ListActionBarLayout headline="Appearance">
+    <ListActionBarLayout headline="General">
       <Form method="post">
         <ListActionBarLayout.ListActionBarContainer
           list={
@@ -152,7 +158,7 @@ export default function Index() {
               value={actionIds.save}
               disabled={state !== "idle"}
             >
-              Save settings
+              Save settings and import
             </Button>
           }
         />

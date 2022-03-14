@@ -1,6 +1,6 @@
-import { Appearance } from "~/types/settings/appearance";
+import { General } from "~/types/settings/general";
 
-export const appearance: Appearance = {
+export const general: General = {
   applicationsPath: "F:\\games\\Emulation\\emulators",
   categoriesPath: "F:\\games\\Emulation\\roms",
 };

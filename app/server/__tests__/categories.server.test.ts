@@ -21,7 +21,7 @@ import {
 import { Applications } from "~/types/applications";
 import { applications } from "../__testData__/applications";
 import { Category } from "~/types/category";
-import { appearance } from "../__testData__/appearance";
+import { general } from "../__testData__/general";
 
 const writeFileMock = jest.fn();
 jest.mock("~/server/readWriteData.server", () => ({
@@ -36,7 +36,7 @@ jest.mock("~/server/applications.server", () => ({
 }));
 
 jest.mock("~/server/settings.server.ts", () => ({
-  readAppearance: () => appearance,
+  readGeneral: () => general,
 }));
 
 jest.mock("fs");
