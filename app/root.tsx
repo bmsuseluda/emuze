@@ -1,18 +1,13 @@
 import {
-  json,
   Links,
   LiveReload,
-  LoaderFunction,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
   useCatch,
-  useLoaderData,
 } from "remix";
 import { globalStyles, themes } from "./stitches";
-import { readAppearance } from "./server/settings.server";
-import { Theme } from "./types/settings/appearance";
 import { Box } from "./components/box";
 
 export default function App() {
@@ -25,11 +20,6 @@ export default function App() {
     </Document>
   );
 }
-
-export const loader: LoaderFunction = async () => {
-  const { theme } = readAppearance();
-  return json(theme);
-};
 
 // https://remix.run/docs/en/v1/api/conventions#errorboundary
 export function ErrorBoundary({ error }: { error: Error }) {
@@ -114,10 +104,9 @@ function Document({
 }
 
 function Layout({ children }: { children: React.ReactNode }) {
-  const theme = useLoaderData<Theme>();
   return (
     <Box
-      className={themes[theme]}
+      className={themes.dark}
       css={{ height: "100vh", display: "flex", flexFlow: "column" }}
     >
       {children}

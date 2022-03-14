@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   LoaderFunction,
   Form,
@@ -12,13 +13,12 @@ import { FormBox } from "~/components/FormBox";
 import { FormRow } from "~/components/FormRow";
 import { Label } from "~/components/label";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
-import { Select } from "~/components/Select";
 import { openFileDialog } from "~/server/openDialog.server";
 import { readAppearance, writeAppearance } from "~/server/settings.server";
-import { Appearance, Theme, themes } from "~/types/settings/appearance";
+import { Appearance } from "~/types/settings/appearance";
 
 export const loader: LoaderFunction = () => {
-  const appearance: Appearance = readAppearance();
+  const appearance: Appearance = readAppearance() || {};
   return json(appearance);
 };
 
@@ -31,13 +31,11 @@ const actionIds = {
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
   const _actionId = form.get("_actionId");
-  const theme = form.get("theme");
   const applicationsPath = form.get("applicationsPath");
   const categoriesPath = form.get("categoriesPath");
 
   if (_actionId === actionIds.save) {
     if (
-      typeof theme !== "string" ||
       typeof applicationsPath !== "string" ||
       typeof categoriesPath !== "string"
     ) {
@@ -45,7 +43,6 @@ export const action: ActionFunction = async ({ request }) => {
     }
 
     const fields: Appearance = {
-      theme: theme as Theme,
       applicationsPath,
       categoriesPath,
     };
@@ -56,7 +53,6 @@ export const action: ActionFunction = async ({ request }) => {
     const newApplicationsPath = await openFileDialog();
     if (newApplicationsPath) {
       return json({
-        theme,
         applicationsPath: newApplicationsPath,
         categoriesPath,
       });
@@ -67,7 +63,6 @@ export const action: ActionFunction = async ({ request }) => {
     const newCategoriesPath = await openFileDialog();
     if (newCategoriesPath) {
       return json({
-        theme,
         applicationsPath,
         categoriesPath: newCategoriesPath,
       });
@@ -78,9 +73,28 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 export default function Index() {
-  const { theme, applicationsPath, categoriesPath } =
-    useLoaderData<Appearance>();
+  const defaultData = useLoaderData<Appearance>();
   const newData = useActionData<Appearance>();
+
+  const [applicationPath, setApplicationPath] = useState(
+    defaultData.applicationsPath
+  );
+
+  useEffect(() => {
+    if (newData?.applicationsPath) {
+      setApplicationPath(newData?.applicationsPath);
+    }
+  }, [newData?.applicationsPath]);
+
+  const [categoriesPath, setCategoriesPath] = useState(
+    defaultData.categoriesPath
+  );
+
+  useEffect(() => {
+    if (newData?.categoriesPath) {
+      setCategoriesPath(newData?.categoriesPath);
+    }
+  }, [newData?.categoriesPath]);
 
   const { state } = useTransition();
 
@@ -91,29 +105,13 @@ export default function Index() {
           list={
             <FormBox>
               <FormRow>
-                <Label htmlFor="theme-select">Theme</Label>
-                <Select
-                  name="theme"
-                  id="theme-select"
-                  defaultValue={theme}
-                  required
-                >
-                  {themes.map((entry) => (
-                    <option key={entry} value={entry}>
-                      {entry}
-                    </option>
-                  ))}
-                </Select>
-              </FormRow>
-
-              <FormRow>
                 <Label htmlFor="applicationsPath">Applications Path</Label>
                 <FileInput>
                   <FileInput.TextInput
                     name="applicationsPath"
                     id="applicationsPath"
-                    defaultValue={newData?.applicationsPath || applicationsPath}
-                    required
+                    value={applicationPath}
+                    onChange={(event) => setApplicationPath(event.target.value)}
                   />
                   <FileInput.Button
                     type="submit"
@@ -132,8 +130,8 @@ export default function Index() {
                   <FileInput.TextInput
                     name="categoriesPath"
                     id="categoriesPath"
-                    defaultValue={newData?.categoriesPath || categoriesPath}
-                    required
+                    value={categoriesPath}
+                    onChange={(event) => setCategoriesPath(event.target.value)}
                   />
                   <FileInput.Button
                     type="submit"

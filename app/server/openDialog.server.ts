@@ -2,13 +2,12 @@
 // @ts-ignore
 import filedialog from "node-file-dialog";
 import dialog from "dialog-node";
-import nodepath from "path";
 
 export const openFileDialog = async () => {
   try {
     const config = { type: "directory" };
     const directories: string[] = await filedialog(config);
-    const dir = nodepath.parse(directories[0]).dir;
+    const dir = directories[0];
 
     return dir;
   } catch (error) {
