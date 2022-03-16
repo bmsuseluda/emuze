@@ -1,0 +1,11 @@
+{
+  "include": ["main.ts"],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "strict": true,
+    "baseUrl": ".",
+    "outDir": "build"
+  }
+}

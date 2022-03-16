@@ -1,23 +1,14 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-ignore
-import filedialog from "node-file-dialog";
 import dialog from "dialog-node";
+import { dialog as electronDialog } from "electron";
 
-export const openFileDialog = async () => {
-  try {
-    const config = { type: "directory" };
-    const directories: string[] = await filedialog(config);
-    const dir = directories[0];
+export const openFolderDialog = (title: string, defaultPath?: string) => {
+  const directory = electronDialog.showOpenDialogSync({
+    title,
+    defaultPath,
+    properties: ["openDirectory"],
+  });
 
-    return dir;
-  } catch (error) {
-    return undefined;
-  }
-};
-
-export const openFileDialog2 = () => {
-  dialog.fileselect("Select a directory", "folder", 0);
-  return "";
+  return directory ? directory[0] : undefined;
 };
 
 export const openErrorDialog = (error: unknown, title: string) => {

@@ -16,6 +16,7 @@
     "target": "ES2019",
     "strict": true,
     "baseUrl": ".",
+    "skipLibCheck": true,
     "paths": {
       "~/*": ["./app/*"],
       "@emotion/core": ["./types/emotion.d.ts"]

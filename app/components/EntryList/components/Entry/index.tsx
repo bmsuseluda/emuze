@@ -29,7 +29,7 @@ const Label = styled("label", {
     borderColor: "$color",
   },
   position: "relative",
-  overflow: "hidden",
+  overflow: "clip",
 
   variants: {
     "data-imageUrl": {

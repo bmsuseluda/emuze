@@ -16,7 +16,7 @@ import { Label } from "~/components/label";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 import { importApplications } from "~/server/applications.server";
 import { importCategories } from "~/server/categories.server";
-import { openFileDialog } from "~/server/openDialog.server";
+import { openFolderDialog } from "~/server/openDialog.server";
 import { readGeneral, writeGeneral } from "~/server/settings.server";
 import { General } from "~/types/settings/general";
 
@@ -56,7 +56,10 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   if (_actionId === actionIds.chooseApplicationsPath) {
-    const newApplicationsPath = await openFileDialog();
+    const newApplicationsPath = openFolderDialog(
+      "Select Emulators Folder",
+      typeof applicationsPath === "string" ? applicationsPath : undefined
+    );
     if (newApplicationsPath) {
       return json({
         applicationsPath: newApplicationsPath,
@@ -66,7 +69,10 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   if (_actionId === actionIds.chooseCategoriesPath) {
-    const newCategoriesPath = await openFileDialog();
+    const newCategoriesPath = openFolderDialog(
+      "Select Roms Folder",
+      typeof categoriesPath === "string" ? categoriesPath : undefined
+    );
     if (newCategoriesPath) {
       return json({
         applicationsPath,

@@ -4,5 +4,6 @@ module.exports = {
   browserBuildDirectory: "public/build",
   publicPath: "/build/",
   serverBuildDirectory: "build",
+  serverBuildPath: "desktop/build/index.js",
   devServerPort: 8002,
 };

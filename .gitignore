@@ -6,3 +6,4 @@ node_modules
 /data
 .env
 coverage
+/desktop/build

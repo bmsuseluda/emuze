@@ -8,7 +8,9 @@
     "build": "remix build",
     "dev": "remix dev",
     "postinstall": "remix setup node",
-    "start": "remix-serve build",
+    "start": "npm run build && npm run start:electron",
+    "start:remix": "remix-serve build",
+    "start:electron": "tsc -p ./desktop/tsconfig.json && electron desktop/build/main.js",
     "test": "jest  --passWithNoTests --coverage",
     "test:watch": "jest --watch  --passWithNoTests",
     "test:findRelatedTests": "jest --findRelatedTests --passWithNoTests",
@@ -19,17 +21,20 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@remix-run/node": "^1.2.3",
     "@remix-run/react": "^1.2.3",
     "@remix-run/serve": "^1.2.3",
+    "@remix-run/server-runtime": "^1.2.3",
     "@stitches/react": "^1.2.7",
     "dialog-node": "^0.2.1",
     "dotenv": "^16.0.0",
+    "electron": "^17.1.2",
     "igdb-api-node": "^5.0.1",
-    "node-file-dialog": "^1.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
-    "remix": "^1.2.3"
+    "remix": "^1.2.3",
+    "remix-electron": "^1.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",

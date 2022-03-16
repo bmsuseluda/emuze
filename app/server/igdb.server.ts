@@ -50,44 +50,49 @@ const matchName = (a: string, b: string) =>
   normalizeString(a) === normalizeString(b);
 
 export const fetchCovers = async (platformIds: number[], entries: Entry[]) => {
-  try {
-    const client = igdb(
-      process.env.IGDB_CLIENT_ID,
-      process.env.IGDB_ACCESS_TOKEN
-    );
-
-    const gamesResponse: GamesResponse = await client
-      .fields(["name", "cover.image_id,alternative_names.name"])
-      .where(
-        `platforms=(${platformIds}) &
-        (${entries.flatMap(filterGame).join(" | ")})`
-      )
-      .limit(500)
-      .request("/games");
-
-    // console.log("request", gamesResponse.config?.data);
-
-    // console.log("game", gamesResponse.data);
-
-    const entriesWithImages = entries.map((entry) => {
-      const gameData = gamesResponse.data.find(
-        ({ name, alternative_names }) =>
-          matchName(name, entry.name) ||
-          !!alternative_names?.find(({ name }) => matchName(name, entry.name))
+  if (process.env.IGDB_CLIENT_ID && process.env.IGDB_ACCESS_TOKEN) {
+    try {
+      const client = igdb(
+        process.env.IGDB_CLIENT_ID,
+        process.env.IGDB_ACCESS_TOKEN
       );
-      if (gameData?.cover) {
-        return {
-          ...entry,
-          imageUrl: getCoverUrl(gameData.cover.image_id),
-        };
-      }
-      return entry;
-    });
 
-    return entriesWithImages;
-  } catch (error) {
-    openErrorDialog(error, `Fetch covers from igdb failed`);
-    console.log("igdb error", error);
-    return entries;
+      const gamesResponse: GamesResponse = await client
+        .fields(["name", "cover.image_id,alternative_names.name"])
+        .where(
+          `platforms=(${platformIds}) &
+            (${entries.flatMap(filterGame).join(" | ")})`
+        )
+        .limit(500)
+        .request("/games");
+
+      // console.log("request", gamesResponse.config?.data);
+
+      // console.log("game", gamesResponse.data);
+
+      const entriesWithImages = entries.map((entry) => {
+        const gameData = gamesResponse.data.find(
+          ({ name, alternative_names }) =>
+            matchName(name, entry.name) ||
+            !!alternative_names?.find(({ name }) => matchName(name, entry.name))
+        );
+        if (gameData?.cover) {
+          return {
+            ...entry,
+            imageUrl: getCoverUrl(gameData.cover.image_id),
+          };
+        }
+        return entry;
+      });
+
+      return entriesWithImages;
+    } catch (error) {
+      openErrorDialog(error, `Fetch covers from igdb failed`);
+      console.log("igdb error", error);
+      return entries;
+    }
   }
+
+  // TODO: add message that env are missing to fetch covers
+  return entries;
 };
