@@ -39,6 +39,10 @@ jest.mock("~/server/settings.server.ts", () => ({
   readGeneral: () => general,
 }));
 
+jest.mock("~/server/openDialog.server.ts", () => ({
+  openErrorDialog: jest.fn(),
+}));
+
 jest.mock("fs");
 
 const igdbRequestMock = jest.fn();

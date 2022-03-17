@@ -18,6 +18,10 @@ jest.mock("igdb-api-node", () => () => ({
   }),
 }));
 
+jest.mock("~/server/openDialog.server.ts", () => ({
+  openErrorDialog: jest.fn(),
+}));
+
 describe("igdb.server", () => {
   it("Should return games if they match directly on name or alternative name", async () => {
     const igdbResponse: GamesResponse = {

@@ -8,9 +8,9 @@ import {
   readFilenames,
   writeFile,
 } from "~/server/readWriteData.server";
-import { convertToId } from "./convertToId.server";
-import { sortCaseInsensitive } from "./sortCaseInsensitive.server";
-import { readGeneral } from "./settings.server";
+import { convertToId } from "~/server/convertToId.server";
+import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
+import { readGeneral } from "~/server/settings.server";
 
 export const paths = {
   applications: "data/applications.json",

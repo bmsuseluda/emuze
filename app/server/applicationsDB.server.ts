@@ -19,7 +19,7 @@ import {
   sonyplaystation2,
   sonypsp,
   supernintendo,
-} from "./categoriesDB.server";
+} from "~/server/categoriesDB.server";
 
 type OptionParamFunction = (entry: Entry) => string[];
 type EnvironmentVariableFunction = (

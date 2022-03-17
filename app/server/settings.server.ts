@@ -1,5 +1,5 @@
 import { General } from "~/types/settings/general";
-import { readFile, writeFile } from "./readWriteData.server";
+import { readFile, writeFile } from "~/server/readWriteData.server";
 
 export type Categories = typeof categories;
 

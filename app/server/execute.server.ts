@@ -1,7 +1,7 @@
 import { execFileSync } from "child_process";
 import { readCategory } from "~/server/categories.server";
-import { getApplicationData } from "./applicationsDB.server";
-import { openErrorDialog } from "./openDialog.server";
+import { getApplicationData } from "~/server/applicationsDB.server";
+import { openErrorDialog } from "~/server/openDialog.server";
 
 export const executeApplication = (category: string, entry: string) => {
   const categoryData = readCategory(category);

@@ -10,10 +10,10 @@ import {
   writeFile,
 } from "~/server/readWriteData.server";
 import { readApplications } from "~/server/applications.server";
-import { convertToId } from "./convertToId.server";
-import { sortCaseInsensitive } from "./sortCaseInsensitive.server";
-import { fetchCovers } from "./igdb.server";
-import { readGeneral } from "./settings.server";
+import { convertToId } from "~/server/convertToId.server";
+import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
+import { fetchCovers } from "~/server/igdb.server";
+import { readGeneral } from "~/server/settings.server";
 
 export const paths = {
   categories: "data/categories.json",
