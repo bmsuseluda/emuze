@@ -3,6 +3,6 @@ module.exports = {
   "app/**/*.{ts,tsx}": [
     "eslint",
     "prettier --write",
-    "npm run test:findRelatedTests",
+    "yarn test:findRelatedTests",
   ],
 };
