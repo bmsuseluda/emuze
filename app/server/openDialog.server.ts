@@ -1,8 +1,7 @@
-import dialog from "dialog-node";
-import { dialog as electronDialog } from "electron";
+import { dialog } from "electron";
 
 export const openFolderDialog = (title: string, defaultPath?: string) => {
-  const directory = electronDialog.showOpenDialogSync({
+  const directory = dialog.showOpenDialogSync({
     title,
     defaultPath,
     properties: ["openDirectory"],
@@ -22,6 +21,6 @@ export const openErrorDialog = (error: unknown, title: string) => {
   }
 
   if (errorMessage) {
-    dialog.error(errorMessage, title, 0);
+    dialog.showErrorBox(title, errorMessage);
   }
 };
