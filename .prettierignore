@@ -5,3 +5,4 @@ node_modules
 /public/build
 coverage
 /desktop/build
+/dist

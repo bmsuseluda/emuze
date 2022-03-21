@@ -2,15 +2,19 @@
   "private": true,
   "name": "launcher",
   "description": "Opinionated launcher for games and other executables",
+  "version": "0.2.0",
+  "author": "gunslinger@sensonar.de",
   "license": "",
   "scripts": {
     "prepare": "husky install",
-    "build": "remix build",
+    "build": "yarn build:remix && yarn build:electron",
+    "build:remix": "remix build",
+    "build:electron": "tsc -p ./desktop/tsconfig.json",
     "dev": "remix dev",
     "postinstall": "remix setup node",
     "start": "yarn build && yarn start:electron",
     "start:remix": "remix-serve build",
-    "start:electron": "tsc -p ./desktop/tsconfig.json && electron desktop/build/main.js",
+    "start:electron": "electron desktop/build/main.js",
     "test": "jest  --passWithNoTests --coverage",
     "test:watch": "jest --watch  --passWithNoTests",
     "test:findRelatedTests": "jest --findRelatedTests --passWithNoTests",
@@ -18,7 +22,9 @@
     "ts:check": "tsc --noEmit",
     "lint": "yarn ts:check && eslint app/**/*.{ts,tsx}",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "app:dir": "yarn build && electron-builder --dir",
+    "app:dist": "yarn build && electron-builder"
   },
   "dependencies": {
     "@remix-run/node": "^1.2.3",
@@ -27,7 +33,6 @@
     "@remix-run/server-runtime": "^1.2.3",
     "@stitches/react": "^1.2.7",
     "dotenv": "^16.0.0",
-    "electron": "^17.1.2",
     "igdb-api-node": "^5.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -55,6 +60,8 @@
     "@typescript-eslint/parser": "^5.12.1",
     "babel-loader": "^8.2.3",
     "cypress": "^9.5.0",
+    "electron": "^17.1.2",
+    "electron-builder": "^22.14.13",
     "eslint": "^8.9.0",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
@@ -71,5 +78,15 @@
   "engines": {
     "node": ">=14"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "build": {
+    "appId": "your.id",
+    "files": [
+      "desktop"
+    ],
+    "extraFiles": [
+      "public"
+    ]
+  },
+  "main": "desktop/build/main.js"
 }
