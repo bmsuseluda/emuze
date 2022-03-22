@@ -4,9 +4,9 @@ import { Application, Applications } from "~/types/applications";
 import { getApplicationData } from "~/server/applicationsDB.server";
 import {
   readDirectorynames,
-  readFile,
+  readFileHome,
   readFilenames,
-  writeFile,
+  writeFileHome,
 } from "~/server/readWriteData.server";
 import { convertToId } from "~/server/convertToId.server";
 import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
@@ -22,10 +22,10 @@ export const readApplication = (application: string) => {
 };
 
 export const readApplications = (): Applications =>
-  readFile(paths.applications);
+  readFileHome(paths.applications);
 
 export const writeApplications = (applications: Applications) =>
-  writeFile(applications, paths.applications);
+  writeFileHome(applications, paths.applications);
 
 export const writeApplication = (application: Application) => {
   const oldApplications = readApplications();
@@ -33,7 +33,7 @@ export const writeApplication = (application: Application) => {
     ...oldApplications.filter((value) => value.id !== application.id),
     application,
   ];
-  writeFile(newApplications, paths.applications);
+  writeFileHome(newApplications, paths.applications);
 };
 
 export const findExecutable = (path: string, id: string): string | null => {

@@ -1,5 +1,5 @@
 import { General } from "~/types/settings/general";
-import { readFile, writeFile } from "~/server/readWriteData.server";
+import { readFileHome, writeFileHome } from "~/server/readWriteData.server";
 
 export type Categories = typeof categories;
 
@@ -14,7 +14,7 @@ export const paths = {
   general: "data/settings/general.json",
 };
 
-export const readGeneral = (): General => readFile(paths.general);
+export const readGeneral = (): General => readFileHome(paths.general);
 
 export const writeGeneral = (general: General) =>
-  writeFile(general, paths.general);
+  writeFileHome(general, paths.general);

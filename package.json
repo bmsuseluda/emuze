@@ -4,7 +4,7 @@
   "description": "Opinionated launcher for games and other executables",
   "version": "0.2.0",
   "author": "gunslinger@sensonar.de",
-  "license": "",
+  "license": "GNU GPLv3",
   "scripts": {
     "prepare": "husky install",
     "build": "yarn build:remix && yarn build:electron",
@@ -80,13 +80,37 @@
   },
   "sideEffects": false,
   "build": {
-    "appId": "your.id",
     "files": [
       "desktop"
     ],
     "extraFiles": [
       "public"
-    ]
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "portable": {
+      "artifactName": "${name}-${version}-portable.${ext}"
+    }
   },
   "main": "desktop/build/main.js"
 }

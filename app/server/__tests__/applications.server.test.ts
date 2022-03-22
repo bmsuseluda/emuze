@@ -20,7 +20,7 @@ const writeFileMock = jest.fn();
 jest.mock("~/server/readWriteData.server", () => ({
   readDirectorynames: jest.fn(),
   readFilenames: jest.fn(),
-  writeFile: (object: unknown, path: string) => writeFileMock(object, path),
+  writeFileHome: (object: unknown, path: string) => writeFileMock(object, path),
 }));
 
 jest.mock("~/server/settings.server.ts", () => ({

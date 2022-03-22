@@ -5,7 +5,7 @@ import { importCategories, importEntries, paths } from "../categories.server";
 import {
   readDirectorynames,
   readFilenames,
-  readFile,
+  readFileHome,
 } from "~/server/readWriteData.server";
 import { readApplications } from "~/server/applications.server";
 import {
@@ -25,10 +25,10 @@ import { general } from "../__testData__/general";
 
 const writeFileMock = jest.fn();
 jest.mock("~/server/readWriteData.server", () => ({
-  readFile: jest.fn(),
+  readFileHome: jest.fn(),
   readDirectorynames: jest.fn(),
   readFilenames: jest.fn(),
-  writeFile: (object: unknown, path: string) => writeFileMock(object, path),
+  writeFileHome: (object: unknown, path: string) => writeFileMock(object, path),
 }));
 
 jest.mock("~/server/applications.server", () => ({
@@ -118,7 +118,7 @@ describe("categories.server", () => {
   describe("importEntries", () => {
     it("Should update entries and keep general category data", async () => {
       // evaluate
-      (readFile as jest.Mock<Category>).mockReturnValueOnce(playstation);
+      (readFileHome as jest.Mock<Category>).mockReturnValueOnce(playstation);
       (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
         hugo.path,
         hugo2.path,

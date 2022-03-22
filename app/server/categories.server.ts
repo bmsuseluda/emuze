@@ -4,10 +4,10 @@ import nodepath from "path";
 import { Categories, Category as CategorySlim } from "~/types/categories";
 import { Category, Entry } from "~/types/category";
 import {
-  readFile,
+  readFileHome,
   readFilenames,
   readDirectorynames,
-  writeFile,
+  writeFileHome,
 } from "~/server/readWriteData.server";
 import { readApplications } from "~/server/applications.server";
 import { convertToId } from "~/server/convertToId.server";
@@ -21,7 +21,7 @@ export const paths = {
 };
 
 export const readCategories = (): Categories => {
-  const categories = readFile(paths.categories);
+  const categories = readFileHome(paths.categories);
 
   if (categories) {
     return categories;
@@ -34,7 +34,7 @@ const writeCategories = (categories: Category[]) => {
     id,
     name,
   }));
-  writeFile(categoriesSlim, paths.categories);
+  writeFileHome(categoriesSlim, paths.categories);
 };
 
 const deleteCategories = () => {
@@ -44,10 +44,10 @@ const deleteCategories = () => {
 };
 
 export const readCategory = (category: string): Category =>
-  readFile(nodepath.join(paths.entries, `${category}.json`));
+  readFileHome(nodepath.join(paths.entries, `${category}.json`));
 
 const writeCategory = (category: Category) =>
-  writeFile(category, nodepath.join(paths.entries, `${category.id}.json`));
+  writeFileHome(category, nodepath.join(paths.entries, `${category.id}.json`));
 
 export const sortFileNames = (a: string, b: string) => {
   const aWithoutPath = nodepath.basename(a);
