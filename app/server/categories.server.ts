@@ -14,6 +14,8 @@ import { convertToId } from "~/server/convertToId.server";
 import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
 import { fetchCovers } from "~/server/igdb.server";
 import { readGeneral } from "~/server/settings.server";
+import Bottleneck from "bottleneck";
+import { Application } from "~/types/applications";
 
 export const paths = {
   categories: "data/categories.json",
@@ -96,6 +98,32 @@ export const importEntries = async (category: string) => {
   writeCategory(data);
 };
 
+const createCategoryData =
+  (
+    { id, path, fileExtensions }: Application,
+    platformIds: number[],
+    categoryFolderName: string,
+    categoryFolderBasename: string
+  ) =>
+  async (): Promise<Category> => {
+    const entries = await readEntriesWithImages(
+      categoryFolderName,
+      fileExtensions,
+      platformIds
+    );
+
+    return {
+      id: convertToId(categoryFolderBasename),
+      name: categoryFolderBasename,
+      applicationId: id,
+      applicationPath: path,
+      entryPath: categoryFolderName,
+      fileExtensions,
+      platformIds,
+      entries,
+    };
+  };
+
 export const importCategories = async () => {
   const { categoriesPath } = readGeneral();
 
@@ -104,12 +132,15 @@ export const importCategories = async () => {
     const categoryFolderNames = readDirectorynames(categoriesPath);
     categoryFolderNames.sort(sortCaseInsensitive);
 
-    const supportedCategories = await categoryFolderNames.reduce<
-      Promise<Category[]>
-    >(async (previousValue, categoryFolderName) => {
-      await previousValue;
+    const limiter = new Bottleneck({
+      maxConcurrent: 4,
+    });
+
+    const getSupportedCategories = categoryFolderNames.reduce<
+      Array<() => Promise<Category>>
+    >((previousValue, categoryFolderName) => {
       const categoryFolderBasename = nodepath.basename(categoryFolderName);
-      let platformIds;
+      let platformIds: number[] | undefined;
       const applicationForCategory = applications.find(({ categories }) =>
         categories.find(({ names, platformIds: appPlatformIds }) =>
           names.find((value) => {
@@ -124,27 +155,22 @@ export const importCategories = async () => {
       );
 
       if (applicationForCategory && platformIds) {
-        const { id, path, fileExtensions } = applicationForCategory;
-        const entries = await readEntriesWithImages(
-          categoryFolderName,
-          fileExtensions,
-          platformIds
+        previousValue.push(
+          createCategoryData(
+            applicationForCategory,
+            platformIds,
+            categoryFolderName,
+            categoryFolderBasename
+          )
         );
-
-        (await previousValue).push({
-          id: convertToId(categoryFolderBasename),
-          name: categoryFolderBasename,
-          applicationId: id,
-          applicationPath: path,
-          entryPath: categoryFolderName,
-          fileExtensions,
-          platformIds,
-          entries,
-        });
       }
 
       return previousValue;
-    }, Promise.resolve([]));
+    }, []);
+
+    const supportedCategories = await Promise.all(
+      getSupportedCategories.map((func) => limiter.schedule(func))
+    );
 
     deleteCategories();
 
