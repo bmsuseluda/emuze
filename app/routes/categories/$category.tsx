@@ -55,6 +55,16 @@ export const action: ActionFunction = async ({ request, params }) => {
   return null;
 };
 
+export const ErrorBoundary = ({ error }: { error: Error }) => {
+  console.error(error);
+  return (
+    <>
+      <h2>Error!</h2>
+      <p>{error.message}</p>
+    </>
+  );
+};
+
 export default function Index() {
   const { name, entries } = useLoaderData<Category>();
   const LaunchButtonRef = useRef<HTMLButtonElement>(null);

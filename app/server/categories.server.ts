@@ -40,8 +40,10 @@ const writeCategories = (categories: Category[]) => {
 };
 
 const deleteCategories = () => {
-  fs.rmSync(paths.entries, { recursive: true, force: true });
-  fs.mkdirSync(paths.entries);
+  if (fs.existsSync(paths.entries)) {
+    fs.rmSync(paths.entries, { recursive: true, force: true });
+    fs.mkdirSync(paths.entries);
+  }
   writeCategories([]);
 };
 

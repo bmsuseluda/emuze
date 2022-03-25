@@ -84,6 +84,16 @@ export const action: ActionFunction = async ({ request }) => {
   return null;
 };
 
+export const ErrorBoundary = ({ error }: { error: Error }) => {
+  console.error(error);
+  return (
+    <>
+      <h2>Error!</h2>
+      <p>{error.message}</p>
+    </>
+  );
+};
+
 export default function Index() {
   const defaultData = useLoaderData<General>();
   const newData = useActionData<General>();
