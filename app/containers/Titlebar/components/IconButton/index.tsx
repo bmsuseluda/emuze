@@ -46,15 +46,11 @@ const CloseButton = styled(Button, {
 
 export const IconButton = ({
   variant,
-  onClick,
   ...rest
 }: Props & ButtonHTMLAttributes<HTMLButtonElement>) => {
   const Icon = iconVariant[variant];
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (typeof onClick === "function") {
-      onClick(e);
-    }
     window.postMessage({ type: "window", name: variant });
   };
 

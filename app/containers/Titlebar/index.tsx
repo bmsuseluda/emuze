@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { styled } from "~/stitches";
 import { IconButton } from "./components/IconButton";
 
