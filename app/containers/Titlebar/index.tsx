@@ -23,19 +23,13 @@ const Buttons = styled("div", {
   whiteSpace: "nowrap",
 });
 
-export const Titlebar = () => {
-  const [isMaximized, setMaximized] = useState(false);
-  return (
-    <Wrapper>
-      <Dragable />
-      <Buttons>
-        <IconButton variant="minimize" />
-        <IconButton
-          variant={isMaximized ? "restore" : "maximize"}
-          onClick={() => setMaximized((maximized) => !maximized)}
-        />
-        <IconButton variant="close" />
-      </Buttons>
-    </Wrapper>
-  );
-};
+export const Titlebar = () => (
+  <Wrapper>
+    <Dragable />
+    <Buttons>
+      <IconButton variant="minimize" />
+      <IconButton variant="maximize" />
+      <IconButton variant="close" />
+    </Buttons>
+  </Wrapper>
+);

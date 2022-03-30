@@ -21,11 +21,11 @@ app.on("ready", async () => {
         window.minimize();
         break;
       case "maximize":
-        // if (window.isMaximized()) {
-        //   window.restore();
-        // } else {
-        window.maximize();
-        // }
+        if (window.isMaximized()) {
+          window.restore();
+        } else {
+          window.maximize();
+        }
         break;
       case "restore": {
         window.restore();

@@ -95,6 +95,7 @@ function Document({
         <Links />
       </head>
       <body>
+        <Titlebar />
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -110,7 +111,6 @@ function Layout({ children }: { children: React.ReactNode }) {
       className={themes.dark}
       css={{ height: "100vh", display: "flex", flexFlow: "column" }}
     >
-      <Titlebar />
       {children}
     </Box>
   );
