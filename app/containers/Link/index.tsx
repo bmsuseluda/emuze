@@ -28,7 +28,7 @@ const ActiveLinkSpan = styled("span", {
 
 export const Link = ({ to, children, ...rest }: Props) => (
   <li>
-    <StyledNavLink to={to} prefetch="intent" {...rest}>
+    <StyledNavLink to={to} prefetch="intent" draggable={false} {...rest}>
       {({ isActive }) => (
         <ActiveLinkSpan active={isActive}>{children}</ActiveLinkSpan>
       )}

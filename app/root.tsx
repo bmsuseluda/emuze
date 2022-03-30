@@ -9,6 +9,7 @@ import {
 } from "remix";
 import { globalStyles, themes } from "./stitches";
 import { Box } from "./components/box";
+import { Titlebar } from "./containers/Titlebar";
 
 export default function App() {
   globalStyles();
@@ -109,6 +110,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       className={themes.dark}
       css={{ height: "100vh", display: "flex", flexFlow: "column" }}
     >
+      <Titlebar />
       {children}
     </Box>
   );

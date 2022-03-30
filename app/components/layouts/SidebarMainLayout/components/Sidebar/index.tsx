@@ -4,7 +4,7 @@ import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 
 const SidebarWrapper = styled("aside", {
   background: "$gradiants$default",
-  padding: "$2",
+  padding: "25px $2 $2 $2",
   display: "flex",
   flexFlow: "column",
   overflow: "auto",

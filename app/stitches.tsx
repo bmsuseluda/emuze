@@ -19,7 +19,8 @@ export const { getCssText, styled, createTheme, globalCss } = createStitches({
       1: "10px",
       2: "20px",
       3: "30px",
-      4: "50px",
+      4: "40px",
+      5: "50px",
     },
     borderWidths: {
       1: "1px",
@@ -62,5 +63,6 @@ export const globalStyles = globalCss({
     padding: 0,
     // TODO: create typography component
     fontFamily: "arial",
+    userSelect: "none",
   },
 });

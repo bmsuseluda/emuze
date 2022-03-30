@@ -94,6 +94,7 @@ export const Entry = ({
             style={{ maxWidth: "200px" }}
             src={imageUrl}
             alt={`${name} cover`}
+            draggable={false}
           />
         )}
         <Name>{name}</Name>

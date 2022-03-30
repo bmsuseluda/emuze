@@ -25,10 +25,12 @@ export const Header = () => (
     <nav aria-label="Main navigation">
       <Ul>
         <li>
-          <StyledLink to="/">Library</StyledLink>
+          <StyledLink to="/" draggable={false}>
+            Library
+          </StyledLink>
         </li>
         <li>
-          <StyledLink to="/settings">
+          <StyledLink to="/settings" draggable={false}>
             <IoMdSettings />
           </StyledLink>
         </li>
