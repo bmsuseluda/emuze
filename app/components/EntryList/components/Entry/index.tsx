@@ -61,6 +61,21 @@ const Input = styled("input", {
   },
 });
 
+const Image = styled("img", {
+  width: "100%",
+  minHeight: "200px",
+
+  "&::before": {
+    content: " ",
+    position: "absolute",
+    background: "$gradiants$default",
+    width: "200px",
+    height: "266px",
+    display: "block",
+    top: 0,
+  },
+});
+
 export const Entry = ({
   id,
   name,
@@ -70,6 +85,7 @@ export const Entry = ({
   "data-testid": dataTestId,
 }: Props) => {
   const { getTestId } = useTestId(dataTestId);
+
   return (
     <Wrapper {...getTestId()}>
       <Input
@@ -90,12 +106,7 @@ export const Entry = ({
         data-imageUrl={!!imageUrl}
       >
         {imageUrl && (
-          <img
-            style={{ maxWidth: "200px" }}
-            src={imageUrl}
-            alt={`${name} cover`}
-            draggable={false}
-          />
+          <Image src={imageUrl} alt={`${name} cover`} draggable={false} />
         )}
         <Name>{name}</Name>
       </Label>
