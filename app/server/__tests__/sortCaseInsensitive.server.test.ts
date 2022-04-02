@@ -12,4 +12,10 @@ describe("sortCaseInsensitive", () => {
     data.sort(sortCaseInsensitive);
     expect(data).toStrictEqual(["hugo", "Hugo 2"]);
   });
+
+  it("Should ignore special characters", () => {
+    const data = ["Pandemonium 2", "Pandemonium!"];
+    data.sort(sortCaseInsensitive);
+    expect(data).toStrictEqual(["Pandemonium!", "Pandemonium 2"]);
+  });
 });

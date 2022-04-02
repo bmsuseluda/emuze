@@ -127,7 +127,7 @@ export default function Index() {
           list={
             <FormBox>
               <FormRow>
-                <Label htmlFor="applicationsPath">Applications Path</Label>
+                <Label htmlFor="applicationsPath">Emulators Path</Label>
                 <FileInput>
                   <FileInput.TextInput
                     name="applicationsPath"
@@ -147,7 +147,7 @@ export default function Index() {
               </FormRow>
 
               <FormRow>
-                <Label htmlFor="categoriesPath">Categories Path</Label>
+                <Label htmlFor="categoriesPath">Roms Path</Label>
                 <FileInput>
                   <FileInput.TextInput
                     name="categoriesPath"
@@ -174,7 +174,7 @@ export default function Index() {
               value={actionIds.save}
               disabled={state !== "idle"}
             >
-              Save settings and import
+              Save settings and import all
             </Button>
           }
         />

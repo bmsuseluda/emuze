@@ -76,7 +76,7 @@ export default function Index() {
               disabled={state !== "idle"}
               value="import"
             >
-              import
+              Import all
             </Button>
           </Form>
         }

@@ -1,10 +1,16 @@
+const normalizeString = (a: string) =>
+  a
+    .toLowerCase()
+    .replace(/[`~!@#$%^&*()_|+\-=?;:'",.]/gi, "")
+    .trim();
+
 export const sortCaseInsensitive = (a: string, b: string) => {
-  const aLowerCase = a.toLowerCase();
-  const bLowerCase = b.toLowerCase();
-  if (aLowerCase < bLowerCase) {
+  const aNormalized = normalizeString(a);
+  const bNormalized = normalizeString(b);
+  if (aNormalized < bNormalized) {
     return -1;
   }
-  if (aLowerCase > bLowerCase) {
+  if (aNormalized > bNormalized) {
     return 1;
   }
   return 0;

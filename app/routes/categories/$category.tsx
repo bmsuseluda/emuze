@@ -116,7 +116,7 @@ export default function Index() {
                 ref={LaunchButtonRef}
                 {...getTestId(["button", "launch"])}
               >
-                launch
+                Launch Rom
               </Button>
               <Button
                 type="submit"
@@ -125,7 +125,7 @@ export default function Index() {
                 value={actionIds.import}
                 {...getTestId(["button", "import"])}
               >
-                import
+                Import Roms
               </Button>
             </>
           }
