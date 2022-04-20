@@ -2,7 +2,7 @@ import fs from "fs";
 import nodepath from "path";
 import { homedir } from "os";
 
-const homeDirectory = nodepath.join(homedir(), ".launcher");
+const homeDirectory = nodepath.join(homedir(), ".emuze");
 
 const readFiles = (path: string) =>
   fs.readdirSync(path, { encoding: "utf8", withFileTypes: true });

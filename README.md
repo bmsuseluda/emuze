@@ -1,14 +1,12 @@
 # Launch your games without hassle
 
-Simple Games Library Emulator Launcher
-
 ## Motivation
 
-My main goals for this launcher are to have a launcher that is as fast and simple as possible. With this you don't have to configure every emulator and fine tune metadata of your roms. If your roms are named correctly then a click on the import button should import your emulators and roms altogether and therefore hopefully no configuration is necessary.
+My main goal for emuze is to have a launcher that is as fast and simple as possible. With this you don't have to configure every emulator and fine tune metadata of your roms. If your roms are named correctly, a click on the import button should import your emulators and roms altogether and therefore no configuration is necessary.
 
 ## Features
 
-- fast and responsive UI
+- Fast and responsive UI
 - Import all your emulators and roms with a click of just one button
 - Fetches Metadata from [igdb](www.igdb.com) based on the filenames of your roms
 
@@ -16,17 +14,22 @@ My main goals for this launcher are to have a launcher that is as fast and simpl
 
 The application asks for the following folders to work:
 
-- emulators folder
-- roms folder with a subfolder for every platform
+- Emulators folder
+- Roms folder with a subfolder for every platform
 
-You can change the folders initially in the wizard or afterwards in the settings.
+You can change the folders in the settings.
+
+### Emulators folder
+
+TODO: add screenshot
+`emulators |-> mesen |---> ... |---> mesen.exe |---> ... |-> duckstation |---> ... |---> duckstation.exe |---> ...`
 
 ## Metadata
 
 Metadata will be fetched from [igdb](www.igdb.com). The application crawls the name and alternative name of a game filtered by the specific platform.
 The Search is case insensitive.
 
-> INFO: [igdb](www.igdb.com) is a community driven open source database for game information. If there is something missing or wrong, please help us all and correct it there.
+> INFO: [igdb](www.igdb.com) is a community driven open source database for game information. If there is something missing or wrong, please help and correct it there.
 
 ### Games with a subtitle
 

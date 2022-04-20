@@ -1,7 +1,7 @@
 {
   "private": true,
-  "name": "launcher",
-  "description": "Opinionated launcher for games and other executables",
+  "name": "emuze",
+  "description": "Opinionated launcher for roms",
   "version": "0.2.0",
   "author": "gunslinger@sensonar.de",
   "license": "GNU GPLv3",
