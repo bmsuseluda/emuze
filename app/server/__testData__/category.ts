@@ -1,4 +1,4 @@
-import { Category, Entry } from "~/types/category";
+import type { Category, Entry } from "~/types/category";
 import * as categoriesDB from "../categoriesDB.server";
 
 export const metroidsamusreturns = {

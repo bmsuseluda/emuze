@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import {
-  LoaderFunction,
   Form,
-  ActionFunction,
-  useTransition,
   useActionData,
-  redirect,
-} from "remix";
-import { useLoaderData, json } from "remix";
+  useLoaderData,
+  useTransition,
+} from "@remix-run/react";
 import { Button } from "~/components/button";
 import { FileInput } from "~/components/FileInput";
 import { FormBox } from "~/components/FormBox";
@@ -18,7 +17,7 @@ import { importApplications } from "~/server/applications.server";
 import { importCategories } from "~/server/categories.server";
 import { openFolderDialog } from "~/server/openDialog.server";
 import { readGeneral, writeGeneral } from "~/server/settings.server";
-import { General } from "~/types/settings/general";
+import type { General } from "~/types/settings/general";
 
 export const loader: LoaderFunction = () => {
   const general: General = readGeneral() || {};

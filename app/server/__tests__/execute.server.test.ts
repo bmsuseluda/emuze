@@ -1,7 +1,7 @@
 import nodepath from "path";
 
 import { readCategory } from "~/server/categories.server";
-import { Category } from "~/types/category";
+import type { Category } from "~/types/category";
 
 import { executeApplication } from "../execute.server";
 import {

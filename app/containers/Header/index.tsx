@@ -1,5 +1,5 @@
 import { styled } from "~/stitches";
-import { Link } from "remix";
+import { Link } from "@remix-run/react";
 import { IoMdSettings } from "react-icons/io";
 
 import { Ul as BaseUl } from "~/components/Ul";

@@ -1,4 +1,4 @@
-import { Entries } from "~/types/category";
+import type { Entries } from "~/types/category";
 
 export const entries: Entries = [
   {

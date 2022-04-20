@@ -1,6 +1,6 @@
 import { useTestId } from "~/hooks/useTestId";
 import { styled } from "~/stitches";
-import { Entries } from "~/types/category";
+import type { Entries } from "~/types/category";
 import { Ul } from "../Ul";
 import { Entry } from "./components/Entry";
 

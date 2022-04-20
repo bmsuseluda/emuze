@@ -1,4 +1,4 @@
-import { Applications } from "~/types/applications";
+import type { Applications } from "~/types/applications";
 import {
   importApplications,
   paths,

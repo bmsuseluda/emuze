@@ -1,4 +1,4 @@
-import { Category } from "~/server/categoriesDB.server";
+import type { Category } from "~/server/categoriesDB.server";
 
 export interface Application {
   id: string;

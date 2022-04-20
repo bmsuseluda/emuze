@@ -6,7 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
   useCatch,
-} from "remix";
+} from "@remix-run/react";
 import { globalStyles, themes } from "./stitches";
 import { Box } from "./components/box";
 import { Titlebar } from "./containers/Titlebar";

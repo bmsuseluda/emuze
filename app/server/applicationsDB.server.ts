@@ -1,9 +1,9 @@
 import nodepath from "path";
 
-import { Entry, Category as CategoryData } from "~/types/category";
+import type { Entry, Category as CategoryData } from "~/types/category";
+import type { Category } from "~/server/categoriesDB.server";
 import {
   arcade,
-  Category,
   neogeo,
   nintendo3ds,
   nintendo64,

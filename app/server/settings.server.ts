@@ -1,4 +1,4 @@
-import { General } from "~/types/settings/general";
+import type { General } from "~/types/settings/general";
 import { readFileHome, writeFileHome } from "~/server/readWriteData.server";
 
 export type Categories = typeof categories;

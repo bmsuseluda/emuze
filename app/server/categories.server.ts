@@ -1,8 +1,8 @@
 import fs from "fs";
 import nodepath from "path";
 
-import { Categories, Category as CategorySlim } from "~/types/categories";
-import { Category, Entry } from "~/types/category";
+import type { Categories, Category as CategorySlim } from "~/types/categories";
+import type { Category, Entry } from "~/types/category";
 import {
   readFileHome,
   readFilenames,
@@ -15,7 +15,7 @@ import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
 import { fetchCovers } from "~/server/igdb.server";
 import { readGeneral } from "~/server/settings.server";
 import Bottleneck from "bottleneck";
-import { Application } from "~/types/applications";
+import type { Application } from "~/types/applications";
 
 export const paths = {
   categories: "data/categories.json",

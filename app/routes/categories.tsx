@@ -1,14 +1,10 @@
-import {
-  MetaFunction,
-  LoaderFunction,
-  useLoaderData,
-  json,
-  Outlet,
-  Form,
+import type {
   ActionFunction,
-  redirect,
-  useTransition,
-} from "remix";
+  LoaderFunction,
+  MetaFunction,
+} from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import { Form, Outlet, useLoaderData, useTransition } from "@remix-run/react";
 import { Button } from "~/components/button";
 import { importCategories, readCategories } from "~/server/categories.server";
 import { SidebarMainLayout } from "~/components/layouts/SidebarMainLayout";

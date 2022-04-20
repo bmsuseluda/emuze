@@ -1,4 +1,4 @@
-import { SelectHTMLAttributes } from "react";
+import type { SelectHTMLAttributes } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 import { styled } from "~/stitches";
 

@@ -1,16 +1,11 @@
 import { useRef, useState } from "react";
-import {
-  LoaderFunction,
-  useLoaderData,
-  json,
-  Form,
-  ActionFunction,
-  useTransition,
-} from "remix";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { Form, useLoaderData, useTransition } from "@remix-run/react";
 import { Button } from "~/components/button";
 import { executeApplication } from "~/server/execute.server";
 import { importEntries, readCategory } from "~/server/categories.server";
-import { Category } from "~/types/category";
+import type { Category } from "~/types/category";
 import { EntryList } from "~/components/EntryList";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 import { useTestId } from "~/hooks/useTestId";

@@ -1,9 +1,11 @@
-import { MetaFunction, LoaderFunction, Outlet } from "remix";
-import { useLoaderData, json } from "remix";
+import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { Outlet, useLoaderData } from "@remix-run/react";
 import { SidebarMainLayout } from "~/components/layouts/SidebarMainLayout";
 import { Header } from "~/containers/Header";
 import { Link } from "~/containers/Link";
-import { Categories, categories } from "~/server/settings.server";
+import type { Categories } from "~/server/settings.server";
+import { categories } from "~/server/settings.server";
 
 export const meta: MetaFunction = () => {
   return {

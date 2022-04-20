@@ -1,6 +1,6 @@
 import nodepath from "path";
 
-import { Application, Applications } from "~/types/applications";
+import type { Application, Applications } from "~/types/applications";
 import { getApplicationData } from "~/server/applicationsDB.server";
 import {
   readDirectorynames,

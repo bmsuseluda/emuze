@@ -1,4 +1,4 @@
-import { General } from "~/types/settings/general";
+import type { General } from "~/types/settings/general";
 
 export const general: General = {
   applicationsPath: "F:\\games\\Emulation\\emulators",

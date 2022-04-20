@@ -1,4 +1,4 @@
-import { CSS } from "@stitches/react";
+import type { CSS } from "@stitches/react";
 import { Box } from "~/components/Box";
 import { styled } from "~/stitches";
 import { Main } from "./components/Main";

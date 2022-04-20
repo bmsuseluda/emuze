@@ -1,6 +1,6 @@
 import igdb from "igdb-api-node";
 
-import { Entry } from "~/types/category";
+import type { Entry } from "~/types/category";
 import { openErrorDialog } from "~/server/openDialog.server";
 
 interface Game {

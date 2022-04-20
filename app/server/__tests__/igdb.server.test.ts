@@ -5,7 +5,8 @@ import {
   finalfantasy7,
   turtles2,
 } from "../__testData__/category";
-import { fetchCovers, GamesResponse } from "../igdb.server";
+import type { GamesResponse } from "../igdb.server";
+import { fetchCovers } from "../igdb.server";
 
 const igdbRequestMock = jest.fn();
 jest.mock("igdb-api-node", () => () => ({

@@ -18,9 +18,9 @@ import {
   hugo,
   hugo2,
 } from "../__testData__/category";
-import { Applications } from "~/types/applications";
+import type { Applications } from "~/types/applications";
 import { applications } from "../__testData__/applications";
-import { Category } from "~/types/category";
+import type { Category } from "~/types/category";
 import { general } from "../__testData__/general";
 
 const writeFileMock = jest.fn();
