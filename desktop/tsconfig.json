@@ -6,6 +6,7 @@
     "noImplicitAny": true,
     "strict": true,
     "baseUrl": ".",
+    "skipLibCheck": true,
     "outDir": "build"
   }
 }
