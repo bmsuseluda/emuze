@@ -3,6 +3,11 @@ import nodepath from "path";
 import type { Entry, Category as CategoryData } from "~/types/category";
 import type { Category } from "~/server/categoriesDB.server";
 import {
+  nintendods,
+  nintendogameboyadvance,
+  nintendogameboycolor,
+} from "~/server/categoriesDB.server";
+import {
   arcade,
   neogeo,
   nintendo3ds,
@@ -75,6 +80,12 @@ const applications: Application[] = [
     categories: [nintendo3ds],
   },
   {
+    id: "melonds",
+    name: "MelonDS",
+    fileExtensions: [".nds"],
+    categories: [nintendods],
+  },
+  {
     id: "dolphin",
     name: "Dolphin",
     fileExtensions: [".iso"],
@@ -123,7 +134,7 @@ const applications: Application[] = [
     id: "visualboyadvance",
     name: "Visual Boy Advance",
     fileExtensions: [".gb", ".gba"],
-    categories: [nintendogameboy],
+    categories: [nintendogameboy, nintendogameboycolor, nintendogameboyadvance],
   },
 ];
 

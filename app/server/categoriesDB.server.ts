@@ -16,6 +16,12 @@ export const sonyplaystation2: Category = {
   platformIds: [8],
 };
 
+export const sonyplaystation3: Category = {
+  id: "sonyplaystation3",
+  names: ["Sony Playstation 3", "playstation 3", "ps3"],
+  platformIds: [9],
+};
+
 export const sonypsp: Category = {
   id: "sonypsp",
   names: [
@@ -47,6 +53,12 @@ export const supernintendo: Category = {
     "Super Famicom",
   ],
   platformIds: [19, 51, 58],
+};
+
+export const nintendods: Category = {
+  id: "nintendods",
+  names: ["Nintendo DS", "DS"],
+  platformIds: [20],
 };
 
 export const nintendo3ds: Category = {
@@ -87,8 +99,20 @@ export const nintendo64: Category = {
 
 export const nintendogameboy: Category = {
   id: "nintendogameboy",
-  names: ["Nintendo Game Boy", "Game Boy"],
+  names: ["Nintendo Game Boy", "Game Boy", "GB"],
   platformIds: [33, 22, 24],
+};
+
+export const nintendogameboycolor: Category = {
+  id: "nintendogameboycolor",
+  names: ["Nintendo Game Boy Color", "Game Boy Color", "GBC"],
+  platformIds: [22],
+};
+
+export const nintendogameboyadvance: Category = {
+  id: "nintendogameboyadvance",
+  names: ["Nintendo Game Boy Advance", "Game Boy Advance", "GBA"],
+  platformIds: [24],
 };
 
 export const segasaturn: Category = {
