@@ -1,4 +1,4 @@
-# Launch your games without hassle
+# Launch your Games without hassle
 
 ## Motivation
 
@@ -19,7 +19,7 @@ The application asks for the following folders to work:
 
 You can change the folders in the settings.
 
-### Emulators folder
+### Emulators Folder
 
 ```
 emulators
@@ -33,13 +33,13 @@ emulators
 |---> ...
 ```
 
-### Roms folder
+### Roms Folder
 
-The roms need to be grouped by there platform. E.g. `Final Fantasy VII.chd` needs to be stored in a folder `playstation`.
+The roms need to be grouped by there platform. E.g. `Final Fantasy VII.chd` needs to be stored in a folder `Playstation`.
 
 ```
 roms
-|-> playstation
+|-> Playstation
 |---> Tekken 2.chd
 |---> Crash Bandicoot.chd
 |---> ...
@@ -56,7 +56,7 @@ The Search is case insensitive.
 
 > INFO: [igdb](www.igdb.com) is a community driven open source database for game information. If there is something missing or wrong, please help and correct it there.
 
-### Games with a subtitle
+### Games with a Subtitle
 
 If a game has a subtitle, the subtitle needs to be in the file name.<br>
 For the title `Max Payne 2` the application wouldn't find metadata. Correct would be `Max Payne 2: The Fall of Max Payne`.
@@ -64,11 +64,11 @@ For the title `Max Payne 2` the application wouldn't find metadata. Correct woul
 On windows special characters like `:` can't be part of a file name, therefore you have to write it the following:
 `Max Payne 2 - The Fall of Max Payne`
 
-### Games with multiple discs
+### Games with multiple Discs
 
 If you have a game with mutiple discs, like Final Fantasy VII, the file name for the first disc would be `Final Fantasy VII (Disc 1).chd`.
 
-### Games with multiple versions (e.g. regions)
+### Games with multiple Versions (e.g. regions)
 
 If you have multiple versions of a game you can specify them in brackets, e.g. the file name for the japanese version of Castlevania could be `Castlevania (J).nes`.
 
