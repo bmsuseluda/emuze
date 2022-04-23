@@ -15,14 +15,39 @@ My main goal for emuze is to have a launcher that is as fast and simple as possi
 The application asks for the following folders to work:
 
 - Emulators folder
-- Roms folder with a subfolder for every platform
+- Roms folder
 
 You can change the folders in the settings.
 
 ### Emulators folder
 
-TODO: add screenshot
-`emulators |-> mesen |---> ... |---> mesen.exe |---> ... |-> duckstation |---> ... |---> duckstation.exe |---> ...`
+```
+emulators
+|-> Mesen.0.9.9
+|---> ...
+|---> Mesen.exe
+|---> ...
+|-> duckstation-windows-x64-release
+|---> ...
+|---> duckstation-qt-x64-ReleaseLTCG.exe
+|---> ...
+```
+
+### Roms folder
+
+The roms need to be grouped by there platform. E.g. `Final Fantasy VII.chd` needs to be stored in a folder `playstation`.
+
+```
+roms
+|-> playstation
+|---> Tekken 2.chd
+|---> Crash Bandicoot.chd
+|---> ...
+|-> Super Nintendo
+|---> Super Metroid.sfc
+|---> Terranigma.sfc
+|---> ...
+```
 
 ## Metadata
 
