@@ -41,7 +41,11 @@ On windows special characters like `:` can't be part of a file name, therefore y
 
 ### Games with multiple discs
 
-If you have a game with mutiple discs, like Final Fantasy VII, the file name for the first disc would be `Final Fantasy VII (Disc 1)`.
+If you have a game with mutiple discs, like Final Fantasy VII, the file name for the first disc would be `Final Fantasy VII (Disc 1).chd`.
+
+### Games with multiple versions (e.g. regions)
+
+If you have multiple versions of a game you can specify them in brackets, e.g. the file name for the japanese version of Castlevania could be `Castlevania (J).nes`.
 
 ## Supported Emulators
 
