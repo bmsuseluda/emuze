@@ -59,18 +59,18 @@ The Search is case insensitive.
 ### Games with a Subtitle
 
 If a game has a subtitle, the subtitle needs to be in the file name.<br>
-For the title `Max Payne 2` the application wouldn't find metadata. Correct would be `Max Payne 2: The Fall of Max Payne`.
+For the title `Max Payne 2` the application wouldn't find metadata. Correct would be `Max Payne 2: The Fall of Max Payne.chd`.
 
 On windows special characters like `:` can't be part of a file name, therefore you have to write it the following:
-`Max Payne 2 - The Fall of Max Payne`
+`Max Payne 2 - The Fall of Max Payne.chd`
 
 ### Games with multiple Discs
 
-If you have a game with mutiple discs, like Final Fantasy VII, the file name for the first disc would be `Final Fantasy VII (Disc 1).chd`.
+If you have a game with mutiple discs, like `Final Fantasy VII`, the file name for the first disc would be `Final Fantasy VII (Disc 1).chd`.
 
-### Games with multiple Versions (e.g. regions)
+### Games with multiple Versions (e.g. Regions)
 
-If you have multiple versions of a game you can specify them in brackets, e.g. the file name for the japanese version of Castlevania could be `Castlevania (J).nes`.
+If you have multiple versions of a game you can specify them in brackets, e.g. the file name for the japanese version of `Castlevania` would be `Castlevania (J).nes`.
 
 ## Supported Emulators
 
