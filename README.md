@@ -1,4 +1,4 @@
-# Launch your Games without hassle
+# emuze - Launch your Games without hassle
 
 ## Motivation
 
@@ -77,11 +77,21 @@ If you have multiple versions of a game you can specify them in brackets, e.g. t
 Every Emulator needs to be configured in the application by the developer.
 Right now the following are supported:
 
-[applicationsDB.server.ts](app\server\applicationsDB.server.ts)
+[applicationsDB.server.ts](app/server/applicationsDB.server.ts)
 
 > INFO: If you miss an emulator or find an error in the configuration, please create a pull request or issue.
 
 ## Known Issues
 
 - Fetching metadata for games like `Super Mario Bros. / Tetris / World Cup` is not supported right now due to the limitations of special characters in a windows file name.
-- For a platform metadata can only be fetched for 500 titles.
+- For a platform metadata can be fetched for 500 titles only.
+- Metadata can't be fetched for roms named for MAME.
+
+## Roadmap
+
+There is a lot i would like to work on. The following features are the bigger ones in no specific order.
+
+- 'Roms as Folder' support for emulators e.g. ScummVM or DosBox
+- Controller support
+- Filter and sorting of roms
+- Linux version

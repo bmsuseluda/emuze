@@ -38,10 +38,17 @@ export const segamastersystem: Category = {
   names: ["Sega Master System", "Master System", "SMS"],
   platformIds: [64],
 };
+
 export const segamegadrive: Category = {
   id: "segamegadrive",
   names: ["Sega Mega Drive", "Mega Drive", "Sega Genesis", "Genesis"],
   platformIds: [29],
+};
+
+export const segacd: Category = {
+  id: "segacd",
+  names: ["Sega CD", "Mega CD", "Sega Mega CD"],
+  platformIds: [78],
 };
 
 export const supernintendo: Category = {

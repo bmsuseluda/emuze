@@ -3,6 +3,11 @@ import nodepath from "path";
 import type { Entry, Category as CategoryData } from "~/types/category";
 import type { Category } from "~/server/categoriesDB.server";
 import {
+  neogeocd,
+  segacd,
+  segamastersystem,
+} from "~/server/categoriesDB.server";
+import {
   nintendods,
   nintendogameboyadvance,
   nintendogameboycolor,
@@ -109,8 +114,8 @@ const applications: Application[] = [
   {
     id: "mame",
     name: "Mame",
-    fileExtensions: [".zip"],
-    categories: [arcade, neogeo],
+    fileExtensions: [".zip", ".chd"],
+    categories: [arcade, neogeo, neogeocd],
     optionParams: ({ path }) => {
       const entryDirname = nodepath.dirname(path);
       return [
@@ -121,14 +126,17 @@ const applications: Application[] = [
         nodepath.join(entryDirname, "cfg"),
         "-nvram_directory",
         nodepath.join(entryDirname, "nvram"),
+        // TODO: the following optionParams are necessary for neogeocd only
+        // "neocdz",
+        // "-cdrm",
       ];
     },
   },
   {
     id: "ares",
     name: "Ares",
-    fileExtensions: [".z64"],
-    categories: [nintendo64],
+    fileExtensions: [".z64", ".sms", ".chd"],
+    categories: [nintendo64, segamastersystem, segacd],
   },
   {
     id: "visualboyadvance",
