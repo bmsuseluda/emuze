@@ -33,11 +33,15 @@ The Search is case insensitive.
 
 ### Games with a subtitle
 
-Right now if a game has a subtitle, the subtitle needs to be in the file name.<br>
+If a game has a subtitle, the subtitle needs to be in the file name.<br>
 For the title `Max Payne 2` the application wouldn't find metadata. Correct would be `Max Payne 2: The Fall of Max Payne`.
 
 On windows special characters like `:` can't be part of a file name, therefore you have to write it the following:
 `Max Payne 2 - The Fall of Max Payne`
+
+### Games with multiple discs
+
+If you have a game with mutiple discs, like Final Fantasy VII, the file name for the first disc would be `Final Fantasy VII (Disc 1)`.
 
 ## Supported Emulators
 
@@ -51,3 +55,4 @@ Right now the following are supported:
 ## Known Issues
 
 - Fetching metadata for games like `Super Mario Bros. / Tetris / World Cup` is not supported right now due to the limitations of special characters in a windows file name.
+- For a platform metadata can only be fetched for 500 titles.
