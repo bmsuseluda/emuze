@@ -2,6 +2,7 @@ import nodepath from "path";
 
 import type { Entry, Category as CategoryData } from "~/types/category";
 import type { Category } from "~/server/categoriesDB.server";
+import { segadreamcast } from "~/server/categoriesDB.server";
 import {
   neogeocd,
   segacd,
@@ -143,6 +144,24 @@ const applications: Application[] = [
     name: "Visual Boy Advance",
     fileExtensions: [".gb", ".gba"],
     categories: [nintendogameboy, nintendogameboycolor, nintendogameboyadvance],
+  },
+  {
+    id: "mgba",
+    name: "mgba",
+    fileExtensions: [".gb", ".gba"],
+    categories: [nintendogameboy, nintendogameboycolor, nintendogameboyadvance],
+  },
+  {
+    id: "redream",
+    name: "Redream",
+    fileExtensions: [".cue", ".chd"],
+    categories: [segadreamcast],
+  },
+  {
+    id: "flycast",
+    name: "Flycast",
+    fileExtensions: [".cue", ".chd"],
+    categories: [segadreamcast],
   },
 ];
 

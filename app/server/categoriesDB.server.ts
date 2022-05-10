@@ -51,6 +51,12 @@ export const segacd: Category = {
   platformIds: [78],
 };
 
+export const segadreamcast: Category = {
+  id: "segadreamcast",
+  names: ["Sega Dreamcast", "Dreamcast"],
+  platformIds: [23],
+};
+
 export const supernintendo: Category = {
   id: "supernintendo",
   names: [
