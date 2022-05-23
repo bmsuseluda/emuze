@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, useLoaderData, useTransition } from "@remix-run/react";
-import { Button } from "~/components/button";
+import { Button } from "~/components/Button";
 import { executeApplication } from "~/server/execute.server";
 import { importEntries, readCategory } from "~/server/categories.server";
 import type { Category } from "~/types/category";

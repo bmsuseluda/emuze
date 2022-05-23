@@ -8,7 +8,7 @@ import {
   useCatch,
 } from "@remix-run/react";
 import { globalStyles, themes } from "./stitches";
-import { Box } from "./components/box";
+import { Box } from "./components/Box";
 import { Titlebar } from "./containers/Titlebar";
 
 export default function App() {

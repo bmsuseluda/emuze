@@ -7,11 +7,11 @@ import {
   useLoaderData,
   useTransition,
 } from "@remix-run/react";
-import { Button } from "~/components/button";
+import { Button } from "~/components/Button";
 import { FileInput } from "~/components/FileInput";
 import { FormBox } from "~/components/FormBox";
 import { FormRow } from "~/components/FormRow";
-import { Label } from "~/components/label";
+import { Label } from "~/components/Label";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 import { importApplications } from "~/server/applications.server";
 import { importCategories } from "~/server/categories.server";

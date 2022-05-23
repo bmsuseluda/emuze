@@ -5,7 +5,7 @@ import type {
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Outlet, useLoaderData, useTransition } from "@remix-run/react";
-import { Button } from "~/components/button";
+import { Button } from "~/components/Button";
 import { importCategories, readCategories } from "~/server/categories.server";
 import { SidebarMainLayout } from "~/components/layouts/SidebarMainLayout";
 import { Link } from "~/containers/Link";
