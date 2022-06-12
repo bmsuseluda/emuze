@@ -11,7 +11,8 @@ export interface Category {
   id: string;
   name: string;
   applicationId: string;
-  applicationPath: string;
+  applicationPath?: string;
+  applicationFlatpakId?: string;
   entryPath: string;
   fileExtensions: string[];
   platformIds: number[];

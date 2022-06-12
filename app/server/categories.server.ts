@@ -102,7 +102,7 @@ export const importEntries = async (category: string) => {
 
 const createCategoryData =
   (
-    { id, path, fileExtensions }: Application,
+    { id, path, fileExtensions, flatpakId }: Application,
     platformIds: number[],
     categoryFolderName: string,
     categoryFolderBasename: string
@@ -119,6 +119,7 @@ const createCategoryData =
       name: categoryFolderBasename,
       applicationId: id,
       applicationPath: path,
+      applicationFlatpakId: flatpakId,
       entryPath: categoryFolderName,
       fileExtensions,
       platformIds,

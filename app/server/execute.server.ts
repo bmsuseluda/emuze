@@ -5,7 +5,8 @@ import { openErrorDialog } from "~/server/openDialog.server";
 
 export const executeApplication = (category: string, entry: string) => {
   const categoryData = readCategory(category);
-  const { applicationId, applicationPath, entries } = categoryData;
+  const { applicationId, applicationPath, applicationFlatpakId, entries } =
+    categoryData;
   const applicationData = getApplicationData(applicationId);
   const entryData = entries?.find((value) => value.id === entry);
 
@@ -14,7 +15,9 @@ export const executeApplication = (category: string, entry: string) => {
       Object.entries(
         applicationData.environmentVariables(categoryData)
       ).forEach(([key, value]) => {
-        process.env[key] = value;
+        if (value) {
+          process.env[key] = value;
+        }
       });
     }
     const optionParams = applicationData.optionParams
@@ -22,10 +25,33 @@ export const executeApplication = (category: string, entry: string) => {
       : [];
 
     try {
-      execFileSync(applicationPath, [...optionParams, entryData.path]);
+      // TODO: extract to linux and windows specific functions
+      if (applicationPath) {
+        execFileSync(applicationPath, [...optionParams, entryData.path]);
+      } else if (applicationFlatpakId) {
+        execFileSync("flatpak", [
+          "run",
+          applicationFlatpakId,
+          ...optionParams,
+          entryData.path,
+        ]);
+      } else {
+        throw new Error(
+          "There is no valid configuration for the Emulator on your operation system."
+        );
+      }
     } catch (error) {
       openErrorDialog(error, `Launch of ${entryData.name} failed`);
       console.log("error", error);
     }
+  }
+};
+
+export const checkFlatpakIsInstalled = (flatpakId: string) => {
+  try {
+    execFileSync("flatpak", ["info", flatpakId]);
+    return true;
+  } catch (error) {
+    return false;
   }
 };

@@ -30,6 +30,7 @@ describe("execute.server", () => {
     process.env = { ...env };
   });
 
+  // TODO: add tests for execute flatpak
   describe("executeApplication", () => {
     it("Should execute the entry with the defined application of the category", () => {
       (readCategory as jest.Mock<Category>).mockReturnValueOnce(pcenginecd);
@@ -51,7 +52,7 @@ describe("execute.server", () => {
 
     it("Should add optional params", () => {
       (readCategory as jest.Mock<Category>).mockReturnValueOnce(neogeo);
-      const entryDirname = "F:\\games\\Emulation\\roms\\Neo Geo";
+      const entryDirname = "F:/games/Emulation/roms/Neo Geo";
 
       executeApplication(neogeo.id, blazingstar.id);
 

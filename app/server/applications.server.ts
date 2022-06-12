@@ -1,7 +1,10 @@
 import nodepath from "path";
 
 import type { Application, Applications } from "~/types/applications";
-import { getApplicationData } from "~/server/applicationsDB.server";
+import {
+  applications,
+  getApplicationData,
+} from "~/server/applicationsDB.server";
 import {
   readDirectorynames,
   readFileHome,
@@ -11,6 +14,8 @@ import {
 import { convertToId } from "~/server/convertToId.server";
 import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
 import { readGeneral } from "~/server/settings.server";
+import { isWindows } from "./operationsystem.server";
+import { checkFlatpakIsInstalled } from "./execute.server";
 
 export const paths = {
   applications: "data/applications.json",
@@ -48,7 +53,7 @@ export const findExecutable = (path: string, id: string): string | null => {
   return null;
 };
 
-export const importApplications = () => {
+export const importApplicationsOnWindows = () => {
   const { applicationsPath } = readGeneral();
 
   if (applicationsPath) {
@@ -78,5 +83,38 @@ export const importApplications = () => {
     );
 
     writeApplications(supportedApplications);
+  }
+};
+
+export const importApplicationsOnLinux = () => {
+  const supportedApplications = applications.reduce<Applications>(
+    (previousValue, application) => {
+      if (
+        !!application.flatpakId &&
+        checkFlatpakIsInstalled(application.flatpakId)
+      ) {
+        const { categories, fileExtensions, name, id, flatpakId } = application;
+        previousValue.push({
+          categories,
+          flatpakId,
+          fileExtensions,
+          id,
+          name,
+        });
+      }
+
+      return previousValue;
+    },
+    []
+  );
+
+  writeApplications(supportedApplications);
+};
+
+export const importApplications = () => {
+  if (isWindows) {
+    importApplicationsOnWindows();
+  } else {
+    importApplicationsOnLinux();
   }
 };

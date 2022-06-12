@@ -1,11 +1,13 @@
 import type { Applications } from "~/types/applications";
 import {
-  importApplications,
   paths,
   findExecutable,
+  importApplicationsOnWindows,
+  importApplicationsOnLinux,
 } from "../applications.server";
 import {
   blastem,
+  bsnes,
   getDirectoryname,
   pcsx2,
   pcsx2Old,
@@ -14,13 +16,19 @@ import {
   readDirectorynames,
   readFilenames,
 } from "~/server/readWriteData.server";
+import { checkFlatpakIsInstalled } from "~/server/execute.server";
 import { general } from "../__testData__/general";
+import { when } from "jest-when";
 
 const writeFileMock = jest.fn();
 jest.mock("~/server/readWriteData.server", () => ({
   readDirectorynames: jest.fn(),
   readFilenames: jest.fn(),
   writeFileHome: (object: unknown, path: string) => writeFileMock(object, path),
+}));
+
+jest.mock("~/server/execute.server", () => ({
+  checkFlatpakIsInstalled: jest.fn(),
 }));
 
 jest.mock("~/server/settings.server.ts", () => ({
@@ -33,42 +41,74 @@ describe("applications.server", () => {
   });
 
   describe("importApplications", () => {
-    it("Should return known applications only", () => {
-      // evaluate
-      (readDirectorynames as jest.Mock<string[]>).mockReturnValueOnce([
-        getDirectoryname(pcsx2.path),
-        getDirectoryname(pcsx2Old.path),
-        getDirectoryname(blastem.path),
-        "unknown application",
-      ]);
-      (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
-        blastem.path,
-      ]);
-      (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
-        pcsx2Old.path,
-      ]);
-      (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([pcsx2.path]);
+    describe("importApplicationsOnLinux", () => {
+      it("Should return known applications only", () => {
+        // evaluate
+        when(checkFlatpakIsInstalled as jest.Mock<boolean>)
+          .calledWith(blastem.flatpakId)
+          .mockReturnValueOnce(true);
+        when(checkFlatpakIsInstalled as jest.Mock<boolean>)
+          .calledWith(pcsx2.flatpakId)
+          .mockReturnValueOnce(true);
+        when(checkFlatpakIsInstalled as jest.Mock<boolean>)
+          .calledWith(bsnes.flatpakId)
+          .mockReturnValueOnce(false);
 
-      // execute
-      importApplications();
+        // execute
+        importApplicationsOnLinux();
 
-      // expect
-      const expected: Applications = [blastem, pcsx2Old, pcsx2];
-      expect(writeFileMock).toHaveBeenCalledWith(expected, paths.applications);
+        // expect
+        const expected: Applications = [blastem, pcsx2];
+        expect(writeFileMock).toHaveBeenCalledWith(
+          expected,
+          paths.applications
+        );
+      });
     });
 
-    it("Should return an empty list because there is no executable", () => {
-      // evaluate
-      (readDirectorynames as jest.Mock<string[]>).mockReturnValueOnce([
-        getDirectoryname(pcsx2.path),
-      ]);
-      (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([]);
+    describe("importApplicationsOnWindows", () => {
+      it("Should return known applications only", () => {
+        // evaluate
+        (readDirectorynames as jest.Mock<string[]>).mockReturnValueOnce([
+          getDirectoryname(pcsx2.path),
+          getDirectoryname(pcsx2Old.path),
+          getDirectoryname(blastem.path),
+          "unknown application",
+        ]);
+        (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
+          blastem.path,
+        ]);
+        (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
+          pcsx2Old.path,
+        ]);
+        (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
+          pcsx2.path,
+        ]);
 
-      // execute
-      importApplications();
+        // execute
+        importApplicationsOnWindows();
 
-      // expect
-      expect(writeFileMock).toHaveBeenCalledWith([], paths.applications);
+        // expect
+        const expected: Applications = [blastem, pcsx2Old, pcsx2];
+        expect(writeFileMock).toHaveBeenCalledWith(
+          expected,
+          paths.applications
+        );
+      });
+
+      it("Should return an empty list because there is no executable", () => {
+        // evaluate
+        (readDirectorynames as jest.Mock<string[]>).mockReturnValueOnce([
+          getDirectoryname(pcsx2.path),
+        ]);
+        (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([]);
+
+        // execute
+        importApplicationsOnWindows();
+
+        // expect
+        expect(writeFileMock).toHaveBeenCalledWith([], paths.applications);
+      });
     });
   });
 
@@ -76,10 +116,10 @@ describe("applications.server", () => {
     it("Should return the executable from path", () => {
       // evaluate
       (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
-        "F:\\games\\Emulation\\emulators\\Blastem win32-0.6.2\\test.config",
-        "F:\\games\\Emulation\\emulators\\Blastem win32-0.6.2\\no.ini",
-        "F:\\games\\Emulation\\emulators\\Blastem win32-0.6.2\\view.exe",
-        "F:\\games\\Emulation\\emulators\\Blastem win32-0.6.2\\NewBlastemV2.exe",
+        "F:/games/Emulation/emulators/Blastem win32-0.6.2/test.config",
+        "F:/games/Emulation/emulators/Blastem win32-0.6.2/no.ini",
+        "F:/games/Emulation/emulators/Blastem win32-0.6.2/view.exe",
+        "F:/games/Emulation/emulators/Blastem win32-0.6.2/NewBlastemV2.exe",
       ]);
 
       // execute
@@ -87,15 +127,15 @@ describe("applications.server", () => {
 
       // expect
       expect(executable).toBe(
-        "F:\\games\\Emulation\\emulators\\Blastem win32-0.6.2\\NewBlastemV2.exe"
+        "F:/games/Emulation/emulators/Blastem win32-0.6.2/NewBlastemV2.exe"
       );
     });
 
     it("Should return the executable from subpath", () => {
       // evaluate
       (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
-        "F:\\games\\Emulation\\emulators\\Blastem win32-0.6.2\\view.exe",
-        "F:\\games\\Emulation\\emulators\\Blastem win32-0.6.2\\system\\NewBlastemV2.exe",
+        "F:/games/Emulation/emulators/Blastem win32-0.6.2/view.exe",
+        "F:/games/Emulation/emulators/Blastem win32-0.6.2/system/NewBlastemV2.exe",
       ]);
 
       // execute
@@ -103,14 +143,14 @@ describe("applications.server", () => {
 
       // expect
       expect(executable).toBe(
-        "F:\\games\\Emulation\\emulators\\Blastem win32-0.6.2\\system\\NewBlastemV2.exe"
+        "F:/games/Emulation/emulators/Blastem win32-0.6.2/system/NewBlastemV2.exe"
       );
     });
 
     it("Should return null because there is no executable in the main and subfolder", () => {
       // evaluate
       (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
-        "F:\\games\\Emulation\\emulators\\Blastem win32-0.6.2\\view.exe",
+        "F:/games/Emulation/emulators/Blastem win32-0.6.2/view.exe",
       ]);
 
       // execute

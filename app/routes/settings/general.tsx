@@ -18,10 +18,11 @@ import { importCategories } from "~/server/categories.server";
 import { openFolderDialog } from "~/server/openDialog.server";
 import { readGeneral, writeGeneral } from "~/server/settings.server";
 import type { General } from "~/types/settings/general";
+import { isWindows } from "~/server/operationsystem.server";
 
 export const loader: LoaderFunction = () => {
   const general: General = readGeneral() || {};
-  return json(general);
+  return json({ ...general, isWindows });
 };
 
 const actionIds = {
@@ -38,14 +39,14 @@ export const action: ActionFunction = async ({ request }) => {
 
   if (_actionId === actionIds.save) {
     if (
-      typeof applicationsPath !== "string" ||
+      (isWindows && typeof applicationsPath !== "string") ||
       typeof categoriesPath !== "string"
     ) {
       throw new Error(`Form not submitted correctly.`);
     }
 
     const fields: General = {
-      applicationsPath,
+      applicationsPath: isWindows && typeof applicationsPath === "string" ? applicationsPath : null,
       categoriesPath,
     };
     writeGeneral(fields);
@@ -125,7 +126,7 @@ export default function Index() {
         <ListActionBarLayout.ListActionBarContainer
           list={
             <FormBox>
-              <FormRow>
+              {defaultData.isWindows && (<FormRow>
                 <Label htmlFor="applicationsPath">Emulators Path</Label>
                 <FileInput>
                   <FileInput.TextInput
@@ -143,7 +144,7 @@ export default function Index() {
                     choose
                   </FileInput.Button>
                 </FileInput>
-              </FormRow>
+              </FormRow>)}
 
               <FormRow>
                 <Label htmlFor="categoriesPath">Roms Path</Label>

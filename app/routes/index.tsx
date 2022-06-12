@@ -4,7 +4,7 @@ import { readGeneral } from "~/server/settings.server";
 
 export const loader: LoaderFunction = () => {
   const general = readGeneral();
-  if (general?.applicationsPath && general?.categoriesPath) {
+  if (general?.applicationsPath || general?.categoriesPath) {
     return redirect("/categories");
   }
 

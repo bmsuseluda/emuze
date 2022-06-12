@@ -35,30 +35,33 @@ import {
 type OptionParamFunction = (entry: Entry) => string[];
 type EnvironmentVariableFunction = (
   category: CategoryData
-) => Record<string, string>;
+) => Record<string, string | null>;
 
-interface Application {
+export interface Application {
   id: string;
   name: string;
   fileExtensions: string[];
   categories: Category[];
   environmentVariables?: EnvironmentVariableFunction;
   optionParams?: OptionParamFunction;
+  flatpakId?: string;
 }
 
-export const pcsx2 = {
+export const pcsx2: Application = {
   id: "pcsx2",
   name: "PCSX2",
   fileExtensions: [".chd", ".iso"],
   categories: [sonyplaystation2],
+  flatpakId: "net.pcsx2.PCSX2",
 };
 
-const applications: Application[] = [
+export const applications: Application[] = [
   {
     id: "duckstation",
     name: "Duckstation",
     fileExtensions: [".chd", ".cue"],
     categories: [sonyplaystation],
+    flatpakId: "org.duckstation.DuckStation",
   },
   pcsx2,
   {
@@ -66,12 +69,14 @@ const applications: Application[] = [
     name: "PPSSPP",
     fileExtensions: [".cso"],
     categories: [sonypsp],
+    flatpakId: "org.ppsspp.PPSSPP",
   },
   {
     id: "blastem",
     name: "BlastEm",
     fileExtensions: [".68K", ".bin", ".sgd", ".smd"],
     categories: [segamegadrive],
+    flatpakId: "com.retrodev.blastem",
   },
   {
     id: "bsnes",
@@ -109,7 +114,7 @@ const applications: Application[] = [
     fileExtensions: [".cue", ".pce"],
     categories: [segasaturn, pcengine, pcenginecd],
     environmentVariables: ({ applicationPath }) => ({
-      MEDNAFEN_HOME: nodepath.dirname(applicationPath),
+      MEDNAFEN_HOME: applicationPath ? nodepath.dirname(applicationPath) : null,
     }),
   },
   {
