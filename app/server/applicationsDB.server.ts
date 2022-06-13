@@ -68,6 +68,7 @@ export const bsnes: Application = {
   name: "BSNES",
   fileExtensions: [".sfc", ".smc"],
   categories: [supernintendo],
+  flatpakId: "dev.bsnes.bsnes",
 };
 
 export const applications: Application[] = [
@@ -80,37 +81,68 @@ export const applications: Application[] = [
   },
   pcsx2,
   {
+    id: "play",
+    name: "Play",
+    fileExtensions: [".iso"],
+    categories: [sonyplaystation2],
+    flatpakId: "org.purei.Play",
+  },
+  {
     id: "ppsspp",
     name: "PPSSPP",
-    fileExtensions: [".cso"],
+    fileExtensions: [".cso", ".iso"],
     categories: [sonypsp],
     flatpakId: "org.ppsspp.PPSSPP",
   },
   blastem,
   bsnes,
   {
+    id: "snes9x",
+    name: "Snes9x",
+    fileExtensions: [".sfc", ".smc"],
+    categories: [supernintendo],
+    flatpakId: "com.snes9x.Snes9x",
+  },
+  {
     id: "citra",
     name: "Citra",
     fileExtensions: [".3ds"],
     categories: [nintendo3ds],
+    flatpakId: "org.citra_emu.citra",
   },
   {
     id: "melonds",
     name: "MelonDS",
     fileExtensions: [".nds"],
     categories: [nintendods],
+    flatpakId: "net.kuribo64.melonDS",
+  },
+  {
+    id: "desmume",
+    name: "DeSmuME",
+    fileExtensions: [".nds"],
+    categories: [nintendods],
+    flatpakId: "org.desmume.DeSmuME",
   },
   {
     id: "dolphin",
     name: "Dolphin",
     fileExtensions: [".iso"],
     categories: [nintendogamecube, nintendowii],
+    flatpakId: "org.DolphinEmu.dolphin-emu",
   },
   {
     id: "mesen",
     name: "Mesen",
     fileExtensions: [".nes"],
     categories: [nintendoentertainmentsystem],
+  },
+  {
+    id: "nestopia",
+    name: "Nestopia",
+    fileExtensions: [".nes"],
+    categories: [nintendoentertainmentsystem],
+    flatpakId: "ca._0ldsk00l.Nestopia",
   },
   {
     id: "mednafen",
@@ -147,6 +179,14 @@ export const applications: Application[] = [
     name: "Ares",
     fileExtensions: [".z64", ".sms", ".chd"],
     categories: [nintendo64, segamastersystem, segacd],
+    flatpakId: "dev.ares.ares",
+  },
+  {
+    id: "mupen64plus",
+    name: "Mupen64Plus",
+    fileExtensions: [".z64"],
+    categories: [nintendo64],
+    flatpakId: "io.github.m64p.m64p",
   },
   {
     id: "visualboyadvance",
@@ -159,6 +199,7 @@ export const applications: Application[] = [
     name: "mgba",
     fileExtensions: [".gb", ".gba"],
     categories: [nintendogameboy, nintendogameboycolor, nintendogameboyadvance],
+    flatpakId: "io.mgba.mGBA",
   },
   {
     id: "redream",
@@ -171,6 +212,7 @@ export const applications: Application[] = [
     name: "Flycast",
     fileExtensions: [".cue", ".chd"],
     categories: [segadreamcast],
+    flatpakId: "org.flycast.Flycast",
   },
 ];
 
