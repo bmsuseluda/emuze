@@ -7,11 +7,11 @@ import {
 } from "../applications.server";
 import {
   blastem,
-  bsnes,
   getDirectoryname,
   pcsx2,
   pcsx2Old,
 } from "../__testData__/applications";
+import * as applicationsFromDB from "../applicationsDB.server";
 import {
   readDirectorynames,
   readFilenames,
@@ -45,20 +45,29 @@ describe("applications.server", () => {
       it("Should return known applications only", () => {
         // evaluate
         when(checkFlatpakIsInstalled as jest.Mock<boolean>)
-          .calledWith(blastem.flatpakId)
+          .calledWith(applicationsFromDB.blastem.flatpakId)
           .mockReturnValueOnce(true);
         when(checkFlatpakIsInstalled as jest.Mock<boolean>)
-          .calledWith(pcsx2.flatpakId)
+          .calledWith(applicationsFromDB.pcsx2.flatpakId)
           .mockReturnValueOnce(true);
         when(checkFlatpakIsInstalled as jest.Mock<boolean>)
-          .calledWith(bsnes.flatpakId)
+          .calledWith(applicationsFromDB.bsnes.flatpakId)
           .mockReturnValueOnce(false);
 
         // execute
         importApplicationsOnLinux();
 
         // expect
-        const expected: Applications = [blastem, pcsx2];
+        const expected = [
+          applicationsFromDB.pcsx2,
+          applicationsFromDB.blastem,
+        ].map(({ categories, fileExtensions, name, id, flatpakId }) => ({
+          categories,
+          fileExtensions,
+          name,
+          id,
+          flatpakId,
+        }));
         expect(writeFileMock).toHaveBeenCalledWith(
           expected,
           paths.applications

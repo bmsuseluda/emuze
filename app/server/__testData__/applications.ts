@@ -30,7 +30,6 @@ export const pcsx2: FullApplication = {
   fileExtensions: [".chd", ".iso"],
   id: "pcsx2-v1.7.2242-windows-64bit-avx2",
   name: "PCSX2",
-  flatpakId: "net.pcsx2.PCSX2",
 };
 
 export const pcsx2Old: FullApplication = {
@@ -55,7 +54,6 @@ export const bsnes: FullApplication = {
   fileExtensions: [".sfc", ".smc"],
   id: "bsnes",
   name: "BSNES",
-  flatpakId: "com.retrodev.blastem",
 };
 
 export const applications: FullApplication[] = [
@@ -67,7 +65,6 @@ export const applications: FullApplication[] = [
     fileExtensions: [".chd", ".cue"],
     id: "duckstation-windows-x64-release",
     name: "Duckstation",
-    flatpakId: "org.duckstation.DuckStation",
   },
   {
     categories: [nintendoentertainmentsystem],

@@ -55,6 +55,21 @@ export const pcsx2: Application = {
   flatpakId: "net.pcsx2.PCSX2",
 };
 
+export const blastem: Application = {
+  id: "blastem",
+  name: "BlastEm",
+  fileExtensions: [".68K", ".bin", ".sgd", ".smd"],
+  categories: [segamegadrive],
+  flatpakId: "com.retrodev.blastem",
+};
+
+export const bsnes: Application = {
+  id: "bsnes",
+  name: "BSNES",
+  fileExtensions: [".sfc", ".smc"],
+  categories: [supernintendo],
+};
+
 export const applications: Application[] = [
   {
     id: "duckstation",
@@ -71,19 +86,8 @@ export const applications: Application[] = [
     categories: [sonypsp],
     flatpakId: "org.ppsspp.PPSSPP",
   },
-  {
-    id: "blastem",
-    name: "BlastEm",
-    fileExtensions: [".68K", ".bin", ".sgd", ".smd"],
-    categories: [segamegadrive],
-    flatpakId: "com.retrodev.blastem",
-  },
-  {
-    id: "bsnes",
-    name: "BSNES",
-    fileExtensions: [".sfc", ".smc"],
-    categories: [supernintendo],
-  },
+  blastem,
+  bsnes,
   {
     id: "citra",
     name: "Citra",

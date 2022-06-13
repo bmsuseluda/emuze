@@ -1,8 +1,12 @@
 import type { Category, Entry } from "~/types/category";
 import * as categoriesDB from "../categoriesDB.server";
 
-interface FullCategory extends Category {
+interface CategoryOnWindows extends Category {
   applicationPath: string;
+}
+
+interface CategoryOnLinux extends Category {
+  applicationFlatpakId: string;
 }
 
 export const metroidsamusreturns = {
@@ -11,7 +15,7 @@ export const metroidsamusreturns = {
   path: "F:/games/Emulation/roms/Nintendo 3DS/Metroid Samus Returns.3ds",
 };
 
-export const nintendo3ds: FullCategory = {
+export const nintendo3ds: CategoryOnWindows = {
   id: "nintendo3ds",
   name: "Nintendo 3DS",
   applicationId: "citra",
@@ -41,12 +45,23 @@ export const windsofthunder: Entry = {
   path: "F:/games/Emulation/roms/PC Engine CD/Winds of Thunder.cue",
 };
 
-export const pcenginecd: FullCategory = {
+export const pcenginecd: CategoryOnWindows = {
   id: "pcenginecd",
   name: "PC Engine CD",
   applicationId: "mednafen-1.29.0-win64",
   applicationPath:
     "F:/games/Emulation/emulators/mednafen-1.29.0-win64/mednafen.exe",
+  entryPath: "F:/games/Emulation/roms/PC Engine CD",
+  fileExtensions: [".cue", ".pce"],
+  platformIds: categoriesDB.pcenginecd.platformIds,
+  entries: [cotton, gateofthunder],
+};
+
+export const pcenginecdLinux: CategoryOnLinux = {
+  id: "pcenginecd",
+  name: "PC Engine CD",
+  applicationId: "mednafen-1.29.0-win64",
+  applicationFlatpakId: "org.mednafen",
   entryPath: "F:/games/Emulation/roms/PC Engine CD",
   fileExtensions: [".cue", ".pce"],
   platformIds: categoriesDB.pcenginecd.platformIds,
@@ -71,7 +86,7 @@ export const finalfantasy7: Entry = {
   path: "F:/games/Emulation/roms/Sony Playstation/Final Fantasy VII (J) (Disc 1).chd",
 };
 
-export const playstation: FullCategory = {
+export const playstation: CategoryOnWindows = {
   id: "sonyplaystation",
   name: "Sony Playstation",
   applicationId: "duckstation-windows-x64-release",
@@ -95,11 +110,22 @@ export const blazingstar: Entry = {
   path: "F:/games/Emulation/roms/Neo Geo/blazstar.zip",
 };
 
-export const neogeo: FullCategory = {
+export const neogeo: CategoryOnWindows = {
   id: "neogeo",
   name: "Neo Geo",
   applicationId: "mame",
   applicationPath: "F:/games/Emulation/emulators/mame/mame.exe",
+  entryPath: "F:/games/Emulation/roms/Neo Geo",
+  fileExtensions: [".zip"],
+  platformIds: categoriesDB.neogeo.platformIds,
+  entries: [blazingstar],
+};
+
+export const neogeoLinux: CategoryOnLinux = {
+  id: "neogeo",
+  name: "Neo Geo",
+  applicationId: "mame",
+  applicationFlatpakId: "org.mame",
   entryPath: "F:/games/Emulation/roms/Neo Geo",
   fileExtensions: [".zip"],
   platformIds: categoriesDB.neogeo.platformIds,

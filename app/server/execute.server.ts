@@ -3,6 +3,27 @@ import { readCategory } from "~/server/categories.server";
 import { getApplicationData } from "~/server/applicationsDB.server";
 import { openErrorDialog } from "~/server/openDialog.server";
 
+const executeApplicationOnLinux = (
+  applicationFlatpakId: string,
+  entryPath: string,
+  optionParams: string[]
+) => {
+  execFileSync("flatpak", [
+    "run",
+    applicationFlatpakId,
+    ...optionParams,
+    entryPath,
+  ]);
+};
+
+const executeApplicationOnWindows = (
+  applicationPath: string,
+  entryPath: string,
+  optionParams: string[]
+) => {
+  execFileSync(applicationPath, [...optionParams, entryPath]);
+};
+
 export const executeApplication = (category: string, entry: string) => {
   const categoryData = readCategory(category);
   const { applicationId, applicationPath, applicationFlatpakId, entries } =
@@ -25,16 +46,18 @@ export const executeApplication = (category: string, entry: string) => {
       : [];
 
     try {
-      // TODO: extract to linux and windows specific functions
       if (applicationPath) {
-        execFileSync(applicationPath, [...optionParams, entryData.path]);
-      } else if (applicationFlatpakId) {
-        execFileSync("flatpak", [
-          "run",
-          applicationFlatpakId,
-          ...optionParams,
+        executeApplicationOnWindows(
+          applicationPath,
           entryData.path,
-        ]);
+          optionParams
+        );
+      } else if (applicationFlatpakId) {
+        executeApplicationOnLinux(
+          applicationFlatpakId,
+          entryData.path,
+          optionParams
+        );
       } else {
         throw new Error(
           "There is no valid configuration for the Emulator on your operation system."
