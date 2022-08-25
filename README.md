@@ -1,4 +1,4 @@
-# emuze - Launch your Games without hassle
+# emuze - Launch your Games fast and simple
 
 ## Motivation
 

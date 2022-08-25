@@ -21,8 +21,8 @@
       "~/*": ["./app/*"],
       "@emotion/core": ["./types/emotion.d.ts"]
     },
-
-    // Remix takes care of building everything in `remix build`.
-    "noEmit": true
+    "noEmit": true,
+    "allowJs": false,
+    "forceConsistentCasingInFileNames": true
   }
 }

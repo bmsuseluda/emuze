@@ -63,7 +63,6 @@ export const globalTypes = {
         title: themeName,
         right: getColoredDiv(themeName === "dark" ? "black" : "white"),
       })),
-      showName: true,
     },
   },
 };
