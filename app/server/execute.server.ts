@@ -3,15 +3,22 @@ import { readCategory } from "~/server/categories.server";
 import { getApplicationData } from "~/server/applicationsDB.server";
 import { openErrorDialog } from "~/server/openDialog.server";
 
-const executeApplicationOnLinux = (
-  applicationFlatpakId: string,
-  entryPath: string,
-  optionParams: string[]
-) => {
+const executeApplicationOnLinux = ({
+  applicationFlatpakOptionParams,
+  applicationFlatpakId,
+  entryPath,
+  optionParams,
+}: {
+  applicationFlatpakOptionParams?: string[];
+  applicationFlatpakId: string;
+  entryPath: string;
+  optionParams?: string[];
+}) => {
   execFileSync("flatpak", [
     "run",
+    ...(applicationFlatpakOptionParams ? applicationFlatpakOptionParams : []),
     applicationFlatpakId,
-    ...optionParams,
+    ...(optionParams ? optionParams : []),
     entryPath,
   ]);
 };
@@ -26,8 +33,13 @@ const executeApplicationOnWindows = (
 
 export const executeApplication = (category: string, entry: string) => {
   const categoryData = readCategory(category);
-  const { applicationId, applicationPath, applicationFlatpakId, entries } =
-    categoryData;
+  const {
+    applicationId,
+    applicationPath,
+    applicationFlatpakId,
+    applicationFlatpakOptionParams,
+    entries,
+  } = categoryData;
   const applicationData = getApplicationData(applicationId);
   const entryData = entries?.find((value) => value.id === entry);
 
@@ -53,11 +65,12 @@ export const executeApplication = (category: string, entry: string) => {
           optionParams
         );
       } else if (applicationFlatpakId) {
-        executeApplicationOnLinux(
+        executeApplicationOnLinux({
+          applicationFlatpakOptionParams,
           applicationFlatpakId,
-          entryData.path,
-          optionParams
-        );
+          entryPath: entryData.path,
+          optionParams,
+        });
       } else {
         throw new Error(
           "There is no valid configuration for the Emulator on your operation system."

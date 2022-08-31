@@ -93,10 +93,18 @@ export const importApplicationsOnLinux = () => {
         !!application.flatpakId &&
         checkFlatpakIsInstalled(application.flatpakId)
       ) {
-        const { categories, fileExtensions, name, id, flatpakId } = application;
+        const {
+          categories,
+          fileExtensions,
+          name,
+          id,
+          flatpakId,
+          flatpakOptionParams,
+        } = application;
         previousValue.push({
           categories,
           flatpakId,
+          flatpakOptionParams,
           fileExtensions,
           id,
           name,

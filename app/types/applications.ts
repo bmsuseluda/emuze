@@ -6,6 +6,7 @@ export interface Application {
   name: string;
   path?: string;
   flatpakId?: string;
+  flatpakOptionParams?: string[];
   categories: Category[];
   fileExtensions: string[];
   optionParams?: string[];

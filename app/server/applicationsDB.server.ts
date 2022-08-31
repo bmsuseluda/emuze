@@ -2,18 +2,14 @@ import nodepath from "path";
 
 import type { Entry, Category as CategoryData } from "~/types/category";
 import type { Category } from "~/server/categoriesDB.server";
-import { segadreamcast } from "~/server/categoriesDB.server";
 import {
+  segadreamcast,
   neogeocd,
   segacd,
   segamastersystem,
-} from "~/server/categoriesDB.server";
-import {
   nintendods,
   nintendogameboyadvance,
   nintendogameboycolor,
-} from "~/server/categoriesDB.server";
-import {
   arcade,
   neogeo,
   nintendo3ds,
@@ -45,6 +41,7 @@ export interface Application {
   environmentVariables?: EnvironmentVariableFunction;
   optionParams?: OptionParamFunction;
   flatpakId?: string;
+  flatpakOptionParams?: string[];
 }
 
 export const pcsx2: Application = {
@@ -53,6 +50,7 @@ export const pcsx2: Application = {
   fileExtensions: [".chd", ".iso"],
   categories: [sonyplaystation2],
   flatpakId: "net.pcsx2.PCSX2",
+  flatpakOptionParams: ["--command=pcsx2-qt"],
 };
 
 export const blastem: Application = {
@@ -149,6 +147,8 @@ export const applications: Application[] = [
     name: "Mednafen",
     fileExtensions: [".cue", ".pce"],
     categories: [segasaturn, pcengine, pcenginecd],
+    flatpakId: "com.github.AmatCoder.mednaffe",
+    flatpakOptionParams: ["--command=mednafen"],
     environmentVariables: ({ applicationPath }) => ({
       MEDNAFEN_HOME: applicationPath ? nodepath.dirname(applicationPath) : null,
     }),
@@ -158,6 +158,7 @@ export const applications: Application[] = [
     name: "Mame",
     fileExtensions: [".zip", ".chd"],
     categories: [arcade, neogeo, neogeocd],
+    flatpakId: "org.mamedev.MAME",
     optionParams: ({ path }) => {
       const entryDirname = nodepath.dirname(path);
       return [

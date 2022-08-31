@@ -13,6 +13,7 @@ export interface Category {
   applicationId: string;
   applicationPath?: string;
   applicationFlatpakId?: string;
+  applicationFlatpakOptionParams?: string[];
   entryPath: string;
   fileExtensions: string[];
   platformIds: number[];
