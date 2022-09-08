@@ -9,9 +9,9 @@
   "license": "GNU GPLv3",
   "scripts": {
     "prepare": "husky install",
-    "build": "yarn build:remix && yarn build:electron",
-    "build:remix": "remix build",
+    "build": "yarn build:electron && yarn build:remix",
     "build:electron": "tsc -p ./desktop/tsconfig.json",
+    "build:remix": "remix build",
     "dev": "remix dev",
     "start": "yarn build && yarn start:electron",
     "start:remix": "remix-serve build",
@@ -39,7 +39,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
-    "remix-electron": "^1.2.1"
+    "remix-electron": "^1.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.18.13",
@@ -96,6 +96,13 @@
             "x64",
             "ia32"
           ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
         }
       ]
     },
@@ -103,16 +110,13 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
     },
+    "portable": {
+      "artifactName": "${name}-${version}-portable.${ext}"
+    },
     "linux": {
       "target": [
         {
-          "target": "pacman",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "flatpak",
+          "target": "AppImage",
           "arch": [
             "x64"
           ]

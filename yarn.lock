@@ -5665,9 +5665,9 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:^16.11.26":
-  version: 16.11.27
-  resolution: "@types/node@npm:16.11.27"
-  checksum: 6ed0c8c4d29a549d0cfd607d19edf9a4668fbd39087701d923b4a04cd760564e47ad27f9403968cb9c11ee006f0ea6ab698b2491b4b2d2dec3f4a53d0fc22df7
+  version: 16.11.58
+  resolution: "@types/node@npm:16.11.58"
+  checksum: efdf14c62e6c1a8e758416aaa3ae4b81015ffd4e1f31c05680d1242817ba23f0b4b1345886fe5aeb3c05d818bcaed1a7af4d637e7cca5723a5e4ac8b759d3ace
   languageName: node
   linkType: hard
 
@@ -10270,15 +10270,15 @@ __metadata:
   linkType: hard
 
 "electron@npm:^20.1.0":
-  version: 20.1.0
-  resolution: "electron@npm:20.1.0"
+  version: 20.1.2
+  resolution: "electron@npm:20.1.2"
   dependencies:
     "@electron/get": ^1.14.1
     "@types/node": ^16.11.26
     extract-zip: ^2.0.1
   bin:
     electron: cli.js
-  checksum: 29a0a79aa2d62fb51a871cdb0afaa15243b3a892cd941cce1b412836fd61b35e5c542367caa0941f91460a35f74d6a6beb4b08ddee1bf085aae6dd48f63ef00c
+  checksum: 2fc71e1d4538cc105a95a35f961c7b503e0cd412c9c0216a5ca4af87e38e4994564e56c7fddc2476cf9d216daf5d6eea33cae9686595fbe663b3225d23480078
   languageName: node
   linkType: hard
 
@@ -10368,7 +10368,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     react-icons: ^4.4.0
-    remix-electron: ^1.2.1
+    remix-electron: ^1.2.2
     require-from-string: ^2.0.2
     ts-jest: ^28.0.8
     tsconfig-paths-webpack-plugin: ^4.0.0
@@ -19278,9 +19278,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remix-electron@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "remix-electron@npm:1.2.1"
+"remix-electron@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "remix-electron@npm:1.2.2"
   dependencies:
     "@types/mime": ^2.0.3
     "@types/node": "*"
@@ -19288,14 +19288,14 @@ __metadata:
     "@types/react-dom": "*"
     fast-glob: ^3.2.11
     mime: ^3.0.0
-    zod: ^3.12.0
+    zod: ^3.14.4
   peerDependencies:
-    "@remix-run/node": ">=1.2.1"
-    "@remix-run/server-runtime": ">=1.2.1"
+    "@remix-run/node": ">=1.4.0"
+    "@remix-run/server-runtime": ">=1.4.0"
     electron: ">=16"
     react: ">=17"
     react-dom: ">=17"
-  checksum: e55d40810693af3d5e05e3249c9c5ca5fa3c721a0afb5b6d8e1ba105a5c1849a07d58a7f103c583c9c991c76da8e9962cafb3cc5170cce310f0eaee895cf1f60
+  checksum: 64aa245f6e260cfd8fdaff2deb020215d4a988430a92315a4f17adcafc9ed3e51e9b207a69a59fb1942eb8a003adc727cd469f1498601ba0bef82c539237c0f0
   languageName: node
   linkType: hard
 
@@ -23109,10 +23109,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.12.0":
-  version: 3.13.4
-  resolution: "zod@npm:3.13.4"
-  checksum: 3db8e4d27e8d305eed44c3eaff3e67fa26e39ad0bf4f06dbafae6b6e6516bdcc5aafe342afeb81ba0386fa53373404a18f0371d41a3738f1f9b85d1321ee9724
+"zod@npm:^3.14.4":
+  version: 3.19.0
+  resolution: "zod@npm:3.19.0"
+  checksum: 35b9270ba73ff15e1cc3e529cdd49b78ceb5f9204770b974ffa5d1728ad1be8429315aa25263d088edecaa99ecc3631339fe79313435154060951706294f47e5
   languageName: node
   linkType: hard
 

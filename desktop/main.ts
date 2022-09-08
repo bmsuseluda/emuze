@@ -4,7 +4,8 @@ import nodepath from "path";
 
 app.on("ready", async () => {
   const url = await initRemix({
-    serverBuild: __dirname,
+    serverBuild: nodepath.join(__dirname),
+    publicFolder: nodepath.join(app.getAppPath(), "..", "..", "public"),
   });
 
   const window = new BrowserWindow({
