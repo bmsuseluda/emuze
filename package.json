@@ -9,7 +9,7 @@
   "license": "GNU GPLv3",
   "scripts": {
     "prepare": "husky install",
-    "dev": "concurrently 'yarn:dev:*'",
+    "dev": "concurrently -k 'yarn:dev:*'",
     "dev:electron": "yarn build:electron && yarn start:electron",
     "dev:remix": "remix dev",
     "build": "yarn build:electron && yarn build:remix",
