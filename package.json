@@ -15,7 +15,7 @@
     "dev": "remix dev",
     "start": "yarn build && yarn start:electron",
     "start:remix": "remix-serve build",
-    "start:electron": "electron desktop/build/main.js",
+    "start:electron": "electron build/desktop/main.js",
     "test": "jest  --passWithNoTests --coverage",
     "test:watch": "jest --watch  --passWithNoTests",
     "test:findRelatedTests": "jest --findRelatedTests --passWithNoTests",
@@ -42,14 +42,19 @@
     "remix-electron": "^1.2.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.18.10",
     "@babel/core": "^7.18.13",
+    "@babel/preset-env": "^7.18.10",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.18.6",
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
     "@remix-run/dev": "^1.6.8",
     "@remix-run/eslint-config": "^1.6.8",
-    "@storybook/addon-actions": "^6.5.10",
     "@storybook/addon-essentials": "^6.5.10",
-    "@storybook/addon-links": "^6.5.10",
+    "@storybook/addons": "^6.5.10",
+    "@storybook/builder-webpack5": "^6.5.10",
+    "@storybook/manager-webpack5": "^6.5.10",
     "@storybook/react": "^6.5.10",
     "@testing-library/react": "^13.3.0",
     "@types/igdb-api-node": "^5.0.0",
@@ -83,10 +88,13 @@
   "build": {
     "appId": "org.emuze.emuze",
     "files": [
-      "desktop"
+      "build/desktop"
     ],
     "extraFiles": [
-      "public"
+      {
+        "from": "build/public",
+        "to": "public"
+      }
     ],
     "win": {
       "target": [
@@ -123,20 +131,8 @@
         }
       ],
       "category": "Emulator"
-    },
-    "flatpak": {
-      "files": [
-        [
-          "public",
-          "/bin/public"
-        ],
-        [
-          "public",
-          "/bin"
-        ]
-      ]
     }
   },
-  "main": "desktop/build/main.js",
+  "main": "build/desktop/main.js",
   "packageManager": "yarn@3.2.0"
 }

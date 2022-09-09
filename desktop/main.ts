@@ -41,6 +41,7 @@ app.on("ready", async () => {
     }
   });
 
+  // TODO: replace with local shortcut
   globalShortcut.register("CommandOrControl+F12", () => {
     window.webContents.toggleDevTools();
   });
