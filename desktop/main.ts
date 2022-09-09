@@ -3,9 +3,14 @@ import { app, BrowserWindow, ipcMain, globalShortcut } from "electron";
 import nodepath from "path";
 
 app.on("ready", async () => {
+  const publicFolder =
+    process.env.NODE_ENV === "development"
+      ? nodepath.join(app.getAppPath(), "..", "public")
+      : nodepath.join(app.getAppPath(), "..", "..", "public");
+
   const url = await initRemix({
     serverBuild: nodepath.join(__dirname),
-    publicFolder: nodepath.join(app.getAppPath(), "..", "..", "public"),
+    publicFolder,
   });
 
   const window = new BrowserWindow({
