@@ -81,6 +81,16 @@ Right now the following are supported:
 
 > INFO: If you miss an emulator or find an error in the configuration, please create a pull request or issue.
 
+## Configuration
+
+### Keyboard Shortcuts
+
+`F11` - Toggle fullscreen
+
+### Commandline Arguments
+
+`--fullscreen` - Start in fullscreen
+
 ## Known Issues
 
 - Fetching metadata for games like `Super Mario Bros. / Tetris / World Cup` is not supported right now due to the limitations of special characters in a windows file name.
@@ -94,4 +104,3 @@ There is a lot i would like to work on. The following features are the bigger on
 - 'Roms as Folder' support for emulators e.g. ScummVM or DosBox
 - Controller support
 - Filter and sorting of roms
-- Linux version

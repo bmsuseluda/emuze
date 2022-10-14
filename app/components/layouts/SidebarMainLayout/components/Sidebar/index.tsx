@@ -4,12 +4,12 @@ import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 
 const SidebarWrapper = styled("aside", {
   background: "$gradiants$default",
-  padding: "25px $2 $2 $2",
+  padding: "25px 0.5em $2 $2",
   display: "flex",
   flexFlow: "column",
   overflow: "auto",
   resize: "horizontal",
-  width: "250px",
+  width: "15em",
 });
 
 const StyledUl = styled(Ul, {

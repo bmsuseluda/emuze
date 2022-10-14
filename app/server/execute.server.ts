@@ -3,6 +3,7 @@ import { readCategory } from "~/server/categories.server";
 import { getApplicationData } from "~/server/applicationsDB.server";
 import { openErrorDialog } from "~/server/openDialog.server";
 
+// TODO: separate os specific code
 const executeApplicationOnLinux = ({
   applicationFlatpakOptionParams,
   applicationFlatpakId,

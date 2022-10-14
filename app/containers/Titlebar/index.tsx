@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { styled } from "~/stitches";
 import { IconButton } from "./components/IconButton";
 
@@ -22,13 +23,28 @@ const Buttons = styled("div", {
   whiteSpace: "nowrap",
 });
 
-export const Titlebar = () => (
-  <Wrapper>
-    <Dragable />
-    <Buttons>
-      <IconButton variant="minimize" />
-      <IconButton variant="maximize" />
-      <IconButton variant="close" />
-    </Buttons>
-  </Wrapper>
-);
+export const Titlebar = () => {
+  const [fullscreen, setFullscreen] = useState(false);
+  useEffect(() => {
+    electronAPI.onFullscreen((fullscreen) => {
+      console.log("fullscreen", fullscreen);
+
+      setFullscreen(fullscreen);
+    });
+  }, []);
+
+  if (!fullscreen) {
+    return (
+      <Wrapper>
+        <Dragable />
+        <Buttons>
+          <IconButton variant="minimize" />
+          <IconButton variant="maximize" />
+          <IconButton variant="close" />
+        </Buttons>
+      </Wrapper>
+    );
+  }
+
+  return null;
+};

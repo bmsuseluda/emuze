@@ -1,6 +1,11 @@
 import { initRemix } from "remix-electron";
-import { app, BrowserWindow, ipcMain, globalShortcut } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import nodepath from "path";
+
+const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
+  window.setFullScreen(fullscreen);
+  window.webContents.send("fullscreen", fullscreen);
+};
 
 app.on("ready", async () => {
   const publicFolder =
@@ -21,7 +26,7 @@ app.on("ready", async () => {
     },
   });
 
-  ipcMain.on("window", (event, name: string) => {
+  ipcMain.on("changeWindow", (_event, name: WindowChangeEvents) => {
     switch (name) {
       case "minimize":
         window.minimize();
@@ -41,16 +46,27 @@ app.on("ready", async () => {
         window.close();
         break;
       default:
-        console.log("unknown window event name", name);
+        console.log("unknown window change event name", name);
         break;
     }
   });
 
-  // TODO: replace with local shortcut
-  globalShortcut.register("CommandOrControl+F12", () => {
-    window.webContents.toggleDevTools();
+  window.webContents.on("before-input-event", (event, input) => {
+    if (input.key.toLowerCase() === "f12") {
+      event.preventDefault();
+      window.webContents.toggleDevTools();
+    }
+    if (input.key.toLowerCase() === "f11") {
+      event.preventDefault();
+      setFullscreen(window, !window.isFullScreen());
+    }
   });
 
   await window.loadURL(url);
+  window.maximize();
   window.show();
+
+  if (app.commandLine.hasSwitch("fullscreen")) {
+    setFullscreen(window, true);
+  }
 });

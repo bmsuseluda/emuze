@@ -1,7 +1,14 @@
-import { ipcRenderer } from "electron";
+import { contextBridge, ipcRenderer } from "electron";
 
-window.addEventListener("message", async (event) => {
-  if (event.data.type === "window") {
-    ipcRenderer.send("window", event.data.name);
-  }
-});
+export type WindowChangeEvents = "close" | "minimize" | "maximize" | "restore";
+
+export const electronAPI = {
+  changeWindow: (eventName: WindowChangeEvents) =>
+    ipcRenderer.send("changeWindow", eventName),
+  onFullscreen: (callback: (fullscreen: boolean) => void) =>
+    ipcRenderer.on("fullscreen", (_event, fullscreen: boolean) =>
+      callback(fullscreen)
+    ),
+};
+
+contextBridge.exposeInMainWorld("electronAPI", electronAPI);

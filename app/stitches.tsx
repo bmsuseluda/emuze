@@ -10,17 +10,17 @@ export const { getCssText, styled, createTheme, globalCss } = createStitches({
       error: "#950909",
     },
     space: {
-      1: "10px",
-      2: "20px",
-      3: "30px",
-      4: "50px",
+      1: "1em",
+      2: "2em",
+      3: "3em",
+      4: "5em",
     },
     sizes: {
-      1: "10px",
-      2: "20px",
-      3: "30px",
-      4: "40px",
-      5: "50px",
+      1: "1em",
+      2: "2em",
+      3: "3em",
+      4: "4em",
+      5: "5em",
     },
     borderWidths: {
       1: "1px",
@@ -28,7 +28,7 @@ export const { getCssText, styled, createTheme, globalCss } = createStitches({
       3: "3px",
     },
     radii: {
-      1: "10px",
+      1: "1em",
     },
     gradiants: {
       default:

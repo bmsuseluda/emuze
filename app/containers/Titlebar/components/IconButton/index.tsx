@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes } from "react";
+import type { IconType } from "react-icons";
 import {
   VscChromeClose,
   VscChromeMinimize,
@@ -7,7 +8,7 @@ import {
 } from "react-icons/vsc";
 import { styled } from "~/stitches";
 
-const iconVariant = {
+const iconVariant: Record<WindowChangeEvents, IconType> = {
   close: VscChromeClose,
   minimize: VscChromeMinimize,
   maximize: VscChromeMaximize,
@@ -15,7 +16,7 @@ const iconVariant = {
 };
 
 interface Props {
-  variant: keyof typeof iconVariant;
+  variant: WindowChangeEvents;
 }
 
 const Button = styled("button", {
@@ -51,7 +52,7 @@ export const IconButton = ({
   const Icon = iconVariant[variant];
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    window.postMessage({ type: "window", name: variant });
+    electronAPI.changeWindow(variant);
   };
 
   if (variant === "close") {
