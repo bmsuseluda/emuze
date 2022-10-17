@@ -1,6 +1,11 @@
 import { contextBridge, ipcRenderer } from "electron";
 
-export type WindowChangeEvents = "close" | "minimize" | "maximize" | "restore";
+export type WindowChangeEvents =
+  | "close"
+  | "minimize"
+  | "maximize"
+  | "restore"
+  | "fullscreen";
 
 export const electronAPI = {
   changeWindow: (eventName: WindowChangeEvents) =>
@@ -9,6 +14,7 @@ export const electronAPI = {
     ipcRenderer.on("fullscreen", (_event, fullscreen: boolean) =>
       callback(fullscreen)
     ),
+  isFullscreen: () => ipcRenderer.invoke("isFullscreen"),
 };
 
 contextBridge.exposeInMainWorld("electronAPI", electronAPI);

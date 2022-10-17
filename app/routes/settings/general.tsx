@@ -19,6 +19,8 @@ import { openFolderDialog } from "~/server/openDialog.server";
 import { readGeneral, writeGeneral } from "~/server/settings.server";
 import type { General } from "~/types/settings/general";
 import { isWindows } from "~/server/operationsystem.server";
+import { Checkbox } from "~/components/Checkbox";
+import { useFullscreen } from "~/hooks/useFullscreen";
 
 export const loader: LoaderFunction = () => {
   const general: General = readGeneral() || {};
@@ -36,6 +38,7 @@ export const action: ActionFunction = async ({ request }) => {
   const _actionId = form.get("_actionId");
   const applicationsPath = form.get("applicationsPath");
   const categoriesPath = form.get("categoriesPath");
+  const fullscreen = form.get("fullscreen") === "on";
 
   if (_actionId === actionIds.save) {
     if (
@@ -46,8 +49,12 @@ export const action: ActionFunction = async ({ request }) => {
     }
 
     const fields: General = {
-      applicationsPath: isWindows && typeof applicationsPath === "string" ? applicationsPath : null,
+      applicationsPath:
+        isWindows && typeof applicationsPath === "string"
+          ? applicationsPath
+          : null,
       categoriesPath,
+      fullscreen,
     };
     writeGeneral(fields);
     importApplications();
@@ -97,6 +104,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 export default function Index() {
   const defaultData = useLoaderData<General>();
   const newData = useActionData<General>();
+  const fullscreen = useFullscreen();
 
   const [applicationPath, setApplicationPath] = useState(
     defaultData.applicationsPath || ""
@@ -126,25 +134,29 @@ export default function Index() {
         <ListActionBarLayout.ListActionBarContainer
           list={
             <FormBox>
-              {defaultData.isWindows && (<FormRow>
-                <Label htmlFor="applicationsPath">Emulators Path</Label>
-                <FileInput>
-                  <FileInput.TextInput
-                    name="applicationsPath"
-                    id="applicationsPath"
-                    value={applicationPath}
-                    onChange={(event) => setApplicationPath(event.target.value)}
-                  />
-                  <FileInput.Button
-                    type="submit"
-                    name="_actionId"
-                    value={actionIds.chooseApplicationsPath}
-                    disabled={state !== "idle"}
-                  >
-                    choose
-                  </FileInput.Button>
-                </FileInput>
-              </FormRow>)}
+              {defaultData.isWindows && (
+                <FormRow>
+                  <Label htmlFor="applicationsPath">Emulators Path</Label>
+                  <FileInput>
+                    <FileInput.TextInput
+                      name="applicationsPath"
+                      id="applicationsPath"
+                      value={applicationPath}
+                      onChange={(event) =>
+                        setApplicationPath(event.target.value)
+                      }
+                    />
+                    <FileInput.Button
+                      type="submit"
+                      name="_actionId"
+                      value={actionIds.chooseApplicationsPath}
+                      disabled={state !== "idle"}
+                    >
+                      choose
+                    </FileInput.Button>
+                  </FileInput>
+                </FormRow>
+              )}
 
               <FormRow>
                 <Label htmlFor="categoriesPath">Roms Path</Label>
@@ -164,6 +176,15 @@ export default function Index() {
                     choose
                   </FileInput.Button>
                 </FileInput>
+              </FormRow>
+              <FormRow>
+                <Label htmlFor="fullscreen">Fullscreen</Label>
+                <Checkbox
+                  id="fullscreen"
+                  name="fullscreen"
+                  checked={fullscreen}
+                  onClick={() => electronAPI.changeWindow("fullscreen")}
+                />
               </FormRow>
             </FormBox>
           }

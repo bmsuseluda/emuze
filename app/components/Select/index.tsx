@@ -17,7 +17,7 @@ const DefaultSelect = styled("select", {
   color: "$color",
   padding: "$1 $3 $1 $1",
   borderStyle: "solid",
-  borderWidth: "$2",
+  borderWidth: "$1",
   borderColor: "$backgroundColor",
   borderRadius: "$1",
   outline: "none",

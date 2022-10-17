@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useFullscreen } from "~/hooks/useFullscreen";
 import { styled } from "~/stitches";
 import { IconButton } from "./components/IconButton";
 
@@ -24,14 +24,7 @@ const Buttons = styled("div", {
 });
 
 export const Titlebar = () => {
-  const [fullscreen, setFullscreen] = useState(false);
-  useEffect(() => {
-    electronAPI.onFullscreen((fullscreen) => {
-      console.log("fullscreen", fullscreen);
-
-      setFullscreen(fullscreen);
-    });
-  }, []);
+  const fullscreen = useFullscreen();
 
   if (!fullscreen) {
     return (

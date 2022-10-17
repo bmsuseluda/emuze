@@ -1,6 +1,7 @@
 import { initRemix } from "remix-electron";
 import { app, BrowserWindow, ipcMain } from "electron";
 import nodepath from "path";
+import { readGeneral } from "./readSettings";
 
 const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
   window.setFullScreen(fullscreen);
@@ -26,6 +27,8 @@ app.on("ready", async () => {
     },
   });
 
+  ipcMain.handle("isFullscreen", () => window.isFullScreen());
+
   ipcMain.on("changeWindow", (_event, name: WindowChangeEvents) => {
     switch (name) {
       case "minimize":
@@ -37,6 +40,9 @@ app.on("ready", async () => {
         } else {
           window.maximize();
         }
+        break;
+      case "fullscreen":
+        setFullscreen(window, !window.isFullScreen());
         break;
       case "restore": {
         window.restore();
@@ -66,7 +72,9 @@ app.on("ready", async () => {
   window.maximize();
   window.show();
 
-  if (app.commandLine.hasSwitch("fullscreen")) {
+  const general = readGeneral();
+
+  if (app.commandLine.hasSwitch("fullscreen") || general.fullscreen) {
     setFullscreen(window, true);
   }
 });

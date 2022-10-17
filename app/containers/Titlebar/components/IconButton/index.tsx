@@ -13,6 +13,7 @@ const iconVariant: Record<WindowChangeEvents, IconType> = {
   minimize: VscChromeMinimize,
   maximize: VscChromeMaximize,
   restore: VscChromeRestore,
+  fullscreen: VscChromeMaximize,
 };
 
 interface Props {

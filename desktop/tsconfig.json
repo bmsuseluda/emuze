@@ -1,5 +1,10 @@
 {
-  "include": ["main.ts", "preload.ts", "../electronApi.d.ts"],
+  "include": [
+    "main.ts",
+    "preload.ts",
+    "readSettings.ts",
+    "../electronApi.d.ts"
+  ],
   "compilerOptions": {
     "esModuleInterop": true,
     "module": "commonjs",
