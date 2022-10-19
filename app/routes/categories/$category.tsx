@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, useLoaderData, useTransition } from "@remix-run/react";
+import { IoMdPlay, IoMdRefresh } from "react-icons/io";
 import { Button } from "~/components/Button";
 import { executeApplication } from "~/server/execute.server";
 import { importEntries, readCategory } from "~/server/categories.server";
@@ -109,6 +110,7 @@ export default function Index() {
                 }
                 value={actionIds.launch}
                 ref={LaunchButtonRef}
+                icon={IoMdPlay}
                 {...getTestId(["button", "launch"])}
               >
                 Launch Rom
@@ -118,6 +120,7 @@ export default function Index() {
                 name="_actionId"
                 disabled={state !== "idle"}
                 value={actionIds.import}
+                icon={IoMdRefresh}
                 {...getTestId(["button", "import"])}
               >
                 Import Roms

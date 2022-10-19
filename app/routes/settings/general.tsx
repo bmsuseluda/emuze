@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
+import { IoMdSave } from "react-icons/io";
+import { IoFolderOpenSharp } from "react-icons/io5";
 import {
   Form,
   useActionData,
@@ -151,8 +153,9 @@ export default function Index() {
                       name="_actionId"
                       value={actionIds.chooseApplicationsPath}
                       disabled={state !== "idle"}
+                      icon={IoFolderOpenSharp}
                     >
-                      choose
+                      Choose
                     </FileInput.Button>
                   </FileInput>
                 </FormRow>
@@ -172,8 +175,9 @@ export default function Index() {
                     name="_actionId"
                     value={actionIds.chooseCategoriesPath}
                     disabled={state !== "idle"}
+                    icon={IoFolderOpenSharp}
                   >
-                    choose
+                    Choose
                   </FileInput.Button>
                 </FileInput>
               </FormRow>
@@ -194,6 +198,7 @@ export default function Index() {
               name="_actionId"
               value={actionIds.save}
               disabled={state !== "idle"}
+              icon={IoMdSave}
             >
               Save settings and import all
             </Button>

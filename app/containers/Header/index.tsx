@@ -1,8 +1,20 @@
-import { styled } from "~/stitches";
 import { Link } from "@remix-run/react";
 import { IoMdSettings } from "react-icons/io";
+import { IoLibrarySharp } from "react-icons/io5";
+import { styled } from "~/stitches";
 
-import { Ul as BaseUl } from "~/components/Ul";
+import { Ul } from "~/components/Ul";
+
+const Headline = styled("h1", {
+  margin: 0,
+  padding: 0,
+});
+
+const StyledNav = styled("nav", {
+  display: "flex",
+  flexDirection: "row",
+  justifyContent: "space-between",
+});
 
 const StyledHeader = styled("header", {
   borderBottom: "1px solid $color",
@@ -12,29 +24,36 @@ const StyledHeader = styled("header", {
 const StyledLink = styled(Link, {
   textDecoration: "none",
   color: "$color",
+
+  "> svg": {
+    width: "20px",
+    height: "20px",
+  },
 });
 
-const Ul = styled(BaseUl, {
+const Links = styled(Ul, {
   display: "flex",
   flexDirection: "row",
-  justifyContent: "space-between",
+  justifyContent: "end",
+  gap: "$1",
 });
 
 export const Header = () => (
   <StyledHeader>
-    <nav aria-label="Main navigation">
-      <Ul>
+    <StyledNav aria-label="Main navigation">
+      <Headline>emuze</Headline>
+      <Links>
         <li>
-          <StyledLink to="/" draggable={false}>
-            Library
+          <StyledLink to="/" draggable={false} title="Library">
+            <IoLibrarySharp />
           </StyledLink>
         </li>
         <li>
-          <StyledLink to="/settings" draggable={false}>
+          <StyledLink to="/settings" draggable={false} title="Settings">
             <IoMdSettings />
           </StyledLink>
         </li>
-      </Ul>
-    </nav>
+      </Links>
+    </StyledNav>
   </StyledHeader>
 );

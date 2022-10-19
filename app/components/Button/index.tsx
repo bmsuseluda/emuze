@@ -1,6 +1,9 @@
+import React from "react";
+import type { ButtonHTMLAttributes } from "react";
+import type { IconType } from "react-icons";
 import { styled } from "~/stitches";
 
-export const Button = styled("button", {
+export const StyledButton = styled("button", {
   backgroundColor: "$backgroundColor",
   color: "$color",
   fontWeight: "bold",
@@ -8,8 +11,8 @@ export const Button = styled("button", {
   borderStyle: "solid",
   borderColor: "$sidebarBackgroundColor",
   borderRadius: "$1",
-  fontSize: "13px",
-  padding: "$1 $2",
+  fontSize: "15px",
+  padding: "$1",
   cursor: "pointer",
   textDecoration: "none",
   outline: "none",
@@ -22,4 +25,34 @@ export const Button = styled("button", {
     borderStyle: "dashed",
     cursor: "not-allowed",
   },
+
+  variants: {
+    icon: {
+      true: {
+        display: "flex",
+        flexDirection: "row",
+        gap: "$1",
+        alignItems: "center",
+        "> svg": {
+          width: "20px",
+          height: "20px",
+        },
+      },
+    },
+  },
 });
+
+type Props = {
+  icon?: IconType;
+  children: React.ReactNode;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
+
+export const Button = React.forwardRef<HTMLButtonElement, Props>(
+  ({ icon: Icon, children, ...rest }, ref) => (
+    <StyledButton icon={!!Icon} {...rest} ref={ref}>
+      {Icon && <Icon />} {children}
+    </StyledButton>
+  )
+);
+
+Button.displayName = "Button";

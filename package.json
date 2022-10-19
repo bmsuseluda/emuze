@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.0.0",
+    "@radix-ui/react-label": "^2.0.0",
     "@remix-run/node": "^1.6.8",
     "@remix-run/react": "^1.6.8",
     "@remix-run/serve": "^1.6.8",

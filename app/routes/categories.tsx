@@ -5,6 +5,7 @@ import type {
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Outlet, useLoaderData, useTransition } from "@remix-run/react";
+import { IoMdRefresh } from "react-icons/io";
 import { Button } from "~/components/Button";
 import { importCategories, readCategories } from "~/server/categories.server";
 import { SidebarMainLayout } from "~/components/layouts/SidebarMainLayout";
@@ -71,6 +72,7 @@ export default function Index() {
               name="_actionId"
               disabled={state !== "idle"}
               value="import"
+              icon={IoMdRefresh}
             >
               Import all
             </Button>
