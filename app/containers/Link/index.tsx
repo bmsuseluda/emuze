@@ -1,8 +1,10 @@
 import { NavLink } from "@remix-run/react";
+import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import { styled } from "~/stitches";
 
 interface Props {
   to: string;
+  icon?: React.ReactNode;
   children: React.ReactNode;
 }
 
@@ -11,7 +13,7 @@ const StyledNavLink = styled(NavLink, {
   color: "$color",
 });
 
-const ActiveLinkSpan = styled("span", {
+const LinkSpan = styled(IconChildrenWrapper, {
   display: "inline-block",
   width: "100%",
   boxSizing: "border-box",
@@ -26,11 +28,13 @@ const ActiveLinkSpan = styled("span", {
   },
 });
 
-export const Link = ({ to, children, ...rest }: Props) => (
+export const Link = ({ to, children, icon, ...rest }: Props) => (
   <li>
     <StyledNavLink to={to} prefetch="intent" draggable={false} {...rest}>
       {({ isActive }) => (
-        <ActiveLinkSpan active={isActive}>{children}</ActiveLinkSpan>
+        <LinkSpan active={isActive} icon={icon}>
+          {children}
+        </LinkSpan>
       )}
     </StyledNavLink>
   </li>

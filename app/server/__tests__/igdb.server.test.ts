@@ -45,7 +45,7 @@ describe("igdb.server", () => {
     };
     igdbRequestMock.mockResolvedValue(igdbResponse);
 
-    const entriesWithImages = await fetchCovers(playstation.platformIds, [
+    const entriesWithImages = await fetchCovers(playstation.igdbPlatformIds, [
       hugo,
       hugo2,
     ]);
@@ -80,7 +80,7 @@ describe("igdb.server", () => {
     };
     igdbRequestMock.mockResolvedValue(igdbResponse);
 
-    const entriesWithImages = await fetchCovers(playstation.platformIds, [
+    const entriesWithImages = await fetchCovers(playstation.igdbPlatformIds, [
       finalfantasy7,
     ]);
 

@@ -153,7 +153,7 @@ export default function Index() {
                       name="_actionId"
                       value={actionIds.chooseApplicationsPath}
                       disabled={state !== "idle"}
-                      icon={IoFolderOpenSharp}
+                      icon={<IoFolderOpenSharp />}
                     >
                       Choose
                     </FileInput.Button>
@@ -175,7 +175,7 @@ export default function Index() {
                     name="_actionId"
                     value={actionIds.chooseCategoriesPath}
                     disabled={state !== "idle"}
-                    icon={IoFolderOpenSharp}
+                    icon={<IoFolderOpenSharp />}
                   >
                     Choose
                   </FileInput.Button>
@@ -198,7 +198,7 @@ export default function Index() {
               name="_actionId"
               value={actionIds.save}
               disabled={state !== "idle"}
-              icon={IoMdSave}
+              icon={<IoMdSave />}
             >
               Save settings and import all
             </Button>

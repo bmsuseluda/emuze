@@ -13,13 +13,16 @@ import { Link } from "~/containers/Link";
 import { Header } from "~/containers/Header";
 import { useTestId } from "~/hooks/useTestId";
 import { importApplications } from "~/server/applications.server";
+import { PlatformIcon } from "~/components/PlatformIcon";
+import type { PlatformId } from "~/types/platforms";
 
-type CategoryLinks = Array<{ name: string; to: string }>;
+type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
 
 export const loader: LoaderFunction = () => {
   const categories = readCategories();
   const categoryLinks = categories.map(({ id, name }) => ({
     to: `/categories/${id}`,
+    id,
     name,
   }));
 
@@ -72,20 +75,21 @@ export default function Index() {
               name="_actionId"
               disabled={state !== "idle"}
               value="import"
-              icon={IoMdRefresh}
+              icon={<IoMdRefresh />}
             >
               Import all
             </Button>
           </Form>
         }
       >
-        {categoryLinks.map((category) => (
+        {categoryLinks.map(({ id, name, to }) => (
           <Link
-            to={category.to}
-            key={category.to}
-            {...getTestId(["link", category.to])}
+            to={to}
+            icon={<PlatformIcon id={id} />}
+            key={to}
+            {...getTestId(["link", to])}
           >
-            {category.name}
+            {name}
           </Link>
         ))}
       </SidebarMainLayout.Sidebar>

@@ -10,6 +10,8 @@ import type { Category } from "~/types/category";
 import { EntryList } from "~/components/EntryList";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 import { useTestId } from "~/hooks/useTestId";
+import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
+import { PlatformIcon } from "~/components/PlatformIcon";
 
 export const loader: LoaderFunction = ({ params }) => {
   const { category } = params;
@@ -62,7 +64,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 };
 
 export default function Index() {
-  const { name, entries } = useLoaderData<Category>();
+  const { id, name, entries } = useLoaderData<Category>();
   const LaunchButtonRef = useRef<HTMLButtonElement>(null);
   const { state } = useTransition();
   const { getTestId } = useTestId("category");
@@ -71,14 +73,16 @@ export default function Index() {
   return (
     <ListActionBarLayout
       headline={
-        <>
-          <span {...getTestId("name")}>{name}</span>
-          {entries && (
-            <span {...getTestId(["entries", "length"])}>
-              {` (${entries.length})`}
-            </span>
-          )}
-        </>
+        <IconChildrenWrapper icon={<PlatformIcon id={id} />}>
+          <span>
+            <span {...getTestId("name")}>{name}</span>
+            {entries && (
+              <span {...getTestId(["entries", "length"])}>
+                {` (${entries.length})`}
+              </span>
+            )}
+          </span>
+        </IconChildrenWrapper>
       }
     >
       <Form method="post">
@@ -110,7 +114,7 @@ export default function Index() {
                 }
                 value={actionIds.launch}
                 ref={LaunchButtonRef}
-                icon={IoMdPlay}
+                icon={<IoMdPlay />}
                 {...getTestId(["button", "launch"])}
               >
                 Launch Rom
@@ -120,7 +124,7 @@ export default function Index() {
                 name="_actionId"
                 disabled={state !== "idle"}
                 value={actionIds.import}
-                icon={IoMdRefresh}
+                icon={<IoMdRefresh />}
                 {...getTestId(["button", "import"])}
               >
                 Import Roms

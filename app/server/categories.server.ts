@@ -16,6 +16,7 @@ import { fetchCovers } from "~/server/igdb.server";
 import { readGeneral } from "~/server/settings.server";
 import Bottleneck from "bottleneck";
 import type { Application } from "~/types/applications";
+import type { PlatformId } from "~/types/platforms";
 
 export const paths = {
   categories: "data/categories.json",
@@ -66,7 +67,7 @@ export const sortFileNames = (a: string, b: string) => {
 const readEntriesWithImages = async (
   entryPath: string,
   fileExtensions: string[],
-  platformIds: number[]
+  igdbPlatformIds: number[]
 ) => {
   const filenames = readFilenames(entryPath, fileExtensions);
   filenames.sort(sortFileNames);
@@ -80,20 +81,20 @@ const readEntriesWithImages = async (
     };
   });
 
-  const entriesWithImages = await fetchCovers(platformIds, entries);
+  const entriesWithImages = await fetchCovers(igdbPlatformIds, entries);
 
   return entriesWithImages;
 };
 
 export const importEntries = async (category: string) => {
   const oldData = readCategory(category);
-  const { entryPath, fileExtensions, platformIds } = oldData;
+  const { entryPath, fileExtensions, igdbPlatformIds } = oldData;
   const data: Category = {
     ...oldData,
     entries: await readEntriesWithImages(
       entryPath,
       fileExtensions,
-      platformIds
+      igdbPlatformIds
     ),
   };
 
@@ -103,19 +104,20 @@ export const importEntries = async (category: string) => {
 const createCategoryData =
   (
     { id, path, fileExtensions, flatpakId, flatpakOptionParams }: Application,
-    platformIds: number[],
+    igdbPlatformIds: number[],
     categoryFolderName: string,
-    categoryFolderBasename: string
+    categoryFolderBasename: string,
+    categoryId: PlatformId
   ) =>
   async (): Promise<Category> => {
     const entries = await readEntriesWithImages(
       categoryFolderName,
       fileExtensions,
-      platformIds
+      igdbPlatformIds
     );
 
     return {
-      id: convertToId(categoryFolderBasename),
+      id: categoryId,
       name: categoryFolderBasename,
       applicationId: id,
       applicationPath: path,
@@ -123,7 +125,7 @@ const createCategoryData =
       applicationFlatpakOptionParams: flatpakOptionParams,
       entryPath: categoryFolderName,
       fileExtensions,
-      platformIds,
+      igdbPlatformIds,
       entries,
     };
   };
@@ -144,27 +146,30 @@ export const importCategories = async () => {
       Array<() => Promise<Category>>
     >((previousValue, categoryFolderName) => {
       const categoryFolderBasename = nodepath.basename(categoryFolderName);
-      let platformIds: number[] | undefined;
+      let igdbPlatformIds: number[] | undefined;
+      let categoryId: PlatformId | undefined;
       const applicationForCategory = applications.find(({ categories }) =>
-        categories.find(({ names, platformIds: appPlatformIds }) =>
+        categories.find(({ names, igdbPlatformIds: appIgdbPlatformIds, id }) =>
           names.find((value) => {
             const match =
               value.toLowerCase() === categoryFolderBasename.toLowerCase();
             if (match) {
-              platformIds = appPlatformIds;
+              igdbPlatformIds = appIgdbPlatformIds;
+              categoryId = id;
             }
             return match;
           })
         )
       );
 
-      if (applicationForCategory && platformIds) {
+      if (applicationForCategory && igdbPlatformIds && categoryId) {
         previousValue.push(
           createCategoryData(
             applicationForCategory,
-            platformIds,
+            igdbPlatformIds,
             categoryFolderName,
-            categoryFolderBasename
+            categoryFolderBasename,
+            categoryId
           )
         );
       }

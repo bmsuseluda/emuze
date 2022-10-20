@@ -1,7 +1,7 @@
 import React from "react";
 import type { ButtonHTMLAttributes } from "react";
-import type { IconType } from "react-icons";
 import { styled } from "~/stitches";
+import { IconChildrenWrapper } from "../IconChildrenWrapper";
 
 export const StyledButton = styled("button", {
   backgroundColor: "$backgroundColor",
@@ -25,32 +25,17 @@ export const StyledButton = styled("button", {
     borderStyle: "dashed",
     cursor: "not-allowed",
   },
-
-  variants: {
-    icon: {
-      true: {
-        display: "flex",
-        flexDirection: "row",
-        gap: "$1",
-        alignItems: "center",
-        "> svg": {
-          width: "20px",
-          height: "20px",
-        },
-      },
-    },
-  },
 });
 
 type Props = {
-  icon?: IconType;
+  icon?: React.ReactNode;
   children: React.ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const Button = React.forwardRef<HTMLButtonElement, Props>(
-  ({ icon: Icon, children, ...rest }, ref) => (
-    <StyledButton icon={!!Icon} {...rest} ref={ref}>
-      {Icon && <Icon />} {children}
+  ({ icon, children, ...rest }, ref) => (
+    <StyledButton {...rest} ref={ref}>
+      <IconChildrenWrapper icon={icon}>{children}</IconChildrenWrapper>
     </StyledButton>
   )
 );

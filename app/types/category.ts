@@ -1,3 +1,5 @@
+import type { PlatformId } from "./platforms";
+
 export interface Entry {
   id: string;
   name: string;
@@ -8,7 +10,7 @@ export interface Entry {
 export type Entries = Entry[];
 
 export interface Category {
-  id: string;
+  id: PlatformId;
   name: string;
   applicationId: string;
   applicationPath?: string;
@@ -16,7 +18,7 @@ export interface Category {
   applicationFlatpakOptionParams?: string[];
   entryPath: string;
   fileExtensions: string[];
-  platformIds: number[];
+  igdbPlatformIds: number[];
   entries?: Entries;
 }
 

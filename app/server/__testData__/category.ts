@@ -23,7 +23,7 @@ export const nintendo3ds: CategoryOnWindows = {
     "F:/games/Emulation/emulators/Citra/nightly-mingw/citra-qt.exe",
   entryPath: "F:/games/Emulation/roms/Nintendo 3DS",
   fileExtensions: [".3ds"],
-  platformIds: categoriesDB.nintendo3ds.platformIds,
+  igdbPlatformIds: categoriesDB.nintendo3ds.igdbPlatformIds,
   entries: [metroidsamusreturns],
 };
 
@@ -53,7 +53,7 @@ export const pcenginecd: CategoryOnWindows = {
     "F:/games/Emulation/emulators/mednafen-1.29.0-win64/mednafen.exe",
   entryPath: "F:/games/Emulation/roms/PC Engine CD",
   fileExtensions: [".cue", ".pce"],
-  platformIds: categoriesDB.pcenginecd.platformIds,
+  igdbPlatformIds: categoriesDB.pcenginecd.igdbPlatformIds,
   entries: [cotton, gateofthunder],
 };
 
@@ -64,7 +64,7 @@ export const pcenginecdLinux: CategoryOnLinux = {
   applicationFlatpakId: "org.mednafen",
   entryPath: "F:/games/Emulation/roms/PC Engine CD",
   fileExtensions: [".cue", ".pce"],
-  platformIds: categoriesDB.pcenginecd.platformIds,
+  igdbPlatformIds: categoriesDB.pcenginecd.igdbPlatformIds,
   entries: [cotton, gateofthunder],
 };
 
@@ -94,7 +94,7 @@ export const playstation: CategoryOnWindows = {
     "F:/games/Emulation/emulators/duckstation-windows-x64-release/duckstation-nogui-x64-ReleaseLTCG.exe",
   entryPath: "F:/games/Emulation/roms/Sony Playstation",
   fileExtensions: [".chd", ".cue"],
-  platformIds: categoriesDB.sonyplaystation.platformIds,
+  igdbPlatformIds: categoriesDB.sonyplaystation.igdbPlatformIds,
   entries: [hugo, hugo2],
 };
 
@@ -117,7 +117,7 @@ export const neogeo: CategoryOnWindows = {
   applicationPath: "F:/games/Emulation/emulators/mame/mame.exe",
   entryPath: "F:/games/Emulation/roms/Neo Geo",
   fileExtensions: [".zip"],
-  platformIds: categoriesDB.neogeo.platformIds,
+  igdbPlatformIds: categoriesDB.neogeo.igdbPlatformIds,
   entries: [blazingstar],
 };
 
@@ -128,6 +128,6 @@ export const neogeoLinux: CategoryOnLinux = {
   applicationFlatpakId: "org.mame",
   entryPath: "F:/games/Emulation/roms/Neo Geo",
   fileExtensions: [".zip"],
-  platformIds: categoriesDB.neogeo.platformIds,
+  igdbPlatformIds: categoriesDB.neogeo.igdbPlatformIds,
   entries: [blazingstar],
 };
