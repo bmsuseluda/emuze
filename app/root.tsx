@@ -6,10 +6,15 @@ import {
   Scripts,
   ScrollRestoration,
   useCatch,
+  useFetcher,
+  useMatches,
+  useTransition,
 } from "@remix-run/react";
 import { globalStyles, themes } from "./stitches";
 import { Box } from "./components/Box";
 import { Titlebar } from "./containers/Titlebar";
+import { useGamepads } from "~/hooks/useGamepads";
+import layout from "~/hooks/useGamepads/layouts/xbox";
 
 export default function App() {
   globalStyles();
@@ -106,6 +111,23 @@ function Document({
 }
 
 function Layout({ children }: { children: React.ReactNode }) {
+  const matches = useMatches();
+  const fetcher = useFetcher();
+  useGamepads([
+    {
+      gamepadIndex: 0,
+      onButtonPress: (buttonId) => {
+        if (layout.buttons.Start === buttonId) {
+          if (matches.find(({ pathname }) => pathname === "/categories")) {
+            fetcher.load("/settings?index");
+          } else {
+            fetcher.load("?index");
+          }
+        }
+      },
+    },
+  ]);
+
   return (
     <Box
       className={themes.dark}

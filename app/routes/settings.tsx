@@ -18,6 +18,9 @@ export const loader: LoaderFunction = () => {
   return json(categories);
 };
 
+interface GamepadRef {
+  [key: number]: Gamepad;
+}
 export default function Index() {
   const categories = useLoaderData<Categories>();
 
