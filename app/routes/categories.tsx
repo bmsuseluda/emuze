@@ -4,7 +4,14 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, Outlet, useLoaderData, useTransition } from "@remix-run/react";
+import {
+  Form,
+  Outlet,
+  useFetcher,
+  useLoaderData,
+  useMatches,
+  useTransition,
+} from "@remix-run/react";
 import { IoMdRefresh } from "react-icons/io";
 import { Button } from "~/components/Button";
 import { importCategories, readCategories } from "~/server/categories.server";
@@ -15,6 +22,8 @@ import { useTestId } from "~/hooks/useTestId";
 import { importApplications } from "~/server/applications.server";
 import { PlatformIcon } from "~/components/PlatformIcon";
 import type { PlatformId } from "~/types/platforms";
+import { useGamepads } from "~/hooks/useGamepads";
+import layout from "~/hooks/useGamepads/layouts/xbox";
 
 type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
 
@@ -62,6 +71,50 @@ export default function Index() {
   const categoryLinks = useLoaderData<CategoryLinks>();
   const { state } = useTransition();
   const { getTestId } = useTestId("categories");
+
+  const matches = useMatches();
+  const fetcher = useFetcher();
+  useGamepads([
+    {
+      gamepadIndex: 0,
+      onButtonPress: (buttonId) => {
+        if (layout.buttons.DPadDown === buttonId) {
+          const pathname = matches[matches.length - 1].pathname;
+          if (pathname === "/categories/") {
+            // TODO: Check how to do it with js
+            // fetcher.load(`${categoryLinks[0].to}?index`);
+            // fetcher.load("/categories/nintendo3ds?index");
+            window.location.href = categoryLinks[0].to;
+          } else {
+            const currentIndex = categoryLinks.findIndex(
+              ({ to }) => to === pathname
+            );
+            if (currentIndex < categoryLinks.length - 1) {
+              window.location.href = categoryLinks[currentIndex + 1].to;
+            } else {
+              window.location.href = categoryLinks[0].to;
+            }
+          }
+        }
+
+        if (layout.buttons.DPadUp === buttonId) {
+          const pathname = matches[matches.length - 1].pathname;
+          if (pathname === "/categories/") {
+            window.location.href = categoryLinks[categoryLinks.length - 1].to;
+          } else {
+            const currentIndex = categoryLinks.findIndex(
+              ({ to }) => to === pathname
+            );
+            if (currentIndex === 0) {
+              window.location.href = categoryLinks[categoryLinks.length - 1].to;
+            } else {
+              window.location.href = categoryLinks[currentIndex - 1].to;
+            }
+          }
+        }
+      },
+    },
+  ]);
 
   return (
     <SidebarMainLayout>
