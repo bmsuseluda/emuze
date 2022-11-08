@@ -14,9 +14,17 @@ app.on("ready", async () => {
       ? nodepath.join(app.getAppPath(), "..", "public")
       : nodepath.join(app.getAppPath(), "..", "..", "public");
 
+  const general = readGeneral();
+  const fullscreen =
+    app.commandLine.hasSwitch("fullscreen") || general.fullscreen;
+
   const url = await initRemix({
     serverBuild: nodepath.join(__dirname),
     publicFolder,
+    getLoadContext: (request) => ({
+      ...request,
+      fullscreen: window.isFullScreen(),
+    }),
   });
 
   const window = new BrowserWindow({
@@ -72,9 +80,7 @@ app.on("ready", async () => {
   window.maximize();
   window.show();
 
-  const general = readGeneral();
-
-  if (app.commandLine.hasSwitch("fullscreen") || general.fullscreen) {
+  if (fullscreen) {
     setFullscreen(window, true);
   }
 });

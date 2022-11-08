@@ -7,7 +7,6 @@ import { json, redirect } from "@remix-run/node";
 import {
   Form,
   Outlet,
-  useFetcher,
   useLoaderData,
   useMatches,
   useTransition,
@@ -24,6 +23,7 @@ import { PlatformIcon } from "~/components/PlatformIcon";
 import type { PlatformId } from "~/types/platforms";
 import { useGamepads } from "~/hooks/useGamepads";
 import layout from "~/hooks/useGamepads/layouts/xbox";
+import { useRef, useState } from "react";
 
 type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
 
@@ -69,47 +69,62 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 export default function Index() {
   const categoryLinks = useLoaderData<CategoryLinks>();
+  const categoryLinksRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const { state } = useTransition();
   const { getTestId } = useTestId("categories");
+  const [focusOnGames, setFocusOnGames] = useState(false);
+
+  const selectLink = (index: number) => {
+    categoryLinksRefs.current[index]?.focus();
+    categoryLinksRefs.current[index]?.click();
+  };
 
   const matches = useMatches();
-  const fetcher = useFetcher();
   useGamepads([
     {
       gamepadIndex: 0,
       onButtonPress: (buttonId) => {
-        if (layout.buttons.DPadDown === buttonId) {
-          const pathname = matches[matches.length - 1].pathname;
-          if (pathname === "/categories/") {
-            // TODO: Check how to do it with js
-            // fetcher.load(`${categoryLinks[0].to}?index`);
-            // fetcher.load("/categories/nintendo3ds?index");
-            window.location.href = categoryLinks[0].to;
-          } else {
-            const currentIndex = categoryLinks.findIndex(
-              ({ to }) => to === pathname
-            );
-            if (currentIndex < categoryLinks.length - 1) {
-              window.location.href = categoryLinks[currentIndex + 1].to;
+        const pathname = matches[matches.length - 1].pathname;
+        if (!focusOnGames) {
+          if (layout.buttons.DPadDown === buttonId) {
+            if (pathname === "/categories/") {
+              selectLink(0);
             } else {
-              window.location.href = categoryLinks[0].to;
+              const currentIndex = categoryLinks.findIndex(
+                ({ to }) => to === pathname
+              );
+              if (currentIndex < categoryLinks.length - 1) {
+                selectLink(currentIndex + 1);
+              } else {
+                selectLink(0);
+              }
             }
           }
-        }
 
-        if (layout.buttons.DPadUp === buttonId) {
-          const pathname = matches[matches.length - 1].pathname;
-          if (pathname === "/categories/") {
-            window.location.href = categoryLinks[categoryLinks.length - 1].to;
-          } else {
-            const currentIndex = categoryLinks.findIndex(
-              ({ to }) => to === pathname
-            );
-            if (currentIndex === 0) {
-              window.location.href = categoryLinks[categoryLinks.length - 1].to;
+          if (layout.buttons.DPadUp === buttonId) {
+            if (pathname === "/categories/") {
+              selectLink(categoryLinks.length - 1);
             } else {
-              window.location.href = categoryLinks[currentIndex - 1].to;
+              const currentIndex = categoryLinks.findIndex(
+                ({ to }) => to === pathname
+              );
+              if (currentIndex === 0) {
+                selectLink(categoryLinks.length - 1);
+              } else {
+                selectLink(currentIndex - 1);
+              }
             }
+          }
+
+          if (
+            [layout.buttons.DPadRight, layout.buttons.A].includes(buttonId) &&
+            pathname !== "/categories/"
+          ) {
+            setFocusOnGames(true);
+          }
+        } else {
+          if (layout.buttons.B === buttonId) {
+            setFocusOnGames(false);
           }
         }
       },
@@ -140,6 +155,9 @@ export default function Index() {
             to={to}
             icon={<PlatformIcon id={id} />}
             key={to}
+            ref={(ref) => {
+              categoryLinksRefs.current.push(ref);
+            }}
             {...getTestId(["link", to])}
           >
             {name}

@@ -5,7 +5,10 @@ type GamepadsConfig = Array<{
   onButtonPress: (buttonId: number) => void;
 }>;
 
-export const useGamepads = (config: GamepadsConfig) => {
+export const useGamepads = (
+  config: GamepadsConfig,
+  deps: React.DependencyList | undefined = []
+) => {
   const [gamepads, setGamepads] = useState<Record<number, Gamepad>>({});
   const [oldGamepads, setOldGamepads] = useState<Record<number, Gamepad>>({});
   const requestAnimationFrameRef = useRef<number>();
@@ -82,5 +85,5 @@ export const useGamepads = (config: GamepadsConfig) => {
       }
     });
     setOldGamepads(gamepads);
-  }, [gamepads]);
+  }, [gamepads, ...deps]);
 };

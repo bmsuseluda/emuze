@@ -1,5 +1,6 @@
 import { useTestId } from "~/hooks/useTestId";
 import { styled } from "~/stitches";
+import React from "react";
 
 interface Props {
   id: string;
@@ -76,40 +77,39 @@ const Image = styled("img", {
   },
 });
 
-export const Entry = ({
-  id,
-  name,
-  imageUrl,
-  onDoubleClick,
-  onSelect,
-  "data-testid": dataTestId,
-}: Props) => {
-  const { getTestId } = useTestId(dataTestId);
+export const Entry = React.forwardRef<HTMLInputElement, Props>(
+  (
+    { id, name, imageUrl, onDoubleClick, onSelect, "data-testid": dataTestId },
+    ref
+  ) => {
+    const { getTestId } = useTestId(dataTestId);
 
-  return (
-    <Wrapper {...getTestId()}>
-      <Input
-        type="radio"
-        id={id}
-        name="entry"
-        value={id}
-        onChange={(event) => {
-          if (event.currentTarget.checked) {
-            onSelect();
-          }
-        }}
-        {...getTestId("link")}
-      />
-      <Label
-        htmlFor={id}
-        onDoubleClick={onDoubleClick}
-        data-imageUrl={!!imageUrl}
-      >
-        {imageUrl && (
-          <Image src={imageUrl} alt={`${name} cover`} draggable={false} />
-        )}
-        <Name>{name}</Name>
-      </Label>
-    </Wrapper>
-  );
-};
+    return (
+      <Wrapper {...getTestId()}>
+        <Input
+          type="radio"
+          id={id}
+          name="entry"
+          value={id}
+          ref={ref}
+          onChange={(event) => {
+            if (event.currentTarget.checked) {
+              onSelect();
+            }
+          }}
+          {...getTestId("link")}
+        />
+        <Label
+          htmlFor={id}
+          onDoubleClick={onDoubleClick}
+          data-imageUrl={!!imageUrl}
+        >
+          {imageUrl && (
+            <Image src={imageUrl} alt={`${name} cover`} draggable={false} />
+          )}
+          <Name>{name}</Name>
+        </Label>
+      </Wrapper>
+    );
+  }
+);

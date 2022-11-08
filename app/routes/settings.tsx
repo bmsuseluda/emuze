@@ -4,7 +4,6 @@ import { Outlet, useLoaderData } from "@remix-run/react";
 import { SidebarMainLayout } from "~/components/layouts/SidebarMainLayout";
 import { Header } from "~/containers/Header";
 import { Link } from "~/containers/Link";
-import type { Categories } from "~/server/settings.server";
 import { categories } from "~/server/settings.server";
 
 export const meta: MetaFunction = () => {
@@ -14,15 +13,12 @@ export const meta: MetaFunction = () => {
   };
 };
 
-export const loader: LoaderFunction = () => {
+export const loader = () => {
   return json(categories);
 };
 
-interface GamepadRef {
-  [key: number]: Gamepad;
-}
 export default function Index() {
-  const categories = useLoaderData<Categories>();
+  const categories = useLoaderData<typeof loader>();
 
   return (
     <SidebarMainLayout>

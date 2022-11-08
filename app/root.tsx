@@ -7,14 +7,15 @@ import {
   ScrollRestoration,
   useCatch,
   useFetcher,
+  useLoaderData,
   useMatches,
-  useTransition,
 } from "@remix-run/react";
 import { globalStyles, themes } from "./stitches";
 import { Box } from "./components/Box";
 import { Titlebar } from "./containers/Titlebar";
 import { useGamepads } from "~/hooks/useGamepads";
 import layout from "~/hooks/useGamepads/layouts/xbox";
+import { json, LoaderFunction } from "@remix-run/node";
 
 export default function App() {
   globalStyles();
@@ -90,6 +91,8 @@ function Document({
   children: React.ReactNode;
   title?: string;
 }) {
+  const { fullscreen } = useLoaderData<typeof loader>();
+
   return (
     <html lang="en">
       <head>
@@ -100,7 +103,7 @@ function Document({
         <Links />
       </head>
       <body>
-        <Titlebar />
+        <Titlebar fullscreen={fullscreen || false} />
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -109,6 +112,10 @@ function Document({
     </html>
   );
 }
+
+export const loader: LoaderFunction = ({ context }) => {
+  return json({ fullscreen: context?.fullscreen });
+};
 
 function Layout({ children }: { children: React.ReactNode }) {
   const matches = useMatches();

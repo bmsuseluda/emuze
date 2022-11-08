@@ -13,6 +13,10 @@ type Props = {
 const StyledNavLink = styled(NavLink, {
   textDecoration: "none",
   color: "$color",
+
+  "&:focus": {
+    outline: "none",
+  },
 });
 
 const LinkSpan = styled(IconChildrenWrapper, {

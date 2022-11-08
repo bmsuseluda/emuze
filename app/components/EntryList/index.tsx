@@ -6,8 +6,9 @@ import { Entry } from "./components/Entry";
 
 interface Props {
   entries: Entries;
+  entriesRefs: React.MutableRefObject<(HTMLInputElement | null)[]>;
   onDoubleClick: () => void;
-  onSelect: () => void;
+  onSelect: (index: number) => void;
   "data-testid"?: string;
 }
 
@@ -19,6 +20,7 @@ const List = styled(Ul, {
 
 export const EntryList = ({
   entries,
+  entriesRefs,
   onDoubleClick,
   onSelect,
   "data-testid": dataTestid,
@@ -26,13 +28,20 @@ export const EntryList = ({
   const { getTestId } = useTestId(dataTestid);
   return (
     <List {...getTestId()}>
-      {entries.map(({ id, name, imageUrl }) => (
+      {entries.map(({ id, name, imageUrl }, index) => (
         <Entry
           id={id}
           name={name}
           imageUrl={imageUrl}
           onDoubleClick={onDoubleClick}
-          onSelect={onSelect}
+          onSelect={() => onSelect(index)}
+          ref={(ref) => {
+            if (index === 0) {
+              entriesRefs.current = [ref];
+            } else {
+              entriesRefs.current.push(ref);
+            }
+          }}
           key={id}
           {...getTestId("entry")}
         />

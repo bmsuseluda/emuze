@@ -23,10 +23,11 @@ import type { General } from "~/types/settings/general";
 import { isWindows } from "~/server/operationsystem.server";
 import { Checkbox } from "~/components/Checkbox";
 import { useFullscreen } from "~/hooks/useFullscreen";
+import { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
 
-export const loader: LoaderFunction = () => {
+export const loader = ({ context }: DataFunctionArgs) => {
   const general: General = readGeneral() || {};
-  return json({ ...general, isWindows });
+  return json({ ...general, isWindows, fullscreen: context?.fullscreen });
 };
 
 const actionIds = {
@@ -104,9 +105,9 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 };
 
 export default function Index() {
-  const defaultData = useLoaderData<General>();
+  const defaultData = useLoaderData<typeof loader>();
   const newData = useActionData<General>();
-  const fullscreen = useFullscreen();
+  const fullscreen = useFullscreen(defaultData.fullscreen || false);
 
   const [applicationPath, setApplicationPath] = useState(
     defaultData.applicationsPath || ""

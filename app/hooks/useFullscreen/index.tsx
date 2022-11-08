@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-export const useFullscreen = () => {
-  const [fullscreen, setFullscreen] = useState(false);
+export const useFullscreen = (fullscreenDefault: boolean) => {
+  const [fullscreen, setFullscreen] = useState(fullscreenDefault);
   useEffect(() => {
     electronAPI.isFullscreen().then((result: boolean) => {
       if (result) {

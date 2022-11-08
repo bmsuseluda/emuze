@@ -23,8 +23,12 @@ const Buttons = styled("div", {
   whiteSpace: "nowrap",
 });
 
-export const Titlebar = () => {
-  const fullscreen = useFullscreen();
+type Props = {
+  fullscreen: boolean;
+};
+
+export const Titlebar = ({ fullscreen: fullscreenDefault }: Props) => {
+  const fullscreen = useFullscreen(fullscreenDefault);
 
   if (!fullscreen) {
     return (

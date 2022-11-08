@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, useLoaderData, useTransition } from "@remix-run/react";
@@ -12,6 +12,8 @@ import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 import { useTestId } from "~/hooks/useTestId";
 import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import { PlatformIcon } from "~/components/PlatformIcon";
+import { useGamepads } from "~/hooks/useGamepads";
+import layout from "~/hooks/useGamepads/layouts/xbox";
 
 export const loader: LoaderFunction = ({ params }) => {
   const { category } = params;
@@ -65,10 +67,71 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 export default function Index() {
   const { id, name, entries } = useLoaderData<Category>();
-  const LaunchButtonRef = useRef<HTMLButtonElement>(null);
+  const launchButtonRef = useRef<HTMLButtonElement>(null);
+  const entriesRefs = useRef<(HTMLInputElement | null)[]>([]);
   const { state } = useTransition();
   const { getTestId } = useTestId("category");
-  const [selected, setSelected] = useState(false);
+  const [selected, setSelected] = useState<number>();
+
+  const choseEntry = (index: number) => {
+    const entry = entriesRefs.current[index];
+    if (entry) {
+      entry.checked = true;
+      entry.focus();
+      setSelected(index);
+    }
+  };
+
+  useGamepads(
+    [
+      {
+        gamepadIndex: 0,
+        onButtonPress: (buttonId) => {
+          if (entries) {
+            if (layout.buttons.DPadRight === buttonId) {
+              if (typeof selected === "undefined") {
+                choseEntry(0);
+              } else if (selected < entries.length - 1) {
+                choseEntry(selected + 1);
+              } else if (selected === entries.length - 1) {
+                choseEntry(0);
+              }
+            }
+
+            if (layout.buttons.DPadLeft === buttonId) {
+              if (typeof selected === "undefined") {
+                // choseEntry(0);
+              } else if (selected > 0) {
+                choseEntry(selected - 1);
+              } else if (selected === 0) {
+                choseEntry(entries.length - 1);
+              }
+            }
+
+            if (
+              layout.buttons.B === buttonId &&
+              typeof selected !== "undefined"
+            ) {
+              const entry = entriesRefs.current[selected];
+              if (entry) {
+                entry.checked = false;
+                setSelected(undefined);
+              }
+            }
+
+            if (layout.buttons.A === buttonId) {
+              if (typeof selected !== "undefined") {
+                launchButtonRef.current?.click();
+              } else {
+                choseEntry(0);
+              }
+            }
+          }
+        },
+      },
+    ],
+    [selected]
+  );
 
   return (
     <ListActionBarLayout
@@ -91,11 +154,13 @@ export default function Index() {
             entries && (
               <EntryList
                 entries={entries}
+                entriesRefs={entriesRefs}
                 onDoubleClick={() => {
-                  LaunchButtonRef.current?.click();
+                  launchButtonRef.current?.click();
                 }}
-                onSelect={() => {
-                  setSelected(true);
+                onSelect={(index: number) => {
+                  console.log("setSelected");
+                  setSelected(index);
                 }}
                 {...getTestId("entries")}
               />
@@ -110,10 +175,10 @@ export default function Index() {
                   !entries ||
                   entries.length === 0 ||
                   state !== "idle" ||
-                  selected === false
+                  typeof selected === "undefined"
                 }
                 value={actionIds.launch}
-                ref={LaunchButtonRef}
+                ref={launchButtonRef}
                 icon={<IoMdPlay />}
                 {...getTestId(["button", "launch"])}
               >
