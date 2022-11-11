@@ -1,12 +1,13 @@
 import type { General } from "~/types/settings/general";
 import { readFileHome, writeFileHome } from "~/server/readWriteData.server";
 
-export type Categories = typeof categories;
+export type Category = { id: string; name: string; to: string };
 
-export const categories = [
+export const categories: Category[] = [
   {
     id: "general",
     name: "General",
+    to: "general",
   },
 ];
 

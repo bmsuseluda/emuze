@@ -1,34 +1,47 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type GamepadsConfig = Array<{
   gamepadIndex: number;
   onButtonPress: (buttonId: number) => void;
 }>;
 
-export const useGamepads = (
-  config: GamepadsConfig,
-  deps: React.DependencyList | undefined = []
-) => {
+const hasButtonPressChanged = (oldGamepad: Gamepad, newGamepad: Gamepad) =>
+  oldGamepad?.buttons.find(
+    ({ pressed }, index) => pressed !== newGamepad?.buttons[index].pressed
+  );
+const isButtonPressed = (gamepad: Gamepad) =>
+  gamepad?.buttons.find(({ pressed }) => pressed);
+
+// TODO: check useEffect deps, see eslint warnings
+export const useGamepads = (config: GamepadsConfig) => {
   const [gamepads, setGamepads] = useState<Record<number, Gamepad>>({});
-  const [oldGamepads, setOldGamepads] = useState<Record<number, Gamepad>>({});
+  const oldGamepads = useRef<Record<number, Gamepad>>({});
   const requestAnimationFrameRef = useRef<number>();
 
-  const addGamepad = (gamepad: Gamepad) => {
-    setGamepads((gamepads) => ({
-      ...gamepads,
-      [gamepad.index]: gamepad,
-    }));
-  };
+  const addGamepad = useCallback((gamepad: Gamepad) => {
+    setGamepads((gamepads) => {
+      if (
+        (!gamepads[gamepad.index] && isButtonPressed(gamepad)) ||
+        hasButtonPressChanged(gamepads[gamepad.index], gamepad)
+      ) {
+        return {
+          ...gamepads,
+          [gamepad.index]: gamepad,
+        };
+      }
+      return gamepads;
+    });
+  }, []);
 
-  const removeGamepad = (gamepad: Gamepad) => {
+  const removeGamepad = useCallback((gamepad: Gamepad) => {
     setGamepads(
       ({ [gamepad.index]: toBeRemoved, ...otherGamepads }) => otherGamepads
     );
-  };
+  }, []);
 
-  const handleGamepadConnected = ({ gamepad }: GamepadEvent) => {
+  const handleGamepadConnected = useCallback(({ gamepad }: GamepadEvent) => {
     addGamepad(gamepad);
-  };
+  }, []);
 
   useEffect(() => {
     window.addEventListener("gamepadconnected", handleGamepadConnected);
@@ -39,9 +52,9 @@ export const useGamepads = (
     );
   }, []);
 
-  const handleGamepadDisconnected = ({ gamepad }: GamepadEvent) => {
+  const handleGamepadDisconnected = useCallback(({ gamepad }: GamepadEvent) => {
     removeGamepad(gamepad);
-  };
+  }, []);
 
   useEffect(() => {
     window.addEventListener("gamepaddisconnected", handleGamepadDisconnected);
@@ -77,13 +90,13 @@ export const useGamepads = (
         gamepad.buttons.forEach((button, index) => {
           if (
             button.pressed &&
-            !oldGamepads[gamepadIndex]?.buttons[index].pressed
+            !oldGamepads.current[gamepadIndex]?.buttons[index].pressed
           ) {
             onButtonPress(index);
           }
         });
       }
     });
-    setOldGamepads(gamepads);
-  }, [gamepads, ...deps]);
+    oldGamepads.current = gamepads;
+  }, [gamepads]);
 };

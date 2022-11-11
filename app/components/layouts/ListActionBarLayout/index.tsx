@@ -1,5 +1,7 @@
 import { styled } from "~/stitches";
 import { Headline } from "~/components/Headline";
+import { useEffect, useRef } from "react";
+import { useTransition } from "@remix-run/react";
 
 interface Props {
   headline: React.ReactNode;
@@ -50,18 +52,35 @@ const ActionBar = styled("div", {
 
 interface ContainerProps {
   list: React.ReactNode;
+  scrollToTopOnLocationChange?: boolean;
   actions: React.ReactNode;
 }
 
 const ListActionBarContainer = ({
   list: listEntries,
+  scrollToTopOnLocationChange = false,
   actions,
-}: ContainerProps) => (
-  <Absolute>
-    <List>{listEntries}</List>
-    <ActionBar>{actions}</ActionBar>
-  </Absolute>
-);
+}: ContainerProps) => {
+  const listRef = useRef<HTMLDivElement>(null);
+  const transition = useTransition();
+
+  useEffect(() => {
+    if (
+      scrollToTopOnLocationChange &&
+      transition.state === "loading" &&
+      listRef.current?.scrollTop
+    ) {
+      listRef.current.scrollTop = 0;
+    }
+  }, [transition]);
+
+  return (
+    <Absolute>
+      <List ref={listRef}>{listEntries}</List>
+      <ActionBar>{actions}</ActionBar>
+    </Absolute>
+  );
+};
 
 export const ListActionBarLayout = ({ headline, children }: Props) => (
   <Layout>

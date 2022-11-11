@@ -73,6 +73,10 @@ export default function Index() {
   const { getTestId } = useTestId("category");
   const [selected, setSelected] = useState<number>();
 
+  useEffect(() => {
+    setSelected(undefined);
+  }, [entries]);
+
   const choseEntry = (index: number) => {
     const entry = entriesRefs.current[index];
     if (entry) {
@@ -82,56 +86,53 @@ export default function Index() {
     }
   };
 
-  useGamepads(
-    [
-      {
-        gamepadIndex: 0,
-        onButtonPress: (buttonId) => {
-          if (entries) {
-            if (layout.buttons.DPadRight === buttonId) {
-              if (typeof selected === "undefined") {
-                choseEntry(0);
-              } else if (selected < entries.length - 1) {
-                choseEntry(selected + 1);
-              } else if (selected === entries.length - 1) {
-                choseEntry(0);
-              }
+  useGamepads([
+    {
+      gamepadIndex: 0,
+      onButtonPress: (buttonId) => {
+        if (entries) {
+          if (layout.buttons.DPadRight === buttonId) {
+            if (typeof selected === "undefined") {
+              choseEntry(0);
+            } else if (selected < entries.length - 1) {
+              choseEntry(selected + 1);
+            } else if (selected === entries.length - 1) {
+              choseEntry(0);
             }
+          }
 
-            if (layout.buttons.DPadLeft === buttonId) {
-              if (typeof selected === "undefined") {
-                // choseEntry(0);
-              } else if (selected > 0) {
+          if (layout.buttons.DPadLeft === buttonId) {
+            if (typeof selected !== "undefined") {
+              if (selected > 0) {
                 choseEntry(selected - 1);
               } else if (selected === 0) {
                 choseEntry(entries.length - 1);
               }
             }
+          }
 
-            if (
-              layout.buttons.B === buttonId &&
-              typeof selected !== "undefined"
-            ) {
-              const entry = entriesRefs.current[selected];
-              if (entry) {
-                entry.checked = false;
-                setSelected(undefined);
-              }
-            }
-
-            if (layout.buttons.A === buttonId) {
-              if (typeof selected !== "undefined") {
-                launchButtonRef.current?.click();
-              } else {
-                choseEntry(0);
-              }
+          if (
+            layout.buttons.B === buttonId &&
+            typeof selected !== "undefined"
+          ) {
+            const entry = entriesRefs.current[selected];
+            if (entry) {
+              entry.checked = false;
+              setSelected(undefined);
             }
           }
-        },
+
+          if (layout.buttons.A === buttonId) {
+            if (typeof selected !== "undefined") {
+              launchButtonRef.current?.click();
+            } else {
+              choseEntry(0);
+            }
+          }
+        }
       },
-    ],
-    [selected]
-  );
+    },
+  ]);
 
   return (
     <ListActionBarLayout
@@ -150,6 +151,7 @@ export default function Index() {
     >
       <Form method="post">
         <ListActionBarLayout.ListActionBarContainer
+          scrollToTopOnLocationChange
           list={
             entries && (
               <EntryList
@@ -159,7 +161,6 @@ export default function Index() {
                   launchButtonRef.current?.click();
                 }}
                 onSelect={(index: number) => {
-                  console.log("setSelected");
                   setSelected(index);
                 }}
                 {...getTestId("entries")}

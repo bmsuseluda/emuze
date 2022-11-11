@@ -15,7 +15,8 @@ import { Box } from "./components/Box";
 import { Titlebar } from "./containers/Titlebar";
 import { useGamepads } from "~/hooks/useGamepads";
 import layout from "~/hooks/useGamepads/layouts/xbox";
-import { json, LoaderFunction } from "@remix-run/node";
+import type { LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
 
 export default function App() {
   globalStyles();

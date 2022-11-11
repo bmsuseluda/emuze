@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { IoMdSave } from "react-icons/io";
 import { IoFolderOpenSharp } from "react-icons/io5";
@@ -23,7 +23,7 @@ import type { General } from "~/types/settings/general";
 import { isWindows } from "~/server/operationsystem.server";
 import { Checkbox } from "~/components/Checkbox";
 import { useFullscreen } from "~/hooks/useFullscreen";
-import { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
+import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
 
 export const loader = ({ context }: DataFunctionArgs) => {
   const general: General = readGeneral() || {};
@@ -135,6 +135,7 @@ export default function Index() {
     <ListActionBarLayout headline="General">
       <Form method="post">
         <ListActionBarLayout.ListActionBarContainer
+          scrollToTopOnLocationChange
           list={
             <FormBox>
               {defaultData.isWindows && (

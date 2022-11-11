@@ -113,3 +113,4 @@ export const Entry = React.forwardRef<HTMLInputElement, Props>(
     );
   }
 );
+Entry.displayName = "Entry";

@@ -4,13 +4,7 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import {
-  Form,
-  Outlet,
-  useLoaderData,
-  useMatches,
-  useTransition,
-} from "@remix-run/react";
+import { Form, Outlet, useLoaderData, useTransition } from "@remix-run/react";
 import { IoMdRefresh } from "react-icons/io";
 import { Button } from "~/components/Button";
 import { importCategories, readCategories } from "~/server/categories.server";
@@ -21,9 +15,7 @@ import { useTestId } from "~/hooks/useTestId";
 import { importApplications } from "~/server/applications.server";
 import { PlatformIcon } from "~/components/PlatformIcon";
 import type { PlatformId } from "~/types/platforms";
-import { useGamepads } from "~/hooks/useGamepads";
-import layout from "~/hooks/useGamepads/layouts/xbox";
-import { useRef, useState } from "react";
+import { useGamepadsOnSidebar } from "~/hooks/useGamepads/useGamepadsOnSidebar";
 
 type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
 
@@ -69,67 +61,9 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 export default function Index() {
   const categoryLinks = useLoaderData<CategoryLinks>();
-  const categoryLinksRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const { state } = useTransition();
   const { getTestId } = useTestId("categories");
-  const [focusOnGames, setFocusOnGames] = useState(false);
-
-  const selectLink = (index: number) => {
-    categoryLinksRefs.current[index]?.focus();
-    categoryLinksRefs.current[index]?.click();
-  };
-
-  const matches = useMatches();
-  useGamepads([
-    {
-      gamepadIndex: 0,
-      onButtonPress: (buttonId) => {
-        const pathname = matches[matches.length - 1].pathname;
-        if (!focusOnGames) {
-          if (layout.buttons.DPadDown === buttonId) {
-            if (pathname === "/categories/") {
-              selectLink(0);
-            } else {
-              const currentIndex = categoryLinks.findIndex(
-                ({ to }) => to === pathname
-              );
-              if (currentIndex < categoryLinks.length - 1) {
-                selectLink(currentIndex + 1);
-              } else {
-                selectLink(0);
-              }
-            }
-          }
-
-          if (layout.buttons.DPadUp === buttonId) {
-            if (pathname === "/categories/") {
-              selectLink(categoryLinks.length - 1);
-            } else {
-              const currentIndex = categoryLinks.findIndex(
-                ({ to }) => to === pathname
-              );
-              if (currentIndex === 0) {
-                selectLink(categoryLinks.length - 1);
-              } else {
-                selectLink(currentIndex - 1);
-              }
-            }
-          }
-
-          if (
-            [layout.buttons.DPadRight, layout.buttons.A].includes(buttonId) &&
-            pathname !== "/categories/"
-          ) {
-            setFocusOnGames(true);
-          }
-        } else {
-          if (layout.buttons.B === buttonId) {
-            setFocusOnGames(false);
-          }
-        }
-      },
-    },
-  ]);
+  const { refCallback } = useGamepadsOnSidebar(categoryLinks, "/categories/");
 
   return (
     <SidebarMainLayout>
@@ -155,9 +89,7 @@ export default function Index() {
             to={to}
             icon={<PlatformIcon id={id} />}
             key={to}
-            ref={(ref) => {
-              categoryLinksRefs.current.push(ref);
-            }}
+            ref={refCallback}
             {...getTestId(["link", to])}
           >
             {name}

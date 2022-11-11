@@ -38,6 +38,10 @@ const Button = styled("button", {
   "&:hover": {
     backgroundColor: "#3d3c40b3",
   },
+
+  "&:focus": {
+    outline: "none",
+  },
 });
 
 const CloseButton = styled(Button, {
