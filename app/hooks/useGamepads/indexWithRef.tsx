@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 type GamepadsConfig = Array<{
   gamepadIndex: number;
@@ -15,7 +15,6 @@ const isButtonPressed = (gamepad: Gamepad) =>
 const findGamepad = (gamepads: (Gamepad | null)[], gamepadIndex: number) =>
   gamepads.find((gamepad) => gamepad?.index === gamepadIndex);
 
-// TODO: check useEffect deps, see eslint warnings
 export const useGamepads = (config: GamepadsConfig) => {
   const oldGamepads = useRef<(Gamepad | null)[]>([]);
   const requestAnimationFrameRef = useRef<number>();

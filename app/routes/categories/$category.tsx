@@ -12,8 +12,8 @@ import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 import { useTestId } from "~/hooks/useTestId";
 import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import { PlatformIcon } from "~/components/PlatformIcon";
-import { useGamepads } from "~/hooks/useGamepads";
 import layout from "~/hooks/useGamepads/layouts/xbox";
+import { useGamepadEvent } from "~/hooks/useGamepadEvent";
 
 export const loader: LoaderFunction = ({ params }) => {
   const { category } = params;
@@ -71,10 +71,10 @@ export default function Index() {
   const entriesRefs = useRef<(HTMLInputElement | null)[]>([]);
   const { state } = useTransition();
   const { getTestId } = useTestId("category");
-  const [selected, setSelected] = useState<number>();
+  const selected = useRef<number>();
 
   useEffect(() => {
-    setSelected(undefined);
+    selected.current = undefined;
   }, [entries]);
 
   const choseEntry = (index: number) => {
@@ -82,57 +82,55 @@ export default function Index() {
     if (entry) {
       entry.checked = true;
       entry.focus();
-      setSelected(index);
+      return index;
     }
   };
 
-  useGamepads([
-    {
-      gamepadIndex: 0,
-      onButtonPress: (buttonId) => {
-        if (entries) {
-          if (layout.buttons.DPadRight === buttonId) {
-            if (typeof selected === "undefined") {
-              choseEntry(0);
-            } else if (selected < entries.length - 1) {
-              choseEntry(selected + 1);
-            } else if (selected === entries.length - 1) {
-              choseEntry(0);
-            }
-          }
+  useGamepadEvent(layout.buttons.DPadRight, () => {
+    if (entriesRefs.current) {
+      if (typeof selected.current === "undefined") {
+        selected.current = choseEntry(0);
+      } else if (selected.current < entriesRefs.current.length - 1) {
+        selected.current = choseEntry(selected.current + 1);
+      } else if (selected.current === entriesRefs.current.length - 1) {
+        selected.current = choseEntry(0);
+      }
+    }
+  });
 
-          if (layout.buttons.DPadLeft === buttonId) {
-            if (typeof selected !== "undefined") {
-              if (selected > 0) {
-                choseEntry(selected - 1);
-              } else if (selected === 0) {
-                choseEntry(entries.length - 1);
-              }
-            }
-          }
-
-          if (
-            layout.buttons.B === buttonId &&
-            typeof selected !== "undefined"
-          ) {
-            const entry = entriesRefs.current[selected];
-            if (entry) {
-              entry.checked = false;
-              setSelected(undefined);
-            }
-          }
-
-          if (layout.buttons.A === buttonId) {
-            if (typeof selected !== "undefined") {
-              launchButtonRef.current?.click();
-            } else {
-              choseEntry(0);
-            }
-          }
+  useGamepadEvent(layout.buttons.DPadLeft, () => {
+    if (entriesRefs.current) {
+      if (typeof selected.current !== "undefined") {
+        if (selected.current > 0) {
+          selected.current = choseEntry(selected.current - 1);
+        } else if (selected.current === 0) {
+          selected.current = choseEntry(entriesRefs.current.length - 1);
         }
-      },
-    },
-  ]);
+      }
+    }
+  });
+
+  useGamepadEvent(layout.buttons.B, () => {
+    if (entriesRefs.current) {
+      if (typeof selected.current !== "undefined") {
+        const entry = entriesRefs.current[selected.current];
+        if (entry) {
+          entry.checked = false;
+          selected.current = undefined;
+        }
+      }
+    }
+  });
+
+  useGamepadEvent(layout.buttons.A, () => {
+    if (entriesRefs.current) {
+      if (typeof selected.current !== "undefined") {
+        launchButtonRef.current?.click();
+      } else {
+        selected.current = choseEntry(0);
+      }
+    }
+  });
 
   return (
     <ListActionBarLayout
@@ -161,7 +159,7 @@ export default function Index() {
                   launchButtonRef.current?.click();
                 }}
                 onSelect={(index: number) => {
-                  setSelected(index);
+                  selected.current = index;
                 }}
                 {...getTestId("entries")}
               />

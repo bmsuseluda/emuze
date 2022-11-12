@@ -1,7 +1,6 @@
-import { useMatches } from "@remix-run/react";
-import { useGamepads } from "~/hooks/useGamepads/index";
 import layout from "~/hooks/useGamepads/layouts/xbox";
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import { useGamepadEvent } from "~/hooks/useGamepadEvent";
 
 type CategoryLink = {
   id: string;
@@ -9,74 +8,58 @@ type CategoryLink = {
   to: string;
 };
 
-export const useGamepadsOnSidebar = (
-  categoryLinks: CategoryLink[],
-  pathname: string
-) => {
+export const useGamepadsOnSidebar = (categoryLinks: CategoryLink[]) => {
   const categoryLinksRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   // TODO: use a context for this instead
   const focusOnMain = useRef(false);
+  const selected = useRef<number>();
 
   const selectLink = (index: number) => {
     categoryLinksRefs.current[index]?.focus();
     categoryLinksRefs.current[index]?.click();
+    return index;
   };
 
-  const matches = useMatches();
-  useGamepads([
-    {
-      gamepadIndex: 0,
-      onButtonPress: (buttonId) => {
-        const lastPathname = matches[matches.length - 1].pathname;
-        if (!focusOnMain.current) {
-          if (layout.buttons.DPadDown === buttonId) {
-            if (lastPathname === pathname) {
-              selectLink(0);
-            } else {
-              const currentIndex = categoryLinks.findIndex(
-                ({ to }) => to === lastPathname
-              );
-              if (currentIndex < categoryLinks.length - 1) {
-                selectLink(currentIndex + 1);
-              } else {
-                selectLink(0);
-              }
-            }
-          }
+  useGamepadEvent(layout.buttons.DPadDown, () => {
+    if (!focusOnMain.current) {
+      if (typeof selected.current === "undefined") {
+        selected.current = selectLink(0);
+      } else if (selected.current < categoryLinks.length - 1) {
+        selected.current = selectLink(selected.current + 1);
+      } else if (selected.current === categoryLinks.length - 1) {
+        selected.current = selectLink(0);
+      }
+    }
+  });
 
-          if (layout.buttons.DPadUp === buttonId) {
-            if (lastPathname === pathname) {
-              selectLink(categoryLinks.length - 1);
-            } else {
-              const currentIndex = categoryLinks.findIndex(
-                ({ to }) => to === lastPathname
-              );
-              if (currentIndex === 0) {
-                selectLink(categoryLinks.length - 1);
-              } else {
-                selectLink(currentIndex - 1);
-              }
-            }
-          }
+  useGamepadEvent(layout.buttons.DPadUp, () => {
+    if (!focusOnMain.current) {
+      if (typeof selected.current === "undefined") {
+        selected.current = selectLink(categoryLinks.length - 1);
+      } else if (selected.current > 0) {
+        selected.current = selectLink(selected.current - 1);
+      } else if (selected.current === 0) {
+        selected.current = selectLink(categoryLinks.length - 1);
+      }
+    }
+  });
 
-          if (
-            [layout.buttons.DPadRight, layout.buttons.A].includes(buttonId) &&
-            lastPathname !== pathname
-          ) {
-            focusOnMain.current = true;
-          }
-        } else {
-          if (layout.buttons.B === buttonId) {
-            focusOnMain.current = false;
-          }
-        }
-      },
-    },
-  ]);
+  useGamepadEvent(layout.buttons.DPadRight, () => {
+    if (!focusOnMain.current) {
+      focusOnMain.current = true;
+    }
+  });
+  useGamepadEvent(layout.buttons.B, () => {
+    focusOnMain.current = false;
+  });
 
   return {
-    refCallback: (ref: HTMLAnchorElement) => {
-      categoryLinksRefs.current.push(ref);
+    refCallback: (index: number) => (ref: HTMLAnchorElement) => {
+      if (index === 0) {
+        categoryLinksRefs.current = [ref];
+      } else {
+        categoryLinksRefs.current.push(ref);
+      }
     },
   };
 };

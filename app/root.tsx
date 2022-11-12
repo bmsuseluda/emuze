@@ -6,15 +6,12 @@ import {
   Scripts,
   ScrollRestoration,
   useCatch,
-  useFetcher,
   useLoaderData,
-  useMatches,
 } from "@remix-run/react";
 import { globalStyles, themes } from "./stitches";
 import { Box } from "./components/Box";
 import { Titlebar } from "./containers/Titlebar";
-import { useGamepads } from "~/hooks/useGamepads";
-import layout from "~/hooks/useGamepads/layouts/xbox";
+import { useGamepads } from "~/hooks/useGamepads/indexWithCustomEvents";
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 
@@ -119,22 +116,7 @@ export const loader: LoaderFunction = ({ context }) => {
 };
 
 function Layout({ children }: { children: React.ReactNode }) {
-  const matches = useMatches();
-  const fetcher = useFetcher();
-  useGamepads([
-    {
-      gamepadIndex: 0,
-      onButtonPress: (buttonId) => {
-        if (layout.buttons.Start === buttonId) {
-          if (matches.find(({ pathname }) => pathname === "/categories")) {
-            fetcher.load("/settings?index");
-          } else {
-            fetcher.load("?index");
-          }
-        }
-      },
-    },
-  ]);
+  useGamepads();
 
   return (
     <Box

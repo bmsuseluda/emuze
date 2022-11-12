@@ -63,7 +63,7 @@ export default function Index() {
   const categoryLinks = useLoaderData<CategoryLinks>();
   const { state } = useTransition();
   const { getTestId } = useTestId("categories");
-  const { refCallback } = useGamepadsOnSidebar(categoryLinks, "/categories/");
+  const { refCallback } = useGamepadsOnSidebar(categoryLinks);
 
   return (
     <SidebarMainLayout>
@@ -84,12 +84,12 @@ export default function Index() {
           </Form>
         }
       >
-        {categoryLinks.map(({ id, name, to }) => (
+        {categoryLinks.map(({ id, name, to }, index) => (
           <Link
             to={to}
             icon={<PlatformIcon id={id} />}
             key={to}
-            ref={refCallback}
+            ref={refCallback(index)}
             {...getTestId(["link", to])}
           >
             {name}

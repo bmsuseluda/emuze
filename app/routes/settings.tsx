@@ -20,13 +20,13 @@ export const loader = () => {
 
 export default function Index() {
   const categories = useLoaderData<typeof loader>();
-  const { refCallback } = useGamepadsOnSidebar(categories, "/settings/");
+  const { refCallback } = useGamepadsOnSidebar(categories);
 
   return (
     <SidebarMainLayout>
       <SidebarMainLayout.Sidebar header={<Header />} headline="Settings">
-        {categories.map(({ id, name }) => (
-          <Link to={id} key={id} ref={refCallback}>
+        {categories.map(({ id, name }, index) => (
+          <Link to={id} key={id} ref={refCallback(index)}>
             {name}
           </Link>
         ))}

@@ -4,11 +4,10 @@ import { styled } from "~/stitches";
 
 import { Ul } from "~/components/Ul";
 import { Link } from "../Link";
-// import { useFetcher, useMatches } from "@remix-run/react";
-// import { useGamepads } from "~/hooks/useGamepads";
-// import layout from "~/hooks/useGamepads/layouts/xbox";
+import layout from "~/hooks/useGamepads/layouts/xbox";
 import { useRef } from "react";
 import type { IconType } from "react-icons";
+import { useGamepadEvent } from "~/hooks/useGamepadEvent";
 
 const Headline = styled("h1", {
   margin: 0,
@@ -49,30 +48,18 @@ export const Header = () => {
   const linksRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   // TODO: move header to root layout
-  // const matches = useMatches();
-  // // const fetcher = useFetcher();
-  //
-  // const selectLink = (index: number) => {
-  //   linksRefs.current[index]?.focus();
-  //   linksRefs.current[index]?.click();
-  // };
-  //
-  // useGamepads([
-  //   {
-  //     gamepadIndex: 0,
-  //     onButtonPress: (buttonId) => {
-  //       if (layout.buttons.Start === buttonId) {
-  //         if (matches.find(({ pathname }) => pathname === "/categories")) {
-  //           selectLink(links.findIndex(({ to }) => to === "/settings"));
-  //           // fetcher.load("/settings?index");
-  //         } else {
-  //           selectLink(links.findIndex(({ to }) => to === "/categories"));
-  //           // fetcher.load("?index");
-  //         }
-  //       }
-  //     },
-  //   },
-  // ]);
+  const selectLink = (index: number) => {
+    linksRefs.current[index]?.focus();
+    linksRefs.current[index]?.click();
+  };
+
+  useGamepadEvent(layout.buttons.Start, () => {
+    if (window.location.pathname.startsWith("/categories")) {
+      selectLink(links.findIndex(({ to }) => to === "/settings"));
+    } else {
+      selectLink(links.findIndex(({ to }) => to === "/categories"));
+    }
+  });
 
   return (
     <StyledHeader>
