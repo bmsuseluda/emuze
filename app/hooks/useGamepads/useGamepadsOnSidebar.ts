@@ -1,5 +1,5 @@
 import layout from "~/hooks/useGamepads/layouts/xbox";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import { useGamepadEvent } from "~/hooks/useGamepadEvent";
 
 type CategoryLink = {
@@ -14,44 +14,57 @@ export const useGamepadsOnSidebar = (categoryLinks: CategoryLink[]) => {
   const focusOnMain = useRef(false);
   const selected = useRef<number>();
 
-  const selectLink = (index: number) => {
+  const selectLink = useCallback((index: number) => {
     categoryLinksRefs.current[index]?.focus();
     categoryLinksRefs.current[index]?.click();
     return index;
-  };
+  }, []);
 
-  useGamepadEvent(layout.buttons.DPadDown, () => {
-    if (!focusOnMain.current) {
-      if (typeof selected.current === "undefined") {
-        selected.current = selectLink(0);
-      } else if (selected.current < categoryLinks.length - 1) {
-        selected.current = selectLink(selected.current + 1);
-      } else if (selected.current === categoryLinks.length - 1) {
-        selected.current = selectLink(0);
+  useGamepadEvent(
+    layout.buttons.DPadDown,
+    useCallback(() => {
+      if (!focusOnMain.current) {
+        if (typeof selected.current === "undefined") {
+          selected.current = selectLink(0);
+        } else if (selected.current < categoryLinksRefs.current.length - 1) {
+          selected.current = selectLink(selected.current + 1);
+        } else if (selected.current === categoryLinksRefs.current.length - 1) {
+          selected.current = selectLink(0);
+        }
       }
-    }
-  });
+    }, [selectLink])
+  );
 
-  useGamepadEvent(layout.buttons.DPadUp, () => {
-    if (!focusOnMain.current) {
-      if (typeof selected.current === "undefined") {
-        selected.current = selectLink(categoryLinks.length - 1);
-      } else if (selected.current > 0) {
-        selected.current = selectLink(selected.current - 1);
-      } else if (selected.current === 0) {
-        selected.current = selectLink(categoryLinks.length - 1);
+  useGamepadEvent(
+    layout.buttons.DPadUp,
+    useCallback(() => {
+      if (!focusOnMain.current) {
+        if (typeof selected.current === "undefined") {
+          selected.current = selectLink(categoryLinksRefs.current.length - 1);
+        } else if (selected.current > 0) {
+          selected.current = selectLink(selected.current - 1);
+        } else if (selected.current === 0) {
+          selected.current = selectLink(categoryLinksRefs.current.length - 1);
+        }
       }
-    }
-  });
+    }, [selectLink])
+  );
 
-  useGamepadEvent(layout.buttons.DPadRight, () => {
-    if (!focusOnMain.current) {
-      focusOnMain.current = true;
-    }
-  });
-  useGamepadEvent(layout.buttons.B, () => {
-    focusOnMain.current = false;
-  });
+  useGamepadEvent(
+    layout.buttons.DPadRight,
+    useCallback(() => {
+      if (!focusOnMain.current) {
+        focusOnMain.current = true;
+      }
+    }, [])
+  );
+
+  useGamepadEvent(
+    layout.buttons.B,
+    useCallback(() => {
+      focusOnMain.current = false;
+    }, [])
+  );
 
   return {
     refCallback: (index: number) => (ref: HTMLAnchorElement) => {

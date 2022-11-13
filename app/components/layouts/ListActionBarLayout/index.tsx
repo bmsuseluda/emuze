@@ -72,7 +72,7 @@ const ListActionBarContainer = ({
     ) {
       listRef.current.scrollTop = 0;
     }
-  }, [transition]);
+  }, [transition, scrollToTopOnLocationChange]);
 
   return (
     <Absolute>

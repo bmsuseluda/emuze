@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import layout from "~/hooks/useGamepads/layouts/xbox";
 
 export const useGamepadEvent = (index: number, onGamepadEvent: () => void) => {
   useEffect(() => {
@@ -8,5 +7,5 @@ export const useGamepadEvent = (index: number, onGamepadEvent: () => void) => {
     return () => {
       removeEventListener(`gamepadonbutton${index}press`, onGamepadEvent);
     };
-  }, []);
+  }, [index, onGamepadEvent]);
 };

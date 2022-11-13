@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, useLoaderData, useTransition } from "@remix-run/react";
@@ -77,60 +77,72 @@ export default function Index() {
     selected.current = undefined;
   }, [entries]);
 
-  const choseEntry = (index: number) => {
+  const choseEntry = useCallback((index: number) => {
     const entry = entriesRefs.current[index];
     if (entry) {
       entry.checked = true;
       entry.focus();
       return index;
     }
-  };
+  }, []);
 
-  useGamepadEvent(layout.buttons.DPadRight, () => {
-    if (entriesRefs.current) {
-      if (typeof selected.current === "undefined") {
-        selected.current = choseEntry(0);
-      } else if (selected.current < entriesRefs.current.length - 1) {
-        selected.current = choseEntry(selected.current + 1);
-      } else if (selected.current === entriesRefs.current.length - 1) {
-        selected.current = choseEntry(0);
-      }
-    }
-  });
-
-  useGamepadEvent(layout.buttons.DPadLeft, () => {
-    if (entriesRefs.current) {
-      if (typeof selected.current !== "undefined") {
-        if (selected.current > 0) {
-          selected.current = choseEntry(selected.current - 1);
-        } else if (selected.current === 0) {
-          selected.current = choseEntry(entriesRefs.current.length - 1);
+  useGamepadEvent(
+    layout.buttons.DPadRight,
+    useCallback(() => {
+      if (entriesRefs.current) {
+        if (typeof selected.current === "undefined") {
+          selected.current = choseEntry(0);
+        } else if (selected.current < entriesRefs.current.length - 1) {
+          selected.current = choseEntry(selected.current + 1);
+        } else if (selected.current === entriesRefs.current.length - 1) {
+          selected.current = choseEntry(0);
         }
       }
-    }
-  });
+    }, [choseEntry])
+  );
 
-  useGamepadEvent(layout.buttons.B, () => {
-    if (entriesRefs.current) {
-      if (typeof selected.current !== "undefined") {
-        const entry = entriesRefs.current[selected.current];
-        if (entry) {
-          entry.checked = false;
-          selected.current = undefined;
+  useGamepadEvent(
+    layout.buttons.DPadLeft,
+    useCallback(() => {
+      if (entriesRefs.current) {
+        if (typeof selected.current !== "undefined") {
+          if (selected.current > 0) {
+            selected.current = choseEntry(selected.current - 1);
+          } else if (selected.current === 0) {
+            selected.current = choseEntry(entriesRefs.current.length - 1);
+          }
         }
       }
-    }
-  });
+    }, [choseEntry])
+  );
 
-  useGamepadEvent(layout.buttons.A, () => {
-    if (entriesRefs.current) {
-      if (typeof selected.current !== "undefined") {
-        launchButtonRef.current?.click();
-      } else {
-        selected.current = choseEntry(0);
+  useGamepadEvent(
+    layout.buttons.B,
+    useCallback(() => {
+      if (entriesRefs.current) {
+        if (typeof selected.current !== "undefined") {
+          const entry = entriesRefs.current[selected.current];
+          if (entry) {
+            entry.checked = false;
+            selected.current = undefined;
+          }
+        }
       }
-    }
-  });
+    }, [])
+  );
+
+  useGamepadEvent(
+    layout.buttons.A,
+    useCallback(() => {
+      if (entriesRefs.current) {
+        if (typeof selected.current !== "undefined") {
+          launchButtonRef.current?.click();
+        } else {
+          selected.current = choseEntry(0);
+        }
+      }
+    }, [choseEntry])
+  );
 
   return (
     <ListActionBarLayout

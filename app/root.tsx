@@ -11,7 +11,7 @@ import {
 import { globalStyles, themes } from "./stitches";
 import { Box } from "./components/Box";
 import { Titlebar } from "./containers/Titlebar";
-import { useGamepads } from "~/hooks/useGamepads/indexWithCustomEvents";
+import { useGamepads } from "~/hooks/useGamepads";
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 

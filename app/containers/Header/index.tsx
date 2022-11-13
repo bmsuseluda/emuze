@@ -5,7 +5,7 @@ import { styled } from "~/stitches";
 import { Ul } from "~/components/Ul";
 import { Link } from "../Link";
 import layout from "~/hooks/useGamepads/layouts/xbox";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import type { IconType } from "react-icons";
 import { useGamepadEvent } from "~/hooks/useGamepadEvent";
 
@@ -53,13 +53,16 @@ export const Header = () => {
     linksRefs.current[index]?.click();
   };
 
-  useGamepadEvent(layout.buttons.Start, () => {
-    if (window.location.pathname.startsWith("/categories")) {
-      selectLink(links.findIndex(({ to }) => to === "/settings"));
-    } else {
-      selectLink(links.findIndex(({ to }) => to === "/categories"));
-    }
-  });
+  useGamepadEvent(
+    layout.buttons.Start,
+    useCallback(() => {
+      if (window.location.pathname.startsWith("/categories")) {
+        selectLink(links.findIndex(({ to }) => to === "/settings"));
+      } else {
+        selectLink(links.findIndex(({ to }) => to === "/categories"));
+      }
+    }, [])
+  );
 
   return (
     <StyledHeader>
