@@ -8,7 +8,6 @@ interface Props {
   entries: Entries;
   entriesRefs: React.MutableRefObject<(HTMLInputElement | null)[]>;
   onDoubleClick: () => void;
-  onSelect: (index: number) => void;
   "data-testid"?: string;
 }
 
@@ -22,7 +21,6 @@ export const EntryList = ({
   entries,
   entriesRefs,
   onDoubleClick,
-  onSelect,
   "data-testid": dataTestid,
 }: Props) => {
   const { getTestId } = useTestId(dataTestid);
@@ -34,7 +32,6 @@ export const EntryList = ({
           name={name}
           imageUrl={imageUrl}
           onDoubleClick={onDoubleClick}
-          onSelect={() => onSelect(index)}
           ref={(ref) => {
             if (index === 0) {
               entriesRefs.current = [ref];

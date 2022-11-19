@@ -7,7 +7,6 @@ interface Props {
   name: string;
   imageUrl?: string;
   onDoubleClick: () => void;
-  onSelect: () => void;
   "data-testid"?: string;
 }
 
@@ -78,10 +77,7 @@ const Image = styled("img", {
 });
 
 export const Entry = React.forwardRef<HTMLInputElement, Props>(
-  (
-    { id, name, imageUrl, onDoubleClick, onSelect, "data-testid": dataTestId },
-    ref
-  ) => {
+  ({ id, name, imageUrl, onDoubleClick, "data-testid": dataTestId }, ref) => {
     const { getTestId } = useTestId(dataTestId);
 
     return (
@@ -92,11 +88,6 @@ export const Entry = React.forwardRef<HTMLInputElement, Props>(
           name="entry"
           value={id}
           ref={ref}
-          onChange={(event) => {
-            if (event.currentTarget.checked) {
-              onSelect();
-            }
-          }}
           {...getTestId("link")}
         />
         <Label

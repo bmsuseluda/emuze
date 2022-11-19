@@ -1,4 +1,4 @@
-import { getApplicationData, pcsx2 } from "../applicationsDB.server";
+import { getApplicationDataByName, pcsx2 } from "../applicationsDB.server";
 
 describe("getApplicationData", () => {
   [
@@ -8,11 +8,11 @@ describe("getApplicationData", () => {
     "F:/games/Emulation/emulators/This is the new version of PCSX2",
   ].forEach((applicationName) => {
     it(`Should return application data for pcsx2 for applicationName ${applicationName}`, () => {
-      expect(getApplicationData(applicationName)).toBe(pcsx2);
+      expect(getApplicationDataByName(applicationName)).toBe(pcsx2);
     });
   });
 
   it("Should return undefined for unknown applicationName", () => {
-    expect(getApplicationData("unknown")).toBeUndefined();
+    expect(getApplicationDataByName("unknown")).toBeUndefined();
   });
 });

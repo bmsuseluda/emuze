@@ -27,10 +27,12 @@ import {
   sonypsp,
   supernintendo,
 } from "~/server/categoriesDB.server";
+import { General } from "~/types/settings/general";
 
-type OptionParamFunction = (entry: Entry) => string[];
+type OptionParamFunction = (entry: Entry, generalSettings: General) => string[];
 type EnvironmentVariableFunction = (
-  category: CategoryData
+  category: CategoryData,
+  generalSettings: General
 ) => Record<string, string | null>;
 
 export interface Application {
@@ -51,6 +53,13 @@ export const pcsx2: Application = {
   categories: [sonyplaystation2],
   flatpakId: "net.pcsx2.PCSX2",
   flatpakOptionParams: ["--command=pcsx2-qt"],
+  optionParams: (_, { fullscreen }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("-fullscreen");
+    }
+    return optionParams;
+  },
 };
 
 export const blastem: Application = {
@@ -59,6 +68,13 @@ export const blastem: Application = {
   fileExtensions: [".68K", ".bin", ".sgd", ".smd"],
   categories: [segamegadrive],
   flatpakId: "com.retrodev.blastem",
+  optionParams: (_, { fullscreen }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("-f");
+    }
+    return optionParams;
+  },
 };
 
 export const bsnes: Application = {
@@ -67,6 +83,13 @@ export const bsnes: Application = {
   fileExtensions: [".sfc", ".smc"],
   categories: [supernintendo],
   flatpakId: "dev.bsnes.bsnes",
+  optionParams: (_, { fullscreen }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("--fullscreen");
+    }
+    return optionParams;
+  },
 };
 
 export const applications: Application[] = [
@@ -76,6 +99,13 @@ export const applications: Application[] = [
     fileExtensions: [".chd", ".cue"],
     categories: [sonyplaystation],
     flatpakId: "org.duckstation.DuckStation",
+    optionParams: (_, { fullscreen }) => {
+      const optionParams = [];
+      if (fullscreen) {
+        optionParams.push("-fullscreen");
+      }
+      return optionParams;
+    },
   },
   pcsx2,
   {
@@ -149,15 +179,22 @@ export const applications: Application[] = [
     categories: [segasaturn, pcengine, pcenginecd],
     flatpakId: "com.github.AmatCoder.mednaffe",
     flatpakOptionParams: ["--command=mednafen"],
-    environmentVariables: ({ applicationPath }) => ({
-      MEDNAFEN_HOME: applicationPath ? nodepath.dirname(applicationPath) : null,
-    }),
+    environmentVariables: ({ applicationPath }, { isWindows }) => {
+      const environmentVariables = {};
+      if (isWindows && applicationPath) {
+        return {
+          ...environmentVariables,
+          MEDNAFEN_HOME: nodepath.dirname(applicationPath),
+        };
+      }
+      return environmentVariables;
+    },
   },
   {
     id: "mame",
     name: "Mame",
     fileExtensions: [".zip", ".chd"],
-    categories: [arcade, neogeo, neogeocd],
+    categories: [arcade, neogeo],
     flatpakId: "org.mamedev.MAME",
     optionParams: ({ path }) => {
       const entryDirname = nodepath.dirname(path);
@@ -169,9 +206,28 @@ export const applications: Application[] = [
         nodepath.join(entryDirname, "cfg"),
         "-nvram_directory",
         nodepath.join(entryDirname, "nvram"),
-        // TODO: the following optionParams are necessary for neogeocd only
-        // "neocdz",
-        // "-cdrm",
+      ];
+    },
+  },
+  {
+    id: "mameneogeocd",
+    name: "Mame",
+    fileExtensions: [".zip", ".chd"],
+    // mame needs specific option params for neogeo cd, therefore it is a specific config of mame
+    categories: [neogeocd],
+    flatpakId: "org.mamedev.MAME",
+    optionParams: ({ path }) => {
+      const entryDirname = nodepath.dirname(path);
+      return [
+        "-w",
+        "-rompath",
+        entryDirname,
+        "-cfg_directory",
+        nodepath.join(entryDirname, "cfg"),
+        "-nvram_directory",
+        nodepath.join(entryDirname, "nvram"),
+        "neocdz",
+        "-cdrm",
       ];
     },
   },
@@ -217,5 +273,10 @@ export const applications: Application[] = [
   },
 ];
 
-export const getApplicationData = (name: string) =>
+export const getApplicationDataByName = (name: string) =>
   applications.find(({ id }) => name.toLowerCase().includes(id.toLowerCase()));
+
+export const getApplicationDataById = (id: string) =>
+  applications.find(
+    (application) => application.id.toLowerCase() === id.toLowerCase()
+  );

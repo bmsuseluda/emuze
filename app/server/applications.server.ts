@@ -3,7 +3,7 @@ import nodepath from "path";
 import type { Application, Applications } from "~/types/applications";
 import {
   applications,
-  getApplicationData,
+  getApplicationDataByName,
 } from "~/server/applicationsDB.server";
 import {
   readDirectorynames,
@@ -62,7 +62,7 @@ export const importApplicationsOnWindows = () => {
 
     const supportedApplications = applicationFoldernames.reduce<Applications>(
       (previousValue, appFoldername) => {
-        const data = getApplicationData(appFoldername);
+        const data = getApplicationDataByName(appFoldername);
         if (data) {
           const { categories, fileExtensions, name, id } = data;
 

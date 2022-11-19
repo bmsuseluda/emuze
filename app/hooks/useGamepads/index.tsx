@@ -33,6 +33,7 @@ export const useGamepads = () => {
     requestAnimationFrameRef.current = requestAnimationFrame(update);
   }, [updateGamepads]);
 
+  // TODO: runs all the time. it only needs to run when a gamepad is connected
   useEffect(() => {
     requestAnimationFrameRef.current = requestAnimationFrame(update);
     return () => {

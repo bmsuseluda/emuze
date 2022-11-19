@@ -69,33 +69,96 @@ export default function Index() {
   const { id, name, entries } = useLoaderData<Category>();
   const launchButtonRef = useRef<HTMLButtonElement>(null);
   const entriesRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const entriesRefsGrid = useRef<(HTMLInputElement | null)[][]>([]);
   const { state } = useTransition();
   const { getTestId } = useTestId("category");
-  const selected = useRef<number>();
+
+  const selectedX = useRef<number>();
+  const selectedY = useRef<number>();
 
   useEffect(() => {
-    selected.current = undefined;
-  }, [entries]);
+    selectedX.current = undefined;
+    selectedY.current = undefined;
+  }, [id]);
 
-  const choseEntry = useCallback((index: number) => {
-    const entry = entriesRefs.current[index];
+  const choseEntry = useCallback((x: number, y: number) => {
+    const entry = entriesRefsGrid.current[y][x];
     if (entry) {
       entry.checked = true;
       entry.focus();
-      return index;
     }
   }, []);
+
+  const getLastIndex = useCallback((array: any[]) => array.length - 1, []);
+
+  const createRefsGrid = () => {
+    const entriesGrid: (HTMLInputElement | null)[][] = [];
+
+    const addToRow = (rowIndex: number, entry: HTMLInputElement | null) => {
+      if (!entriesGrid[rowIndex]) {
+        // create new row
+        entriesGrid[rowIndex] = [entry];
+      } else {
+        // add to existing row
+        entriesGrid[rowIndex].push(entry);
+      }
+    };
+
+    let rowIndex = 0;
+    entriesRefs.current.forEach((entry, index) => {
+      const top = entry?.getBoundingClientRect().top;
+      if (index > 0) {
+        const topPrevious =
+          entriesRefs.current[index - 1]?.getBoundingClientRect().top;
+        if (top && topPrevious && top > topPrevious) {
+          // nextRow
+          rowIndex = rowIndex + 1;
+          addToRow(rowIndex, entry);
+          return;
+        }
+      }
+      addToRow(rowIndex, entry);
+    });
+    entriesRefsGrid.current = entriesGrid;
+  };
+
+  useEffect(() => {
+    createRefsGrid();
+  }, [entries]);
+
+  useEffect(() => {
+    window.addEventListener("resize", createRefsGrid);
+
+    return () => {
+      window.removeEventListener("resize", createRefsGrid);
+    };
+  });
 
   useGamepadEvent(
     layout.buttons.DPadRight,
     useCallback(() => {
-      if (entriesRefs.current) {
-        if (typeof selected.current === "undefined") {
-          selected.current = choseEntry(0);
-        } else if (selected.current < entriesRefs.current.length - 1) {
-          selected.current = choseEntry(selected.current + 1);
-        } else if (selected.current === entriesRefs.current.length - 1) {
-          selected.current = choseEntry(0);
+      if (entriesRefsGrid.current) {
+        if (
+          typeof selectedX.current !== "undefined" &&
+          typeof selectedY.current !== "undefined"
+        ) {
+          if (
+            selectedX.current <
+            getLastIndex(entriesRefsGrid.current[selectedY.current])
+          ) {
+            selectedX.current = selectedX.current + 1;
+            choseEntry(selectedX.current, selectedY.current);
+          } else if (
+            selectedX.current ===
+            getLastIndex(entriesRefsGrid.current[selectedY.current])
+          ) {
+            selectedX.current = 0;
+            choseEntry(selectedX.current, selectedY.current);
+          }
+        } else {
+          selectedX.current = 0;
+          selectedY.current = 0;
+          choseEntry(selectedX.current, selectedY.current);
         }
       }
     }, [choseEntry])
@@ -104,12 +167,75 @@ export default function Index() {
   useGamepadEvent(
     layout.buttons.DPadLeft,
     useCallback(() => {
-      if (entriesRefs.current) {
-        if (typeof selected.current !== "undefined") {
-          if (selected.current > 0) {
-            selected.current = choseEntry(selected.current - 1);
-          } else if (selected.current === 0) {
-            selected.current = choseEntry(entriesRefs.current.length - 1);
+      if (entriesRefsGrid.current) {
+        if (
+          typeof selectedX.current !== "undefined" &&
+          typeof selectedY.current !== "undefined"
+        ) {
+          if (selectedX.current > 0) {
+            selectedX.current = selectedX.current - 1;
+            choseEntry(selectedX.current, selectedY.current);
+          } else if (selectedX.current === 0) {
+            selectedX.current = getLastIndex(
+              entriesRefsGrid.current[selectedY.current]
+            );
+            choseEntry(selectedX.current, selectedY.current);
+          }
+        }
+      }
+    }, [choseEntry])
+  );
+
+  useGamepadEvent(
+    layout.buttons.DPadDown,
+    useCallback(() => {
+      if (entriesRefsGrid.current) {
+        if (
+          typeof selectedX.current !== "undefined" &&
+          typeof selectedY.current !== "undefined"
+        ) {
+          if (selectedY.current < getLastIndex(entriesRefsGrid.current)) {
+            selectedY.current = selectedY.current + 1;
+            if (
+              !entriesRefsGrid.current[selectedY.current][selectedX.current]
+            ) {
+              selectedX.current = getLastIndex(
+                entriesRefsGrid.current[selectedY.current]
+              );
+            }
+            choseEntry(selectedX.current, selectedY.current);
+          } else if (
+            selectedY.current === getLastIndex(entriesRefsGrid.current)
+          ) {
+            selectedY.current = 0;
+            choseEntry(selectedX.current, selectedY.current);
+          }
+        }
+      }
+    }, [choseEntry])
+  );
+
+  useGamepadEvent(
+    layout.buttons.DPadUp,
+    useCallback(() => {
+      if (entriesRefsGrid.current) {
+        if (
+          typeof selectedX.current !== "undefined" &&
+          typeof selectedY.current !== "undefined"
+        ) {
+          if (selectedY.current > 0) {
+            selectedY.current = selectedY.current - 1;
+            choseEntry(selectedX.current, selectedY.current);
+          } else if (selectedY.current === 0) {
+            selectedY.current = getLastIndex(entriesRefsGrid.current);
+            if (
+              !entriesRefsGrid.current[selectedY.current][selectedX.current]
+            ) {
+              selectedX.current = getLastIndex(
+                entriesRefsGrid.current[selectedY.current]
+              );
+            }
+            choseEntry(selectedX.current, selectedY.current);
           }
         }
       }
@@ -119,12 +245,17 @@ export default function Index() {
   useGamepadEvent(
     layout.buttons.B,
     useCallback(() => {
-      if (entriesRefs.current) {
-        if (typeof selected.current !== "undefined") {
-          const entry = entriesRefs.current[selected.current];
+      if (entriesRefsGrid.current) {
+        if (
+          typeof selectedX.current !== "undefined" &&
+          typeof selectedY.current !== "undefined"
+        ) {
+          const entry =
+            entriesRefsGrid.current[selectedY.current][selectedX.current];
           if (entry) {
             entry.checked = false;
-            selected.current = undefined;
+            selectedX.current = undefined;
+            selectedY.current = undefined;
           }
         }
       }
@@ -134,11 +265,16 @@ export default function Index() {
   useGamepadEvent(
     layout.buttons.A,
     useCallback(() => {
-      if (entriesRefs.current) {
-        if (typeof selected.current !== "undefined") {
+      if (entriesRefsGrid.current) {
+        if (
+          typeof selectedX.current !== "undefined" &&
+          typeof selectedY.current !== "undefined"
+        ) {
           launchButtonRef.current?.click();
         } else {
-          selected.current = choseEntry(0);
+          selectedX.current = 0;
+          selectedY.current = 0;
+          choseEntry(selectedX.current, selectedY.current);
         }
       }
     }, [choseEntry])
@@ -170,9 +306,6 @@ export default function Index() {
                 onDoubleClick={() => {
                   launchButtonRef.current?.click();
                 }}
-                onSelect={(index: number) => {
-                  selected.current = index;
-                }}
                 {...getTestId("entries")}
               />
             )
@@ -182,12 +315,7 @@ export default function Index() {
               <Button
                 type="submit"
                 name="_actionId"
-                disabled={
-                  !entries ||
-                  entries.length === 0 ||
-                  state !== "idle" ||
-                  typeof selected === "undefined"
-                }
+                disabled={!entries || entries.length === 0 || state !== "idle"}
                 value={actionIds.launch}
                 ref={launchButtonRef}
                 icon={<IoMdPlay />}
