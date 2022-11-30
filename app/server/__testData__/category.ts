@@ -48,7 +48,7 @@ export const windsofthunder: Entry = {
 export const pcenginecd: CategoryOnWindows = {
   id: "pcenginecd",
   name: "PC Engine CD",
-  applicationId: "mednafen-1.29.0-win64",
+  applicationId: "mednafen",
   applicationPath:
     "F:/games/Emulation/emulators/mednafen-1.29.0-win64/mednafen.exe",
   entryPath: "F:/games/Emulation/roms/PC Engine CD",
@@ -60,7 +60,7 @@ export const pcenginecd: CategoryOnWindows = {
 export const pcenginecdLinux: CategoryOnLinux = {
   id: "pcenginecd",
   name: "PC Engine CD",
-  applicationId: "mednafen-1.29.0-win64",
+  applicationId: "mednafen",
   applicationFlatpakId: "org.mednafen",
   entryPath: "F:/games/Emulation/roms/PC Engine CD",
   fileExtensions: [".cue", ".pce"],
@@ -89,7 +89,7 @@ export const finalfantasy7: Entry = {
 export const playstation: CategoryOnWindows = {
   id: "sonyplaystation",
   name: "Sony Playstation",
-  applicationId: "duckstation-windows-x64-release",
+  applicationId: "duckstation",
   applicationPath:
     "F:/games/Emulation/emulators/duckstation-windows-x64-release/duckstation-nogui-x64-ReleaseLTCG.exe",
   entryPath: "F:/games/Emulation/roms/Sony Playstation",

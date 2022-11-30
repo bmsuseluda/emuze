@@ -28,7 +28,7 @@ export const pcsx2: FullApplication = {
   categories: [sonyplaystation2],
   path: "F:/games/Emulation/emulators/Pcsx2-v1.7.2242-windows-64bit-AVX2/pcsx2x64-avx2.exe",
   fileExtensions: [".chd", ".iso"],
-  id: "pcsx2-v1.7.2242-windows-64bit-avx2",
+  id: "pcsx2",
   name: "PCSX2",
 };
 
@@ -36,7 +36,7 @@ export const pcsx2Old: FullApplication = {
   categories: [sonyplaystation2],
   path: "F:/games/Emulation/emulators/pcSX2-v1.6.2242-windows-64bit-AVX2/pcsx2x64-avx2.exe",
   fileExtensions: [".chd", ".iso"],
-  id: "pcsx2-v1.6.2242-windows-64bit-avx2",
+  id: "pcsx2",
   name: "PCSX2",
 };
 
@@ -44,7 +44,7 @@ export const blastem: FullApplication = {
   categories: [segamegadrive],
   path: "F:/games/Emulation/emulators/Blastem win32-0.6.2/blastem.exe",
   fileExtensions: [".68K", ".bin", ".sgd", ".smd"],
-  id: "blastemwin32-0.6.2",
+  id: "blastem",
   name: "BlastEm",
 };
 
@@ -63,14 +63,14 @@ export const applications: FullApplication[] = [
     categories: [sonyplaystation],
     path: "F:/games/Emulation/emulators/duckstation-windows-x64-release/duckstation-nogui-x64-ReleaseLTCG.exe",
     fileExtensions: [".chd", ".cue"],
-    id: "duckstation-windows-x64-release",
+    id: "duckstation",
     name: "Duckstation",
   },
   {
     categories: [nintendoentertainmentsystem],
     path: "F:/games/Emulation/emulators/Mesen.0.9.9/Mesen.exe",
     fileExtensions: [".nes"],
-    id: "mesen.0.9.9",
+    id: "mesen",
     name: "Mesen",
   },
   {
@@ -85,14 +85,14 @@ export const applications: FullApplication[] = [
     categories: [nintendogamecube, nintendowii],
     path: "F:/games/Emulation/emulators/dolphin-master-5.0-15445-x64/Dolphin.exe",
     fileExtensions: [".iso"],
-    id: "dolphin-master-5.0-15445-x64",
+    id: "dolphin",
     name: "Dolphin",
   },
   {
     categories: [segasaturn, pcengine, pcenginecd],
     path: "F:/games/Emulation/emulators/mednafen-1.29.0-win64/mednafen.exe",
     fileExtensions: [".cue", ".pce"],
-    id: "mednafen-1.29.0-win64",
+    id: "mednafen",
     name: "Mednafen",
   },
 ];

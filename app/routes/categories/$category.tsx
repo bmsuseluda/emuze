@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, useLoaderData, useTransition } from "@remix-run/react";
@@ -14,6 +14,8 @@ import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import { PlatformIcon } from "~/components/PlatformIcon";
 import layout from "~/hooks/useGamepads/layouts/xbox";
 import { useGamepadEvent } from "~/hooks/useGamepadEvent";
+import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
+import { useRefsGrid } from "~/hooks/useGamepads/useRefsGrid";
 
 export const loader: LoaderFunction = ({ params }) => {
   const { category } = params;
@@ -68,216 +70,39 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 export default function Index() {
   const { id, name, entries } = useLoaderData<Category>();
   const launchButtonRef = useRef<HTMLButtonElement>(null);
-  const entriesRefs = useRef<(HTMLInputElement | null)[]>([]);
-  const entriesRefsGrid = useRef<(HTMLInputElement | null)[][]>([]);
+  const entriesRefs = useRef<HTMLInputElement[]>([]);
   const { state } = useTransition();
   const { getTestId } = useTestId("category");
 
-  const selectedX = useRef<number>();
-  const selectedY = useRef<number>();
+  const { entriesRefsGrid } = useRefsGrid(entriesRefs, entries);
 
-  useEffect(() => {
-    selectedX.current = undefined;
-    selectedY.current = undefined;
-  }, [id]);
-
-  const choseEntry = useCallback((x: number, y: number) => {
-    const entry = entriesRefsGrid.current[y][x];
-    if (entry) {
-      entry.checked = true;
-      entry.focus();
-    }
+  const selectEntry = useCallback((entry: HTMLInputElement) => {
+    entry.checked = true;
+    entry.focus();
   }, []);
 
-  const getLastIndex = useCallback((array: any[]) => array.length - 1, []);
-
-  const createRefsGrid = () => {
-    const entriesGrid: (HTMLInputElement | null)[][] = [];
-
-    const addToRow = (rowIndex: number, entry: HTMLInputElement | null) => {
-      if (!entriesGrid[rowIndex]) {
-        // create new row
-        entriesGrid[rowIndex] = [entry];
-      } else {
-        // add to existing row
-        entriesGrid[rowIndex].push(entry);
-      }
-    };
-
-    let rowIndex = 0;
-    entriesRefs.current.forEach((entry, index) => {
-      const top = entry?.getBoundingClientRect().top;
-      if (index > 0) {
-        const topPrevious =
-          entriesRefs.current[index - 1]?.getBoundingClientRect().top;
-        if (top && topPrevious && top > topPrevious) {
-          // nextRow
-          rowIndex = rowIndex + 1;
-          addToRow(rowIndex, entry);
-          return;
-        }
-      }
-      addToRow(rowIndex, entry);
-    });
-    entriesRefsGrid.current = entriesGrid;
-  };
-
-  useEffect(() => {
-    createRefsGrid();
-  }, [entries]);
-
-  useEffect(() => {
-    window.addEventListener("resize", createRefsGrid);
-
-    return () => {
-      window.removeEventListener("resize", createRefsGrid);
-    };
-  });
-
-  useGamepadEvent(
-    layout.buttons.DPadRight,
-    useCallback(() => {
-      if (entriesRefsGrid.current) {
-        if (
-          typeof selectedX.current !== "undefined" &&
-          typeof selectedY.current !== "undefined"
-        ) {
-          if (
-            selectedX.current <
-            getLastIndex(entriesRefsGrid.current[selectedY.current])
-          ) {
-            selectedX.current = selectedX.current + 1;
-            choseEntry(selectedX.current, selectedY.current);
-          } else if (
-            selectedX.current ===
-            getLastIndex(entriesRefsGrid.current[selectedY.current])
-          ) {
-            selectedX.current = 0;
-            choseEntry(selectedX.current, selectedY.current);
-          }
-        } else {
-          selectedX.current = 0;
-          selectedY.current = 0;
-          choseEntry(selectedX.current, selectedY.current);
-        }
-      }
-    }, [choseEntry])
-  );
-
-  useGamepadEvent(
-    layout.buttons.DPadLeft,
-    useCallback(() => {
-      if (entriesRefsGrid.current) {
-        if (
-          typeof selectedX.current !== "undefined" &&
-          typeof selectedY.current !== "undefined"
-        ) {
-          if (selectedX.current > 0) {
-            selectedX.current = selectedX.current - 1;
-            choseEntry(selectedX.current, selectedY.current);
-          } else if (selectedX.current === 0) {
-            selectedX.current = getLastIndex(
-              entriesRefsGrid.current[selectedY.current]
-            );
-            choseEntry(selectedX.current, selectedY.current);
-          }
-        }
-      }
-    }, [choseEntry])
-  );
-
-  useGamepadEvent(
-    layout.buttons.DPadDown,
-    useCallback(() => {
-      if (entriesRefsGrid.current) {
-        if (
-          typeof selectedX.current !== "undefined" &&
-          typeof selectedY.current !== "undefined"
-        ) {
-          if (selectedY.current < getLastIndex(entriesRefsGrid.current)) {
-            selectedY.current = selectedY.current + 1;
-            if (
-              !entriesRefsGrid.current[selectedY.current][selectedX.current]
-            ) {
-              selectedX.current = getLastIndex(
-                entriesRefsGrid.current[selectedY.current]
-              );
-            }
-            choseEntry(selectedX.current, selectedY.current);
-          } else if (
-            selectedY.current === getLastIndex(entriesRefsGrid.current)
-          ) {
-            selectedY.current = 0;
-            choseEntry(selectedX.current, selectedY.current);
-          }
-        }
-      }
-    }, [choseEntry])
-  );
-
-  useGamepadEvent(
-    layout.buttons.DPadUp,
-    useCallback(() => {
-      if (entriesRefsGrid.current) {
-        if (
-          typeof selectedX.current !== "undefined" &&
-          typeof selectedY.current !== "undefined"
-        ) {
-          if (selectedY.current > 0) {
-            selectedY.current = selectedY.current - 1;
-            choseEntry(selectedX.current, selectedY.current);
-          } else if (selectedY.current === 0) {
-            selectedY.current = getLastIndex(entriesRefsGrid.current);
-            if (
-              !entriesRefsGrid.current[selectedY.current][selectedX.current]
-            ) {
-              selectedX.current = getLastIndex(
-                entriesRefsGrid.current[selectedY.current]
-              );
-            }
-            choseEntry(selectedX.current, selectedY.current);
-          }
-        }
-      }
-    }, [choseEntry])
+  const { selectedEntry, resetSelected } = useGamepadsOnGrid(
+    entriesRefsGrid,
+    selectEntry
   );
 
   useGamepadEvent(
     layout.buttons.B,
     useCallback(() => {
-      if (entriesRefsGrid.current) {
-        if (
-          typeof selectedX.current !== "undefined" &&
-          typeof selectedY.current !== "undefined"
-        ) {
-          const entry =
-            entriesRefsGrid.current[selectedY.current][selectedX.current];
-          if (entry) {
-            entry.checked = false;
-            selectedX.current = undefined;
-            selectedY.current = undefined;
-          }
-        }
+      if (selectedEntry.current) {
+        selectedEntry.current.checked = false;
+        resetSelected();
       }
-    }, [])
+    }, [resetSelected, selectedEntry])
   );
 
   useGamepadEvent(
     layout.buttons.A,
     useCallback(() => {
-      if (entriesRefsGrid.current) {
-        if (
-          typeof selectedX.current !== "undefined" &&
-          typeof selectedY.current !== "undefined"
-        ) {
-          launchButtonRef.current?.click();
-        } else {
-          selectedX.current = 0;
-          selectedY.current = 0;
-          choseEntry(selectedX.current, selectedY.current);
-        }
+      if (selectedEntry.current) {
+        launchButtonRef.current?.click();
       }
-    }, [choseEntry])
+    }, [selectedEntry])
   );
 
   return (

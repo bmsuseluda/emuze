@@ -9,7 +9,7 @@ type CategoryLink = {
 };
 
 export const useGamepadsOnSidebar = (categoryLinks: CategoryLink[]) => {
-  const categoryLinksRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const categoryLinksRefs = useRef<HTMLAnchorElement[]>([]);
   // TODO: use a context for this instead
   const focusOnMain = useRef(false);
   const selected = useRef<number>();

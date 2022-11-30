@@ -1,6 +1,7 @@
 import nodepath from "path";
 
 import { readCategory } from "~/server/categories.server";
+import { readGeneral } from "~/server/settings.server";
 import type { Category } from "~/types/category";
 
 import { executeApplication } from "../execute.server";
@@ -12,6 +13,7 @@ import {
   pcenginecd,
   pcenginecdLinux,
 } from "../__testData__/category";
+import type { General } from "~/types/settings/general";
 
 const execFileMock = jest.fn();
 jest.mock("child_process", () => ({
@@ -21,6 +23,9 @@ jest.mock("child_process", () => ({
 
 jest.mock("~/server/categories.server", () => ({
   readCategory: jest.fn(),
+}));
+jest.mock("~/server/settings.server", () => ({
+  readGeneral: jest.fn(),
 }));
 
 describe("execute.server", () => {
@@ -34,6 +39,12 @@ describe("execute.server", () => {
 
   describe("executeApplication", () => {
     describe("executeApplicationOnWindows", () => {
+      beforeEach(() => {
+        (readGeneral as jest.Mock<General>).mockReturnValue({
+          isWindows: true,
+        });
+      });
+
       it("Should execute the entry with the defined application of the category", () => {
         (readCategory as jest.Mock<Category>).mockReturnValueOnce(pcenginecd);
 
@@ -85,6 +96,12 @@ describe("execute.server", () => {
     });
 
     describe("executeApplicationOnLinux", () => {
+      beforeEach(() => {
+        (readGeneral as jest.Mock<General>).mockReturnValue({
+          isWindows: false,
+        });
+      });
+
       it("Should execute the entry with the defined application of the category", () => {
         (readCategory as jest.Mock<Category>).mockReturnValueOnce(
           pcenginecdLinux

@@ -27,7 +27,7 @@ import {
   sonypsp,
   supernintendo,
 } from "~/server/categoriesDB.server";
-import { General } from "~/types/settings/general";
+import type { General } from "~/types/settings/general";
 
 type OptionParamFunction = (entry: Entry, generalSettings: General) => string[];
 type EnvironmentVariableFunction = (

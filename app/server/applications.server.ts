@@ -11,7 +11,6 @@ import {
   readFilenames,
   writeFileHome,
 } from "~/server/readWriteData.server";
-import { convertToId } from "~/server/convertToId.server";
 import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
 import { readGeneral } from "~/server/settings.server";
 import { isWindows } from "./operationsystem.server";
@@ -72,7 +71,7 @@ export const importApplicationsOnWindows = () => {
               categories,
               path: executable,
               fileExtensions,
-              id: convertToId(nodepath.basename(appFoldername)),
+              id,
               name,
             });
           }
