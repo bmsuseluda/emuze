@@ -4,10 +4,13 @@ import { styled } from "~/stitches";
 
 import { Ul } from "~/components/Ul";
 import { Link } from "../Link";
-import layout from "~/hooks/useGamepads/layouts/xbox";
+import { layout } from "~/hooks/useGamepads/layouts";
 import { useCallback, useRef } from "react";
 import type { IconType } from "react-icons";
-import { useGamepadEvent } from "~/hooks/useGamepadEvent";
+import {
+  useGamepadButtonPressEvent,
+  useKeyboardEvent,
+} from "~/hooks/useGamepadEvent";
 
 const Headline = styled("h1", {
   margin: 0,
@@ -53,16 +56,16 @@ export const Header = () => {
     linksRefs.current[index]?.click();
   };
 
-  useGamepadEvent(
-    layout.buttons.Start,
-    useCallback(() => {
-      if (window.location.pathname.startsWith("/categories")) {
-        selectLink(links.findIndex(({ to }) => to === "/settings"));
-      } else {
-        selectLink(links.findIndex(({ to }) => to === "/categories"));
-      }
-    }, [])
-  );
+  const onSettings = useCallback(() => {
+    if (window.location.pathname.startsWith("/categories")) {
+      selectLink(links.findIndex(({ to }) => to === "/settings"));
+    } else {
+      selectLink(links.findIndex(({ to }) => to === "/categories"));
+    }
+  }, []);
+
+  useGamepadButtonPressEvent(layout.buttons.Start, onSettings);
+  useKeyboardEvent("Escape", onSettings);
 
   return (
     <StyledHeader>

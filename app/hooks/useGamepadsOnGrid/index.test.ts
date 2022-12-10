@@ -1,7 +1,7 @@
 import { createEvent, fireEvent, renderHook } from "@testing-library/react";
 
 import { useGamepadsOnGrid } from ".";
-import layout from "~/hooks/useGamepads/layouts/xbox";
+import { layout } from "~/hooks/useGamepads/layouts";
 
 const pressButton = (buttonIndex: number) => {
   fireEvent(window, createEvent(`gamepadonbutton${buttonIndex}press`, window));

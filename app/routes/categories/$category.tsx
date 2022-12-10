@@ -12,8 +12,11 @@ import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 import { useTestId } from "~/hooks/useTestId";
 import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import { PlatformIcon } from "~/components/PlatformIcon";
-import layout from "~/hooks/useGamepads/layouts/xbox";
-import { useGamepadEvent } from "~/hooks/useGamepadEvent";
+import { layout } from "~/hooks/useGamepads/layouts";
+import {
+  useGamepadButtonPressEvent,
+  useKeyboardEvent,
+} from "~/hooks/useGamepadEvent";
 import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
 import { useRefsGrid } from "~/hooks/useGamepads/useRefsGrid";
 
@@ -86,24 +89,24 @@ export default function Index() {
     selectEntry
   );
 
-  useGamepadEvent(
-    layout.buttons.B,
-    useCallback(() => {
-      if (selectedEntry.current) {
-        selectedEntry.current.checked = false;
-        resetSelected();
-      }
-    }, [resetSelected, selectedEntry])
-  );
+  const onBack = useCallback(() => {
+    if (selectedEntry.current) {
+      selectedEntry.current.checked = false;
+      resetSelected();
+    }
+  }, [resetSelected, selectedEntry]);
 
-  useGamepadEvent(
-    layout.buttons.A,
-    useCallback(() => {
-      if (selectedEntry.current) {
-        launchButtonRef.current?.click();
-      }
-    }, [selectedEntry])
-  );
+  const onExecute = useCallback(() => {
+    if (selectedEntry.current) {
+      launchButtonRef.current?.click();
+    }
+  }, [selectedEntry]);
+
+  useGamepadButtonPressEvent(layout.buttons.B, onBack);
+  useGamepadButtonPressEvent(layout.buttons.A, onExecute);
+
+  useKeyboardEvent("Backspace", onBack);
+  useKeyboardEvent("Enter", onExecute);
 
   return (
     <ListActionBarLayout
