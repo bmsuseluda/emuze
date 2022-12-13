@@ -18,7 +18,7 @@ import {
   useKeyboardEvent,
 } from "~/hooks/useGamepadEvent";
 import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
-import { useRefsGrid } from "~/hooks/useGamepads/useRefsGrid";
+import { useRefsGrid } from "~/hooks/useRefsGrid";
 
 export const loader: LoaderFunction = ({ params }) => {
   const { category } = params;

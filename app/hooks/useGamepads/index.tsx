@@ -5,7 +5,7 @@ import type { StickDirection } from "~/hooks/useGamepads/layouts";
 const findGamepad = (gamepads: (Gamepad | null)[], gamepadIndex: number) =>
   gamepads.find((gamepad) => gamepad?.index === gamepadIndex);
 
-const stickPressed = (stickValue: number) => {
+const isStickPressed = (stickValue: number) => {
   const normalizedStickValue = stickValue < 0 ? stickValue * -1 : stickValue;
   return normalizedStickValue > 0.5;
 };
@@ -30,9 +30,9 @@ export const useGamepads = () => {
         gamepad.axes.forEach((stickValue, index) => {
           if (
             !(
-              oldGamepad?.axes[index] && stickPressed(oldGamepad.axes[index])
+              oldGamepad?.axes[index] && isStickPressed(oldGamepad.axes[index])
             ) &&
-            stickPressed(stickValue)
+            isStickPressed(stickValue)
           ) {
             switch (index) {
               case layout.axes.leftStickX: {

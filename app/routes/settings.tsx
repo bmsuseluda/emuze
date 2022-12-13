@@ -5,7 +5,7 @@ import { SidebarMainLayout } from "~/components/layouts/SidebarMainLayout";
 import { Header } from "~/containers/Header";
 import { Link } from "~/containers/Link";
 import { categories } from "~/server/settings.server";
-import { useGamepadsOnSidebar } from "~/hooks/useGamepads/useGamepadsOnSidebar";
+import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
 
 export const meta: MetaFunction = () => {
   return {
@@ -20,7 +20,7 @@ export const loader = () => {
 
 export default function Index() {
   const categories = useLoaderData<typeof loader>();
-  const { refCallback } = useGamepadsOnSidebar(categories);
+  const { refCallback } = useGamepadsOnSidebar();
 
   return (
     <SidebarMainLayout>

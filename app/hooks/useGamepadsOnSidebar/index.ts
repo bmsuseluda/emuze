@@ -6,13 +6,7 @@ import {
   useKeyboardEvent,
 } from "~/hooks/useGamepadEvent";
 
-type CategoryLink = {
-  id: string;
-  name: string;
-  to: string;
-};
-
-export const useGamepadsOnSidebar = (categoryLinks: CategoryLink[]) => {
+export const useGamepadsOnSidebar = () => {
   const categoryLinksRefs = useRef<HTMLAnchorElement[]>([]);
   // TODO: use a context for this instead
   const focusOnMain = useRef(false);

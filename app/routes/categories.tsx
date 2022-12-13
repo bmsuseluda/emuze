@@ -15,7 +15,7 @@ import { useTestId } from "~/hooks/useTestId";
 import { importApplications } from "~/server/applications.server";
 import { PlatformIcon } from "~/components/PlatformIcon";
 import type { PlatformId } from "~/types/platforms";
-import { useGamepadsOnSidebar } from "~/hooks/useGamepads/useGamepadsOnSidebar";
+import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
 
 type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
 
@@ -63,7 +63,7 @@ export default function Index() {
   const categoryLinks = useLoaderData<CategoryLinks>();
   const { state } = useTransition();
   const { getTestId } = useTestId("categories");
-  const { refCallback } = useGamepadsOnSidebar(categoryLinks);
+  const { refCallback } = useGamepadsOnSidebar();
 
   return (
     <SidebarMainLayout>
