@@ -43,7 +43,13 @@ export const segamastersystem: Category = {
 
 export const segamegadrive: Category = {
   id: "segamegadrive",
-  names: ["Sega Mega Drive", "Mega Drive", "Sega Genesis", "Genesis"],
+  names: [
+    "Sega Mega Drive",
+    "Mega Drive",
+    "Sega Megadrive",
+    "Sega Genesis",
+    "Genesis",
+  ],
   igdbPlatformIds: [29],
 };
 

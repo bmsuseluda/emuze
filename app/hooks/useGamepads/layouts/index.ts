@@ -1,8 +1,3 @@
-type Layout = {
-  buttons: Record<string, number>;
-  axes: Record<string, number>;
-};
-
 export type StickDirection =
   | "leftStickUp"
   | "leftStickDown"
@@ -13,7 +8,7 @@ export type StickDirection =
   | "rightStickLeft"
   | "rightStickRight";
 
-export const layout: Layout = {
+export const layout = {
   buttons: {
     A: 0,
     B: 1,
