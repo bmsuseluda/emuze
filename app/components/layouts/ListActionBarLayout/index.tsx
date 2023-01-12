@@ -41,6 +41,13 @@ const List = styled("div", {
     backgroundColor: "$sidebarBackgroundColor",
     borderRadius: "$1",
   },
+  variants: {
+    scrollSmooth: {
+      true: {
+        scrollBehavior: "smooth",
+      },
+    },
+  },
 });
 
 const ActionBar = styled("div", {
@@ -54,12 +61,14 @@ interface ContainerProps {
   list: React.ReactNode;
   scrollToTopOnLocationChange?: boolean;
   actions: React.ReactNode;
+  scrollSmooth?: boolean;
 }
 
 const ListActionBarContainer = ({
   list: listEntries,
   scrollToTopOnLocationChange = false,
   actions,
+  scrollSmooth,
 }: ContainerProps) => {
   const listRef = useRef<HTMLDivElement>(null);
   const transition = useTransition();
@@ -70,13 +79,16 @@ const ListActionBarContainer = ({
       transition.state === "loading" &&
       listRef.current?.scrollTop
     ) {
-      listRef.current.scrollTop = 0;
+      // @ts-ignore There is no other way to deactivate smooth scrolling here
+      listRef.current.scrollTo({ top: 0, behavior: "instant" });
     }
   }, [transition, scrollToTopOnLocationChange]);
 
   return (
     <Absolute>
-      <List ref={listRef}>{listEntries}</List>
+      <List ref={listRef} scrollSmooth={scrollSmooth}>
+        {listEntries}
+      </List>
       <ActionBar>{actions}</ActionBar>
     </Absolute>
   );

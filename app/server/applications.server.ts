@@ -1,6 +1,6 @@
 import nodepath from "path";
 
-import type { Application, Applications } from "~/types/applications";
+import type { Applications } from "~/types/applications";
 import {
   applications,
   getApplicationDataByName,

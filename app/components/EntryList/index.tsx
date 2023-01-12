@@ -1,3 +1,4 @@
+import type { MutableRefObject } from "react";
 import { useTestId } from "~/hooks/useTestId";
 import { styled } from "~/stitches";
 import type { Entries } from "~/types/category";
@@ -6,15 +7,15 @@ import { Entry } from "./components/Entry";
 
 interface Props {
   entries: Entries;
-  entriesRefs: React.MutableRefObject<(HTMLInputElement | null)[]>;
+  entriesRefs: MutableRefObject<(HTMLInputElement | null)[]>;
   onDoubleClick: () => void;
   "data-testid"?: string;
 }
 
 const List = styled(Ul, {
-  display: "flex",
-  flexWrap: "wrap",
+  display: "grid",
   gap: "$2",
+  gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
 });
 
 export const EntryList = ({

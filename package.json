@@ -11,7 +11,7 @@
     "prepare": "husky install",
     "dev": "concurrently -k 'yarn:dev:*'",
     "dev:electron": "yarn build:electron && yarn start:electron",
-    "dev:remix": "remix dev",
+    "dev:remix": "cp -r ./public ./build && remix dev",
     "build": "yarn build:electron && yarn build:remix",
     "build:electron": "tsc -p ./desktop/tsconfig.json",
     "build:remix": "remix build",
@@ -97,6 +97,10 @@
       "build/desktop"
     ],
     "extraFiles": [
+      {
+        "from": "public",
+        "to": "public"
+      },
       {
         "from": "build/public",
         "to": "public"

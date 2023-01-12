@@ -54,14 +54,14 @@ export const readCategory = (category: string): Category =>
 const writeCategory = (category: Category) =>
   writeFileHome(category, nodepath.join(paths.entries, `${category.id}.json`));
 
-export const sortFileNames = (a: string, b: string) => {
+const sortFileNames = (a: string, b: string) => {
   const aWithoutPath = nodepath.basename(a);
   const bWithoutPath = nodepath.basename(b);
   const aExtname = nodepath.extname(aWithoutPath);
   const bExtname = nodepath.extname(bWithoutPath);
   const aWithoutFileExtension = aWithoutPath.split(aExtname)[0];
-  const bWithoutExtension = bWithoutPath.split(bExtname)[0];
-  return sortCaseInsensitive(aWithoutFileExtension, bWithoutExtension);
+  const bWithoutFileExtension = bWithoutPath.split(bExtname)[0];
+  return sortCaseInsensitive(aWithoutFileExtension, bWithoutFileExtension);
 };
 
 const readEntriesWithImages = async (

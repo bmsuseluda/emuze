@@ -39,12 +39,6 @@ export const gateofthunder: Entry = {
   path: "F:/games/Emulation/roms/PC Engine CD/Gate of Thunder.CUE",
 };
 
-export const windsofthunder: Entry = {
-  id: "windsofthunder",
-  name: "Winds of Thunder",
-  path: "F:/games/Emulation/roms/PC Engine CD/Winds of Thunder.cue",
-};
-
 export const pcenginecd: CategoryOnWindows = {
   id: "pcenginecd",
   name: "PC Engine CD",
@@ -66,6 +60,12 @@ export const pcenginecdLinux: CategoryOnLinux = {
   fileExtensions: [".cue", ".pce"],
   igdbPlatformIds: categoriesDB.pcenginecd.igdbPlatformIds,
   entries: [cotton, gateofthunder],
+};
+
+export const fahrenheit: Entry = {
+  id: "fahrenheit",
+  name: "Fahrenheit",
+  path: "F:/games/Emulation/roms/Sony Playstation 2/Fahrenheit.chd",
 };
 
 export const hugo: Entry = {
@@ -96,6 +96,18 @@ export const playstation: CategoryOnWindows = {
   fileExtensions: [".chd", ".cue"],
   igdbPlatformIds: categoriesDB.sonyplaystation.igdbPlatformIds,
   entries: [hugo, hugo2],
+};
+
+export const playstation2: CategoryOnLinux = {
+  id: "sonyplaystation2",
+  name: "Sony Playstation 2",
+  applicationId: "pcsx2",
+  applicationFlatpakId: "net.pcsx2.PCSX2",
+  applicationFlatpakOptionParams: ["--command=pcsx2-qt"],
+  entryPath: "/home/dennisludwig/Documents/Emulation/Sony Playstation 2",
+  fileExtensions: [".chd", ".iso"],
+  igdbPlatformIds: categoriesDB.sonyplaystation2.igdbPlatformIds,
+  entries: [fahrenheit],
 };
 
 export const turtles2: Entry = {

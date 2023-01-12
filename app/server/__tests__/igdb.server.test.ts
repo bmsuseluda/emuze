@@ -4,6 +4,8 @@ import {
   hugo2,
   finalfantasy7,
   turtles2,
+  fahrenheit,
+  playstation2,
 } from "../__testData__/category";
 import type { GamesResponse } from "../igdb.server";
 import { fetchCovers } from "../igdb.server";
@@ -58,6 +60,40 @@ describe("igdb.server", () => {
         ...hugo2,
         imageUrl:
           "https://images.igdb.com/igdb/image/upload/t_cover_big/hugo360img.png",
+      },
+    ]);
+  });
+
+  it("Should return games if they match on localized name", async () => {
+    const igdbResponse: GamesResponse = {
+      data: [
+        {
+          name: "Indigo Prophecy",
+          cover: {
+            image_id: "indigoimg",
+          },
+          game_localizations: [
+            {
+              name: "Fahrenheit",
+              cover: {
+                image_id: "fahrenheitimg",
+              },
+            },
+          ],
+        },
+      ],
+    };
+    igdbRequestMock.mockResolvedValue(igdbResponse);
+
+    const entriesWithImages = await fetchCovers(playstation2.igdbPlatformIds, [
+      fahrenheit,
+    ]);
+
+    expect(entriesWithImages).toStrictEqual([
+      {
+        ...fahrenheit,
+        imageUrl:
+          "https://images.igdb.com/igdb/image/upload/t_cover_big/fahrenheitimg.png",
       },
     ]);
   });

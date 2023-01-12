@@ -3,13 +3,20 @@ import igdb from "igdb-api-node";
 import type { Entry } from "~/types/category";
 import { openErrorDialog } from "~/server/openDialog.server";
 
+interface GameLocalization {
+  name?: string;
+  cover?: {
+    image_id: string;
+  };
+}
+
 interface Game {
   cover?: {
     image_id: string;
   };
   name: string;
   alternative_names?: [{ name: string }];
-  game_localizations?: [{ name?: string }];
+  game_localizations?: GameLocalization[];
 }
 
 export interface GamesResponse {
@@ -27,8 +34,25 @@ const replaceSubTitleChar = (a: string) =>
 
 const removeRegion = (a: string) => a.replace(/\(.*\)/gi, "").trim();
 
-export const getCoverUrl = (gameId: string) =>
-  `https://images.igdb.com/igdb/image/upload/t_cover_big/${gameId}.png`;
+const findGameLocalization = (
+  entryName: string,
+  gameLocalizations?: GameLocalization[]
+) => gameLocalizations?.find(({ name }) => name && matchName(name, entryName));
+
+export const getCoverUrl = (entryName: string, gameData: Game) => {
+  const localization = findGameLocalization(
+    entryName,
+    gameData.game_localizations
+  );
+
+  const gameId = localization?.cover?.image_id || gameData.cover?.image_id;
+
+  if (gameId) {
+    return `https://images.igdb.com/igdb/image/upload/t_cover_big/${gameId}.png`;
+  }
+
+  return null;
+};
 
 const filterCaseInsensitive = (field: string, value: string) =>
   `${field}~"${value}"`;
@@ -70,7 +94,7 @@ export const fetchCovers = async (PlatformId: number[], entries: Entry[]) => {
       const gamesResponse: GamesResponse = await client
         .fields([
           "name",
-          "cover.image_id,alternative_names.name,game_localizations.name",
+          "cover.image_id,alternative_names.name,game_localizations.name,game_localizations.cover.image_id",
         ])
         .where(
           `platforms=(${PlatformId}) &
@@ -90,15 +114,16 @@ export const fetchCovers = async (PlatformId: number[], entries: Entry[]) => {
             !!alternative_names?.find(({ name }) =>
               matchName(name, entry.name)
             ) ||
-            !!game_localizations?.find(
-              ({ name }) => name && matchName(name, entry.name)
-            )
+            !!findGameLocalization(entry.name, game_localizations)
         );
-        if (gameData?.cover) {
-          return {
-            ...entry,
-            imageUrl: getCoverUrl(gameData.cover.image_id),
-          };
+        if (gameData) {
+          const imageUrl = getCoverUrl(entry.name, gameData);
+          if (imageUrl) {
+            return {
+              ...entry,
+              imageUrl,
+            };
+          }
         }
         return entry;
       });

@@ -28,6 +28,7 @@ module.exports = {
   },
   rules: {
     "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
     "jsx-a11y/anchor-has-content": "off",
   },
   overrides: [

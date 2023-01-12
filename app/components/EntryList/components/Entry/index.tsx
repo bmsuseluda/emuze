@@ -12,14 +12,13 @@ interface Props {
 
 const Wrapper = styled("li", {
   position: "relative",
+  minWidth: "200px",
+  maxWidth: "300px",
 });
 
 const Label = styled("label", {
   backgroundColor: "$backgroundColor",
   display: "flex",
-  width: "200px",
-  height: "266px",
-  flexDirection: "column",
   justifyContent: "flex-end",
   borderStyle: "solid",
   borderWidth: "$3",
@@ -63,21 +62,12 @@ const Input = styled("input", {
 
 const Image = styled("img", {
   width: "100%",
-  minHeight: "200px",
-
-  "&::before": {
-    content: " ",
-    position: "absolute",
-    background: "$gradiants$default",
-    width: "200px",
-    height: "266px",
-    display: "block",
-    top: 0,
-  },
 });
 
 const getAdditionalInfo = (name: string) =>
   name.substring(name.indexOf("(") + 1, name.indexOf(")"));
+
+const fallbackImageUrl = "/fallback.png";
 
 export const Entry = React.forwardRef<HTMLInputElement, Props>(
   ({ id, name, imageUrl, onDoubleClick, "data-testid": dataTestId }, ref) => {
@@ -99,11 +89,13 @@ export const Entry = React.forwardRef<HTMLInputElement, Props>(
           onDoubleClick={onDoubleClick}
           data-imageUrl={!!imageUrl}
         >
-          {imageUrl && (
-            <Image src={imageUrl} alt={`${name} cover`} draggable={false} />
-          )}
-          {!imageUrl && <Name>{name}</Name>}
+          <Image
+            src={imageUrl || fallbackImageUrl}
+            alt={`${name} cover`}
+            draggable={false}
+          />
           {imageUrl && additionalInfo && <Name>{additionalInfo}</Name>}
+          {!imageUrl && <Name>{name}</Name>}
         </Label>
       </Wrapper>
     );

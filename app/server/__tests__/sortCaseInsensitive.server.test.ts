@@ -18,4 +18,13 @@ describe("sortCaseInsensitive", () => {
     data.sort(sortCaseInsensitive);
     expect(data).toStrictEqual(["Pandemonium!", "Pandemonium 2"]);
   });
+
+  it("Should ignore additional infos (in brackets)", () => {
+    const data = ["Donkey Kong Country (USA)", "Donkey Kong Country 2"];
+    data.sort(sortCaseInsensitive);
+    expect(data).toStrictEqual([
+      "Donkey Kong Country (USA)",
+      "Donkey Kong Country 2",
+    ]);
+  });
 });
