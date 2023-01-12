@@ -25,7 +25,7 @@ const Label = styled("label", {
   borderWidth: "$3",
   borderColor: "$backgroundColor",
   borderRadius: "$1",
-  "&:hover, &:focus": {
+  "&:focus": {
     borderColor: "$color",
   },
   position: "relative",
@@ -76,9 +76,13 @@ const Image = styled("img", {
   },
 });
 
+const getAdditionalInfo = (name: string) =>
+  name.substring(name.indexOf("(") + 1, name.indexOf(")"));
+
 export const Entry = React.forwardRef<HTMLInputElement, Props>(
   ({ id, name, imageUrl, onDoubleClick, "data-testid": dataTestId }, ref) => {
     const { getTestId } = useTestId(dataTestId);
+    const additionalInfo = getAdditionalInfo(name);
 
     return (
       <Wrapper {...getTestId()}>
@@ -98,7 +102,8 @@ export const Entry = React.forwardRef<HTMLInputElement, Props>(
           {imageUrl && (
             <Image src={imageUrl} alt={`${name} cover`} draggable={false} />
           )}
-          <Name>{name}</Name>
+          {!imageUrl && <Name>{name}</Name>}
+          {imageUrl && additionalInfo && <Name>{additionalInfo}</Name>}
         </Label>
       </Wrapper>
     );

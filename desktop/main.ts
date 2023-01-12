@@ -16,7 +16,7 @@ app.on("ready", async () => {
 
   const general = readGeneral();
   const fullscreen =
-    app.commandLine.hasSwitch("fullscreen") || general.fullscreen;
+    app.commandLine.hasSwitch("fullscreen") || general?.fullscreen;
 
   if (process.env.NODE_ENV === "development") {
     const {

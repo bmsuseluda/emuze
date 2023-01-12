@@ -20,25 +20,11 @@ export const paths = {
   applications: "data/applications.json",
 };
 
-export const readApplication = (application: string) => {
-  const applications = readApplications();
-  return applications.find(({ id }) => id === application);
-};
-
 export const readApplications = (): Applications =>
   readFileHome(paths.applications);
 
 export const writeApplications = (applications: Applications) =>
   writeFileHome(applications, paths.applications);
-
-export const writeApplication = (application: Application) => {
-  const oldApplications = readApplications();
-  const newApplications = [
-    ...oldApplications.filter((value) => value.id !== application.id),
-    application,
-  ];
-  writeFileHome(newApplications, paths.applications);
-};
 
 export const findExecutable = (path: string, id: string): string | null => {
   const executables = readFilenames(path, [".exe"]).filter((filename) =>

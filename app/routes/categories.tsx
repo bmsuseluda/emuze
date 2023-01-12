@@ -61,7 +61,6 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 export default function Index() {
   const categoryLinks = useLoaderData<CategoryLinks>();
-  const { state } = useTransition();
   const { getTestId } = useTestId("categories");
   const { refCallback } = useGamepadsOnSidebar();
 
@@ -72,10 +71,10 @@ export default function Index() {
         headline="Platforms"
         actions={
           <Form method="post">
+            {/*TODO: The user needs some feedback how long the import takes*/}
             <Button
               type="submit"
               name="_actionId"
-              disabled={state !== "idle"}
               value="import"
               icon={<IoMdRefresh />}
             >

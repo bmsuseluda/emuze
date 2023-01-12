@@ -73,8 +73,8 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 export default function Index() {
   const { id, name, entries } = useLoaderData<Category>();
   const launchButtonRef = useRef<HTMLButtonElement>(null);
+  const importButtonRef = useRef<HTMLButtonElement>(null);
   const entriesRefs = useRef<HTMLInputElement[]>([]);
-  const { state } = useTransition();
   const { getTestId } = useTestId("category");
 
   const { entriesRefsGrid } = useRefsGrid(entriesRefs, entries);
@@ -102,11 +102,17 @@ export default function Index() {
     }
   }, [selectedEntry]);
 
+  const onImport = useCallback(() => {
+    importButtonRef.current?.click();
+  }, []);
+
   useGamepadButtonPressEvent(layout.buttons.B, onBack);
   useGamepadButtonPressEvent(layout.buttons.A, onExecute);
+  useGamepadButtonPressEvent(layout.buttons.X, onImport);
 
   useKeyboardEvent("Backspace", onBack);
   useKeyboardEvent("Enter", onExecute);
+  useKeyboardEvent("i", onImport);
 
   return (
     <ListActionBarLayout
@@ -143,7 +149,7 @@ export default function Index() {
               <Button
                 type="submit"
                 name="_actionId"
-                disabled={!entries || entries.length === 0 || state !== "idle"}
+                disabled={!entries || entries.length === 0}
                 value={actionIds.launch}
                 ref={launchButtonRef}
                 icon={<IoMdPlay />}
@@ -154,8 +160,8 @@ export default function Index() {
               <Button
                 type="submit"
                 name="_actionId"
-                disabled={state !== "idle"}
                 value={actionIds.import}
+                ref={importButtonRef}
                 icon={<IoMdRefresh />}
                 {...getTestId(["button", "import"])}
               >

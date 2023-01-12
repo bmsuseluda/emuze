@@ -131,6 +131,8 @@ const createCategoryData =
   };
 
 export const importCategories = async () => {
+  deleteCategories();
+
   const { categoriesPath } = readGeneral();
 
   if (categoriesPath) {
@@ -181,12 +183,13 @@ export const importCategories = async () => {
       getSupportedCategories.map((func) => limiter.schedule(func))
     );
 
-    deleteCategories();
-
-    supportedCategories.forEach((category) => {
+    const supportedCategoriesWithEntries = supportedCategories.filter(
+      ({ entries }) => entries && entries.length > 0
+    );
+    supportedCategoriesWithEntries.forEach((category) => {
       writeCategory(category);
     });
 
-    writeCategories(supportedCategories);
+    writeCategories(supportedCategoriesWithEntries);
   }
 };
