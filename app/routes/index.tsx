@@ -1,14 +1,8 @@
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { readGeneral } from "~/server/settings.server";
 
 export const loader: LoaderFunction = () => {
-  const general = readGeneral();
-  if (general?.applicationsPath || general?.categoriesPath) {
-    return redirect("/categories");
-  }
-
-  return redirect("/settings/general");
+  return redirect("/categories");
 };
 
 export const meta: MetaFunction = () => {

@@ -3,12 +3,7 @@ import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { IoMdSave } from "react-icons/io";
 import { IoFolderOpenSharp } from "react-icons/io5";
-import {
-  Form,
-  useActionData,
-  useLoaderData,
-  useTransition,
-} from "@remix-run/react";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import { Button } from "~/components/Button";
 import { FileInput } from "~/components/FileInput";
 import { FormBox } from "~/components/FormBox";
@@ -21,13 +16,12 @@ import { openFolderDialog } from "~/server/openDialog.server";
 import { readGeneral, writeGeneral } from "~/server/settings.server";
 import type { General } from "~/types/settings/general";
 import { isWindows } from "~/server/operationsystem.server";
-import { Checkbox } from "~/components/Checkbox";
-import { useFullscreen } from "~/hooks/useFullscreen";
-import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
+import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
+import { SettingsIcon } from "~/components/SettingsIcon";
 
-export const loader = ({ context }: DataFunctionArgs) => {
+export const loader = () => {
   const general: General = readGeneral() || {};
-  return json({ ...general, isWindows, fullscreen: context?.fullscreen });
+  return json({ ...general, isWindows });
 };
 
 const actionIds = {
@@ -41,7 +35,6 @@ export const action: ActionFunction = async ({ request }) => {
   const _actionId = form.get("_actionId");
   const applicationsPath = form.get("applicationsPath");
   const categoriesPath = form.get("categoriesPath");
-  const fullscreen = form.get("fullscreen") === "on";
 
   if (_actionId === actionIds.save) {
     if (
@@ -57,7 +50,6 @@ export const action: ActionFunction = async ({ request }) => {
           ? applicationsPath
           : null,
       categoriesPath,
-      fullscreen,
     };
     writeGeneral(fields);
     importApplications();
@@ -107,7 +99,6 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 export default function Index() {
   const defaultData = useLoaderData<typeof loader>();
   const newData = useActionData<General>();
-  const fullscreen = useFullscreen(defaultData.fullscreen || false);
 
   const [applicationPath, setApplicationPath] = useState(
     defaultData.applicationsPath || ""
@@ -129,10 +120,16 @@ export default function Index() {
     }
   }, [newData?.categoriesPath]);
 
-  const { state } = useTransition();
-
   return (
-    <ListActionBarLayout headline="General">
+    <ListActionBarLayout
+      headline={
+        <IconChildrenWrapper icon={<SettingsIcon id="general" />}>
+          <span>
+            <span>General</span>
+          </span>
+        </IconChildrenWrapper>
+      }
+    >
       <Form method="post">
         <ListActionBarLayout.ListActionBarContainer
           scrollToTopOnLocationChange
@@ -154,7 +151,6 @@ export default function Index() {
                       type="submit"
                       name="_actionId"
                       value={actionIds.chooseApplicationsPath}
-                      disabled={state !== "idle"}
                       icon={<IoFolderOpenSharp />}
                     >
                       Choose
@@ -176,21 +172,11 @@ export default function Index() {
                     type="submit"
                     name="_actionId"
                     value={actionIds.chooseCategoriesPath}
-                    disabled={state !== "idle"}
                     icon={<IoFolderOpenSharp />}
                   >
                     Choose
                   </FileInput.Button>
                 </FileInput>
-              </FormRow>
-              <FormRow>
-                <Label htmlFor="fullscreen">Fullscreen</Label>
-                <Checkbox
-                  id="fullscreen"
-                  name="fullscreen"
-                  checked={fullscreen}
-                  onClick={() => electronAPI.changeWindow("fullscreen")}
-                />
               </FormRow>
             </FormBox>
           }
@@ -199,7 +185,6 @@ export default function Index() {
               type="submit"
               name="_actionId"
               value={actionIds.save}
-              disabled={state !== "idle"}
               icon={<IoMdSave />}
             >
               Save settings and import all

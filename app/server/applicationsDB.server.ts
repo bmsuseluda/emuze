@@ -28,11 +28,17 @@ import {
   supernintendo,
 } from "~/server/categoriesDB.server";
 import type { General } from "~/types/settings/general";
+import type { Appearance } from "~/types/settings/appearance";
 
-type OptionParamFunction = (entry: Entry, generalSettings: General) => string[];
+type Settings = {
+  general: General;
+  appearance: Appearance;
+};
+
+type OptionParamFunction = (entry: Entry, settings: Settings) => string[];
 type EnvironmentVariableFunction = (
   category: CategoryData,
-  generalSettings: General
+  settings: Settings
 ) => Record<string, string | null>;
 
 export interface Application {
@@ -53,7 +59,7 @@ export const pcsx2: Application = {
   categories: [sonyplaystation2],
   flatpakId: "net.pcsx2.PCSX2",
   flatpakOptionParams: ["--command=pcsx2-qt"],
-  optionParams: (_, { fullscreen }) => {
+  optionParams: (_, { appearance: { fullscreen } }) => {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("-fullscreen");
@@ -68,7 +74,7 @@ export const blastem: Application = {
   fileExtensions: [".68K", ".bin", ".sgd", ".smd"],
   categories: [segamegadrive],
   flatpakId: "com.retrodev.blastem",
-  optionParams: (_, { fullscreen }) => {
+  optionParams: (_, { appearance: { fullscreen } }) => {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("-f");
@@ -83,7 +89,7 @@ export const bsnes: Application = {
   fileExtensions: [".sfc", ".smc"],
   categories: [supernintendo],
   flatpakId: "dev.bsnes.bsnes",
-  optionParams: (_, { fullscreen }) => {
+  optionParams: (_, { appearance: { fullscreen } }) => {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("--fullscreen");
@@ -99,7 +105,7 @@ export const applications: Application[] = [
     fileExtensions: [".chd", ".cue"],
     categories: [sonyplaystation],
     flatpakId: "org.duckstation.DuckStation",
-    optionParams: (_, { fullscreen }) => {
+    optionParams: (_, { appearance: { fullscreen } }) => {
       const optionParams = [];
       if (fullscreen) {
         optionParams.push("-fullscreen");
@@ -179,7 +185,7 @@ export const applications: Application[] = [
     categories: [segasaturn, pcengine, pcenginecd],
     flatpakId: "com.github.AmatCoder.mednaffe",
     flatpakOptionParams: ["--command=mednafen"],
-    environmentVariables: ({ applicationPath }, { isWindows }) => {
+    environmentVariables: ({ applicationPath }, { general: { isWindows } }) => {
       const environmentVariables = {};
       if (isWindows && applicationPath) {
         return {

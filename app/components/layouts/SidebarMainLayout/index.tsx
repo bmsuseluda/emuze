@@ -11,7 +11,6 @@ interface Props {
 
 const Layout = styled(Box, {
   display: "flex",
-  gap: "$2",
   flex: 1,
   backgroundColor: "$backgroundColor",
   color: "$color",

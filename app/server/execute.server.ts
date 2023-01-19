@@ -2,7 +2,7 @@ import { execFileSync } from "child_process";
 import { readCategory } from "~/server/categories.server";
 import { getApplicationDataById } from "~/server/applicationsDB.server";
 import { openErrorDialog } from "~/server/openDialog.server";
-import { readGeneral } from "~/server/settings.server";
+import { readAppearance, readGeneral } from "~/server/settings.server";
 
 // TODO: separate os specific code
 const executeApplicationOnLinux = ({
@@ -34,7 +34,10 @@ const executeApplicationOnWindows = (
 };
 
 export const executeApplication = (category: string, entry: string) => {
-  const generalSettings = readGeneral();
+  const settings = {
+    general: readGeneral(),
+    appearance: readAppearance(),
+  };
   const categoryData = readCategory(category);
   const {
     applicationId,
@@ -49,7 +52,7 @@ export const executeApplication = (category: string, entry: string) => {
   if (applicationData && entryData) {
     if (applicationData.environmentVariables) {
       Object.entries(
-        applicationData.environmentVariables(categoryData, generalSettings)
+        applicationData.environmentVariables(categoryData, settings)
       ).forEach(([key, value]) => {
         if (value) {
           process.env[key] = value;
@@ -57,7 +60,7 @@ export const executeApplication = (category: string, entry: string) => {
       });
     }
     const optionParams = applicationData.optionParams
-      ? applicationData.optionParams(entryData, generalSettings)
+      ? applicationData.optionParams(entryData, settings)
       : [];
 
     try {

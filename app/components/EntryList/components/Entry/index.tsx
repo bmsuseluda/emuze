@@ -52,8 +52,9 @@ const Name = styled("div", {
 
 const Input = styled("input", {
   position: "absolute",
-  top: "50%",
-  left: "50%",
+  top: 0,
+  width: "100%",
+  height: "100%",
   zIndex: "-2",
   "&:checked + label": {
     borderColor: "$accent",

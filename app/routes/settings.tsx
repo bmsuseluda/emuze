@@ -6,6 +6,7 @@ import { Header } from "~/containers/Header";
 import { Link } from "~/containers/Link";
 import { categories } from "~/server/settings.server";
 import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
+import { SettingsIcon } from "~/components/SettingsIcon";
 
 export const meta: MetaFunction = () => {
   return {
@@ -20,13 +21,18 @@ export const loader = () => {
 
 export default function Index() {
   const categories = useLoaderData<typeof loader>();
-  const { refCallback } = useGamepadsOnSidebar();
+  const { refCallback } = useGamepadsOnSidebar(0);
 
   return (
     <SidebarMainLayout>
       <SidebarMainLayout.Sidebar header={<Header />} headline="Settings">
         {categories.map(({ id, name }, index) => (
-          <Link to={id} key={id} ref={refCallback(index)}>
+          <Link
+            to={id}
+            key={id}
+            ref={refCallback(index)}
+            icon={<SettingsIcon id={id} />}
+          >
             {name}
           </Link>
         ))}

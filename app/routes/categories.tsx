@@ -16,18 +16,34 @@ import { importApplications } from "~/server/applications.server";
 import { PlatformIcon } from "~/components/PlatformIcon";
 import type { PlatformId } from "~/types/platforms";
 import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
+import { readGeneral } from "~/server/settings.server";
 
 type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
+type LoaderData = {
+  selectedCategoryId: string;
+  categoryLinks: CategoryLinks;
+};
 
-export const loader: LoaderFunction = () => {
-  const categories = readCategories();
-  const categoryLinks = categories.map(({ id, name }) => ({
-    to: `/categories/${id}`,
-    id,
-    name,
-  }));
+export const loader: LoaderFunction = ({ params }) => {
+  const general = readGeneral();
+  if (general?.applicationsPath || general?.categoriesPath) {
+    const categories = readCategories();
 
-  return json(categoryLinks);
+    const { category } = params;
+    if (!category) {
+      return redirect(`/categories/${categories[0].id}`);
+    }
+
+    const categoryLinks = categories.map(({ id, name }) => ({
+      to: `/categories/${id}`,
+      id,
+      name,
+    }));
+
+    return json({ categoryLinks, selectedCategoryId: category });
+  }
+
+  return redirect("/settings/general");
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -60,9 +76,11 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 };
 
 export default function Index() {
-  const categoryLinks = useLoaderData<CategoryLinks>();
+  const { categoryLinks, selectedCategoryId } = useLoaderData<LoaderData>();
   const { getTestId } = useTestId("categories");
-  const { refCallback } = useGamepadsOnSidebar();
+  const { refCallback } = useGamepadsOnSidebar(
+    categoryLinks.findIndex(({ id }) => id === selectedCategoryId)
+  );
 
   return (
     <SidebarMainLayout>

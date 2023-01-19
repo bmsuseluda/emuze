@@ -1,7 +1,7 @@
 import { initRemix } from "remix-electron";
 import { app, BrowserWindow, ipcMain } from "electron";
 import nodepath from "path";
-import { readGeneral } from "./readSettings";
+import { readAppearance } from "./readSettings";
 
 const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
   window.setFullScreen(fullscreen);
@@ -14,9 +14,9 @@ app.on("ready", async () => {
       ? nodepath.join(app.getAppPath(), "..", "public")
       : nodepath.join(app.getAppPath(), "..", "..", "public");
 
-  const general = readGeneral();
+  const appearance = readAppearance();
   const fullscreen =
-    app.commandLine.hasSwitch("fullscreen") || general?.fullscreen;
+    app.commandLine.hasSwitch("fullscreen") || appearance?.fullscreen;
 
   if (process.env.NODE_ENV === "development") {
     const {

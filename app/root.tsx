@@ -14,6 +14,7 @@ import { Titlebar } from "./containers/Titlebar";
 import { useGamepads } from "~/hooks/useGamepads";
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
+import { FullscreenProvider } from "~/provider/FullscreenProvider";
 
 export default function App() {
   globalStyles();
@@ -82,6 +83,10 @@ export function CatchBoundary() {
   );
 }
 
+export const loader: LoaderFunction = ({ context }) => {
+  return json({ fullscreen: context?.fullscreen });
+};
+
 function Document({
   children,
   title,
@@ -101,8 +106,10 @@ function Document({
         <Links />
       </head>
       <body>
-        <Titlebar fullscreen={fullscreen || false} />
-        {children}
+        <FullscreenProvider fullscreenDefault={fullscreen}>
+          <Titlebar />
+          {children}
+        </FullscreenProvider>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
@@ -110,10 +117,6 @@ function Document({
     </html>
   );
 }
-
-export const loader: LoaderFunction = ({ context }) => {
-  return json({ fullscreen: context?.fullscreen });
-};
 
 function Layout({ children }: { children: React.ReactNode }) {
   useGamepads();

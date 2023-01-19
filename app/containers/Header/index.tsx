@@ -25,8 +25,7 @@ const StyledNav = styled("nav", {
 });
 
 const StyledHeader = styled("header", {
-  borderBottom: "1px solid $color",
-  padding: "$1 $1 $1 0",
+  marginBottom: "-0.8em",
 });
 
 const Links = styled(Ul, {

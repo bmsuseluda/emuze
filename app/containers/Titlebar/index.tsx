@@ -1,6 +1,6 @@
-import { useFullscreen } from "~/hooks/useFullscreen";
 import { styled } from "~/stitches";
 import { IconButton } from "./components/IconButton";
+import { useFullscreen } from "~/hooks/useFullscreen";
 
 const Wrapper = styled("div", {
   position: "fixed",
@@ -23,12 +23,8 @@ const Buttons = styled("div", {
   whiteSpace: "nowrap",
 });
 
-type Props = {
-  fullscreen: boolean;
-};
-
-export const Titlebar = ({ fullscreen: fullscreenDefault }: Props) => {
-  const fullscreen = useFullscreen(fullscreenDefault);
+export const Titlebar = () => {
+  const fullscreen = useFullscreen();
 
   if (!fullscreen) {
     return (

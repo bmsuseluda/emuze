@@ -12,6 +12,7 @@ const Layout = styled("div", {
   display: "flex",
   flexDirection: "column",
   flex: 1,
+  gap: "1.5em",
 });
 
 const Wrapper = styled("div", { position: "relative", flex: 6 });
@@ -23,18 +24,18 @@ const Absolute = styled("div", {
   bottom: 0,
   display: "flex",
   flexDirection: "column",
-  gap: "$2",
+  gap: "$1",
 });
 
 const List = styled("div", {
   flex: 15,
   overflowY: "auto",
-  paddingRight: "$1",
+  paddingRight: "1.5em",
 
   scrollbarColor: "$colors$sidebarBackgroundColor transparent",
 
   "&::-webkit-scrollbar": {
-    width: "12px",
+    width: "0.7em",
   },
 
   "&::-webkit-scrollbar-thumb": {

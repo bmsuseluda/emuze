@@ -120,11 +120,6 @@ export default function Index() {
         <IconChildrenWrapper icon={<PlatformIcon id={id} />}>
           <span>
             <span {...getTestId("name")}>{name}</span>
-            {entries && (
-              <span {...getTestId(["entries", "length"])}>
-                {` (${entries.length})`}
-              </span>
-            )}
           </span>
         </IconChildrenWrapper>
       }

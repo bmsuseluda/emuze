@@ -6,11 +6,11 @@ import {
   useKeyboardEvent,
 } from "~/hooks/useGamepadEvent";
 
-export const useGamepadsOnSidebar = () => {
+export const useGamepadsOnSidebar = (selectedCategoryId: number) => {
   const categoryLinksRefs = useRef<HTMLAnchorElement[]>([]);
   // TODO: use a context for this instead
   const focusOnMain = useRef(false);
-  const selected = useRef<number>();
+  const selected = useRef<number>(selectedCategoryId);
 
   const selectLink = useCallback((index: number) => {
     categoryLinksRefs.current[index]?.focus();

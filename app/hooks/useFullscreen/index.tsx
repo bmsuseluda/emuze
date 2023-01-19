@@ -1,17 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { FullscreenContext } from "~/provider/FullscreenProvider";
 
-export const useFullscreen = (fullscreenDefault: boolean) => {
-  const [fullscreen, setFullscreen] = useState(fullscreenDefault);
-  useEffect(() => {
-    electronAPI.isFullscreen().then((result: boolean) => {
-      if (result) {
-        setFullscreen(true);
-      }
-    });
-    electronAPI.onFullscreen((fullscreen) => {
-      setFullscreen(fullscreen);
-    });
-  }, []);
+export const useFullscreen = () => {
+  const context = useContext(FullscreenContext);
+  if (context === undefined) {
+    throw new Error("useFullscreen must be used within a FullscreenProvider");
+  }
 
-  return fullscreen;
+  return context;
 };

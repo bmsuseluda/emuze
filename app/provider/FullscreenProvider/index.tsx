@@ -1,0 +1,28 @@
+import { createContext, useEffect, useState } from "react";
+
+export const FullscreenContext = createContext<boolean>(false);
+
+type Props = {
+  fullscreenDefault: boolean;
+  children: React.ReactNode;
+};
+
+export const FullscreenProvider = ({ fullscreenDefault, children }: Props) => {
+  const [fullscreen, setFullscreen] = useState(fullscreenDefault);
+  useEffect(() => {
+    electronAPI.isFullscreen().then((result: boolean) => {
+      if (result) {
+        setFullscreen(true);
+      }
+    });
+    electronAPI.onFullscreen((fullscreen) => {
+      setFullscreen(fullscreen);
+    });
+  }, []);
+
+  return (
+    <FullscreenContext.Provider value={fullscreen}>
+      {children}
+    </FullscreenContext.Provider>
+  );
+};

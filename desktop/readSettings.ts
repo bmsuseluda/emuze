@@ -13,16 +13,13 @@ const readFileHome = (path: string) => {
   }
 };
 
-type General = {
-  applicationsPath?: string | null;
-  categoriesPath?: string;
-  isWindows?: boolean;
+type Appearance = {
   fullscreen?: boolean;
 };
 
 const paths = {
-  general: "data/settings/general.json",
+  appearance: "data/settings/appearance.json",
 };
 
 // TODO: Check how to share with remix server
-export const readGeneral = (): General => readFileHome(paths.general);
+export const readAppearance = (): Appearance => readFileHome(paths.appearance);
