@@ -29,6 +29,8 @@ import {
 } from "~/server/categoriesDB.server";
 import type { General } from "~/types/settings/general";
 import type { Appearance } from "~/types/settings/appearance";
+import neogeoGames from "~/server/nameMappings/neogeoMapping.json";
+import arcadeGames from "~/server/nameMappings/mameMapping.json";
 
 type Settings = {
   general: General;
@@ -41,6 +43,8 @@ type EnvironmentVariableFunction = (
   settings: Settings
 ) => Record<string, string | null>;
 
+type FindEntryNameFunction = (entry: Entry) => string;
+
 export interface Application {
   id: string;
   name: string;
@@ -50,6 +54,8 @@ export interface Application {
   optionParams?: OptionParamFunction;
   flatpakId?: string;
   flatpakOptionParams?: string[];
+  findEntryName?: FindEntryNameFunction;
+  filteredFiles?: string[];
 }
 
 export const pcsx2: Application = {
@@ -97,6 +103,16 @@ export const bsnes: Application = {
     return optionParams;
   },
 };
+
+const getSharedMameSettings = (entryDirname: string) => [
+  "-w",
+  "-rompath",
+  entryDirname,
+  "-cfg_directory",
+  nodepath.join(entryDirname, "cfg"),
+  "-nvram_directory",
+  nodepath.join(entryDirname, "nvram"),
+];
 
 export const applications: Application[] = [
   {
@@ -200,20 +216,35 @@ export const applications: Application[] = [
     id: "mame",
     name: "Mame",
     fileExtensions: [".zip", ".chd"],
-    categories: [arcade, neogeo],
+    categories: [arcade],
     flatpakId: "org.mamedev.MAME",
     optionParams: ({ path }) => {
       const entryDirname = nodepath.dirname(path);
-      return [
-        "-w",
-        "-rompath",
-        entryDirname,
-        "-cfg_directory",
-        nodepath.join(entryDirname, "cfg"),
-        "-nvram_directory",
-        nodepath.join(entryDirname, "nvram"),
-      ];
+      return [...getSharedMameSettings(entryDirname)];
     },
+    findEntryName: ({ id }) => {
+      // TODO: import if necessary only
+      // @ts-ignore TODO: add types
+      const entryName = arcadeGames[id];
+      return entryName || id;
+    },
+  },
+  {
+    id: "mameneogeo",
+    name: "Mame",
+    fileExtensions: [".zip", ".chd"],
+    categories: [neogeo],
+    flatpakId: "org.mamedev.MAME",
+    optionParams: ({ path }) => {
+      const entryDirname = nodepath.dirname(path);
+      return [...getSharedMameSettings(entryDirname)];
+    },
+    findEntryName: ({ id }) => {
+      // @ts-ignore TODO: add types
+      const entryName = neogeoGames[id];
+      return entryName || id;
+    },
+    filteredFiles: ["neogeo.zip"],
   },
   {
     id: "mameneogeocd",
@@ -224,18 +255,9 @@ export const applications: Application[] = [
     flatpakId: "org.mamedev.MAME",
     optionParams: ({ path }) => {
       const entryDirname = nodepath.dirname(path);
-      return [
-        "-w",
-        "-rompath",
-        entryDirname,
-        "-cfg_directory",
-        nodepath.join(entryDirname, "cfg"),
-        "-nvram_directory",
-        nodepath.join(entryDirname, "nvram"),
-        "neocdz",
-        "-cdrm",
-      ];
+      return [...getSharedMameSettings(entryDirname), "neocdz", "-cdrm"];
     },
+    filteredFiles: ["neocdz.zip"],
   },
   {
     id: "ares",

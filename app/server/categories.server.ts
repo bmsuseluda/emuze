@@ -17,6 +17,7 @@ import { readGeneral } from "~/server/settings.server";
 import Bottleneck from "bottleneck";
 import type { Application } from "~/types/applications";
 import type { PlatformId } from "~/types/platforms";
+import { getApplicationDataById } from "~/server/applicationsDB.server";
 
 export const paths = {
   categories: "data/categories.json",
@@ -67,34 +68,59 @@ const sortFileNames = (a: string, b: string) => {
 const readEntriesWithImages = async (
   entryPath: string,
   fileExtensions: string[],
-  igdbPlatformIds: number[]
+  igdbPlatformIds: number[],
+  applicationId: string
 ) => {
-  const filenames = readFilenames(entryPath, fileExtensions);
-  filenames.sort(sortFileNames);
-  const entries = filenames.map<Entry>((filename) => {
-    const extension = nodepath.extname(filename);
-    const [name] = nodepath.basename(filename).split(extension);
-    return {
-      id: convertToId(name),
-      name,
-      path: filename,
-    };
-  });
+  const applicationData = getApplicationDataById(applicationId);
 
-  const entriesWithImages = await fetchCovers(igdbPlatformIds, entries);
+  if (applicationData) {
+    const filenames = readFilenames(entryPath, fileExtensions);
+    filenames.sort(sortFileNames);
 
-  return entriesWithImages;
+    const { findEntryName, filteredFiles } = applicationData;
+
+    let filenamesFiltered = filenames;
+    if (filteredFiles) {
+      filenamesFiltered = filenamesFiltered.filter(
+        (filename) => !filteredFiles.includes(nodepath.basename(filename))
+      );
+    }
+
+    const entries = filenamesFiltered.map<Entry>((filename) => {
+      const extension = nodepath.extname(filename);
+      const [name] = nodepath.basename(filename).split(extension);
+      const entry = {
+        id: convertToId(name),
+        name,
+        path: filename,
+      };
+
+      if (findEntryName) {
+        return {
+          ...entry,
+          name: findEntryName(entry),
+        };
+      }
+
+      return entry;
+    });
+
+    const entriesWithImages = await fetchCovers(igdbPlatformIds, entries);
+
+    return entriesWithImages;
+  }
 };
 
 export const importEntries = async (category: string) => {
   const oldData = readCategory(category);
-  const { entryPath, fileExtensions, igdbPlatformIds } = oldData;
+  const { entryPath, fileExtensions, igdbPlatformIds, applicationId } = oldData;
   const data: Category = {
     ...oldData,
     entries: await readEntriesWithImages(
       entryPath,
       fileExtensions,
-      igdbPlatformIds
+      igdbPlatformIds,
+      applicationId
     ),
   };
 
@@ -113,7 +139,8 @@ const createCategoryData =
     const entries = await readEntriesWithImages(
       categoryFolderName,
       fileExtensions,
-      igdbPlatformIds
+      igdbPlatformIds,
+      id
     );
 
     return {

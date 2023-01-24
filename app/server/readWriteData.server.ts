@@ -44,12 +44,16 @@ export const readFileHome = (path: string) => {
   }
 };
 
-export const writeFileHome = (object: unknown, path: string) => {
+export const writeFile = (object: unknown, path: string) => {
   // TODO: add success message, validation ...
-  const pathInHome = nodepath.join(homeDirectory, path);
-  const dirname = nodepath.dirname(pathInHome);
+  const dirname = nodepath.dirname(path);
   if (!fs.existsSync(dirname)) {
     fs.mkdirSync(dirname, { recursive: true });
   }
-  fs.writeFileSync(pathInHome, JSON.stringify(object));
+  fs.writeFileSync(path, JSON.stringify(object));
+};
+
+export const writeFileHome = (object: unknown, path: string) => {
+  const pathInHome = nodepath.join(homeDirectory, path);
+  writeFile(object, pathInHome);
 };

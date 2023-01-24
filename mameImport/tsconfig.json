@@ -1,0 +1,15 @@
+{
+  "include": [
+    "index.ts",
+    "../app/server/readWriteData.server.ts"
+  ],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "strict": true,
+    "baseUrl": ".",
+    "skipLibCheck": true,
+    "outDir": "../build/mameImport"
+  }
+}
