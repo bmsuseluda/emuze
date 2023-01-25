@@ -102,5 +102,4 @@ Right now the following are supported:
 There is a lot i would like to work on. The following features are the bigger ones in no specific order.
 
 - 'Roms as Folder' support for emulators e.g. ScummVM or DosBox
-- Controller support
 - Filter and sorting of roms
