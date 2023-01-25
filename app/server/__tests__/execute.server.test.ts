@@ -1,7 +1,7 @@
 import nodepath from "path";
 
 import { readCategory } from "~/server/categories.server";
-import { readGeneral, readAppearance } from "~/server/settings.server";
+import { readAppearance, readGeneral } from "~/server/settings.server";
 import type { Category } from "~/types/category";
 
 import { executeApplication } from "../execute.server";
@@ -14,7 +14,7 @@ import {
   pcenginecdLinux,
 } from "../__testData__/category";
 import type { General } from "~/types/settings/general";
-import { Appearance } from "~/types/settings/appearance";
+import type { Appearance } from "~/types/settings/appearance";
 
 const execFileMock = jest.fn();
 jest.mock("child_process", () => ({

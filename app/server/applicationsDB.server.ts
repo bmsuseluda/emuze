@@ -1,25 +1,25 @@
 import nodepath from "path";
 
-import type { Entry, Category as CategoryData } from "~/types/category";
+import type { Category as CategoryData, Entry } from "~/types/category";
 import type { Category } from "~/server/categoriesDB.server";
 import {
-  segadreamcast,
-  neogeocd,
-  segacd,
-  segamastersystem,
-  nintendods,
-  nintendogameboyadvance,
-  nintendogameboycolor,
   arcade,
   neogeo,
+  neogeocd,
   nintendo3ds,
   nintendo64,
+  nintendods,
   nintendoentertainmentsystem,
   nintendogameboy,
+  nintendogameboyadvance,
+  nintendogameboycolor,
   nintendogamecube,
   nintendowii,
   pcengine,
   pcenginecd,
+  segacd,
+  segadreamcast,
+  segamastersystem,
   segamegadrive,
   segasaturn,
   sonyplaystation,
@@ -29,8 +29,7 @@ import {
 } from "~/server/categoriesDB.server";
 import type { General } from "~/types/settings/general";
 import type { Appearance } from "~/types/settings/appearance";
-import neogeoGames from "~/server/nameMappings/neogeoMapping.json";
-import arcadeGames from "~/server/nameMappings/mameMapping.json";
+import neogeoGames from "~/server/mameMappings/neogeoMapping.json";
 
 type Settings = {
   general: General;
@@ -222,12 +221,6 @@ export const applications: Application[] = [
       const entryDirname = nodepath.dirname(path);
       return [...getSharedMameSettings(entryDirname)];
     },
-    findEntryName: ({ id }) => {
-      // TODO: import if necessary only
-      // @ts-ignore TODO: add types
-      const entryName = arcadeGames[id];
-      return entryName || id;
-    },
   },
   {
     id: "mameneogeo",
@@ -240,7 +233,7 @@ export const applications: Application[] = [
       return [...getSharedMameSettings(entryDirname)];
     },
     findEntryName: ({ id }) => {
-      // @ts-ignore TODO: add types
+      // @ts-ignore TODO: check how to type this
       const entryName = neogeoGames[id];
       return entryName || id;
     },

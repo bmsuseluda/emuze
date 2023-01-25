@@ -1,7 +1,7 @@
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { IoMdSave } from "react-icons/io";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form } from "@remix-run/react";
 import { Button } from "~/components/Button";
 import { FormBox } from "~/components/FormBox";
 import { FormRow } from "~/components/FormRow";
@@ -49,7 +49,6 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 };
 
 export default function Index() {
-  const defaultData = useLoaderData<typeof loader>();
   const fullscreen = useFullscreen();
 
   return (

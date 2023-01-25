@@ -1,5 +1,5 @@
 import { styled } from "~/stitches";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { useFullscreen } from "~/hooks/useFullscreen";
 
 const StyledMain = styled("main", {

@@ -26,6 +26,7 @@ export const readGeneral = (): General => readFileHome(paths.general);
 export const writeGeneral = (general: General) =>
   writeFileHome(general, paths.general);
 
-export const readAppearance = (): Appearance => readFileHome(paths.appearance);
+export const readAppearance = (): Appearance =>
+  readFileHome(paths.appearance) || {};
 export const writeAppearance = (appearance: Appearance) =>
   writeFileHome(appearance, paths.appearance);

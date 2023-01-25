@@ -9,7 +9,7 @@ const xmlParser = new XMLParser({ ignoreAttributes: false });
 
 const projectPath = nodepath.join(__dirname, "..", "..", "..");
 const hashPath = nodepath.join(projectPath, "mameImport", "hash");
-const resultPath = nodepath.join(projectPath, "app", "server", "nameMappings");
+const resultPath = nodepath.join(projectPath, "app", "server", "mameMappings");
 
 const readFile = (path: string): MameXmlStructure | null => {
   try {
@@ -124,5 +124,6 @@ const importNeoGeo = () => {
   writeFile(result, nodepath.join(resultPath, "neogeoMapping.json"));
 };
 
-importMame();
+// TODO: the software lists are not complete
+// importMame();
 importNeoGeo();
