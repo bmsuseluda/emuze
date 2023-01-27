@@ -21,5 +21,3 @@ export interface Category {
   igdbPlatformIds: number[];
   entries?: Entries;
 }
-
-export type Categories = Category[];

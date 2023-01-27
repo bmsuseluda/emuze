@@ -1,22 +1,29 @@
 import { when } from "jest-when";
 import nodepath from "path";
 
-import { importCategories, importEntries, paths } from "../categories.server";
+import {
+  importCategories,
+  importEntries,
+  paths,
+  readEntriesWithImages,
+} from "../categories.server";
 import {
   readDirectorynames,
-  readFilenames,
   readFileHome,
+  readFilenames,
 } from "~/server/readWriteData.server";
 import { readApplications } from "~/server/applications.server";
 import {
+  blazingstar,
+  cotton,
+  gateofthunder,
+  hugo,
+  hugo2,
+  metroidsamusreturns,
+  neogeo,
   nintendo3ds,
   pcenginecd,
   playstation,
-  metroidsamusreturns,
-  gateofthunder,
-  cotton,
-  hugo,
-  hugo2,
 } from "../__testData__/category";
 import type { Applications } from "~/types/applications";
 import { applications } from "../__testData__/applications";
@@ -59,6 +66,29 @@ jest.mock("igdb-api-node", () => () => ({
 describe("categories.server", () => {
   beforeEach(() => {
     jest.resetAllMocks();
+  });
+
+  describe("readEntriesWithImages", () => {
+    it("Should filter excluded filenames (neogeo.zip) and find entryName from json file", async () => {
+      when(readFilenames as jest.Mock<string[]>)
+        .calledWith(neogeo.entryPath, neogeo.fileExtensions)
+        .mockReturnValueOnce([
+          blazingstar.path,
+          "F:/games/Emulation/roms/Neo Geo/neogeo.zip",
+        ]);
+      igdbRequestMock.mockResolvedValue({
+        data: [],
+      });
+
+      const result = await readEntriesWithImages(
+        neogeo.entryPath,
+        neogeo.fileExtensions,
+        neogeo.igdbPlatformIds,
+        neogeo.applicationId
+      );
+
+      expect(result).toStrictEqual([{ ...blazingstar, name: "Blazing Star" }]);
+    });
   });
 
   describe("importCategories", () => {

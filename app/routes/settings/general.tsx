@@ -120,6 +120,12 @@ export default function Index() {
     }
   }, [newData?.categoriesPath]);
 
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [newData]);
+
   return (
     <ListActionBarLayout
       headline={
@@ -186,6 +192,10 @@ export default function Index() {
               name="_actionId"
               value={actionIds.save}
               icon={<IoMdSave />}
+              loading={loading}
+              onClick={() => {
+                setLoading(true);
+              }}
             >
               Save settings and import all
             </Button>

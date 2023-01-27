@@ -1,4 +1,4 @@
-import type { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
 
 import { EntryList } from ".";
 import { entries } from "./testData";
@@ -15,6 +15,7 @@ const Template: ComponentStory<typeof EntryList> = (args) => (
 export const Basic = Template.bind({});
 Basic.args = {
   entries,
+  entriesRefs: { current: [] },
   onDoubleClick: () => {
     alert("launch");
   },

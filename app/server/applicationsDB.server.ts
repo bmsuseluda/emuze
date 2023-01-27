@@ -42,7 +42,21 @@ type EnvironmentVariableFunction = (
   settings: Settings
 ) => Record<string, string | null>;
 
-type FindEntryNameFunction = (entry: Entry) => string;
+type FindEntryNameFunction = (entry: Entry, categoryPath: string) => string;
+
+export const findEntryNameByFolder: FindEntryNameFunction = (
+  { name, path },
+  categoryPath
+) => {
+  const entryFolderPath = nodepath.dirname(path);
+  if (categoryPath !== entryFolderPath) {
+    const entryNameByFolder = nodepath.dirname(path).split(nodepath.sep).at(-1);
+    if (entryNameByFolder) {
+      return entryNameByFolder;
+    }
+  }
+  return name;
+};
 
 export interface Application {
   id: string;
@@ -221,6 +235,7 @@ export const applications: Application[] = [
       const entryDirname = nodepath.dirname(path);
       return [...getSharedMameSettings(entryDirname)];
     },
+    findEntryName: findEntryNameByFolder,
   },
   {
     id: "mameneogeo",

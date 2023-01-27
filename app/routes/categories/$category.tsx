@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
@@ -114,6 +114,12 @@ export default function Index() {
   useKeyboardEvent("Enter", onExecute);
   useKeyboardEvent("i", onImport);
 
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [entries]);
+
   return (
     <ListActionBarLayout
       headline={
@@ -159,6 +165,10 @@ export default function Index() {
                 value={actionIds.import}
                 ref={importButtonRef}
                 icon={<IoMdRefresh />}
+                loading={loading}
+                onClick={() => {
+                  setLoading(true);
+                }}
                 {...getTestId(["button", "import"])}
               >
                 Import Roms

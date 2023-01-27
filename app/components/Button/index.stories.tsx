@@ -1,6 +1,7 @@
-import type { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
 
 import { Button } from ".";
+import { IoMdRefresh } from "react-icons/io";
 
 export default {
   title: "Components/Button",
@@ -18,4 +19,17 @@ export const Disabled = Template.bind({});
 Disabled.args = {
   children: "save",
   disabled: true,
+};
+
+export const WithIcon = Template.bind({});
+WithIcon.args = {
+  children: "import",
+  icon: <IoMdRefresh />,
+};
+
+export const Loading = Template.bind({});
+Loading.args = {
+  children: "loading",
+  icon: <IoMdRefresh />,
+  loading: true,
 };

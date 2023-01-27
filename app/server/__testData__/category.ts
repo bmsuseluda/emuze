@@ -125,7 +125,7 @@ export const blazingstar: Entry = {
 export const neogeo: CategoryOnWindows = {
   id: "neogeo",
   name: "Neo Geo",
-  applicationId: "mame",
+  applicationId: "mameneogeo",
   applicationPath: "F:/games/Emulation/emulators/mame/mame.exe",
   entryPath: "F:/games/Emulation/roms/Neo Geo",
   fileExtensions: [".zip"],
@@ -136,7 +136,7 @@ export const neogeo: CategoryOnWindows = {
 export const neogeoLinux: CategoryOnLinux = {
   id: "neogeo",
   name: "Neo Geo",
-  applicationId: "mame",
+  applicationId: "mameneogeo",
   applicationFlatpakId: "org.mame",
   entryPath: "F:/games/Emulation/roms/Neo Geo",
   fileExtensions: [".zip"],

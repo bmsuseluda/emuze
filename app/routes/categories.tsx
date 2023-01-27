@@ -17,6 +17,7 @@ import { PlatformIcon } from "~/components/PlatformIcon";
 import type { PlatformId } from "~/types/platforms";
 import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
 import { readGeneral } from "~/server/settings.server";
+import { useEffect, useState } from "react";
 
 type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
 type LoaderData = {
@@ -82,6 +83,12 @@ export default function Index() {
     categoryLinks.findIndex(({ id }) => id === selectedCategoryId)
   );
 
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [categoryLinks]);
+
   return (
     <SidebarMainLayout>
       <SidebarMainLayout.Sidebar
@@ -89,12 +96,15 @@ export default function Index() {
         headline="Platforms"
         actions={
           <Form method="post">
-            {/*TODO: The user needs some feedback how long the import takes*/}
             <Button
               type="submit"
               name="_actionId"
               value="import"
               icon={<IoMdRefresh />}
+              onClick={() => {
+                setLoading(true);
+              }}
+              loading={loading}
             >
               Import all
             </Button>

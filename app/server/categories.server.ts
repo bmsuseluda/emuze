@@ -4,9 +4,9 @@ import nodepath from "path";
 import type { Categories, Category as CategorySlim } from "~/types/categories";
 import type { Category, Entry } from "~/types/category";
 import {
+  readDirectorynames,
   readFileHome,
   readFilenames,
-  readDirectorynames,
   writeFileHome,
 } from "~/server/readWriteData.server";
 import { readApplications } from "~/server/applications.server";
@@ -65,7 +65,7 @@ const sortFileNames = (a: string, b: string) => {
   return sortCaseInsensitive(aWithoutFileExtension, bWithoutFileExtension);
 };
 
-const readEntriesWithImages = async (
+export const readEntriesWithImages = async (
   entryPath: string,
   fileExtensions: string[],
   igdbPlatformIds: number[],
@@ -98,7 +98,7 @@ const readEntriesWithImages = async (
       if (findEntryName) {
         return {
           ...entry,
-          name: findEntryName(entry),
+          name: findEntryName(entry, entryPath),
         };
       }
 
