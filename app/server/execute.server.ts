@@ -1,4 +1,4 @@
-import { execFileSync } from "child_process";
+import { execFile, execFileSync } from "child_process";
 import { readCategory } from "~/server/categories.server";
 import { getApplicationDataById } from "~/server/applicationsDB.server";
 import { openErrorDialog } from "~/server/openDialog.server";
@@ -16,7 +16,8 @@ const executeApplicationOnLinux = ({
   entryPath: string;
   optionParams?: string[];
 }) => {
-  execFileSync("flatpak", [
+  // TODO: check how to get logs in error case but without freezing the application
+  execFile("flatpak", [
     "run",
     ...(applicationFlatpakOptionParams ? applicationFlatpakOptionParams : []),
     applicationFlatpakId,
@@ -30,6 +31,7 @@ const executeApplicationOnWindows = (
   entryPath: string,
   optionParams: string[]
 ) => {
+  // TODO: check how to get logs in error case but without freezing the application
   execFileSync(applicationPath, [...optionParams, entryPath]);
 };
 
