@@ -1,7 +1,6 @@
-import { execFile, execFileSync } from "child_process";
+import { execFileSync } from "child_process";
 import { readCategory } from "~/server/categories.server";
 import { getApplicationDataById } from "~/server/applicationsDB.server";
-import { openErrorDialog } from "~/server/openDialog.server";
 import { readAppearance, readGeneral } from "~/server/settings.server";
 
 // TODO: separate os specific code
@@ -17,7 +16,7 @@ const executeApplicationOnLinux = ({
   optionParams?: string[];
 }) => {
   // TODO: check how to get logs in error case but without freezing the application
-  execFile("flatpak", [
+  execFileSync("flatpak", [
     "run",
     ...(applicationFlatpakOptionParams ? applicationFlatpakOptionParams : []),
     applicationFlatpakId,
@@ -85,7 +84,7 @@ export const executeApplication = (category: string, entry: string) => {
         );
       }
     } catch (error) {
-      openErrorDialog(error, `Launch of ${entryData.name} failed`);
+      // openErrorDialog(error, `Launch of ${entryData.name} failed`);
       console.log("error", error);
     }
   }

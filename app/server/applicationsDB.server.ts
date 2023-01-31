@@ -30,6 +30,7 @@ import {
 import type { General } from "~/types/settings/general";
 import type { Appearance } from "~/types/settings/appearance";
 import neogeoGames from "~/server/mameMappings/neogeoMapping.json";
+import arcadeGames from "~/server/mameMappings/arcadeMapping.json";
 
 type Settings = {
   general: General;
@@ -44,6 +45,8 @@ type EnvironmentVariableFunction = (
 
 type FindEntryNameFunction = (entry: Entry, categoryPath: string) => string;
 
+const mameRegionChars = ["j", "a", "u", "b", "k", "w", "c"];
+
 export const findEntryNameByFolder: FindEntryNameFunction = (
   { name, path },
   categoryPath
@@ -56,6 +59,19 @@ export const findEntryNameByFolder: FindEntryNameFunction = (
     }
   }
   return name;
+};
+
+// TODO: add tests
+export const findArcadeName: FindEntryNameFunction = ({ id }) => {
+  const entry = arcadeGames.find(
+    ({ name }) =>
+      name === id ||
+      mameRegionChars.find(
+        (mameRegionChar) => `${name}${mameRegionChar}` === id
+      )
+  );
+
+  return entry?.description || id;
 };
 
 export interface Application {
@@ -235,7 +251,7 @@ export const applications: Application[] = [
       const entryDirname = nodepath.dirname(path);
       return [...getSharedMameSettings(entryDirname)];
     },
-    findEntryName: findEntryNameByFolder,
+    findEntryName: findArcadeName,
   },
   {
     id: "mameneogeo",

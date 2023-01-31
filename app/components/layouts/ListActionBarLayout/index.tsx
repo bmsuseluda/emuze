@@ -1,7 +1,7 @@
 import { styled } from "~/stitches";
 import { Headline } from "~/components/Headline";
 import { useEffect, useRef } from "react";
-import { useTransition } from "@remix-run/react";
+import { useLocation } from "@remix-run/react";
 
 interface Props {
   headline: React.ReactNode;
@@ -72,18 +72,14 @@ const ListActionBarContainer = ({
   scrollSmooth,
 }: ContainerProps) => {
   const listRef = useRef<HTMLDivElement>(null);
-  const transition = useTransition();
+  const location = useLocation();
 
   useEffect(() => {
-    if (
-      scrollToTopOnLocationChange &&
-      transition.state === "loading" &&
-      listRef.current?.scrollTop
-    ) {
+    if (scrollToTopOnLocationChange && listRef.current?.scrollTo) {
       // @ts-ignore There is no other way to deactivate smooth scrolling here
       listRef.current.scrollTo({ top: 0, behavior: "instant" });
     }
-  }, [transition, scrollToTopOnLocationChange]);
+  }, [location.pathname, scrollToTopOnLocationChange]);
 
   return (
     <Absolute>

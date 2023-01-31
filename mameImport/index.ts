@@ -2,6 +2,7 @@ import fs from "fs";
 import nodepath from "path";
 import { XMLParser } from "fast-xml-parser";
 import { readFilenames, writeFile } from "../app/server/readWriteData.server";
+import arcadeGames from "./hash/MachineFilter0.251.json";
 
 type Result = Record<string, string | number>;
 
@@ -118,6 +119,17 @@ const importMame = () => {
   writeFile(result, nodepath.join(resultPath, "mameMapping.json"));
 };
 
+const importArcadeFromMameSpludlow = () => {
+  const result = arcadeGames.MachineFilter.filter(
+    ({ romof }) => romof !== "neogeo"
+  ).map(({ name, description }) => ({
+    name,
+    description: filterDescription(description),
+  }));
+
+  writeFile(result, nodepath.join(resultPath, "arcadeMapping.json"));
+};
+
 const importNeoGeo = () => {
   const result: Result = {};
   extractGames(result, nodepath.join(hashPath, "neogeo.xml"));
@@ -127,3 +139,4 @@ const importNeoGeo = () => {
 // TODO: the software lists are not complete
 // importMame();
 importNeoGeo();
+importArcadeFromMameSpludlow();
