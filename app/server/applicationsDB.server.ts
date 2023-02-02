@@ -29,8 +29,7 @@ import {
 } from "~/server/categoriesDB.server";
 import type { General } from "~/types/settings/general";
 import type { Appearance } from "~/types/settings/appearance";
-import neogeoGames from "~/server/mameMappings/neogeoMapping.json";
-import arcadeGames from "~/server/mameMappings/arcadeMapping.json";
+import mameGames from "~/server/mameMappings/mameMapping.json";
 
 type Settings = {
   general: General;
@@ -45,8 +44,6 @@ type EnvironmentVariableFunction = (
 
 type FindEntryNameFunction = (entry: Entry, categoryPath: string) => string;
 
-const mameRegionChars = ["j", "a", "u", "b", "k", "w", "c"];
-
 export const findEntryNameByFolder: FindEntryNameFunction = (
   { name, path },
   categoryPath
@@ -59,19 +56,6 @@ export const findEntryNameByFolder: FindEntryNameFunction = (
     }
   }
   return name;
-};
-
-// TODO: add tests
-export const findArcadeName: FindEntryNameFunction = ({ id }) => {
-  const entry = arcadeGames.find(
-    ({ name }) =>
-      name === id ||
-      mameRegionChars.find(
-        (mameRegionChar) => `${name}${mameRegionChar}` === id
-      )
-  );
-
-  return entry?.description || id;
 };
 
 export interface Application {
@@ -133,7 +117,26 @@ export const bsnes: Application = {
   },
 };
 
-const getSharedMameSettings = (entryDirname: string) => [
+const findMameArcadeGameName: FindEntryNameFunction = ({ id }) => {
+  // @ts-ignore TODO: check how to type this
+  const entryName = mameGames[id];
+  return entryName || id;
+};
+
+const mame: Application = {
+  id: "mame",
+  name: "Mame",
+  fileExtensions: [".zip", ".chd"],
+  categories: [arcade],
+  flatpakId: "org.mamedev.MAME",
+  optionParams: ({ path }) => {
+    const entryDirname = nodepath.dirname(path);
+    return [...getSharedMameOptionParams(entryDirname)];
+  },
+  findEntryName: findMameArcadeGameName,
+};
+
+const getSharedMameOptionParams = (entryDirname: string) => [
   "-w",
   "-rompath",
   entryDirname,
@@ -241,47 +244,23 @@ export const applications: Application[] = [
       return environmentVariables;
     },
   },
+  mame,
   {
-    id: "mame",
-    name: "Mame",
-    fileExtensions: [".zip", ".chd"],
-    categories: [arcade],
-    flatpakId: "org.mamedev.MAME",
-    optionParams: ({ path }) => {
-      const entryDirname = nodepath.dirname(path);
-      return [...getSharedMameSettings(entryDirname)];
-    },
-    findEntryName: findArcadeName,
-  },
-  {
+    ...mame,
     id: "mameneogeo",
-    name: "Mame",
-    fileExtensions: [".zip", ".chd"],
     categories: [neogeo],
-    flatpakId: "org.mamedev.MAME",
-    optionParams: ({ path }) => {
-      const entryDirname = nodepath.dirname(path);
-      return [...getSharedMameSettings(entryDirname)];
-    },
-    findEntryName: ({ id }) => {
-      // @ts-ignore TODO: check how to type this
-      const entryName = neogeoGames[id];
-      return entryName || id;
-    },
     filteredFiles: ["neogeo.zip"],
   },
   {
+    ...mame,
     id: "mameneogeocd",
-    name: "Mame",
-    fileExtensions: [".zip", ".chd"],
-    // mame needs specific option params for neogeo cd, therefore it is a specific config of mame
     categories: [neogeocd],
-    flatpakId: "org.mamedev.MAME",
     optionParams: ({ path }) => {
       const entryDirname = nodepath.dirname(path);
-      return [...getSharedMameSettings(entryDirname), "neocdz", "-cdrm"];
+      return [...getSharedMameOptionParams(entryDirname), "neocdz", "-cdrm"];
     },
     filteredFiles: ["neocdz.zip"],
+    findEntryName: undefined,
   },
   {
     id: "ares",
