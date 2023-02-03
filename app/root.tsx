@@ -15,6 +15,8 @@ import { useGamepads } from "~/hooks/useGamepads";
 import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { FullscreenProvider } from "~/provider/FullscreenProvider";
+import { FocusProvider } from "~/provider/FocusProvider";
+import { focusDefault } from "~/types/focusElements";
 
 export default function App() {
   globalStyles();
@@ -107,8 +109,10 @@ function Document({
       </head>
       <body>
         <FullscreenProvider fullscreenDefault={fullscreen}>
-          <Titlebar />
-          {children}
+          <FocusProvider focusDefault={focusDefault}>
+            <Titlebar />
+            {children}
+          </FocusProvider>
         </FullscreenProvider>
         <ScrollRestoration />
         <Scripts />

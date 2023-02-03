@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import { IoMdPlay, IoMdRefresh } from "react-icons/io";
 import { Button } from "~/components/Button";
 import { executeApplication } from "~/server/execute.server";
@@ -19,6 +19,8 @@ import {
 } from "~/hooks/useGamepadEvent";
 import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
 import { useRefsGrid } from "~/hooks/useRefsGrid";
+import { useFocus } from "~/hooks/useFocus";
+import type { FocusElements } from "~/types/focusElements";
 
 export const loader: LoaderFunction = ({ params }) => {
   const { category } = params;
@@ -50,6 +52,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     const entry = form.get("entry");
     if (typeof entry === "string") {
       executeApplication(category, entry);
+      return json({ actionId: _actionId });
     }
   }
 
@@ -72,10 +75,19 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 export default function Index() {
   const { id, name, entries } = useLoaderData<Category>();
+  const actionData = useActionData<{ actionId?: string }>();
   const launchButtonRef = useRef<HTMLButtonElement>(null);
   const importButtonRef = useRef<HTMLButtonElement>(null);
   const entriesRefs = useRef<HTMLInputElement[]>([]);
   const { getTestId } = useTestId("category");
+  const { isInFocus, disableFocus, switchFocus } =
+    useFocus<FocusElements>("main");
+
+  useEffect(() => {
+    if (actionData?.actionId === actionIds.launch) {
+      switchFocus("main");
+    }
+  }, [actionData?.actionId, switchFocus]);
 
   const { entriesRefsGrid } = useRefsGrid(entriesRefs, entries);
 
@@ -90,20 +102,28 @@ export default function Index() {
   );
 
   const onBack = useCallback(() => {
-    if (selectedEntry.current) {
-      selectedEntry.current.checked = false;
-      resetSelected();
+    if (isInFocus) {
+      if (selectedEntry.current) {
+        selectedEntry.current.checked = false;
+        resetSelected();
+      }
+      switchFocus("sidebar");
     }
-  }, [resetSelected, selectedEntry]);
+  }, [isInFocus, resetSelected, selectedEntry, switchFocus]);
 
   const onExecute = useCallback(() => {
-    if (selectedEntry.current) {
-      launchButtonRef.current?.click();
+    if (isInFocus) {
+      if (selectedEntry.current) {
+        disableFocus();
+        launchButtonRef.current?.click();
+      }
     }
-  }, [selectedEntry]);
+  }, [isInFocus, selectedEntry, disableFocus]);
 
   const onImport = useCallback(() => {
-    importButtonRef.current?.click();
+    if (isInFocus) {
+      importButtonRef.current?.click();
+    }
   }, []);
 
   useGamepadButtonPressEvent(layout.buttons.B, onBack);

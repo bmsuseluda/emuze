@@ -5,7 +5,9 @@ import {
 } from "~/hooks/useGamepadEvent";
 import { layout } from "~/hooks/useGamepads/layouts";
 import type { MutableRefObject } from "react";
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { useFocus } from "~/hooks/useFocus";
+import type { FocusElements } from "~/types/focusElements";
 
 export const useGamepadsOnGrid = <T>(
   entriesRefsGrid: MutableRefObject<T[][]>,
@@ -14,6 +16,16 @@ export const useGamepadsOnGrid = <T>(
   const selectedX = useRef<number>();
   const selectedY = useRef<number>();
   const selectedEntry = useRef<T>();
+
+  const { isInFocus, switchFocus } = useFocus<FocusElements>("main");
+
+  useEffect(() => {
+    if (isInFocus) {
+      selectedX.current = 0;
+      selectedY.current = 0;
+      handleSelectEntry(selectedX.current, selectedY.current);
+    }
+  }, [isInFocus]);
 
   const getLastIndex = useCallback(
     (array: T[] | T[][]) => array.length - 1,
@@ -50,10 +62,6 @@ export const useGamepadsOnGrid = <T>(
           selectedX.current = 0;
           handleSelectEntry(selectedX.current, selectedY.current);
         }
-      } else {
-        selectedX.current = 0;
-        selectedY.current = 0;
-        handleSelectEntry(selectedX.current, selectedY.current);
       }
     }
   }, [handleSelectEntry, getLastIndex, entriesRefsGrid]);
@@ -72,6 +80,8 @@ export const useGamepadsOnGrid = <T>(
             entriesRefsGrid.current[selectedY.current]
           );
           handleSelectEntry(selectedX.current, selectedY.current);
+
+          //   TODO: Check how to switch to main if first element
         }
       }
     }

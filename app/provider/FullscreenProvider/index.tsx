@@ -1,10 +1,11 @@
+import type { ReactNode } from "react";
 import { createContext, useEffect, useState } from "react";
 
 export const FullscreenContext = createContext<boolean>(false);
 
 type Props = {
   fullscreenDefault: boolean;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export const FullscreenProvider = ({ fullscreenDefault, children }: Props) => {

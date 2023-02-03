@@ -5,11 +5,13 @@ import {
   useGamepadStickDirectionEvent,
   useKeyboardEvent,
 } from "~/hooks/useGamepadEvent";
+import { useFocus } from "~/hooks/useFocus";
+import type { FocusElements } from "~/types/focusElements";
 
 export const useGamepadsOnSidebar = (selectedCategoryId: number) => {
   const categoryLinksRefs = useRef<HTMLAnchorElement[]>([]);
-  // TODO: use a context for this instead
-  const focusOnMain = useRef(false);
+
+  const { isInFocus, switchFocus } = useFocus<FocusElements>("sidebar");
   const selected = useRef<number>(selectedCategoryId);
 
   const selectLink = useCallback((index: number) => {
@@ -19,7 +21,7 @@ export const useGamepadsOnSidebar = (selectedCategoryId: number) => {
   }, []);
 
   const onDown = useCallback(() => {
-    if (!focusOnMain.current) {
+    if (isInFocus) {
       if (typeof selected.current === "undefined") {
         selected.current = selectLink(0);
       } else if (selected.current < categoryLinksRefs.current.length - 1) {
@@ -28,10 +30,10 @@ export const useGamepadsOnSidebar = (selectedCategoryId: number) => {
         selected.current = selectLink(0);
       }
     }
-  }, [selectLink]);
+  }, [isInFocus, selectLink]);
 
   const onUp = useCallback(() => {
-    if (!focusOnMain.current) {
+    if (isInFocus) {
       if (typeof selected.current === "undefined") {
         selected.current = selectLink(categoryLinksRefs.current.length - 1);
       } else if (selected.current > 0) {
@@ -40,7 +42,7 @@ export const useGamepadsOnSidebar = (selectedCategoryId: number) => {
         selected.current = selectLink(categoryLinksRefs.current.length - 1);
       }
     }
-  }, [selectLink]);
+  }, [isInFocus, selectLink]);
 
   useGamepadButtonPressEvent(layout.buttons.DPadDown, onDown);
   useGamepadButtonPressEvent(layout.buttons.DPadUp, onUp);
@@ -49,22 +51,17 @@ export const useGamepadsOnSidebar = (selectedCategoryId: number) => {
   useKeyboardEvent("ArrowUp", onUp);
   useKeyboardEvent("ArrowDown", onDown);
 
-  const onFocusToMain = useCallback(() => {
-    if (!focusOnMain.current) {
-      focusOnMain.current = true;
+  const switchToMain = useCallback(() => {
+    if (isInFocus) {
+      switchFocus("main");
     }
   }, []);
 
-  useGamepadButtonPressEvent(layout.buttons.DPadRight, onFocusToMain);
-  useGamepadStickDirectionEvent("leftStickRight", onFocusToMain);
-  useKeyboardEvent("ArrowRight", onFocusToMain);
-
-  const onBack = useCallback(() => {
-    focusOnMain.current = false;
-  }, []);
-
-  useGamepadButtonPressEvent(layout.buttons.B, onBack);
-  useKeyboardEvent("Backspace", onBack);
+  useGamepadButtonPressEvent(layout.buttons.DPadRight, switchToMain);
+  useGamepadStickDirectionEvent("leftStickRight", switchToMain);
+  useKeyboardEvent("ArrowRight", switchToMain);
+  useGamepadButtonPressEvent(layout.buttons.A, switchToMain);
+  useKeyboardEvent("Enter", switchToMain);
 
   return {
     refCallback: (index: number) => (ref: HTMLAnchorElement) => {
