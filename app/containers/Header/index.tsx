@@ -11,6 +11,8 @@ import {
   useGamepadButtonPressEvent,
   useKeyboardEvent,
 } from "~/hooks/useGamepadEvent";
+import {useFocus} from "~/hooks/useFocus";
+import {FocusElements} from "~/types/focusElements";
 
 const Headline = styled("h1", {
   margin: 0,
@@ -48,6 +50,8 @@ const links: LinkData[] = [
 
 export const Header = () => {
   const linksRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+
+  const {} = useFocus<FocusElements>('sidebar');
 
   // TODO: move header to root layout
   const selectLink = (index: number) => {

@@ -21,7 +21,7 @@ export const useFocus = <FocusElement extends string>(
     if (!isInFocus && elementInFocus === elementId) {
       setIsInFocus(true);
     }
-  }, [elementInFocus]);
+  }, [elementInFocus, elementId, isInFocus]);
 
   const switchFocus = useCallback(
     (element: FocusElement) => {

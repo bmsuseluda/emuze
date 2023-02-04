@@ -17,20 +17,7 @@ export const useGamepadsOnGrid = <T>(
   const selectedY = useRef<number>();
   const selectedEntry = useRef<T>();
 
-  const { isInFocus, switchFocus } = useFocus<FocusElements>("main");
-
-  useEffect(() => {
-    if (isInFocus) {
-      selectedX.current = 0;
-      selectedY.current = 0;
-      handleSelectEntry(selectedX.current, selectedY.current);
-    }
-  }, [isInFocus]);
-
-  const getLastIndex = useCallback(
-    (array: T[] | T[][]) => array.length - 1,
-    []
-  );
+  const { isInFocus } = useFocus<FocusElements>("main");
 
   const handleSelectEntry = useCallback(
     (x: number, y: number) => {
@@ -41,6 +28,24 @@ export const useGamepadsOnGrid = <T>(
       }
     },
     [onSelectEntry, selectedEntry, entriesRefsGrid]
+  );
+
+  useEffect(() => {
+    if (
+      isInFocus &&
+      typeof selectedX.current === "undefined" &&
+      typeof selectedY.current === "undefined" &&
+      typeof selectedEntry.current === "undefined"
+    ) {
+      selectedX.current = 0;
+      selectedY.current = 0;
+      handleSelectEntry(selectedX.current, selectedY.current);
+    }
+  }, [isInFocus, handleSelectEntry]);
+
+  const getLastIndex = useCallback(
+    (array: T[] | T[][]) => array.length - 1,
+    []
   );
 
   const onRight = useCallback(() => {

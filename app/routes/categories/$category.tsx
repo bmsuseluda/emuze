@@ -52,7 +52,8 @@ export const action: ActionFunction = async ({ request, params }) => {
     const entry = form.get("entry");
     if (typeof entry === "string") {
       executeApplication(category, entry);
-      return json({ actionId: _actionId });
+      // TODO: Find a better solution to trigger switchFocusToMain when launch game is finished
+      return json({ actionId: `${_actionId}${Date.now()}` });
     }
   }
 
@@ -64,6 +65,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 };
 
 export const ErrorBoundary = ({ error }: { error: Error }) => {
+  // TODO: Replace with something good
   console.error(error);
   return (
     <>
@@ -84,7 +86,8 @@ export default function Index() {
     useFocus<FocusElements>("main");
 
   useEffect(() => {
-    if (actionData?.actionId === actionIds.launch) {
+    // TODO: This interferes with mouse usage, but shouldn't
+    if (actionData?.actionId?.startsWith(actionIds.launch) && !isInFocus) {
       switchFocus("main");
     }
   }, [actionData?.actionId, switchFocus]);
@@ -124,7 +127,7 @@ export default function Index() {
     if (isInFocus) {
       importButtonRef.current?.click();
     }
-  }, []);
+  }, [isInFocus]);
 
   useGamepadButtonPressEvent(layout.buttons.B, onBack);
   useGamepadButtonPressEvent(layout.buttons.A, onExecute);

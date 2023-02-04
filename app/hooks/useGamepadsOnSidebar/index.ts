@@ -55,7 +55,7 @@ export const useGamepadsOnSidebar = (selectedCategoryId: number) => {
     if (isInFocus) {
       switchFocus("main");
     }
-  }, []);
+  }, [isInFocus, switchFocus]);
 
   useGamepadButtonPressEvent(layout.buttons.DPadRight, switchToMain);
   useGamepadStickDirectionEvent("leftStickRight", switchToMain);
