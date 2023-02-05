@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef } from "react";
-import { layout } from "~/hooks/useGamepads/layouts";
 import type { StickDirection } from "~/hooks/useGamepads/layouts";
+import { layout } from "~/hooks/useGamepads/layouts";
+import { useFocus } from "~/hooks/useFocus";
+import type { FocusElements } from "~/types/focusElements";
 
 const findGamepad = (gamepads: (Gamepad | null)[], gamepadIndex: number) =>
   gamepads.find((gamepad) => gamepad?.index === gamepadIndex);
@@ -17,6 +19,7 @@ const dispatchStickDirectionEvent = (stickDirection: StickDirection) => {
 export const useGamepads = () => {
   const oldGamepads = useRef<(Gamepad | null)[]>([]);
   const requestAnimationFrameRef = useRef<number>();
+  const { isDisabled } = useFocus<FocusElements>("main");
 
   const fireEventOnButtonPress = useCallback((gamepads: (Gamepad | null)[]) => {
     gamepads.forEach((gamepad) => {
@@ -89,11 +92,17 @@ export const useGamepads = () => {
 
   // TODO: runs all the time. it only needs to run when a gamepad is connected
   useEffect(() => {
-    requestAnimationFrameRef.current = requestAnimationFrame(update);
+    if (isDisabled) {
+      if (requestAnimationFrameRef.current) {
+        cancelAnimationFrame(requestAnimationFrameRef.current);
+      }
+    } else {
+      requestAnimationFrameRef.current = requestAnimationFrame(update);
+    }
     return () => {
       if (requestAnimationFrameRef.current) {
         cancelAnimationFrame(requestAnimationFrameRef.current);
       }
     };
-  }, [update]);
+  }, [update, isDisabled]);
 };

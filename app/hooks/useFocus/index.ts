@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { FocusContext } from "~/provider/FocusProvider";
 
 export const useFocus = <FocusElement extends string>(
@@ -34,8 +34,14 @@ export const useFocus = <FocusElement extends string>(
     setElementInFocus();
   }, [setElementInFocus]);
 
+  const isDisabled = useMemo(
+    () => elementInFocus === undefined,
+    [elementInFocus]
+  );
+
   return {
     isInFocus,
+    isDisabled,
     switchFocus,
     disableFocus,
   };

@@ -82,12 +82,12 @@ export default function Index() {
   const importButtonRef = useRef<HTMLButtonElement>(null);
   const entriesRefs = useRef<HTMLInputElement[]>([]);
   const { getTestId } = useTestId("category");
-  const { isInFocus, disableFocus, switchFocus } =
+  const { isInFocus, disableFocus, switchFocus, isDisabled } =
     useFocus<FocusElements>("main");
 
   useEffect(() => {
     // TODO: This interferes with mouse usage, but shouldn't
-    if (actionData?.actionId?.startsWith(actionIds.launch) && !isInFocus) {
+    if (actionData?.actionId?.startsWith(actionIds.launch) && isDisabled) {
       switchFocus("main");
     }
   }, [actionData?.actionId, switchFocus]);
