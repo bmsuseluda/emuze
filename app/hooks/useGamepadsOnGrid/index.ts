@@ -6,18 +6,15 @@ import {
 import { layout } from "~/hooks/useGamepads/layouts";
 import type { MutableRefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
-import { useFocus } from "~/hooks/useFocus";
-import type { FocusElements } from "~/types/focusElements";
 
 export const useGamepadsOnGrid = <T>(
   entriesRefsGrid: MutableRefObject<T[][]>,
-  onSelectEntry: (entry: T) => void
+  onSelectEntry: (entry: T) => void,
+  isInFocus: boolean
 ) => {
   const selectedX = useRef<number>();
   const selectedY = useRef<number>();
   const selectedEntry = useRef<T>();
-
-  const { isInFocus } = useFocus<FocusElements>("main");
 
   const handleSelectEntry = useCallback(
     (x: number, y: number) => {
@@ -159,5 +156,5 @@ export const useGamepadsOnGrid = <T>(
     selectedEntry.current = undefined;
   }, []);
 
-  return { selectedEntry, resetSelected };
+  return { selectedEntry, resetSelected, selectedX };
 };

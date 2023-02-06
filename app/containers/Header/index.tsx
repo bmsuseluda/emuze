@@ -11,8 +11,8 @@ import {
   useGamepadButtonPressEvent,
   useKeyboardEvent,
 } from "~/hooks/useGamepadEvent";
-import {useFocus} from "~/hooks/useFocus";
-import {FocusElements} from "~/types/focusElements";
+import { useFocus } from "~/hooks/useFocus";
+import type { FocusElements } from "~/types/focusElements";
 
 const Headline = styled("h1", {
   margin: 0,
@@ -51,7 +51,7 @@ const links: LinkData[] = [
 export const Header = () => {
   const linksRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
-  const {} = useFocus<FocusElements>('sidebar');
+  const { switchFocus } = useFocus<FocusElements>("sidebar");
 
   // TODO: move header to root layout
   const selectLink = (index: number) => {
@@ -60,6 +60,7 @@ export const Header = () => {
   };
 
   const onSettings = useCallback(() => {
+    switchFocus("sidebar");
     if (window.location.pathname.startsWith("/categories")) {
       selectLink(links.findIndex(({ to }) => to === "/settings"));
     } else {

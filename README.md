@@ -9,6 +9,7 @@ My main goal for emuze is to have a launcher that is as fast and simple as possi
 - Fast and responsive UI
 - Import all your emulators and roms with a click of just one button
 - Fetches Metadata from [igdb](www.igdb.com) based on the filenames of your roms
+- Gamepad support (x-input only)
 
 ## Getting started
 
@@ -52,7 +53,7 @@ roms
 ## Metadata
 
 Metadata will be fetched from [igdb](www.igdb.com). The application crawls the name and alternative name of a game filtered by the specific platform.
-The Search is case insensitive.
+The Search is case-insensitive.
 
 > INFO: [igdb](www.igdb.com) is a community driven open source database for game information. If there is something missing or wrong, please help and correct it there.
 

@@ -5,13 +5,13 @@ import {
   useGamepadStickDirectionEvent,
   useKeyboardEvent,
 } from "~/hooks/useGamepadEvent";
-import { useFocus } from "~/hooks/useFocus";
-import type { FocusElements } from "~/types/focusElements";
 
-export const useGamepadsOnSidebar = (selectedCategoryId: number) => {
+export const useGamepadsOnSidebar = (
+  selectedCategoryId: number,
+  isInFocus: boolean
+) => {
   const categoryLinksRefs = useRef<HTMLAnchorElement[]>([]);
 
-  const { isInFocus, switchFocus } = useFocus<FocusElements>("sidebar");
   const selected = useRef<number>(selectedCategoryId);
 
   const selectLink = useCallback((index: number) => {
@@ -50,18 +50,6 @@ export const useGamepadsOnSidebar = (selectedCategoryId: number) => {
   useGamepadStickDirectionEvent("leftStickUp", onUp);
   useKeyboardEvent("ArrowUp", onUp);
   useKeyboardEvent("ArrowDown", onDown);
-
-  const switchToMain = useCallback(() => {
-    if (isInFocus) {
-      switchFocus("main");
-    }
-  }, [isInFocus, switchFocus]);
-
-  useGamepadButtonPressEvent(layout.buttons.DPadRight, switchToMain);
-  useGamepadStickDirectionEvent("leftStickRight", switchToMain);
-  useKeyboardEvent("ArrowRight", switchToMain);
-  useGamepadButtonPressEvent(layout.buttons.A, switchToMain);
-  useKeyboardEvent("Enter", switchToMain);
 
   return {
     refCallback: (index: number) => (ref: HTMLAnchorElement) => {

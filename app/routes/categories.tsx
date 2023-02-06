@@ -17,7 +17,15 @@ import { PlatformIcon } from "~/components/PlatformIcon";
 import type { PlatformId } from "~/types/platforms";
 import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
 import { readGeneral } from "~/server/settings.server";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import {
+  useGamepadButtonPressEvent,
+  useGamepadStickDirectionEvent,
+  useKeyboardEvent,
+} from "~/hooks/useGamepadEvent";
+import { layout } from "~/hooks/useGamepads/layouts";
+import { useFocus } from "~/hooks/useFocus";
+import type { FocusElements } from "~/types/focusElements";
 
 type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
 type LoaderData = {
@@ -79,15 +87,32 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 export default function Index() {
   const { categoryLinks, selectedCategoryId } = useLoaderData<LoaderData>();
   const { getTestId } = useTestId("categories");
-  const { refCallback } = useGamepadsOnSidebar(
-    categoryLinks.findIndex(({ id }) => id === selectedCategoryId)
-  );
 
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(false);
   }, [categoryLinks]);
+
+  const { isInFocus, switchFocus } = useFocus<FocusElements>("sidebar");
+
+  const { refCallback } = useGamepadsOnSidebar(
+    categoryLinks.findIndex(({ id }) => id === selectedCategoryId),
+    isInFocus
+  );
+
+  const switchToMain = useCallback(() => {
+    if (isInFocus) {
+      switchFocus("main");
+    }
+  }, [isInFocus, switchFocus]);
+
+  // TODO: add tests
+  useGamepadButtonPressEvent(layout.buttons.DPadRight, switchToMain);
+  useGamepadStickDirectionEvent("leftStickRight", switchToMain);
+  useKeyboardEvent("ArrowRight", switchToMain);
+  useGamepadButtonPressEvent(layout.buttons.A, switchToMain);
+  useKeyboardEvent("Enter", switchToMain);
 
   return (
     <SidebarMainLayout>

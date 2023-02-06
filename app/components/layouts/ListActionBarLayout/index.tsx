@@ -75,8 +75,6 @@ const ListActionBarContainer = ({
   const location = useLocation();
 
   useEffect(() => {
-    // TODO: Check whats wrong here
-    console.log("location", location.pathname, scrollToTopOnLocationChange);
     if (scrollToTopOnLocationChange && listRef.current?.scrollTo) {
       // @ts-ignore There is no other way to deactivate smooth scrolling here
       listRef.current.scrollTo({ top: 0, behavior: "instant" });

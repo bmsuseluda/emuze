@@ -7,6 +7,15 @@ import { Link } from "~/containers/Link";
 import { categories } from "~/server/settings.server";
 import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
 import { SettingsIcon } from "~/components/SettingsIcon";
+import { useFocus } from "~/hooks/useFocus";
+import type { FocusElements } from "~/types/focusElements";
+import { useCallback } from "react";
+import {
+  useGamepadButtonPressEvent,
+  useGamepadStickDirectionEvent,
+  useKeyboardEvent,
+} from "~/hooks/useGamepadEvent";
+import { layout } from "~/hooks/useGamepads/layouts";
 
 export const meta: MetaFunction = () => {
   return {
@@ -21,7 +30,23 @@ export const loader = () => {
 
 export default function Index() {
   const categories = useLoaderData<typeof loader>();
-  const { refCallback } = useGamepadsOnSidebar(0);
+
+  const { isInFocus, switchFocus } = useFocus<FocusElements>("sidebar");
+
+  const { refCallback } = useGamepadsOnSidebar(0, isInFocus);
+
+  const switchToMain = useCallback(() => {
+    if (isInFocus) {
+      switchFocus("main");
+    }
+  }, [isInFocus, switchFocus]);
+
+  // TODO: add tests
+  useGamepadButtonPressEvent(layout.buttons.DPadRight, switchToMain);
+  useGamepadStickDirectionEvent("leftStickRight", switchToMain);
+  useKeyboardEvent("ArrowRight", switchToMain);
+  useGamepadButtonPressEvent(layout.buttons.A, switchToMain);
+  useKeyboardEvent("Enter", switchToMain);
 
   return (
     <SidebarMainLayout>

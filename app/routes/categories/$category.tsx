@@ -87,7 +87,7 @@ export default function Index() {
 
   useEffect(() => {
     // TODO: This interferes with mouse usage, but shouldn't
-    if (actionData?.actionId?.startsWith(actionIds.launch) && isDisabled) {
+    if (actionData?.actionId?.startsWith(actionIds.launch)) {
       switchFocus("main");
     }
   }, [actionData?.actionId, switchFocus]);
@@ -101,7 +101,8 @@ export default function Index() {
 
   const { selectedEntry, resetSelected } = useGamepadsOnGrid(
     entriesRefsGrid,
-    selectEntry
+    selectEntry,
+    isInFocus
   );
 
   const onBack = useCallback(() => {

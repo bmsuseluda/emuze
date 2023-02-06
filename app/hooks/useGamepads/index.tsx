@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import type { StickDirection } from "~/hooks/useGamepads/layouts";
 import { layout } from "~/hooks/useGamepads/layouts";
-import { useFocus } from "~/hooks/useFocus";
-import type { FocusElements } from "~/types/focusElements";
 
 const findGamepad = (gamepads: (Gamepad | null)[], gamepadIndex: number) =>
   gamepads.find((gamepad) => gamepad?.index === gamepadIndex);
@@ -16,10 +14,9 @@ const dispatchStickDirectionEvent = (stickDirection: StickDirection) => {
   dispatchEvent(new CustomEvent(`gamepadon${stickDirection}`));
 };
 
-export const useGamepads = () => {
+export const useGamepads = (isDisabled: boolean) => {
   const oldGamepads = useRef<(Gamepad | null)[]>([]);
   const requestAnimationFrameRef = useRef<number>();
-  const { isDisabled } = useFocus<FocusElements>("main");
 
   const fireEventOnButtonPress = useCallback((gamepads: (Gamepad | null)[]) => {
     gamepads.forEach((gamepad) => {

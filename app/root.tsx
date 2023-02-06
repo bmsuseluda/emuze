@@ -16,7 +16,8 @@ import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { FullscreenProvider } from "~/provider/FullscreenProvider";
 import { FocusProvider } from "~/provider/FocusProvider";
-import { focusDefault } from "~/types/focusElements";
+import { focusDefault, FocusElements } from "~/types/focusElements";
+import { useFocus } from "~/hooks/useFocus";
 
 export default function App() {
   globalStyles();
@@ -123,7 +124,9 @@ function Document({
 }
 
 function Layout({ children }: { children: React.ReactNode }) {
-  useGamepads();
+  const { isDisabled } = useFocus<FocusElements>("main");
+
+  useGamepads(isDisabled);
 
   return (
     <Box
