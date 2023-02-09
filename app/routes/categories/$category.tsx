@@ -21,6 +21,8 @@ import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
 import { useRefsGrid } from "~/hooks/useRefsGrid";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElements } from "~/types/focusElements";
+import {Appearance} from "~/types/settings/appearance";
+import {readAppearance} from "~/server/settings.server";
 
 export const loader: LoaderFunction = ({ params }) => {
   const { category } = params;
@@ -30,6 +32,7 @@ export const loader: LoaderFunction = ({ params }) => {
   }
 
   const categoryData = readCategory(category);
+  const appearance: Appearance = readAppearance() || {};
   return json(categoryData);
 };
 

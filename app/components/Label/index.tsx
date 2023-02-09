@@ -3,4 +3,8 @@ import { styled } from "~/stitches";
 
 export const Label = styled(LabelPrimitive.Root, {
   color: "$color",
+
+  "&:hover": {
+    cursor: "pointer",
+  },
 });

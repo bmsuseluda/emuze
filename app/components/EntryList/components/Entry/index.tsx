@@ -1,6 +1,7 @@
 import { useTestId } from "~/hooks/useTestId";
 import { styled } from "~/stitches";
 import React from "react";
+import type { CSS } from "@stitches/react";
 
 interface Props {
   id: string;
@@ -16,19 +17,26 @@ const Wrapper = styled("li", {
   maxWidth: "300px",
 });
 
-const Label = styled("label", {
-  backgroundColor: "$backgroundColor",
-  display: "flex",
-  justifyContent: "flex-end",
+const borderStyles: CSS = {
   borderStyle: "solid",
   borderWidth: "$3",
   borderColor: "$backgroundColor",
   borderRadius: "$1",
-  "&:focus": {
-    borderColor: "$color",
-  },
   position: "relative",
   overflow: "clip",
+};
+
+const Label = styled("label", {
+  display: "block",
+  ...borderStyles,
+});
+
+const InnerBorder = styled("div", {
+  backgroundColor: "$backgroundColor",
+  display: "flex",
+  justifyContent: "flex-end",
+
+  ...borderStyles,
 
   variants: {
     "data-imageUrl": {
@@ -52,7 +60,8 @@ const Name = styled("div", {
 
 const Input = styled("input", {
   position: "absolute",
-  top: 0,
+  top: "-2px",
+  left: 0,
   width: "100%",
   height: "100%",
   zIndex: "-2",
@@ -85,18 +94,16 @@ export const Entry = React.forwardRef<HTMLInputElement, Props>(
           ref={ref}
           {...getTestId("link")}
         />
-        <Label
-          htmlFor={id}
-          onDoubleClick={onDoubleClick}
-          data-imageUrl={!!imageUrl}
-        >
-          <Image
-            src={imageUrl || fallbackImageUrl}
-            alt={`${name} cover`}
-            draggable={false}
-          />
-          {imageUrl && additionalInfo && <Name>{additionalInfo}</Name>}
-          {!imageUrl && <Name>{name}</Name>}
+        <Label htmlFor={id} onDoubleClick={onDoubleClick}>
+          <InnerBorder data-imageUrl={!!imageUrl}>
+            <Image
+              src={imageUrl || fallbackImageUrl}
+              alt={`${name} cover`}
+              draggable={false}
+            />
+            {imageUrl && additionalInfo && <Name>{additionalInfo}</Name>}
+            {!imageUrl && <Name>{name}</Name>}
+          </InnerBorder>
         </Label>
       </Wrapper>
     );

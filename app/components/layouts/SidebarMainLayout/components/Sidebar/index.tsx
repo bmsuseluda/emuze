@@ -10,7 +10,6 @@ const SidebarWrapper = styled("aside", {
   display: "flex",
   flexFlow: "column",
   overflow: "auto",
-  resize: "horizontal",
   width: "15em",
   gap: "1.5em",
 

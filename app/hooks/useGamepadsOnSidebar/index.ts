@@ -51,13 +51,18 @@ export const useGamepadsOnSidebar = (
   useKeyboardEvent("ArrowUp", onUp);
   useKeyboardEvent("ArrowDown", onDown);
 
-  return {
-    refCallback: (index: number) => (ref: HTMLAnchorElement) => {
+  const refCallback = useCallback(
+    (index: number) => (ref: HTMLAnchorElement) => {
       if (index === 0) {
         categoryLinksRefs.current = [ref];
       } else {
         categoryLinksRefs.current.push(ref);
       }
     },
+    []
+  );
+
+  return {
+    refCallback,
   };
 };

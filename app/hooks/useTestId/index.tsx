@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 export type TestIdAttribute = string | number | undefined;
 type TestIdAttributes = TestIdAttribute | TestIdAttribute[];
 
@@ -25,12 +27,15 @@ const getSeparator = (initial: TestIdAttributes, suffix: TestIdAttributes) =>
   initial && suffix ? SEPARATOR : "";
 
 export const useTestId = (initial: TestIdAttributes) => {
-  const getTestId = (suffix?: TestIdAttributes) => ({
-    "data-testid":
-      createTestIdString(initial) +
-      getSeparator(initial, suffix) +
-      createTestIdString(suffix),
-  });
+  const getTestId = useCallback(
+    (suffix?: TestIdAttributes) => ({
+      "data-testid":
+        createTestIdString(initial) +
+        getSeparator(initial, suffix) +
+        createTestIdString(suffix),
+    }),
+    [initial]
+  );
 
   return {
     getTestId,

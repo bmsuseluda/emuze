@@ -26,6 +26,7 @@ import {
 import { layout } from "~/hooks/useGamepads/layouts";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElements } from "~/types/focusElements";
+import { styled } from "~/stitches";
 
 type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
 type LoaderData = {
@@ -44,7 +45,7 @@ export const loader: LoaderFunction = ({ params }) => {
     }
 
     const categoryLinks = categories.map(({ id, name }) => ({
-      to: `/categories/${id}`,
+      to: id,
       id,
       name,
     }));
@@ -83,6 +84,12 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
     </>
   );
 };
+
+const Name = styled("div", {
+  overflow: "hidden",
+  whiteSpace: "nowrap",
+  textOverflow: "ellipsis",
+});
 
 export default function Index() {
   const { categoryLinks, selectedCategoryId } = useLoaderData<LoaderData>();
@@ -144,7 +151,7 @@ export default function Index() {
             ref={refCallback(index)}
             {...getTestId(["link", to])}
           >
-            {name}
+            <Name>{name}</Name>
           </Link>
         ))}
       </SidebarMainLayout.Sidebar>

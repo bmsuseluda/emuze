@@ -14,7 +14,7 @@ interface Props {
 
 const List = styled(Ul, {
   display: "grid",
-  gap: "$2",
+  gap: "$1",
   gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
 });
 
