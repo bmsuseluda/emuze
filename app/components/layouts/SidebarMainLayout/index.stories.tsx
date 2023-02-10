@@ -1,4 +1,4 @@
-import type { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
 
 import { SidebarMainLayout } from ".";
 
@@ -42,6 +42,20 @@ ManyElements.args = {
         <a href="/">hello</a>
         <a href="/">hello</a>
         <a href="/">hello</a>
+        <a href="/">hello</a>
+        <a href="/">hello</a>
+        <a href="/">hello</a>
+      </SidebarMainLayout.Sidebar>
+      <SidebarMainLayout.Main>This is the main</SidebarMainLayout.Main>
+    </>
+  ),
+};
+
+export const WithSidebarCollapsed = Template.bind({});
+WithSidebarCollapsed.args = {
+  children: (
+    <>
+      <SidebarMainLayout.Sidebar headline="Categories" collapse>
         <a href="/">hello</a>
         <a href="/">hello</a>
         <a href="/">hello</a>

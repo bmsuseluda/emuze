@@ -1,5 +1,6 @@
 import type { Entries } from "~/types/category";
 
+// TODO: add image urls to some entries
 export const entries: Entries = [
   {
     id: "animaniacs",
@@ -10,6 +11,8 @@ export const entries: Entries = [
     id: "axelay",
     name: "Axelay",
     path: "F:/games/Emulation/roms/Super Nintendo/Axelay.sfc",
+    imageUrl:
+      "https://images.igdb.com/igdb/image/upload/t_cover_big/co25my.png",
   },
   {
     id: "bahamutlagoon",
@@ -20,6 +23,8 @@ export const entries: Entries = [
     id: "batmanreturns",
     name: "Batman Returns",
     path: "F:/games/Emulation/roms/Super Nintendo/Batman Returns.sfc",
+    imageUrl:
+      "https://images.igdb.com/igdb/image/upload/t_cover_big/co3bsp.png",
   },
   {
     id: "claymates",
@@ -35,6 +40,8 @@ export const entries: Entries = [
     id: "donkeykongcountry2",
     name: "Donkey Kong Country 2",
     path: "F:/games/Emulation/roms/Super Nintendo/Donkey Kong Country 2.sfc",
+    imageUrl:
+      "https://images.igdb.com/igdb/image/upload/t_cover_big/co217m.png",
   },
   {
     id: "donkeykongcountry3",
@@ -45,6 +52,8 @@ export const entries: Entries = [
     id: "donkeykongcountry",
     name: "Donkey Kong Country",
     path: "F:/games/Emulation/roms/Super Nintendo/Donkey Kong Country.sfc",
+    imageUrl:
+      "https://images.igdb.com/igdb/image/upload/t_cover_big/co29n6.png",
   },
   {
     id: "earthwormjim",

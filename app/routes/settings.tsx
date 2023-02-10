@@ -4,7 +4,7 @@ import { Outlet, useLoaderData } from "@remix-run/react";
 import { SidebarMainLayout } from "~/components/layouts/SidebarMainLayout";
 import { Header } from "~/containers/Header";
 import { Link } from "~/containers/Link";
-import { categories } from "~/server/settings.server";
+import { categories, readAppearance } from "~/server/settings.server";
 import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
 import { SettingsIcon } from "~/components/SettingsIcon";
 import { useFocus } from "~/hooks/useFocus";
@@ -25,11 +25,13 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader = () => {
-  return json(categories);
+  const { collapseSidebar } = readAppearance();
+
+  return json({ categories, collapseSidebar });
 };
 
 export default function Index() {
-  const categories = useLoaderData<typeof loader>();
+  const { categories, collapseSidebar } = useLoaderData<typeof loader>();
 
   const { isInFocus, switchFocus } = useFocus<FocusElements>("sidebar");
 
@@ -50,7 +52,11 @@ export default function Index() {
 
   return (
     <SidebarMainLayout>
-      <SidebarMainLayout.Sidebar header={<Header />} headline="Settings">
+      <SidebarMainLayout.Sidebar
+        header={<Header collapse={collapseSidebar} />}
+        headline="Settings"
+        collapse={collapseSidebar}
+      >
         {categories.map(({ id, name }, index) => (
           <Link
             to={id}
@@ -58,7 +64,7 @@ export default function Index() {
             ref={refCallback(index)}
             icon={<SettingsIcon id={id} />}
           >
-            {name}
+            {collapseSidebar ? undefined : name}
           </Link>
         ))}
       </SidebarMainLayout.Sidebar>

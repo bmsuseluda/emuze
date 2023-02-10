@@ -1,7 +1,7 @@
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { IoMdSave } from "react-icons/io";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData, useLocation } from "@remix-run/react";
 import { Button } from "~/components/Button";
 import { FormBox } from "~/components/FormBox";
 import { Label } from "~/components/Label";
@@ -15,7 +15,7 @@ import { useFullscreen } from "~/hooks/useFullscreen";
 import { CheckboxRow } from "~/components/CheckboxRow";
 
 export const loader = () => {
-  const appearance: Appearance = readAppearance() || {};
+  const appearance = readAppearance();
   return json(appearance);
 };
 
@@ -55,6 +55,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 export default function Index() {
   const { alwaysGameNames, collapseSidebar } = useLoaderData<typeof loader>();
   const fullscreen = useFullscreen();
+  const location = useLocation();
 
   return (
     <ListActionBarLayout
@@ -69,6 +70,7 @@ export default function Index() {
       <Form method="post">
         <ListActionBarLayout.ListActionBarContainer
           scrollToTopOnLocationChange
+          locationPathname={location.pathname}
           list={
             <FormBox>
               <CheckboxRow>
@@ -84,7 +86,7 @@ export default function Index() {
                 <Checkbox
                   id="alwaysGameNames"
                   name="alwaysGameNames"
-                  checked={alwaysGameNames}
+                  defaultChecked={alwaysGameNames}
                 />
                 <Label htmlFor="alwaysGameNames">Always show game names</Label>
               </CheckboxRow>
@@ -92,7 +94,7 @@ export default function Index() {
                 <Checkbox
                   id="collapseSidebar"
                   name="collapseSidebar"
-                  checked={collapseSidebar}
+                  defaultChecked={collapseSidebar}
                 />
                 <Label htmlFor="collapseSidebar">Collapse sidebar</Label>
               </CheckboxRow>

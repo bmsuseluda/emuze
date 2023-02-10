@@ -1,12 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useLocation,
+} from "@remix-run/react";
 import { IoMdPlay, IoMdRefresh } from "react-icons/io";
 import { Button } from "~/components/Button";
 import { executeApplication } from "~/server/execute.server";
 import { importEntries, readCategory } from "~/server/categories.server";
-import type { Category } from "~/types/category";
 import { EntryList } from "~/components/EntryList";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 import { useTestId } from "~/hooks/useTestId";
@@ -21,10 +25,10 @@ import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
 import { useRefsGrid } from "~/hooks/useRefsGrid";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElements } from "~/types/focusElements";
-import {Appearance} from "~/types/settings/appearance";
-import {readAppearance} from "~/server/settings.server";
+import { readAppearance } from "~/server/settings.server";
+import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
 
-export const loader: LoaderFunction = ({ params }) => {
+export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
   if (!category) {
     console.log("category empty");
@@ -32,8 +36,8 @@ export const loader: LoaderFunction = ({ params }) => {
   }
 
   const categoryData = readCategory(category);
-  const appearance: Appearance = readAppearance() || {};
-  return json(categoryData);
+  const { alwaysGameNames } = readAppearance();
+  return json({ categoryData, alwaysGameNames });
 };
 
 const actionIds = {
@@ -79,13 +83,17 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 };
 
 export default function Index() {
-  const { id, name, entries } = useLoaderData<Category>();
+  const {
+    categoryData: { id, name, entries },
+    alwaysGameNames,
+  } = useLoaderData<typeof loader>();
+  const location = useLocation();
   const actionData = useActionData<{ actionId?: string }>();
   const launchButtonRef = useRef<HTMLButtonElement>(null);
   const importButtonRef = useRef<HTMLButtonElement>(null);
   const entriesRefs = useRef<HTMLInputElement[]>([]);
   const { getTestId } = useTestId("category");
-  const { isInFocus, disableFocus, switchFocus, isDisabled } =
+  const { isInFocus, disableFocus, switchFocus } =
     useFocus<FocusElements>("main");
 
   useEffect(() => {
@@ -160,11 +168,13 @@ export default function Index() {
       <Form method="post">
         <ListActionBarLayout.ListActionBarContainer
           scrollToTopOnLocationChange
+          locationPathname={location.pathname}
           scrollSmooth
           list={
             entries && (
               <EntryList
                 entries={entries}
+                alwaysGameNames={alwaysGameNames}
                 entriesRefs={entriesRefs}
                 onDoubleClick={() => {
                   launchButtonRef.current?.click();

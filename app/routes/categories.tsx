@@ -1,8 +1,4 @@
-import type {
-  ActionFunction,
-  LoaderFunction,
-  MetaFunction,
-} from "@remix-run/node";
+import type { ActionFunction, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { Form, Outlet, useLoaderData } from "@remix-run/react";
 import { IoMdRefresh } from "react-icons/io";
@@ -16,7 +12,7 @@ import { importApplications } from "~/server/applications.server";
 import { PlatformIcon } from "~/components/PlatformIcon";
 import type { PlatformId } from "~/types/platforms";
 import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
-import { readGeneral } from "~/server/settings.server";
+import { readAppearance, readGeneral } from "~/server/settings.server";
 import { useCallback, useEffect, useState } from "react";
 import {
   useGamepadButtonPressEvent,
@@ -27,15 +23,18 @@ import { layout } from "~/hooks/useGamepads/layouts";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElements } from "~/types/focusElements";
 import { styled } from "~/stitches";
+import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
 
 type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
 type LoaderData = {
   selectedCategoryId: string;
   categoryLinks: CategoryLinks;
+  collapseSidebar?: boolean;
 };
 
-export const loader: LoaderFunction = ({ params }) => {
+export const loader = ({ params }: DataFunctionArgs) => {
   const general = readGeneral();
+  const { collapseSidebar } = readAppearance();
   if (general?.applicationsPath || general?.categoriesPath) {
     const categories = readCategories();
 
@@ -50,7 +49,11 @@ export const loader: LoaderFunction = ({ params }) => {
       name,
     }));
 
-    return json({ categoryLinks, selectedCategoryId: category });
+    return json({
+      categoryLinks,
+      selectedCategoryId: category,
+      collapseSidebar,
+    });
   }
 
   return redirect("/settings/general");
@@ -92,7 +95,8 @@ const Name = styled("div", {
 });
 
 export default function Index() {
-  const { categoryLinks, selectedCategoryId } = useLoaderData<LoaderData>();
+  const { categoryLinks, selectedCategoryId, collapseSidebar } =
+    useLoaderData<LoaderData>();
   const { getTestId } = useTestId("categories");
 
   const [loading, setLoading] = useState(false);
@@ -124,8 +128,9 @@ export default function Index() {
   return (
     <SidebarMainLayout>
       <SidebarMainLayout.Sidebar
-        header={<Header />}
+        header={<Header collapse={collapseSidebar} />}
         headline="Platforms"
+        collapse={collapseSidebar}
         actions={
           <Form method="post">
             <Button
@@ -138,7 +143,7 @@ export default function Index() {
               }}
               loading={loading}
             >
-              Import all
+              {!collapseSidebar && "Import all"}
             </Button>
           </Form>
         }
@@ -147,11 +152,12 @@ export default function Index() {
           <Link
             to={to}
             icon={<PlatformIcon id={id} />}
+            aria-label={name}
             key={to}
             ref={refCallback(index)}
             {...getTestId(["link", to])}
           >
-            <Name>{name}</Name>
+            {collapseSidebar ? undefined : <Name>{name}</Name>}
           </Link>
         ))}
       </SidebarMainLayout.Sidebar>

@@ -20,3 +20,13 @@ Basic.args = {
     alert("launch");
   },
 };
+
+export const WithAlwaysGameName = Template.bind({});
+WithAlwaysGameName.args = {
+  entries,
+  alwaysGameNames: true,
+  entriesRefs: { current: [] },
+  onDoubleClick: () => {
+    alert("launch");
+  },
+};

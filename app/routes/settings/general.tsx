@@ -3,7 +3,12 @@ import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { IoMdSave } from "react-icons/io";
 import { IoFolderOpenSharp } from "react-icons/io5";
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useLocation,
+} from "@remix-run/react";
 import { Button } from "~/components/Button";
 import { FileInput } from "~/components/FileInput";
 import { FormBox } from "~/components/FormBox";
@@ -99,6 +104,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 export default function Index() {
   const defaultData = useLoaderData<typeof loader>();
   const newData = useActionData<General>();
+  const location = useLocation();
 
   const [applicationPath, setApplicationPath] = useState(
     defaultData.applicationsPath || ""
@@ -139,6 +145,7 @@ export default function Index() {
       <Form method="post">
         <ListActionBarLayout.ListActionBarContainer
           scrollToTopOnLocationChange
+          locationPathname={location.pathname}
           list={
             <FormBox>
               {defaultData.isWindows && (

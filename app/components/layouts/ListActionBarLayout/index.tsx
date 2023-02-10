@@ -1,11 +1,11 @@
 import { styled } from "~/stitches";
 import { Headline } from "~/components/Headline";
+import type { ReactNode } from "react";
 import { useEffect, useRef } from "react";
-import { useLocation } from "@remix-run/react";
 
 interface Props {
-  headline: React.ReactNode;
-  children: React.ReactNode;
+  headline?: ReactNode;
+  children: ReactNode;
 }
 
 const Layout = styled("div", {
@@ -48,6 +48,11 @@ const List = styled("div", {
         scrollBehavior: "smooth",
       },
     },
+    collapse: {
+      true: {
+        paddingRight: 0,
+      },
+    },
   },
 });
 
@@ -59,31 +64,34 @@ const ActionBar = styled("div", {
 });
 
 interface ContainerProps {
-  list: React.ReactNode;
+  list: ReactNode;
   scrollToTopOnLocationChange?: boolean;
-  actions: React.ReactNode;
+  locationPathname?: string;
+  actions: ReactNode;
   scrollSmooth?: boolean;
+  collapse?: boolean;
 }
 
 const ListActionBarContainer = ({
   list: listEntries,
   scrollToTopOnLocationChange = false,
+  locationPathname,
   actions,
   scrollSmooth,
+  collapse = false,
 }: ContainerProps) => {
   const listRef = useRef<HTMLDivElement>(null);
-  const location = useLocation();
 
   useEffect(() => {
     if (scrollToTopOnLocationChange && listRef.current?.scrollTo) {
       // @ts-ignore There is no other way to deactivate smooth scrolling here
       listRef.current.scrollTo({ top: 0, behavior: "instant" });
     }
-  }, [location.pathname, scrollToTopOnLocationChange]);
+  }, [locationPathname, scrollToTopOnLocationChange]);
 
   return (
     <Absolute>
-      <List ref={listRef} scrollSmooth={scrollSmooth}>
+      <List ref={listRef} scrollSmooth={scrollSmooth} collapse={collapse}>
         {listEntries}
       </List>
       <ActionBar>{actions}</ActionBar>
@@ -93,7 +101,7 @@ const ListActionBarContainer = ({
 
 export const ListActionBarLayout = ({ headline, children }: Props) => (
   <Layout>
-    <Headline>{headline}</Headline>
+    {headline && <Headline>{headline}</Headline>}
     <Wrapper>{children}</Wrapper>
   </Layout>
 );

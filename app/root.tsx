@@ -12,12 +12,12 @@ import { globalStyles, themes } from "./stitches";
 import { Box } from "./components/Box";
 import { Titlebar } from "./containers/Titlebar";
 import { useGamepads } from "~/hooks/useGamepads";
-import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { FullscreenProvider } from "~/provider/FullscreenProvider";
 import { FocusProvider } from "~/provider/FocusProvider";
 import { focusDefault, FocusElements } from "~/types/focusElements";
 import { useFocus } from "~/hooks/useFocus";
+import { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
 
 export default function App() {
   globalStyles();
@@ -86,8 +86,9 @@ export function CatchBoundary() {
   );
 }
 
-export const loader: LoaderFunction = ({ context }) => {
-  return json({ fullscreen: context?.fullscreen });
+export const loader = ({ context }: DataFunctionArgs) => {
+  const fullscreen: boolean | undefined = context?.fullscreen as boolean;
+  return json({ fullscreen });
 };
 
 function Document({

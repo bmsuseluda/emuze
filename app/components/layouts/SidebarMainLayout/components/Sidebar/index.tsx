@@ -3,6 +3,7 @@ import { Ul } from "~/components/Ul";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 import { Separator } from "~/components/Separator";
 import { useFullscreen } from "~/hooks/useFullscreen";
+import type { ReactNode } from "react";
 
 const SidebarWrapper = styled("aside", {
   background: "$gradiants$default",
@@ -11,12 +12,18 @@ const SidebarWrapper = styled("aside", {
   flexFlow: "column",
   overflow: "auto",
   width: "15em",
+  transition: "width 0.5s ease-in-out",
   gap: "1.5em",
 
   variants: {
     isFullscreen: {
       true: {
         paddingTop: "$1",
+      },
+    },
+    collapse: {
+      true: {
+        width: "2.5em",
       },
     },
   },
@@ -29,19 +36,26 @@ const StyledUl = styled(Ul, {
 });
 
 interface Props {
-  header?: React.ReactNode;
-  headline: React.ReactNode;
-  children?: React.ReactNode;
-  actions?: React.ReactNode;
+  header?: ReactNode;
+  headline: ReactNode;
+  children?: ReactNode;
+  actions?: ReactNode;
+  collapse?: boolean;
 }
 
-export const Sidebar = ({ header, headline, children, actions }: Props) => {
+export const Sidebar = ({
+  header,
+  headline,
+  children,
+  actions,
+  collapse = false,
+}: Props) => {
   const isFullscreen = useFullscreen();
   return (
-    <SidebarWrapper isFullscreen={isFullscreen}>
+    <SidebarWrapper isFullscreen={isFullscreen} collapse={collapse}>
       {header}
       <Separator />
-      <ListActionBarLayout headline={headline}>
+      <ListActionBarLayout headline={collapse ? undefined : headline}>
         <ListActionBarLayout.ListActionBarContainer
           list={
             <nav>
@@ -49,6 +63,7 @@ export const Sidebar = ({ header, headline, children, actions }: Props) => {
             </nav>
           }
           actions={actions}
+          collapse={collapse}
         />
       </ListActionBarLayout>
     </SidebarWrapper>

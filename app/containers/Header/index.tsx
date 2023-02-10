@@ -35,6 +35,14 @@ const Links = styled(Ul, {
   flexDirection: "row",
   justifyContent: "end",
   gap: "$1",
+
+  variants: {
+    collapse: {
+      true: {
+        flexDirection: "column",
+      },
+    },
+  },
 });
 
 type LinkData = {
@@ -48,7 +56,11 @@ const links: LinkData[] = [
   { to: "/settings", icon: IoMdSettings, title: "Settings" },
 ];
 
-export const Header = () => {
+type Props = {
+  collapse?: boolean;
+};
+
+export const Header = ({ collapse = false }: Props) => {
   const linksRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   const { switchFocus } = useFocus<FocusElements>("sidebar");
@@ -74,14 +86,14 @@ export const Header = () => {
   return (
     <StyledHeader>
       <StyledNav aria-label="Main navigation">
-        <Headline>emuze</Headline>
-        <Links>
+        {!collapse && <Headline>emuze</Headline>}
+        <Links collapse={collapse}>
           {links.map(({ to, icon: Icon, title }) => (
             <Link
               to={to}
               icon={<Icon />}
               aria-label={title}
-              title={title}
+              title={collapse ? undefined : title}
               key={title}
               ref={(ref: HTMLAnchorElement) => {
                 linksRefs.current.push(ref);

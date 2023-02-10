@@ -7,6 +7,7 @@ import { Entry } from "./components/Entry";
 
 interface Props {
   entries: Entries;
+  alwaysGameNames?: boolean;
   entriesRefs: MutableRefObject<(HTMLInputElement | null)[]>;
   onDoubleClick: () => void;
   "data-testid"?: string;
@@ -20,6 +21,7 @@ const List = styled(Ul, {
 
 export const EntryList = ({
   entries,
+  alwaysGameNames = false,
   entriesRefs,
   onDoubleClick,
   "data-testid": dataTestid,
@@ -32,6 +34,7 @@ export const EntryList = ({
           id={id}
           name={name}
           imageUrl={imageUrl}
+          alwaysGameName={alwaysGameNames}
           onDoubleClick={onDoubleClick}
           ref={(ref) => {
             if (index === 0) {

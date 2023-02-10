@@ -6,6 +6,7 @@ import type { CSS } from "@stitches/react";
 interface Props {
   id: string;
   name: string;
+  alwaysGameName?: boolean;
   imageUrl?: string;
   onDoubleClick: () => void;
   "data-testid"?: string;
@@ -28,6 +29,7 @@ const borderStyles: CSS = {
 
 const Label = styled("label", {
   display: "block",
+  backgroundColor: "$backgroundColor",
   ...borderStyles,
 });
 
@@ -60,8 +62,8 @@ const Name = styled("div", {
 
 const Input = styled("input", {
   position: "absolute",
-  top: "-2px",
-  left: 0,
+  top: "-4px",
+  left: "-4px",
   width: "100%",
   height: "100%",
   zIndex: "-2",
@@ -79,10 +81,38 @@ const getAdditionalInfo = (name: string) =>
 
 const fallbackImageUrl = "/fallback.png";
 
+export const getDisplayedName = (
+  name: string,
+  alwaysGameName: boolean,
+  isImage: boolean
+) => {
+  const additionalInfo = getAdditionalInfo(name);
+
+  if (!alwaysGameName && isImage) {
+    if (additionalInfo) {
+      return additionalInfo;
+    } else {
+      return undefined;
+    }
+  }
+
+  return name;
+};
+
 export const Entry = React.forwardRef<HTMLInputElement, Props>(
-  ({ id, name, imageUrl, onDoubleClick, "data-testid": dataTestId }, ref) => {
+  (
+    {
+      id,
+      name,
+      alwaysGameName = false,
+      imageUrl,
+      onDoubleClick,
+      "data-testid": dataTestId,
+    },
+    ref
+  ) => {
     const { getTestId } = useTestId(dataTestId);
-    const additionalInfo = getAdditionalInfo(name);
+    const displayedName = getDisplayedName(name, alwaysGameName, !!imageUrl);
 
     return (
       <Wrapper {...getTestId()}>
@@ -101,8 +131,7 @@ export const Entry = React.forwardRef<HTMLInputElement, Props>(
               alt={`${name} cover`}
               draggable={false}
             />
-            {imageUrl && additionalInfo && <Name>{additionalInfo}</Name>}
-            {!imageUrl && <Name>{name}</Name>}
+            {displayedName && <Name>{displayedName}</Name>}
           </InnerBorder>
         </Label>
       </Wrapper>
