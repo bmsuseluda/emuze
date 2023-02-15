@@ -33,6 +33,7 @@ type LoaderData = {
 };
 
 export const loader = ({ params }: DataFunctionArgs) => {
+  console.log("loader");
   const general = readGeneral();
   const { collapseSidebar } = readAppearance();
   if (general?.applicationsPath || general?.categoriesPath) {
@@ -125,6 +126,8 @@ export default function Index() {
   useGamepadButtonPressEvent(layout.buttons.A, switchToMain);
   useKeyboardEvent("Enter", switchToMain);
 
+  console.log("rerender");
+
   return (
     <SidebarMainLayout>
       <SidebarMainLayout.Sidebar
@@ -143,7 +146,7 @@ export default function Index() {
               }}
               loading={loading}
             >
-              {!collapseSidebar && "Import all"}
+              {!collapseSidebar ? "Import all" : null}
             </Button>
           </Form>
         }

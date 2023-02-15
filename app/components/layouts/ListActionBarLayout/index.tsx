@@ -51,6 +51,9 @@ const List = styled("div", {
     collapse: {
       true: {
         paddingRight: 0,
+        "&::-webkit-scrollbar": {
+          display: "none",
+        },
       },
     },
   },
@@ -61,6 +64,16 @@ const ActionBar = styled("div", {
   display: "flex",
   gap: "$1",
   alignItems: "center",
+
+  variants: {
+    collapse: {
+      true: {
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      },
+    },
+  },
 });
 
 interface ContainerProps {
@@ -94,7 +107,7 @@ const ListActionBarContainer = ({
       <List ref={listRef} scrollSmooth={scrollSmooth} collapse={collapse}>
         {listEntries}
       </List>
-      <ActionBar>{actions}</ActionBar>
+      <ActionBar collapse={collapse}>{actions}</ActionBar>
     </Absolute>
   );
 };

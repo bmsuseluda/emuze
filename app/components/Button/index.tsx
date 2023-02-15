@@ -12,7 +12,7 @@ export const StyledButton = styled("button", {
   borderColor: "$sidebarBackgroundColor",
   borderRadius: "$1",
   fontSize: "15px",
-  padding: "$1",
+  padding: "0.5rem",
   cursor: "pointer",
   textDecoration: "none",
   outline: "none",

@@ -10,16 +10,6 @@ type Props = {
   children?: React.ReactNode;
 } & AnchorHTMLAttributes<HTMLAnchorElement>;
 
-const ListItem = styled("li", {
-  variants: {
-    circle: {
-      true: {
-        display: "inline",
-      },
-    },
-  },
-});
-
 const StyledNavLink = styled(NavLink, {
   textDecoration: "none",
   color: "$color",
@@ -44,6 +34,7 @@ const LinkSpan = styled(IconChildrenWrapper, {
     circle: {
       true: {
         borderRadius: "50%",
+        width: "max-content",
       },
     },
   },
@@ -51,7 +42,7 @@ const LinkSpan = styled(IconChildrenWrapper, {
 
 export const Link = React.forwardRef<HTMLAnchorElement, Props>(
   ({ to, children, icon, ...rest }, ref) => (
-    <ListItem circle={!!icon && !children}>
+    <li>
       <StyledNavLink
         to={to}
         prefetch="intent"
@@ -65,7 +56,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, Props>(
           </LinkSpan>
         )}
       </StyledNavLink>
-    </ListItem>
+    </li>
   )
 );
 

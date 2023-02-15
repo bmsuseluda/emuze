@@ -24,6 +24,14 @@ const StyledNav = styled("nav", {
   flexDirection: "row",
   justifyContent: "space-between",
   alignItems: "center",
+
+  variants: {
+    collapse: {
+      true: {
+        display: "block",
+      },
+    },
+  },
 });
 
 const StyledHeader = styled("header", {
@@ -40,6 +48,7 @@ const Links = styled(Ul, {
     collapse: {
       true: {
         flexDirection: "column",
+        alignItems: "center",
       },
     },
   },
@@ -85,7 +94,7 @@ export const Header = ({ collapse = false }: Props) => {
 
   return (
     <StyledHeader>
-      <StyledNav aria-label="Main navigation">
+      <StyledNav aria-label="Main navigation" collapse={collapse}>
         {!collapse && <Headline>emuze</Headline>}
         <Links collapse={collapse}>
           {links.map(({ to, icon: Icon, title }) => (

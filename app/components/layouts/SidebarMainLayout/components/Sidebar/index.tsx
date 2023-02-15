@@ -7,13 +7,14 @@ import type { ReactNode } from "react";
 
 const SidebarWrapper = styled("aside", {
   background: "$gradiants$default",
-  padding: "$2 0.5em $1 $1",
+  padding: "$2 0.5rem $1 $1",
   display: "flex",
   flexFlow: "column",
-  overflow: "auto",
-  width: "15em",
+  overflowX: "hidden",
+  overflowY: "auto",
+  width: "15rem",
   transition: "width 0.5s ease-in-out",
-  gap: "1.5em",
+  gap: "1.5rem",
 
   variants: {
     isFullscreen: {
@@ -23,7 +24,8 @@ const SidebarWrapper = styled("aside", {
     },
     collapse: {
       true: {
-        width: "2.5em",
+        width: "3.5rem",
+        padding: "$2 0.5rem $1",
       },
     },
   },
@@ -33,6 +35,15 @@ const StyledUl = styled(Ul, {
   display: "flex",
   flexDirection: "column",
   gap: "$1",
+  overflowX: "hidden",
+
+  variants: {
+    collapse: {
+      true: {
+        alignItems: "center",
+      },
+    },
+  },
 });
 
 interface Props {
@@ -59,7 +70,7 @@ export const Sidebar = ({
         <ListActionBarLayout.ListActionBarContainer
           list={
             <nav>
-              <StyledUl>{children}</StyledUl>
+              <StyledUl collapse={collapse}>{children}</StyledUl>
             </nav>
           }
           actions={actions}
