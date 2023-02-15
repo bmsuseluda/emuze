@@ -8,7 +8,7 @@ import {
   useCatch,
   useLoaderData,
 } from "@remix-run/react";
-import { globalStyles, themes } from "./stitches";
+import { globalStyles } from "./stitches";
 import { Box } from "./components/Box";
 import { Titlebar } from "./containers/Titlebar";
 import { useGamepads } from "~/hooks/useGamepads";
@@ -131,8 +131,12 @@ function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <Box
-      className={themes.dark}
-      css={{ height: "100vh", display: "flex", flexFlow: "column" }}
+      css={{
+        height: "100vh",
+        display: "flex",
+        flexFlow: "column",
+        backgroundColor: "$backgroundColor",
+      }}
     >
       {children}
     </Box>

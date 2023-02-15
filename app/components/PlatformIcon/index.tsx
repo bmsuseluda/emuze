@@ -39,6 +39,8 @@ const icons: Record<PlatformId, IconType> = {
   nintendogameboyadvance: MdVideogameAsset,
   pcengine: MdVideogameAsset,
   pcenginecd: MdVideogameAsset,
+
+  initial: MdVideogameAsset,
 };
 
 type Props = {

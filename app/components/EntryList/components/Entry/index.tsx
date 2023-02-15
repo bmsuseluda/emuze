@@ -57,7 +57,7 @@ const Name = styled("div", {
   right: 0,
   userSelect: "none",
   padding: "$1",
-  backgroundColor: "rgba(0, 0, 0, 0.6)",
+  backgroundColor: "$transparentBackgroundColor",
 });
 
 const Input = styled("input", {

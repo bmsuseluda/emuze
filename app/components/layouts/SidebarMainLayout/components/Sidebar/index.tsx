@@ -65,7 +65,7 @@ export const Sidebar = ({
   return (
     <SidebarWrapper isFullscreen={isFullscreen} collapse={collapse}>
       {header}
-      <Separator />
+      {header && <Separator />}
       <ListActionBarLayout headline={collapse ? undefined : headline}>
         <ListActionBarLayout.ListActionBarContainer
           list={

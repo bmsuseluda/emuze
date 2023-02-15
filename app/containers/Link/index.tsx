@@ -3,12 +3,14 @@ import type { AnchorHTMLAttributes } from "react";
 import React from "react";
 import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import { styled } from "~/stitches";
+import type { RemixNavLinkProps } from "@remix-run/react/dist/components";
 
 type Props = {
   to: string;
   icon?: React.ReactNode;
   children?: React.ReactNode;
-} & AnchorHTMLAttributes<HTMLAnchorElement>;
+} & AnchorHTMLAttributes<HTMLAnchorElement> &
+  RemixNavLinkProps;
 
 const StyledNavLink = styled(NavLink, {
   textDecoration: "none",
@@ -42,21 +44,19 @@ const LinkSpan = styled(IconChildrenWrapper, {
 
 export const Link = React.forwardRef<HTMLAnchorElement, Props>(
   ({ to, children, icon, ...rest }, ref) => (
-    <li>
-      <StyledNavLink
-        to={to}
-        prefetch="intent"
-        draggable={false}
-        {...rest}
-        ref={ref}
-      >
-        {({ isActive }) => (
-          <LinkSpan active={isActive} icon={icon} circle={!!icon && !children}>
-            {children}
-          </LinkSpan>
-        )}
-      </StyledNavLink>
-    </li>
+    <StyledNavLink
+      to={to}
+      prefetch="intent"
+      draggable={false}
+      {...rest}
+      ref={ref}
+    >
+      {({ isActive }) => (
+        <LinkSpan active={isActive} icon={icon} circle={!!icon && !children}>
+          {children}
+        </LinkSpan>
+      )}
+    </StyledNavLink>
   )
 );
 

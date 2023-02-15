@@ -3,11 +3,12 @@ import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Form,
+  Outlet,
   useActionData,
   useLoaderData,
   useLocation,
 } from "@remix-run/react";
-import { IoMdPlay, IoMdRefresh } from "react-icons/io";
+import { IoMdPlay, IoMdRefresh, IoMdSettings } from "react-icons/io";
 import { Button } from "~/components/Button";
 import { executeApplication } from "~/server/execute.server";
 import { importEntries, readCategory } from "~/server/categories.server";
@@ -27,6 +28,8 @@ import { useFocus } from "~/hooks/useFocus";
 import type { FocusElements } from "~/types/focusElements";
 import { readAppearance } from "~/server/settings.server";
 import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
+import { Link } from "~/containers/Link";
+import { styled } from "~/stitches";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -82,7 +85,12 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
   );
 };
 
-export default function Index() {
+const HeadlineRow = styled("div", {
+  display: "flex",
+  justifyContent: "space-between",
+});
+
+export default function Category() {
   const {
     categoryData: { id, name, entries },
     alwaysGameNames,
@@ -91,6 +99,7 @@ export default function Index() {
   const actionData = useActionData<{ actionId?: string }>();
   const launchButtonRef = useRef<HTMLButtonElement>(null);
   const importButtonRef = useRef<HTMLButtonElement>(null);
+  const settingsButtonRef = useRef<HTMLAnchorElement>(null);
   const entriesRefs = useRef<HTMLInputElement[]>([]);
   const { getTestId } = useTestId("category");
   const { isInFocus, disableFocus, switchFocus } =
@@ -141,13 +150,21 @@ export default function Index() {
     }
   }, [isInFocus]);
 
+  const onSettings = useCallback(() => {
+    if (isInFocus) {
+      settingsButtonRef.current?.click();
+    }
+  }, [isInFocus]);
+
   useGamepadButtonPressEvent(layout.buttons.B, onBack);
   useGamepadButtonPressEvent(layout.buttons.A, onExecute);
   useGamepadButtonPressEvent(layout.buttons.X, onImport);
+  useGamepadButtonPressEvent(layout.buttons.Start, onSettings);
 
   useKeyboardEvent("Backspace", onBack);
   useKeyboardEvent("Enter", onExecute);
   useKeyboardEvent("i", onImport);
+  useKeyboardEvent("Escape", onSettings);
 
   const [loading, setLoading] = useState(false);
 
@@ -156,64 +173,76 @@ export default function Index() {
   }, [entries]);
 
   return (
-    <ListActionBarLayout
-      headline={
-        <IconChildrenWrapper icon={<PlatformIcon id={id} />}>
-          <span>
-            <span {...getTestId("name")}>{name}</span>
-          </span>
-        </IconChildrenWrapper>
-      }
-    >
-      <Form method="post">
-        <ListActionBarLayout.ListActionBarContainer
-          scrollToTopOnLocationChange
-          locationPathname={location.pathname}
-          scrollSmooth
-          list={
-            entries && (
-              <EntryList
-                entries={entries}
-                alwaysGameNames={alwaysGameNames}
-                entriesRefs={entriesRefs}
-                onDoubleClick={() => {
-                  launchButtonRef.current?.click();
-                }}
-                {...getTestId("entries")}
-              />
-            )
-          }
-          actions={
-            <>
-              <Button
-                type="submit"
-                name="_actionId"
-                disabled={!entries || entries.length === 0}
-                value={actionIds.launch}
-                ref={launchButtonRef}
-                icon={<IoMdPlay />}
-                {...getTestId(["button", "launch"])}
-              >
-                Launch Rom
-              </Button>
-              <Button
-                type="submit"
-                name="_actionId"
-                value={actionIds.import}
-                ref={importButtonRef}
-                icon={<IoMdRefresh />}
-                loading={loading}
-                onClick={() => {
-                  setLoading(true);
-                }}
-                {...getTestId(["button", "import"])}
-              >
-                Import Roms
-              </Button>
-            </>
-          }
-        />
-      </Form>
-    </ListActionBarLayout>
+    <>
+      <ListActionBarLayout
+        headline={
+          <HeadlineRow>
+            <IconChildrenWrapper icon={<PlatformIcon id={id} />}>
+              <span>
+                <span {...getTestId("name")}>{name}</span>
+              </span>
+            </IconChildrenWrapper>
+            <Link
+              to="settings"
+              icon={<IoMdSettings />}
+              aria-label="Settings"
+              title="Settings"
+              ref={settingsButtonRef}
+            />
+          </HeadlineRow>
+        }
+      >
+        <Form method="post">
+          <ListActionBarLayout.ListActionBarContainer
+            scrollToTopOnLocationChange
+            locationPathname={location.pathname}
+            scrollSmooth
+            list={
+              entries && (
+                <EntryList
+                  entries={entries}
+                  alwaysGameNames={alwaysGameNames}
+                  entriesRefs={entriesRefs}
+                  onDoubleClick={() => {
+                    launchButtonRef.current?.click();
+                  }}
+                  {...getTestId("entries")}
+                />
+              )
+            }
+            actions={
+              <>
+                <Button
+                  type="submit"
+                  name="_actionId"
+                  disabled={!entries || entries.length === 0}
+                  value={actionIds.launch}
+                  ref={launchButtonRef}
+                  icon={<IoMdPlay />}
+                  {...getTestId(["button", "launch"])}
+                >
+                  Launch Rom
+                </Button>
+                <Button
+                  type="submit"
+                  name="_actionId"
+                  value={actionIds.import}
+                  ref={importButtonRef}
+                  icon={<IoMdRefresh />}
+                  loading={loading}
+                  onClick={() => {
+                    setLoading(true);
+                  }}
+                  {...getTestId(["button", "import"])}
+                >
+                  Import Roms
+                </Button>
+              </>
+            }
+          />
+        </Form>
+      </ListActionBarLayout>
+      <Outlet />
+    </>
   );
 }

@@ -12,7 +12,7 @@ import { importApplications } from "~/server/applications.server";
 import { PlatformIcon } from "~/components/PlatformIcon";
 import type { PlatformId } from "~/types/platforms";
 import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
-import { readAppearance, readGeneral } from "~/server/settings.server";
+import { readAppearance } from "~/server/settings.server";
 import { useCallback, useEffect, useState } from "react";
 import {
   useGamepadButtonPressEvent,
@@ -33,15 +33,13 @@ type LoaderData = {
 };
 
 export const loader = ({ params }: DataFunctionArgs) => {
-  console.log("loader");
-  const general = readGeneral();
+  const { category } = params;
   const { collapseSidebar } = readAppearance();
-  if (general?.applicationsPath || general?.categoriesPath) {
-    const categories = readCategories();
+  const categories = readCategories();
 
-    const { category } = params;
+  if (categories && categories.length > 0) {
     if (!category) {
-      return redirect(`/categories/${categories[0].id}`);
+      return redirect(categories[0].id);
     }
 
     const categoryLinks = categories.map(({ id, name }) => ({
@@ -57,7 +55,11 @@ export const loader = ({ params }: DataFunctionArgs) => {
     });
   }
 
-  return redirect("/settings/general");
+  return json({
+    categoryLinks: [],
+    selectedCategoryId: category,
+    collapseSidebar,
+  });
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -95,7 +97,7 @@ const Name = styled("div", {
   textOverflow: "ellipsis",
 });
 
-export default function Index() {
+export default function Categories() {
   const { categoryLinks, selectedCategoryId, collapseSidebar } =
     useLoaderData<LoaderData>();
   const { getTestId } = useTestId("categories");
@@ -126,8 +128,6 @@ export default function Index() {
   useGamepadButtonPressEvent(layout.buttons.A, switchToMain);
   useKeyboardEvent("Enter", switchToMain);
 
-  console.log("rerender");
-
   return (
     <SidebarMainLayout>
       <SidebarMainLayout.Sidebar
@@ -152,16 +152,17 @@ export default function Index() {
         }
       >
         {categoryLinks.map(({ id, name, to }, index) => (
-          <Link
-            to={to}
-            icon={<PlatformIcon id={id} />}
-            aria-label={name}
-            key={to}
-            ref={refCallback(index)}
-            {...getTestId(["link", to])}
-          >
-            {collapseSidebar ? undefined : <Name>{name}</Name>}
-          </Link>
+          <li key={to}>
+            <Link
+              to={to}
+              icon={<PlatformIcon id={id} />}
+              aria-label={name}
+              ref={refCallback(index)}
+              {...getTestId(["link", to])}
+            >
+              {collapseSidebar ? undefined : <Name>{name}</Name>}
+            </Link>
+          </li>
         ))}
       </SidebarMainLayout.Sidebar>
       <SidebarMainLayout.Main>

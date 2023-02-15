@@ -14,6 +14,7 @@ const Layout = styled(Box, {
   flex: 1,
   backgroundColor: "$backgroundColor",
   color: "$color",
+  height: "100%",
 });
 
 export const SidebarMainLayout = ({ children, ...rest }: Props) => (
