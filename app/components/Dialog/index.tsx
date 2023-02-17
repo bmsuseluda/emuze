@@ -1,5 +1,5 @@
 import * as RadixDialog from "@radix-ui/react-dialog";
-import { IoClose } from "react-icons/io5";
+import { VscChromeClose } from "react-icons/vsc";
 import { styled } from "~/stitches";
 import { keyframes } from "@stitches/react";
 import type { ReactNode } from "react";
@@ -35,12 +35,9 @@ const DialogContent = styled(RadixDialog.Content, {
   maxWidth: "90vw",
   height: "60vh",
   maxHeight: "90vh",
-  padding: 25,
   animation: `${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1)`,
   "&:focus": { outline: "none" },
 });
-
-const Flex = styled("div", { display: "flex" });
 
 const IconButton = styled("button", {
   all: "unset",
@@ -48,13 +45,11 @@ const IconButton = styled("button", {
   borderRadius: "100%",
   height: 25,
   width: 25,
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
   color: "$color",
   position: "absolute",
   top: 10,
   right: 10,
+  cursor: "pointer",
 });
 
 type Props = {
@@ -73,13 +68,11 @@ export const Dialog = ({ children, open, onClose }: Props) => (
       }}
     >
       {children}
-      <Flex css={{ marginTop: 25, justifyContent: "flex-end" }}>
-        <RadixDialog.Close asChild onClick={onClose}>
-          <IconButton aria-label="Close">
-            <IoClose />
-          </IconButton>
-        </RadixDialog.Close>
-      </Flex>
+      <RadixDialog.Close asChild onClick={onClose}>
+        <IconButton aria-label="Close">
+          <VscChromeClose />
+        </IconButton>
+      </RadixDialog.Close>
     </DialogContent>
   </RadixDialog.Root>
 );

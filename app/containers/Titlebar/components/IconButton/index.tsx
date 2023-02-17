@@ -2,8 +2,8 @@ import type { ButtonHTMLAttributes } from "react";
 import type { IconType } from "react-icons";
 import {
   VscChromeClose,
-  VscChromeMinimize,
   VscChromeMaximize,
+  VscChromeMinimize,
   VscChromeRestore,
 } from "react-icons/vsc";
 import { styled } from "~/stitches";
@@ -27,7 +27,7 @@ const Button = styled("button", {
   blockSize: "16px",
   backgroundColor: "transparent",
   border: "none",
-  color: "white",
+  color: "$color",
   boxSizing: "content-box",
 
   "& svg": {
@@ -56,7 +56,7 @@ export const IconButton = ({
 }: Props & ButtonHTMLAttributes<HTMLButtonElement>) => {
   const Icon = iconVariant[variant];
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleClick = () => {
     electronAPI.changeWindow(variant);
   };
 

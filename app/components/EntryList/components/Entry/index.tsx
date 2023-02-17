@@ -1,7 +1,7 @@
 import { useTestId } from "~/hooks/useTestId";
 import { styled } from "~/stitches";
 import React from "react";
-import type { CSS } from "@stitches/react";
+import { RoundedBorder } from "~/components/RoundedBorder";
 
 interface Props {
   id: string;
@@ -18,27 +18,15 @@ const Wrapper = styled("li", {
   maxWidth: "300px",
 });
 
-const borderStyles: CSS = {
-  borderStyle: "solid",
-  borderWidth: "$3",
-  borderColor: "$backgroundColor",
-  borderRadius: "$1",
-  position: "relative",
-  overflow: "clip",
-};
-
-const Label = styled("label", {
+const Label = styled(RoundedBorder, {
   display: "block",
   backgroundColor: "$backgroundColor",
-  ...borderStyles,
 });
 
-const InnerBorder = styled("div", {
+const InnerBorder = styled(RoundedBorder, {
   backgroundColor: "$backgroundColor",
   display: "flex",
   justifyContent: "flex-end",
-
-  ...borderStyles,
 
   variants: {
     "data-imageUrl": {
@@ -124,7 +112,7 @@ export const Entry = React.forwardRef<HTMLInputElement, Props>(
           ref={ref}
           {...getTestId("link")}
         />
-        <Label htmlFor={id} onDoubleClick={onDoubleClick}>
+        <Label as="label" htmlFor={id} onDoubleClick={onDoubleClick}>
           <InnerBorder data-imageUrl={!!imageUrl}>
             <Image
               src={imageUrl || fallbackImageUrl}

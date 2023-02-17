@@ -3,11 +3,12 @@ import { createStitches } from "@stitches/react";
 export const { getCssText, styled, createTheme, globalCss } = createStitches({
   theme: {
     colors: {
-      color: "white",
-      backgroundColor: "black",
+      color: "black",
+      backgroundColor: "white",
       transparentBackgroundColor: "rgba(0, 0, 0, 0.6)",
-      sidebarBackgroundColor: "#4d4d4d",
+      sidebarBackgroundColor: "#b3b2b2",
       accent: "#950909",
+      colorOnAccent: "white",
       error: "#950909",
     },
     space: {
@@ -37,6 +38,28 @@ export const { getCssText, styled, createTheme, globalCss } = createStitches({
     },
   },
 });
+
+const darkTheme = createTheme({
+  colors: {
+    color: "white",
+    backgroundColor: "black",
+    transparentBackgroundColor: "rgba(0, 0, 0, 0.6)",
+    sidebarBackgroundColor: "#4d4d4d",
+    accent: "#950909",
+    colorOnAccent: "white",
+    error: "#950909",
+  },
+  gradiants: {
+    default:
+      "linear-gradient(45deg, $colors$backgroundColor, $colors$sidebarBackgroundColor)",
+  },
+});
+
+const lightTheme = createTheme({});
+
+export type ThemeName = keyof typeof themes;
+
+export const themes = { dark: darkTheme, light: lightTheme };
 
 export const globalStyles = globalCss({
   body: {

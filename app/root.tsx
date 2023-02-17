@@ -8,7 +8,7 @@ import {
   useCatch,
   useLoaderData,
 } from "@remix-run/react";
-import { globalStyles } from "./stitches";
+import { globalStyles, themes } from "./stitches";
 import { Box } from "./components/Box";
 import { Titlebar } from "./containers/Titlebar";
 import { useGamepads } from "~/hooks/useGamepads";
@@ -18,6 +18,7 @@ import { FocusProvider } from "~/provider/FocusProvider";
 import { focusDefault, FocusElements } from "~/types/focusElements";
 import { useFocus } from "~/hooks/useFocus";
 import { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
+import { ReactNode } from "react";
 
 export default function App() {
   globalStyles();
@@ -95,7 +96,7 @@ function Document({
   children,
   title,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   title?: string;
 }) {
   const { fullscreen } = useLoaderData<typeof loader>();
@@ -111,10 +112,7 @@ function Document({
       </head>
       <body>
         <FullscreenProvider fullscreenDefault={fullscreen}>
-          <FocusProvider focusDefault={focusDefault}>
-            <Titlebar />
-            {children}
-          </FocusProvider>
+          <FocusProvider focusDefault={focusDefault}>{children}</FocusProvider>
         </FullscreenProvider>
         <ScrollRestoration />
         <Scripts />
@@ -124,13 +122,14 @@ function Document({
   );
 }
 
-function Layout({ children }: { children: React.ReactNode }) {
+function Layout({ children }: { children: ReactNode }) {
   const { isDisabled } = useFocus<FocusElements>("main");
 
   useGamepads(isDisabled);
 
   return (
     <Box
+      className={themes.dark}
       css={{
         height: "100vh",
         display: "flex",
@@ -138,6 +137,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         backgroundColor: "$backgroundColor",
       }}
     >
+      <Titlebar />
       {children}
     </Box>
   );

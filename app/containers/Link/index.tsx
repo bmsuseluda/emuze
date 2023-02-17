@@ -31,6 +31,7 @@ const LinkSpan = styled(IconChildrenWrapper, {
     active: {
       true: {
         backgroundColor: "$accent",
+        color: "$colorOnAccent",
       },
     },
     circle: {
