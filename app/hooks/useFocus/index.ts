@@ -5,7 +5,7 @@ export const useFocus = <FocusElement extends string>(
   elementId: FocusElement
 ) => {
   const context = useContext(FocusContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error("useFocus must be used within a FocusProvider");
   }
 

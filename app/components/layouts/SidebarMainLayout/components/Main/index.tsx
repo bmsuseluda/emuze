@@ -1,11 +1,11 @@
 import { styled } from "~/stitches";
 import type { ReactNode } from "react";
-import { useFullscreen } from "~/hooks/useFullscreen";
 
 const StyledMain = styled("main", {
   flex: 6,
   padding: "$2 0.5em $1 $2",
   display: "flex",
+  backgroundColor: "$backgroundColor",
 
   variants: {
     isFullscreen: {
@@ -18,9 +18,9 @@ const StyledMain = styled("main", {
 
 type Props = {
   children: ReactNode;
+  isFullscreen?: boolean;
 };
 
-export const Main = ({ children }: Props) => {
-  const isFullscreen = useFullscreen();
-  return <StyledMain isFullscreen={isFullscreen}>{children}</StyledMain>;
-};
+export const Main = ({ children, isFullscreen = false }: Props) => (
+  <StyledMain isFullscreen={isFullscreen}>{children}</StyledMain>
+);

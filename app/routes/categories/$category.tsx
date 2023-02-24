@@ -8,7 +8,7 @@ import {
   useLoaderData,
   useLocation,
 } from "@remix-run/react";
-import { IoMdPlay, IoMdRefresh, IoMdSettings } from "react-icons/io";
+import { IoMdPlay, IoMdRefresh } from "react-icons/io";
 import { Button } from "~/components/Button";
 import { executeApplication } from "~/server/execute.server";
 import { importEntries, readCategory } from "~/server/categories.server";
@@ -28,8 +28,8 @@ import { useFocus } from "~/hooks/useFocus";
 import type { FocusElements } from "~/types/focusElements";
 import { readAppearance } from "~/server/settings.server";
 import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
-import { Link } from "~/containers/Link";
-import { styled } from "~/stitches";
+import { useFullscreen } from "~/hooks/useFullscreen";
+import { SettingsLink } from "~/components/SettingsLink";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -85,17 +85,13 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
   );
 };
 
-const HeadlineRow = styled("div", {
-  display: "flex",
-  justifyContent: "space-between",
-});
-
 export default function Category() {
   const {
     categoryData: { id, name, entries },
     alwaysGameNames,
   } = useLoaderData<typeof loader>();
   const location = useLocation();
+  const isFullscreen = useFullscreen();
   const actionData = useActionData<{ actionId?: string }>();
   const launchButtonRef = useRef<HTMLButtonElement>(null);
   const importButtonRef = useRef<HTMLButtonElement>(null);
@@ -176,20 +172,11 @@ export default function Category() {
     <>
       <ListActionBarLayout
         headline={
-          <HeadlineRow>
-            <IconChildrenWrapper icon={<PlatformIcon id={id} />}>
-              <span>
-                <span {...getTestId("name")}>{name}</span>
-              </span>
-            </IconChildrenWrapper>
-            <Link
-              to="settings"
-              icon={<IoMdSettings />}
-              aria-label="Settings"
-              title="Settings"
-              ref={settingsButtonRef}
-            />
-          </HeadlineRow>
+          <IconChildrenWrapper icon={<PlatformIcon id={id} />}>
+            <span>
+              <span {...getTestId("name")}>{name}</span>
+            </span>
+          </IconChildrenWrapper>
         }
       >
         <Form method="post">
@@ -242,6 +229,7 @@ export default function Category() {
           />
         </Form>
       </ListActionBarLayout>
+      <SettingsLink isFullscreen={isFullscreen} ref={settingsButtonRef} />
       <Outlet />
     </>
   );

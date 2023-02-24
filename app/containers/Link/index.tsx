@@ -6,7 +6,7 @@ import { styled } from "~/stitches";
 import type { RemixNavLinkProps } from "@remix-run/react/dist/components";
 
 type Props = {
-  to: string;
+  highlightIfActive?: boolean;
   icon?: React.ReactNode;
   children?: React.ReactNode;
 } & AnchorHTMLAttributes<HTMLAnchorElement> &
@@ -44,7 +44,7 @@ const LinkSpan = styled(IconChildrenWrapper, {
 });
 
 export const Link = React.forwardRef<HTMLAnchorElement, Props>(
-  ({ to, children, icon, ...rest }, ref) => (
+  ({ to, children, icon, highlightIfActive = true, ...rest }, ref) => (
     <StyledNavLink
       to={to}
       prefetch="intent"
@@ -53,7 +53,11 @@ export const Link = React.forwardRef<HTMLAnchorElement, Props>(
       ref={ref}
     >
       {({ isActive }) => (
-        <LinkSpan active={isActive} icon={icon} circle={!!icon && !children}>
+        <LinkSpan
+          active={isActive && highlightIfActive}
+          icon={icon}
+          circle={!!icon && !children}
+        >
           {children}
         </LinkSpan>
       )}

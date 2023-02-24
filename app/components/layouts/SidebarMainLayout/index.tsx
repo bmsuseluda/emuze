@@ -3,16 +3,16 @@ import { Box } from "~/components/Box";
 import { styled } from "~/stitches";
 import { Main } from "./components/Main";
 import { Sidebar } from "./components/Sidebar";
+import type { ReactNode } from "react";
 
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
   css?: CSS;
 }
 
 const Layout = styled(Box, {
   display: "flex",
   flex: 1,
-  backgroundColor: "$backgroundColor",
   color: "$color",
   height: "100%",
 });

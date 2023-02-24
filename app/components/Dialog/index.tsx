@@ -22,11 +22,15 @@ const DialogOverlay = styled(RadixDialog.Overlay, {
 });
 
 const DialogContent = styled(RadixDialog.Content, {
-  backgroundColor: "$backgroundColor",
+  backgroundColor: "$sidebarBackgroundColor",
   color: "$color",
-  borderRadius: 6,
-  boxShadow:
-    "hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px",
+  boxShadow: "0px 0px 20px 10px black",
+  borderStyle: "solid",
+  borderWidth: "0.2rem",
+  borderColor: "$sidebarBackgroundColor",
+  borderRadius: "$1",
+  overflow: "clip",
+
   position: "fixed",
   top: "50%",
   left: "50%",
@@ -58,7 +62,6 @@ type Props = {
   onClose: () => void;
 };
 
-// TODO: reset focus on close
 export const Dialog = ({ children, open, onClose }: Props) => (
   <RadixDialog.Root open={open}>
     <DialogOverlay onClick={onClose} />

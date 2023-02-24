@@ -28,15 +28,16 @@ export const useGamepadsOnGrid = <T>(
   );
 
   useEffect(() => {
-    if (
-      isInFocus &&
-      typeof selectedX.current === "undefined" &&
-      typeof selectedY.current === "undefined" &&
-      typeof selectedEntry.current === "undefined"
-    ) {
-      selectedX.current = 0;
-      selectedY.current = 0;
-      handleSelectEntry(selectedX.current, selectedY.current);
+    if (isInFocus) {
+      if (
+        typeof selectedX.current === "undefined" &&
+        typeof selectedY.current === "undefined" &&
+        typeof selectedEntry.current === "undefined"
+      ) {
+        selectedX.current = 0;
+        selectedY.current = 0;
+      }
+      handleSelectEntry(selectedX.current!, selectedY.current!);
     }
   }, [isInFocus, handleSelectEntry]);
 
@@ -46,7 +47,7 @@ export const useGamepadsOnGrid = <T>(
   );
 
   const onRight = useCallback(() => {
-    if (entriesRefsGrid.current) {
+    if (isInFocus && entriesRefsGrid.current) {
       if (
         typeof selectedX.current !== "undefined" &&
         typeof selectedY.current !== "undefined"
@@ -66,10 +67,10 @@ export const useGamepadsOnGrid = <T>(
         }
       }
     }
-  }, [handleSelectEntry, getLastIndex, entriesRefsGrid]);
+  }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus]);
 
   const onLeft = useCallback(() => {
-    if (entriesRefsGrid.current) {
+    if (isInFocus && entriesRefsGrid.current) {
       if (
         typeof selectedX.current !== "undefined" &&
         typeof selectedY.current !== "undefined"
@@ -87,10 +88,10 @@ export const useGamepadsOnGrid = <T>(
         }
       }
     }
-  }, [handleSelectEntry, getLastIndex, entriesRefsGrid]);
+  }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus]);
 
   const onDown = useCallback(() => {
-    if (entriesRefsGrid.current) {
+    if (isInFocus && entriesRefsGrid.current) {
       if (
         typeof selectedX.current !== "undefined" &&
         typeof selectedY.current !== "undefined"
@@ -111,10 +112,10 @@ export const useGamepadsOnGrid = <T>(
         }
       }
     }
-  }, [handleSelectEntry, getLastIndex, entriesRefsGrid]);
+  }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus]);
 
   const onUp = useCallback(() => {
-    if (entriesRefsGrid.current) {
+    if (isInFocus && entriesRefsGrid.current) {
       if (
         typeof selectedX.current !== "undefined" &&
         typeof selectedY.current !== "undefined"
@@ -133,7 +134,7 @@ export const useGamepadsOnGrid = <T>(
         }
       }
     }
-  }, [handleSelectEntry, getLastIndex, entriesRefsGrid]);
+  }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus]);
 
   useGamepadButtonPressEvent(layout.buttons.DPadRight, onRight);
   useGamepadButtonPressEvent(layout.buttons.DPadLeft, onLeft);

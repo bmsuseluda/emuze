@@ -5,33 +5,12 @@ const Headline = styled("h1", {
   padding: 0,
 });
 
-const StyledNav = styled("nav", {
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-
-  variants: {
-    collapse: {
-      true: {
-        display: "block",
-      },
-    },
-  },
-});
-
 const StyledHeader = styled("header", {
   marginBottom: "-0.8em",
 });
 
-type Props = {
-  collapse?: boolean;
-};
-
-export const Header = ({ collapse = false }: Props) => (
+export const Header = () => (
   <StyledHeader>
-    <StyledNav aria-label="Main navigation" collapse={collapse}>
-      {!collapse && <Headline>emuze</Headline>}
-    </StyledNav>
+    <Headline>emuze</Headline>
   </StyledHeader>
 );

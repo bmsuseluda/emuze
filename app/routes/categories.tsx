@@ -1,6 +1,12 @@
 import type { ActionFunction, MetaFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, Outlet, useLoaderData } from "@remix-run/react";
+import {
+  Form,
+  Outlet,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from "@remix-run/react";
 import { IoMdRefresh } from "react-icons/io";
 import { Button } from "~/components/Button";
 import { importCategories, readCategories } from "~/server/categories.server";
@@ -24,6 +30,7 @@ import { useFocus } from "~/hooks/useFocus";
 import type { FocusElements } from "~/types/focusElements";
 import { styled } from "~/stitches";
 import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
+import { useFullscreen } from "~/hooks/useFullscreen";
 
 type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
 type LoaderData = {
@@ -101,6 +108,9 @@ export default function Categories() {
   const { categoryLinks, selectedCategoryId, collapseSidebar } =
     useLoaderData<LoaderData>();
   const { getTestId } = useTestId("categories");
+  const isFullscreen = useFullscreen();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
 
@@ -121,19 +131,28 @@ export default function Categories() {
     }
   }, [isInFocus, switchFocus]);
 
+  const onSettings = useCallback(() => {
+    if (isInFocus) {
+      navigate(`${pathname}/settings`);
+    }
+  }, [isInFocus, pathname]);
+
   // TODO: add tests
   useGamepadButtonPressEvent(layout.buttons.DPadRight, switchToMain);
   useGamepadStickDirectionEvent("leftStickRight", switchToMain);
   useKeyboardEvent("ArrowRight", switchToMain);
   useGamepadButtonPressEvent(layout.buttons.A, switchToMain);
   useKeyboardEvent("Enter", switchToMain);
+  useGamepadButtonPressEvent(layout.buttons.Start, onSettings);
+  useKeyboardEvent("Escape", onSettings);
 
   return (
     <SidebarMainLayout>
       <SidebarMainLayout.Sidebar
-        header={<Header collapse={collapseSidebar} />}
+        header={<Header />}
         headline="Platforms"
         collapse={collapseSidebar}
+        isFullscreen={isFullscreen}
         actions={
           <Form method="post">
             <Button
@@ -165,7 +184,7 @@ export default function Categories() {
           </li>
         ))}
       </SidebarMainLayout.Sidebar>
-      <SidebarMainLayout.Main>
+      <SidebarMainLayout.Main isFullscreen={isFullscreen}>
         <Outlet />
       </SidebarMainLayout.Main>
     </SidebarMainLayout>

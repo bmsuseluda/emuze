@@ -12,7 +12,7 @@ const Wrapper = styled("div", {
   justifyContent: "space-between",
 });
 
-const Dragable = styled("div", {
+const Draggable = styled("div", {
   width: "100%",
   height: "100%",
   WebkitAppRegion: "drag",
@@ -23,14 +23,21 @@ const Buttons = styled("div", {
   whiteSpace: "nowrap",
 });
 
+const FakeSettingsButton = styled("div", {
+  width: "16px",
+  height: "16px",
+  padding: "12.8px 15px",
+});
+
 export const Titlebar = () => {
   const fullscreen = useFullscreen();
 
   if (!fullscreen) {
     return (
       <Wrapper>
-        <Dragable />
+        <Draggable />
         <Buttons>
+          <FakeSettingsButton />
           <IconButton variant="minimize" />
           <IconButton variant="maximize" />
           <IconButton variant="close" />

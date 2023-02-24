@@ -46,15 +46,16 @@ export default function Index() {
   }, [switchFocus]);
 
   const { refCallback } = useGamepadsOnSidebar(0, isInFocus);
-  const location = useLocation();
+  const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
+    // TODO: should be the element where we came from
     switchFocus("main");
     // TODO: use useState for dialog open and add some delay to show close animation
     // TODO: replace with robust solution
-    navigate(location.pathname.split("/settings")[0]);
-  };
+    navigate(pathname.split("/settings")[0]);
+  }, [pathname]);
 
   const switchToMain = useCallback(() => {
     if (isInFocus) {
@@ -72,11 +73,12 @@ export default function Index() {
   useGamepadButtonPressEvent(layout.buttons.Start, handleClose);
 
   return (
-    <Dialog open={true} onClose={handleClose}>
+    <Dialog open onClose={handleClose}>
       <SidebarMainLayout>
         <SidebarMainLayout.Sidebar
           headline="Settings"
           collapse={collapseSidebar}
+          isFullscreen
         >
           {categories.map(({ id, name }, index) => (
             <li key={id}>
@@ -90,7 +92,7 @@ export default function Index() {
             </li>
           ))}
         </SidebarMainLayout.Sidebar>
-        <SidebarMainLayout.Main>
+        <SidebarMainLayout.Main isFullscreen>
           <Outlet />
         </SidebarMainLayout.Main>
       </SidebarMainLayout>

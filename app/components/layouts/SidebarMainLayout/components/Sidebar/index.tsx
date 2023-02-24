@@ -2,7 +2,6 @@ import { styled } from "~/stitches";
 import { Ul } from "~/components/Ul";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 import { Separator } from "~/components/Separator";
-import { useFullscreen } from "~/hooks/useFullscreen";
 import type { ReactNode } from "react";
 
 const SidebarWrapper = styled("aside", {
@@ -25,7 +24,7 @@ const SidebarWrapper = styled("aside", {
     collapse: {
       true: {
         width: "3.5rem",
-        padding: "$2 0.5rem $1",
+        paddingLeft: "0.5rem",
       },
     },
   },
@@ -52,6 +51,7 @@ interface Props {
   children?: ReactNode;
   actions?: ReactNode;
   collapse?: boolean;
+  isFullscreen?: boolean;
 }
 
 export const Sidebar = ({
@@ -60,23 +60,21 @@ export const Sidebar = ({
   children,
   actions,
   collapse = false,
-}: Props) => {
-  const isFullscreen = useFullscreen();
-  return (
-    <SidebarWrapper isFullscreen={isFullscreen} collapse={collapse}>
-      {header}
-      {header && <Separator />}
-      <ListActionBarLayout headline={collapse ? undefined : headline}>
-        <ListActionBarLayout.ListActionBarContainer
-          list={
-            <nav>
-              <StyledUl collapse={collapse}>{children}</StyledUl>
-            </nav>
-          }
-          actions={actions}
-          collapse={collapse}
-        />
-      </ListActionBarLayout>
-    </SidebarWrapper>
-  );
-};
+  isFullscreen = false,
+}: Props) => (
+  <SidebarWrapper isFullscreen={isFullscreen} collapse={collapse}>
+    {!collapse && header}
+    {!collapse && header && <Separator />}
+    <ListActionBarLayout headline={collapse ? undefined : headline}>
+      <ListActionBarLayout.ListActionBarContainer
+        list={
+          <nav>
+            <StyledUl collapse={collapse}>{children}</StyledUl>
+          </nav>
+        }
+        actions={actions}
+        collapse={collapse}
+      />
+    </ListActionBarLayout>
+  </SidebarWrapper>
+);
