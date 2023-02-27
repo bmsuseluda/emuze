@@ -12,7 +12,7 @@ import { categories, readAppearance } from "~/server/settings.server";
 import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
 import { SettingsIcon } from "~/components/SettingsIcon";
 import { useFocus } from "~/hooks/useFocus";
-import type { FocusElements } from "~/types/focusElements";
+import type { FocusElement } from "~/types/focusElement";
 import { useCallback, useEffect } from "react";
 import {
   useGamepadButtonPressEvent,
@@ -39,7 +39,7 @@ export default function Index() {
   // TODO: check if collapse is good here
   const { categories, collapseSidebar } = useLoaderData<typeof loader>();
 
-  const { isInFocus, switchFocus } = useFocus<FocusElements>("settingsSidebar");
+  const { isInFocus, switchFocus } = useFocus<FocusElement>("settingsSidebar");
 
   useEffect(() => {
     switchFocus("settingsSidebar");
@@ -55,7 +55,7 @@ export default function Index() {
     // TODO: use useState for dialog open and add some delay to show close animation
     // TODO: replace with robust solution
     navigate(pathname.split("/settings")[0]);
-  }, [pathname]);
+  }, [pathname, navigate, switchFocus]);
 
   const switchToMain = useCallback(() => {
     if (isInFocus) {

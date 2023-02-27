@@ -1,7 +1,9 @@
-import type { MutableRefObject } from "react";
+import debounce from "lodash.debounce";
+import type { MutableRefObject, RefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
 
 export const useRefsGrid = <T extends HTMLElement, R>(
+  entryListRef: RefObject<HTMLUListElement>,
   entriesRefs: MutableRefObject<T[]>,
   entries?: R[]
 ) => {
@@ -43,12 +45,17 @@ export const useRefsGrid = <T extends HTMLElement, R>(
   }, [entries, createRefsGrid]);
 
   useEffect(() => {
-    window.addEventListener("resize", createRefsGrid);
+    if (entryListRef.current) {
+      const resizeObserver = new ResizeObserver(
+        debounce(createRefsGrid, 200, { leading: false, trailing: true })
+      );
+      resizeObserver.observe(entryListRef.current);
 
-    return () => {
-      window.removeEventListener("resize", createRefsGrid);
-    };
-  });
+      return () => {
+        resizeObserver.disconnect();
+      };
+    }
+  }, [createRefsGrid, entryListRef]);
 
   return { entriesRefsGrid };
 };

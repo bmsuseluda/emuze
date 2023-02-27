@@ -1,13 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import {
-  Form,
-  Outlet,
-  useActionData,
-  useLoaderData,
-  useLocation,
-} from "@remix-run/react";
+import { Form, Outlet, useActionData, useLoaderData } from "@remix-run/react";
 import { IoMdPlay, IoMdRefresh } from "react-icons/io";
 import { Button } from "~/components/Button";
 import { executeApplication } from "~/server/execute.server";
@@ -25,7 +19,7 @@ import {
 import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
 import { useRefsGrid } from "~/hooks/useRefsGrid";
 import { useFocus } from "~/hooks/useFocus";
-import type { FocusElements } from "~/types/focusElements";
+import type { FocusElement } from "~/types/focusElement";
 import { readAppearance } from "~/server/settings.server";
 import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
 import { useFullscreen } from "~/hooks/useFullscreen";
@@ -90,16 +84,17 @@ export default function Category() {
     categoryData: { id, name, entries },
     alwaysGameNames,
   } = useLoaderData<typeof loader>();
-  const location = useLocation();
+
   const isFullscreen = useFullscreen();
   const actionData = useActionData<{ actionId?: string }>();
   const launchButtonRef = useRef<HTMLButtonElement>(null);
   const importButtonRef = useRef<HTMLButtonElement>(null);
   const settingsButtonRef = useRef<HTMLAnchorElement>(null);
+  const entryListRef = useRef<HTMLUListElement>(null);
   const entriesRefs = useRef<HTMLInputElement[]>([]);
   const { getTestId } = useTestId("category");
   const { isInFocus, disableFocus, switchFocus } =
-    useFocus<FocusElements>("main");
+    useFocus<FocusElement>("main");
 
   useEffect(() => {
     // TODO: This interferes with mouse usage, but shouldn't
@@ -108,7 +103,7 @@ export default function Category() {
     }
   }, [actionData?.actionId, switchFocus]);
 
-  const { entriesRefsGrid } = useRefsGrid(entriesRefs, entries);
+  const { entriesRefsGrid } = useRefsGrid(entryListRef, entriesRefs, entries);
 
   const selectEntry = useCallback((entry: HTMLInputElement) => {
     entry.checked = true;
@@ -182,7 +177,7 @@ export default function Category() {
         <Form method="post">
           <ListActionBarLayout.ListActionBarContainer
             scrollToTopOnLocationChange
-            locationPathname={location.pathname}
+            pathId={id}
             scrollSmooth
             list={
               entries && (
@@ -193,6 +188,7 @@ export default function Category() {
                   onDoubleClick={() => {
                     launchButtonRef.current?.click();
                   }}
+                  ref={entryListRef}
                   {...getTestId("entries")}
                 />
               )

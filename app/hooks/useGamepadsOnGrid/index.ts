@@ -18,9 +18,9 @@ export const useGamepadsOnGrid = <T>(
 
   const handleSelectEntry = useCallback(
     (x: number, y: number) => {
-      const entry = entriesRefsGrid.current[y][x];
-      selectedEntry.current = entry;
-      if (entry) {
+      if (entriesRefsGrid.current[y] && entriesRefsGrid.current[y][x]) {
+        const entry = entriesRefsGrid.current[y][x];
+        selectedEntry.current = entry;
         onSelectEntry(entry);
       }
     },
@@ -30,14 +30,14 @@ export const useGamepadsOnGrid = <T>(
   useEffect(() => {
     if (isInFocus) {
       if (
-        typeof selectedX.current === "undefined" &&
-        typeof selectedY.current === "undefined" &&
+        typeof selectedX.current === "undefined" ||
+        typeof selectedY.current === "undefined" ||
         typeof selectedEntry.current === "undefined"
       ) {
         selectedX.current = 0;
         selectedY.current = 0;
       }
-      handleSelectEntry(selectedX.current!, selectedY.current!);
+      handleSelectEntry(selectedX.current, selectedY.current);
     }
   }, [isInFocus, handleSelectEntry]);
 
@@ -50,7 +50,8 @@ export const useGamepadsOnGrid = <T>(
     if (isInFocus && entriesRefsGrid.current) {
       if (
         typeof selectedX.current !== "undefined" &&
-        typeof selectedY.current !== "undefined"
+        typeof selectedY.current !== "undefined" &&
+        entriesRefsGrid.current[selectedY.current]
       ) {
         if (
           selectedX.current <
@@ -73,7 +74,8 @@ export const useGamepadsOnGrid = <T>(
     if (isInFocus && entriesRefsGrid.current) {
       if (
         typeof selectedX.current !== "undefined" &&
-        typeof selectedY.current !== "undefined"
+        typeof selectedY.current !== "undefined" &&
+        entriesRefsGrid.current[selectedY.current]
       ) {
         if (selectedX.current > 0) {
           selectedX.current = selectedX.current - 1;
@@ -94,7 +96,8 @@ export const useGamepadsOnGrid = <T>(
     if (isInFocus && entriesRefsGrid.current) {
       if (
         typeof selectedX.current !== "undefined" &&
-        typeof selectedY.current !== "undefined"
+        typeof selectedY.current !== "undefined" &&
+        entriesRefsGrid.current[selectedY.current]
       ) {
         if (selectedY.current < getLastIndex(entriesRefsGrid.current)) {
           selectedY.current = selectedY.current + 1;
@@ -118,7 +121,8 @@ export const useGamepadsOnGrid = <T>(
     if (isInFocus && entriesRefsGrid.current) {
       if (
         typeof selectedX.current !== "undefined" &&
-        typeof selectedY.current !== "undefined"
+        typeof selectedY.current !== "undefined" &&
+        entriesRefsGrid.current[selectedY.current]
       ) {
         if (selectedY.current > 0) {
           selectedY.current = selectedY.current - 1;

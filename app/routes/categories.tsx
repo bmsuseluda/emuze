@@ -27,7 +27,7 @@ import {
 } from "~/hooks/useGamepadEvent";
 import { layout } from "~/hooks/useGamepads/layouts";
 import { useFocus } from "~/hooks/useFocus";
-import type { FocusElements } from "~/types/focusElements";
+import type { FocusElement } from "~/types/focusElement";
 import { styled } from "~/stitches";
 import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
 import { useFullscreen } from "~/hooks/useFullscreen";
@@ -118,7 +118,7 @@ export default function Categories() {
     setLoading(false);
   }, [categoryLinks]);
 
-  const { isInFocus, switchFocus } = useFocus<FocusElements>("sidebar");
+  const { isInFocus, switchFocus } = useFocus<FocusElement>("sidebar");
 
   const { refCallback } = useGamepadsOnSidebar(
     categoryLinks.findIndex(({ id }) => id === selectedCategoryId),
@@ -135,7 +135,7 @@ export default function Categories() {
     if (isInFocus) {
       navigate(`${pathname}/settings`);
     }
-  }, [isInFocus, pathname]);
+  }, [isInFocus, pathname, navigate]);
 
   // TODO: add tests
   useGamepadButtonPressEvent(layout.buttons.DPadRight, switchToMain);
@@ -150,7 +150,6 @@ export default function Categories() {
     <SidebarMainLayout>
       <SidebarMainLayout.Sidebar
         header={<Header />}
-        headline="Platforms"
         collapse={collapseSidebar}
         isFullscreen={isFullscreen}
         actions={

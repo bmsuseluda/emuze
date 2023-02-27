@@ -16,10 +16,6 @@ const StyledCheckbox = styled(CheckboxPrimitive.Root, {
   alignItems: "center",
   justifyContent: "center",
 
-  // "&:focus": {
-  //   borderColor: "$color",
-  // },
-
   "&:hover": {
     cursor: "pointer",
   },

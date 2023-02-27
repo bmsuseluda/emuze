@@ -47,7 +47,7 @@ const StyledUl = styled(Ul, {
 
 interface Props {
   header?: ReactNode;
-  headline: ReactNode;
+  headline?: ReactNode;
   children?: ReactNode;
   actions?: ReactNode;
   collapse?: boolean;

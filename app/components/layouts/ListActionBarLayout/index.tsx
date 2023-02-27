@@ -79,7 +79,7 @@ const ActionBar = styled("div", {
 interface ContainerProps {
   list: ReactNode;
   scrollToTopOnLocationChange?: boolean;
-  locationPathname?: string;
+  pathId?: string;
   actions: ReactNode;
   scrollSmooth?: boolean;
   collapse?: boolean;
@@ -88,7 +88,7 @@ interface ContainerProps {
 const ListActionBarContainer = ({
   list: listEntries,
   scrollToTopOnLocationChange = false,
-  locationPathname,
+  pathId,
   actions,
   scrollSmooth,
   collapse = false,
@@ -100,7 +100,7 @@ const ListActionBarContainer = ({
       // @ts-ignore There is no other way to deactivate smooth scrolling here
       listRef.current.scrollTo({ top: 0, behavior: "instant" });
     }
-  }, [locationPathname, scrollToTopOnLocationChange]);
+  }, [pathId, scrollToTopOnLocationChange]);
 
   return (
     <Absolute>

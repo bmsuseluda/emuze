@@ -1,14 +1,9 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { IoMdSave } from "react-icons/io";
 import { IoFolderOpenSharp } from "react-icons/io5";
-import {
-  Form,
-  useActionData,
-  useLoaderData,
-  useLocation,
-} from "@remix-run/react";
+import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import { Button } from "~/components/Button";
 import { FileInput } from "~/components/FileInput";
 import { FormBox } from "~/components/FormBox";
@@ -23,6 +18,15 @@ import type { General } from "~/types/settings/general";
 import { isWindows } from "~/server/operationsystem.server";
 import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import { SettingsIcon } from "~/components/SettingsIcon";
+import { useFocus } from "~/hooks/useFocus";
+import type { FocusElement } from "~/types/focusElement";
+import { useRefsGrid } from "~/hooks/useRefsGrid";
+import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
+import {
+  useGamepadButtonPressEvent,
+  useKeyboardEvent,
+} from "~/hooks/useGamepadEvent";
+import { layout } from "~/hooks/useGamepads/layouts";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
@@ -104,7 +108,55 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 export default function Index() {
   const defaultData = useLoaderData<typeof loader>();
   const newData = useActionData<General>();
-  const location = useLocation();
+
+  // TODO: Maybe create specific files for gamepad controls
+  const saveButtonRef = useRef<HTMLButtonElement>(null);
+  const entryListRef = useRef<HTMLUListElement>(null);
+  const entriesRefs = useRef<HTMLButtonElement[]>([]);
+  const { isInFocus, switchFocus } = useFocus<FocusElement>("settingsMain");
+
+  const { entriesRefsGrid } = useRefsGrid(entryListRef, entriesRefs, []);
+
+  const selectEntry = useCallback((entry: HTMLButtonElement) => {
+    entry.focus();
+  }, []);
+
+  const { selectedEntry, resetSelected } = useGamepadsOnGrid(
+    entriesRefsGrid,
+    selectEntry,
+    isInFocus
+  );
+
+  const onBack = useCallback(() => {
+    if (isInFocus) {
+      if (selectedEntry.current) {
+        // TODO: blur on the button is not enough. Maybe the input element has focus https://github.com/radix-ui/primitives/discussions/874
+        selectedEntry.current.blur();
+        resetSelected();
+      }
+      switchFocus("settingsSidebar");
+    }
+  }, [isInFocus, resetSelected, selectedEntry, switchFocus]);
+
+  const onToggle = useCallback(() => {
+    if (isInFocus) {
+      selectedEntry.current?.click();
+    }
+  }, [isInFocus, selectEntry]);
+
+  const onSave = useCallback(() => {
+    if (isInFocus) {
+      switchFocus("main");
+      saveButtonRef.current?.click();
+    }
+  }, [isInFocus]);
+
+  useGamepadButtonPressEvent(layout.buttons.B, onBack);
+  useKeyboardEvent("Backspace", onBack);
+  useGamepadButtonPressEvent(layout.buttons.A, onToggle);
+  useKeyboardEvent("Enter", onToggle);
+  useGamepadButtonPressEvent(layout.buttons.X, onSave);
+  useKeyboardEvent("s", onSave);
 
   const [applicationPath, setApplicationPath] = useState(
     defaultData.applicationsPath || ""
@@ -145,9 +197,10 @@ export default function Index() {
       <Form method="post">
         <ListActionBarLayout.ListActionBarContainer
           scrollToTopOnLocationChange
-          locationPathname={location.pathname}
+          pathId="general"
           list={
-            <FormBox>
+            // TODO: maybe formbox should be an ul
+            <FormBox as="ul" ref={entryListRef}>
               {defaultData.isWindows && (
                 <FormRow>
                   <Label htmlFor="applicationsPath">Emulators Path</Label>
@@ -165,6 +218,11 @@ export default function Index() {
                       name="_actionId"
                       value={actionIds.chooseApplicationsPath}
                       icon={<IoFolderOpenSharp />}
+                      ref={(ref) => {
+                        if (ref) {
+                          entriesRefs.current.push(ref);
+                        }
+                      }}
                     >
                       Choose
                     </FileInput.Button>
@@ -186,6 +244,11 @@ export default function Index() {
                     name="_actionId"
                     value={actionIds.chooseCategoriesPath}
                     icon={<IoFolderOpenSharp />}
+                    ref={(ref) => {
+                      if (ref) {
+                        entriesRefs.current.push(ref);
+                      }
+                    }}
                   >
                     Choose
                   </FileInput.Button>
@@ -203,6 +266,7 @@ export default function Index() {
               onClick={() => {
                 setLoading(true);
               }}
+              ref={saveButtonRef}
             >
               Save settings and import all
             </Button>

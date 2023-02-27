@@ -6736,6 +6736,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash.debounce@npm:^4.0.7":
+  version: 4.0.7
+  resolution: "@types/lodash.debounce@npm:4.0.7"
+  dependencies:
+    "@types/lodash": "*"
+  checksum: e873b2d77f89010876baba3437ef826b17221b98948e00b5590828334a481dea1c8f9d28543210e564adc53199584f42c3cb171f8b6c3614fefc0b4e0888679c
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:*":
+  version: 4.14.191
+  resolution: "@types/lodash@npm:4.14.191"
+  checksum: ba0d5434e10690869f32d5ea49095250157cae502f10d57de0a723fd72229ce6c6a4979576f0f13e0aa9fbe3ce2457bfb9fa7d4ec3d6daba56730a51906d1491
+  languageName: node
+  linkType: hard
+
 "@types/lodash@npm:^4.14.167":
   version: 4.14.184
   resolution: "@types/lodash@npm:4.14.184"
@@ -11706,6 +11722,7 @@ __metadata:
     "@types/igdb-api-node": ^5.0.0
     "@types/jest": ^28.1.8
     "@types/jest-when": ^3.5.2
+    "@types/lodash.debounce": ^4.0.7
     "@types/react": ^18.0.17
     "@types/react-dom": ^18.0.6
     babel-loader: ^8.2.5
@@ -11726,6 +11743,7 @@ __metadata:
     jest-environment-jsdom: ^28.1.3
     jest-when: ^3.5.1
     lint-staged: ^13.0.3
+    lodash.debounce: ^4.0.8
     prettier: ^2.7.1
     react: ^18.2.0
     react-dom: ^18.2.0

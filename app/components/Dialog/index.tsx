@@ -25,11 +25,9 @@ const DialogContent = styled(RadixDialog.Content, {
   backgroundColor: "$sidebarBackgroundColor",
   color: "$color",
   boxShadow: "0px 0px 20px 10px black",
-  borderStyle: "solid",
+  roundedBorder: true,
   borderWidth: "0.2rem",
   borderColor: "$sidebarBackgroundColor",
-  borderRadius: "$1",
-  overflow: "clip",
 
   position: "fixed",
   top: "50%",

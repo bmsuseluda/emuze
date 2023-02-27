@@ -15,10 +15,11 @@ import { useGamepads } from "~/hooks/useGamepads";
 import { json } from "@remix-run/node";
 import { FullscreenProvider } from "~/provider/FullscreenProvider";
 import { FocusProvider } from "~/provider/FocusProvider";
-import { focusDefault, FocusElements } from "~/types/focusElements";
+import type { FocusElement } from "~/types/focusElement";
+import { focusDefault } from "~/types/focusElement";
 import { useFocus } from "~/hooks/useFocus";
-import { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
-import { ReactNode } from "react";
+import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
+import type { ReactNode } from "react";
 
 export default function App() {
   globalStyles();
@@ -99,8 +100,6 @@ function Document({
   children: ReactNode;
   title?: string;
 }) {
-  const { fullscreen } = useLoaderData<typeof loader>();
-
   return (
     <html lang="en">
       <head>
@@ -111,9 +110,7 @@ function Document({
         <Links />
       </head>
       <body>
-        <FullscreenProvider fullscreenDefault={fullscreen}>
-          <FocusProvider focusDefault={focusDefault}>{children}</FocusProvider>
-        </FullscreenProvider>
+        <FocusProvider focusDefault={focusDefault}>{children}</FocusProvider>
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
@@ -123,7 +120,8 @@ function Document({
 }
 
 function Layout({ children }: { children: ReactNode }) {
-  const { isDisabled } = useFocus<FocusElements>("main");
+  const { fullscreen } = useLoaderData<typeof loader>();
+  const { isDisabled } = useFocus<FocusElement>("main");
 
   useGamepads(isDisabled);
 
@@ -137,8 +135,10 @@ function Layout({ children }: { children: ReactNode }) {
         backgroundColor: "$backgroundColor",
       }}
     >
-      <Titlebar />
-      {children}
+      <FullscreenProvider fullscreenDefault={fullscreen}>
+        <Titlebar />
+        {children}
+      </FullscreenProvider>
     </Box>
   );
 }

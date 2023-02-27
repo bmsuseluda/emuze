@@ -4,6 +4,8 @@ import { Box } from "../Box";
 export const FormBox = styled(Box, {
   display: "flex",
   flexDirection: "column",
-  gap: "$2",
+  gap: "$1",
   width: "400px",
+  margin: 0,
+  padding: 0,
 });

@@ -1,7 +1,9 @@
-// Necessary to use typescript alias. For more information see https://github.com/storybookjs/storybook/issues/6316
-const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+import type { StorybookConfig } from "@storybook/core-common";
 
-module.exports = {
+// Necessary to use typescript alias. For more information see https://github.com/storybookjs/storybook/issues/6316
+import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
+
+const config: StorybookConfig = {
   core: {
     builder: "webpack5",
     disableTelemetry: true,
@@ -9,12 +11,17 @@ module.exports = {
   framework: "@storybook/react",
   features: {
     babelModeV7: true,
+    storyStoreV7: true,
   },
   stories: ["../app/**/*.stories.mdx", "../app/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: ["@storybook/addon-essentials"],
   staticDirs: ["../public"],
-  webpackFinal: async (config, { configType }) => {
-    config.resolve.plugins = [new TsconfigPathsPlugin()];
+  webpackFinal: async (config) => {
+    if (config.resolve) {
+      config.resolve.plugins = [new TsconfigPathsPlugin()];
+    }
     return config;
   },
 };
+
+export default config;

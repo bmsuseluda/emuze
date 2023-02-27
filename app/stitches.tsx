@@ -37,6 +37,16 @@ export const { getCssText, styled, createTheme, globalCss } = createStitches({
         "linear-gradient(45deg, $colors$backgroundColor, $colors$sidebarBackgroundColor)",
     },
   },
+  utils: {
+    roundedBorder: (value: boolean) => ({
+      borderStyle: "solid",
+      borderWidth: "$3",
+      borderColor: "$backgroundColor",
+      borderRadius: "$1",
+      position: "relative",
+      overflow: "clip",
+    }),
+  },
 });
 
 const darkTheme = createTheme({
