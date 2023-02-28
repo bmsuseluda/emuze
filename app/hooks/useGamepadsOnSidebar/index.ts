@@ -1,5 +1,5 @@
 import { layout } from "~/hooks/useGamepads/layouts";
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
   useGamepadButtonPressEvent,
   useGamepadStickDirectionEvent,
@@ -19,6 +19,13 @@ export const useGamepadsOnSidebar = (
     categoryLinksRefs.current[index]?.click();
     return index;
   }, []);
+
+  useEffect(() => {
+    const selectedLink = categoryLinksRefs.current[selected.current];
+    if (isInFocus && selectedLink) {
+      selectedLink.focus();
+    }
+  }, [isInFocus]);
 
   const onDown = useCallback(() => {
     if (isInFocus) {

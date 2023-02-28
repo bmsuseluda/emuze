@@ -2,10 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { IoMdSave } from "react-icons/io";
-import { IoFolderOpenSharp } from "react-icons/io5";
+import { FaFolderOpen } from "react-icons/fa";
 import { Form, useActionData, useLoaderData } from "@remix-run/react";
 import { Button } from "~/components/Button";
-import { FileInput } from "~/components/FileInput";
 import { FormBox } from "~/components/FormBox";
 import { FormRow } from "~/components/FormRow";
 import { Label } from "~/components/Label";
@@ -27,6 +26,7 @@ import {
   useKeyboardEvent,
 } from "~/hooks/useGamepadEvent";
 import { layout } from "~/hooks/useGamepads/layouts";
+import { TextInput } from "~/components/TextInput";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
@@ -129,11 +129,7 @@ export default function Index() {
 
   const onBack = useCallback(() => {
     if (isInFocus) {
-      if (selectedEntry.current) {
-        // TODO: blur on the button is not enough. Maybe the input element has focus https://github.com/radix-ui/primitives/discussions/874
-        selectedEntry.current.blur();
-        resetSelected();
-      }
+      resetSelected();
       switchFocus("settingsSidebar");
     }
   }, [isInFocus, resetSelected, selectedEntry, switchFocus]);
@@ -199,61 +195,66 @@ export default function Index() {
           scrollToTopOnLocationChange
           pathId="general"
           list={
-            // TODO: maybe formbox should be an ul
-            <FormBox as="ul" ref={entryListRef}>
+            <FormBox ref={entryListRef}>
               {defaultData.isWindows && (
+                <li>
+                  <FormRow>
+                    <Label htmlFor="applicationsPath">Emulators Path</Label>
+                    <TextInput>
+                      <TextInput.Input
+                        name="applicationsPath"
+                        id="applicationsPath"
+                        value={applicationPath}
+                        onChange={(event) =>
+                          setApplicationPath(event.target.value)
+                        }
+                        iconButton
+                      />
+                      <TextInput.IconButton
+                        type="submit"
+                        name="_actionId"
+                        value={actionIds.chooseApplicationsPath}
+                        ref={(ref) => {
+                          if (ref) {
+                            // TODO: fix it
+                            entriesRefs.current.push(ref);
+                          }
+                        }}
+                      >
+                        <FaFolderOpen />
+                      </TextInput.IconButton>
+                    </TextInput>
+                  </FormRow>
+                </li>
+              )}
+              <li>
                 <FormRow>
-                  <Label htmlFor="applicationsPath">Emulators Path</Label>
-                  <FileInput>
-                    <FileInput.TextInput
-                      name="applicationsPath"
-                      id="applicationsPath"
-                      value={applicationPath}
+                  <Label htmlFor="categoriesPath">Roms Path</Label>
+                  <TextInput>
+                    <TextInput.Input
+                      name="categoriesPath"
+                      id="categoriesPath"
+                      value={categoriesPath}
                       onChange={(event) =>
-                        setApplicationPath(event.target.value)
+                        setCategoriesPath(event.target.value)
                       }
+                      iconButton
                     />
-                    <FileInput.Button
+                    <TextInput.IconButton
                       type="submit"
                       name="_actionId"
-                      value={actionIds.chooseApplicationsPath}
-                      icon={<IoFolderOpenSharp />}
+                      value={actionIds.chooseCategoriesPath}
                       ref={(ref) => {
                         if (ref) {
                           entriesRefs.current.push(ref);
                         }
                       }}
                     >
-                      Choose
-                    </FileInput.Button>
-                  </FileInput>
+                      <FaFolderOpen />
+                    </TextInput.IconButton>
+                  </TextInput>
                 </FormRow>
-              )}
-
-              <FormRow>
-                <Label htmlFor="categoriesPath">Roms Path</Label>
-                <FileInput>
-                  <FileInput.TextInput
-                    name="categoriesPath"
-                    id="categoriesPath"
-                    value={categoriesPath}
-                    onChange={(event) => setCategoriesPath(event.target.value)}
-                  />
-                  <FileInput.Button
-                    type="submit"
-                    name="_actionId"
-                    value={actionIds.chooseCategoriesPath}
-                    icon={<IoFolderOpenSharp />}
-                    ref={(ref) => {
-                      if (ref) {
-                        entriesRefs.current.push(ref);
-                      }
-                    }}
-                  >
-                    Choose
-                  </FileInput.Button>
-                </FileInput>
-              </FormRow>
+              </li>
             </FormBox>
           }
           actions={

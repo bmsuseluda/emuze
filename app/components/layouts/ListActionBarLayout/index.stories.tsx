@@ -1,4 +1,4 @@
-import type { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
 
 import { ListActionBarLayout } from ".";
 import { Button } from "~/components/Button";

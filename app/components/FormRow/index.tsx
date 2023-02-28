@@ -9,8 +9,4 @@ export const FormRow = styled("fieldset", {
   roundedBorder: true,
   borderWidth: "$1",
   borderColor: "transparent",
-
-  "&:focus-within": {
-    borderColor: "$accent",
-  },
 });

@@ -1,4 +1,4 @@
-import type { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
 
 import { FormRow } from ".";
 import { Label } from "../Label";
@@ -20,7 +20,7 @@ Basic.args = {
   children: (
     <>
       <Label htmlFor="firstname">firstname</Label>
-      <TextInput name="firstname" id="firstname" />
+      <TextInput.Input name="firstname" id="firstname" />
     </>
   ),
 };

@@ -1,4 +1,4 @@
-import type { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
 
 import { FormBox } from ".";
 import { Label } from "../Label";
@@ -21,15 +21,15 @@ Basic.args = {
     <>
       <Label>
         firstname
-        <TextInput name="firstname" />
+        <TextInput.Input name="firstname" />
       </Label>
       <Label>
         lastname
-        <TextInput name="lastname" />
+        <TextInput.Input name="lastname" />
       </Label>
       <Label>
         address
-        <TextInput name="address" />
+        <TextInput.Input name="address" />
       </Label>
     </>
   ),

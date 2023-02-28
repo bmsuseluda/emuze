@@ -1,4 +1,3 @@
-import type { MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Outlet,
@@ -21,13 +20,6 @@ import {
 } from "~/hooks/useGamepadEvent";
 import { layout } from "~/hooks/useGamepads/layouts";
 import { Dialog } from "~/components/Dialog";
-
-export const meta: MetaFunction = () => {
-  return {
-    title: "Settings",
-    description: "Configure to your needs",
-  };
-};
 
 export const loader = () => {
   const { collapseSidebar } = readAppearance();
@@ -57,6 +49,12 @@ export default function Index() {
     navigate(pathname.split("/settings")[0]);
   }, [pathname, navigate, switchFocus]);
 
+  const handleCloseOnFocus = useCallback(() => {
+    if (isInFocus) {
+      handleClose();
+    }
+  }, [isInFocus, handleClose]);
+
   const switchToMain = useCallback(() => {
     if (isInFocus) {
       switchFocus("settingsMain");
@@ -71,6 +69,8 @@ export default function Index() {
   useKeyboardEvent("Enter", switchToMain);
   useKeyboardEvent("Escape", handleClose);
   useGamepadButtonPressEvent(layout.buttons.Start, handleClose);
+  useGamepadButtonPressEvent(layout.buttons.B, handleCloseOnFocus);
+  useKeyboardEvent("Backspace", handleCloseOnFocus);
 
   return (
     <Dialog open onClose={handleClose}>

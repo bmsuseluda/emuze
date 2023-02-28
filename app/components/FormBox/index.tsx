@@ -1,7 +1,6 @@
 import { styled } from "~/stitches";
-import { Box } from "../Box";
 
-export const FormBox = styled(Box, {
+export const FormBox = styled("ul", {
   display: "flex",
   flexDirection: "column",
   gap: "$1",

@@ -12,7 +12,7 @@ import { globalStyles, themes } from "./stitches";
 import { Box } from "./components/Box";
 import { Titlebar } from "./containers/Titlebar";
 import { useGamepads } from "~/hooks/useGamepads";
-import { json } from "@remix-run/node";
+import { json, MetaFunction } from "@remix-run/node";
 import { FullscreenProvider } from "~/provider/FullscreenProvider";
 import { FocusProvider } from "~/provider/FocusProvider";
 import type { FocusElement } from "~/types/focusElement";
@@ -31,6 +31,11 @@ export default function App() {
     </Document>
   );
 }
+
+export const meta: MetaFunction = () => ({
+  title: "emuze",
+  description: "Your library",
+});
 
 // https://remix.run/docs/en/v1/api/conventions#errorboundary
 export function ErrorBoundary({ error }: { error: Error }) {

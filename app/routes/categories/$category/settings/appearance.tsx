@@ -85,11 +85,7 @@ export default function Index() {
 
   const onBack = useCallback(() => {
     if (isInFocus) {
-      if (selectedEntry.current) {
-        // TODO: blur on the button is not enough. Maybe the input element has focus https://github.com/radix-ui/primitives/discussions/874
-        selectedEntry.current.blur();
-        resetSelected();
-      }
+      resetSelected();
       switchFocus("settingsSidebar");
     }
   }, [isInFocus, resetSelected, selectedEntry, switchFocus]);
@@ -128,47 +124,55 @@ export default function Index() {
           scrollToTopOnLocationChange
           pathId="appearance"
           list={
-            <FormBox as="ul" ref={entryListRef}>
-              <CheckboxRow>
-                <Checkbox
-                  id="fullscreen"
-                  name="fullscreen"
-                  checked={fullscreen}
-                  onClick={() => electronAPI.changeWindow("fullscreen")}
-                  ref={(ref) => {
-                    if (ref) {
-                      entriesRefs.current.push(ref);
-                    }
-                  }}
-                />
-                <Label htmlFor="fullscreen">Fullscreen</Label>
-              </CheckboxRow>
-              <CheckboxRow>
-                <Checkbox
-                  id="alwaysGameNames"
-                  name="alwaysGameNames"
-                  defaultChecked={alwaysGameNames}
-                  ref={(ref) => {
-                    if (ref) {
-                      entriesRefs.current.push(ref);
-                    }
-                  }}
-                />
-                <Label htmlFor="alwaysGameNames">Always show game names</Label>
-              </CheckboxRow>
-              <CheckboxRow>
-                <Checkbox
-                  id="collapseSidebar"
-                  name="collapseSidebar"
-                  defaultChecked={collapseSidebar}
-                  ref={(ref) => {
-                    if (ref) {
-                      entriesRefs.current.push(ref);
-                    }
-                  }}
-                />
-                <Label htmlFor="collapseSidebar">Collapse sidebar</Label>
-              </CheckboxRow>
+            <FormBox ref={entryListRef}>
+              <li>
+                <CheckboxRow>
+                  <Checkbox
+                    id="fullscreen"
+                    name="fullscreen"
+                    checked={fullscreen}
+                    onClick={() => electronAPI.changeWindow("fullscreen")}
+                    ref={(ref) => {
+                      if (ref) {
+                        entriesRefs.current[0] = ref;
+                      }
+                    }}
+                  />
+                  <Label htmlFor="fullscreen">Fullscreen</Label>
+                </CheckboxRow>
+              </li>
+              <li>
+                <CheckboxRow>
+                  <Checkbox
+                    id="alwaysGameNames"
+                    name="alwaysGameNames"
+                    defaultChecked={alwaysGameNames}
+                    ref={(ref) => {
+                      if (ref) {
+                        entriesRefs.current[1] = ref;
+                      }
+                    }}
+                  />
+                  <Label htmlFor="alwaysGameNames">
+                    Always show game names
+                  </Label>
+                </CheckboxRow>
+              </li>
+              <li>
+                <CheckboxRow>
+                  <Checkbox
+                    id="collapseSidebar"
+                    name="collapseSidebar"
+                    defaultChecked={collapseSidebar}
+                    ref={(ref) => {
+                      if (ref) {
+                        entriesRefs.current[2] = ref;
+                      }
+                    }}
+                  />
+                  <Label htmlFor="collapseSidebar">Collapse sidebar</Label>
+                </CheckboxRow>
+              </li>
             </FormBox>
           }
           actions={

@@ -1,4 +1,4 @@
-import type { ComponentStory, ComponentMeta } from "@storybook/react";
+import type { ComponentMeta, ComponentStory } from "@storybook/react";
 
 import { TextInput } from ".";
 
@@ -13,11 +13,20 @@ const Template: ComponentStory<typeof TextInput> = (args) => (
 
 export const Basic = Template.bind({});
 Basic.args = {
-  name: "firstname",
-  defaultValue: "Peter",
+  children: (
+    <>
+      <TextInput.Input />
+      <TextInput.IconButton>choose</TextInput.IconButton>
+    </>
+  ),
 };
 
 export const Invalid = Template.bind({});
 Invalid.args = {
-  required: true,
+  children: (
+    <>
+      <TextInput.Input required />
+      <TextInput.IconButton>choose</TextInput.IconButton>
+    </>
+  ),
 };

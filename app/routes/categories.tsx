@@ -1,4 +1,4 @@
-import type { ActionFunction, MetaFunction } from "@remix-run/node";
+import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import {
   Form,
@@ -79,13 +79,6 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   return null;
-};
-
-export const meta: MetaFunction = () => {
-  return {
-    title: "Library",
-    description: "Your library",
-  };
 };
 
 export const ErrorBoundary = ({ error }: { error: Error }) => {
