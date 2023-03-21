@@ -36,7 +36,7 @@ const withThemeProvider = (Story: Story, context: StoryContext) => {
       css={{
         backgroundColor: "$backgroundColor",
         width: "100%",
-        height: "100%",
+        height: "100vh",
         padding: "$2",
         position: "absolute",
         boxSizing: "border-box",

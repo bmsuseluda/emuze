@@ -1,14 +1,15 @@
 import {
-  playstation,
+  bayoubilly,
+  fahrenheit,
+  finalfantasy7,
   hugo,
   hugo2,
-  finalfantasy7,
-  turtles2,
-  fahrenheit,
+  playstation,
   playstation2,
+  turtles2,
 } from "../__testData__/category";
 import type { GamesResponse } from "../igdb.server";
-import { fetchCovers } from "../igdb.server";
+import { chunk, fetchCovers } from "../igdb.server";
 
 const igdbRequestMock = jest.fn();
 jest.mock("igdb-api-node", () => () => ({
@@ -23,6 +24,10 @@ jest.mock("igdb-api-node", () => () => ({
 
 jest.mock("~/server/openDialog.server.ts", () => ({
   openErrorDialog: jest.fn(),
+}));
+
+jest.mock("~/server/igdbAuthentication.server.ts", () => ({
+  getAccessToken: jest.fn(),
 }));
 
 describe("igdb.server", () => {
@@ -155,6 +160,42 @@ describe("igdb.server", () => {
         imageUrl:
           "https://images.igdb.com/igdb/image/upload/t_cover_big/turtles2img.png",
       },
+    ]);
+  });
+
+  it("Should return games with comma separated article", async () => {
+    const igdbResponse: GamesResponse = {
+      data: [
+        {
+          name: "The Adventures of Bayou Billy",
+          cover: {
+            image_id: "bayoubillyimg",
+          },
+        },
+      ],
+    };
+    igdbRequestMock.mockResolvedValue(igdbResponse);
+
+    const entriesWithImages = await fetchCovers([18], [bayoubilly]);
+
+    expect(entriesWithImages).toStrictEqual([
+      {
+        ...bayoubilly,
+        imageUrl:
+          "https://images.igdb.com/igdb/image/upload/t_cover_big/bayoubillyimg.png",
+      },
+    ]);
+  });
+});
+
+describe("chunk", () => {
+  it("Should chunk the array into 2 chunks for 5 entries", () => {
+    const entries = [1, 2, 3, 4, 5];
+    const result = chunk(entries, 3);
+
+    expect(result).toStrictEqual([
+      [1, 2, 3],
+      [4, 5],
     ]);
   });
 });

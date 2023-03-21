@@ -25,31 +25,31 @@ ManyElements.args = {
             <>
               <Label>
                 firstname
-                <TextInput name="firstname" />
+                <TextInput.Input name="firstname" />
               </Label>
               <Label>
                 firstname
-                <TextInput name="firstname" />
+                <TextInput.Input name="firstname" />
               </Label>
               <Label>
                 firstname
-                <TextInput name="firstname" />
+                <TextInput.Input name="firstname" />
               </Label>
               <Label>
                 firstname
-                <TextInput name="firstname" />
+                <TextInput.Input name="firstname" />
               </Label>
               <Label>
                 firstname
-                <TextInput name="firstname" />
+                <TextInput.Input name="firstname" />
               </Label>
               <Label>
                 firstname
-                <TextInput name="firstname" />
+                <TextInput.Input name="firstname" />
               </Label>
               <Label>
                 firstname
-                <TextInput name="firstname" />
+                <TextInput.Input name="firstname" />
               </Label>
             </>
           }
@@ -76,7 +76,7 @@ OneElement.args = {
             <>
               <Label>
                 firstname
-                <TextInput name="firstname" />
+                <TextInput.Input name="firstname" />
               </Label>
             </>
           }

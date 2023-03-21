@@ -52,6 +52,10 @@ jest.mock("~/server/openDialog.server.ts", () => ({
 
 jest.mock("fs");
 
+jest.mock("~/server/igdbAuthentication.server.ts", () => ({
+  getAccessToken: jest.fn(),
+}));
+
 const igdbRequestMock = jest.fn();
 jest.mock("igdb-api-node", () => () => ({
   fields: () => ({

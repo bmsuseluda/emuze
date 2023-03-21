@@ -63,7 +63,7 @@ export const action: ActionFunction = async ({ request }) => {
     writeGeneral(fields);
     importApplications();
     await importCategories();
-    return redirect("/categories");
+    throw redirect("/categories");
   }
 
   if (_actionId === actionIds.chooseApplicationsPath) {
@@ -132,20 +132,20 @@ export default function Index() {
       resetSelected();
       switchFocus("settingsSidebar");
     }
-  }, [isInFocus, resetSelected, selectedEntry, switchFocus]);
+  }, [isInFocus, resetSelected, switchFocus]);
 
   const onToggle = useCallback(() => {
     if (isInFocus) {
       selectedEntry.current?.click();
     }
-  }, [isInFocus, selectEntry]);
+  }, [isInFocus, selectedEntry]);
 
   const onSave = useCallback(() => {
     if (isInFocus) {
       switchFocus("main");
       saveButtonRef.current?.click();
     }
-  }, [isInFocus]);
+  }, [isInFocus, switchFocus]);
 
   useGamepadButtonPressEvent(layout.buttons.B, onBack);
   useKeyboardEvent("Backspace", onBack);

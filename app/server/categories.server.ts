@@ -105,9 +105,7 @@ export const readEntriesWithImages = async (
       return entry;
     });
 
-    const entriesWithImages = await fetchCovers(igdbPlatformIds, entries);
-
-    return entriesWithImages;
+    return await fetchCovers(igdbPlatformIds, entries);
   }
 };
 

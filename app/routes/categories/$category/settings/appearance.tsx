@@ -88,13 +88,13 @@ export default function Index() {
       resetSelected();
       switchFocus("settingsSidebar");
     }
-  }, [isInFocus, resetSelected, selectedEntry, switchFocus]);
+  }, [isInFocus, resetSelected, switchFocus]);
 
   const onToggle = useCallback(() => {
     if (isInFocus) {
       selectedEntry.current?.click();
     }
-  }, [isInFocus, selectEntry]);
+  }, [isInFocus, selectedEntry]);
 
   const onSave = useCallback(() => {
     if (isInFocus) {

@@ -15,7 +15,7 @@ Basic.args = {
   children: (
     <>
       firstname
-      <TextInput name="firstname" />
+      <TextInput.Input name="firstname" />
     </>
   ),
 };

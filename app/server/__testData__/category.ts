@@ -110,6 +110,12 @@ export const playstation2: CategoryOnLinux = {
   entries: [fahrenheit],
 };
 
+export const bayoubilly: Entry = {
+  id: "adventuresofbayoubilly,the(e)",
+  name: "Adventures of Bayou Billy, The (E)",
+  path: "F:/games/Emulation/roms/Nintendo Entertainment System/Adventures of Bayou Billy, The (E).nes",
+};
+
 export const turtles2: Entry = {
   id: "teenagemutantheroturtlesii-thearcadegame",
   name: "Teenage Mutant Hero Turtles II - The Arcade Game",

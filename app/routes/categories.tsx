@@ -46,7 +46,7 @@ export const loader = ({ params }: DataFunctionArgs) => {
 
   if (categories && categories.length > 0) {
     if (!category) {
-      return redirect(categories[0].id);
+      throw redirect(categories[0].id);
     }
 
     const categoryLinks = categories.map(({ id, name }) => ({
@@ -75,7 +75,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (_actionId === "import") {
     importApplications();
     await importCategories();
-    return redirect("/categories");
+    throw redirect("/categories");
   }
 
   return null;

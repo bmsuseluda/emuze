@@ -15,6 +15,7 @@ export const StyledButton = styled("button", {
   cursor: "pointer",
   textDecoration: "none",
   outline: "none",
+  whiteSpace: "nowrap",
 
   "&:disabled": {
     borderStyle: "dashed",
