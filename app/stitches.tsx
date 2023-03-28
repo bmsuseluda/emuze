@@ -76,7 +76,10 @@ export const globalStyles = globalCss({
     margin: 0,
     padding: 0,
     // TODO: create typography component
-    fontFamily: "arial",
+    fontFamily:
+      "ui-rounded, Hiragino Maru Gothic ProN, Quicksand, Comfortaa, Manjari, Arial Rounded MT Bold, Calibri, source-sans-pro, sans-serif",
+    fontSize: "130%",
+
     userSelect: "none",
   },
 });

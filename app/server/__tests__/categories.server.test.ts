@@ -52,16 +52,12 @@ jest.mock("~/server/openDialog.server.ts", () => ({
 
 jest.mock("fs");
 
-jest.mock("~/server/igdbAuthentication.server.ts", () => ({
-  getAccessToken: jest.fn(),
-}));
-
 const igdbRequestMock = jest.fn();
-jest.mock("igdb-api-node", () => () => ({
+jest.mock("apicalypse", () => () => ({
   fields: () => ({
     where: () => ({
       limit: () => ({
-        request: igdbRequestMock,
+        requestAll: igdbRequestMock,
       }),
     }),
   }),
@@ -80,9 +76,7 @@ describe("categories.server", () => {
           blazingstar.path,
           "F:/games/Emulation/roms/Neo Geo/neogeo.zip",
         ]);
-      igdbRequestMock.mockResolvedValue({
-        data: [],
-      });
+      igdbRequestMock.mockResolvedValue([]);
 
       const result = await readEntriesWithImages(
         neogeo.entryPath,
@@ -112,9 +106,7 @@ describe("categories.server", () => {
       when(readFilenames as jest.Mock<string[]>)
         .calledWith(pcenginecd.entryPath, pcenginecd.fileExtensions)
         .mockReturnValueOnce([gateofthunder.path, cotton.path]);
-      igdbRequestMock.mockResolvedValue({
-        data: [],
-      });
+      igdbRequestMock.mockResolvedValue([]);
 
       // execute
       await importCategories();
@@ -157,9 +149,7 @@ describe("categories.server", () => {
         hugo.path,
         hugo2.path,
       ]);
-      igdbRequestMock.mockResolvedValue({
-        data: [],
-      });
+      igdbRequestMock.mockResolvedValue([]);
 
       // execute
       await importEntries(playstation.id);

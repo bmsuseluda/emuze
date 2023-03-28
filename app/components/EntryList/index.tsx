@@ -1,5 +1,5 @@
 import type { HTMLAttributes, MutableRefObject } from "react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTestId } from "~/hooks/useTestId";
 import { styled } from "~/stitches";
 import type { Entries } from "~/types/category";
@@ -20,6 +20,8 @@ const List = styled(Ul, {
   gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
 });
 
+const entriesNumberForChunk = 50;
+
 export const EntryList = React.forwardRef<HTMLUListElement, Props>(
   (
     {
@@ -33,9 +35,26 @@ export const EntryList = React.forwardRef<HTMLUListElement, Props>(
     listRef
   ) => {
     const { getTestId } = useTestId(dataTestid);
+
+    const [entriesToRender, setEntriesToRender] = useState(
+      entries.slice(0, entriesNumberForChunk)
+    );
+    useEffect(() => {
+      setEntriesToRender(entries.slice(0, entriesNumberForChunk));
+    }, [entries]);
+    useEffect(() => {
+      if (entriesToRender.length < entries.length) {
+        console.log("add Entries");
+        setEntriesToRender((entriesToRender) => [
+          ...entriesToRender,
+          ...entries.slice(entriesToRender.length, entries.length),
+        ]);
+      }
+    }, [entriesToRender, entries]);
+
     return (
       <List ref={listRef} {...getTestId()}>
-        {entries.map(({ id, name, imageUrl }, index) => (
+        {entriesToRender.map(({ id, name, imageUrl }, index) => (
           <Entry
             id={id}
             name={name}

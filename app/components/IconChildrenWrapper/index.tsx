@@ -19,6 +19,7 @@ const Wrapper = styled("span", {
           minHeight: "1.3rem",
           maxWidth: "1.3rem",
           maxHeight: "1.3rem",
+          verticalAlign: "middle",
         },
       },
     },

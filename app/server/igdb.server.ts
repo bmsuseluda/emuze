@@ -1,9 +1,6 @@
-import igdb from "igdb-api-node";
-
 import type { Entry } from "~/types/category";
 import { openErrorDialog } from "~/server/openDialog.server";
-import { clientId, getAccessToken } from "~/server/igdbAuthentication.server";
-import type { Apicalypse } from "apicalypse";
+import apicalypse from "apicalypse";
 
 interface GameLocalization {
   name?: string;
@@ -12,7 +9,7 @@ interface GameLocalization {
   };
 }
 
-interface Game {
+export interface Game {
   cover?: {
     image_id: string;
   };
@@ -21,12 +18,9 @@ interface Game {
   game_localizations?: GameLocalization[];
 }
 
-export interface GamesResponse {
-  data: Game[];
-  config?: {
-    data?: unknown;
-  };
-}
+const url =
+  process.env.IGDB_DEVELOPMENT_URL ||
+  "https://emuze-api-d7jjhe73ba-uc.a.run.app/games";
 
 const igdbSubTitleChar = ":";
 const windowsSubTitleChar = " -";
@@ -90,70 +84,45 @@ const normalizeString = (a: string) =>
 const matchName = (a: string, b: string) =>
   normalizeString(a) === normalizeString(b);
 
-export const chunk = <T>(array: T[], maxEntries: number): Array<T[]> => {
-  const chunks = [];
-  const chunkNumber = Math.ceil(array.length / maxEntries);
-
-  for (let i = 0; i < chunkNumber; i++) {
-    chunks.push(array.slice(i * maxEntries, (i + 1) * maxEntries));
-  }
-
-  return chunks;
-};
-
-const fetchCoversForChunk = async (
-  client: Apicalypse,
-  platformId: number[],
-  entries: Entry[]
-) => {
-  const gamesResponse: GamesResponse = await client
-    .fields([
-      "name",
-      "cover.image_id,alternative_names.name,game_localizations.name,game_localizations.cover.image_id",
-    ])
-    .where(
-      `platforms=(${platformId}) &
-            (${entries.flatMap(filterGame).join(" | ")})`
-    )
-    .limit(500)
-    .request("/games");
-
-  const entriesWithImages = entries.map((entry) => {
-    const gameData = gamesResponse.data.find(
-      ({ name, alternative_names, game_localizations }) =>
-        matchName(name, entry.name) ||
-        !!alternative_names?.find(({ name }) => matchName(name, entry.name)) ||
-        !!findGameLocalization(entry.name, game_localizations)
-    );
-    if (gameData) {
-      const imageUrl = getCoverUrl(entry.name, gameData);
-      if (imageUrl) {
-        return {
-          ...entry,
-          imageUrl,
-        };
-      }
-    }
-    return entry;
-  });
-
-  return entriesWithImages;
-};
-
-export const fetchCovers = async (platformId: number[], entries: Entry[]) => {
+export const fetchCovers = async (platformIds: number[], entries: Entry[]) => {
   if (entries.length > 0) {
-    const entryChunks = chunk(entries, 200);
     try {
-      const accessToken = await getAccessToken();
-      const client = igdb(clientId, accessToken);
+      const client = apicalypse({
+        method: "POST",
+      });
 
-      const entriesWithImages = await Promise.all(
-        entryChunks.map((entryChunk) =>
-          fetchCoversForChunk(client, platformId, entryChunk)
+      const gamesData: Game[] = await client
+        .fields([
+          "name",
+          "cover.image_id,alternative_names.name,game_localizations.name,game_localizations.cover.image_id",
+        ])
+        .where(
+          `platforms=(${platformIds}) &
+            (${entries.flatMap(filterGame).join(" | ")})`
         )
-      );
+        .limit(500)
+        .requestAll(url);
 
-      return entriesWithImages.flat();
+      return entries.map((entry) => {
+        const gameData = gamesData.find(
+          ({ name, alternative_names, game_localizations }) =>
+            matchName(name, entry.name) ||
+            !!alternative_names?.find(({ name }) =>
+              matchName(name, entry.name)
+            ) ||
+            !!findGameLocalization(entry.name, game_localizations)
+        );
+        if (gameData) {
+          const imageUrl = getCoverUrl(entry.name, gameData);
+          if (imageUrl) {
+            return {
+              ...entry,
+              imageUrl,
+            };
+          }
+        }
+        return entry;
+      });
     } catch (error) {
       openErrorDialog(error, `Fetch covers from igdb failed`);
       console.log("igdb error", error);

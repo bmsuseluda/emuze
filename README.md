@@ -36,7 +36,7 @@ emulators
 
 ### Roms Folder
 
-The roms need to be grouped by there platform. E.g. `Final Fantasy VII.chd` needs to be stored in a folder `Playstation`.
+The roms need to be grouped by their platform. E.g. `Final Fantasy VII.chd` needs to be stored in a folder `Playstation`.
 
 ```
 roms
@@ -95,8 +95,6 @@ Right now the following are supported:
 ## Known Issues
 
 - Fetching metadata for games like `Super Mario Bros. / Tetris / World Cup` is not supported right now due to the limitations of special characters in a windows file name.
-- For a platform metadata can be fetched for 500 titles only.
-- Metadata can't be fetched for roms named for MAME.
 
 ## Roadmap
 

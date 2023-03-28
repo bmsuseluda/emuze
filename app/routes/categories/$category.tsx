@@ -168,9 +168,7 @@ export default function Category() {
       <ListActionBarLayout
         headline={
           <IconChildrenWrapper icon={<PlatformIcon id={id} />}>
-            <span>
-              <span {...getTestId("name")}>{name}</span>
-            </span>
+            <span {...getTestId("name")}>{name}</span>
           </IconChildrenWrapper>
         }
       >

@@ -24,10 +24,20 @@ import type { ReactNode } from "react";
 
 export default function App() {
   globalStyles();
+  const { fullscreen } = useLoaderData<typeof loader>();
+  const { isDisabled } = useFocus<FocusElement>("main");
+
+  useGamepads(isDisabled);
+
   return (
     <Document>
       <Layout>
-        <Outlet />
+        <FocusProvider focusDefault={focusDefault}>
+          <FullscreenProvider fullscreenDefault={fullscreen}>
+            <Titlebar />
+            <Outlet />
+          </FullscreenProvider>
+        </FocusProvider>
       </Layout>
     </Document>
   );
@@ -116,7 +126,7 @@ function Document({
         <Links />
       </head>
       <body>
-        <FocusProvider focusDefault={focusDefault}>{children}</FocusProvider>
+        {children}
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
@@ -126,11 +136,6 @@ function Document({
 }
 
 function Layout({ children }: { children: ReactNode }) {
-  const { fullscreen } = useLoaderData<typeof loader>();
-  const { isDisabled } = useFocus<FocusElement>("main");
-
-  useGamepads(isDisabled);
-
   return (
     <Box
       className={themes.dark}
@@ -141,10 +146,7 @@ function Layout({ children }: { children: ReactNode }) {
         backgroundColor: "$backgroundColor",
       }}
     >
-      <FullscreenProvider fullscreenDefault={fullscreen}>
-        <Titlebar />
-        {children}
-      </FullscreenProvider>
+      {children}
     </Box>
   );
 }

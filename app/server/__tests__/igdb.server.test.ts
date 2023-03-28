@@ -8,15 +8,15 @@ import {
   playstation2,
   turtles2,
 } from "../__testData__/category";
-import type { GamesResponse } from "../igdb.server";
-import { chunk, fetchCovers } from "../igdb.server";
+import type { Game } from "../igdb.server";
+import { fetchCovers } from "../igdb.server";
 
 const igdbRequestMock = jest.fn();
-jest.mock("igdb-api-node", () => () => ({
+jest.mock("apicalypse", () => () => ({
   fields: () => ({
     where: () => ({
       limit: () => ({
-        request: igdbRequestMock,
+        requestAll: igdbRequestMock,
       }),
     }),
   }),
@@ -26,30 +26,24 @@ jest.mock("~/server/openDialog.server.ts", () => ({
   openErrorDialog: jest.fn(),
 }));
 
-jest.mock("~/server/igdbAuthentication.server.ts", () => ({
-  getAccessToken: jest.fn(),
-}));
-
 describe("igdb.server", () => {
   it("Should return games if they match directly on name or alternative name", async () => {
-    const igdbResponse: GamesResponse = {
-      data: [
-        {
-          name: "Hugo",
-        },
-        {
-          name: "Hugo 360",
-          alternative_names: [
-            {
-              name: "Hugo 2",
-            },
-          ],
-          cover: {
-            image_id: "hugo360img",
+    const igdbResponse: Game[] = [
+      {
+        name: "Hugo",
+      },
+      {
+        name: "Hugo 360",
+        alternative_names: [
+          {
+            name: "Hugo 2",
           },
+        ],
+        cover: {
+          image_id: "hugo360img",
         },
-      ],
-    };
+      },
+    ];
     igdbRequestMock.mockResolvedValue(igdbResponse);
 
     const entriesWithImages = await fetchCovers(playstation.igdbPlatformIds, [
@@ -70,24 +64,22 @@ describe("igdb.server", () => {
   });
 
   it("Should return games if they match on localized name", async () => {
-    const igdbResponse: GamesResponse = {
-      data: [
-        {
-          name: "Indigo Prophecy",
-          cover: {
-            image_id: "indigoimg",
-          },
-          game_localizations: [
-            {
-              name: "Fahrenheit",
-              cover: {
-                image_id: "fahrenheitimg",
-              },
-            },
-          ],
+    const igdbResponse: Game[] = [
+      {
+        name: "Indigo Prophecy",
+        cover: {
+          image_id: "indigoimg",
         },
-      ],
-    };
+        game_localizations: [
+          {
+            name: "Fahrenheit",
+            cover: {
+              image_id: "fahrenheitimg",
+            },
+          },
+        ],
+      },
+    ];
     igdbRequestMock.mockResolvedValue(igdbResponse);
 
     const entriesWithImages = await fetchCovers(playstation2.igdbPlatformIds, [
@@ -104,21 +96,19 @@ describe("igdb.server", () => {
   });
 
   it("Should return games with multiple discs and region", async () => {
-    const igdbResponse: GamesResponse = {
-      data: [
-        {
-          name: "Final Fantasy vii",
-          alternative_names: [
-            {
-              name: "FF7",
-            },
-          ],
-          cover: {
-            image_id: "ff7img",
+    const igdbResponse: Game[] = [
+      {
+        name: "Final Fantasy vii",
+        alternative_names: [
+          {
+            name: "FF7",
           },
+        ],
+        cover: {
+          image_id: "ff7img",
         },
-      ],
-    };
+      },
+    ];
     igdbRequestMock.mockResolvedValue(igdbResponse);
 
     const entriesWithImages = await fetchCovers(playstation.igdbPlatformIds, [
@@ -135,21 +125,19 @@ describe("igdb.server", () => {
   });
 
   it("Should return games with subtitle", async () => {
-    const igdbResponse: GamesResponse = {
-      data: [
-        {
-          name: "Teenage Mutant Ninja Turtles II: The Arcade Game",
-          alternative_names: [
-            {
-              name: "Teenage Mutant Hero Turtles II: The Arcade Game",
-            },
-          ],
-          cover: {
-            image_id: "turtles2img",
+    const igdbResponse: Game[] = [
+      {
+        name: "Teenage Mutant Ninja Turtles II: The Arcade Game",
+        alternative_names: [
+          {
+            name: "Teenage Mutant Hero Turtles II: The Arcade Game",
           },
+        ],
+        cover: {
+          image_id: "turtles2img",
         },
-      ],
-    };
+      },
+    ];
     igdbRequestMock.mockResolvedValue(igdbResponse);
 
     const entriesWithImages = await fetchCovers([18], [turtles2]);
@@ -164,16 +152,14 @@ describe("igdb.server", () => {
   });
 
   it("Should return games with comma separated article", async () => {
-    const igdbResponse: GamesResponse = {
-      data: [
-        {
-          name: "The Adventures of Bayou Billy",
-          cover: {
-            image_id: "bayoubillyimg",
-          },
+    const igdbResponse: Game[] = [
+      {
+        name: "The Adventures of Bayou Billy",
+        cover: {
+          image_id: "bayoubillyimg",
         },
-      ],
-    };
+      },
+    ];
     igdbRequestMock.mockResolvedValue(igdbResponse);
 
     const entriesWithImages = await fetchCovers([18], [bayoubilly]);
@@ -184,18 +170,6 @@ describe("igdb.server", () => {
         imageUrl:
           "https://images.igdb.com/igdb/image/upload/t_cover_big/bayoubillyimg.png",
       },
-    ]);
-  });
-});
-
-describe("chunk", () => {
-  it("Should chunk the array into 2 chunks for 5 entries", () => {
-    const entries = [1, 2, 3, 4, 5];
-    const result = chunk(entries, 3);
-
-    expect(result).toStrictEqual([
-      [1, 2, 3],
-      [4, 5],
     ]);
   });
 });

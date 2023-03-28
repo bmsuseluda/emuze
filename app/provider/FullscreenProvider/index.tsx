@@ -8,7 +8,10 @@ type Props = {
   children: ReactNode;
 };
 
-export const FullscreenProvider = ({ fullscreenDefault, children }: Props) => {
+export const FullscreenProvider = ({
+  fullscreenDefault = false,
+  children,
+}: Props) => {
   const [fullscreen, setFullscreen] = useState(fullscreenDefault);
   useEffect(() => {
     electronAPI.isFullscreen().then((result: boolean) => {
