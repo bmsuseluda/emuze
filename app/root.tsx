@@ -11,32 +11,38 @@ import {
 import { globalStyles, themes } from "./stitches";
 import { Box } from "./components/Box";
 import { Titlebar } from "./containers/Titlebar";
-import { useGamepads } from "~/hooks/useGamepads";
 import type { MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { FullscreenProvider } from "~/provider/FullscreenProvider";
 import { FocusProvider } from "~/provider/FocusProvider";
 import type { FocusElement } from "~/types/focusElement";
 import { focusDefault } from "~/types/focusElement";
-import { useFocus } from "~/hooks/useFocus";
 import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
 import type { ReactNode } from "react";
+import { useFocus } from "~/hooks/useFocus";
+import { useGamepads } from "~/hooks/useGamepads";
+
+const GamepadProvider = ({ children }: { children: ReactNode }) => {
+  const { isDisabled } = useFocus<FocusElement>("main");
+  useGamepads(isDisabled);
+
+  return <>{children}</>;
+};
 
 export default function App() {
   globalStyles();
   const { fullscreen } = useLoaderData<typeof loader>();
-  const { isDisabled } = useFocus<FocusElement>("main");
-
-  useGamepads(isDisabled);
 
   return (
     <Document>
       <Layout>
         <FocusProvider focusDefault={focusDefault}>
-          <FullscreenProvider fullscreenDefault={fullscreen}>
-            <Titlebar />
-            <Outlet />
-          </FullscreenProvider>
+          <GamepadProvider>
+            <FullscreenProvider fullscreenDefault={fullscreen}>
+              <Titlebar />
+              <Outlet />
+            </FullscreenProvider>
+          </GamepadProvider>
         </FocusProvider>
       </Layout>
     </Document>

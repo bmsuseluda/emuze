@@ -1,2 +1,2 @@
-export const convertToId = (name: string) =>
-  name.toLowerCase().split(" ").join("");
+export const convertToId = (name: string, index: number) =>
+  `${name.toLowerCase().split(" ").join("")}${index}`;

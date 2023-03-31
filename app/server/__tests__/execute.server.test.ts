@@ -6,8 +6,6 @@ import type { Category } from "~/types/category";
 
 import { executeApplication } from "../execute.server";
 import {
-  blazingstar,
-  gateofthunder,
   neogeo,
   neogeoLinux,
   pcenginecd,
@@ -32,6 +30,8 @@ jest.mock("~/server/settings.server", () => ({
   readAppearance: jest.fn(),
 }));
 
+const getFirstEntry = (category: Category) => category.entries![0];
+
 describe("execute.server", () => {
   const env = process.env;
 
@@ -54,11 +54,12 @@ describe("execute.server", () => {
 
       it("Should execute the entry with the defined application of the category", () => {
         (readCategory as jest.Mock<Category>).mockReturnValueOnce(pcenginecd);
+        const entry = getFirstEntry(pcenginecd);
 
-        executeApplication(pcenginecd.id, gateofthunder.id);
+        executeApplication(pcenginecd.id, entry.id);
 
         expect(execFileMock).toHaveBeenCalledWith(pcenginecd.applicationPath, [
-          gateofthunder.path,
+          entry.path,
         ]);
       });
 
@@ -73,8 +74,9 @@ describe("execute.server", () => {
       it("Should add optional params", () => {
         (readCategory as jest.Mock<Category>).mockReturnValueOnce(neogeo);
         const entryDirname = "F:/games/Emulation/roms/Neo Geo";
+        const entry = getFirstEntry(neogeo);
 
-        executeApplication(neogeo.id, blazingstar.id);
+        executeApplication(neogeo.id, entry.id);
 
         expect(execFileMock).toHaveBeenCalledWith(neogeo.applicationPath, [
           "-w",
@@ -84,17 +86,18 @@ describe("execute.server", () => {
           nodepath.join(entryDirname, "cfg"),
           "-nvram_directory",
           nodepath.join(entryDirname, "nvram"),
-          blazingstar.path,
+          entry.path,
         ]);
       });
 
       it("Should add environment varables", () => {
         (readCategory as jest.Mock<Category>).mockReturnValueOnce(pcenginecd);
+        const entry = getFirstEntry(pcenginecd);
 
-        executeApplication(pcenginecd.id, gateofthunder.id);
+        executeApplication(pcenginecd.id, entry.id);
 
         expect(execFileMock).toHaveBeenCalledWith(pcenginecd.applicationPath, [
-          gateofthunder.path,
+          entry.path,
         ]);
         expect(process.env.MEDNAFEN_HOME).toBe(
           nodepath.dirname(pcenginecd.applicationPath)
@@ -116,13 +119,14 @@ describe("execute.server", () => {
         (readCategory as jest.Mock<Category>).mockReturnValueOnce(
           pcenginecdLinux
         );
+        const entry = getFirstEntry(pcenginecdLinux);
 
-        executeApplication(pcenginecdLinux.id, gateofthunder.id);
+        executeApplication(pcenginecdLinux.id, entry.id);
 
         expect(execFileMock).toHaveBeenCalledWith("flatpak", [
           "run",
           pcenginecdLinux.applicationFlatpakId,
-          gateofthunder.path,
+          entry.path,
         ]);
       });
 
@@ -139,8 +143,9 @@ describe("execute.server", () => {
       it("Should add optional params", () => {
         (readCategory as jest.Mock<Category>).mockReturnValueOnce(neogeoLinux);
         const entryDirname = "F:/games/Emulation/roms/Neo Geo";
+        const entry = getFirstEntry(neogeo);
 
-        executeApplication(neogeo.id, blazingstar.id);
+        executeApplication(neogeo.id, entry.id);
 
         expect(execFileMock).toHaveBeenCalledWith("flatpak", [
           "run",
@@ -152,7 +157,7 @@ describe("execute.server", () => {
           nodepath.join(entryDirname, "cfg"),
           "-nvram_directory",
           nodepath.join(entryDirname, "nvram"),
-          blazingstar.path,
+          entry.path,
         ]);
       });
     });

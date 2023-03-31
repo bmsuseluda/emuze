@@ -57,7 +57,7 @@ jest.mock("apicalypse", () => () => ({
   fields: () => ({
     where: () => ({
       limit: () => ({
-        requestAll: igdbRequestMock,
+        request: igdbRequestMock,
       }),
     }),
   }),
@@ -85,7 +85,9 @@ describe("categories.server", () => {
         neogeo.applicationId
       );
 
-      expect(result).toStrictEqual([{ ...blazingstar, name: "Blazing Star" }]);
+      expect(result).toStrictEqual([
+        { ...blazingstar, name: "Blazing Star", id: `${blazingstar.id}0` },
+      ]);
     });
   });
 

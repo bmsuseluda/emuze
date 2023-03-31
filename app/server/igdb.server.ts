@@ -1,5 +1,6 @@
 import type { Entry } from "~/types/category";
 import { openErrorDialog } from "~/server/openDialog.server";
+import type { Apicalypse } from "apicalypse";
 import apicalypse from "apicalypse";
 
 interface GameLocalization {
@@ -84,46 +85,77 @@ const normalizeString = (a: string) =>
 const matchName = (a: string, b: string) =>
   normalizeString(a) === normalizeString(b);
 
-export const fetchCovers = async (platformIds: number[], entries: Entry[]) => {
-  if (entries.length > 0) {
-    try {
-      const client = apicalypse({
-        method: "POST",
-      });
+export const chunk = <T>(array: T[], maxEntries: number): Array<T[]> => {
+  const chunks = [];
+  const chunkNumber = Math.ceil(array.length / maxEntries);
 
-      const gamesData: Game[] = await client
-        .fields([
-          "name",
-          "cover.image_id,alternative_names.name,game_localizations.name,game_localizations.cover.image_id",
-        ])
-        .where(
-          `platforms=(${platformIds}) &
+  for (let i = 0; i < chunkNumber; i++) {
+    chunks.push(array.slice(i * maxEntries, (i + 1) * maxEntries));
+  }
+
+  return chunks;
+};
+
+export interface GamesResponse {
+  data: Game[];
+  config?: {
+    data?: unknown;
+  };
+}
+
+const fetchCoversForChunk = async (
+  client: Apicalypse,
+  platformId: number[],
+  entries: Entry[]
+) => {
+  // TODO: check on limit in response
+  const gamesResponse: GamesResponse = await client
+    .fields([
+      "name",
+      "cover.image_id,alternative_names.name,game_localizations.name,game_localizations.cover.image_id",
+    ])
+    .where(
+      `platforms=(${platformId}) &
             (${entries.flatMap(filterGame).join(" | ")})`
-        )
-        .limit(500)
-        .requestAll(url);
+    )
+    .limit(500)
+    .request(url);
 
-      return entries.map((entry) => {
-        const gameData = gamesData.find(
-          ({ name, alternative_names, game_localizations }) =>
-            matchName(name, entry.name) ||
-            !!alternative_names?.find(({ name }) =>
-              matchName(name, entry.name)
-            ) ||
-            !!findGameLocalization(entry.name, game_localizations)
-        );
-        if (gameData) {
-          const imageUrl = getCoverUrl(entry.name, gameData);
-          if (imageUrl) {
-            return {
-              ...entry,
-              imageUrl,
-            };
-          }
-        }
-        return entry;
-      });
+  return entries.map((entry) => {
+    const gameData = gamesResponse.data.find(
+      ({ name, alternative_names, game_localizations }) =>
+        matchName(name, entry.name) ||
+        !!alternative_names?.find(({ name }) => matchName(name, entry.name)) ||
+        !!findGameLocalization(entry.name, game_localizations)
+    );
+    if (gameData) {
+      const imageUrl = getCoverUrl(entry.name, gameData);
+      if (imageUrl) {
+        return {
+          ...entry,
+          imageUrl,
+        };
+      }
+    }
+    return entry;
+  });
+};
+
+export const fetchCovers = async (platformId: number[], entries: Entry[]) => {
+  if (entries.length > 0) {
+    const entryChunks = chunk(entries, 200);
+    try {
+      const client = apicalypse({ method: "POST" });
+
+      const entriesWithImages = await Promise.all(
+        entryChunks.map((entryChunk) =>
+          fetchCoversForChunk(client, platformId, entryChunk)
+        )
+      );
+
+      return entriesWithImages.flat();
     } catch (error) {
+      // TODO: check how to show only 1 error
       openErrorDialog(error, `Fetch covers from igdb failed`);
       console.log("igdb error", error);
       return entries;

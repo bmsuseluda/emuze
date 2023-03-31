@@ -9,6 +9,9 @@ interface CategoryOnLinux extends Category {
   applicationFlatpakId: string;
 }
 
+const addIndex = (entries: Entry[]) =>
+  entries.map((entry, index) => ({ ...entry, id: `${entry.id}${index}` }));
+
 export const metroidsamusreturns = {
   id: "metroidsamusreturns",
   name: "Metroid Samus Returns",
@@ -24,7 +27,7 @@ export const nintendo3ds: CategoryOnWindows = {
   entryPath: "F:/games/Emulation/roms/Nintendo 3DS",
   fileExtensions: [".3ds"],
   igdbPlatformIds: categoriesDB.nintendo3ds.igdbPlatformIds,
-  entries: [metroidsamusreturns],
+  entries: addIndex([metroidsamusreturns]),
 };
 
 export const cotton: Entry = {
@@ -48,7 +51,7 @@ export const pcenginecd: CategoryOnWindows = {
   entryPath: "F:/games/Emulation/roms/PC Engine CD",
   fileExtensions: [".cue", ".pce"],
   igdbPlatformIds: categoriesDB.pcenginecd.igdbPlatformIds,
-  entries: [cotton, gateofthunder],
+  entries: addIndex([cotton, gateofthunder]),
 };
 
 export const pcenginecdLinux: CategoryOnLinux = {
@@ -59,7 +62,7 @@ export const pcenginecdLinux: CategoryOnLinux = {
   entryPath: "F:/games/Emulation/roms/PC Engine CD",
   fileExtensions: [".cue", ".pce"],
   igdbPlatformIds: categoriesDB.pcenginecd.igdbPlatformIds,
-  entries: [cotton, gateofthunder],
+  entries: addIndex([cotton, gateofthunder]),
 };
 
 export const fahrenheit: Entry = {
@@ -95,7 +98,10 @@ export const playstation: CategoryOnWindows = {
   entryPath: "F:/games/Emulation/roms/Sony Playstation",
   fileExtensions: [".chd", ".cue"],
   igdbPlatformIds: categoriesDB.sonyplaystation.igdbPlatformIds,
-  entries: [hugo, hugo2],
+  entries: [
+    { ...hugo, id: `${hugo.id}0` },
+    { ...hugo2, id: `${hugo2.id}1` },
+  ],
 };
 
 export const playstation2: CategoryOnLinux = {
@@ -107,7 +113,7 @@ export const playstation2: CategoryOnLinux = {
   entryPath: "/home/dennisludwig/Documents/Emulation/Sony Playstation 2",
   fileExtensions: [".chd", ".iso"],
   igdbPlatformIds: categoriesDB.sonyplaystation2.igdbPlatformIds,
-  entries: [fahrenheit],
+  entries: addIndex([fahrenheit]),
 };
 
 export const bayoubilly: Entry = {
@@ -136,7 +142,7 @@ export const neogeo: CategoryOnWindows = {
   entryPath: "F:/games/Emulation/roms/Neo Geo",
   fileExtensions: [".zip"],
   igdbPlatformIds: categoriesDB.neogeo.igdbPlatformIds,
-  entries: [blazingstar],
+  entries: addIndex([blazingstar]),
 };
 
 export const neogeoLinux: CategoryOnLinux = {
@@ -147,5 +153,5 @@ export const neogeoLinux: CategoryOnLinux = {
   entryPath: "F:/games/Emulation/roms/Neo Geo",
   fileExtensions: [".zip"],
   igdbPlatformIds: categoriesDB.neogeo.igdbPlatformIds,
-  entries: [blazingstar],
+  entries: addIndex([blazingstar]),
 };

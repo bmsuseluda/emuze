@@ -86,11 +86,12 @@ export const readEntriesWithImages = async (
       );
     }
 
-    const entries = filenamesFiltered.map<Entry>((filename) => {
+    const entries = filenamesFiltered.map<Entry>((filename, index) => {
       const extension = nodepath.extname(filename);
       const [name] = nodepath.basename(filename).split(extension);
+
       const entry = {
-        id: convertToId(name),
+        id: convertToId(name, index),
         name,
         path: filename,
       };

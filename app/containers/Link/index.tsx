@@ -27,6 +27,7 @@ const LinkSpan = styled(IconChildrenWrapper, {
   width: "100%",
   boxSizing: "border-box",
   padding: "0.5em",
+
   variants: {
     active: {
       true: {

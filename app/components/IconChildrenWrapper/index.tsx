@@ -15,10 +15,8 @@ const Wrapper = styled("span", {
         gap: "$1",
         alignItems: "center",
         "> svg": {
-          minWidth: "1.3rem",
-          minHeight: "1.3rem",
-          maxWidth: "1.3rem",
-          maxHeight: "1.3rem",
+          minHeight: "max-content",
+          minWidth: "max-content",
           verticalAlign: "middle",
         },
       },

@@ -117,10 +117,10 @@ export const bsnes: Application = {
   },
 };
 
-const findMameArcadeGameName: FindEntryNameFunction = ({ id }) => {
+const findMameArcadeGameName: FindEntryNameFunction = ({ name }) => {
   // @ts-ignore TODO: check how to type this
-  const entryName = mameGames[id];
-  return entryName || id;
+  const entryName = mameGames[name];
+  return entryName || name;
 };
 
 const mame: Application = {

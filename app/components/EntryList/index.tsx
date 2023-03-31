@@ -44,7 +44,6 @@ export const EntryList = React.forwardRef<HTMLUListElement, Props>(
     }, [entries]);
     useEffect(() => {
       if (entriesToRender.length < entries.length) {
-        console.log("add Entries");
         setEntriesToRender((entriesToRender) => [
           ...entriesToRender,
           ...entries.slice(entriesToRender.length, entries.length),
