@@ -121,8 +121,6 @@ export default function Index() {
     >
       <Form method="post">
         <ListActionBarLayout.ListActionBarContainer
-          scrollToTopOnLocationChange
-          pathId="appearance"
           list={
             <FormBox ref={entryListRef}>
               <li>

@@ -16,8 +16,6 @@ import {
   useGamepadButtonPressEvent,
   useKeyboardEvent,
 } from "~/hooks/useGamepadEvent";
-import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
-import { useRefsGrid } from "~/hooks/useRefsGrid";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElement } from "~/types/focusElement";
 import { readAppearance } from "~/server/settings.server";
@@ -90,8 +88,7 @@ export default function Category() {
   const launchButtonRef = useRef<HTMLButtonElement>(null);
   const importButtonRef = useRef<HTMLButtonElement>(null);
   const settingsButtonRef = useRef<HTMLAnchorElement>(null);
-  const entryListRef = useRef<HTMLUListElement>(null);
-  const entriesRefs = useRef<HTMLInputElement[]>([]);
+
   const { getTestId } = useTestId("category");
   const { isInFocus, disableFocus, switchFocus } =
     useFocus<FocusElement>("main");
@@ -103,37 +100,14 @@ export default function Category() {
     }
   }, [actionData?.actionId, switchFocus]);
 
-  const { entriesRefsGrid } = useRefsGrid(entryListRef, entriesRefs, entries);
-
-  const selectEntry = useCallback((entry: HTMLInputElement) => {
-    entry.checked = true;
-    entry.focus();
-  }, []);
-
-  const { selectedEntry, resetSelected } = useGamepadsOnGrid(
-    entriesRefsGrid,
-    selectEntry,
-    isInFocus
-  );
-
   const onBack = useCallback(() => {
-    if (isInFocus) {
-      if (selectedEntry.current) {
-        selectedEntry.current.checked = false;
-        resetSelected();
-      }
-      switchFocus("sidebar");
-    }
-  }, [isInFocus, resetSelected, selectedEntry, switchFocus]);
+    switchFocus("sidebar");
+  }, [switchFocus]);
 
   const onExecute = useCallback(() => {
-    if (isInFocus) {
-      if (selectedEntry.current) {
-        disableFocus();
-        launchButtonRef.current?.click();
-      }
-    }
-  }, [isInFocus, selectedEntry, disableFocus]);
+    disableFocus();
+    launchButtonRef.current?.click();
+  }, [disableFocus]);
 
   const onImport = useCallback(() => {
     if (isInFocus) {
@@ -147,13 +121,9 @@ export default function Category() {
     }
   }, [isInFocus]);
 
-  useGamepadButtonPressEvent(layout.buttons.B, onBack);
-  useGamepadButtonPressEvent(layout.buttons.A, onExecute);
   useGamepadButtonPressEvent(layout.buttons.X, onImport);
   useGamepadButtonPressEvent(layout.buttons.Start, onSettings);
 
-  useKeyboardEvent("Backspace", onBack);
-  useKeyboardEvent("Enter", onExecute);
   useKeyboardEvent("i", onImport);
   useKeyboardEvent("Escape", onSettings);
 
@@ -166,6 +136,7 @@ export default function Category() {
   return (
     <>
       <ListActionBarLayout
+        key={id}
         headline={
           <IconChildrenWrapper icon={<PlatformIcon id={id} />}>
             <span {...getTestId("name")}>{name}</span>
@@ -174,8 +145,6 @@ export default function Category() {
       >
         <Form method="post">
           <ListActionBarLayout.ListActionBarContainer
-            scrollToTopOnLocationChange
-            pathId={id}
             scrollSmooth
             list={
               entries && (
@@ -183,11 +152,9 @@ export default function Category() {
                   key={id}
                   entries={entries}
                   alwaysGameNames={alwaysGameNames}
-                  entriesRefs={entriesRefs}
-                  onDoubleClick={() => {
-                    launchButtonRef.current?.click();
-                  }}
-                  ref={entryListRef}
+                  onExecute={onExecute}
+                  onBack={onBack}
+                  isInFocus={isInFocus}
                   {...getTestId("entries")}
                 />
               )

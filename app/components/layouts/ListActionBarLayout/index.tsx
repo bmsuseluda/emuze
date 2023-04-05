@@ -1,7 +1,7 @@
 import { styled } from "~/stitches";
 import { Headline } from "~/components/Headline";
 import type { ReactNode } from "react";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 interface Props {
   headline?: ReactNode;
@@ -78,8 +78,6 @@ const ActionBar = styled("div", {
 
 interface ContainerProps {
   list: ReactNode;
-  scrollToTopOnLocationChange?: boolean;
-  pathId?: string;
   actions: ReactNode;
   scrollSmooth?: boolean;
   collapse?: boolean;
@@ -87,20 +85,11 @@ interface ContainerProps {
 
 const ListActionBarContainer = ({
   list: listEntries,
-  scrollToTopOnLocationChange = false,
-  pathId,
   actions,
   scrollSmooth,
   collapse = false,
 }: ContainerProps) => {
   const listRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (scrollToTopOnLocationChange && listRef.current?.scrollTo) {
-      // @ts-ignore There is no other way to deactivate smooth scrolling here
-      listRef.current.scrollTo({ top: 0, behavior: "instant" });
-    }
-  }, [pathId, scrollToTopOnLocationChange]);
 
   return (
     <Absolute>

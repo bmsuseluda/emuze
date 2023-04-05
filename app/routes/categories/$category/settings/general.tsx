@@ -192,8 +192,6 @@ export default function Index() {
     >
       <Form method="post">
         <ListActionBarLayout.ListActionBarContainer
-          scrollToTopOnLocationChange
-          pathId="general"
           list={
             <FormBox ref={entryListRef}>
               {defaultData.isWindows && (
