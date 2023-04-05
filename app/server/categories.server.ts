@@ -12,9 +12,8 @@ import {
 import { readApplications } from "~/server/applications.server";
 import { convertToId } from "~/server/convertToId.server";
 import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
-import { fetchCovers } from "~/server/igdb.server";
+import { fetchMetaData } from "~/server/igdb.server";
 import { readGeneral } from "~/server/settings.server";
-import Bottleneck from "bottleneck";
 import type { Application } from "~/types/applications";
 import type { PlatformId } from "~/types/platforms";
 import { getApplicationDataById } from "~/server/applicationsDB.server";
@@ -65,62 +64,79 @@ const sortFileNames = (a: string, b: string) => {
   return sortCaseInsensitive(aWithoutFileExtension, bWithoutFileExtension);
 };
 
-export const readEntriesWithImages = async (
-  entryPath: string,
-  fileExtensions: string[],
-  igdbPlatformIds: number[],
-  applicationId: string
-) => {
-  const applicationData = getApplicationDataById(applicationId);
+const sortEntries = (a: Entry, b: Entry) => sortFileNames(a.path, b.path);
+
+const filterFiles = (filenames: string[], filesToFilter?: string[]) => {
+  if (filesToFilter) {
+    return filenames.filter(
+      (filename) => !filesToFilter.includes(nodepath.basename(filename))
+    );
+  }
+
+  return filenames;
+};
+
+export const readEntriesWithMetaData = async (categoryId: string) => {
+  const oldCategoryData = readCategory(categoryId);
+  const applicationData = getApplicationDataById(oldCategoryData.applicationId);
 
   if (applicationData) {
-    const filenames = readFilenames(entryPath, fileExtensions);
-    filenames.sort(sortFileNames);
+    const filenames = readFilenames(
+      oldCategoryData.entryPath,
+      oldCategoryData.fileExtensions
+    );
 
     const { findEntryName, filteredFiles } = applicationData;
 
-    let filenamesFiltered = filenames;
-    if (filteredFiles) {
-      filenamesFiltered = filenamesFiltered.filter(
-        (filename) => !filteredFiles.includes(nodepath.basename(filename))
-      );
-    }
+    const filenamesFiltered = filterFiles(filenames, filteredFiles);
 
-    const entries = filenamesFiltered.map<Entry>((filename, index) => {
+    const entriesWithMetaData: Entry[] = [];
+    const entriesWithoutMetaData: Entry[] = [];
+
+    filenamesFiltered.forEach((filename, index) => {
       const extension = nodepath.extname(filename);
       const [name] = nodepath.basename(filename).split(extension);
 
-      const entry = {
-        id: convertToId(name, index),
-        name,
-        path: filename,
-      };
-
-      if (findEntryName) {
-        return {
-          ...entry,
-          name: findEntryName(entry, entryPath),
+      const oldEntryData = oldCategoryData.entries?.find(
+        ({ path }) => path === filename
+      );
+      // TODO: create metaData object with validDate
+      if (oldEntryData?.imageUrl) {
+        entriesWithMetaData.push(oldEntryData);
+      } else {
+        const entry = {
+          id: convertToId(name, index),
+          name,
+          path: filename,
         };
-      }
 
-      return entry;
+        if (findEntryName) {
+          entriesWithoutMetaData.push({
+            ...entry,
+            name: findEntryName(entry, oldCategoryData.entryPath),
+          });
+        } else {
+          entriesWithoutMetaData.push(entry);
+        }
+      }
     });
 
-    return await fetchCovers(igdbPlatformIds, entries);
+    return [
+      ...entriesWithMetaData,
+      ...(await fetchMetaData(
+        oldCategoryData.igdbPlatformIds,
+        entriesWithoutMetaData
+      )),
+    ].sort(sortEntries);
   }
 };
 
 export const importEntries = async (category: string) => {
+  // TODO: oldData is read in readEntriesWithMetaData as well
   const oldData = readCategory(category);
-  const { entryPath, fileExtensions, igdbPlatformIds, applicationId } = oldData;
   const data: Category = {
     ...oldData,
-    entries: await readEntriesWithImages(
-      entryPath,
-      fileExtensions,
-      igdbPlatformIds,
-      applicationId
-    ),
+    entries: await readEntriesWithMetaData(category),
   };
 
   writeCategory(data);
@@ -135,12 +151,7 @@ const createCategoryData =
     categoryId: PlatformId
   ) =>
   async (): Promise<Category> => {
-    const entries = await readEntriesWithImages(
-      categoryFolderName,
-      fileExtensions,
-      igdbPlatformIds,
-      id
-    );
+    const entries = await readEntriesWithMetaData(categoryId);
 
     return {
       id: categoryId,
@@ -157,18 +168,12 @@ const createCategoryData =
   };
 
 export const importCategories = async () => {
-  deleteCategories();
-
   const { categoriesPath } = readGeneral();
 
   if (categoriesPath) {
     const applications = readApplications();
     const categoryFolderNames = readDirectorynames(categoriesPath);
     categoryFolderNames.sort(sortCaseInsensitive);
-
-    const limiter = new Bottleneck({
-      maxConcurrent: 4,
-    });
 
     const getSupportedCategories = categoryFolderNames.reduce<
       Array<() => Promise<Category>>
@@ -205,17 +210,14 @@ export const importCategories = async () => {
       return previousValue;
     }, []);
 
-    const supportedCategories = await Promise.all(
-      getSupportedCategories.map((func) => limiter.schedule(func))
-    );
+    const supportedCategories = (
+      await Promise.all(getSupportedCategories.map((func) => func()))
+    ).filter(({ entries }) => entries && entries.length > 0);
 
-    const supportedCategoriesWithEntries = supportedCategories.filter(
-      ({ entries }) => entries && entries.length > 0
-    );
-    supportedCategoriesWithEntries.forEach((category) => {
+    deleteCategories();
+    supportedCategories.forEach((category) => {
       writeCategory(category);
     });
-
-    writeCategories(supportedCategoriesWithEntries);
+    writeCategories(supportedCategories);
   }
 };

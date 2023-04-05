@@ -9,10 +9,10 @@ interface CategoryOnLinux extends Category {
   applicationFlatpakId: string;
 }
 
-const addIndex = (entries: Entry[]) =>
+export const addIndex = (entries: Entry[]) =>
   entries.map((entry, index) => ({ ...entry, id: `${entry.id}${index}` }));
 
-export const metroidsamusreturns = {
+export const metroidsamusreturns: Entry = {
   id: "metroidsamusreturns",
   name: "Metroid Samus Returns",
   path: "F:/games/Emulation/roms/Nintendo 3DS/Metroid Samus Returns.3ds",
@@ -98,10 +98,7 @@ export const playstation: CategoryOnWindows = {
   entryPath: "F:/games/Emulation/roms/Sony Playstation",
   fileExtensions: [".chd", ".cue"],
   igdbPlatformIds: categoriesDB.sonyplaystation.igdbPlatformIds,
-  entries: [
-    { ...hugo, id: `${hugo.id}0` },
-    { ...hugo2, id: `${hugo2.id}1` },
-  ],
+  entries: addIndex([hugo, hugo2]),
 };
 
 export const playstation2: CategoryOnLinux = {

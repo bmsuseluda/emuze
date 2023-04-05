@@ -7,8 +7,6 @@ export interface Entry {
   imageUrl?: string;
 }
 
-export type Entries = Entry[];
-
 export interface Category {
   id: PlatformId;
   name: string;
@@ -19,5 +17,5 @@ export interface Category {
   entryPath: string;
   fileExtensions: string[];
   igdbPlatformIds: number[];
-  entries?: Entries;
+  entries?: Entry[];
 }

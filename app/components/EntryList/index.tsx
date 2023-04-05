@@ -2,12 +2,12 @@ import type { HTMLAttributes, MutableRefObject } from "react";
 import React, { useEffect, useState } from "react";
 import { useTestId } from "~/hooks/useTestId";
 import { styled } from "~/stitches";
-import type { Entries } from "~/types/category";
+import type { Entry as EntryType } from "~/types/category";
 import { Ul } from "../Ul";
 import { Entry } from "./components/Entry";
 
 type Props = {
-  entries: Entries;
+  entries: EntryType[];
   alwaysGameNames?: boolean;
   entriesRefs: MutableRefObject<(HTMLInputElement | null)[]>;
   onDoubleClick: () => void;
@@ -39,9 +39,7 @@ export const EntryList = React.forwardRef<HTMLUListElement, Props>(
     const [entriesToRender, setEntriesToRender] = useState(
       entries.slice(0, entriesNumberForChunk)
     );
-    useEffect(() => {
-      setEntriesToRender(entries.slice(0, entriesNumberForChunk));
-    }, [entries]);
+
     useEffect(() => {
       if (entriesToRender.length < entries.length) {
         setEntriesToRender((entriesToRender) => [

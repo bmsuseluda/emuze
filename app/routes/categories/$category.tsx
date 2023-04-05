@@ -180,6 +180,7 @@ export default function Category() {
             list={
               entries && (
                 <EntryList
+                  key={id}
                   entries={entries}
                   alwaysGameNames={alwaysGameNames}
                   entriesRefs={entriesRefs}

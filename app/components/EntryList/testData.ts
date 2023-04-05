@@ -1,7 +1,6 @@
-import type { Entries } from "~/types/category";
+import type { Entry } from "~/types/category";
 
-// TODO: add image urls to some entries
-export const entries: Entries = [
+export const entries: Entry[] = [
   {
     id: "animaniacs",
     name: "Animaniacs",

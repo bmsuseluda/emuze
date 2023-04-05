@@ -103,7 +103,7 @@ export interface GamesResponse {
   };
 }
 
-const fetchCoversForChunk = async (
+const fetchMetaDataForChunk = async (
   client: Apicalypse,
   platformId: number[],
   entries: Entry[]
@@ -141,19 +141,19 @@ const fetchCoversForChunk = async (
   });
 };
 
-export const fetchCovers = async (platformId: number[], entries: Entry[]) => {
+export const fetchMetaData = async (platformId: number[], entries: Entry[]) => {
   if (entries.length > 0) {
     const entryChunks = chunk(entries, 200);
     try {
       const client = apicalypse({ method: "POST" });
 
-      const entriesWithImages = await Promise.all(
+      const entriesWithMetaData = await Promise.all(
         entryChunks.map((entryChunk) =>
-          fetchCoversForChunk(client, platformId, entryChunk)
+          fetchMetaDataForChunk(client, platformId, entryChunk)
         )
       );
 
-      return entriesWithImages.flat();
+      return entriesWithMetaData.flat();
     } catch (error) {
       // TODO: check how to show only 1 error
       openErrorDialog(error, `Fetch covers from igdb failed`);
