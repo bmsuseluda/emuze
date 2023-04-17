@@ -72,10 +72,10 @@ export const EntryList = ({
     entriesToRender
   );
 
-  const selectEntry = useCallback((entry: HTMLInputElement) => {
+  const selectEntry = (entry: HTMLInputElement) => {
     entry.checked = true;
     entry.focus();
-  }, []);
+  };
 
   const { selectedEntry, resetSelected } = useGamepadsOnGrid(
     entriesRefsGrid,

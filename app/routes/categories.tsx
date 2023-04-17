@@ -6,6 +6,7 @@ import {
   useLoaderData,
   useLocation,
   useNavigate,
+  useNavigation,
 } from "@remix-run/react";
 import { IoMdRefresh } from "react-icons/io";
 import { Button } from "~/components/Button";
@@ -19,7 +20,7 @@ import { PlatformIcon } from "~/components/PlatformIcon";
 import type { PlatformId } from "~/types/platforms";
 import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
 import { readAppearance } from "~/server/settings.server";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import {
   useGamepadButtonPressEvent,
   useGamepadStickDirectionEvent,
@@ -69,10 +70,14 @@ export const loader = ({ params }: DataFunctionArgs) => {
   });
 };
 
+const actionIds = {
+  import: "import",
+};
+
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
   const _actionId = form.get("_actionId");
-  if (_actionId === "import") {
+  if (_actionId === actionIds.import) {
     importApplications();
     await importCategories();
     throw redirect("/categories");
@@ -104,12 +109,7 @@ export default function Categories() {
   const isFullscreen = useFullscreen();
   const { pathname } = useLocation();
   const navigate = useNavigate();
-
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLoading(false);
-  }, [categoryLinks]);
+  const { state, formData } = useNavigation();
 
   const { isInFocus, switchFocus } = useFocus<FocusElement>("sidebar");
 
@@ -126,6 +126,7 @@ export default function Categories() {
 
   const onSettings = useCallback(() => {
     if (isInFocus) {
+      // TODO: check how to trigger settings button click instead like $category
       navigate(`${pathname}/settings`);
     }
   }, [isInFocus, pathname, navigate]);
@@ -150,12 +151,12 @@ export default function Categories() {
             <Button
               type="submit"
               name="_actionId"
-              value="import"
+              value={actionIds.import}
               icon={<IoMdRefresh />}
-              onClick={() => {
-                setLoading(true);
-              }}
-              loading={loading}
+              loading={
+                state === "submitting" &&
+                formData?.get("_actionId") === actionIds.import
+              }
             >
               {!collapseSidebar ? "Import all" : null}
             </Button>

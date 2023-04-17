@@ -27,6 +27,7 @@ export const useGamepadsOnGrid = <T>(
     [onSelectEntry, selectedEntry, entriesRefsGrid]
   );
 
+  // TODO: Check if this could be done without useEffect
   useEffect(() => {
     if (isInFocus) {
       if (

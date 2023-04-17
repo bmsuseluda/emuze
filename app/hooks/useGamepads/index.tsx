@@ -96,6 +96,7 @@ export const useGamepads = (isDisabled: boolean) => {
     } else {
       requestAnimationFrameRef.current = requestAnimationFrame(update);
     }
+
     return () => {
       if (requestAnimationFrameRef.current) {
         cancelAnimationFrame(requestAnimationFrameRef.current);

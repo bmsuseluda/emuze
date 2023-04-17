@@ -3,7 +3,12 @@ import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { IoMdSave } from "react-icons/io";
 import { FaFolderOpen } from "react-icons/fa";
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
+import {
+  Form,
+  useActionData,
+  useLoaderData,
+  useNavigation,
+} from "@remix-run/react";
 import { Button } from "~/components/Button";
 import { FormBox } from "~/components/FormBox";
 import { FormRow } from "~/components/FormRow";
@@ -121,6 +126,7 @@ export default function Index() {
     entry.focus();
   }, []);
 
+  // TODO: check how to align gamepadsGrid navigation with native input usage (use navigation keys in text input)
   const { selectedEntry, resetSelected } = useGamepadsOnGrid(
     entriesRefsGrid,
     selectEntry,
@@ -174,11 +180,7 @@ export default function Index() {
     }
   }, [newData?.categoriesPath]);
 
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLoading(false);
-  }, [newData]);
+  const { state, formData } = useNavigation();
 
   return (
     <ListActionBarLayout
@@ -261,10 +263,10 @@ export default function Index() {
               name="_actionId"
               value={actionIds.save}
               icon={<IoMdSave />}
-              loading={loading}
-              onClick={() => {
-                setLoading(true);
-              }}
+              loading={
+                state === "submitting" &&
+                formData?.get("_actionId") === actionIds.save
+              }
               ref={saveButtonRef}
             >
               Save settings and import all

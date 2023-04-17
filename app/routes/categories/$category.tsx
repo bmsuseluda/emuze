@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Form, Outlet, useActionData, useLoaderData } from "@remix-run/react";
+import { Form, Outlet, useLoaderData, useNavigation } from "@remix-run/react";
 import { IoMdPlay, IoMdRefresh } from "react-icons/io";
 import { Button } from "~/components/Button";
 import { executeApplication } from "~/server/execute.server";
@@ -54,8 +54,6 @@ export const action: ActionFunction = async ({ request, params }) => {
     const entry = form.get("entry");
     if (typeof entry === "string") {
       executeApplication(category, entry);
-      // TODO: Find a better solution to trigger switchFocusToMain when launch game is finished
-      return json({ actionId: `${_actionId}${Date.now()}` });
     }
   }
 
@@ -84,7 +82,6 @@ export default function Category() {
   } = useLoaderData<typeof loader>();
 
   const isFullscreen = useFullscreen();
-  const actionData = useActionData<{ actionId?: string }>();
   const launchButtonRef = useRef<HTMLButtonElement>(null);
   const importButtonRef = useRef<HTMLButtonElement>(null);
   const settingsButtonRef = useRef<HTMLAnchorElement>(null);
@@ -93,12 +90,15 @@ export default function Category() {
   const { isInFocus, disableFocus, switchFocus } =
     useFocus<FocusElement>("main");
 
+  const { state, formData } = useNavigation();
   useEffect(() => {
-    // TODO: This interferes with mouse usage, but shouldn't
-    if (actionData?.actionId?.startsWith(actionIds.launch)) {
+    if (
+      state === "loading" &&
+      formData?.get("_actionId") === actionIds.launch
+    ) {
       switchFocus("main");
     }
-  }, [actionData?.actionId, switchFocus]);
+  }, [state, formData, switchFocus]);
 
   const onBack = useCallback(() => {
     switchFocus("sidebar");
@@ -126,12 +126,6 @@ export default function Category() {
 
   useKeyboardEvent("i", onImport);
   useKeyboardEvent("Escape", onSettings);
-
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLoading(false);
-  }, [entries]);
 
   return (
     <>
@@ -178,10 +172,10 @@ export default function Category() {
                   value={actionIds.import}
                   ref={importButtonRef}
                   icon={<IoMdRefresh />}
-                  loading={loading}
-                  onClick={() => {
-                    setLoading(true);
-                  }}
+                  loading={
+                    state === "submitting" &&
+                    formData?.get("_actionId") === actionIds.import
+                  }
                   {...getTestId(["button", "import"])}
                 >
                   Import Roms
