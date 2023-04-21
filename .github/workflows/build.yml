@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: yarn --immutable --immutable-cache
       - name: Build
-        run: yarn app:dist
+        run: yarn app:dist --publish=never
       - name: Upload AppImage
         uses: actions/upload-artifact@v3
         with:
