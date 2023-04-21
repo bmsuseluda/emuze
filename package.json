@@ -26,7 +26,9 @@
     "build-storybook": "build-storybook",
     "mame:build": "tsc -p ./mameImport/tsconfig.json",
     "mame:import": "yarn mame:build && node ./build/mameImport/mameImport/index.js",
-    "app:dist": "yarn build && electron-builder"
+    "app:dist": "yarn app:distLinux && yarn app:distWindows",
+    "app:distLinux": "yarn build && electron-builder --linux",
+    "app:distWindows": "yarn build && electron-builder --win"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.0.0",

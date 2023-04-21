@@ -18,10 +18,28 @@ jobs:
       - name: Install dependencies
         run: yarn --immutable --immutable-cache
       - name: Build
-        run: yarn app:dist --publish=never
+        run: yarn app:distLinux --publish=never
       - name: Upload AppImage
         uses: actions/upload-artifact@v3
         with:
           name: linux-appImage
           path: dist/emuze-*.AppImage
           retention-days: 14
+
+  build_windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - name: Install dependencies
+        run: yarn --immutable --immutable-cache
+      - name: Build
+        run: yarn app:distWindows portable --publish=never
+      - name: Upload Portable
+        uses: actions/upload-artifact@v3
+        with:
+          name: win-portable
+          path: dist/emuze*.
