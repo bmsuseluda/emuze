@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build_linux:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,6 +16,12 @@ jobs:
         with:
           node-version: '16.x'
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: yarn --immutable --immutable-cache
       - name: Build
-        run: yarn build
+        run: yarn app:dist
+      - name: Upload AppImage
+        uses: actions/upload-artifact@v3
+        with:
+          name: linux-appImage
+          path: dist/emuze-*.AppImage
+          retention-days: 14
