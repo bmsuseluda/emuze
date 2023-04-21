@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: '16.x'
       - name: Install dependencies
-        run: yarn --immutable --immutable-cache
+        run: yarn
       - name: Build
         run: yarn app:distLinux --publish=never
       - name: Upload AppImage
@@ -37,9 +37,10 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Build
-        run: yarn app:distWindows portable --publish=never
+        run: yarn app:distWindows --publish=never
       - name: Upload Portable
         uses: actions/upload-artifact@v3
         with:
           name: win-portable
-          path: dist/emuze*.
+          path: dist/emuze*.exe
+          retention-days: 14
