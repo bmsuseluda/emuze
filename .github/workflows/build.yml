@@ -35,7 +35,7 @@ jobs:
         with:
           node-version: '16.x'
       - name: Install dependencies
-        run: yarn --immutable --immutable-cache
+        run: yarn
       - name: Build
         run: yarn app:distWindows portable --publish=never
       - name: Upload Portable
