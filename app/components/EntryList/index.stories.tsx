@@ -15,7 +15,6 @@ const Template: ComponentStory<typeof EntryList> = (args) => (
 export const Basic = Template.bind({});
 Basic.args = {
   entries,
-  entriesRefs: { current: [] },
   onDoubleClick: () => {
     alert("launch");
   },
@@ -25,7 +24,6 @@ export const WithAlwaysGameName = Template.bind({});
 WithAlwaysGameName.args = {
   entries,
   alwaysGameNames: true,
-  entriesRefs: { current: [] },
   onDoubleClick: () => {
     alert("launch");
   },
