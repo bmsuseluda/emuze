@@ -19,12 +19,6 @@ jobs:
         run: yarn
       - name: Build
         run: yarn app:distLinux --publish=never
-      - name: Upload AppImage
-        uses: actions/upload-artifact@v3
-        with:
-          name: linux-appImage
-          path: dist/emuze-*.AppImage
-          retention-days: 14
 
   build_windows:
     runs-on: windows-latest
@@ -38,9 +32,3 @@ jobs:
         run: yarn
       - name: Build
         run: yarn app:distWindows --publish=never
-      - name: Upload Portable
-        uses: actions/upload-artifact@v3
-        with:
-          name: win-portable
-          path: dist/emuze*.exe
-          retention-days: 14
