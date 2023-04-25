@@ -12,10 +12,14 @@ export interface Category {
   name: string;
   applicationId: string;
   applicationPath?: string;
+  // TODO: remove and use data from applicationDB
   applicationFlatpakId?: string;
+  // TODO: remove and use data from applicationDB
   applicationFlatpakOptionParams?: string[];
   entryPath: string;
+  // TODO: remove and use data from applicationDB
   fileExtensions: string[];
+  // TODO: remove and use data from categoriesDB
   igdbPlatformIds: number[];
   entries?: Entry[];
 }
