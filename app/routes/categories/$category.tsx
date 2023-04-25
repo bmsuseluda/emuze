@@ -30,6 +30,7 @@ export const loader = ({ params }: DataFunctionArgs) => {
     throw Error("category empty");
   }
 
+  // TODO: check what todo if categoryData is null
   const categoryData = readCategory(category);
   const { alwaysGameNames } = readAppearance();
   return json({ categoryData, alwaysGameNames });
@@ -76,10 +77,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 };
 
 export default function Category() {
-  const {
-    categoryData: { id, name, entries },
-    alwaysGameNames,
-  } = useLoaderData<typeof loader>();
+  const { categoryData, alwaysGameNames } = useLoaderData<typeof loader>();
 
   const isFullscreen = useFullscreen();
   const launchButtonRef = useRef<HTMLButtonElement>(null);
@@ -126,6 +124,12 @@ export default function Category() {
 
   useKeyboardEvent("i", onImport);
   useKeyboardEvent("Escape", onSettings);
+
+  if (!categoryData) {
+    return null;
+  }
+
+  const { id, name, entries } = categoryData;
 
   return (
     <>

@@ -137,7 +137,7 @@ export const neogeo: CategoryOnWindows = {
   applicationId: "mameneogeo",
   applicationPath: "F:/games/Emulation/emulators/mame/mame.exe",
   entryPath: "F:/games/Emulation/roms/Neo Geo",
-  fileExtensions: [".zip"],
+  fileExtensions: [".zip", ".chd"],
   igdbPlatformIds: categoriesDB.neogeo.igdbPlatformIds,
   entries: addIndex([blazingstar]),
 };

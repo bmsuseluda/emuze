@@ -48,7 +48,7 @@ const deleteCategories = () => {
   writeCategories([]);
 };
 
-export const readCategory = (category: string): Category =>
+export const readCategory = (category: string): Category | null =>
   readFileHome(nodepath.join(paths.entries, `${category}.json`));
 
 const writeCategory = (category: Category) =>
@@ -76,15 +76,17 @@ const filterFiles = (filenames: string[], filesToFilter?: string[]) => {
   return filenames;
 };
 
-export const readEntriesWithMetaData = async (categoryId: string) => {
+export const readEntriesWithMetaData = async (
+  categoryId: string,
+  entryPath: string,
+  igdbPlatformIds: number[],
+  applicationId: string
+) => {
   const oldCategoryData = readCategory(categoryId);
-  const applicationData = getApplicationDataById(oldCategoryData.applicationId);
+  const applicationData = getApplicationDataById(applicationId);
 
   if (applicationData) {
-    const filenames = readFilenames(
-      oldCategoryData.entryPath,
-      oldCategoryData.fileExtensions
-    );
+    const filenames = readFilenames(entryPath, applicationData.fileExtensions);
 
     const { findEntryName, filteredFiles } = applicationData;
 
@@ -97,7 +99,7 @@ export const readEntriesWithMetaData = async (categoryId: string) => {
       const extension = nodepath.extname(filename);
       const [name] = nodepath.basename(filename).split(extension);
 
-      const oldEntryData = oldCategoryData.entries?.find(
+      const oldEntryData = oldCategoryData?.entries?.find(
         ({ path }) => path === filename
       );
       // TODO: create metaData object with validDate
@@ -113,7 +115,7 @@ export const readEntriesWithMetaData = async (categoryId: string) => {
         if (findEntryName) {
           entriesWithoutMetaData.push({
             ...entry,
-            name: findEntryName(entry, oldCategoryData.entryPath),
+            name: findEntryName(entry, entryPath),
           });
         } else {
           entriesWithoutMetaData.push(entry);
@@ -123,10 +125,7 @@ export const readEntriesWithMetaData = async (categoryId: string) => {
 
     return [
       ...entriesWithMetaData,
-      ...(await fetchMetaData(
-        oldCategoryData.igdbPlatformIds,
-        entriesWithoutMetaData
-      )),
+      ...(await fetchMetaData(igdbPlatformIds, entriesWithoutMetaData)),
     ].sort(sortEntries);
   }
 };
@@ -134,12 +133,21 @@ export const readEntriesWithMetaData = async (categoryId: string) => {
 export const importEntries = async (category: string) => {
   // TODO: oldData is read in readEntriesWithMetaData as well
   const oldData = readCategory(category);
-  const data: Category = {
-    ...oldData,
-    entries: await readEntriesWithMetaData(category),
-  };
 
-  writeCategory(data);
+  if (oldData) {
+    const { entryPath, igdbPlatformIds, applicationId } = oldData;
+    const data: Category = {
+      ...oldData,
+      entries: await readEntriesWithMetaData(
+        category,
+        entryPath,
+        igdbPlatformIds,
+        applicationId
+      ),
+    };
+
+    writeCategory(data);
+  }
 };
 
 const createCategoryData =
@@ -151,7 +159,12 @@ const createCategoryData =
     categoryId: PlatformId
   ) =>
   async (): Promise<Category> => {
-    const entries = await readEntriesWithMetaData(categoryId);
+    const entries = await readEntriesWithMetaData(
+      categoryId,
+      categoryFolderName,
+      igdbPlatformIds,
+      id
+    );
 
     return {
       id: categoryId,

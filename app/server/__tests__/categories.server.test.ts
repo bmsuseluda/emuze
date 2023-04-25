@@ -81,7 +81,12 @@ describe("categories.server", () => {
         expectedResult
       );
 
-      const result = await readEntriesWithMetaData(neogeo.id);
+      const result = await readEntriesWithMetaData(
+        neogeo.id,
+        neogeo.entryPath,
+        neogeo.igdbPlatformIds,
+        neogeo.applicationId
+      );
 
       expect(result).toStrictEqual(expectedResult);
     });
@@ -113,7 +118,12 @@ describe("categories.server", () => {
         fetchMetaDataMock
       );
 
-      const result = await readEntriesWithMetaData(playstation.id);
+      const result = await readEntriesWithMetaData(
+        playstation.id,
+        playstation.entryPath,
+        playstation.igdbPlatformIds,
+        playstation.applicationId
+      );
 
       expect(result).toStrictEqual(
         addIndex([
@@ -130,6 +140,53 @@ describe("categories.server", () => {
       expect(fetchMetaDataMock).toHaveBeenCalledWith(
         playstation.igdbPlatformIds,
         addIndex([hugo])
+      );
+    });
+
+    it("Should fetch metaData for all entries if there is no oldCategoryData", async () => {
+      when(readFilenames as jest.Mock<string[]>)
+        .calledWith(playstation.entryPath, playstation.fileExtensions)
+        .mockReturnValueOnce([hugo.path, hugo2.path]);
+      (readFileHome as jest.Mock<Category | null>).mockReturnValue(null);
+
+      const fetchMetaDataMock = jest.fn().mockResolvedValue(
+        addIndex([
+          {
+            ...hugo,
+            imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+          },
+          {
+            ...hugo2,
+            imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+          },
+        ])
+      );
+      (fetchMetaData as jest.Mock<Promise<Entry[]>>).mockImplementation(
+        fetchMetaDataMock
+      );
+
+      const result = await readEntriesWithMetaData(
+        playstation.id,
+        playstation.entryPath,
+        playstation.igdbPlatformIds,
+        playstation.applicationId
+      );
+
+      expect(result).toStrictEqual(
+        addIndex([
+          {
+            ...hugo,
+            imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+          },
+          {
+            ...hugo2,
+            imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+          },
+        ])
+      );
+      expect(fetchMetaDataMock).toHaveBeenCalledWith(
+        playstation.igdbPlatformIds,
+        addIndex([hugo, hugo2])
       );
     });
   });
