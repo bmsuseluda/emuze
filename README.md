@@ -91,14 +91,21 @@ Right now the following are supported:
 ### Commandline Arguments
 
 `--fullscreen` - Start in fullscreen
+`--no-sandbox` - Launch as a Non-Steam Game in SteamOS, see [Running on Steam Deck in Game mode](#running-on-steam-deck-in-game-mode) 
 
 ## Known Issues
 
 - Fetching metadata for games like `Super Mario Bros. / Tetris / World Cup` is not supported right now due to the limitations of special characters in a windows file name.
 
+## Running on Steam Deck in Game mode
+
+To run emuze on the Steam Deck, add the AppImage via `Add a Non-Steam Game`.
+
+Add `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
+
 ## Roadmap
 
 There is a lot i would like to work on. The following features are the bigger ones in no specific order.
 
-- 'Roms as Folder' support for emulators e.g. ScummVM or DosBox
+- `Roms as Folder` support for emulators e.g. ScummVM or DosBox
 - Filter and sorting of roms

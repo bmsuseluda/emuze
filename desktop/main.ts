@@ -44,6 +44,7 @@ app.on("ready", async () => {
     frame: false,
     webPreferences: {
       preload: nodepath.join(__dirname, "preload.js"),
+      nodeIntegration: true,
     },
   });
 
