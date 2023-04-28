@@ -57,5 +57,8 @@ export const useRefsGrid = <T extends HTMLElement, R>(
     }
   }, [createRefsGrid, entryListRef]);
 
-  return { entriesRefsGrid };
+  return {
+    // Array containing entries refs structured on their rendered rows. The first array contains the rows on y-axis and the second array contains the entries refs in the row on x-axis [y-axis][x-axis]
+    entriesRefsGrid,
+  };
 };

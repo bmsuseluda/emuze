@@ -1,5 +1,5 @@
-import type { HTMLAttributes } from "react";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import type { HTMLAttributes, MutableRefObject } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { useTestId } from "~/hooks/useTestId";
 import { styled } from "~/stitches";
 import type { Entry as EntryType } from "~/types/category";
@@ -46,25 +46,6 @@ export const EntryList = ({
   const [entriesToRender, setEntriesToRender] = useState(
     entries.slice(0, entriesNumberForChunk)
   );
-  useEffect(() => {
-    let timer: number;
-    if (entriesToRender.length < entries.length) {
-      timer = window?.setTimeout(() => {
-        setEntriesToRender((entriesToRender) => [
-          ...entriesToRender,
-          ...entries.slice(
-            entriesToRender.length,
-            entriesToRender.length + 400
-          ),
-        ]);
-      }, 500);
-    }
-    return () => {
-      if (timer) {
-        clearTimeout(timer);
-      }
-    };
-  }, [entriesToRender, entries]);
 
   const { entriesRefsGrid } = useRefsGrid(
     entryListRef,
@@ -77,10 +58,39 @@ export const EntryList = ({
     entry.focus();
   };
 
+  /* on down selectedY is entriesRefsGrid.length -2 ->
+   *   add next chunk at the end of entriesToRender (third chunk)
+   *   TODO: remove first chunk
+   */
+  const onDown = (
+    entriesRefsGrid: MutableRefObject<HTMLInputElement[][]>,
+    selectedY: MutableRefObject<number | undefined>
+  ) => {
+    if (selectedY.current === entriesRefsGrid.current.length - 2) {
+      setEntriesToRender((entriesToRender) => [
+        ...entriesToRender,
+        ...entries.slice(
+          entriesToRender.length,
+          entriesToRender.length + entriesNumberForChunk
+        ),
+      ]);
+    }
+  };
+
+  /*
+   * TODO: implement
+   * on up selectedY is 2 ->
+   *   add first chunk at the beginning of entriesToRender (first chunk)
+   *   remove third chunk
+   * */
+  const onUp = () => {};
+
   const { selectedEntry, resetSelected } = useGamepadsOnGrid(
     entriesRefsGrid,
     selectEntry,
-    isInFocus
+    isInFocus,
+    onDown,
+    onUp
   );
 
   const handleBack = useCallback(() => {

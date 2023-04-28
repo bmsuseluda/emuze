@@ -10,7 +10,15 @@ import { useCallback, useEffect, useRef } from "react";
 export const useGamepadsOnGrid = <T>(
   entriesRefsGrid: MutableRefObject<T[][]>,
   onSelectEntry: (entry: T) => void,
-  isInFocus: boolean
+  isInFocus: boolean,
+  onDown: (
+    entriesRefsGrid: MutableRefObject<T[][]>,
+    selectedY: MutableRefObject<number | undefined>
+  ) => void,
+  onUp: (
+    entriesRefsGrid: MutableRefObject<T[][]>,
+    selectedY: MutableRefObject<number | undefined>
+  ) => void
 ) => {
   const selectedX = useRef<number>();
   const selectedY = useRef<number>();
@@ -47,7 +55,7 @@ export const useGamepadsOnGrid = <T>(
     []
   );
 
-  const onRight = useCallback(() => {
+  const handleRight = useCallback(() => {
     if (isInFocus && entriesRefsGrid.current) {
       if (
         typeof selectedX.current !== "undefined" &&
@@ -71,7 +79,7 @@ export const useGamepadsOnGrid = <T>(
     }
   }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus]);
 
-  const onLeft = useCallback(() => {
+  const handleLeft = useCallback(() => {
     if (isInFocus && entriesRefsGrid.current) {
       if (
         typeof selectedX.current !== "undefined" &&
@@ -93,7 +101,7 @@ export const useGamepadsOnGrid = <T>(
     }
   }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus]);
 
-  const onDown = useCallback(() => {
+  const handleDown = useCallback(() => {
     if (isInFocus && entriesRefsGrid.current) {
       if (
         typeof selectedX.current !== "undefined" &&
@@ -115,10 +123,12 @@ export const useGamepadsOnGrid = <T>(
           handleSelectEntry(selectedX.current, selectedY.current);
         }
       }
-    }
-  }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus]);
 
-  const onUp = useCallback(() => {
+      onDown(entriesRefsGrid, selectedY);
+    }
+  }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus, onDown]);
+
+  const handleUp = useCallback(() => {
     if (isInFocus && entriesRefsGrid.current) {
       if (
         typeof selectedX.current !== "undefined" &&
@@ -138,23 +148,25 @@ export const useGamepadsOnGrid = <T>(
           handleSelectEntry(selectedX.current, selectedY.current);
         }
       }
+
+      onUp(entriesRefsGrid, selectedY);
     }
-  }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus]);
+  }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus, onUp]);
 
-  useGamepadButtonPressEvent(layout.buttons.DPadRight, onRight);
-  useGamepadButtonPressEvent(layout.buttons.DPadLeft, onLeft);
-  useGamepadButtonPressEvent(layout.buttons.DPadDown, onDown);
-  useGamepadButtonPressEvent(layout.buttons.DPadUp, onUp);
+  useGamepadButtonPressEvent(layout.buttons.DPadRight, handleRight);
+  useGamepadButtonPressEvent(layout.buttons.DPadLeft, handleLeft);
+  useGamepadButtonPressEvent(layout.buttons.DPadDown, handleDown);
+  useGamepadButtonPressEvent(layout.buttons.DPadUp, handleUp);
 
-  useGamepadStickDirectionEvent("leftStickRight", onRight);
-  useGamepadStickDirectionEvent("leftStickLeft", onLeft);
-  useGamepadStickDirectionEvent("leftStickDown", onDown);
-  useGamepadStickDirectionEvent("leftStickUp", onUp);
+  useGamepadStickDirectionEvent("leftStickRight", handleRight);
+  useGamepadStickDirectionEvent("leftStickLeft", handleLeft);
+  useGamepadStickDirectionEvent("leftStickDown", handleDown);
+  useGamepadStickDirectionEvent("leftStickUp", handleUp);
 
-  useKeyboardEvent("ArrowRight", onRight);
-  useKeyboardEvent("ArrowLeft", onLeft);
-  useKeyboardEvent("ArrowDown", onDown);
-  useKeyboardEvent("ArrowUp", onUp);
+  useKeyboardEvent("ArrowRight", handleRight);
+  useKeyboardEvent("ArrowLeft", handleLeft);
+  useKeyboardEvent("ArrowDown", handleDown);
+  useKeyboardEvent("ArrowUp", handleUp);
 
   const resetSelected = useCallback(() => {
     selectedX.current = undefined;
