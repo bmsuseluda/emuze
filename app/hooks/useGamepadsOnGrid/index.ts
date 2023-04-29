@@ -10,15 +10,7 @@ import { useCallback, useEffect, useRef } from "react";
 export const useGamepadsOnGrid = <T>(
   entriesRefsGrid: MutableRefObject<T[][]>,
   onSelectEntry: (entry: T) => void,
-  isInFocus: boolean,
-  onDown: (
-    entriesRefsGrid: MutableRefObject<T[][]>,
-    selectedY: MutableRefObject<number | undefined>
-  ) => void,
-  onUp: (
-    entriesRefsGrid: MutableRefObject<T[][]>,
-    selectedY: MutableRefObject<number | undefined>
-  ) => void
+  isInFocus: boolean
 ) => {
   const selectedX = useRef<number>();
   const selectedY = useRef<number>();
@@ -123,10 +115,8 @@ export const useGamepadsOnGrid = <T>(
           handleSelectEntry(selectedX.current, selectedY.current);
         }
       }
-
-      onDown(entriesRefsGrid, selectedY);
     }
-  }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus, onDown]);
+  }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus]);
 
   const handleUp = useCallback(() => {
     if (isInFocus && entriesRefsGrid.current) {
@@ -138,20 +128,10 @@ export const useGamepadsOnGrid = <T>(
         if (selectedY.current > 0) {
           selectedY.current = selectedY.current - 1;
           handleSelectEntry(selectedX.current, selectedY.current);
-        } else if (selectedY.current === 0) {
-          selectedY.current = getLastIndex(entriesRefsGrid.current);
-          if (!entriesRefsGrid.current[selectedY.current][selectedX.current]) {
-            selectedX.current = getLastIndex(
-              entriesRefsGrid.current[selectedY.current]
-            );
-          }
-          handleSelectEntry(selectedX.current, selectedY.current);
         }
       }
-
-      onUp(entriesRefsGrid, selectedY);
     }
-  }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus, onUp]);
+  }, [handleSelectEntry, entriesRefsGrid, isInFocus]);
 
   useGamepadButtonPressEvent(layout.buttons.DPadRight, handleRight);
   useGamepadButtonPressEvent(layout.buttons.DPadLeft, handleLeft);

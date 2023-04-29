@@ -1,7 +1,7 @@
 import { styled } from "~/stitches";
 import { Headline } from "~/components/Headline";
 import type { ReactNode } from "react";
-import { useRef } from "react";
+import { forwardRef } from "react";
 
 interface Props {
   headline?: ReactNode;
@@ -83,23 +83,19 @@ interface ContainerProps {
   collapse?: boolean;
 }
 
-const ListActionBarContainer = ({
-  list: listEntries,
-  actions,
-  scrollSmooth,
-  collapse = false,
-}: ContainerProps) => {
-  const listRef = useRef<HTMLDivElement>(null);
-
-  return (
-    <Absolute>
-      <List ref={listRef} scrollSmooth={scrollSmooth} collapse={collapse}>
-        {listEntries}
-      </List>
-      <ActionBar collapse={collapse}>{actions}</ActionBar>
-    </Absolute>
-  );
-};
+const ListActionBarContainer = forwardRef<HTMLDivElement, ContainerProps>(
+  ({ list: listEntries, actions, scrollSmooth, collapse = false }, ref) => {
+    return (
+      <Absolute>
+        <List ref={ref} scrollSmooth={scrollSmooth} collapse={collapse}>
+          {listEntries}
+        </List>
+        <ActionBar collapse={collapse}>{actions}</ActionBar>
+      </Absolute>
+    );
+  }
+);
+ListActionBarContainer.displayName = "ListActionBarContainer";
 
 export const ListActionBarLayout = ({ headline, children }: Props) => (
   <Layout>

@@ -22,6 +22,7 @@ import { readAppearance } from "~/server/settings.server";
 import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
 import { useFullscreen } from "~/hooks/useFullscreen";
 import { SettingsLink } from "~/components/SettingsLink";
+import { useAddEntriesToRenderOnScrollEnd } from "~/hooks/useAddEntriesToRenderOnScrollEnd";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -84,6 +85,10 @@ export default function Category() {
   const importButtonRef = useRef<HTMLButtonElement>(null);
   const settingsButtonRef = useRef<HTMLAnchorElement>(null);
 
+  const { listRef, entriesToRender } = useAddEntriesToRenderOnScrollEnd(
+    categoryData?.entries || []
+  );
+
   const { getTestId } = useTestId("category");
   const { isInFocus, disableFocus, switchFocus } =
     useFocus<FocusElement>("main");
@@ -129,7 +134,7 @@ export default function Category() {
     return null;
   }
 
-  const { id, name, entries } = categoryData;
+  const { id, name } = categoryData;
 
   return (
     <>
@@ -144,11 +149,12 @@ export default function Category() {
         <Form method="post">
           <ListActionBarLayout.ListActionBarContainer
             scrollSmooth
+            ref={listRef}
             list={
-              entries && (
+              entriesToRender && (
                 <EntryList
                   key={id}
-                  entries={entries}
+                  entries={entriesToRender}
                   alwaysGameNames={alwaysGameNames}
                   onExecute={onExecute}
                   onBack={onBack}
@@ -162,7 +168,7 @@ export default function Category() {
                 <Button
                   type="submit"
                   name="_actionId"
-                  disabled={!entries || entries.length === 0}
+                  disabled={!entriesToRender || entriesToRender.length === 0}
                   value={actionIds.launch}
                   ref={launchButtonRef}
                   icon={<IoMdPlay />}
