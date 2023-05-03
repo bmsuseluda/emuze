@@ -1,13 +1,5 @@
 import type { Category, Entry } from "~/types/jsonFiles/category";
 
-interface CategoryOnWindows extends Category {
-  applicationPath: string;
-}
-
-interface CategoryOnLinux extends Category {
-  applicationFlatpakId: string;
-}
-
 export const addIndex = (entries: Entry[]) =>
   entries.map((entry, index) => ({ ...entry, id: `${entry.id}${index}` }));
 
@@ -17,7 +9,7 @@ export const metroidsamusreturns: Entry = {
   path: "F:/games/Emulation/roms/Nintendo 3DS/Metroid Samus Returns.3ds",
 };
 
-export const nintendo3ds: CategoryOnWindows = {
+export const nintendo3ds: Category = {
   id: "nintendo3ds",
   name: "Nintendo 3DS",
   applicationId: "citra",
@@ -39,7 +31,7 @@ export const gateofthunder: Entry = {
   path: "F:/games/Emulation/roms/PC Engine CD/Gate of Thunder.CUE",
 };
 
-export const pcenginecd: CategoryOnWindows = {
+export const pcenginecd: Category = {
   id: "pcenginecd",
   name: "PC Engine CD",
   applicationId: "mednafen",
@@ -49,11 +41,10 @@ export const pcenginecd: CategoryOnWindows = {
   entries: addIndex([cotton, gateofthunder]),
 };
 
-export const pcenginecdLinux: CategoryOnLinux = {
+export const pcenginecdLinux: Category = {
   id: "pcenginecd",
   name: "PC Engine CD",
   applicationId: "mednafen",
-  applicationFlatpakId: "org.mednafen",
   entryPath: "F:/games/Emulation/roms/PC Engine CD",
   entries: addIndex([cotton, gateofthunder]),
 };
@@ -82,7 +73,7 @@ export const finalfantasy7: Entry = {
   path: "F:/games/Emulation/roms/Sony Playstation/Final Fantasy VII (J) (Disc 1).chd",
 };
 
-export const playstation: CategoryOnWindows = {
+export const playstation: Category = {
   id: "sonyplaystation",
   name: "Sony Playstation",
   applicationId: "duckstation",
@@ -92,11 +83,10 @@ export const playstation: CategoryOnWindows = {
   entries: addIndex([hugo, hugo2]),
 };
 
-export const playstation2: CategoryOnLinux = {
+export const playstation2: Category = {
   id: "sonyplaystation2",
   name: "Sony Playstation 2",
   applicationId: "pcsx2",
-  applicationFlatpakId: "net.pcsx2.PCSX2",
   entryPath: "/home/dennisludwig/Documents/Emulation/Sony Playstation 2",
   entries: addIndex([fahrenheit]),
 };
@@ -119,7 +109,7 @@ export const blazingstar: Entry = {
   path: "F:/games/Emulation/roms/Neo Geo/blazstar.zip",
 };
 
-export const neogeo: CategoryOnWindows = {
+export const neogeo: Category = {
   id: "neogeo",
   name: "Neo Geo",
   applicationId: "mameneogeo",
@@ -128,11 +118,10 @@ export const neogeo: CategoryOnWindows = {
   entries: addIndex([blazingstar]),
 };
 
-export const neogeoLinux: CategoryOnLinux = {
+export const neogeoLinux: Category = {
   id: "neogeo",
   name: "Neo Geo",
   applicationId: "mameneogeo",
-  applicationFlatpakId: "org.mame",
   entryPath: "F:/games/Emulation/roms/Neo Geo",
   entries: addIndex([blazingstar]),
 };

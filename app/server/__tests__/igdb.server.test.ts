@@ -48,7 +48,7 @@ describe("igdb.server", () => {
     igdbRequestMock.mockResolvedValue(igdbResponse);
 
     const entriesWithImages = await fetchMetaData(
-      categoriesDB.playstation.igdbPlatformIds,
+      categoriesDB.sonyplaystation.igdbPlatformIds,
       [hugo, hugo2]
     );
 
@@ -86,7 +86,7 @@ describe("igdb.server", () => {
     igdbRequestMock.mockResolvedValue(igdbResponse);
 
     const entriesWithImages = await fetchMetaData(
-      categoriesDB.playstation2.igdbPlatformIds,
+      categoriesDB.sonyplaystation2.igdbPlatformIds,
       [fahrenheit]
     );
 
@@ -118,7 +118,7 @@ describe("igdb.server", () => {
     igdbRequestMock.mockResolvedValue(igdbResponse);
 
     const entriesWithImages = await fetchMetaData(
-      categoriesDB.playstation.igdbPlatformIds,
+      categoriesDB.sonyplaystation.igdbPlatformIds,
       [finalfantasy7]
     );
 

@@ -102,7 +102,7 @@ export const readEntriesWithMetaData = async (
       const [name] = nodepath.basename(filename).split(extension);
 
       const oldEntryData = oldEntries?.find(({ path }) => path === filename);
-      // TODO: create metaData object with validDate
+      // TODO: create metaData object with 'expiresOn'
       if (oldEntryData?.imageUrl) {
         entriesWithMetaData.push(oldEntryData);
       } else {

@@ -1,4 +1,4 @@
-import type { PlatformId } from "../platforms";
+import type { PlatformId } from "~/server/categoriesDB.server";
 
 export interface Entry {
   id: string;

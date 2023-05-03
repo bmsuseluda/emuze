@@ -17,7 +17,6 @@ import { Header } from "~/containers/Header";
 import { useTestId } from "~/hooks/useTestId";
 import { importApplications } from "~/server/applications.server";
 import { PlatformIcon } from "~/components/PlatformIcon";
-import type { PlatformId } from "~/types/platforms";
 import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
 import { readAppearance } from "~/server/settings.server";
 import { useCallback } from "react";
@@ -32,6 +31,7 @@ import type { FocusElement } from "~/types/focusElement";
 import { styled } from "~/stitches";
 import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
 import { useFullscreen } from "~/hooks/useFullscreen";
+import type { PlatformId } from "~/server/categoriesDB.server";
 
 type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
 type LoaderData = {

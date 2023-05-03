@@ -78,7 +78,6 @@ describe("categories.server", () => {
           blazingstar.path,
           "F:/games/Emulation/roms/Neo Geo/neogeo.zip",
         ]);
-      (readFileHome as jest.Mock<Category>).mockReturnValueOnce(neogeo);
 
       const expectedResult: Entry[] = [
         { ...blazingstar, name: "Blazing Star", id: `${blazingstar.id}0` },
@@ -102,16 +101,6 @@ describe("categories.server", () => {
       when(readFilenames as jest.Mock<string[]>)
         .calledWith(playstation.entryPath, duckstation.fileExtensions)
         .mockReturnValueOnce([hugo.path, hugo2.path]);
-      (readFileHome as jest.Mock<Category>).mockReturnValueOnce({
-        ...playstation,
-        entries: addIndex([
-          hugo,
-          {
-            ...hugo2,
-            imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
-          },
-        ]),
-      });
 
       const fetchMetaDataMock = jest.fn().mockResolvedValue(
         addIndex([
@@ -128,8 +117,15 @@ describe("categories.server", () => {
       const result = await readEntriesWithMetaData(
         playstation.id,
         playstation.entryPath,
-        categoriesDB.playstation.igdbPlatformIds,
-        playstation.applicationId
+        categoriesDB.sonyplaystation.igdbPlatformIds,
+        playstation.applicationId,
+        addIndex([
+          hugo,
+          {
+            ...hugo2,
+            imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+          },
+        ])
       );
 
       expect(result).toStrictEqual(
@@ -145,7 +141,7 @@ describe("categories.server", () => {
         ])
       );
       expect(fetchMetaDataMock).toHaveBeenCalledWith(
-        categoriesDB.playstation.igdbPlatformIds,
+        categoriesDB.sonyplaystation.igdbPlatformIds,
         addIndex([hugo])
       );
     });
@@ -154,7 +150,6 @@ describe("categories.server", () => {
       when(readFilenames as jest.Mock<string[]>)
         .calledWith(playstation.entryPath, duckstation.fileExtensions)
         .mockReturnValueOnce([hugo.path, hugo2.path]);
-      (readFileHome as jest.Mock<Category | null>).mockReturnValue(null);
 
       const fetchMetaDataMock = jest.fn().mockResolvedValue(
         addIndex([
@@ -175,7 +170,7 @@ describe("categories.server", () => {
       const result = await readEntriesWithMetaData(
         playstation.id,
         playstation.entryPath,
-        categoriesDB.playstation.igdbPlatformIds,
+        categoriesDB.sonyplaystation.igdbPlatformIds,
         playstation.applicationId
       );
 
@@ -192,7 +187,7 @@ describe("categories.server", () => {
         ])
       );
       expect(fetchMetaDataMock).toHaveBeenCalledWith(
-        categoriesDB.playstation.igdbPlatformIds,
+        categoriesDB.sonyplaystation.igdbPlatformIds,
         addIndex([hugo, hugo2])
       );
     });

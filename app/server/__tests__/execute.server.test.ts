@@ -3,6 +3,7 @@ import nodepath from "path";
 import { readCategory } from "~/server/categories.server";
 import { readAppearance, readGeneral } from "~/server/settings.server";
 import type { Category } from "~/types/jsonFiles/category";
+import { applications as applicationsDB } from "../applicationsDB.server";
 
 import { executeApplication } from "../execute.server";
 import {
@@ -100,7 +101,7 @@ describe("execute.server", () => {
           entry.path,
         ]);
         expect(process.env.MEDNAFEN_HOME).toBe(
-          nodepath.dirname(pcenginecd.applicationPath)
+          nodepath.dirname(pcenginecd.applicationPath!)
         );
       });
     });
@@ -125,7 +126,8 @@ describe("execute.server", () => {
 
         expect(execFileMock).toHaveBeenCalledWith("flatpak", [
           "run",
-          pcenginecdLinux.applicationFlatpakId,
+          "--command=mednafen",
+          applicationsDB.mednafen.flatpakId,
           entry.path,
         ]);
       });
@@ -149,7 +151,7 @@ describe("execute.server", () => {
 
         expect(execFileMock).toHaveBeenCalledWith("flatpak", [
           "run",
-          neogeoLinux.applicationFlatpakId,
+          applicationsDB.mame.flatpakId,
           "-w",
           "-rompath",
           entryDirname,

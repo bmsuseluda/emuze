@@ -251,7 +251,7 @@ export const flycast: Application = {
   flatpakId: "org.flycast.Flycast",
 };
 
-export const applications: Application[] = [
+export const applications = {
   duckstation,
   pcsx2,
   play,
@@ -272,12 +272,14 @@ export const applications: Application[] = [
   mupen64Plus,
   mgba,
   flycast,
-];
+};
 
 export const getApplicationDataByName = (name: string) =>
-  applications.find(({ id }) => name.toLowerCase().includes(id.toLowerCase()));
+  Object.values(applications).find(({ id }) =>
+    name.toLowerCase().includes(id.toLowerCase())
+  );
 
 export const getApplicationDataById = (id: string) =>
-  applications.find(
+  Object.values(applications).find(
     (application) => application.id.toLowerCase() === id.toLowerCase()
   );

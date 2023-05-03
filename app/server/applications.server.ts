@@ -69,22 +69,21 @@ export const importApplicationsOnWindows = () => {
 };
 
 export const importApplicationsOnLinux = () => {
-  const supportedApplications = applications.reduce<Application[]>(
-    (previousValue, application) => {
-      if (
-        !!application.flatpakId &&
-        checkFlatpakIsInstalled(application.flatpakId)
-      ) {
-        const { id } = application;
-        previousValue.push({
-          id,
-        });
-      }
+  const supportedApplications = Object.values(applications).reduce<
+    Application[]
+  >((previousValue, application) => {
+    if (
+      !!application.flatpakId &&
+      checkFlatpakIsInstalled(application.flatpakId)
+    ) {
+      const { id } = application;
+      previousValue.push({
+        id,
+      });
+    }
 
-      return previousValue;
-    },
-    []
-  );
+    return previousValue;
+  }, []);
 
   writeApplications(supportedApplications);
 };

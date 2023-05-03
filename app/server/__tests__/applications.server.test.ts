@@ -61,15 +61,9 @@ describe("applications.server", () => {
         const expected = [
           applicationsFromDB.pcsx2,
           applicationsFromDB.blastem,
-        ].map(
-          ({ fileExtensions, name, id, flatpakId, flatpakOptionParams }) => ({
-            fileExtensions,
-            name,
-            id,
-            flatpakId,
-            flatpakOptionParams,
-          })
-        );
+        ].map(({ id }) => ({
+          id,
+        }));
         expect(writeFileMock).toHaveBeenCalledWith(
           expected,
           paths.applications
