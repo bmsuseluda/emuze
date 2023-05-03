@@ -18,7 +18,7 @@ import { importApplications } from "~/server/applications.server";
 import { importCategories } from "~/server/categories.server";
 import { openFolderDialog } from "~/server/openDialog.server";
 import { readGeneral, writeGeneral } from "~/server/settings.server";
-import type { General } from "~/types/settings/general";
+import type { General } from "~/types/jsonFiles/settings/general";
 import { isWindows } from "~/server/operationsystem.server";
 import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import { SettingsIcon } from "~/components/SettingsIcon";

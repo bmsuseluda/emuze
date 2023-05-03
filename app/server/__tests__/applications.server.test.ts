@@ -1,9 +1,9 @@
-import type { Applications } from "~/types/applications";
+import type { Application } from "~/types/jsonFiles/applications";
 import {
-  paths,
   findExecutable,
-  importApplicationsOnWindows,
   importApplicationsOnLinux,
+  importApplicationsOnWindows,
+  paths,
 } from "../applications.server";
 import {
   blastem,
@@ -62,15 +62,7 @@ describe("applications.server", () => {
           applicationsFromDB.pcsx2,
           applicationsFromDB.blastem,
         ].map(
-          ({
-            categories,
-            fileExtensions,
-            name,
-            id,
-            flatpakId,
-            flatpakOptionParams,
-          }) => ({
-            categories,
+          ({ fileExtensions, name, id, flatpakId, flatpakOptionParams }) => ({
             fileExtensions,
             name,
             id,
@@ -108,7 +100,7 @@ describe("applications.server", () => {
         importApplicationsOnWindows();
 
         // expect
-        const expected: Applications = [blastem, pcsx2Old, pcsx2];
+        const expected: Application[] = [blastem, pcsx2Old, pcsx2];
         expect(writeFileMock).toHaveBeenCalledWith(
           expected,
           paths.applications

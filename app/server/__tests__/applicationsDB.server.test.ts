@@ -3,7 +3,7 @@ import {
   getApplicationDataByName,
   pcsx2,
 } from "../applicationsDB.server";
-import type { Entry } from "~/types/category";
+import type { Entry } from "~/types/jsonFiles/category";
 
 describe("getApplicationData", () => {
   [

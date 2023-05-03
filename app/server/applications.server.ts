@@ -1,6 +1,6 @@
 import nodepath from "path";
 
-import type { Applications } from "~/types/applications";
+import type { Application } from "~/types/jsonFiles/applications";
 import {
   applications,
   getApplicationDataByName,
@@ -20,10 +20,10 @@ export const paths = {
   applications: "data/applications.json",
 };
 
-export const readApplications = (): Applications =>
+export const readApplications = (): Application[] =>
   readFileHome(paths.applications);
 
-export const writeApplications = (applications: Applications) =>
+export const writeApplications = (applications: Application[]) =>
   writeFileHome(applications, paths.applications);
 
 export const findExecutable = (path: string, id: string): string | null => {
@@ -45,20 +45,17 @@ export const importApplicationsOnWindows = () => {
     const applicationFoldernames = readDirectorynames(applicationsPath);
     applicationFoldernames.sort(sortCaseInsensitive);
 
-    const supportedApplications = applicationFoldernames.reduce<Applications>(
+    const supportedApplications = applicationFoldernames.reduce<Application[]>(
       (previousValue, appFoldername) => {
         const data = getApplicationDataByName(appFoldername);
         if (data) {
-          const { categories, fileExtensions, name, id } = data;
+          const { id } = data;
 
           const executable = findExecutable(appFoldername, id);
           if (executable) {
             previousValue.push({
-              categories,
               path: executable,
-              fileExtensions,
               id,
-              name,
             });
           }
         }
@@ -72,27 +69,15 @@ export const importApplicationsOnWindows = () => {
 };
 
 export const importApplicationsOnLinux = () => {
-  const supportedApplications = applications.reduce<Applications>(
+  const supportedApplications = applications.reduce<Application[]>(
     (previousValue, application) => {
       if (
         !!application.flatpakId &&
         checkFlatpakIsInstalled(application.flatpakId)
       ) {
-        const {
-          categories,
-          fileExtensions,
-          name,
-          id,
-          flatpakId,
-          flatpakOptionParams,
-        } = application;
+        const { id } = application;
         previousValue.push({
-          categories,
-          flatpakId,
-          flatpakOptionParams,
-          fileExtensions,
           id,
-          name,
         });
       }
 

@@ -1,4 +1,4 @@
-import type { Entry } from "~/types/category";
+import type { Entry } from "~/types/jsonFiles/category";
 
 export const entries: Entry[] = [
   {

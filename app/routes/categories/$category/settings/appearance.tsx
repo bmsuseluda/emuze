@@ -8,7 +8,7 @@ import { Label } from "~/components/Label";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 import { readAppearance, writeAppearance } from "~/server/settings.server";
 import { Checkbox } from "~/components/Checkbox";
-import type { Appearance } from "~/types/settings/appearance";
+import type { Appearance } from "~/types/jsonFiles/settings/appearance";
 import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import { SettingsIcon } from "~/components/SettingsIcon";
 import { useFullscreen } from "~/hooks/useFullscreen";

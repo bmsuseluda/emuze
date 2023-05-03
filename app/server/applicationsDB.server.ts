@@ -1,34 +1,11 @@
 import nodepath from "path";
 
-import type { Category as CategoryData, Entry } from "~/types/category";
-import type { Category } from "~/server/categoriesDB.server";
-import {
-  arcade,
-  neogeo,
-  neogeocd,
-  nintendo3ds,
-  nintendo64,
-  nintendods,
-  nintendoentertainmentsystem,
-  nintendogameboy,
-  nintendogameboyadvance,
-  nintendogameboycolor,
-  nintendogamecube,
-  nintendowii,
-  pcengine,
-  pcenginecd,
-  segacd,
-  segadreamcast,
-  segamastersystem,
-  segamegadrive,
-  segasaturn,
-  sonyplaystation,
-  sonyplaystation2,
-  sonypsp,
-  supernintendo,
-} from "~/server/categoriesDB.server";
-import type { General } from "~/types/settings/general";
-import type { Appearance } from "~/types/settings/appearance";
+import type {
+  Category as CategoryData,
+  Entry,
+} from "~/types/jsonFiles/category";
+import type { General } from "~/types/jsonFiles/settings/general";
+import type { Appearance } from "~/types/jsonFiles/settings/appearance";
 import mameGames from "~/server/mameMappings/mameMapping.json";
 
 type Settings = {
@@ -62,10 +39,9 @@ export interface Application {
   id: string;
   name: string;
   fileExtensions: string[];
-  categories: Category[];
   environmentVariables?: EnvironmentVariableFunction;
-  optionParams?: OptionParamFunction;
-  flatpakId?: string;
+  createOptionParams?: OptionParamFunction;
+  flatpakId: string;
   flatpakOptionParams?: string[];
   findEntryName?: FindEntryNameFunction;
   filteredFiles?: string[];
@@ -75,10 +51,9 @@ export const pcsx2: Application = {
   id: "pcsx2",
   name: "PCSX2",
   fileExtensions: [".chd", ".iso"],
-  categories: [sonyplaystation2],
   flatpakId: "net.pcsx2.PCSX2",
   flatpakOptionParams: ["--command=pcsx2-qt"],
-  optionParams: (_, { appearance: { fullscreen } }) => {
+  createOptionParams: (_, { appearance: { fullscreen } }) => {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("-fullscreen");
@@ -91,9 +66,8 @@ export const blastem: Application = {
   id: "blastem",
   name: "BlastEm",
   fileExtensions: [".68K", ".bin", ".sgd", ".smd"],
-  categories: [segamegadrive],
   flatpakId: "com.retrodev.blastem",
-  optionParams: (_, { appearance: { fullscreen } }) => {
+  createOptionParams: (_, { appearance: { fullscreen } }) => {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("-f");
@@ -106,9 +80,8 @@ export const bsnes: Application = {
   id: "bsnes",
   name: "BSNES",
   fileExtensions: [".sfc", ".smc"],
-  categories: [supernintendo],
   flatpakId: "dev.bsnes.bsnes",
-  optionParams: (_, { appearance: { fullscreen } }) => {
+  createOptionParams: (_, { appearance: { fullscreen } }) => {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("--fullscreen");
@@ -123,17 +96,33 @@ const findMameArcadeGameName: FindEntryNameFunction = ({ name }) => {
   return entryName || name;
 };
 
-const mame: Application = {
+export const mame: Application = {
   id: "mame",
   name: "Mame",
   fileExtensions: [".zip", ".chd"],
-  categories: [arcade],
   flatpakId: "org.mamedev.MAME",
-  optionParams: ({ path }) => {
+  createOptionParams: ({ path }) => {
     const entryDirname = nodepath.dirname(path);
     return [...getSharedMameOptionParams(entryDirname)];
   },
   findEntryName: findMameArcadeGameName,
+};
+
+export const mameNeoGeo: Application = {
+  ...mame,
+  id: "mameneogeo",
+  filteredFiles: ["neogeo.zip"],
+};
+
+export const mameNeoGeoCD: Application = {
+  ...mame,
+  id: "mameneogeocd",
+  createOptionParams: ({ path }) => {
+    const entryDirname = nodepath.dirname(path);
+    return [...getSharedMameOptionParams(entryDirname), "neocdz", "-cdrm"];
+  },
+  filteredFiles: ["neocdz.zip"],
+  findEntryName: undefined,
 };
 
 const getSharedMameOptionParams = (entryDirname: string) => [
@@ -146,162 +135,143 @@ const getSharedMameOptionParams = (entryDirname: string) => [
   nodepath.join(entryDirname, "nvram"),
 ];
 
+export const duckstation: Application = {
+  id: "duckstation",
+  name: "Duckstation",
+  fileExtensions: [".chd", ".cue"],
+  flatpakId: "org.duckstation.DuckStation",
+  createOptionParams: (_, { appearance: { fullscreen } }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("-fullscreen");
+    }
+    return optionParams;
+  },
+};
+
+export const play: Application = {
+  id: "play",
+  name: "Play",
+  fileExtensions: [".iso"],
+  flatpakId: "org.purei.Play",
+};
+
+export const ppsspp: Application = {
+  id: "ppsspp",
+  name: "PPSSPP",
+  fileExtensions: [".cso", ".iso"],
+  flatpakId: "org.ppsspp.PPSSPP",
+};
+
+export const snes9x: Application = {
+  id: "snes9x",
+  name: "Snes9x",
+  fileExtensions: [".sfc", ".smc"],
+  flatpakId: "com.snes9x.Snes9x",
+};
+
+export const citra: Application = {
+  id: "citra",
+  name: "Citra",
+  fileExtensions: [".3ds"],
+  flatpakId: "org.citra_emu.citra",
+};
+
+export const melonds: Application = {
+  id: "melonds",
+  name: "MelonDS",
+  fileExtensions: [".nds"],
+  flatpakId: "net.kuribo64.melonDS",
+};
+
+export const desmume: Application = {
+  id: "desmume",
+  name: "DeSmuME",
+  fileExtensions: [".nds"],
+  flatpakId: "org.desmume.DeSmuME",
+};
+
+export const dolphin: Application = {
+  id: "dolphin",
+  name: "Dolphin",
+  fileExtensions: [".iso"],
+  flatpakId: "org.DolphinEmu.dolphin-emu",
+};
+
+export const nestopia: Application = {
+  id: "nestopia",
+  name: "Nestopia",
+  fileExtensions: [".nes"],
+  flatpakId: "ca._0ldsk00l.Nestopia",
+};
+
+export const mednafen: Application = {
+  id: "mednafen",
+  name: "Mednafen",
+  fileExtensions: [".cue", ".pce"],
+  flatpakId: "com.github.AmatCoder.mednaffe",
+  flatpakOptionParams: ["--command=mednafen"],
+  environmentVariables: ({ applicationPath }, { general: { isWindows } }) => {
+    const environmentVariables = {};
+    if (isWindows && applicationPath) {
+      return {
+        ...environmentVariables,
+        MEDNAFEN_HOME: nodepath.dirname(applicationPath),
+      };
+    }
+    return environmentVariables;
+  },
+};
+
+export const ares: Application = {
+  id: "ares",
+  name: "Ares",
+  fileExtensions: [".z64", ".sms", ".chd"],
+  flatpakId: "dev.ares.ares",
+};
+
+export const mupen64Plus: Application = {
+  id: "mupen64plus",
+  name: "Mupen64Plus",
+  fileExtensions: [".z64"],
+  flatpakId: "io.github.m64p.m64p",
+};
+
+export const mgba: Application = {
+  id: "mgba",
+  name: "mgba",
+  fileExtensions: [".gb", ".gba"],
+  flatpakId: "io.mgba.mGBA",
+};
+
+export const flycast: Application = {
+  id: "flycast",
+  name: "Flycast",
+  fileExtensions: [".cue", ".chd"],
+  flatpakId: "org.flycast.Flycast",
+};
+
 export const applications: Application[] = [
-  {
-    id: "duckstation",
-    name: "Duckstation",
-    fileExtensions: [".chd", ".cue"],
-    categories: [sonyplaystation],
-    flatpakId: "org.duckstation.DuckStation",
-    optionParams: (_, { appearance: { fullscreen } }) => {
-      const optionParams = [];
-      if (fullscreen) {
-        optionParams.push("-fullscreen");
-      }
-      return optionParams;
-    },
-  },
+  duckstation,
   pcsx2,
-  {
-    id: "play",
-    name: "Play",
-    fileExtensions: [".iso"],
-    categories: [sonyplaystation2],
-    flatpakId: "org.purei.Play",
-  },
-  {
-    id: "ppsspp",
-    name: "PPSSPP",
-    fileExtensions: [".cso", ".iso"],
-    categories: [sonypsp],
-    flatpakId: "org.ppsspp.PPSSPP",
-  },
+  play,
+  ppsspp,
   blastem,
   bsnes,
-  {
-    id: "snes9x",
-    name: "Snes9x",
-    fileExtensions: [".sfc", ".smc"],
-    categories: [supernintendo],
-    flatpakId: "com.snes9x.Snes9x",
-  },
-  {
-    id: "citra",
-    name: "Citra",
-    fileExtensions: [".3ds"],
-    categories: [nintendo3ds],
-    flatpakId: "org.citra_emu.citra",
-  },
-  {
-    id: "melonds",
-    name: "MelonDS",
-    fileExtensions: [".nds"],
-    categories: [nintendods],
-    flatpakId: "net.kuribo64.melonDS",
-  },
-  {
-    id: "desmume",
-    name: "DeSmuME",
-    fileExtensions: [".nds"],
-    categories: [nintendods],
-    flatpakId: "org.desmume.DeSmuME",
-  },
-  {
-    id: "dolphin",
-    name: "Dolphin",
-    fileExtensions: [".iso"],
-    categories: [nintendogamecube, nintendowii],
-    flatpakId: "org.DolphinEmu.dolphin-emu",
-  },
-  {
-    id: "mesen",
-    name: "Mesen",
-    fileExtensions: [".nes"],
-    categories: [nintendoentertainmentsystem],
-  },
-  {
-    id: "nestopia",
-    name: "Nestopia",
-    fileExtensions: [".nes"],
-    categories: [nintendoentertainmentsystem],
-    flatpakId: "ca._0ldsk00l.Nestopia",
-  },
-  {
-    id: "mednafen",
-    name: "Mednafen",
-    fileExtensions: [".cue", ".pce"],
-    categories: [segasaturn, pcengine, pcenginecd],
-    flatpakId: "com.github.AmatCoder.mednaffe",
-    flatpakOptionParams: ["--command=mednafen"],
-    environmentVariables: ({ applicationPath }, { general: { isWindows } }) => {
-      const environmentVariables = {};
-      if (isWindows && applicationPath) {
-        return {
-          ...environmentVariables,
-          MEDNAFEN_HOME: nodepath.dirname(applicationPath),
-        };
-      }
-      return environmentVariables;
-    },
-  },
+  snes9x,
+  citra,
+  melonds,
+  desmume,
+  dolphin,
+  nestopia,
+  mednafen,
   mame,
-  {
-    ...mame,
-    id: "mameneogeo",
-    categories: [neogeo],
-    filteredFiles: ["neogeo.zip"],
-  },
-  {
-    ...mame,
-    id: "mameneogeocd",
-    categories: [neogeocd],
-    optionParams: ({ path }) => {
-      const entryDirname = nodepath.dirname(path);
-      return [...getSharedMameOptionParams(entryDirname), "neocdz", "-cdrm"];
-    },
-    filteredFiles: ["neocdz.zip"],
-    findEntryName: undefined,
-  },
-  {
-    id: "ares",
-    name: "Ares",
-    fileExtensions: [".z64", ".sms", ".chd"],
-    categories: [nintendo64, segamastersystem, segacd],
-    flatpakId: "dev.ares.ares",
-  },
-  {
-    id: "mupen64plus",
-    name: "Mupen64Plus",
-    fileExtensions: [".z64"],
-    categories: [nintendo64],
-    flatpakId: "io.github.m64p.m64p",
-  },
-  {
-    id: "visualboyadvance",
-    name: "Visual Boy Advance",
-    fileExtensions: [".gb", ".gba"],
-    categories: [nintendogameboy, nintendogameboycolor, nintendogameboyadvance],
-  },
-  {
-    id: "mgba",
-    name: "mgba",
-    fileExtensions: [".gb", ".gba"],
-    categories: [nintendogameboy, nintendogameboycolor, nintendogameboyadvance],
-    flatpakId: "io.mgba.mGBA",
-  },
-  {
-    id: "redream",
-    name: "Redream",
-    fileExtensions: [".cue", ".chd"],
-    categories: [segadreamcast],
-  },
-  {
-    id: "flycast",
-    name: "Flycast",
-    fileExtensions: [".cue", ".chd"],
-    categories: [segadreamcast],
-    flatpakId: "org.flycast.Flycast",
-  },
+  mameNeoGeo,
+  mameNeoGeoCD,
+  ares,
+  mupen64Plus,
+  mgba,
+  flycast,
 ];
 
 export const getApplicationDataByName = (name: string) =>

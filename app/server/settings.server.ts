@@ -1,5 +1,5 @@
-import type { General } from "~/types/settings/general";
-import type { Appearance } from "~/types/settings/appearance";
+import type { General } from "~/types/jsonFiles/settings/general";
+import type { Appearance } from "~/types/jsonFiles/settings/appearance";
 import { readFileHome, writeFileHome } from "~/server/readWriteData.server";
 
 export type Category = { id: string; name: string; to: string };

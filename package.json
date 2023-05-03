@@ -65,6 +65,7 @@
     "@storybook/builder-webpack5": "^6.5.16",
     "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/react": "^6.5.16",
+    "@testing-library/dom": "^9.2.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/apicalypse": "^0.1.1",

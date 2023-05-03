@@ -4,12 +4,11 @@ import {
   finalfantasy7,
   hugo,
   hugo2,
-  playstation,
-  playstation2,
   turtles2,
 } from "../__testData__/category";
 import type { GamesResponse } from "../igdb.server";
 import { chunk, fetchMetaData } from "../igdb.server";
+import { categories as categoriesDB } from "../categoriesDB.server";
 
 const igdbRequestMock = jest.fn();
 jest.mock("apicalypse", () => () => ({
@@ -48,10 +47,10 @@ describe("igdb.server", () => {
     };
     igdbRequestMock.mockResolvedValue(igdbResponse);
 
-    const entriesWithImages = await fetchMetaData(playstation.igdbPlatformIds, [
-      hugo,
-      hugo2,
-    ]);
+    const entriesWithImages = await fetchMetaData(
+      categoriesDB.playstation.igdbPlatformIds,
+      [hugo, hugo2]
+    );
 
     expect(entriesWithImages).toStrictEqual([
       {
@@ -87,7 +86,7 @@ describe("igdb.server", () => {
     igdbRequestMock.mockResolvedValue(igdbResponse);
 
     const entriesWithImages = await fetchMetaData(
-      playstation2.igdbPlatformIds,
+      categoriesDB.playstation2.igdbPlatformIds,
       [fahrenheit]
     );
 
@@ -118,9 +117,10 @@ describe("igdb.server", () => {
     };
     igdbRequestMock.mockResolvedValue(igdbResponse);
 
-    const entriesWithImages = await fetchMetaData(playstation.igdbPlatformIds, [
-      finalfantasy7,
-    ]);
+    const entriesWithImages = await fetchMetaData(
+      categoriesDB.playstation.igdbPlatformIds,
+      [finalfantasy7]
+    );
 
     expect(entriesWithImages).toStrictEqual([
       {
