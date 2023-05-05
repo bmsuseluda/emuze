@@ -41,8 +41,8 @@ export const executeApplication = (category: string, entry: string) => {
   };
   const categoryData = readCategory(category);
   if (categoryData) {
-    const { applicationId, applicationPath, entries } = categoryData;
-    const applicationData = getApplicationDataById(applicationId);
+    const { application, entries } = categoryData;
+    const applicationData = getApplicationDataById(application.id);
     const entryData = entries?.find((value) => value.id === entry);
 
     if (applicationData && entryData) {
@@ -67,9 +67,9 @@ export const executeApplication = (category: string, entry: string) => {
         : [];
 
       try {
-        if (applicationPath) {
+        if (application.path) {
           executeApplicationOnWindows(
-            applicationPath,
+            application.path,
             entryData.path,
             optionParams
           );

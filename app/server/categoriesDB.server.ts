@@ -14,7 +14,7 @@ import {
   mednafen,
   melonds,
   mgba,
-  mupen64Plus,
+  mupen64plus,
   nestopia,
   pcsx2,
   play,
@@ -162,7 +162,7 @@ export const nintendo64: Category = {
   id: "nintendo64",
   names: ["Nintendo 64", "N64"],
   igdbPlatformIds: [4],
-  applications: [ares, mupen64Plus],
+  applications: [ares, mupen64plus],
   defaultApplication: ares,
 };
 
@@ -256,7 +256,7 @@ export const categories = {
   arcade,
   neogeo,
   neogeocd,
-};
+} satisfies Record<string, Category>;
 
 export const getCategoryDataByName = (name: string) =>
   Object.values(categories).find(

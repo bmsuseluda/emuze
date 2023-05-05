@@ -12,9 +12,9 @@ export const pcsx2 = {
   id: "pcsx2",
 } satisfies Application;
 
-export const pcsx2Old = {
-  path: "F:/games/Emulation/emulators/pcSX2-v1.6.2242-windows-64bit-AVX2/pcsx2x64-avx2.exe",
-  id: "pcsx2",
+export const play = {
+  path: "F:/games/Emulation/emulators/Play/play.exe",
+  id: "play",
 } satisfies Application;
 
 export const blastem = {
@@ -27,28 +27,32 @@ export const bsnes = {
   id: "bsnes",
 } satisfies Application;
 
-export const applications = [
+export const citra = {
+  path: "F:/games/Emulation/emulators/Citra/nightly-mingw/citra-qt.exe",
+  id: "citra",
+} satisfies Application;
+
+export const mednafen = {
+  path: "F:/games/Emulation/emulators/mednafen-1.29.0-win64/mednafen.exe",
+  id: "mednafen",
+} satisfies Application;
+
+export const duckstation = {
+  path: "F:/games/Emulation/emulators/duckstation-windows-x64-release/duckstation-nogui-x64-ReleaseLTCG.exe",
+  id: "duckstation",
+} satisfies Application;
+
+export const dolphin = {
+  path: "F:/games/Emulation/emulators/dolphin-master-5.0-15445-x64/Dolphin.exe",
+  id: "dolphin",
+} satisfies Application;
+
+export const applications = {
   blastem,
   bsnes,
-  {
-    path: "F:/games/Emulation/emulators/duckstation-windows-x64-release/duckstation-nogui-x64-ReleaseLTCG.exe",
-    id: "duckstation",
-  },
-  {
-    path: "F:/games/Emulation/emulators/Mesen.0.9.9/Mesen.exe",
-    id: "mesen",
-  },
-  {
-    path: "F:/games/Emulation/emulators/Citra/nightly-mingw/citra-qt.exe",
-    id: "citra",
-  },
+  duckstation,
+  citra,
   pcsx2,
-  {
-    path: "F:/games/Emulation/emulators/dolphin-master-5.0-15445-x64/Dolphin.exe",
-    id: "dolphin",
-  },
-  {
-    path: "F:/games/Emulation/emulators/mednafen-1.29.0-win64/mednafen.exe",
-    id: "mednafen",
-  },
-] satisfies Application[];
+  dolphin,
+  mednafen,
+} satisfies Record<string, Application>;

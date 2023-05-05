@@ -1,5 +1,5 @@
 export type General = {
-  applicationsPath?: string | null;
+  applicationsPath?: string;
   categoriesPath?: string;
   isWindows?: boolean;
 };

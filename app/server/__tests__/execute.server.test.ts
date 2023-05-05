@@ -59,7 +59,7 @@ describe("execute.server", () => {
 
         executeApplication(pcenginecd.id, entry.id);
 
-        expect(execFileMock).toHaveBeenCalledWith(pcenginecd.applicationPath, [
+        expect(execFileMock).toHaveBeenCalledWith(pcenginecd.application.path, [
           entry.path,
         ]);
       });
@@ -79,7 +79,7 @@ describe("execute.server", () => {
 
         executeApplication(neogeo.id, entry.id);
 
-        expect(execFileMock).toHaveBeenCalledWith(neogeo.applicationPath, [
+        expect(execFileMock).toHaveBeenCalledWith(neogeo.application.path, [
           "-w",
           "-rompath",
           entryDirname,
@@ -97,11 +97,11 @@ describe("execute.server", () => {
 
         executeApplication(pcenginecd.id, entry.id);
 
-        expect(execFileMock).toHaveBeenCalledWith(pcenginecd.applicationPath, [
+        expect(execFileMock).toHaveBeenCalledWith(pcenginecd.application.path, [
           entry.path,
         ]);
         expect(process.env.MEDNAFEN_HOME).toBe(
-          nodepath.dirname(pcenginecd.applicationPath)
+          nodepath.dirname(pcenginecd.application.path)
         );
       });
     });

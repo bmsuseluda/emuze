@@ -1,4 +1,6 @@
+import type { ApplicationId } from "~/server/applicationsDB.server";
+
 export interface Application {
-  id: string;
+  id: ApplicationId;
   path?: string;
 }

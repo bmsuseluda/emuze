@@ -36,7 +36,7 @@ export const findEntryNameByFolder: FindEntryNameFunction = (
 };
 
 export interface Application {
-  id: string;
+  id: ApplicationId;
   name: string;
   fileExtensions: string[];
   environmentVariables?: EnvironmentVariableFunction;
@@ -110,13 +110,13 @@ export const mame: Application = {
 
 export const mameNeoGeo: Application = {
   ...mame,
-  id: "mameneogeo",
+  id: "mameNeoGeo",
   filteredFiles: ["neogeo.zip"],
 };
 
 export const mameNeoGeoCD: Application = {
   ...mame,
-  id: "mameneogeocd",
+  id: "mameNeoGeoCD",
   createOptionParams: ({ path }) => {
     const entryDirname = nodepath.dirname(path);
     return [...getSharedMameOptionParams(entryDirname), "neocdz", "-cdrm"];
@@ -211,12 +211,12 @@ export const mednafen: Application = {
   fileExtensions: [".cue", ".pce"],
   flatpakId: "com.github.AmatCoder.mednaffe",
   flatpakOptionParams: ["--command=mednafen"],
-  environmentVariables: ({ applicationPath }, { general: { isWindows } }) => {
+  environmentVariables: ({ application }, { general: { isWindows } }) => {
     const environmentVariables = {};
-    if (isWindows && applicationPath) {
+    if (isWindows && application.path) {
       return {
         ...environmentVariables,
-        MEDNAFEN_HOME: nodepath.dirname(applicationPath),
+        MEDNAFEN_HOME: nodepath.dirname(application.path),
       };
     }
     return environmentVariables;
@@ -230,7 +230,7 @@ export const ares: Application = {
   flatpakId: "dev.ares.ares",
 };
 
-export const mupen64Plus: Application = {
+export const mupen64plus: Application = {
   id: "mupen64plus",
   name: "Mupen64Plus",
   fileExtensions: [".z64"],
@@ -251,6 +251,8 @@ export const flycast: Application = {
   flatpakId: "org.flycast.Flycast",
 };
 
+export type ApplicationId = keyof typeof applications;
+
 export const applications = {
   duckstation,
   pcsx2,
@@ -269,17 +271,17 @@ export const applications = {
   mameNeoGeo,
   mameNeoGeoCD,
   ares,
-  mupen64Plus,
+  mupen64plus,
   mgba,
   flycast,
-};
+} satisfies Record<string, Application>;
 
 export const getApplicationDataByName = (name: string) =>
   Object.values(applications).find(({ id }) =>
     name.toLowerCase().includes(id.toLowerCase())
   );
 
-export const getApplicationDataById = (id: string) =>
+export const getApplicationDataById = (id: ApplicationId) =>
   Object.values(applications).find(
     (application) => application.id.toLowerCase() === id.toLowerCase()
   );

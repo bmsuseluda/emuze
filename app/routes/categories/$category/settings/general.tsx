@@ -61,7 +61,7 @@ export const action: ActionFunction = async ({ request }) => {
       applicationsPath:
         isWindows && typeof applicationsPath === "string"
           ? applicationsPath
-          : null,
+          : undefined,
       categoriesPath,
     };
     writeGeneral(fields);

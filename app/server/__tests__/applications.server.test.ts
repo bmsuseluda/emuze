@@ -1,14 +1,14 @@
 import type { Application } from "~/types/jsonFiles/applications";
 import {
   findExecutable,
-  importApplicationsOnLinux,
-  importApplicationsOnWindows,
+  getInstalledApplicationsOnLinux,
+  getInstalledApplicationsOnWindows,
 } from "../applications.server";
 import {
   blastem,
   getDirectoryname,
   pcsx2,
-  pcsx2Old,
+  play,
 } from "../__testData__/applications";
 import * as applicationsFromDB from "../applicationsDB.server";
 import {
@@ -18,6 +18,7 @@ import {
 import { checkFlatpakIsInstalled } from "~/server/execute.server";
 import { general } from "../__testData__/general";
 import { when } from "jest-when";
+import { sonyplaystation2 } from "~/server/categoriesDB.server";
 
 jest.mock("~/server/readWriteData.server", () => ({
   readDirectorynames: jest.fn(),
@@ -33,58 +34,52 @@ describe("applications.server", () => {
     jest.resetAllMocks();
   });
 
-  describe("importApplications", () => {
-    describe("importApplicationsOnLinux", () => {
+  describe("getInstalledApplications", () => {
+    describe("getInstalledApplicationsOnLinux", () => {
       it("Should return known applications only", () => {
         // evaluate
         when(checkFlatpakIsInstalled as jest.Mock<boolean>)
-          .calledWith(applicationsFromDB.blastem.flatpakId)
-          .mockReturnValueOnce(true);
+          .calledWith(applicationsFromDB.play.flatpakId)
+          .mockReturnValueOnce(false);
         when(checkFlatpakIsInstalled as jest.Mock<boolean>)
           .calledWith(applicationsFromDB.pcsx2.flatpakId)
           .mockReturnValueOnce(true);
-        when(checkFlatpakIsInstalled as jest.Mock<boolean>)
-          .calledWith(applicationsFromDB.bsnes.flatpakId)
-          .mockReturnValueOnce(false);
 
         // execute
-        const result = importApplicationsOnLinux();
+        const result = getInstalledApplicationsOnLinux(
+          sonyplaystation2.applications
+        );
 
         // expect
-        const expected = [
-          applicationsFromDB.pcsx2,
-          applicationsFromDB.blastem,
-        ].map(({ id }) => ({
+        const expected = [applicationsFromDB.pcsx2].map(({ id }) => ({
           id,
         }));
         expect(result).toStrictEqual(expected);
       });
     });
 
-    describe("importApplicationsOnWindows", () => {
+    describe("getInstalledApplicationsOnWindows", () => {
       it("Should return known applications only", () => {
         // evaluate
         (readDirectorynames as jest.Mock<string[]>).mockReturnValueOnce([
           getDirectoryname(pcsx2.path),
-          getDirectoryname(pcsx2Old.path),
           getDirectoryname(blastem.path),
+          getDirectoryname(play.path),
           "unknown application",
-        ]);
-        (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
-          blastem.path,
-        ]);
-        (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
-          pcsx2Old.path,
         ]);
         (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
           pcsx2.path,
         ]);
+        (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([play.path]);
 
         // execute
-        const result = importApplicationsOnWindows(general.applicationsPath);
+        const result = getInstalledApplicationsOnWindows(
+          sonyplaystation2.applications,
+          general.applicationsPath
+        );
 
         // expect
-        const expected: Application[] = [blastem, pcsx2Old, pcsx2];
+        const expected: Application[] = [pcsx2, play];
         expect(result).toStrictEqual(expected);
       });
 
@@ -96,7 +91,10 @@ describe("applications.server", () => {
         (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([]);
 
         // execute
-        const result = importApplicationsOnWindows(general.applicationsPath);
+        const result = getInstalledApplicationsOnWindows(
+          sonyplaystation2.applications,
+          general.applicationsPath
+        );
 
         // expect
         expect(result).toStrictEqual([]);

@@ -1,15 +1,11 @@
 import nodepath from "path";
 
 import type { Application } from "~/types/jsonFiles/applications";
-import {
-  applications,
-  getApplicationDataByName,
-} from "~/server/applicationsDB.server";
+import type { Application as ApplicationDB } from "~/server/applicationsDB.server";
 import {
   readDirectorynames,
   readFilenames,
 } from "~/server/readWriteData.server";
-import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
 import { isWindows } from "./operationsystem.server";
 import { checkFlatpakIsInstalled } from "./execute.server";
 
@@ -29,33 +25,32 @@ export const findExecutable = (path: string, id: string): string | null => {
   return null;
 };
 
-export const importApplicationsOnWindows = (applicationsPath: string) => {
+export const getInstalledApplicationsOnWindows = (
+  applications: ApplicationDB[],
+  applicationsPath: string
+) => {
   const applicationFoldernames = readDirectorynames(applicationsPath);
-  applicationFoldernames.sort(sortCaseInsensitive);
 
-  const supportedApplications = applicationFoldernames.reduce<Application[]>(
-    (previousValue, appFoldername) => {
-      const data = getApplicationDataByName(appFoldername);
-      if (data) {
-        const { id } = data;
-
-        const executable = findExecutable(appFoldername, id);
-        if (executable) {
-          previousValue.push({
-            path: executable,
-            id,
-          });
-        }
+  return applications.reduce<Application[]>((result, { id }) => {
+    const appFoldername = applicationFoldernames.find((applicationFoldername) =>
+      applicationFoldername.toLowerCase().includes(id.toLowerCase())
+    );
+    if (appFoldername) {
+      const executable = findExecutable(appFoldername, id);
+      if (executable) {
+        result.push({
+          path: executable,
+          id,
+        });
       }
-      return previousValue;
-    },
-    []
-  );
-
-  return supportedApplications;
+    }
+    return result;
+  }, []);
 };
 
-export const importApplicationsOnLinux = () =>
+export const getInstalledApplicationsOnLinux = (
+  applications: ApplicationDB[]
+) =>
   Object.values(applications)
     .filter(({ flatpakId }) => checkFlatpakIsInstalled(flatpakId))
     .map(
@@ -64,10 +59,13 @@ export const importApplicationsOnLinux = () =>
       })
     );
 
-export const importApplications = (applicationsPath?: string) => {
+export const getInstalledApplications = (
+  applications: ApplicationDB[],
+  applicationsPath?: string
+) => {
   if (isWindows && applicationsPath) {
-    return importApplicationsOnWindows(applicationsPath);
+    return getInstalledApplicationsOnWindows(applications, applicationsPath);
   } else {
-    return importApplicationsOnLinux();
+    return getInstalledApplicationsOnLinux(applications);
   }
 };

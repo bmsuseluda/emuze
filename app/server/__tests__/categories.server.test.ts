@@ -25,6 +25,7 @@ import {
   pcenginecd,
   playstation,
 } from "../__testData__/category";
+import { applications as applicationsTestData } from "../__testData__/applications";
 import type { Category, Entry } from "~/types/jsonFiles/category";
 import { general } from "../__testData__/general";
 import { fetchMetaData } from "~/server/igdb.server";
@@ -35,6 +36,8 @@ import {
   mameNeoGeo,
   mednafen,
 } from "~/server/applicationsDB.server";
+import { getInstalledApplications } from "~/server/applications.server";
+import type { Application } from "~/types/jsonFiles/applications";
 
 const writeFileMock = jest.fn();
 jest.mock("~/server/readWriteData.server", () => ({
@@ -45,7 +48,7 @@ jest.mock("~/server/readWriteData.server", () => ({
 }));
 
 jest.mock("~/server/applications.server", () => ({
-  readApplications: jest.fn(),
+  getInstalledApplications: jest.fn(),
 }));
 
 jest.mock("~/server/settings.server.ts", () => ({
@@ -65,6 +68,16 @@ jest.mock("~/server/igdb.server.ts", () => ({
 describe("categories.server", () => {
   beforeEach(() => {
     jest.resetAllMocks();
+  });
+
+  describe("getApplicationForCategory", () => {
+    it("Should return old application if old application is installed", () => {});
+
+    it("Should return default application if old application is not set and default application is installed", () => {});
+
+    it("Should return first installed application that is compatible with the category", () => {});
+
+    it("Should return default application if no compatible application is installed", () => {});
   });
 
   describe("readEntriesWithMetaData", () => {
@@ -88,7 +101,7 @@ describe("categories.server", () => {
         neogeo.id,
         neogeo.entryPath,
         categoriesDB.neogeo.igdbPlatformIds,
-        neogeo.applicationId
+        neogeo.application.id
       );
 
       expect(result).toStrictEqual(expectedResult);
@@ -115,7 +128,7 @@ describe("categories.server", () => {
         playstation.id,
         playstation.entryPath,
         categoriesDB.sonyplaystation.igdbPlatformIds,
-        playstation.applicationId,
+        playstation.application.id,
         addIndex([
           hugo,
           {
@@ -168,7 +181,7 @@ describe("categories.server", () => {
         playstation.id,
         playstation.entryPath,
         categoriesDB.sonyplaystation.igdbPlatformIds,
-        playstation.applicationId
+        playstation.application.id
       );
 
       expect(result).toStrictEqual(
@@ -212,6 +225,12 @@ describe("categories.server", () => {
       (fetchMetaData as jest.Mock<Promise<Entry[]>>).mockResolvedValueOnce(
         pcenginecd.entries
       );
+      (
+        getInstalledApplications as jest.Mock<Application[]>
+      ).mockReturnValueOnce([applicationsTestData.citra]);
+      (
+        getInstalledApplications as jest.Mock<Application[]>
+      ).mockReturnValueOnce([applicationsTestData.mednafen]);
 
       // execute
       await importCategories();
@@ -257,6 +276,9 @@ describe("categories.server", () => {
       (fetchMetaData as jest.Mock<Promise<Entry[]>>).mockResolvedValueOnce(
         playstation.entries
       );
+      (
+        getInstalledApplications as jest.Mock<Application[]>
+      ).mockReturnValueOnce([applicationsTestData.duckstation]);
 
       // execute
       await importEntries(playstation.id);
