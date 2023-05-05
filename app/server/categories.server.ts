@@ -195,7 +195,7 @@ export const getApplicationForCategory = (
   defaultApplication: ApplicationDB,
   oldApplication?: Application
 ) => {
-  return installedApplicationsForCategory[0];
+  return installedApplicationsForCategory[0] || defaultApplication;
 };
 
 const createCategoryData =
