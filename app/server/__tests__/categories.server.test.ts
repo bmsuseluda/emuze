@@ -207,10 +207,10 @@ describe("categories.server", () => {
       (readFileHome as jest.Mock<Category>).mockReturnValueOnce(nintendo3ds);
       (readFileHome as jest.Mock<Category>).mockReturnValueOnce(pcenginecd);
       (fetchMetaData as jest.Mock<Promise<Entry[]>>).mockResolvedValueOnce(
-        nintendo3ds.entries!
+        nintendo3ds.entries
       );
       (fetchMetaData as jest.Mock<Promise<Entry[]>>).mockResolvedValueOnce(
-        pcenginecd.entries!
+        pcenginecd.entries
       );
 
       // execute
@@ -255,7 +255,7 @@ describe("categories.server", () => {
         hugo2.path,
       ]);
       (fetchMetaData as jest.Mock<Promise<Entry[]>>).mockResolvedValueOnce(
-        playstation.entries!
+        playstation.entries
       );
 
       // execute

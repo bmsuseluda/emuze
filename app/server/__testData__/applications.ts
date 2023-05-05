@@ -7,31 +7,27 @@ export const getDirectoryname = (path: string) => {
   return path.split(basename)[0];
 };
 
-interface FullApplication extends Application {
-  path: string;
-}
-
-export const pcsx2: FullApplication = {
+export const pcsx2 = {
   path: "F:/games/Emulation/emulators/Pcsx2-v1.7.2242-windows-64bit-AVX2/pcsx2x64-avx2.exe",
   id: "pcsx2",
-};
+} satisfies Application;
 
-export const pcsx2Old: FullApplication = {
+export const pcsx2Old = {
   path: "F:/games/Emulation/emulators/pcSX2-v1.6.2242-windows-64bit-AVX2/pcsx2x64-avx2.exe",
   id: "pcsx2",
-};
+} satisfies Application;
 
-export const blastem: FullApplication = {
+export const blastem = {
   path: "F:/games/Emulation/emulators/Blastem win32-0.6.2/blastem.exe",
   id: "blastem",
-};
+} satisfies Application;
 
-export const bsnes: FullApplication = {
+export const bsnes = {
   path: "F:/games/Emulation/emulators/bsnes/bsnes-mt.exe",
   id: "bsnes",
-};
+} satisfies Application;
 
-export const applications: FullApplication[] = [
+export const applications = [
   blastem,
   bsnes,
   {
@@ -55,4 +51,4 @@ export const applications: FullApplication[] = [
     path: "F:/games/Emulation/emulators/mednafen-1.29.0-win64/mednafen.exe",
     id: "mednafen",
   },
-];
+] satisfies Application[];

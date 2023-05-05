@@ -9,7 +9,7 @@ export const metroidsamusreturns: Entry = {
   path: "F:/games/Emulation/roms/Nintendo 3DS/Metroid Samus Returns.3ds",
 };
 
-export const nintendo3ds: Category = {
+export const nintendo3ds = {
   id: "nintendo3ds",
   name: "Nintendo 3DS",
   applicationId: "citra",
@@ -17,7 +17,7 @@ export const nintendo3ds: Category = {
     "F:/games/Emulation/emulators/Citra/nightly-mingw/citra-qt.exe",
   entryPath: "F:/games/Emulation/roms/Nintendo 3DS",
   entries: addIndex([metroidsamusreturns]),
-};
+} satisfies Category;
 
 export const cotton: Entry = {
   id: "cotton",
@@ -31,7 +31,7 @@ export const gateofthunder: Entry = {
   path: "F:/games/Emulation/roms/PC Engine CD/Gate of Thunder.CUE",
 };
 
-export const pcenginecd: Category = {
+export const pcenginecd = {
   id: "pcenginecd",
   name: "PC Engine CD",
   applicationId: "mednafen",
@@ -39,15 +39,15 @@ export const pcenginecd: Category = {
     "F:/games/Emulation/emulators/mednafen-1.29.0-win64/mednafen.exe",
   entryPath: "F:/games/Emulation/roms/PC Engine CD",
   entries: addIndex([cotton, gateofthunder]),
-};
+} satisfies Category;
 
-export const pcenginecdLinux: Category = {
+export const pcenginecdLinux = {
   id: "pcenginecd",
   name: "PC Engine CD",
   applicationId: "mednafen",
   entryPath: "F:/games/Emulation/roms/PC Engine CD",
   entries: addIndex([cotton, gateofthunder]),
-};
+} satisfies Category;
 
 export const fahrenheit: Entry = {
   id: "fahrenheit",
@@ -73,7 +73,7 @@ export const finalfantasy7: Entry = {
   path: "F:/games/Emulation/roms/Sony Playstation/Final Fantasy VII (J) (Disc 1).chd",
 };
 
-export const playstation: Category = {
+export const playstation = {
   id: "sonyplaystation",
   name: "Sony Playstation",
   applicationId: "duckstation",
@@ -81,15 +81,15 @@ export const playstation: Category = {
     "F:/games/Emulation/emulators/duckstation-windows-x64-release/duckstation-nogui-x64-ReleaseLTCG.exe",
   entryPath: "F:/games/Emulation/roms/Sony Playstation",
   entries: addIndex([hugo, hugo2]),
-};
+} satisfies Category;
 
-export const playstation2: Category = {
+export const playstation2 = {
   id: "sonyplaystation2",
   name: "Sony Playstation 2",
   applicationId: "pcsx2",
   entryPath: "/home/dennisludwig/Documents/Emulation/Sony Playstation 2",
   entries: addIndex([fahrenheit]),
-};
+} satisfies Category;
 
 export const bayoubilly: Entry = {
   id: "adventuresofbayoubilly,the(e)",
@@ -109,19 +109,19 @@ export const blazingstar: Entry = {
   path: "F:/games/Emulation/roms/Neo Geo/blazstar.zip",
 };
 
-export const neogeo: Category = {
+export const neogeo = {
   id: "neogeo",
   name: "Neo Geo",
   applicationId: "mameneogeo",
   applicationPath: "F:/games/Emulation/emulators/mame/mame.exe",
   entryPath: "F:/games/Emulation/roms/Neo Geo",
   entries: addIndex([blazingstar]),
-};
+} satisfies Category;
 
-export const neogeoLinux: Category = {
+export const neogeoLinux = {
   id: "neogeo",
   name: "Neo Geo",
   applicationId: "mameneogeo",
   entryPath: "F:/games/Emulation/roms/Neo Geo",
   entries: addIndex([blazingstar]),
-};
+} satisfies Category;

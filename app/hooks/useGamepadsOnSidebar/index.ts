@@ -6,6 +6,7 @@ import {
   useKeyboardEvent,
 } from "~/hooks/useGamepadEvent";
 
+// TODO: write tests
 export const useGamepadsOnSidebar = (
   selectedCategoryId: number,
   isInFocus: boolean

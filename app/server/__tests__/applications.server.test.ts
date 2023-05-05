@@ -81,7 +81,7 @@ describe("applications.server", () => {
         ]);
 
         // execute
-        const result = importApplicationsOnWindows(general.applicationsPath!);
+        const result = importApplicationsOnWindows(general.applicationsPath);
 
         // expect
         const expected: Application[] = [blastem, pcsx2Old, pcsx2];
@@ -96,7 +96,7 @@ describe("applications.server", () => {
         (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([]);
 
         // execute
-        const result = importApplicationsOnWindows(general.applicationsPath!);
+        const result = importApplicationsOnWindows(general.applicationsPath);
 
         // expect
         expect(result).toStrictEqual([]);

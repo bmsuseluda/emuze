@@ -29,7 +29,9 @@ jest.mock("~/server/settings.server", () => ({
   readAppearance: jest.fn(),
 }));
 
-const getFirstEntry = (category: Category) => category.entries![0];
+const getFirstEntry = (
+  category: Category & Required<Pick<Category, "entries">>
+) => category.entries[0];
 
 describe("execute.server", () => {
   const env = process.env;
@@ -99,7 +101,7 @@ describe("execute.server", () => {
           entry.path,
         ]);
         expect(process.env.MEDNAFEN_HOME).toBe(
-          nodepath.dirname(pcenginecd.applicationPath!)
+          nodepath.dirname(pcenginecd.applicationPath)
         );
       });
     });
