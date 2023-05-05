@@ -151,6 +151,27 @@ export const importEntries = async (category: string) => {
   }
 };
 
+/**
+ * const installedApplicationsForCategory
+ * const oldApplicationId
+ * const defaultApplicationId
+ *
+ * if (oldApplicationId is in installedApplicationsForCategory) {
+ *     return oldApplicationId
+ * }
+ *
+ * if (defaultApplicationId is in installedApplicationsForCategory) {
+ *     return defaultApplicationId
+ * }
+ *
+ * if (installedApplicationsForCategory.length > 0) {
+ *     return installedApplicationsForCategory[0].id
+ * }
+ *
+ * return defaultApplicationId
+ */
+const getApplicationIdForCategory = () => {};
+
 const createCategoryData =
   (
     applicationId: string,

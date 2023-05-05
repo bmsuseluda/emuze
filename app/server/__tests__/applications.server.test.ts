@@ -3,7 +3,6 @@ import {
   findExecutable,
   importApplicationsOnLinux,
   importApplicationsOnWindows,
-  paths,
 } from "../applications.server";
 import {
   blastem,
@@ -20,19 +19,13 @@ import { checkFlatpakIsInstalled } from "~/server/execute.server";
 import { general } from "../__testData__/general";
 import { when } from "jest-when";
 
-const writeFileMock = jest.fn();
 jest.mock("~/server/readWriteData.server", () => ({
   readDirectorynames: jest.fn(),
   readFilenames: jest.fn(),
-  writeFileHome: (object: unknown, path: string) => writeFileMock(object, path),
 }));
 
 jest.mock("~/server/execute.server", () => ({
   checkFlatpakIsInstalled: jest.fn(),
-}));
-
-jest.mock("~/server/settings.server.ts", () => ({
-  readGeneral: () => general,
 }));
 
 describe("applications.server", () => {
@@ -55,7 +48,7 @@ describe("applications.server", () => {
           .mockReturnValueOnce(false);
 
         // execute
-        importApplicationsOnLinux();
+        const result = importApplicationsOnLinux();
 
         // expect
         const expected = [
@@ -64,10 +57,7 @@ describe("applications.server", () => {
         ].map(({ id }) => ({
           id,
         }));
-        expect(writeFileMock).toHaveBeenCalledWith(
-          expected,
-          paths.applications
-        );
+        expect(result).toStrictEqual(expected);
       });
     });
 
@@ -91,14 +81,11 @@ describe("applications.server", () => {
         ]);
 
         // execute
-        importApplicationsOnWindows();
+        const result = importApplicationsOnWindows(general.applicationsPath!);
 
         // expect
         const expected: Application[] = [blastem, pcsx2Old, pcsx2];
-        expect(writeFileMock).toHaveBeenCalledWith(
-          expected,
-          paths.applications
-        );
+        expect(result).toStrictEqual(expected);
       });
 
       it("Should return an empty list because there is no executable", () => {
@@ -109,10 +96,10 @@ describe("applications.server", () => {
         (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([]);
 
         // execute
-        importApplicationsOnWindows();
+        const result = importApplicationsOnWindows(general.applicationsPath!);
 
         // expect
-        expect(writeFileMock).toHaveBeenCalledWith([], paths.applications);
+        expect(result).toStrictEqual([]);
       });
     });
   });

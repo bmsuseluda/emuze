@@ -12,7 +12,6 @@ import {
   readFileHome,
   readFilenames,
 } from "~/server/readWriteData.server";
-import { readApplications } from "~/server/applications.server";
 import {
   addIndex,
   blazingstar,
@@ -26,8 +25,6 @@ import {
   pcenginecd,
   playstation,
 } from "../__testData__/category";
-import type { Application } from "~/types/jsonFiles/applications";
-import { applications } from "../__testData__/applications";
 import type { Category, Entry } from "~/types/jsonFiles/category";
 import { general } from "../__testData__/general";
 import { fetchMetaData } from "~/server/igdb.server";
@@ -196,9 +193,6 @@ describe("categories.server", () => {
   describe("importCategories", () => {
     it("Should import 3ds and pcengine data", async () => {
       // evaluate
-      (readApplications as jest.Mock<Application[]>).mockReturnValueOnce(
-        applications
-      );
       (readDirectorynames as jest.Mock<string[]>).mockReturnValueOnce([
         nintendo3ds.entryPath,
         "unknown category",
@@ -255,8 +249,6 @@ describe("categories.server", () => {
   describe("importEntries", () => {
     it("Should update entries and keep general category data", async () => {
       // evaluate
-      (readFileHome as jest.Mock<Category>).mockReturnValueOnce(playstation);
-      // TODO: Remove if double call is not necessary
       (readFileHome as jest.Mock<Category>).mockReturnValueOnce(playstation);
       (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
         hugo.path,

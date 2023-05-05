@@ -14,7 +14,6 @@ import { FormBox } from "~/components/FormBox";
 import { FormRow } from "~/components/FormRow";
 import { Label } from "~/components/Label";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
-import { importApplications } from "~/server/applications.server";
 import { importCategories } from "~/server/categories.server";
 import { openFolderDialog } from "~/server/openDialog.server";
 import { readGeneral, writeGeneral } from "~/server/settings.server";
@@ -66,7 +65,6 @@ export const action: ActionFunction = async ({ request }) => {
       categoriesPath,
     };
     writeGeneral(fields);
-    importApplications();
     await importCategories();
     throw redirect("/categories");
   }

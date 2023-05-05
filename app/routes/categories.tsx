@@ -15,7 +15,6 @@ import { SidebarMainLayout } from "~/components/layouts/SidebarMainLayout";
 import { Link } from "~/containers/Link";
 import { Header } from "~/containers/Header";
 import { useTestId } from "~/hooks/useTestId";
-import { importApplications } from "~/server/applications.server";
 import { PlatformIcon } from "~/components/PlatformIcon";
 import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
 import { readAppearance } from "~/server/settings.server";
@@ -78,7 +77,6 @@ export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
   const _actionId = form.get("_actionId");
   if (_actionId === actionIds.import) {
-    importApplications();
     await importCategories();
     throw redirect("/categories");
   }

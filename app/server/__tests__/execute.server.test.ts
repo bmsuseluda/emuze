@@ -19,8 +19,6 @@ const execFileMock = jest.fn();
 jest.mock("child_process", () => ({
   execFileSync: (applicationPath: string, entryPath: string) =>
     execFileMock(applicationPath, entryPath),
-  execFile: (applicationPath: string, entryPath: string) =>
-    execFileMock(applicationPath, entryPath),
 }));
 
 jest.mock("~/server/categories.server", () => ({
