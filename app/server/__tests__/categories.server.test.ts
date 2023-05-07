@@ -36,7 +36,10 @@ import {
   mameNeoGeo,
   mednafen,
 } from "~/server/applicationsDB.server";
-import { getInstalledApplications } from "~/server/applications.server";
+import {
+  getApplicationForCategory,
+  getInstalledApplications,
+} from "~/server/applications.server";
 import type { Application } from "~/types/jsonFiles/applications";
 
 const writeFileMock = jest.fn();
@@ -49,6 +52,7 @@ jest.mock("~/server/readWriteData.server", () => ({
 
 jest.mock("~/server/applications.server", () => ({
   getInstalledApplications: jest.fn(),
+  getApplicationForCategory: jest.fn(),
 }));
 
 jest.mock("~/server/settings.server.ts", () => ({
@@ -68,16 +72,6 @@ jest.mock("~/server/igdb.server.ts", () => ({
 describe("categories.server", () => {
   beforeEach(() => {
     jest.resetAllMocks();
-  });
-
-  describe("getApplicationForCategory", () => {
-    it("Should return old application if old application is installed", () => {});
-
-    it("Should return default application if old application is not set and default application is installed", () => {});
-
-    it("Should return first installed application that is compatible with the category", () => {});
-
-    it("Should return default application if no compatible application is installed", () => {});
   });
 
   describe("readEntriesWithMetaData", () => {
@@ -228,9 +222,15 @@ describe("categories.server", () => {
       (
         getInstalledApplications as jest.Mock<Application[]>
       ).mockReturnValueOnce([applicationsTestData.citra]);
+      (getApplicationForCategory as jest.Mock<Application>).mockReturnValueOnce(
+        applicationsTestData.citra
+      );
       (
         getInstalledApplications as jest.Mock<Application[]>
       ).mockReturnValueOnce([applicationsTestData.mednafen]);
+      (getApplicationForCategory as jest.Mock<Application>).mockReturnValueOnce(
+        applicationsTestData.mednafen
+      );
 
       // execute
       await importCategories();
@@ -279,6 +279,9 @@ describe("categories.server", () => {
       (
         getInstalledApplications as jest.Mock<Application[]>
       ).mockReturnValueOnce([applicationsTestData.duckstation]);
+      (getApplicationForCategory as jest.Mock<Application>).mockReturnValueOnce(
+        applicationsTestData.duckstation
+      );
 
       // execute
       await importEntries(playstation.id);

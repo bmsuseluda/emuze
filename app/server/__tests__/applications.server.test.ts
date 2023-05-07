@@ -1,10 +1,12 @@
 import type { Application } from "~/types/jsonFiles/applications";
 import {
   findExecutable,
+  getApplicationForCategory,
   getInstalledApplicationsOnLinux,
   getInstalledApplicationsOnWindows,
 } from "../applications.server";
 import {
+  applications as applicationsTestData,
   blastem,
   getDirectoryname,
   pcsx2,
@@ -159,6 +161,44 @@ describe("applications.server", () => {
 
       // expect
       expect(executable).toBeNull();
+    });
+  });
+
+  describe("getApplicationForCategory", () => {
+    const defaultApplication = applicationsFromDB.pcsx2;
+    it("Should return old application if old application is installed", () => {
+      const oldApplication = applicationsTestData.play;
+      const result = getApplicationForCategory(
+        [defaultApplication, oldApplication],
+        defaultApplication,
+        oldApplication
+      );
+
+      expect(result).toBe(oldApplication);
+    });
+
+    it("Should return default application if old application is not set and default application is installed", () => {
+      const result = getApplicationForCategory(
+        [defaultApplication, applicationsTestData.play],
+        defaultApplication
+      );
+
+      expect(result).toBe(defaultApplication);
+    });
+
+    it("Should return first installed application that is compatible with the category", () => {
+      const result = getApplicationForCategory(
+        [applicationsTestData.play, applicationsTestData.duckstation],
+        defaultApplication
+      );
+
+      expect(result).toBe(applicationsTestData.play);
+    });
+
+    it("Should return default application if no compatible application is installed", () => {
+      const result = getApplicationForCategory([], defaultApplication);
+
+      expect(result).toStrictEqual({ id: defaultApplication.id });
     });
   });
 });

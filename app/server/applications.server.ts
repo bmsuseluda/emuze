@@ -69,3 +69,33 @@ export const getInstalledApplications = (
     return getInstalledApplicationsOnLinux(applications);
   }
 };
+
+export const getApplicationForCategory = (
+  installedApplicationsForCategory: Application[],
+  defaultApplicationDB: ApplicationDB,
+  oldApplication?: Application
+) => {
+  if (installedApplicationsForCategory.length > 0) {
+    if (
+      oldApplication &&
+      installedApplicationsForCategory.find(
+        ({ id }) => id === oldApplication?.id
+      )
+    ) {
+      return oldApplication;
+    }
+
+    const defaultApplication = installedApplicationsForCategory.find(
+      ({ id }) => id === defaultApplicationDB.id
+    );
+    if (defaultApplication) {
+      return defaultApplication;
+    }
+
+    return installedApplicationsForCategory[0];
+  }
+
+  return {
+    id: defaultApplicationDB.id,
+  };
+};

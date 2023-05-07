@@ -53,6 +53,7 @@ export const applications = {
   duckstation,
   citra,
   pcsx2,
+  play,
   dolphin,
   mednafen,
 } satisfies Record<string, Application>;

@@ -13,10 +13,7 @@ import { convertToId } from "~/server/convertToId.server";
 import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
 import { fetchMetaData } from "~/server/igdb.server";
 import { readGeneral } from "~/server/settings.server";
-import type {
-  Application as ApplicationDB,
-  ApplicationId,
-} from "~/server/applicationsDB.server";
+import type { ApplicationId } from "~/server/applicationsDB.server";
 import { getApplicationDataById } from "~/server/applicationsDB.server";
 import type {
   Category as CategoryDB,
@@ -26,8 +23,10 @@ import {
   categories,
   getCategoryDataByName,
 } from "~/server/categoriesDB.server";
-import { getInstalledApplications } from "~/server/applications.server";
-import type { Application } from "~/types/jsonFiles/applications";
+import {
+  getApplicationForCategory,
+  getInstalledApplications,
+} from "~/server/applications.server";
 
 export const paths = {
   categories: "data/categories.json",
@@ -169,33 +168,6 @@ export const importEntries = async (category: string) => {
       entries,
     });
   }
-};
-
-/**
- * const installedApplicationsForCategory
- * const oldApplicationId
- * const defaultApplicationId
- *
- * if (oldApplicationId is in installedApplicationsForCategory) {
- *     return oldApplicationId
- * }
- *
- * if (defaultApplicationId is in installedApplicationsForCategory) {
- *     return defaultApplicationId
- * }
- *
- * if (installedApplicationsForCategory.length > 0) {
- *     return installedApplicationsForCategory[0].id
- * }
- *
- * return defaultApplicationId
- */
-export const getApplicationForCategory = (
-  installedApplicationsForCategory: Application[],
-  defaultApplication: ApplicationDB,
-  oldApplication?: Application
-) => {
-  return installedApplicationsForCategory[0] || defaultApplication;
 };
 
 const createCategoryData =
