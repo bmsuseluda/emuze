@@ -23,10 +23,7 @@ import {
   categories,
   getCategoryDataByName,
 } from "~/server/categoriesDB.server";
-import {
-  getApplicationForCategory,
-  getInstalledApplications,
-} from "~/server/applications.server";
+import { getApplicationForCategory } from "~/server/applications.server";
 
 export const paths = {
   categories: "data/categories.json",
@@ -144,20 +141,19 @@ export const importEntries = async (category: string) => {
 
   if (oldCategoryData && categoryDbData) {
     const { applicationsPath } = readGeneral();
-    const installedApplications = getInstalledApplications(
-      categoryDbData.applications,
-      applicationsPath
-    );
-    const application = getApplicationForCategory(
-      installedApplications,
-      categoryDbData.defaultApplication,
-      oldCategoryData?.application
-    );
+    const { igdbPlatformIds, defaultApplication, applications } =
+      categoryDbData;
+    const application = getApplicationForCategory({
+      applicationsForCategory: applications,
+      applicationsPath,
+      defaultApplicationDB: defaultApplication,
+      oldApplication: oldCategoryData?.application,
+    });
 
     const entries = await readEntriesWithMetaData(
       category,
       oldCategoryData.entryPath,
-      categoryDbData.igdbPlatformIds,
+      igdbPlatformIds,
       application.id,
       oldCategoryData.entries
     );
@@ -178,18 +174,17 @@ const createCategoryData =
     applicationsPath?: string
   ) =>
   async (): Promise<Category> => {
-    const { id, igdbPlatformIds, defaultApplication } = categoryDbData;
+    const { id, igdbPlatformIds, defaultApplication, applications } =
+      categoryDbData;
     const oldCategoryData = readCategory(id);
 
-    const installedApplications = getInstalledApplications(
-      categoryDbData.applications,
-      applicationsPath
-    );
-    const application = getApplicationForCategory(
-      installedApplications,
-      defaultApplication,
-      oldCategoryData?.application
-    );
+    const application = getApplicationForCategory({
+      applicationsForCategory: applications,
+      applicationsPath,
+      defaultApplicationDB: defaultApplication,
+      oldApplication: oldCategoryData?.application,
+    });
+
     const entries = await readEntriesWithMetaData(
       id,
       categoryFolderName,

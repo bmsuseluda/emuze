@@ -66,6 +66,7 @@ export const EntryList = ({
 
   const handleExecute = useCallback(() => {
     if (isInFocus) {
+      // TODO: selectedEntry.current won't set with mouse click, therefore doubleClick does not work
       if (selectedEntry.current) {
         onExecute();
       }

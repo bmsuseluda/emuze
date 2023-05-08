@@ -1,35 +1,18 @@
 import type { ComponentMeta, ComponentStory } from "@storybook/react";
 
-import { Button } from ".";
-import { IoMdRefresh } from "react-icons/io";
+import { ApplicationIndicator } from ".";
+import { duckstation } from "~/server/__testData__/applications";
 
 export default {
-  title: "Components/Button",
-  component: Button,
-} as ComponentMeta<typeof Button>;
+  title: "Components/ApplicationIndicator",
+  component: ApplicationIndicator,
+} as ComponentMeta<typeof ApplicationIndicator>;
 
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
+const Template: ComponentStory<typeof ApplicationIndicator> = (args) => (
+  <ApplicationIndicator {...args} />
+);
 
 export const Basic = Template.bind({});
 Basic.args = {
-  children: "save",
-};
-
-export const Disabled = Template.bind({});
-Disabled.args = {
-  children: "save",
-  disabled: true,
-};
-
-export const WithIcon = Template.bind({});
-WithIcon.args = {
-  children: "import",
-  icon: <IoMdRefresh />,
-};
-
-export const Loading = Template.bind({});
-Loading.args = {
-  children: "loading",
-  icon: <IoMdRefresh />,
-  loading: true,
+  application: duckstation,
 };

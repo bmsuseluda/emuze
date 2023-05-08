@@ -1,7 +1,7 @@
 import type { Application } from "~/types/jsonFiles/applications";
 import {
   findExecutable,
-  getApplicationForCategory,
+  getInstalledApplicationForCategory,
   getInstalledApplicationsOnLinux,
   getInstalledApplicationsOnWindows,
 } from "../applications.server";
@@ -168,7 +168,7 @@ describe("applications.server", () => {
     const defaultApplication = applicationsFromDB.pcsx2;
     it("Should return old application if old application is installed", () => {
       const oldApplication = applicationsTestData.play;
-      const result = getApplicationForCategory(
+      const result = getInstalledApplicationForCategory(
         [defaultApplication, oldApplication],
         defaultApplication,
         oldApplication
@@ -178,7 +178,7 @@ describe("applications.server", () => {
     });
 
     it("Should return default application if old application is not set and default application is installed", () => {
-      const result = getApplicationForCategory(
+      const result = getInstalledApplicationForCategory(
         [defaultApplication, applicationsTestData.play],
         defaultApplication
       );
@@ -187,7 +187,7 @@ describe("applications.server", () => {
     });
 
     it("Should return first installed application that is compatible with the category", () => {
-      const result = getApplicationForCategory(
+      const result = getInstalledApplicationForCategory(
         [applicationsTestData.play, applicationsTestData.duckstation],
         defaultApplication
       );
@@ -196,7 +196,7 @@ describe("applications.server", () => {
     });
 
     it("Should return default application if no compatible application is installed", () => {
-      const result = getApplicationForCategory([], defaultApplication);
+      const result = getInstalledApplicationForCategory([], defaultApplication);
 
       expect(result).toStrictEqual({ id: defaultApplication.id });
     });

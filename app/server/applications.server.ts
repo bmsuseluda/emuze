@@ -70,7 +70,7 @@ export const getInstalledApplications = (
   }
 };
 
-export const getApplicationForCategory = (
+export const getInstalledApplicationForCategory = (
   installedApplicationsForCategory: Application[],
   defaultApplicationDB: ApplicationDB,
   oldApplication?: Application
@@ -98,4 +98,28 @@ export const getApplicationForCategory = (
   return {
     id: defaultApplicationDB.id,
   };
+};
+
+export const getApplicationForCategory = ({
+  applicationsForCategory,
+  applicationsPath,
+  defaultApplicationDB,
+  oldApplication,
+}: {
+  applicationsForCategory: ApplicationDB[];
+  applicationsPath?: string;
+  defaultApplicationDB: ApplicationDB;
+  oldApplication?: Application;
+}) => {
+  const installedApplications = getInstalledApplications(
+    applicationsForCategory,
+    applicationsPath
+  );
+  const application = getInstalledApplicationForCategory(
+    installedApplications,
+    defaultApplicationDB,
+    oldApplication
+  );
+
+  return application;
 };
