@@ -5,6 +5,13 @@ import { StorybookConfig } from "@storybook/react-webpack5";
 const config: StorybookConfig = {
   core: {
     disableTelemetry: true,
+    builder: {
+      name: "@storybook/builder-webpack5",
+      options: {
+        lazyCompilation: true,
+        fsCache: true,
+      },
+    },
   },
   framework: {
     name: "@storybook/react-webpack5",
@@ -27,4 +34,5 @@ const config: StorybookConfig = {
     autodocs: true,
   },
 };
+
 export default config;

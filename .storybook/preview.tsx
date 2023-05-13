@@ -25,10 +25,7 @@ const withThemeProvider: Decorator = (Story, context) => {
       className={theme}
       css={{
         backgroundColor: "$backgroundColor",
-        width: "100%",
-        height: "100vh",
         padding: "$2",
-        position: "absolute",
         boxSizing: "border-box",
         display: "flex",
         flexDirection: "column",
@@ -49,14 +46,17 @@ const preview: Preview = {
         date: /Date$/,
       },
     },
+    backgrounds: {
+      disable: true,
+    },
   },
   decorators: [withThemeProvider],
   globalTypes: {
     theme: {
-      name: "Theme",
       description: "Theme",
       defaultValue: "dark",
       toolbar: {
+        title: "Theme",
         icon: "lightning",
         items: Object.keys(themes).map((themeName) => ({
           value: themeName,

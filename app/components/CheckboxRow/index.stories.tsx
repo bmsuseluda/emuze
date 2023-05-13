@@ -1,42 +1,41 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
-
 import { CheckboxRow } from ".";
 import { Checkbox } from "~/components/Checkbox";
 import { Label } from "~/components/Label";
+import type { Meta, StoryObj } from "@storybook/react";
 
-export default {
-  title: "Components/CheckboxRow",
+const meta = {
   component: CheckboxRow,
-} as ComponentMeta<typeof CheckboxRow>;
+} satisfies Meta<typeof CheckboxRow>;
 
-const Template: ComponentStory<typeof CheckboxRow> = (args) => (
-  <CheckboxRow {...args} />
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Checked = Template.bind({});
-Checked.args = {
-  children: (
-    <>
-      <Checkbox
-        id="alwaysGameNames"
-        name="alwaysGameNames"
-        defaultChecked={true}
-      />
-      <Label htmlFor="alwaysGameNames">Always show game names</Label>
-    </>
-  ),
+export const Checked: Story = {
+  args: {
+    children: (
+      <>
+        <Checkbox
+          id="alwaysGameNames"
+          name="alwaysGameNames"
+          defaultChecked={true}
+        />
+        <Label htmlFor="alwaysGameNames">Always show game names</Label>
+      </>
+    ),
+  },
 };
 
-export const Unchecked = Template.bind({});
-Unchecked.args = {
-  children: (
-    <>
-      <Checkbox
-        id="alwaysGameNames"
-        name="alwaysGameNames"
-        defaultChecked={false}
-      />
-      <Label htmlFor="alwaysGameNames">Always show game names</Label>
-    </>
-  ),
+export const Unchecked: Story = {
+  args: {
+    children: (
+      <>
+        <Checkbox
+          id="alwaysGameNames"
+          name="alwaysGameNames"
+          defaultChecked={false}
+        />
+        <Label htmlFor="alwaysGameNames">Always show game names</Label>
+      </>
+    ),
+  },
 };

@@ -1,18 +1,20 @@
-import type { ComponentMeta, ComponentStoryObj } from "@storybook/react";
-
 import { Select } from ".";
 import React from "react";
 
-export default {
-  title: "Components/Select",
-  component: Select.Root,
-} as ComponentMeta<typeof Select.Root>;
+import type { Meta, StoryObj } from "@storybook/react";
 
-export const Default: ComponentStoryObj<typeof Select.Root> = {
+const meta = {
+  component: Select.Root,
+} satisfies Meta<typeof Select.Root>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
   args: {},
   render: (args) => {
     return (
-      <Select.Root>
+      <Select.Root name="fruit" value="grapes">
         <Select.Trigger placeholder="Select a fruit…"></Select.Trigger>
         <Select.Content>
           <Select.Item value="apple">Apple</Select.Item>
@@ -26,7 +28,7 @@ export const Default: ComponentStoryObj<typeof Select.Root> = {
   },
 };
 
-export const Open: ComponentStoryObj<typeof Select.Root> = {
+export const Open: Story = {
   args: {},
   render: (args) => {
     return (

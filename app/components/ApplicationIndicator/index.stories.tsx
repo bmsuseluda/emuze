@@ -1,18 +1,32 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 
 import { ApplicationIndicator } from ".";
-import { duckstation } from "~/server/__testData__/applications";
+import { pcsx2, play } from "~/server/__testData__/applications";
 
-export default {
-  title: "Components/ApplicationIndicator",
+const meta = {
   component: ApplicationIndicator,
-} as ComponentMeta<typeof ApplicationIndicator>;
+} satisfies Meta<typeof ApplicationIndicator>;
 
-const Template: ComponentStory<typeof ApplicationIndicator> = (args) => (
-  <ApplicationIndicator {...args} />
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Basic = Template.bind({});
-Basic.args = {
-  application: duckstation,
+export const MultipleInstalledApplications: Story = {
+  args: {
+    application: play,
+    installedApplications: [play, pcsx2],
+  },
+};
+
+export const NoInstalledApplication: Story = {
+  args: {
+    application: play,
+    installedApplications: [],
+  },
+};
+
+export const OnlyOneInstalledApplication: Story = {
+  args: {
+    application: play,
+    installedApplications: [play],
+  },
 };

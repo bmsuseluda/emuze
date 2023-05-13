@@ -18,11 +18,15 @@ import {
 } from "~/hooks/useGamepadEvent";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElement } from "~/types/focusElement";
-import { readAppearance } from "~/server/settings.server";
+import { readAppearance, readGeneral } from "~/server/settings.server";
 import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
 import { useFullscreen } from "~/hooks/useFullscreen";
 import { SettingsLink } from "~/components/SettingsLink";
 import { useAddEntriesToRenderOnScrollEnd } from "~/hooks/useAddEntriesToRenderOnScrollEnd";
+import { getInstalledApplications } from "~/server/applications.server";
+import type { PlatformId } from "~/server/categoriesDB.server";
+import { categories } from "~/server/categoriesDB.server";
+import { ApplicationIndicator } from "~/components/ApplicationIndicator";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -33,8 +37,16 @@ export const loader = ({ params }: DataFunctionArgs) => {
 
   // TODO: check what todo if categoryData is null
   const categoryData = readCategory(category);
+
+  const { applicationsPath } = readGeneral();
+
+  const installedApplications = getInstalledApplications(
+    categories[category as PlatformId].applications,
+    applicationsPath
+  );
+
   const { alwaysGameNames } = readAppearance();
-  return json({ categoryData, alwaysGameNames });
+  return json({ categoryData, alwaysGameNames, installedApplications });
 };
 
 const actionIds = {
@@ -78,7 +90,8 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 };
 
 export default function Category() {
-  const { categoryData, alwaysGameNames } = useLoaderData<typeof loader>();
+  const { categoryData, alwaysGameNames, installedApplications } =
+    useLoaderData<typeof loader>();
 
   const isFullscreen = useFullscreen();
   const launchButtonRef = useRef<HTMLButtonElement>(null);
@@ -174,7 +187,7 @@ export default function Category() {
                   icon={<IoMdPlay />}
                   {...getTestId(["button", "launch"])}
                 >
-                  Launch Rom
+                  Launch Game
                 </Button>
                 <Button
                   type="submit"
@@ -188,8 +201,12 @@ export default function Category() {
                   }
                   {...getTestId(["button", "import"])}
                 >
-                  Import Roms
+                  Import Games
                 </Button>
+                <ApplicationIndicator
+                  installedApplications={installedApplications}
+                  application={categoryData.application}
+                />
               </>
             }
           />

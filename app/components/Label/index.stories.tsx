@@ -1,21 +1,22 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
-
 import { Label } from ".";
 import { TextInput } from "../TextInput";
 
-export default {
-  title: "Components/Label",
+import type { Meta, StoryObj } from "@storybook/react";
+
+const meta = {
   component: Label,
-} as ComponentMeta<typeof Label>;
+} satisfies Meta<typeof Label>;
 
-const Template: ComponentStory<typeof Label> = (args) => <Label {...args} />;
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Basic = Template.bind({});
-Basic.args = {
-  children: (
-    <>
-      firstname
-      <TextInput.Input name="firstname" />
-    </>
-  ),
+export const Basic: Story = {
+  args: {
+    children: (
+      <>
+        firstname
+        <TextInput.Input name="firstname" />
+      </>
+    ),
+  },
 };

@@ -1,19 +1,19 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
-
 import { Checkbox } from ".";
+import type { Meta, StoryObj } from "@storybook/react";
 
-export default {
-  title: "Components/Checkbox",
+const meta = {
   component: Checkbox,
-} as ComponentMeta<typeof Checkbox>;
+} satisfies Meta<typeof Checkbox>;
 
-const Template: ComponentStory<typeof Checkbox> = (args) => (
-  <Checkbox {...args} />
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Checked = Template.bind({});
-Checked.args = {
-  checked: true,
+export const Checked: Story = {
+  args: {
+    checked: true,
+  },
 };
 
-export const Unchecked = Template.bind({});
+export const Unchecked: Story = {
+  args: {},
+};

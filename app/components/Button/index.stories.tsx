@@ -1,35 +1,39 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 
 import { Button } from ".";
 import { IoMdRefresh } from "react-icons/io";
 
-export default {
-  title: "Components/Button",
+const meta = {
   component: Button,
-} as ComponentMeta<typeof Button>;
+} satisfies Meta<typeof Button>;
 
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Basic = Template.bind({});
-Basic.args = {
-  children: "save",
+export const Basic: Story = {
+  args: {
+    children: "save",
+  },
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-  children: "save",
-  disabled: true,
+export const Disabled: Story = {
+  args: {
+    children: "save",
+    disabled: true,
+  },
 };
 
-export const WithIcon = Template.bind({});
-WithIcon.args = {
-  children: "import",
-  icon: <IoMdRefresh />,
+export const WithIcon: Story = {
+  args: {
+    children: "import",
+    icon: <IoMdRefresh />,
+  },
 };
 
-export const Loading = Template.bind({});
-Loading.args = {
-  children: "loading",
-  icon: <IoMdRefresh />,
-  loading: true,
+export const Loading: Story = {
+  args: {
+    children: "loading",
+    icon: <IoMdRefresh />,
+    loading: true,
+  },
 };

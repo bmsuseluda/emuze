@@ -23,7 +23,7 @@ export const StyledButton = styled("button", {
   },
 });
 
-type Props = {
+export type Props = {
   icon?: React.ReactNode;
   children: React.ReactNode;
   loading?: boolean;

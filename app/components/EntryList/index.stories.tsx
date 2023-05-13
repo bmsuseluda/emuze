@@ -1,30 +1,31 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
-
 import { EntryList } from ".";
 import { entries } from "./testData";
+import type { Meta, StoryObj } from "@storybook/react";
 
-export default {
-  title: "Components/EntryList",
+const meta = {
   component: EntryList,
-} as ComponentMeta<typeof EntryList>;
+} satisfies Meta<typeof EntryList>;
 
-const Template: ComponentStory<typeof EntryList> = (args) => (
-  <EntryList {...args} />
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Basic = Template.bind({});
-Basic.args = {
-  entries,
-  onDoubleClick: () => {
-    alert("launch");
+export const Basic: Story = {
+  args: {
+    entries,
+    onExecute: () => {
+      alert("launch");
+    },
+    isInFocus: true,
   },
 };
 
-export const WithAlwaysGameName = Template.bind({});
-WithAlwaysGameName.args = {
-  entries,
-  alwaysGameNames: true,
-  onDoubleClick: () => {
-    alert("launch");
+export const WithAlwaysGameName: Story = {
+  args: {
+    entries,
+    alwaysGameNames: true,
+    onExecute: () => {
+      alert("launch");
+    },
+    isInFocus: true,
   },
 };
