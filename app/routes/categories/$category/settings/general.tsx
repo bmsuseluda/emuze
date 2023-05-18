@@ -183,7 +183,8 @@ export default function Index() {
   return (
     <ListActionBarLayout
       headline={
-        <IconChildrenWrapper icon={<SettingsIcon id="general" />}>
+        <IconChildrenWrapper>
+          <SettingsIcon id="general" />
           <span>
             <span>General</span>
           </span>
@@ -260,13 +261,13 @@ export default function Index() {
               type="submit"
               name="_actionId"
               value={actionIds.save}
-              icon={<IoMdSave />}
               loading={
                 state === "submitting" &&
                 formData?.get("_actionId") === actionIds.save
               }
               ref={saveButtonRef}
             >
+              <IoMdSave />
               Save settings and import all
             </Button>
           }

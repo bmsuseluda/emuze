@@ -112,7 +112,8 @@ export default function Index() {
   return (
     <ListActionBarLayout
       headline={
-        <IconChildrenWrapper icon={<SettingsIcon id="appearance" />}>
+        <IconChildrenWrapper>
+          <SettingsIcon id="appearance" />
           <span>
             <span>Appearance</span>
           </span>
@@ -178,9 +179,9 @@ export default function Index() {
               type="submit"
               name="_actionId"
               value={actionIds.save}
-              icon={<IoMdSave />}
               ref={saveButtonRef}
             >
+              <IoMdSave />
               Save settings
             </Button>
           }

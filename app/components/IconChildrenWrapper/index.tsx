@@ -1,5 +1,6 @@
 import { styled } from "~/stitches";
 import { keyframes } from "@stitches/react";
+import type { ReactNode } from "react";
 
 const rotate = keyframes({
   "0%": { transform: "rotate(0deg)" },
@@ -7,20 +8,19 @@ const rotate = keyframes({
 });
 
 const Wrapper = styled("span", {
+  display: "flex",
+  flexDirection: "row",
+  gap: "$1",
+  alignItems: "center",
+  whiteSpace: "nowrap",
+
+  "> svg": {
+    minHeight: "max-content",
+    minWidth: "max-content",
+    verticalAlign: "middle",
+  },
+
   variants: {
-    icon: {
-      true: {
-        display: "flex",
-        flexDirection: "row",
-        gap: "$1",
-        alignItems: "center",
-        "> svg": {
-          minHeight: "max-content",
-          minWidth: "max-content",
-          verticalAlign: "middle",
-        },
-      },
-    },
     rotate: {
       true: {
         "> svg": {
@@ -32,20 +32,17 @@ const Wrapper = styled("span", {
 });
 
 type Props = {
-  icon?: React.ReactNode;
-  children: React.ReactNode;
+  children: ReactNode;
   rotate?: boolean;
 };
 
 // TODO: add story
 export const IconChildrenWrapper = ({
-  icon,
   children,
   rotate = false,
   ...rest
 }: Props) => (
-  <Wrapper icon={!!icon} rotate={rotate} {...rest}>
-    {icon && icon}
+  <Wrapper rotate={rotate} {...rest}>
     {children}
   </Wrapper>
 );

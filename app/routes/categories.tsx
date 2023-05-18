@@ -94,7 +94,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
   );
 };
 
-const Name = styled("div", {
+const Name = styled("span", {
   overflow: "hidden",
   whiteSpace: "nowrap",
   textOverflow: "ellipsis",
@@ -150,12 +150,12 @@ export default function Categories() {
               type="submit"
               name="_actionId"
               value={actionIds.import}
-              icon={<IoMdRefresh />}
               loading={
                 state === "submitting" &&
                 formData?.get("_actionId") === actionIds.import
               }
             >
+              <IoMdRefresh />
               {!collapseSidebar ? "Import all" : null}
             </Button>
           </Form>

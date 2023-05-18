@@ -1,26 +1,10 @@
 import type { Application } from "~/types/jsonFiles/applications";
 import { Select } from "~/components/Select";
-import { styled } from "~/stitches";
-import { BiError } from "react-icons/bi";
 
 type Props = {
   application: Application;
   installedApplications: Application[];
 };
-
-const ErrorMessage = styled("div", {
-  color: "red",
-  display: "flex",
-  gap: "$1",
-  whiteSpace: "nowrap",
-  alignItems: "center",
-
-  "& svg": {
-    width: "30px",
-    height: "30px",
-    verticalAlign: "middle",
-  },
-});
 
 export const ApplicationIndicator = ({
   application,
@@ -38,15 +22,6 @@ export const ApplicationIndicator = ({
           ))}
         </Select.Content>
       </Select.Root>
-    );
-  }
-
-  if (installedApplications.length === 0) {
-    return (
-      <ErrorMessage>
-        <BiError />
-        No installed emulators
-      </ErrorMessage>
     );
   }
 

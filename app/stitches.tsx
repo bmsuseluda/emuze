@@ -57,7 +57,7 @@ const darkTheme = createTheme({
     sidebarBackgroundColor: "#4d4d4d",
     accent: "#950909",
     colorOnAccent: "white",
-    error: "#950909",
+    error: "#da1616",
   },
   gradiants: {
     default:

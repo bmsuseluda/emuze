@@ -26,7 +26,7 @@ import { useAddEntriesToRenderOnScrollEnd } from "~/hooks/useAddEntriesToRenderO
 import { getInstalledApplications } from "~/server/applications.server";
 import type { PlatformId } from "~/server/categoriesDB.server";
 import { categories } from "~/server/categoriesDB.server";
-import { ApplicationIndicator } from "~/components/ApplicationIndicator";
+import { BiError } from "react-icons/bi";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -154,7 +154,8 @@ export default function Category() {
       <ListActionBarLayout
         key={id}
         headline={
-          <IconChildrenWrapper icon={<PlatformIcon id={id} />}>
+          <IconChildrenWrapper>
+            <PlatformIcon id={id} />
             <span {...getTestId("name")}>{name}</span>
           </IconChildrenWrapper>
         }
@@ -181,32 +182,41 @@ export default function Category() {
                 <Button
                   type="submit"
                   name="_actionId"
-                  disabled={!entriesToRender || entriesToRender.length === 0}
+                  disabled={
+                    !entriesToRender ||
+                    entriesToRender.length === 0 ||
+                    installedApplications.length === 0
+                  }
                   value={actionIds.launch}
                   ref={launchButtonRef}
-                  icon={<IoMdPlay />}
                   {...getTestId(["button", "launch"])}
                 >
-                  Launch Game
+                  {installedApplications.length === 0 ? (
+                    <>
+                      <BiError />
+                      No installed emulators
+                    </>
+                  ) : (
+                    <>
+                      <IoMdPlay />
+                      Launch Game
+                    </>
+                  )}
                 </Button>
                 <Button
                   type="submit"
                   name="_actionId"
                   value={actionIds.import}
                   ref={importButtonRef}
-                  icon={<IoMdRefresh />}
                   loading={
                     state === "submitting" &&
                     formData?.get("_actionId") === actionIds.import
                   }
                   {...getTestId(["button", "import"])}
                 >
+                  <IoMdRefresh />
                   Import Games
                 </Button>
-                <ApplicationIndicator
-                  installedApplications={installedApplications}
-                  application={categoryData.application}
-                />
               </>
             }
           />
