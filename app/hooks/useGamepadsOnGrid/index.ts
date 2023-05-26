@@ -60,12 +60,6 @@ export const useGamepadsOnGrid = <T>(
         ) {
           selectedX.current = selectedX.current + 1;
           handleSelectEntry(selectedX.current, selectedY.current);
-        } else if (
-          selectedX.current ===
-          getLastIndex(entriesRefsGrid.current[selectedY.current])
-        ) {
-          selectedX.current = 0;
-          handleSelectEntry(selectedX.current, selectedY.current);
         }
       }
     }
@@ -81,17 +75,10 @@ export const useGamepadsOnGrid = <T>(
         if (selectedX.current > 0) {
           selectedX.current = selectedX.current - 1;
           handleSelectEntry(selectedX.current, selectedY.current);
-        } else if (selectedX.current === 0) {
-          selectedX.current = getLastIndex(
-            entriesRefsGrid.current[selectedY.current]
-          );
-          handleSelectEntry(selectedX.current, selectedY.current);
-
-          //   TODO: Check how to switch to main if first element
         }
       }
     }
-  }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus]);
+  }, [handleSelectEntry, entriesRefsGrid, isInFocus]);
 
   const handleDown = useCallback(() => {
     if (isInFocus && entriesRefsGrid.current) {
@@ -107,11 +94,6 @@ export const useGamepadsOnGrid = <T>(
               entriesRefsGrid.current[selectedY.current]
             );
           }
-          handleSelectEntry(selectedX.current, selectedY.current);
-        } else if (
-          selectedY.current === getLastIndex(entriesRefsGrid.current)
-        ) {
-          selectedY.current = 0;
           handleSelectEntry(selectedX.current, selectedY.current);
         }
       }
