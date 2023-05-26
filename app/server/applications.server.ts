@@ -7,7 +7,9 @@ import {
   readFilenames,
 } from "~/server/readWriteData.server";
 import { isWindows } from "./operationsystem.server";
-import { checkFlatpakIsInstalled } from "./execute.server";
+import { checkFlatpakIsInstalled, installFlatpak } from "./execute.server";
+import { readCategories } from "~/server/categories.server";
+import { categories as categoriesDB } from "~/server/categoriesDB.server";
 
 export const paths = {
   applications: "data/applications.json",
@@ -122,4 +124,22 @@ export const getApplicationForCategory = ({
   );
 
   return application;
+};
+
+export const installMissingApplicationsOnLinux = () => {
+  const categories = readCategories();
+  categories.forEach(({ id }) => {
+    const flatpakId = categoriesDB[id].defaultApplication.flatpakId;
+    if (!checkFlatpakIsInstalled(flatpakId)) {
+      installFlatpak(flatpakId);
+    }
+  });
+};
+
+export const checkHasMissingApplications = () => {
+  const categories = readCategories();
+  return !!categories.find(({ id }) => {
+    const flatpakId = categoriesDB[id].defaultApplication.flatpakId;
+    return !checkFlatpakIsInstalled(flatpakId);
+  });
 };

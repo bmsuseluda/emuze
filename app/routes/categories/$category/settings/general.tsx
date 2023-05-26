@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { IoMdSave } from "react-icons/io";
+import { IoMdDownload, IoMdSave } from "react-icons/io";
 import { FaFolderOpen } from "react-icons/fa";
 import {
   Form,
@@ -14,7 +14,7 @@ import { FormBox } from "~/components/FormBox";
 import { FormRow } from "~/components/FormRow";
 import { Label } from "~/components/Label";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
-import { importCategories } from "~/server/categories.server";
+import { importCategories, readCategories } from "~/server/categories.server";
 import { openFolderDialog } from "~/server/openDialog.server";
 import { readGeneral, writeGeneral } from "~/server/settings.server";
 import type { General } from "~/types/jsonFiles/settings/general";
@@ -31,16 +31,22 @@ import {
 } from "~/hooks/useGamepadEvent";
 import { layout } from "~/hooks/useGamepads/layouts";
 import { TextInput } from "~/components/TextInput";
+import {
+  checkHasMissingApplications,
+  installMissingApplicationsOnLinux,
+} from "~/server/applications.server";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
-  return json({ ...general, isWindows });
+  const hasMissingApplications = checkHasMissingApplications();
+  return json({ ...general, isWindows, hasMissingApplications });
 };
 
 const actionIds = {
   chooseApplicationsPath: "chooseApplicationsPath",
   chooseCategoriesPath: "chooseCategoriesPath",
   save: "save",
+  installMissingApplications: "installMissingApplications",
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -66,7 +72,16 @@ export const action: ActionFunction = async ({ request }) => {
     };
     writeGeneral(fields);
     await importCategories();
-    throw redirect("/categories");
+
+    const categories = readCategories();
+
+    if (categories?.length > 0) {
+      throw redirect(`/categories/${categories[0].id}/settings/general`);
+    }
+  }
+
+  if (_actionId === actionIds.installMissingApplications) {
+    installMissingApplicationsOnLinux();
   }
 
   if (_actionId === actionIds.chooseApplicationsPath) {
@@ -146,10 +161,9 @@ export default function Index() {
 
   const onSave = useCallback(() => {
     if (isInFocus) {
-      switchFocus("main");
       saveButtonRef.current?.click();
     }
-  }, [isInFocus, switchFocus]);
+  }, [isInFocus]);
 
   useGamepadButtonPressEvent(layout.buttons.B, onBack);
   useKeyboardEvent("Backspace", onBack);
@@ -257,19 +271,36 @@ export default function Index() {
             </FormBox>
           }
           actions={
-            <Button
-              type="submit"
-              name="_actionId"
-              value={actionIds.save}
-              loading={
-                state === "submitting" &&
-                formData?.get("_actionId") === actionIds.save
-              }
-              ref={saveButtonRef}
-            >
-              <IoMdSave />
-              Save settings and import all
-            </Button>
+            <>
+              <Button
+                type="submit"
+                name="_actionId"
+                value={actionIds.save}
+                loading={
+                  state === "submitting" &&
+                  formData?.get("_actionId") === actionIds.save
+                }
+                ref={saveButtonRef}
+              >
+                <IoMdSave />
+                Save settings and import all
+              </Button>
+              {!isWindows && defaultData.hasMissingApplications && (
+                <Button
+                  type="submit"
+                  name="_actionId"
+                  value={actionIds.installMissingApplications}
+                  loading={
+                    state === "submitting" &&
+                    formData?.get("_actionId") ===
+                      actionIds.installMissingApplications
+                  }
+                >
+                  <IoMdDownload />
+                  Install missing Emulators
+                </Button>
+              )}
+            </>
           }
         />
       </Form>

@@ -1,5 +1,6 @@
 import type { Application } from "~/types/jsonFiles/applications";
 import {
+  checkHasMissingApplications,
   findExecutable,
   getInstalledApplicationForCategory,
   getInstalledApplicationsOnLinux,
@@ -21,6 +22,9 @@ import { checkFlatpakIsInstalled } from "~/server/execute.server";
 import { general } from "../__testData__/general";
 import { when } from "jest-when";
 import { sonyplaystation2 } from "~/server/categoriesDB.server";
+import type { Category as CategorySlim } from "~/types/jsonFiles/categories";
+import { readCategories } from "~/server/categories.server";
+import { neogeo, playstation } from "~/server/__testData__/category";
 
 jest.mock("~/server/readWriteData.server", () => ({
   readDirectorynames: jest.fn(),
@@ -29,6 +33,10 @@ jest.mock("~/server/readWriteData.server", () => ({
 
 jest.mock("~/server/execute.server", () => ({
   checkFlatpakIsInstalled: jest.fn(),
+}));
+
+jest.mock("~/server/categories.server", () => ({
+  readCategories: jest.fn(),
 }));
 
 describe("applications.server", () => {
@@ -199,6 +207,38 @@ describe("applications.server", () => {
       const result = getInstalledApplicationForCategory([], defaultApplication);
 
       expect(result).toStrictEqual({ id: defaultApplication.id });
+    });
+  });
+
+  describe("checkHasMissingApplications", () => {
+    it("Should return false if there are no categories", () => {
+      (readCategories as jest.Mock<CategorySlim[]>).mockReturnValue([]);
+      (checkFlatpakIsInstalled as jest.Mock<boolean>).mockReturnValue(true);
+
+      expect(checkHasMissingApplications()).toBeFalsy();
+    });
+
+    it("Should return false if there is no missing application", () => {
+      (readCategories as jest.Mock<CategorySlim[]>).mockReturnValue([
+        playstation,
+        neogeo,
+      ]);
+      (checkFlatpakIsInstalled as jest.Mock<boolean>).mockReturnValue(true);
+
+      expect(checkHasMissingApplications()).toBeFalsy();
+    });
+
+    it("Should return true if there is a missing application", () => {
+      (readCategories as jest.Mock<CategorySlim[]>).mockReturnValue([
+        playstation,
+        neogeo,
+      ]);
+      (checkFlatpakIsInstalled as jest.Mock<boolean>).mockReturnValueOnce(true);
+      (checkFlatpakIsInstalled as jest.Mock<boolean>).mockReturnValueOnce(
+        false
+      );
+
+      expect(checkHasMissingApplications()).toBeTruthy();
     });
   });
 });

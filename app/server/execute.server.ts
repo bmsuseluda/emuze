@@ -97,3 +97,12 @@ export const checkFlatpakIsInstalled = (flatpakId: string) => {
     return false;
   }
 };
+
+export const installFlatpak = (flatpakId: string) => {
+  try {
+    execFileSync("flatpak", ["install", "--noninteractive", flatpakId]);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};

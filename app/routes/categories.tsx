@@ -70,7 +70,7 @@ export const loader = ({ params }: DataFunctionArgs) => {
 };
 
 const actionIds = {
-  import: "import",
+  import: "importAll",
 };
 
 export const action: ActionFunction = async ({ request }) => {
