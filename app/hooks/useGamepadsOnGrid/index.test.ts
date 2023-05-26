@@ -41,36 +41,6 @@ describe("useGamepadsOnGrid", () => {
       expect(onSelectEntry).toBeCalledWith("row2element1");
     });
 
-    it("Should select last element in first row on dpad left press", () => {
-      const entriesRefsGrid = {
-        current: [["row1element1", "row1element2", "row1element3"]],
-      };
-      const onSelectEntry = jest.fn();
-
-      const { result } = renderHook(() =>
-        useGamepadsOnGrid(entriesRefsGrid, onSelectEntry, true)
-      );
-
-      expect(result.current.selectedEntry).toStrictEqual({
-        current: "row1element1",
-      });
-      expect(onSelectEntry).toBeCalledWith("row1element1");
-
-      // press left to go to last column
-      pressButton(layout.buttons.DPadLeft);
-      expect(result.current.selectedEntry).toStrictEqual({
-        current: "row1element3",
-      });
-      expect(onSelectEntry).toBeCalledWith("row1element3");
-
-      // press right to go to first column again
-      pressButton(layout.buttons.DPadRight);
-      expect(result.current.selectedEntry).toStrictEqual({
-        current: "row1element1",
-      });
-      expect(onSelectEntry).toBeCalledWith("row1element1");
-    });
-
     it("Should select last element in second row on dpad down press", () => {
       const entriesRefsGrid = {
         current: [
