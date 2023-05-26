@@ -1,98 +1,59 @@
 import nodepath from "path";
 
-import type { Application } from "~/types/applications";
-import {
-  nintendo3ds,
-  nintendoentertainmentsystem,
-  nintendogamecube,
-  nintendowii,
-  pcengine,
-  pcenginecd,
-  segamegadrive,
-  segasaturn,
-  sonyplaystation,
-  sonyplaystation2,
-  supernintendo,
-} from "../categoriesDB.server";
+import type { Application } from "~/types/jsonFiles/applications";
 
 export const getDirectoryname = (path: string) => {
   const basename = nodepath.basename(path);
   return path.split(basename)[0];
 };
 
-interface FullApplication extends Application {
-  path: string;
-}
-
-export const pcsx2: FullApplication = {
-  categories: [sonyplaystation2],
+export const pcsx2 = {
   path: "F:/games/Emulation/emulators/Pcsx2-v1.7.2242-windows-64bit-AVX2/pcsx2x64-avx2.exe",
-  fileExtensions: [".chd", ".iso"],
   id: "pcsx2",
-  name: "PCSX2",
-};
+} satisfies Application;
 
-export const pcsx2Old: FullApplication = {
-  categories: [sonyplaystation2],
-  path: "F:/games/Emulation/emulators/pcSX2-v1.6.2242-windows-64bit-AVX2/pcsx2x64-avx2.exe",
-  fileExtensions: [".chd", ".iso"],
-  id: "pcsx2",
-  name: "PCSX2",
-};
+export const play = {
+  path: "F:/games/Emulation/emulators/Play/play.exe",
+  id: "play",
+} satisfies Application;
 
-export const blastem: FullApplication = {
-  categories: [segamegadrive],
+export const blastem = {
   path: "F:/games/Emulation/emulators/Blastem win32-0.6.2/blastem.exe",
-  fileExtensions: [".68K", ".bin", ".sgd", ".smd"],
   id: "blastem",
-  name: "BlastEm",
-};
+} satisfies Application;
 
-export const bsnes: FullApplication = {
-  categories: [supernintendo],
+export const bsnes = {
   path: "F:/games/Emulation/emulators/bsnes/bsnes-mt.exe",
-  fileExtensions: [".sfc", ".smc"],
   id: "bsnes",
-  name: "BSNES",
-};
+} satisfies Application;
 
-export const applications: FullApplication[] = [
+export const citra = {
+  path: "F:/games/Emulation/emulators/Citra/nightly-mingw/citra-qt.exe",
+  id: "citra",
+} satisfies Application;
+
+export const mednafen = {
+  path: "F:/games/Emulation/emulators/mednafen-1.29.0-win64/mednafen.exe",
+  id: "mednafen",
+} satisfies Application;
+
+export const duckstation = {
+  path: "F:/games/Emulation/emulators/duckstation-windows-x64-release/duckstation-nogui-x64-ReleaseLTCG.exe",
+  id: "duckstation",
+} satisfies Application;
+
+export const dolphin = {
+  path: "F:/games/Emulation/emulators/dolphin-master-5.0-15445-x64/Dolphin.exe",
+  id: "dolphin",
+} satisfies Application;
+
+export const applications = {
   blastem,
   bsnes,
-  {
-    categories: [sonyplaystation],
-    path: "F:/games/Emulation/emulators/duckstation-windows-x64-release/duckstation-nogui-x64-ReleaseLTCG.exe",
-    fileExtensions: [".chd", ".cue"],
-    id: "duckstation",
-    name: "Duckstation",
-  },
-  {
-    categories: [nintendoentertainmentsystem],
-    path: "F:/games/Emulation/emulators/Mesen.0.9.9/Mesen.exe",
-    fileExtensions: [".nes"],
-    id: "mesen",
-    name: "Mesen",
-  },
-  {
-    categories: [nintendo3ds],
-    path: "F:/games/Emulation/emulators/Citra/nightly-mingw/citra-qt.exe",
-    fileExtensions: [".3ds"],
-    id: "citra",
-    name: "Citra",
-  },
+  duckstation,
+  citra,
   pcsx2,
-  {
-    categories: [nintendogamecube, nintendowii],
-    path: "F:/games/Emulation/emulators/dolphin-master-5.0-15445-x64/Dolphin.exe",
-    fileExtensions: [".iso"],
-    id: "dolphin",
-    name: "Dolphin",
-  },
-  {
-    categories: [segasaturn, pcengine, pcenginecd],
-    path: "F:/games/Emulation/emulators/mednafen-1.29.0-win64/mednafen.exe",
-    fileExtensions: [".cue", ".pce"],
-    id: "mednafen",
-    name: "Mednafen",
-  },
-];
+  play,
+  dolphin,
+  mednafen,
+} satisfies Record<string, Application>;

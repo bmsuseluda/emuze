@@ -1,5 +1,5 @@
-import type { ButtonHTMLAttributes } from "react";
-import React from "react";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
+import React, { forwardRef } from "react";
 import { styled } from "~/stitches";
 import { IconChildrenWrapper } from "../IconChildrenWrapper";
 
@@ -10,7 +10,8 @@ export const StyledButton = styled("button", {
   roundedBorder: true,
   borderWidth: "$2",
   borderColor: "$sidebarBackgroundColor",
-  fontSize: "15px",
+  fontFamily: "inherit",
+  fontSize: "90%",
   padding: "0.5rem",
   cursor: "pointer",
   textDecoration: "none",
@@ -23,18 +24,15 @@ export const StyledButton = styled("button", {
   },
 });
 
-type Props = {
-  icon?: React.ReactNode;
-  children: React.ReactNode;
+export type Props = {
+  children: ReactNode;
   loading?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const Button = React.forwardRef<HTMLButtonElement, Props>(
-  ({ icon, children, loading = false, ...rest }, ref) => (
+export const Button = forwardRef<HTMLButtonElement, Props>(
+  ({ children, loading = false, ...rest }, ref) => (
     <StyledButton {...rest} ref={ref}>
-      <IconChildrenWrapper icon={icon} rotate={loading}>
-        {children}
-      </IconChildrenWrapper>
+      <IconChildrenWrapper rotate={loading}>{children}</IconChildrenWrapper>
     </StyledButton>
   )
 );

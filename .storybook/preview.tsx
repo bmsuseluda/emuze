@@ -1,18 +1,8 @@
-import { Story, StoryContext } from "@storybook/react";
+import type { Preview } from "@storybook/react";
+import { Decorator } from "@storybook/react";
 
-import { globalStyles, ThemeName, themes } from "../app/stitches";
-import { Box } from "../app/components/Box";
-
-export const parameters = {
-  layout: "fullscreen",
-  actions: { argTypesRegex: "^on[A-Z].*" },
-  controls: {
-    matchers: {
-      color: /(background|color)$/i,
-      date: /Date$/,
-    },
-  },
-};
+import { globalStyles, ThemeName, themes } from "~/stitches";
+import { Box } from "~/components/Box";
 
 const getColoredDiv = (color: string) => (
   <div
@@ -26,7 +16,7 @@ const getColoredDiv = (color: string) => (
   />
 );
 
-const withThemeProvider = (Story: Story, context: StoryContext) => {
+const withThemeProvider: Decorator = (Story, context) => {
   const themeName = context.globals.theme as ThemeName;
   const theme = themes[themeName];
   globalStyles();
@@ -35,10 +25,7 @@ const withThemeProvider = (Story: Story, context: StoryContext) => {
       className={theme}
       css={{
         backgroundColor: "$backgroundColor",
-        width: "100%",
-        height: "100vh",
         padding: "$2",
-        position: "absolute",
         boxSizing: "border-box",
         display: "flex",
         flexDirection: "column",
@@ -49,20 +36,36 @@ const withThemeProvider = (Story: Story, context: StoryContext) => {
   );
 };
 
-export const decorators = [withThemeProvider];
-
-export const globalTypes = {
-  theme: {
-    name: "Theme",
-    description: "Theme",
-    defaultValue: "dark",
-    toolbar: {
-      icon: "lightning",
-      items: Object.keys(themes).map((themeName) => ({
-        value: themeName,
-        title: themeName,
-        right: getColoredDiv(themeName === "dark" ? "black" : "white"),
-      })),
+const preview: Preview = {
+  parameters: {
+    layout: "fullscreen",
+    actions: { argTypesRegex: "^on[A-Z].*" },
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/,
+      },
+    },
+    backgrounds: {
+      disable: true,
+    },
+  },
+  decorators: [withThemeProvider],
+  globalTypes: {
+    theme: {
+      description: "Theme",
+      defaultValue: "dark",
+      toolbar: {
+        title: "Theme",
+        icon: "lightning",
+        items: Object.keys(themes).map((themeName) => ({
+          value: themeName,
+          title: themeName,
+          right: getColoredDiv(themeName === "dark" ? "black" : "white"),
+        })),
+      },
     },
   },
 };
+
+export default preview;

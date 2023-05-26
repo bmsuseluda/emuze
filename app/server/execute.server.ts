@@ -41,48 +41,45 @@ export const executeApplication = (category: string, entry: string) => {
   };
   const categoryData = readCategory(category);
   if (categoryData) {
-    const {
-      applicationId,
-      applicationPath,
-      applicationFlatpakId,
-      applicationFlatpakOptionParams,
-      entries,
-    } = categoryData;
-    const applicationData = getApplicationDataById(applicationId);
+    const { application, entries } = categoryData;
+    const applicationData = getApplicationDataById(application.id);
     const entryData = entries?.find((value) => value.id === entry);
 
     if (applicationData && entryData) {
-      if (applicationData.environmentVariables) {
-        Object.entries(
-          applicationData.environmentVariables(categoryData, settings)
-        ).forEach(([key, value]) => {
-          if (value) {
-            process.env[key] = value;
+      const {
+        environmentVariables,
+        createOptionParams,
+        flatpakId,
+        flatpakOptionParams,
+      } = applicationData;
+
+      if (environmentVariables) {
+        Object.entries(environmentVariables(categoryData, settings)).forEach(
+          ([key, value]) => {
+            if (value) {
+              process.env[key] = value;
+            }
           }
-        });
+        );
       }
-      const optionParams = applicationData.optionParams
-        ? applicationData.optionParams(entryData, settings)
+      const optionParams = createOptionParams
+        ? createOptionParams(entryData, settings)
         : [];
 
       try {
-        if (applicationPath) {
+        if (application.path) {
           executeApplicationOnWindows(
-            applicationPath,
+            application.path,
             entryData.path,
             optionParams
           );
-        } else if (applicationFlatpakId) {
+        } else {
           executeApplicationOnLinux({
-            applicationFlatpakOptionParams,
-            applicationFlatpakId,
+            applicationFlatpakOptionParams: flatpakOptionParams,
+            applicationFlatpakId: flatpakId,
             entryPath: entryData.path,
             optionParams,
           });
-        } else {
-          throw new Error(
-            "There is no valid configuration for the Emulator on your operation system."
-          );
         }
       } catch (error) {
         // openErrorDialog(error, `Launch of ${entryData.name} failed`);
@@ -95,6 +92,15 @@ export const executeApplication = (category: string, entry: string) => {
 export const checkFlatpakIsInstalled = (flatpakId: string) => {
   try {
     execFileSync("flatpak", ["info", flatpakId]);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+export const installFlatpak = (flatpakId: string) => {
+  try {
+    execFileSync("flatpak", ["install", "--noninteractive", flatpakId]);
     return true;
   } catch (error) {
     return false;

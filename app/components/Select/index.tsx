@@ -18,7 +18,6 @@ const SelectTrigger = styled(RadixSelect.SelectTrigger, {
   padding: "$1",
   borderRadius: "$1",
   outline: "none",
-  width: "100%",
   boxSizing: "border-box",
   cursor: "pointer",
 

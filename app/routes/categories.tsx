@@ -15,9 +15,7 @@ import { SidebarMainLayout } from "~/components/layouts/SidebarMainLayout";
 import { Link } from "~/containers/Link";
 import { Header } from "~/containers/Header";
 import { useTestId } from "~/hooks/useTestId";
-import { importApplications } from "~/server/applications.server";
 import { PlatformIcon } from "~/components/PlatformIcon";
-import type { PlatformId } from "~/types/platforms";
 import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
 import { readAppearance } from "~/server/settings.server";
 import { useCallback } from "react";
@@ -32,6 +30,7 @@ import type { FocusElement } from "~/types/focusElement";
 import { styled } from "~/stitches";
 import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
 import { useFullscreen } from "~/hooks/useFullscreen";
+import type { PlatformId } from "~/server/categoriesDB.server";
 
 type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
 type LoaderData = {
@@ -71,14 +70,13 @@ export const loader = ({ params }: DataFunctionArgs) => {
 };
 
 const actionIds = {
-  import: "import",
+  import: "importAll",
 };
 
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
   const _actionId = form.get("_actionId");
   if (_actionId === actionIds.import) {
-    importApplications();
     await importCategories();
     throw redirect("/categories");
   }
@@ -96,7 +94,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
   );
 };
 
-const Name = styled("div", {
+const Name = styled("span", {
   overflow: "hidden",
   whiteSpace: "nowrap",
   textOverflow: "ellipsis",
@@ -152,12 +150,12 @@ export default function Categories() {
               type="submit"
               name="_actionId"
               value={actionIds.import}
-              icon={<IoMdRefresh />}
               loading={
                 state === "submitting" &&
                 formData?.get("_actionId") === actionIds.import
               }
             >
+              <IoMdRefresh />
               {!collapseSidebar ? "Import all" : null}
             </Button>
           </Form>

@@ -4,13 +4,14 @@ import nodepath from "path";
 
 import { readDirectorynames, readFilenames } from "../readWriteData.server";
 import {
-  pcenginecd,
   cotton,
   gateofthunder,
-  playstation,
   hugo,
   hugo2,
+  pcenginecd,
+  playstation,
 } from "../__testData__/category";
+import { duckstation, mednafen } from "~/server/applicationsDB.server";
 
 jest.mock("fs", () => ({
   readdirSync: jest.fn(),
@@ -47,7 +48,7 @@ describe("readWriteData.server", () => {
       ]);
 
       expect(
-        readFilenames(pcenginecd.entryPath, pcenginecd.fileExtensions)
+        readFilenames(pcenginecd.entryPath, mednafen.fileExtensions)
       ).toStrictEqual([cotton.path, gateofthunder.path]);
     });
 
@@ -75,7 +76,7 @@ describe("readWriteData.server", () => {
         ]);
 
       expect(
-        readFilenames(playstation.entryPath, playstation.fileExtensions)
+        readFilenames(playstation.entryPath, duckstation.fileExtensions)
       ).toStrictEqual([hugo.path, hugo2.path]);
     });
   });

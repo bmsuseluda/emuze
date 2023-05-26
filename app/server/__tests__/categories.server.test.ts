@@ -12,7 +12,6 @@ import {
   readFileHome,
   readFilenames,
 } from "~/server/readWriteData.server";
-import { readApplications } from "~/server/applications.server";
 import {
   addIndex,
   blazingstar,
@@ -26,11 +25,19 @@ import {
   pcenginecd,
   playstation,
 } from "../__testData__/category";
-import type { Applications } from "~/types/applications";
-import { applications } from "../__testData__/applications";
-import type { Category, Entry } from "~/types/category";
+import { applications as applicationsTestData } from "../__testData__/applications";
+import type { Category, Entry } from "~/types/jsonFiles/category";
 import { general } from "../__testData__/general";
 import { fetchMetaData } from "~/server/igdb.server";
+import { categories as categoriesDB } from "../categoriesDB.server";
+import {
+  citra,
+  duckstation,
+  mameNeoGeo,
+  mednafen,
+} from "~/server/applicationsDB.server";
+import { getApplicationForCategory } from "~/server/applications.server";
+import type { Application } from "~/types/jsonFiles/applications";
 
 const writeFileMock = jest.fn();
 jest.mock("~/server/readWriteData.server", () => ({
@@ -41,7 +48,7 @@ jest.mock("~/server/readWriteData.server", () => ({
 }));
 
 jest.mock("~/server/applications.server", () => ({
-  readApplications: jest.fn(),
+  getApplicationForCategory: jest.fn(),
 }));
 
 jest.mock("~/server/settings.server.ts", () => ({
@@ -66,12 +73,11 @@ describe("categories.server", () => {
   describe("readEntriesWithMetaData", () => {
     it("Should filter excluded filenames (neogeo.zip) and find entryName from json file", async () => {
       when(readFilenames as jest.Mock<string[]>)
-        .calledWith(neogeo.entryPath, neogeo.fileExtensions)
+        .calledWith(neogeo.entryPath, mameNeoGeo.fileExtensions)
         .mockReturnValueOnce([
           blazingstar.path,
           "F:/games/Emulation/roms/Neo Geo/neogeo.zip",
         ]);
-      (readFileHome as jest.Mock<Category>).mockReturnValueOnce(neogeo);
 
       const expectedResult: Entry[] = [
         { ...blazingstar, name: "Blazing Star", id: `${blazingstar.id}0` },
@@ -84,8 +90,8 @@ describe("categories.server", () => {
       const result = await readEntriesWithMetaData(
         neogeo.id,
         neogeo.entryPath,
-        neogeo.igdbPlatformIds,
-        neogeo.applicationId
+        categoriesDB.neogeo.igdbPlatformIds,
+        neogeo.application.id
       );
 
       expect(result).toStrictEqual(expectedResult);
@@ -93,18 +99,8 @@ describe("categories.server", () => {
 
     it("Should only fetch metaData for entries without metaData", async () => {
       when(readFilenames as jest.Mock<string[]>)
-        .calledWith(playstation.entryPath, playstation.fileExtensions)
+        .calledWith(playstation.entryPath, duckstation.fileExtensions)
         .mockReturnValueOnce([hugo.path, hugo2.path]);
-      (readFileHome as jest.Mock<Category>).mockReturnValueOnce({
-        ...playstation,
-        entries: addIndex([
-          hugo,
-          {
-            ...hugo2,
-            imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
-          },
-        ]),
-      });
 
       const fetchMetaDataMock = jest.fn().mockResolvedValue(
         addIndex([
@@ -121,8 +117,15 @@ describe("categories.server", () => {
       const result = await readEntriesWithMetaData(
         playstation.id,
         playstation.entryPath,
-        playstation.igdbPlatformIds,
-        playstation.applicationId
+        categoriesDB.sonyplaystation.igdbPlatformIds,
+        playstation.application.id,
+        addIndex([
+          hugo,
+          {
+            ...hugo2,
+            imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+          },
+        ])
       );
 
       expect(result).toStrictEqual(
@@ -138,16 +141,15 @@ describe("categories.server", () => {
         ])
       );
       expect(fetchMetaDataMock).toHaveBeenCalledWith(
-        playstation.igdbPlatformIds,
+        categoriesDB.sonyplaystation.igdbPlatformIds,
         addIndex([hugo])
       );
     });
 
     it("Should fetch metaData for all entries if there is no oldCategoryData", async () => {
       when(readFilenames as jest.Mock<string[]>)
-        .calledWith(playstation.entryPath, playstation.fileExtensions)
+        .calledWith(playstation.entryPath, duckstation.fileExtensions)
         .mockReturnValueOnce([hugo.path, hugo2.path]);
-      (readFileHome as jest.Mock<Category | null>).mockReturnValue(null);
 
       const fetchMetaDataMock = jest.fn().mockResolvedValue(
         addIndex([
@@ -168,8 +170,8 @@ describe("categories.server", () => {
       const result = await readEntriesWithMetaData(
         playstation.id,
         playstation.entryPath,
-        playstation.igdbPlatformIds,
-        playstation.applicationId
+        categoriesDB.sonyplaystation.igdbPlatformIds,
+        playstation.application.id
       );
 
       expect(result).toStrictEqual(
@@ -185,7 +187,7 @@ describe("categories.server", () => {
         ])
       );
       expect(fetchMetaDataMock).toHaveBeenCalledWith(
-        playstation.igdbPlatformIds,
+        categoriesDB.sonyplaystation.igdbPlatformIds,
         addIndex([hugo, hugo2])
       );
     });
@@ -194,27 +196,30 @@ describe("categories.server", () => {
   describe("importCategories", () => {
     it("Should import 3ds and pcengine data", async () => {
       // evaluate
-      (readApplications as jest.Mock<Applications>).mockReturnValueOnce(
-        applications
-      );
       (readDirectorynames as jest.Mock<string[]>).mockReturnValueOnce([
         nintendo3ds.entryPath,
         "unknown category",
         pcenginecd.entryPath,
       ]);
       when(readFilenames as jest.Mock<string[]>)
-        .calledWith(nintendo3ds.entryPath, nintendo3ds.fileExtensions)
+        .calledWith(nintendo3ds.entryPath, citra.fileExtensions)
         .mockReturnValueOnce([metroidsamusreturns.path]);
       when(readFilenames as jest.Mock<string[]>)
-        .calledWith(pcenginecd.entryPath, pcenginecd.fileExtensions)
+        .calledWith(pcenginecd.entryPath, mednafen.fileExtensions)
         .mockReturnValueOnce([cotton.path, gateofthunder.path]);
       (readFileHome as jest.Mock<Category>).mockReturnValueOnce(nintendo3ds);
       (readFileHome as jest.Mock<Category>).mockReturnValueOnce(pcenginecd);
       (fetchMetaData as jest.Mock<Promise<Entry[]>>).mockResolvedValueOnce(
-        nintendo3ds.entries!
+        nintendo3ds.entries
       );
       (fetchMetaData as jest.Mock<Promise<Entry[]>>).mockResolvedValueOnce(
-        pcenginecd.entries!
+        pcenginecd.entries
+      );
+      (getApplicationForCategory as jest.Mock<Application>).mockReturnValueOnce(
+        applicationsTestData.citra
+      );
+      (getApplicationForCategory as jest.Mock<Application>).mockReturnValueOnce(
+        applicationsTestData.mednafen
       );
 
       // execute
@@ -254,14 +259,15 @@ describe("categories.server", () => {
     it("Should update entries and keep general category data", async () => {
       // evaluate
       (readFileHome as jest.Mock<Category>).mockReturnValueOnce(playstation);
-      // TODO: Remove if double call is not necessary
-      (readFileHome as jest.Mock<Category>).mockReturnValueOnce(playstation);
       (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
         hugo.path,
         hugo2.path,
       ]);
       (fetchMetaData as jest.Mock<Promise<Entry[]>>).mockResolvedValueOnce(
-        playstation.entries!
+        playstation.entries
+      );
+      (getApplicationForCategory as jest.Mock<Application>).mockReturnValueOnce(
+        applicationsTestData.duckstation
       );
 
       // execute

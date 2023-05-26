@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { Entry } from "~/types/category";
+import type { Entry } from "~/types/jsonFiles/category";
 
 const entriesNumberForChunk = 100;
 

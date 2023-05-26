@@ -1,32 +1,32 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
-
 import { TextInput } from ".";
 
-export default {
-  title: "Components/TextInput",
+import type { Meta, StoryObj } from "@storybook/react";
+
+const meta = {
   component: TextInput,
-} as ComponentMeta<typeof TextInput>;
+} satisfies Meta<typeof TextInput>;
 
-const Template: ComponentStory<typeof TextInput> = (args) => (
-  <TextInput {...args} />
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Basic = Template.bind({});
-Basic.args = {
-  children: (
-    <>
-      <TextInput.Input />
-      <TextInput.IconButton>choose</TextInput.IconButton>
-    </>
-  ),
+export const Basic: Story = {
+  args: {
+    children: (
+      <>
+        <TextInput.Input />
+        <TextInput.IconButton>choose</TextInput.IconButton>
+      </>
+    ),
+  },
 };
 
-export const Invalid = Template.bind({});
-Invalid.args = {
-  children: (
-    <>
-      <TextInput.Input required />
-      <TextInput.IconButton>choose</TextInput.IconButton>
-    </>
-  ),
+export const Invalid: Story = {
+  args: {
+    children: (
+      <>
+        <TextInput.Input required />
+        <TextInput.IconButton>choose</TextInput.IconButton>
+      </>
+    ),
+  },
 };

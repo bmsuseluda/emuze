@@ -23,7 +23,6 @@ const StyledNavLink = styled(NavLink, {
 
 const LinkSpan = styled(IconChildrenWrapper, {
   borderRadius: "$1",
-  display: "inline-block",
   width: "100%",
   boxSizing: "border-box",
   padding: "0.5em",
@@ -56,9 +55,9 @@ export const Link = React.forwardRef<HTMLAnchorElement, Props>(
       {({ isActive }) => (
         <LinkSpan
           active={isActive && highlightIfActive}
-          icon={icon}
           circle={!!icon && !children}
         >
+          {icon}
           {children}
         </LinkSpan>
       )}

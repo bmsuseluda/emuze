@@ -1,26 +1,27 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
-
 import { FormRow } from ".";
 import { Label } from "../Label";
 import { TextInput } from "../TextInput";
+import type { Meta, StoryObj } from "@storybook/react";
 
-export default {
-  title: "Components/FormRow",
+const meta = {
   component: FormRow,
-} as ComponentMeta<typeof FormRow>;
+} satisfies Meta<typeof FormRow>;
 
-const Template: ComponentStory<typeof FormRow> = (args) => (
-  <div style={{ width: "300px" }}>
-    <FormRow {...args} />
-  </div>
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Basic = Template.bind({});
-Basic.args = {
-  children: (
-    <>
-      <Label htmlFor="firstname">firstname</Label>
-      <TextInput.Input name="firstname" id="firstname" />
-    </>
+export const Basic: Story = {
+  render: (args) => (
+    <div style={{ width: "300px" }}>
+      <FormRow {...args} />
+    </div>
   ),
+  args: {
+    children: (
+      <>
+        <Label htmlFor="firstname">firstname</Label>
+        <TextInput.Input name="firstname" id="firstname" />
+      </>
+    ),
+  },
 };

@@ -1,29 +1,36 @@
 import fs from "fs";
 import nodepath from "path";
 
-import type { Categories, Category as CategorySlim } from "~/types/categories";
-import type { Category, Entry } from "~/types/category";
+import type { Category as CategorySlim } from "~/types/jsonFiles/categories";
+import type { Category, Entry } from "~/types/jsonFiles/category";
 import {
   readDirectorynames,
   readFileHome,
   readFilenames,
   writeFileHome,
 } from "~/server/readWriteData.server";
-import { readApplications } from "~/server/applications.server";
 import { convertToId } from "~/server/convertToId.server";
 import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
 import { fetchMetaData } from "~/server/igdb.server";
 import { readGeneral } from "~/server/settings.server";
-import type { Application } from "~/types/applications";
-import type { PlatformId } from "~/types/platforms";
+import type { ApplicationId } from "~/server/applicationsDB.server";
 import { getApplicationDataById } from "~/server/applicationsDB.server";
+import type {
+  Category as CategoryDB,
+  PlatformId,
+} from "~/server/categoriesDB.server";
+import {
+  categories,
+  getCategoryDataByName,
+} from "~/server/categoriesDB.server";
+import { getApplicationForCategory } from "~/server/applications.server";
 
 export const paths = {
   categories: "data/categories.json",
   entries: "data/categories/",
 };
 
-export const readCategories = (): Categories => {
+export const readCategories = (): CategorySlim[] => {
   const categories = readFileHome(paths.categories);
 
   if (categories) {
@@ -80,9 +87,9 @@ export const readEntriesWithMetaData = async (
   categoryId: string,
   entryPath: string,
   igdbPlatformIds: number[],
-  applicationId: string
+  applicationId: ApplicationId,
+  oldEntries?: Entry[]
 ) => {
-  const oldCategoryData = readCategory(categoryId);
   const applicationData = getApplicationDataById(applicationId);
 
   if (applicationData) {
@@ -99,10 +106,8 @@ export const readEntriesWithMetaData = async (
       const extension = nodepath.extname(filename);
       const [name] = nodepath.basename(filename).split(extension);
 
-      const oldEntryData = oldCategoryData?.entries?.find(
-        ({ path }) => path === filename
-      );
-      // TODO: create metaData object with validDate
+      const oldEntryData = oldEntries?.find(({ path }) => path === filename);
+      // TODO: create metaData object with 'expiresOn'
       if (oldEntryData?.imageUrl) {
         entriesWithMetaData.push(oldEntryData);
       } else {
@@ -131,96 +136,98 @@ export const readEntriesWithMetaData = async (
 };
 
 export const importEntries = async (category: string) => {
-  // TODO: oldData is read in readEntriesWithMetaData as well
-  const oldData = readCategory(category);
+  const categoryDbData = categories[category as PlatformId];
+  const oldCategoryData = readCategory(category);
 
-  if (oldData) {
-    const { entryPath, igdbPlatformIds, applicationId } = oldData;
-    const data: Category = {
-      ...oldData,
-      entries: await readEntriesWithMetaData(
-        category,
-        entryPath,
-        igdbPlatformIds,
-        applicationId
-      ),
-    };
+  if (oldCategoryData && categoryDbData) {
+    const { applicationsPath } = readGeneral();
+    const { igdbPlatformIds, defaultApplication, applications } =
+      categoryDbData;
+    const application = getApplicationForCategory({
+      applicationsForCategory: applications,
+      applicationsPath,
+      defaultApplicationDB: defaultApplication,
+      oldApplication: oldCategoryData?.application,
+    });
 
-    writeCategory(data);
+    const entries = await readEntriesWithMetaData(
+      category,
+      oldCategoryData.entryPath,
+      igdbPlatformIds,
+      application.id,
+      oldCategoryData.entries
+    );
+
+    writeCategory({
+      ...oldCategoryData,
+      application,
+      entries,
+    });
   }
 };
 
 const createCategoryData =
   (
-    { id, path, fileExtensions, flatpakId, flatpakOptionParams }: Application,
-    igdbPlatformIds: number[],
+    categoryDbData: CategoryDB,
     categoryFolderName: string,
-    categoryFolderBasename: string,
-    categoryId: PlatformId
+    categoryFolderBaseName: string,
+    applicationsPath?: string
   ) =>
   async (): Promise<Category> => {
+    const { id, igdbPlatformIds, defaultApplication, applications } =
+      categoryDbData;
+    const oldCategoryData = readCategory(id);
+
+    const application = getApplicationForCategory({
+      applicationsForCategory: applications,
+      applicationsPath,
+      defaultApplicationDB: defaultApplication,
+      oldApplication: oldCategoryData?.application,
+    });
+
     const entries = await readEntriesWithMetaData(
-      categoryId,
+      id,
       categoryFolderName,
       igdbPlatformIds,
-      id
+      application.id,
+      oldCategoryData?.entries
     );
 
     return {
-      id: categoryId,
-      name: categoryFolderBasename,
-      applicationId: id,
-      applicationPath: path,
-      applicationFlatpakId: flatpakId,
-      applicationFlatpakOptionParams: flatpakOptionParams,
+      ...oldCategoryData,
+      id,
+      name: categoryFolderBaseName,
+      application,
       entryPath: categoryFolderName,
-      fileExtensions,
-      igdbPlatformIds,
       entries,
     };
   };
 
 export const importCategories = async () => {
-  const { categoriesPath } = readGeneral();
+  const { categoriesPath, applicationsPath } = readGeneral();
 
   if (categoriesPath) {
-    const applications = readApplications();
     const categoryFolderNames = readDirectorynames(categoriesPath);
     categoryFolderNames.sort(sortCaseInsensitive);
 
     const getSupportedCategories = categoryFolderNames.reduce<
       Array<() => Promise<Category>>
-    >((previousValue, categoryFolderName) => {
+    >((result, categoryFolderName) => {
       const categoryFolderBasename = nodepath.basename(categoryFolderName);
-      let igdbPlatformIds: number[] | undefined;
-      let categoryId: PlatformId | undefined;
-      const applicationForCategory = applications.find(({ categories }) =>
-        categories.find(({ names, igdbPlatformIds: appIgdbPlatformIds, id }) =>
-          names.find((value) => {
-            const match =
-              value.toLowerCase() === categoryFolderBasename.toLowerCase();
-            if (match) {
-              igdbPlatformIds = appIgdbPlatformIds;
-              categoryId = id;
-            }
-            return match;
-          })
-        )
-      );
+      const categoryDbData = getCategoryDataByName(categoryFolderBasename);
 
-      if (applicationForCategory && igdbPlatformIds && categoryId) {
-        previousValue.push(
+      if (categoryDbData) {
+        result.push(
           createCategoryData(
-            applicationForCategory,
-            igdbPlatformIds,
+            categoryDbData,
             categoryFolderName,
             categoryFolderBasename,
-            categoryId
+            applicationsPath
           )
         );
       }
 
-      return previousValue;
+      return result;
     }, []);
 
     const supportedCategories = (

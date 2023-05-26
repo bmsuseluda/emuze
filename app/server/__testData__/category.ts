@@ -1,13 +1,4 @@
-import type { Category, Entry } from "~/types/category";
-import * as categoriesDB from "../categoriesDB.server";
-
-interface CategoryOnWindows extends Category {
-  applicationPath: string;
-}
-
-interface CategoryOnLinux extends Category {
-  applicationFlatpakId: string;
-}
+import type { Category, Entry } from "~/types/jsonFiles/category";
 
 export const addIndex = (entries: Entry[]) =>
   entries.map((entry, index) => ({ ...entry, id: `${entry.id}${index}` }));
@@ -18,17 +9,16 @@ export const metroidsamusreturns: Entry = {
   path: "F:/games/Emulation/roms/Nintendo 3DS/Metroid Samus Returns.3ds",
 };
 
-export const nintendo3ds: CategoryOnWindows = {
+export const nintendo3ds = {
   id: "nintendo3ds",
   name: "Nintendo 3DS",
-  applicationId: "citra",
-  applicationPath:
-    "F:/games/Emulation/emulators/Citra/nightly-mingw/citra-qt.exe",
+  application: {
+    id: "citra",
+    path: "F:/games/Emulation/emulators/Citra/nightly-mingw/citra-qt.exe",
+  },
   entryPath: "F:/games/Emulation/roms/Nintendo 3DS",
-  fileExtensions: [".3ds"],
-  igdbPlatformIds: categoriesDB.nintendo3ds.igdbPlatformIds,
   entries: addIndex([metroidsamusreturns]),
-};
+} satisfies Category;
 
 export const cotton: Entry = {
   id: "cotton",
@@ -42,28 +32,26 @@ export const gateofthunder: Entry = {
   path: "F:/games/Emulation/roms/PC Engine CD/Gate of Thunder.CUE",
 };
 
-export const pcenginecd: CategoryOnWindows = {
+export const pcenginecd = {
   id: "pcenginecd",
   name: "PC Engine CD",
-  applicationId: "mednafen",
-  applicationPath:
-    "F:/games/Emulation/emulators/mednafen-1.29.0-win64/mednafen.exe",
+  application: {
+    id: "mednafen",
+    path: "F:/games/Emulation/emulators/mednafen-1.29.0-win64/mednafen.exe",
+  },
   entryPath: "F:/games/Emulation/roms/PC Engine CD",
-  fileExtensions: [".cue", ".pce"],
-  igdbPlatformIds: categoriesDB.pcenginecd.igdbPlatformIds,
   entries: addIndex([cotton, gateofthunder]),
-};
+} satisfies Category;
 
-export const pcenginecdLinux: CategoryOnLinux = {
+export const pcenginecdLinux = {
   id: "pcenginecd",
   name: "PC Engine CD",
-  applicationId: "mednafen",
-  applicationFlatpakId: "org.mednafen",
+  application: {
+    id: "mednafen",
+  },
   entryPath: "F:/games/Emulation/roms/PC Engine CD",
-  fileExtensions: [".cue", ".pce"],
-  igdbPlatformIds: categoriesDB.pcenginecd.igdbPlatformIds,
   entries: addIndex([cotton, gateofthunder]),
-};
+} satisfies Category;
 
 export const fahrenheit: Entry = {
   id: "fahrenheit",
@@ -89,29 +77,26 @@ export const finalfantasy7: Entry = {
   path: "F:/games/Emulation/roms/Sony Playstation/Final Fantasy VII (J) (Disc 1).chd",
 };
 
-export const playstation: CategoryOnWindows = {
+export const playstation = {
   id: "sonyplaystation",
   name: "Sony Playstation",
-  applicationId: "duckstation",
-  applicationPath:
-    "F:/games/Emulation/emulators/duckstation-windows-x64-release/duckstation-nogui-x64-ReleaseLTCG.exe",
+  application: {
+    id: "duckstation",
+    path: "F:/games/Emulation/emulators/duckstation-windows-x64-release/duckstation-nogui-x64-ReleaseLTCG.exe",
+  },
   entryPath: "F:/games/Emulation/roms/Sony Playstation",
-  fileExtensions: [".chd", ".cue"],
-  igdbPlatformIds: categoriesDB.sonyplaystation.igdbPlatformIds,
   entries: addIndex([hugo, hugo2]),
-};
+} satisfies Category;
 
-export const playstation2: CategoryOnLinux = {
+export const playstation2 = {
   id: "sonyplaystation2",
   name: "Sony Playstation 2",
-  applicationId: "pcsx2",
-  applicationFlatpakId: "net.pcsx2.PCSX2",
-  applicationFlatpakOptionParams: ["--command=pcsx2-qt"],
+  application: {
+    id: "pcsx2",
+  },
   entryPath: "/home/dennisludwig/Documents/Emulation/Sony Playstation 2",
-  fileExtensions: [".chd", ".iso"],
-  igdbPlatformIds: categoriesDB.sonyplaystation2.igdbPlatformIds,
   entries: addIndex([fahrenheit]),
-};
+} satisfies Category;
 
 export const bayoubilly: Entry = {
   id: "adventuresofbayoubilly,the(e)",
@@ -131,24 +116,23 @@ export const blazingstar: Entry = {
   path: "F:/games/Emulation/roms/Neo Geo/blazstar.zip",
 };
 
-export const neogeo: CategoryOnWindows = {
+export const neogeo = {
   id: "neogeo",
   name: "Neo Geo",
-  applicationId: "mameneogeo",
-  applicationPath: "F:/games/Emulation/emulators/mame/mame.exe",
+  application: {
+    id: "mameNeoGeo",
+    path: "F:/games/Emulation/emulators/mame/mame.exe",
+  },
   entryPath: "F:/games/Emulation/roms/Neo Geo",
-  fileExtensions: [".zip", ".chd"],
-  igdbPlatformIds: categoriesDB.neogeo.igdbPlatformIds,
   entries: addIndex([blazingstar]),
-};
+} satisfies Category;
 
-export const neogeoLinux: CategoryOnLinux = {
+export const neogeoLinux = {
   id: "neogeo",
   name: "Neo Geo",
-  applicationId: "mameneogeo",
-  applicationFlatpakId: "org.mame",
+  application: {
+    id: "mameNeoGeo",
+  },
   entryPath: "F:/games/Emulation/roms/Neo Geo",
-  fileExtensions: [".zip"],
-  igdbPlatformIds: categoriesDB.neogeo.igdbPlatformIds,
   entries: addIndex([blazingstar]),
-};
+} satisfies Category;

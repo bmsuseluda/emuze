@@ -1,12 +1,14 @@
 module.exports = {
   presets: [
-    ["@babel/preset-env", { useBuiltIns: "entry", corejs: 3, loose: true }],
     [
-      "@babel/preset-react",
+      "@babel/preset-env",
       {
-        runtime: "automatic",
+        targets: {
+          chrome: 100,
+        },
       },
     ],
     "@babel/preset-typescript",
+    "@babel/preset-react",
   ],
 };

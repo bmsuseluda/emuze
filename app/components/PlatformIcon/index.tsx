@@ -10,7 +10,7 @@ import {
 import { FaGamepad } from "react-icons/fa";
 import { MdVideogameAsset } from "react-icons/md";
 import { TiSpiral } from "react-icons/ti";
-import type { PlatformId } from "~/types/platforms";
+import type { PlatformId } from "~/server/categoriesDB.server";
 
 const icons: Record<PlatformId, IconType> = {
   nintendoentertainmentsystem: MdVideogameAsset,
@@ -21,7 +21,6 @@ const icons: Record<PlatformId, IconType> = {
   nintendo3ds: SiNintendo3Ds,
   sonyplaystation: IoLogoPlaystation,
   sonyplaystation2: IoLogoPlaystation,
-  sonyplaystation3: IoLogoPlaystation,
   sonypsp: IoLogoPlaystation,
   arcade: SiApplearcade,
   neogeo: SiApplearcade,

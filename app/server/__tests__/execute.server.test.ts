@@ -2,7 +2,8 @@ import nodepath from "path";
 
 import { readCategory } from "~/server/categories.server";
 import { readAppearance, readGeneral } from "~/server/settings.server";
-import type { Category } from "~/types/category";
+import type { Category } from "~/types/jsonFiles/category";
+import { applications as applicationsDB } from "../applicationsDB.server";
 
 import { executeApplication } from "../execute.server";
 import {
@@ -11,14 +12,12 @@ import {
   pcenginecd,
   pcenginecdLinux,
 } from "../__testData__/category";
-import type { General } from "~/types/settings/general";
-import type { Appearance } from "~/types/settings/appearance";
+import type { General } from "~/types/jsonFiles/settings/general";
+import type { Appearance } from "~/types/jsonFiles/settings/appearance";
 
 const execFileMock = jest.fn();
 jest.mock("child_process", () => ({
   execFileSync: (applicationPath: string, entryPath: string) =>
-    execFileMock(applicationPath, entryPath),
-  execFile: (applicationPath: string, entryPath: string) =>
     execFileMock(applicationPath, entryPath),
 }));
 
@@ -30,7 +29,9 @@ jest.mock("~/server/settings.server", () => ({
   readAppearance: jest.fn(),
 }));
 
-const getFirstEntry = (category: Category) => category.entries![0];
+const getFirstEntry = (
+  category: Category & Required<Pick<Category, "entries">>
+) => category.entries[0];
 
 describe("execute.server", () => {
   const env = process.env;
@@ -58,7 +59,7 @@ describe("execute.server", () => {
 
         executeApplication(pcenginecd.id, entry.id);
 
-        expect(execFileMock).toHaveBeenCalledWith(pcenginecd.applicationPath, [
+        expect(execFileMock).toHaveBeenCalledWith(pcenginecd.application.path, [
           entry.path,
         ]);
       });
@@ -78,7 +79,7 @@ describe("execute.server", () => {
 
         executeApplication(neogeo.id, entry.id);
 
-        expect(execFileMock).toHaveBeenCalledWith(neogeo.applicationPath, [
+        expect(execFileMock).toHaveBeenCalledWith(neogeo.application.path, [
           "-w",
           "-rompath",
           entryDirname,
@@ -96,11 +97,11 @@ describe("execute.server", () => {
 
         executeApplication(pcenginecd.id, entry.id);
 
-        expect(execFileMock).toHaveBeenCalledWith(pcenginecd.applicationPath, [
+        expect(execFileMock).toHaveBeenCalledWith(pcenginecd.application.path, [
           entry.path,
         ]);
         expect(process.env.MEDNAFEN_HOME).toBe(
-          nodepath.dirname(pcenginecd.applicationPath)
+          nodepath.dirname(pcenginecd.application.path)
         );
       });
     });
@@ -125,7 +126,8 @@ describe("execute.server", () => {
 
         expect(execFileMock).toHaveBeenCalledWith("flatpak", [
           "run",
-          pcenginecdLinux.applicationFlatpakId,
+          "--command=mednafen",
+          applicationsDB.mednafen.flatpakId,
           entry.path,
         ]);
       });
@@ -149,7 +151,7 @@ describe("execute.server", () => {
 
         expect(execFileMock).toHaveBeenCalledWith("flatpak", [
           "run",
-          neogeoLinux.applicationFlatpakId,
+          applicationsDB.mame.flatpakId,
           "-w",
           "-rompath",
           entryDirname,

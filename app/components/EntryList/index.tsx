@@ -2,7 +2,7 @@ import type { HTMLAttributes } from "react";
 import React, { useCallback, useRef } from "react";
 import { useTestId } from "~/hooks/useTestId";
 import { styled } from "~/stitches";
-import type { Entry as EntryType } from "~/types/category";
+import type { Entry as EntryType } from "~/types/jsonFiles/category";
 import { Ul } from "../Ul";
 import { Entry } from "./components/Entry";
 import { useRefsGrid } from "~/hooks/useRefsGrid";
@@ -66,6 +66,7 @@ export const EntryList = ({
 
   const handleExecute = useCallback(() => {
     if (isInFocus) {
+      // TODO: selectedEntry.current won't set with mouse click, therefore doubleClick does not work
       if (selectedEntry.current) {
         onExecute();
       }

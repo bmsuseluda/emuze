@@ -1,4 +1,4 @@
-import type { Entry } from "~/types/category";
+import type { Entry } from "~/types/jsonFiles/category";
 import { openErrorDialog } from "~/server/openDialog.server";
 import type { Apicalypse } from "apicalypse";
 import apicalypse from "apicalypse";

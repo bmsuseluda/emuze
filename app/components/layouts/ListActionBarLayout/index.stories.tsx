@@ -1,113 +1,135 @@
-import type { ComponentMeta, ComponentStory } from "@storybook/react";
-
 import { ListActionBarLayout } from ".";
 import { Button } from "~/components/Button";
 import { Label } from "~/components/Label";
 import { TextInput } from "~/components/TextInput";
 
-export default {
-  title: "Layouts/ListActionBarLayout",
+import type { Meta, StoryObj } from "@storybook/react";
+import { styled } from "~/stitches";
+
+const meta = {
   component: ListActionBarLayout,
-} as ComponentMeta<typeof ListActionBarLayout>;
+} satisfies Meta<typeof ListActionBarLayout>;
 
-const Template: ComponentStory<typeof ListActionBarLayout> = (args) => (
-  <ListActionBarLayout {...args} />
-);
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const ManyElements = Template.bind({});
-ManyElements.args = {
-  headline: "Persons",
-  children: (
-    <>
-      <form>
-        <ListActionBarLayout.ListActionBarContainer
-          list={
-            <>
-              <Label>
-                firstname
-                <TextInput.Input name="firstname" />
-              </Label>
-              <Label>
-                firstname
-                <TextInput.Input name="firstname" />
-              </Label>
-              <Label>
-                firstname
-                <TextInput.Input name="firstname" />
-              </Label>
-              <Label>
-                firstname
-                <TextInput.Input name="firstname" />
-              </Label>
-              <Label>
-                firstname
-                <TextInput.Input name="firstname" />
-              </Label>
-              <Label>
-                firstname
-                <TextInput.Input name="firstname" />
-              </Label>
-              <Label>
-                firstname
-                <TextInput.Input name="firstname" />
-              </Label>
-            </>
-          }
-          actions={
-            <>
-              <Button>Edit</Button>
-              <Button>Create</Button>
-            </>
-          }
-        />
-      </form>
-    </>
+const Wrapper = styled("div", {
+  height: "100vh",
+  display: "flex",
+});
+
+export const ManyElements: Story = {
+  render: (args) => (
+    <Wrapper>
+      <ListActionBarLayout {...args} />
+    </Wrapper>
   ),
+  args: {
+    headline: "Persons",
+    children: (
+      <>
+        <form>
+          <ListActionBarLayout.ListActionBarContainer
+            list={
+              <>
+                <Label>
+                  firstname
+                  <TextInput.Input name="firstname" />
+                </Label>
+                <Label>
+                  firstname
+                  <TextInput.Input name="firstname" />
+                </Label>
+                <Label>
+                  firstname
+                  <TextInput.Input name="firstname" />
+                </Label>
+                <Label>
+                  firstname
+                  <TextInput.Input name="firstname" />
+                </Label>
+                <Label>
+                  firstname
+                  <TextInput.Input name="firstname" />
+                </Label>
+                <Label>
+                  firstname
+                  <TextInput.Input name="firstname" />
+                </Label>
+                <Label>
+                  firstname
+                  <TextInput.Input name="firstname" />
+                </Label>
+              </>
+            }
+            actions={
+              <>
+                <Button>Edit</Button>
+                <Button>Create</Button>
+              </>
+            }
+          />
+        </form>
+      </>
+    ),
+  },
 };
 
-export const OneElement = Template.bind({});
-OneElement.args = {
-  headline: "Persons",
-  children: (
-    <>
-      <form>
-        <ListActionBarLayout.ListActionBarContainer
-          list={
-            <>
-              <Label>
-                firstname
-                <TextInput.Input name="firstname" />
-              </Label>
-            </>
-          }
-          actions={
-            <>
-              <Button>Edit</Button>
-              <Button>Create</Button>
-            </>
-          }
-        />
-      </form>
-    </>
+export const OneElement: Story = {
+  render: (args) => (
+    <Wrapper>
+      <ListActionBarLayout {...args} />
+    </Wrapper>
   ),
+  args: {
+    headline: "Persons",
+    children: (
+      <>
+        <form>
+          <ListActionBarLayout.ListActionBarContainer
+            list={
+              <>
+                <Label>
+                  firstname
+                  <TextInput.Input name="firstname" />
+                </Label>
+              </>
+            }
+            actions={
+              <>
+                <Button>Edit</Button>
+                <Button>Create</Button>
+              </>
+            }
+          />
+        </form>
+      </>
+    ),
+  },
 };
 
-export const ZeroElement = Template.bind({});
-ZeroElement.args = {
-  headline: "Persons",
-  children: (
-    <>
-      <form>
-        <ListActionBarLayout.ListActionBarContainer
-          list={<></>}
-          actions={
-            <>
-              <Button>Edit</Button>
-              <Button>Create</Button>
-            </>
-          }
-        />
-      </form>
-    </>
+export const ZeroElement: Story = {
+  render: (args) => (
+    <Wrapper>
+      <ListActionBarLayout {...args} />
+    </Wrapper>
   ),
+  args: {
+    headline: "Persons",
+    children: (
+      <>
+        <form>
+          <ListActionBarLayout.ListActionBarContainer
+            list={<></>}
+            actions={
+              <>
+                <Button>Edit</Button>
+                <Button>Create</Button>
+              </>
+            }
+          />
+        </form>
+      </>
+    ),
+  },
 };
