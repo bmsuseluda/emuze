@@ -31,6 +31,7 @@ import { styled } from "~/stitches";
 import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
 import { useFullscreen } from "~/hooks/useFullscreen";
 import type { PlatformId } from "~/server/categoriesDB.server";
+import { Typography } from "~/components/Typography";
 
 type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
 type LoaderData = {
@@ -94,7 +95,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
   );
 };
 
-const Name = styled("span", {
+const Name = styled(Typography, {
   overflow: "hidden",
   whiteSpace: "nowrap",
   textOverflow: "ellipsis",
@@ -154,8 +155,8 @@ export default function Categories() {
                 state === "submitting" &&
                 formData?.get("_actionId") === actionIds.import
               }
+              icon={<IoMdRefresh />}
             >
-              <IoMdRefresh />
               {!collapseSidebar ? "Import all" : null}
             </Button>
           </Form>

@@ -281,8 +281,8 @@ export default function Index() {
                   formData?.get("_actionId") === actionIds.save
                 }
                 ref={saveButtonRef}
+                icon={<IoMdSave />}
               >
-                <IoMdSave />
                 Save settings and import all
               </Button>
               {!isWindows && defaultData.hasMissingApplications && (
@@ -295,8 +295,8 @@ export default function Index() {
                     formData?.get("_actionId") ===
                       actionIds.installMissingApplications
                   }
+                  icon={<IoMdDownload />}
                 >
-                  <IoMdDownload />
                   Install missing Emulators
                 </Button>
               )}

@@ -27,6 +27,7 @@ import { getInstalledApplications } from "~/server/applications.server";
 import type { PlatformId } from "~/server/categoriesDB.server";
 import { categories } from "~/server/categoriesDB.server";
 import { BiError } from "react-icons/bi";
+import { Typography } from "~/components/Typography";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -156,7 +157,7 @@ export default function Category() {
         headline={
           <IconChildrenWrapper>
             <PlatformIcon id={id} />
-            <span {...getTestId("name")}>{name}</span>
+            <Typography {...getTestId("name")}>{name}</Typography>
           </IconChildrenWrapper>
         }
       >
@@ -190,18 +191,17 @@ export default function Category() {
                   value={actionIds.launch}
                   ref={launchButtonRef}
                   {...getTestId(["button", "launch"])}
-                >
-                  {installedApplications.length === 0 ? (
-                    <>
+                  icon={
+                    installedApplications.length === 0 ? (
                       <BiError />
-                      No installed emulators
-                    </>
-                  ) : (
-                    <>
+                    ) : (
                       <IoMdPlay />
-                      Launch Game
-                    </>
-                  )}
+                    )
+                  }
+                >
+                  {installedApplications.length === 0
+                    ? "No installed emulators"
+                    : "Launch Game"}
                 </Button>
                 <Button
                   type="submit"
@@ -213,8 +213,8 @@ export default function Category() {
                     formData?.get("_actionId") === actionIds.import
                   }
                   {...getTestId(["button", "import"])}
+                  icon={<IoMdRefresh />}
                 >
-                  <IoMdRefresh />
                   Import Games
                 </Button>
               </>

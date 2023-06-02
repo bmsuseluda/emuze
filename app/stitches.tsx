@@ -32,7 +32,7 @@ export const { getCssText, styled, createTheme, globalCss } = createStitches({
     radii: {
       1: "0.8rem",
     },
-    gradiants: {
+    gradients: {
       default:
         "linear-gradient(45deg, $colors$backgroundColor, $colors$sidebarBackgroundColor)",
     },
@@ -59,7 +59,7 @@ const darkTheme = createTheme({
     colorOnAccent: "white",
     error: "#da1616",
   },
-  gradiants: {
+  gradients: {
     default:
       "linear-gradient(45deg, $colors$backgroundColor, $colors$sidebarBackgroundColor)",
   },
