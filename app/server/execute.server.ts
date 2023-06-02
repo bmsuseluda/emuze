@@ -1,4 +1,4 @@
-import { execFileSync } from "child_process";
+import { execFile, execFileSync } from "child_process";
 import { readCategory } from "~/server/categories.server";
 import { getApplicationDataById } from "~/server/applicationsDB.server";
 import { readAppearance, readGeneral } from "~/server/settings.server";
@@ -97,6 +97,17 @@ export const checkFlatpakIsInstalled = (flatpakId: string) => {
     return false;
   }
 };
+export const checkFlatpakIsInstalledParallel = (flatpakId: string) =>
+  new Promise<boolean>((resolve, reject) => {
+    execFile("flatpak", ["info", flatpakId], (error, stdout, stderr) => {
+      if (error) {
+        reject(true);
+      }
+      if (stdout) {
+        resolve(true);
+      }
+    });
+  });
 
 export const installFlatpak = (flatpakId: string) => {
   try {

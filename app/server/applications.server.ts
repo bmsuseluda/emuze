@@ -2,14 +2,19 @@ import nodepath from "path";
 
 import type { Application } from "~/types/jsonFiles/applications";
 import type { Application as ApplicationDB } from "~/server/applicationsDB.server";
+import { applications as applicationsDB } from "~/server/applicationsDB.server";
 import {
   readDirectorynames,
   readFilenames,
 } from "~/server/readWriteData.server";
 import { isWindows } from "./operationsystem.server";
-import { checkFlatpakIsInstalled, installFlatpak } from "./execute.server";
-import { readCategories } from "~/server/categories.server";
-import { categories as categoriesDB } from "~/server/categoriesDB.server";
+import {
+  checkFlatpakIsInstalled,
+  checkFlatpakIsInstalledParallel,
+  installFlatpak,
+} from "./execute.server";
+import { readCategories, readCategory } from "~/server/categories.server";
+import type { Category } from "~/types/jsonFiles/category";
 
 export const paths = {
   applications: "data/applications.json",
@@ -52,14 +57,15 @@ export const getInstalledApplicationsOnWindows = (
 
 export const getInstalledApplicationsOnLinux = (
   applications: ApplicationDB[]
-) =>
-  Object.values(applications)
+) => {
+  return Object.values(applications)
     .filter(({ flatpakId }) => checkFlatpakIsInstalled(flatpakId))
     .map(
       ({ id }): Application => ({
         id,
       })
     );
+};
 
 export const getInstalledApplications = (
   applications: ApplicationDB[],
@@ -73,33 +79,22 @@ export const getInstalledApplications = (
 };
 
 export const getInstalledApplicationForCategory = (
-  installedApplicationsForCategory: Application[],
+  applicationsForCategory: ApplicationDB[],
   defaultApplicationDB: ApplicationDB,
   oldApplication?: Application
 ) => {
-  if (installedApplicationsForCategory.length > 0) {
-    if (
-      oldApplication &&
-      installedApplicationsForCategory.find(
-        ({ id }) => id === oldApplication?.id
-      )
-    ) {
-      return oldApplication;
-    }
-
-    const defaultApplication = installedApplicationsForCategory.find(
-      ({ id }) => id === defaultApplicationDB.id
-    );
-    if (defaultApplication) {
-      return defaultApplication;
-    }
-
-    return installedApplicationsForCategory[0];
+  if (
+    oldApplication &&
+    checkFlatpakIsInstalled(applicationsDB[oldApplication.id].flatpakId)
+  ) {
+    return oldApplication;
   }
 
-  return {
-    id: defaultApplicationDB.id,
-  };
+  if (checkFlatpakIsInstalled(defaultApplicationDB.flatpakId)) {
+    return defaultApplicationDB;
+  }
+
+  return installedApplicationsForCategory[0];
 };
 
 export const getApplicationForCategory = ({
@@ -113,12 +108,8 @@ export const getApplicationForCategory = ({
   defaultApplicationDB: ApplicationDB;
   oldApplication?: Application;
 }) => {
-  const installedApplications = getInstalledApplications(
-    applicationsForCategory,
-    applicationsPath
-  );
   const application = getInstalledApplicationForCategory(
-    installedApplications,
+    applicationsForCategory,
     defaultApplicationDB,
     oldApplication
   );
@@ -126,20 +117,20 @@ export const getApplicationForCategory = ({
   return application;
 };
 
-export const installMissingApplicationsOnLinux = () => {
-  const categories = readCategories();
-  categories.forEach(({ id }) => {
-    const flatpakId = categoriesDB[id].defaultApplication.flatpakId;
-    if (!checkFlatpakIsInstalled(flatpakId)) {
-      installFlatpak(flatpakId);
-    }
-  });
-};
+export const installMissingApplicationsOnLinux = async () => {
+  const flatpakIds = [
+    ...new Set(
+      readCategories()
+        .map(({ id }) => readCategory(id))
+        .filter((category): category is Category => !!category)
+        .map((category) => applicationsDB[category.application.id].flatpakId)
+    ),
+  ];
 
-export const checkHasMissingApplications = () => {
-  const categories = readCategories();
-  return !!categories.find(({ id }) => {
-    const flatpakId = categoriesDB[id].defaultApplication.flatpakId;
-    return !checkFlatpakIsInstalled(flatpakId);
-  });
+  const functions = flatpakIds.map((flatpakId) =>
+    checkFlatpakIsInstalledParallel(flatpakId).catch(() => {
+      installFlatpak(flatpakId);
+    })
+  );
+  await Promise.all(functions);
 };

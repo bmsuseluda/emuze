@@ -31,15 +31,11 @@ import {
 } from "~/hooks/useGamepadEvent";
 import { layout } from "~/hooks/useGamepads/layouts";
 import { TextInput } from "~/components/TextInput";
-import {
-  checkHasMissingApplications,
-  installMissingApplicationsOnLinux,
-} from "~/server/applications.server";
+import { installMissingApplicationsOnLinux } from "~/server/applications.server";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
-  const hasMissingApplications = checkHasMissingApplications();
-  return json({ ...general, isWindows, hasMissingApplications });
+  return json({ ...general, isWindows });
 };
 
 const actionIds = {
@@ -81,7 +77,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   if (_actionId === actionIds.installMissingApplications) {
-    installMissingApplicationsOnLinux();
+    await installMissingApplicationsOnLinux();
   }
 
   if (_actionId === actionIds.chooseApplicationsPath) {
@@ -285,7 +281,7 @@ export default function Index() {
               >
                 Save settings and import all
               </Button>
-              {!isWindows && defaultData.hasMissingApplications && (
+              {!isWindows && (
                 <Button
                   type="submit"
                   name="_actionId"
