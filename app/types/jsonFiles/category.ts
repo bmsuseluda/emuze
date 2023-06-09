@@ -11,7 +11,7 @@ export interface Entry {
 export interface Category {
   id: PlatformId;
   name: string;
-  application: Application;
+  application?: Application;
   entryPath: string;
   entries?: Entry[];
 }

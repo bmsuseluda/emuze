@@ -32,7 +32,7 @@ const InnerBorder = styled("div", {
   variants: {
     "data-imageUrl": {
       false: {
-        background: "$gradiants$default",
+        background: "$gradients$default",
       },
     },
   },

@@ -23,7 +23,7 @@ import {
   categories,
   getCategoryDataByName,
 } from "~/server/categoriesDB.server";
-import { getApplicationForCategory } from "~/server/applications.server";
+import { getInstalledApplicationForCategory } from "~/server/applications.server";
 
 export const paths = {
   categories: "data/categories.json",
@@ -58,7 +58,7 @@ const deleteCategories = () => {
 export const readCategory = (category: string): Category | null =>
   readFileHome(nodepath.join(paths.entries, `${category}.json`));
 
-const writeCategory = (category: Category) =>
+export const writeCategory = (category: Category) =>
   writeFileHome(category, nodepath.join(paths.entries, `${category.id}.json`));
 
 const sortFileNames = (a: string, b: string) => {
@@ -141,10 +141,8 @@ export const importEntries = async (category: string) => {
 
   if (oldCategoryData && categoryDbData) {
     const { applicationsPath } = readGeneral();
-    const { igdbPlatformIds, defaultApplication, applications } =
-      categoryDbData;
-    const application = getApplicationForCategory({
-      applicationsForCategory: applications,
+    const { igdbPlatformIds, defaultApplication } = categoryDbData;
+    const application = getInstalledApplicationForCategory({
       applicationsPath,
       defaultApplicationDB: defaultApplication,
       oldApplication: oldCategoryData?.application,
@@ -154,7 +152,7 @@ export const importEntries = async (category: string) => {
       category,
       oldCategoryData.entryPath,
       igdbPlatformIds,
-      application.id,
+      application?.id || defaultApplication.id,
       oldCategoryData.entries
     );
 
@@ -174,12 +172,10 @@ const createCategoryData =
     applicationsPath?: string
   ) =>
   async (): Promise<Category> => {
-    const { id, igdbPlatformIds, defaultApplication, applications } =
-      categoryDbData;
+    const { id, igdbPlatformIds, defaultApplication } = categoryDbData;
     const oldCategoryData = readCategory(id);
 
-    const application = getApplicationForCategory({
-      applicationsForCategory: applications,
+    const application = getInstalledApplicationForCategory({
       applicationsPath,
       defaultApplicationDB: defaultApplication,
       oldApplication: oldCategoryData?.application,
@@ -189,7 +185,7 @@ const createCategoryData =
       id,
       categoryFolderName,
       igdbPlatformIds,
-      application.id,
+      application?.id || defaultApplication.id,
       oldCategoryData?.entries
     );
 

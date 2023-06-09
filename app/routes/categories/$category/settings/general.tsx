@@ -31,15 +31,12 @@ import {
 } from "~/hooks/useGamepadEvent";
 import { layout } from "~/hooks/useGamepads/layouts";
 import { TextInput } from "~/components/TextInput";
-import {
-  checkHasMissingApplications,
-  installMissingApplicationsOnLinux,
-} from "~/server/applications.server";
+import { installMissingApplicationsOnLinux } from "~/server/applications.server";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
-  const hasMissingApplications = checkHasMissingApplications();
-  return json({ ...general, isWindows, hasMissingApplications });
+  const categories = readCategories();
+  return json({ ...general, isWindows, categories });
 };
 
 const actionIds = {
@@ -81,7 +78,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   if (_actionId === actionIds.installMissingApplications) {
-    installMissingApplicationsOnLinux();
+    await installMissingApplicationsOnLinux();
   }
 
   if (_actionId === actionIds.chooseApplicationsPath) {
@@ -281,11 +278,11 @@ export default function Index() {
                   formData?.get("_actionId") === actionIds.save
                 }
                 ref={saveButtonRef}
+                icon={<IoMdSave />}
               >
-                <IoMdSave />
                 Save settings and import all
               </Button>
-              {!isWindows && defaultData.hasMissingApplications && (
+              {!isWindows && defaultData.categories.length > 0 && (
                 <Button
                   type="submit"
                   name="_actionId"
@@ -295,8 +292,8 @@ export default function Index() {
                     formData?.get("_actionId") ===
                       actionIds.installMissingApplications
                   }
+                  icon={<IoMdDownload />}
                 >
-                  <IoMdDownload />
                   Install missing Emulators
                 </Button>
               )}

@@ -2,6 +2,7 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import React, { forwardRef } from "react";
 import { styled } from "~/stitches";
 import { IconChildrenWrapper } from "../IconChildrenWrapper";
+import { Typography } from "~/components/Typography";
 
 export const StyledButton = styled("button", {
   backgroundColor: "$backgroundColor",
@@ -27,12 +28,16 @@ export const StyledButton = styled("button", {
 export type Props = {
   children: ReactNode;
   loading?: boolean;
+  icon?: ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const Button = forwardRef<HTMLButtonElement, Props>(
-  ({ children, loading = false, ...rest }, ref) => (
+  ({ children, loading = false, icon, ...rest }, ref) => (
     <StyledButton {...rest} ref={ref}>
-      <IconChildrenWrapper rotate={loading}>{children}</IconChildrenWrapper>
+      <IconChildrenWrapper rotate={loading}>
+        {icon}
+        <Typography>{children}</Typography>
+      </IconChildrenWrapper>
     </StyledButton>
   )
 );

@@ -180,8 +180,8 @@ export default function Index() {
               name="_actionId"
               value={actionIds.save}
               ref={saveButtonRef}
+              icon={<IoMdSave />}
             >
-              <IoMdSave />
               Save settings
             </Button>
           }

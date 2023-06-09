@@ -5,7 +5,7 @@ import { Separator } from "~/components/Separator";
 import type { ReactNode } from "react";
 
 const SidebarWrapper = styled("aside", {
-  background: "$gradiants$default",
+  background: "$gradients$default",
   padding: "$2 0.5rem $1 $1",
   display: "flex",
   flexFlow: "column",
