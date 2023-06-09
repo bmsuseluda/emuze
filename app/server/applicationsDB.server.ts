@@ -213,7 +213,7 @@ export const mednafen: Application = {
   flatpakOptionParams: ["--command=mednafen"],
   environmentVariables: ({ application }, { general: { isWindows } }) => {
     const environmentVariables = {};
-    if (isWindows && application.path) {
+    if (isWindows && application?.path) {
       return {
         ...environmentVariables,
         MEDNAFEN_HOME: nodepath.dirname(application.path),

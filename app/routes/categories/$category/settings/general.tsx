@@ -35,7 +35,8 @@ import { installMissingApplicationsOnLinux } from "~/server/applications.server"
 
 export const loader = () => {
   const general: General = readGeneral() || {};
-  return json({ ...general, isWindows });
+  const categories = readCategories();
+  return json({ ...general, isWindows, categories });
 };
 
 const actionIds = {
@@ -281,7 +282,7 @@ export default function Index() {
               >
                 Save settings and import all
               </Button>
-              {!isWindows && (
+              {!isWindows && defaultData.categories.length > 0 && (
                 <Button
                   type="submit"
                   name="_actionId"

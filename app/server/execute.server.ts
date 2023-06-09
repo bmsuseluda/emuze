@@ -40,7 +40,7 @@ export const executeApplication = (category: string, entry: string) => {
     appearance: readAppearance(),
   };
   const categoryData = readCategory(category);
-  if (categoryData) {
+  if (categoryData?.application) {
     const { application, entries } = categoryData;
     const applicationData = getApplicationDataById(application.id);
     const entryData = entries?.find((value) => value.id === entry);

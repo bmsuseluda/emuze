@@ -3,17 +3,19 @@ import nodepath from "path";
 import type { Application } from "~/types/jsonFiles/applications";
 import type { Application as ApplicationDB } from "~/server/applicationsDB.server";
 import { applications as applicationsDB } from "~/server/applicationsDB.server";
-import {
-  readDirectorynames,
-  readFilenames,
-} from "~/server/readWriteData.server";
+import { categories as categoriesDB } from "~/server/categoriesDB.server";
+import { readFilenames } from "~/server/readWriteData.server";
 import { isWindows } from "./operationsystem.server";
 import {
   checkFlatpakIsInstalled,
   checkFlatpakIsInstalledParallel,
   installFlatpak,
 } from "./execute.server";
-import { readCategories, readCategory } from "~/server/categories.server";
+import {
+  readCategories,
+  readCategory,
+  writeCategory,
+} from "~/server/categories.server";
 import type { Category } from "~/types/jsonFiles/category";
 
 export const paths = {
@@ -32,54 +34,7 @@ export const findExecutable = (path: string, id: string): string | null => {
   return null;
 };
 
-export const getInstalledApplicationsOnWindows = (
-  applications: ApplicationDB[],
-  applicationsPath: string
-) => {
-  const applicationFoldernames = readDirectorynames(applicationsPath);
-
-  return applications.reduce<Application[]>((result, { id }) => {
-    const appFoldername = applicationFoldernames.find((applicationFoldername) =>
-      applicationFoldername.toLowerCase().includes(id.toLowerCase())
-    );
-    if (appFoldername) {
-      const executable = findExecutable(appFoldername, id);
-      if (executable) {
-        result.push({
-          path: executable,
-          id,
-        });
-      }
-    }
-    return result;
-  }, []);
-};
-
-export const getInstalledApplicationsOnLinux = (
-  applications: ApplicationDB[]
-) => {
-  return Object.values(applications)
-    .filter(({ flatpakId }) => checkFlatpakIsInstalled(flatpakId))
-    .map(
-      ({ id }): Application => ({
-        id,
-      })
-    );
-};
-
-export const getInstalledApplications = (
-  applications: ApplicationDB[],
-  applicationsPath?: string
-) => {
-  if (isWindows && applicationsPath) {
-    return getInstalledApplicationsOnWindows(applications, applicationsPath);
-  } else {
-    return getInstalledApplicationsOnLinux(applications);
-  }
-};
-
-export const getInstalledApplicationForCategory = (
-  applicationsForCategory: ApplicationDB[],
+export const getInstalledApplicationForCategoryOnLinux = (
   defaultApplicationDB: ApplicationDB,
   oldApplication?: Application
 ) => {
@@ -94,43 +49,70 @@ export const getInstalledApplicationForCategory = (
     return defaultApplicationDB;
   }
 
-  return installedApplicationsForCategory[0];
+  return undefined;
 };
 
-export const getApplicationForCategory = ({
-  applicationsForCategory,
+export const getInstalledApplicationForCategoryOnWindows = (
+  defaultApplicationDB: ApplicationDB,
+  applicationsPath: string,
+  oldApplication?: Application
+) => {
+  if (oldApplication && findExecutable(applicationsPath, oldApplication.id)) {
+    return oldApplication;
+  }
+
+  if (findExecutable(applicationsPath, defaultApplicationDB.id)) {
+    return defaultApplicationDB;
+  }
+
+  return undefined;
+};
+
+export const getInstalledApplicationForCategory = ({
   applicationsPath,
   defaultApplicationDB,
   oldApplication,
 }: {
-  applicationsForCategory: ApplicationDB[];
   applicationsPath?: string;
   defaultApplicationDB: ApplicationDB;
   oldApplication?: Application;
 }) => {
-  const application = getInstalledApplicationForCategory(
-    applicationsForCategory,
+  if (isWindows && applicationsPath) {
+    return getInstalledApplicationForCategoryOnWindows(
+      defaultApplicationDB,
+      applicationsPath,
+      oldApplication
+    );
+  }
+
+  return getInstalledApplicationForCategoryOnLinux(
     defaultApplicationDB,
     oldApplication
   );
-
-  return application;
 };
 
 export const installMissingApplicationsOnLinux = async () => {
-  const flatpakIds = [
+  const categoriesWithoutApplication = [
     ...new Set(
       readCategories()
         .map(({ id }) => readCategory(id))
-        .filter((category): category is Category => !!category)
-        .map((category) => applicationsDB[category.application.id].flatpakId)
+        .filter(
+          (category): category is Category =>
+            !!category && !category?.application
+        )
     ),
   ];
 
-  const functions = flatpakIds.map((flatpakId) =>
-    checkFlatpakIsInstalledParallel(flatpakId).catch(() => {
+  const functions = categoriesWithoutApplication.map((category) => {
+    const defaultApplication = categoriesDB[category.id].defaultApplication;
+    const flatpakId = defaultApplication.flatpakId;
+    return checkFlatpakIsInstalledParallel(flatpakId).catch(() => {
       installFlatpak(flatpakId);
-    })
-  );
+      writeCategory({
+        ...category,
+        application: defaultApplication,
+      });
+    });
+  });
   await Promise.all(functions);
 };

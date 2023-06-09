@@ -36,7 +36,7 @@ import {
   mameNeoGeo,
   mednafen,
 } from "~/server/applicationsDB.server";
-import { getApplicationForCategory } from "~/server/applications.server";
+import { getInstalledApplicationForCategory } from "~/server/applications.server";
 import type { Application } from "~/types/jsonFiles/applications";
 
 const writeFileMock = jest.fn();
@@ -48,7 +48,7 @@ jest.mock("~/server/readWriteData.server", () => ({
 }));
 
 jest.mock("~/server/applications.server", () => ({
-  getApplicationForCategory: jest.fn(),
+  getInstalledApplicationForCategory: jest.fn(),
 }));
 
 jest.mock("~/server/settings.server.ts", () => ({
@@ -215,12 +215,12 @@ describe("categories.server", () => {
       (fetchMetaData as jest.Mock<Promise<Entry[]>>).mockResolvedValueOnce(
         pcenginecd.entries
       );
-      (getApplicationForCategory as jest.Mock<Application>).mockReturnValueOnce(
-        applicationsTestData.citra
-      );
-      (getApplicationForCategory as jest.Mock<Application>).mockReturnValueOnce(
-        applicationsTestData.mednafen
-      );
+      (
+        getInstalledApplicationForCategory as jest.Mock<Application>
+      ).mockReturnValueOnce(applicationsTestData.citra);
+      (
+        getInstalledApplicationForCategory as jest.Mock<Application>
+      ).mockReturnValueOnce(applicationsTestData.mednafen);
 
       // execute
       await importCategories();
@@ -266,9 +266,9 @@ describe("categories.server", () => {
       (fetchMetaData as jest.Mock<Promise<Entry[]>>).mockResolvedValueOnce(
         playstation.entries
       );
-      (getApplicationForCategory as jest.Mock<Application>).mockReturnValueOnce(
-        applicationsTestData.duckstation
-      );
+      (
+        getInstalledApplicationForCategory as jest.Mock<Application>
+      ).mockReturnValueOnce(applicationsTestData.duckstation);
 
       // execute
       await importEntries(playstation.id);
