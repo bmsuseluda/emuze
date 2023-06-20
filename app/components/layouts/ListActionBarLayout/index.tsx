@@ -30,16 +30,16 @@ const Absolute = styled("div", {
 const List = styled("div", {
   flex: 15,
   overflowY: "auto",
-  paddingRight: "1.5em",
+  paddingRight: "0.5em",
 
   scrollbarColor: "$colors$sidebarBackgroundColor transparent",
 
   "&::-webkit-scrollbar": {
-    width: "0.7em",
+    width: "0.5em",
   },
 
   "&::-webkit-scrollbar-thumb": {
-    backgroundColor: "$sidebarBackgroundColor",
+    backgroundColor: "transparent",
     borderRadius: "$1",
   },
   variants: {
@@ -51,8 +51,16 @@ const List = styled("div", {
     collapse: {
       true: {
         paddingRight: 0,
+
         "&::-webkit-scrollbar": {
           display: "none",
+        },
+      },
+      false: {
+        "&:hover": {
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "$sidebarBackgroundColor",
+          },
         },
       },
     },

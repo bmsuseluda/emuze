@@ -280,7 +280,7 @@ export default function Index() {
                 ref={saveButtonRef}
                 icon={<IoMdSave />}
               >
-                Save settings and import all
+                Import all
               </Button>
               {!isWindows && defaultData.categories.length > 0 && (
                 <Button
@@ -294,7 +294,7 @@ export default function Index() {
                   }
                   icon={<IoMdDownload />}
                 >
-                  Install missing Emulators
+                  Install Emulators
                 </Button>
               )}
             </>

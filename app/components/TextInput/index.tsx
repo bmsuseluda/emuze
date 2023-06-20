@@ -12,6 +12,9 @@ const Input = styled("input", {
   outline: "none",
   width: "100%",
   boxSizing: "border-box",
+  fontFamily: "inherit",
+  fontSize: "80%",
+  fontWeight: 300,
 
   "&:focus": {
     borderColor: "$accent",

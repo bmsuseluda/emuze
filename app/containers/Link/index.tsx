@@ -15,6 +15,8 @@ type Props = {
 const StyledNavLink = styled(NavLink, {
   textDecoration: "none",
   color: "$color",
+  fontSize: "90%",
+  fontWeight: 500,
 
   "&:focus": {
     outline: "none",

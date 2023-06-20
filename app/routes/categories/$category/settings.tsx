@@ -78,7 +78,6 @@ export default function Index() {
         <SidebarMainLayout.Sidebar
           headline="Settings"
           collapse={collapseSidebar}
-          isFullscreen
         >
           {categories.map(({ id, name }, index) => (
             <li key={id}>
@@ -92,7 +91,7 @@ export default function Index() {
             </li>
           ))}
         </SidebarMainLayout.Sidebar>
-        <SidebarMainLayout.Main isFullscreen>
+        <SidebarMainLayout.Main>
           <Outlet />
         </SidebarMainLayout.Main>
       </SidebarMainLayout>
