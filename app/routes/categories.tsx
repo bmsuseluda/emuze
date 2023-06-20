@@ -29,7 +29,6 @@ import { useFocus } from "~/hooks/useFocus";
 import type { FocusElement } from "~/types/focusElement";
 import { styled } from "~/stitches";
 import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
-import { useFullscreen } from "~/hooks/useFullscreen";
 import type { PlatformId } from "~/server/categoriesDB.server";
 import { Typography } from "~/components/Typography";
 
@@ -105,7 +104,6 @@ export default function Categories() {
   const { categoryLinks, selectedCategoryId, collapseSidebar } =
     useLoaderData<LoaderData>();
   const { getTestId } = useTestId("categories");
-  const isFullscreen = useFullscreen();
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { state, formData } = useNavigation();
@@ -144,7 +142,6 @@ export default function Categories() {
       <SidebarMainLayout.Sidebar
         header={<Header />}
         collapse={collapseSidebar}
-        isFullscreen={isFullscreen}
         actions={
           <Form method="post">
             <Button
@@ -176,7 +173,7 @@ export default function Categories() {
           </li>
         ))}
       </SidebarMainLayout.Sidebar>
-      <SidebarMainLayout.Main isFullscreen={isFullscreen}>
+      <SidebarMainLayout.Main>
         <Outlet />
       </SidebarMainLayout.Main>
     </SidebarMainLayout>

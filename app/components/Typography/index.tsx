@@ -8,7 +8,7 @@ export const Typography = styled("span", {
   },
   "&::after": {
     content: "",
-    marginTop: "-0.2em",
+    marginTop: "0",
     display: "table",
   },
 });

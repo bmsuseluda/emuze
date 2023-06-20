@@ -3,6 +3,7 @@ import { styled } from "~/stitches";
 const Headline = styled("h1", {
   margin: 0,
   padding: 0,
+  fontWeight: 400,
 });
 
 const StyledHeader = styled("header", {

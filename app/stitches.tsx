@@ -72,12 +72,18 @@ export type ThemeName = keyof typeof themes;
 export const themes = { dark: darkTheme, light: lightTheme };
 
 export const globalStyles = globalCss({
+  "@font-face": [
+    {
+      fontFamily: "Quicksand Light",
+      src: 'url("/Quicksand-VariableFont_wght.ttf") format("truetype")',
+    },
+  ],
   body: {
     margin: 0,
     padding: 0,
-    // TODO: create typography component
-    fontFamily:
-      "ui-rounded, Hiragino Maru Gothic ProN, Quicksand, Comfortaa, Manjari, Arial Rounded MT Bold, Calibri, source-sans-pro, sans-serif",
+
+    fontWeight: 400,
+    fontFamily: "Quicksand Light",
     fontSize: "130%",
 
     userSelect: "none",

@@ -47,6 +47,8 @@ const Name = styled("div", {
   userSelect: "none",
   padding: "$1",
   backgroundColor: "$transparentBackgroundColor",
+  fontWeight: 400,
+  fontSize: "80%",
 });
 
 const Input = styled("input", {

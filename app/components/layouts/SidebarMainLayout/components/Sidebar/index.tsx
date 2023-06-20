@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 
 const SidebarWrapper = styled("aside", {
   background: "$gradients$default",
-  padding: "$2 0.5rem $1 $1",
+  padding: "$1 0.5rem $1 $1",
   display: "flex",
   flexFlow: "column",
   overflowX: "hidden",
@@ -16,11 +16,6 @@ const SidebarWrapper = styled("aside", {
   gap: "1.5rem",
 
   variants: {
-    isFullscreen: {
-      true: {
-        paddingTop: "$1",
-      },
-    },
     collapse: {
       true: {
         width: "3.5rem",
@@ -51,7 +46,6 @@ interface Props {
   children?: ReactNode;
   actions?: ReactNode;
   collapse?: boolean;
-  isFullscreen?: boolean;
 }
 
 export const Sidebar = ({
@@ -60,9 +54,8 @@ export const Sidebar = ({
   children,
   actions,
   collapse = false,
-  isFullscreen = false,
 }: Props) => (
-  <SidebarWrapper isFullscreen={isFullscreen} collapse={collapse}>
+  <SidebarWrapper collapse={collapse}>
     {!collapse && header}
     {!collapse && header && <Separator />}
     <ListActionBarLayout headline={collapse ? undefined : headline}>

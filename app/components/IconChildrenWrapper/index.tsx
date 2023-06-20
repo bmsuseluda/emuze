@@ -10,13 +10,13 @@ const rotate = keyframes({
 const Wrapper = styled("span", {
   display: "flex",
   flexDirection: "row",
-  gap: "$1",
+  gap: "0.5em",
   alignItems: "center",
   whiteSpace: "nowrap",
 
   "> svg": {
-    minHeight: "max-content",
-    minWidth: "max-content",
+    minHeight: "1.2em",
+    minWidth: "1.2em",
     verticalAlign: "middle",
   },
 
