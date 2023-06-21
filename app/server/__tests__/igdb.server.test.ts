@@ -9,6 +9,7 @@ import {
 import type { GamesResponse } from "../igdb.server";
 import { chunk, fetchMetaData } from "../igdb.server";
 import { categories as categoriesDB } from "../categoriesDB.server";
+import { getExpiresOn } from "~/server/getExpiresOn.server";
 
 const igdbRequestMock = jest.fn();
 jest.mock("apicalypse", () => () => ({
@@ -24,6 +25,19 @@ jest.mock("apicalypse", () => () => ({
 jest.mock("~/server/openDialog.server.ts", () => ({
   openErrorDialog: jest.fn(),
 }));
+
+jest.mock("~/server/getExpiresOn.server.ts", () => {
+  const getFutureDate = () => {
+    const now = new Date();
+    now.setDate(now.getDate() + 10);
+    now.setSeconds(0);
+    return now.getTime();
+  };
+  const futureDate = getFutureDate();
+  return {
+    getExpiresOn: () => futureDate,
+  };
+});
 
 describe("igdb.server", () => {
   it("Should return games if they match directly on name or alternative name", async () => {
@@ -58,8 +72,11 @@ describe("igdb.server", () => {
       },
       {
         ...hugo2,
-        imageUrl:
-          "https://images.igdb.com/igdb/image/upload/t_cover_big/hugo360img.png",
+        metaData: {
+          expiresOn: getExpiresOn(),
+          imageUrl:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/hugo360img.png",
+        },
       },
     ]);
   });
@@ -93,8 +110,11 @@ describe("igdb.server", () => {
     expect(entriesWithImages).toStrictEqual([
       {
         ...fahrenheit,
-        imageUrl:
-          "https://images.igdb.com/igdb/image/upload/t_cover_big/fahrenheitimg.png",
+        metaData: {
+          expiresOn: getExpiresOn(),
+          imageUrl:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/fahrenheitimg.png",
+        },
       },
     ]);
   });
@@ -125,8 +145,11 @@ describe("igdb.server", () => {
     expect(entriesWithImages).toStrictEqual([
       {
         ...finalfantasy7,
-        imageUrl:
-          "https://images.igdb.com/igdb/image/upload/t_cover_big/ff7img.png",
+        metaData: {
+          expiresOn: getExpiresOn(),
+          imageUrl:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/ff7img.png",
+        },
       },
     ]);
   });
@@ -154,8 +177,11 @@ describe("igdb.server", () => {
     expect(entriesWithImages).toStrictEqual([
       {
         ...turtles2,
-        imageUrl:
-          "https://images.igdb.com/igdb/image/upload/t_cover_big/turtles2img.png",
+        metaData: {
+          expiresOn: getExpiresOn(),
+          imageUrl:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/turtles2img.png",
+        },
       },
     ]);
   });
@@ -178,8 +204,11 @@ describe("igdb.server", () => {
     expect(entriesWithImages).toStrictEqual([
       {
         ...bayoubilly,
-        imageUrl:
-          "https://images.igdb.com/igdb/image/upload/t_cover_big/bayoubillyimg.png",
+        metaData: {
+          expiresOn: getExpiresOn(),
+          imageUrl:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/bayoubillyimg.png",
+        },
       },
     ]);
   });

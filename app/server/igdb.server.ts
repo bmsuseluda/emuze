@@ -2,6 +2,7 @@ import type { Entry } from "~/types/jsonFiles/category";
 import { openErrorDialog } from "~/server/openDialog.server";
 import type { Apicalypse } from "apicalypse";
 import apicalypse from "apicalypse";
+import { getExpiresOn } from "~/server/getExpiresOn.server";
 
 interface GameLocalization {
   name?: string;
@@ -121,6 +122,7 @@ const fetchMetaDataForChunk = async (
     .limit(500)
     .request(url);
 
+  const expiresOn = getExpiresOn();
   return entries.map((entry) => {
     const gameData = gamesResponse.data.find(
       ({ name, alternative_names, game_localizations }) =>
@@ -133,7 +135,10 @@ const fetchMetaDataForChunk = async (
       if (imageUrl) {
         return {
           ...entry,
-          imageUrl,
+          metaData: {
+            imageUrl,
+            expiresOn,
+          },
         };
       }
     }
