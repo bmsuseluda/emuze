@@ -72,7 +72,7 @@ export const hugo2: Entry = {
 };
 
 export const finalfantasy7: Entry = {
-  id: "finalfantasyvii(J)(disc1)",
+  id: "finalfantasyvii(j)(disc1)",
   name: "Final Fantasy VII (J) (Disc 1)",
   path: "F:/games/Emulation/roms/Sony Playstation/Final Fantasy VII (J) (Disc 1).chd",
 };

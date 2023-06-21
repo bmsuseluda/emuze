@@ -80,11 +80,11 @@ export const EntryList = ({
 
   return (
     <List ref={entryListRef} {...getTestId()}>
-      {entries.map(({ id, name, imageUrl }, index) => (
+      {entries.map(({ id, name, metaData }, index) => (
         <Entry
           id={id}
           name={name}
-          imageUrl={imageUrl}
+          imageUrl={metaData?.imageUrl}
           alwaysGameName={alwaysGameNames}
           onDoubleClick={handleExecute}
           ref={(ref) => {

@@ -16,6 +16,7 @@ import {
   addIndex,
   blazingstar,
   cotton,
+  finalfantasy7,
   gateofthunder,
   hugo,
   hugo2,
@@ -38,6 +39,7 @@ import {
 } from "~/server/applicationsDB.server";
 import { getInstalledApplicationForCategory } from "~/server/applications.server";
 import type { Application } from "~/types/jsonFiles/applications";
+import { getExpiresOn } from "~/server/getExpiresOn.server";
 
 const writeFileMock = jest.fn();
 jest.mock("~/server/readWriteData.server", () => ({
@@ -64,6 +66,19 @@ jest.mock("fs");
 jest.mock("~/server/igdb.server.ts", () => ({
   fetchMetaData: jest.fn(),
 }));
+
+jest.mock("~/server/getExpiresOn.server.ts", () => {
+  const getFutureDate = () => {
+    const now = new Date();
+    now.setDate(now.getDate() + 10);
+    now.setSeconds(0);
+    return now.getTime();
+  };
+  const futureDate = getFutureDate();
+  return {
+    getExpiresOn: () => futureDate,
+  };
+});
 
 describe("categories.server", () => {
   beforeEach(() => {
@@ -100,13 +115,23 @@ describe("categories.server", () => {
     it("Should only fetch metaData for entries without metaData", async () => {
       when(readFilenames as jest.Mock<string[]>)
         .calledWith(playstation.entryPath, duckstation.fileExtensions)
-        .mockReturnValueOnce([hugo.path, hugo2.path]);
+        .mockReturnValueOnce([finalfantasy7.path, hugo.path, hugo2.path]);
 
       const fetchMetaDataMock = jest.fn().mockResolvedValue(
         addIndex([
           {
+            ...finalfantasy7,
+            metaData: {
+              imageUrl: "https://www.allImagesComeFromHere.com/ff7.png",
+              expiresOn: getExpiresOn(),
+            },
+          },
+          {
             ...hugo,
-            imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+            metaData: {
+              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+              expiresOn: getExpiresOn(),
+            },
           },
         ])
       );
@@ -120,10 +145,20 @@ describe("categories.server", () => {
         categoriesDB.sonyplaystation.igdbPlatformIds,
         playstation.application.id,
         addIndex([
+          {
+            ...finalfantasy7,
+            metaData: {
+              imageUrl: "https://www.allImagesComeFromHere.com/ff7.png",
+              expiresOn: new Date(2022).getTime(),
+            },
+          },
           hugo,
           {
             ...hugo2,
-            imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+            metaData: {
+              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+              expiresOn: getExpiresOn(),
+            },
           },
         ])
       );
@@ -131,18 +166,31 @@ describe("categories.server", () => {
       expect(result).toStrictEqual(
         addIndex([
           {
+            ...finalfantasy7,
+            metaData: {
+              imageUrl: "https://www.allImagesComeFromHere.com/ff7.png",
+              expiresOn: getExpiresOn(),
+            },
+          },
+          {
             ...hugo,
-            imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+            metaData: {
+              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+              expiresOn: getExpiresOn(),
+            },
           },
           {
             ...hugo2,
-            imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+            metaData: {
+              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+              expiresOn: getExpiresOn(),
+            },
           },
         ])
       );
       expect(fetchMetaDataMock).toHaveBeenCalledWith(
         categoriesDB.sonyplaystation.igdbPlatformIds,
-        addIndex([hugo])
+        addIndex([finalfantasy7, hugo])
       );
     });
 
@@ -155,11 +203,17 @@ describe("categories.server", () => {
         addIndex([
           {
             ...hugo,
-            imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+            metaData: {
+              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+              expiresOn: getExpiresOn(),
+            },
           },
           {
             ...hugo2,
-            imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+            metaData: {
+              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+              expiresOn: getExpiresOn(),
+            },
           },
         ])
       );
@@ -178,11 +232,17 @@ describe("categories.server", () => {
         addIndex([
           {
             ...hugo,
-            imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+            metaData: {
+              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+              expiresOn: getExpiresOn(),
+            },
           },
           {
             ...hugo2,
-            imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+            metaData: {
+              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+              expiresOn: getExpiresOn(),
+            },
           },
         ])
       );

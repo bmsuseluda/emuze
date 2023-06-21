@@ -1,4 +1,5 @@
 import type { Entry } from "~/types/jsonFiles/category";
+import { getExpiresOn } from "~/server/getExpiresOn.server";
 
 export const entries: Entry[] = [
   {
@@ -10,8 +11,11 @@ export const entries: Entry[] = [
     id: "axelay",
     name: "Axelay",
     path: "F:/games/Emulation/roms/Super Nintendo/Axelay.sfc",
-    imageUrl:
-      "https://images.igdb.com/igdb/image/upload/t_cover_big/co25my.png",
+    metaData: {
+      imageUrl:
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co25my.png",
+      expiresOn: getExpiresOn(),
+    },
   },
   {
     id: "bahamutlagoon",
@@ -22,8 +26,11 @@ export const entries: Entry[] = [
     id: "batmanreturns",
     name: "Batman Returns",
     path: "F:/games/Emulation/roms/Super Nintendo/Batman Returns.sfc",
-    imageUrl:
-      "https://images.igdb.com/igdb/image/upload/t_cover_big/co3bsp.png",
+    metaData: {
+      imageUrl:
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co3bsp.png",
+      expiresOn: getExpiresOn(),
+    },
   },
   {
     id: "claymates",
@@ -39,8 +46,11 @@ export const entries: Entry[] = [
     id: "donkeykongcountry2",
     name: "Donkey Kong Country 2",
     path: "F:/games/Emulation/roms/Super Nintendo/Donkey Kong Country 2.sfc",
-    imageUrl:
-      "https://images.igdb.com/igdb/image/upload/t_cover_big/co217m.png",
+    metaData: {
+      imageUrl:
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co217m.png",
+      expiresOn: getExpiresOn(),
+    },
   },
   {
     id: "donkeykongcountry3",
@@ -51,8 +61,11 @@ export const entries: Entry[] = [
     id: "donkeykongcountry",
     name: "Donkey Kong Country",
     path: "F:/games/Emulation/roms/Super Nintendo/Donkey Kong Country.sfc",
-    imageUrl:
-      "https://images.igdb.com/igdb/image/upload/t_cover_big/co29n6.png",
+    metaData: {
+      imageUrl:
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co29n6.png",
+      expiresOn: getExpiresOn(),
+    },
   },
   {
     id: "earthwormjim",
