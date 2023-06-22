@@ -31,7 +31,7 @@ export const paths = {
 };
 
 export const readCategories = (): CategorySlim[] => {
-  const categories = readFileHome(paths.categories);
+  const categories = readFileHome<CategorySlim[]>(paths.categories);
 
   if (categories) {
     return categories;
@@ -138,9 +138,10 @@ export const readEntriesWithMetaData = async (
 export const importEntries = async (category: string) => {
   const categoryDbData = categories[category as PlatformId];
   const oldCategoryData = readCategory(category);
+  const generalData = readGeneral();
 
-  if (oldCategoryData && categoryDbData) {
-    const { applicationsPath } = readGeneral();
+  if (oldCategoryData && categoryDbData && generalData) {
+    const { applicationsPath } = generalData;
     const { igdbPlatformIds, defaultApplication } = categoryDbData;
     const application = getInstalledApplicationForCategory({
       applicationsPath,
@@ -200,9 +201,10 @@ const createCategoryData =
   };
 
 export const importCategories = async () => {
-  const { categoriesPath, applicationsPath } = readGeneral();
+  const generalData = readGeneral();
 
-  if (categoriesPath) {
+  if (generalData?.categoriesPath) {
+    const { categoriesPath, applicationsPath } = generalData;
     const categoryFolderNames = readDirectorynames(categoriesPath);
     categoryFolderNames.sort(sortCaseInsensitive);
 

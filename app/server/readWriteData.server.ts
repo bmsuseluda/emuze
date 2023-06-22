@@ -34,7 +34,7 @@ export const readFilenames = (path: string, fileExtensions?: string[]) => {
   return filenames;
 };
 
-export const readFileHome = (path: string) => {
+export const readFileHome = <T>(path: string): T | null => {
   const pathInHome = nodepath.join(homeDirectory, path);
   try {
     const data = fs.readFileSync(pathInHome, "utf8");
