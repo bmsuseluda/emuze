@@ -5,9 +5,7 @@ import type { Category as CategorySlim } from "~/types/jsonFiles/categories";
 import type { Category, Entry } from "~/types/jsonFiles/category";
 import {
   readDirectorynames,
-  readFileHome,
   readFilenames,
-  writeFileHome,
 } from "~/server/readWriteData.server";
 import { convertToId } from "~/server/convertToId.server";
 import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
@@ -24,27 +22,26 @@ import {
   getCategoryDataByName,
 } from "~/server/categoriesDB.server";
 import { getInstalledApplicationForCategory } from "~/server/applications.server";
+import {
+  FileDataCache,
+  MultipleFileDataCache,
+} from "~/server/FileDataCache.server";
 
 export const paths = {
   categories: "data/categories.json",
   entries: "data/categories/",
 };
 
-export const readCategories = (): CategorySlim[] => {
-  const categories = readFileHome(paths.categories);
+const categoriesDataCache = new FileDataCache<CategorySlim[]>(paths.categories);
 
-  if (categories) {
-    return categories;
-  }
-  return [];
-};
+export const readCategories = () => categoriesDataCache.readFile() || [];
 
 const writeCategories = (categories: Category[]) => {
   const categoriesSlim = categories.map<CategorySlim>(({ id, name }) => ({
     id,
     name,
   }));
-  writeFileHome(categoriesSlim, paths.categories);
+  categoriesDataCache.writeFile(categoriesSlim);
 };
 
 const deleteCategories = () => {
@@ -55,11 +52,18 @@ const deleteCategories = () => {
   writeCategories([]);
 };
 
-export const readCategory = (category: string): Category | null =>
-  readFileHome(nodepath.join(paths.entries, `${category}.json`));
+const categoryDataCache = new MultipleFileDataCache<Category>();
+
+export const readCategory = (categoryId: string) =>
+  categoryDataCache.readFile(
+    nodepath.join(paths.entries, `${categoryId}.json`)
+  );
 
 export const writeCategory = (category: Category) =>
-  writeFileHome(category, nodepath.join(paths.entries, `${category.id}.json`));
+  categoryDataCache.writeFile(
+    category,
+    nodepath.join(paths.entries, `${category.id}.json`)
+  );
 
 const sortFileNames = (a: string, b: string) => {
   const aWithoutPath = nodepath.basename(a);
@@ -138,9 +142,10 @@ export const readEntriesWithMetaData = async (
 export const importEntries = async (category: string) => {
   const categoryDbData = categories[category as PlatformId];
   const oldCategoryData = readCategory(category);
+  const generalData = readGeneral();
 
-  if (oldCategoryData && categoryDbData) {
-    const { applicationsPath } = readGeneral();
+  if (oldCategoryData && categoryDbData && generalData) {
+    const { applicationsPath } = generalData;
     const { igdbPlatformIds, defaultApplication } = categoryDbData;
     const application = getInstalledApplicationForCategory({
       applicationsPath,
@@ -200,9 +205,10 @@ const createCategoryData =
   };
 
 export const importCategories = async () => {
-  const { categoriesPath, applicationsPath } = readGeneral();
+  const generalData = readGeneral();
 
-  if (categoriesPath) {
+  if (generalData?.categoriesPath) {
+    const { categoriesPath, applicationsPath } = generalData;
     const categoryFolderNames = readDirectorynames(categoriesPath);
     categoryFolderNames.sort(sortCaseInsensitive);
 

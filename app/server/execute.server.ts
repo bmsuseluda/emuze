@@ -35,12 +35,13 @@ const executeApplicationOnWindows = (
 };
 
 export const executeApplication = (category: string, entry: string) => {
-  const settings = {
-    general: readGeneral(),
-    appearance: readAppearance(),
-  };
+  const generalData = readGeneral();
   const categoryData = readCategory(category);
-  if (categoryData?.application) {
+  if (categoryData?.application && generalData) {
+    const settings = {
+      general: generalData,
+      appearance: readAppearance(),
+    };
     const { application, entries } = categoryData;
     const applicationData = getApplicationDataById(application.id);
     const entryData = entries?.find((value) => value.id === entry);

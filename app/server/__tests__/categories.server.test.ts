@@ -122,14 +122,14 @@ describe("categories.server", () => {
           {
             ...finalfantasy7,
             metaData: {
-              imageUrl: "https://www.allImagesComeFromHere.com/ff7.png",
+              imageUrl: "https://www.allImagesComeFromHere.com/ff7.webp",
               expiresOn: getExpiresOn(),
             },
           },
           {
             ...hugo,
             metaData: {
-              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.webp",
               expiresOn: getExpiresOn(),
             },
           },
@@ -148,7 +148,7 @@ describe("categories.server", () => {
           {
             ...finalfantasy7,
             metaData: {
-              imageUrl: "https://www.allImagesComeFromHere.com/ff7.png",
+              imageUrl: "https://www.allImagesComeFromHere.com/ff7.webp",
               expiresOn: new Date(2022).getTime(),
             },
           },
@@ -156,7 +156,7 @@ describe("categories.server", () => {
           {
             ...hugo2,
             metaData: {
-              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.webp",
               expiresOn: getExpiresOn(),
             },
           },
@@ -168,21 +168,21 @@ describe("categories.server", () => {
           {
             ...finalfantasy7,
             metaData: {
-              imageUrl: "https://www.allImagesComeFromHere.com/ff7.png",
+              imageUrl: "https://www.allImagesComeFromHere.com/ff7.webp",
               expiresOn: getExpiresOn(),
             },
           },
           {
             ...hugo,
             metaData: {
-              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.webp",
               expiresOn: getExpiresOn(),
             },
           },
           {
             ...hugo2,
             metaData: {
-              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.webp",
               expiresOn: getExpiresOn(),
             },
           },
@@ -204,14 +204,14 @@ describe("categories.server", () => {
           {
             ...hugo,
             metaData: {
-              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.webp",
               expiresOn: getExpiresOn(),
             },
           },
           {
             ...hugo2,
             metaData: {
-              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.webp",
               expiresOn: getExpiresOn(),
             },
           },
@@ -233,14 +233,14 @@ describe("categories.server", () => {
           {
             ...hugo,
             metaData: {
-              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.webp",
               expiresOn: getExpiresOn(),
             },
           },
           {
             ...hugo2,
             metaData: {
-              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.png",
+              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.webp",
               expiresOn: getExpiresOn(),
             },
           },

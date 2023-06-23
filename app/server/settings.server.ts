@@ -1,6 +1,6 @@
 import type { General } from "~/types/jsonFiles/settings/general";
 import type { Appearance } from "~/types/jsonFiles/settings/appearance";
-import { readFileHome, writeFileHome } from "~/server/readWriteData.server";
+import { FileDataCache } from "~/server/FileDataCache.server";
 
 export type Category = { id: string; name: string; to: string };
 
@@ -22,11 +22,12 @@ export const paths = {
   appearance: "data/settings/appearance.json",
 };
 
-export const readGeneral = (): General => readFileHome(paths.general);
+const generalDataCache = new FileDataCache<General>(paths.general);
+export const readGeneral = () => generalDataCache.readFile();
 export const writeGeneral = (general: General) =>
-  writeFileHome(general, paths.general);
+  generalDataCache.writeFile(general);
 
-export const readAppearance = (): Appearance =>
-  readFileHome(paths.appearance) || {};
+const appearanceDataCache = new FileDataCache<Appearance>(paths.appearance);
+export const readAppearance = () => appearanceDataCache.readFile() || {};
 export const writeAppearance = (appearance: Appearance) =>
-  writeFileHome(appearance, paths.appearance);
+  appearanceDataCache.writeFile(appearance);
