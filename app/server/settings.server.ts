@@ -1,6 +1,6 @@
 import type { General } from "~/types/jsonFiles/settings/general";
 import type { Appearance } from "~/types/jsonFiles/settings/appearance";
-import { readFileHome, writeFileHome } from "~/server/readWriteData.server";
+import { FileDataCache } from "~/server/FileDataCache.server";
 
 export type Category = { id: string; name: string; to: string };
 
@@ -17,44 +17,17 @@ export const categories: Category[] = [
   },
 ];
 
-type FilePath = "data/settings/general.json" | "data/settings/appearance.json";
-
-type Paths = Record<string, FilePath>;
-
 export const paths = {
   general: "data/settings/general.json",
   appearance: "data/settings/appearance.json",
-} satisfies Paths;
-
-type DataCachePool = Record<FilePath, unknown | null>;
-const dataCachePool = {
-  "data/settings/general.json": null as General | null,
-  "data/settings/appearance.json": null as Appearance | null,
-} satisfies DataCachePool;
-
-type GenericDataCachePool = Record<string, unknown | null>;
-const readFileHomeWithCaching = <T extends keyof typeof dataCachePool>(
-  filePath: T
-) => {
-  if (!dataCachePool[filePath]) {
-    dataCachePool[filePath] = readFileHome<(typeof dataCachePool)[T]>(filePath);
-  }
-  return dataCachePool[filePath];
 };
 
-const writeFileHomeWithCaching = <T extends keyof typeof dataCachePool>(
-  filePath: T,
-  content: (typeof dataCachePool)[T]
-) => {
-  writeFileHome(content, filePath);
-  dataCachePool[filePath] = content;
-};
-
-export const readGeneral = () => readFileHomeWithCaching(paths.general);
+const generalDataCache = new FileDataCache<General>(paths.general);
+export const readGeneral = () => generalDataCache.readFile();
 export const writeGeneral = (general: General) =>
-  writeFileHomeWithCaching(paths.general, general);
+  generalDataCache.writeFile(general);
 
-export const readAppearance = (): Appearance =>
-  readFileHomeWithCaching(paths.appearance) || {};
+const appearanceDataCache = new FileDataCache<Appearance>(paths.appearance);
+export const readAppearance = () => appearanceDataCache.readFile() || {};
 export const writeAppearance = (appearance: Appearance) =>
-  writeFileHomeWithCaching(paths.appearance, appearance);
+  appearanceDataCache.writeFile(appearance);

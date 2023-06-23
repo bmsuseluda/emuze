@@ -75,7 +75,7 @@ describe("igdb.server", () => {
         metaData: {
           expiresOn: getExpiresOn(),
           imageUrl:
-            "https://images.igdb.com/igdb/image/upload/t_cover_big/hugo360img.png",
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/hugo360img.webp",
         },
       },
     ]);
@@ -113,7 +113,7 @@ describe("igdb.server", () => {
         metaData: {
           expiresOn: getExpiresOn(),
           imageUrl:
-            "https://images.igdb.com/igdb/image/upload/t_cover_big/fahrenheitimg.png",
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/fahrenheitimg.webp",
         },
       },
     ]);
@@ -148,7 +148,7 @@ describe("igdb.server", () => {
         metaData: {
           expiresOn: getExpiresOn(),
           imageUrl:
-            "https://images.igdb.com/igdb/image/upload/t_cover_big/ff7img.png",
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/ff7img.webp",
         },
       },
     ]);
@@ -180,7 +180,7 @@ describe("igdb.server", () => {
         metaData: {
           expiresOn: getExpiresOn(),
           imageUrl:
-            "https://images.igdb.com/igdb/image/upload/t_cover_big/turtles2img.png",
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/turtles2img.webp",
         },
       },
     ]);
@@ -207,7 +207,7 @@ describe("igdb.server", () => {
         metaData: {
           expiresOn: getExpiresOn(),
           imageUrl:
-            "https://images.igdb.com/igdb/image/upload/t_cover_big/bayoubillyimg.png",
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/bayoubillyimg.webp",
         },
       },
     ]);

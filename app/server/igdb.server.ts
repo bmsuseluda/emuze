@@ -54,7 +54,7 @@ export const getCoverUrl = (entryName: string, gameData: Game) => {
   const gameId = localization?.cover?.image_id || gameData.cover?.image_id;
 
   if (gameId) {
-    return `https://images.igdb.com/igdb/image/upload/t_cover_big/${gameId}.png`;
+    return `https://images.igdb.com/igdb/image/upload/t_cover_big/${gameId}.webp`;
   }
 
   return null;
