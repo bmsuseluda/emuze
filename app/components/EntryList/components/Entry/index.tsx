@@ -70,7 +70,7 @@ const Image = styled("img", {
 const getAdditionalInfo = (name: string) =>
   name.substring(name.indexOf("(") + 1, name.indexOf(")"));
 
-const fallbackImageUrl = "/fallback.webp";
+const fallbackImageUrl = "/fallback.png";
 
 export const getDisplayedName = (
   name: string,
