@@ -76,6 +76,7 @@ export const globalStyles = globalCss({
     {
       fontFamily: "Quicksand Light",
       src: 'url("/Quicksand-VariableFont_wght.ttf") format("truetype")',
+      fontDisplay: "block",
     },
   ],
   body: {
