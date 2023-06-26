@@ -2,7 +2,7 @@ import { initRemix } from "remix-electron";
 import { app, BrowserWindow, ipcMain } from "electron";
 import nodepath from "path";
 import { readAppearance } from "./readSettings";
-import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import * as dotenv from "dotenv";
 
 dotenv.config();
 

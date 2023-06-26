@@ -65,6 +65,7 @@ const Input = styled("input", {
 
 const Image = styled("img", {
   width: "100%",
+  height: "100%",
 });
 
 const getAdditionalInfo = (name: string) =>
@@ -121,6 +122,8 @@ export const Entry = React.forwardRef<HTMLInputElement, Props>(
               src={imageUrl || fallbackImageUrl}
               alt={`${name} cover`}
               draggable={false}
+              width={300}
+              height={400}
             />
             {displayedName && <Name>{displayedName}</Name>}
           </InnerBorder>
