@@ -13,7 +13,7 @@ export const Basic: Story = {
   args: {
     children: (
       <>
-        <TextInput.Input />
+        <TextInput.Input value="This is a TextInput" />
         <TextInput.IconButton>choose</TextInput.IconButton>
       </>
     ),

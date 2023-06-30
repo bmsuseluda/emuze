@@ -11,7 +11,7 @@ import {
 import { globalStyles, themes } from "./stitches";
 import { Box } from "./components/Box";
 import { Titlebar } from "./containers/Titlebar";
-import type { MetaFunction } from "@remix-run/node";
+import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { FullscreenProvider } from "~/provider/FullscreenProvider";
 import { FocusProvider } from "~/provider/FocusProvider";
@@ -21,6 +21,10 @@ import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModul
 import type { ReactNode } from "react";
 import { useFocus } from "~/hooks/useFocus";
 import { useGamepads } from "~/hooks/useGamepads";
+
+import styles from "./index.css";
+
+export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 const GamepadProvider = ({ children }: { children: ReactNode }) => {
   const { isDisabled } = useFocus<FocusElement>("main");
