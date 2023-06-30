@@ -14,6 +14,7 @@ const dispatchStickDirectionEvent = (stickDirection: StickDirection) => {
   dispatchEvent(new CustomEvent(`gamepadon${stickDirection}`));
 };
 
+// TODO: create npm package
 export const useGamepads = (isDisabled: boolean) => {
   const oldGamepads = useRef<(Gamepad | null)[]>([]);
   const requestAnimationFrameRef = useRef<number>();

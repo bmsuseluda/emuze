@@ -26,6 +26,7 @@ import {
   FileDataCache,
   MultipleFileDataCache,
 } from "~/server/FileDataCache.server";
+import { openErrorDialog } from "~/server/openDialog.server";
 
 export const paths = {
   categories: "data/categories.json",
@@ -153,19 +154,27 @@ export const importEntries = async (category: string) => {
       oldApplication: oldCategoryData?.application,
     });
 
-    const entries = await readEntriesWithMetaData(
+    await readEntriesWithMetaData(
       category,
       oldCategoryData.entryPath,
       igdbPlatformIds,
       application?.id || defaultApplication.id,
       oldCategoryData.entries
-    );
-
-    writeCategory({
-      ...oldCategoryData,
-      application,
-      entries,
-    });
+    )
+      .then((entries) => {
+        writeCategory({
+          ...oldCategoryData,
+          application,
+          entries,
+        });
+      })
+      .catch((error) => {
+        openErrorDialog(
+          "Please try again later",
+          "Fetch covers from igdb failed"
+        );
+        console.log("igdb error", error);
+      });
   }
 };
 
@@ -186,22 +195,20 @@ const createCategoryData =
       oldApplication: oldCategoryData?.application,
     });
 
-    const entries = await readEntriesWithMetaData(
+    return readEntriesWithMetaData(
       id,
       categoryFolderName,
       igdbPlatformIds,
       application?.id || defaultApplication.id,
       oldCategoryData?.entries
-    );
-
-    return {
+    ).then((entries) => ({
       ...oldCategoryData,
       id,
       name: categoryFolderBaseName,
       application,
       entryPath: categoryFolderName,
       entries,
-    };
+    }));
   };
 
 export const importCategories = async () => {
@@ -232,14 +239,23 @@ export const importCategories = async () => {
       return result;
     }, []);
 
-    const supportedCategories = (
-      await Promise.all(getSupportedCategories.map((func) => func()))
-    ).filter(({ entries }) => entries && entries.length > 0);
-
-    deleteCategories();
-    supportedCategories.forEach((category) => {
-      writeCategory(category);
-    });
-    writeCategories(supportedCategories);
+    await Promise.all(getSupportedCategories.map((func) => func()))
+      .then((categories) => {
+        const supportedCategories = categories.filter(
+          ({ entries }) => entries && entries.length > 0
+        );
+        deleteCategories();
+        supportedCategories.forEach((category) => {
+          writeCategory(category);
+        });
+        writeCategories(supportedCategories);
+      })
+      .catch((error) => {
+        openErrorDialog(
+          "Please try again later",
+          "Fetch covers from igdb failed"
+        );
+        console.log("igdb error", error);
+      });
   }
 };

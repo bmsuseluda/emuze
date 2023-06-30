@@ -1,5 +1,6 @@
 import { readFileHome, writeFileHome } from "~/server/readWriteData.server";
 
+// TODO: create npm package
 export class FileDataCache<Content> {
   constructor(filePath: string) {
     this.filePath = filePath;

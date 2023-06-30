@@ -1,5 +1,4 @@
 import type { Entry } from "~/types/jsonFiles/category";
-import { openErrorDialog } from "~/server/openDialog.server";
 import type { Apicalypse } from "apicalypse";
 import apicalypse from "apicalypse";
 import { getExpiresOn } from "~/server/getExpiresOn.server";
@@ -149,22 +148,15 @@ const fetchMetaDataForChunk = async (
 export const fetchMetaData = async (platformId: number[], entries: Entry[]) => {
   if (entries.length > 0) {
     const entryChunks = chunk(entries, 200);
-    try {
-      const client = apicalypse({ method: "POST" });
+    const client = apicalypse({ method: "POST" });
 
-      const entriesWithMetaData = await Promise.all(
-        entryChunks.map((entryChunk) =>
-          fetchMetaDataForChunk(client, platformId, entryChunk)
-        )
-      );
+    const entriesWithMetaData = await Promise.all(
+      entryChunks.map((entryChunk) =>
+        fetchMetaDataForChunk(client, platformId, entryChunk)
+      )
+    );
 
-      return entriesWithMetaData.flat();
-    } catch (error) {
-      // TODO: check how to show only 1 error
-      openErrorDialog(error, `Fetch covers from igdb failed`);
-      console.log("igdb error", error);
-      return entries;
-    }
+    return entriesWithMetaData.flat();
   }
   return entries;
 };
