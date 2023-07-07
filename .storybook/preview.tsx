@@ -4,7 +4,17 @@ import type { Preview } from "@storybook/react";
 import { Decorator } from "@storybook/react";
 
 import { globalStyles, ThemeName, themes } from "~/stitches";
-import { Box } from "~/components/Box";
+import { styled } from "../styled-system/jsx";
+
+const StoryWrapper = styled("div", {
+  base: {
+    backgroundColor: "backgroundColor",
+    padding: "2",
+    boxSizing: "border-box",
+    display: "flex",
+    flexDirection: "column",
+  },
+});
 
 const getColoredDiv = (color: string) => (
   <div
@@ -23,18 +33,9 @@ const withThemeProvider: Decorator = (Story, context) => {
   const theme = themes[themeName];
   globalStyles();
   return (
-    <Box
-      className={theme}
-      css={{
-        backgroundColor: "$backgroundColor",
-        padding: "$2",
-        boxSizing: "border-box",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <StoryWrapper>
       <Story {...context} />
-    </Box>
+    </StoryWrapper>
   );
 };
 

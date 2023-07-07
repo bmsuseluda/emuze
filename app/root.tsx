@@ -8,8 +8,7 @@ import {
   useCatch,
   useLoaderData,
 } from "@remix-run/react";
-import { globalStyles, themes } from "./stitches";
-import { Box } from "./components/Box";
+import { globalStyles } from "./stitches";
 import { Titlebar } from "./containers/Titlebar";
 import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
@@ -23,6 +22,7 @@ import { useFocus } from "~/hooks/useFocus";
 import { useGamepads } from "~/hooks/useGamepads";
 
 import styles from "./index.css";
+import { styled } from "../styled-system/jsx";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
@@ -145,18 +145,15 @@ function Document({
   );
 }
 
+const Wrapper = styled("div", {
+  base: {
+    height: "100vh",
+    display: "flex",
+    flexFlow: "column",
+    backgroundColor: "backgroundColor",
+  },
+});
+
 function Layout({ children }: { children: ReactNode }) {
-  return (
-    <Box
-      className={themes.dark}
-      css={{
-        height: "100vh",
-        display: "flex",
-        flexFlow: "column",
-        backgroundColor: "$backgroundColor",
-      }}
-    >
-      {children}
-    </Box>
-  );
+  return <Wrapper>{children}</Wrapper>;
 }

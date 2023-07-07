@@ -1,4 +1,17 @@
-import { defineConfig } from "@pandacss/dev";
+import { defineConfig, defineGlobalStyles } from "@pandacss/dev";
+
+const globalCss = defineGlobalStyles({
+  body: {
+    margin: 0,
+    padding: 0,
+
+    fontWeight: 400,
+    fontFamily: "quicksandLight",
+    fontSize: "130%",
+
+    userSelect: "none",
+  },
+});
 
 export default defineConfig({
   // Whether to use css reset
@@ -13,6 +26,8 @@ export default defineConfig({
 
   // Files to exclude
   exclude: [],
+
+  // globalCss,
 
   // Useful for theme customization
   theme: {
@@ -62,6 +77,24 @@ export default defineConfig({
             "linear-gradient(45deg, $colors$backgroundColor, $colors$sidebarBackgroundColor)",
         },
       },
+      fonts: {
+        quicksandLight: {
+          value: "var(--font-quicksand-light)",
+        },
+      },
+    },
+
+    extend: {
+      keyframes: {
+        scaleUp: {
+          "0%": { transform: "scale(0)" },
+          "100%": { transform: "scale(1)" },
+        },
+        makeOpaque: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+      },
     },
   },
 
@@ -69,15 +102,8 @@ export default defineConfig({
     extend: {
       borderRounded: {
         className: "borderRounded",
-        values: "boolean",
-        transform: (
-          value: string,
-          // TODO: ask on discord why i need to type this
-          { token }: { token: (path: string) => string }
-        ) => ({
-          borderStyle: "solid",
-          border: token("borders.3"),
-          borderColor: token("colors.backgroundColor"),
+        values: { type: "boolean" },
+        transform: (value, { token }) => ({
           borderRadius: token("radii.1"),
           position: "relative",
           overflow: "clip",

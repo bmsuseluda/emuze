@@ -1,5 +1,4 @@
 import type { CSS } from "@stitches/react";
-import { Box } from "~/components/Box";
 import { styled } from "~/stitches";
 import { Main } from "./components/Main";
 import { Sidebar } from "./components/Sidebar";
@@ -10,7 +9,7 @@ interface Props {
   css?: CSS;
 }
 
-const Layout = styled(Box, {
+const Layout = styled("div", {
   display: "flex",
   flex: 1,
   color: "$color",
