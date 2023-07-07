@@ -70,11 +70,15 @@ export default defineConfig({
       borderRounded: {
         className: "borderRounded",
         values: "boolean",
-        transform: () => ({
+        transform: (
+          value: string,
+          // TODO: ask on discord why i need to type this
+          { token }: { token: (path: string) => string }
+        ) => ({
           borderStyle: "solid",
-          border: "3",
-          borderColor: "backgroundColor",
-          borderRadius: "1",
+          border: token("borders.3"),
+          borderColor: token("colors.backgroundColor"),
+          borderRadius: token("radii.1"),
           position: "relative",
           overflow: "clip",
         }),

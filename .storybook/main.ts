@@ -28,7 +28,29 @@ const config: StorybookConfig = {
     if (config.resolve) {
       config.resolve.plugins = [new TsconfigPathsPlugin()];
     }
-    return config;
+    return {
+      ...config,
+      module: {
+        ...config.module,
+        rules: [
+          ...(config.module?.rules || []),
+          {
+            test: /\.css$/,
+            use: [
+              {
+                loader: "style-loader",
+              },
+              {
+                loader: "css-loader",
+                options: {
+                  sourceMap: true,
+                },
+              },
+            ],
+          },
+        ],
+      },
+    };
   },
   docs: {
     autodocs: true,

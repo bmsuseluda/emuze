@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
+import "../../index.css";
+
 import { Button } from ".";
 import { IoMdRefresh } from "react-icons/io";
 

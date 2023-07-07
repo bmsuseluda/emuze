@@ -3,6 +3,8 @@
     "remix.env.d.ts",
     "app/**/*.ts",
     "app/**/*.tsx",
+    "styled-system",
+    "app/**/*.css",
     ".storybook/**/*.ts",
     ".storybook/**/*.tsx",
     "./electronApi.d.ts"

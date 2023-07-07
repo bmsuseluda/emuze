@@ -3,15 +3,28 @@ import React, { forwardRef } from "react";
 import { IconChildrenWrapper } from "../IconChildrenWrapper";
 import { Typography } from "~/components/Typography";
 import { styled } from "../../../styled-system/jsx";
+import type { SystemStyleObject } from "../../../styled-system/types";
+
+const borderRounded: SystemStyleObject = {
+  borderStyle: "solid",
+  border: "3",
+  borderColor: "backgroundColor",
+  borderRadius: "1",
+  position: "relative",
+  overflow: "clip",
+};
 
 export const StyledButton = styled("button", {
   base: {
+    ...borderRounded,
+
+    // TODO: ask on discord why this does not work
+    // borderRounded: true,
     backgroundColor: "backgroundColor",
     color: "color",
     fontWeight: "700",
     border: "2",
     borderColor: "sidebarBackgroundColor",
-    // TODO: borderRounded
     fontFamily: "inherit",
     fontSize: "80%",
     padding: "0.5rem",
