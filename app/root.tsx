@@ -8,7 +8,6 @@ import {
   useCatch,
   useLoaderData,
 } from "@remix-run/react";
-import { globalStyles } from "./stitches";
 import { Titlebar } from "./containers/Titlebar";
 import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
@@ -34,7 +33,6 @@ const GamepadProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export default function App() {
-  globalStyles();
   const { fullscreen } = useLoaderData<typeof loader>();
 
   return (

@@ -27,7 +27,7 @@ export default defineConfig({
   // Files to exclude
   exclude: [],
 
-  // globalCss,
+  globalCss,
 
   // Useful for theme customization
   theme: {

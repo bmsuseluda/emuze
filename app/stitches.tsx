@@ -70,23 +70,3 @@ const darkTheme = createTheme({});
 export type ThemeName = keyof typeof themes;
 
 export const themes = { dark: darkTheme, light: lightTheme };
-
-export const globalStyles = globalCss({
-  "@font-face": [
-    {
-      fontFamily: "Quicksand Light",
-      src: 'url("/Quicksand-VariableFont_wght.ttf") format("truetype")',
-      fontDisplay: "block",
-    },
-  ],
-  body: {
-    margin: 0,
-    padding: 0,
-
-    fontWeight: 400,
-    fontFamily: "Quicksand Light",
-    fontSize: "130%",
-
-    userSelect: "none",
-  },
-});

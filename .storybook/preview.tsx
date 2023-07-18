@@ -3,7 +3,7 @@ import "../app/index.css";
 import type { Preview } from "@storybook/react";
 import { Decorator } from "@storybook/react";
 
-import { globalStyles, ThemeName, themes } from "~/stitches";
+import { ThemeName, themes } from "~/stitches";
 import { styled } from "../styled-system/jsx";
 
 const StoryWrapper = styled("div", {
@@ -31,7 +31,6 @@ const getColoredDiv = (color: string) => (
 const withThemeProvider: Decorator = (Story, context) => {
   const themeName = context.globals.theme as ThemeName;
   const theme = themes[themeName];
-  globalStyles();
   return (
     <StoryWrapper>
       <Story {...context} />
