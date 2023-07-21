@@ -19,7 +19,7 @@ import {
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElement } from "~/types/focusElement";
 import { readAppearance } from "~/server/settings.server";
-import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
+import type { DataFunctionArgs } from "~/context";
 import { useFullscreen } from "~/hooks/useFullscreen";
 import { SettingsLink } from "~/components/SettingsLink";
 import { useAddEntriesToRenderOnScrollEnd } from "~/hooks/useAddEntriesToRenderOnScrollEnd";
