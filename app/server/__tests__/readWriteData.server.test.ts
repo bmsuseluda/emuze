@@ -12,10 +12,15 @@ import {
   playstation,
 } from "../__testData__/category";
 import { duckstation, mednafen } from "~/server/applicationsDB.server";
+import type { Mock } from "vitest";
 
-jest.mock("fs", () => ({
-  readdirSync: jest.fn(),
-}));
+vi.mock("fs", async () => {
+  const actual = await vi.importActual<object>("fs");
+  return {
+    ...actual,
+    readdirSync: vi.fn(),
+  };
+});
 
 class SimpleDirent {
   name: string;
@@ -31,11 +36,11 @@ class SimpleDirent {
   }
 }
 
-type ReadDirMock = jest.Mock<SimpleDirent[]>;
+type ReadDirMock = Mock<any, SimpleDirent[]>;
 
 describe("readWriteData.server", () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   describe("readFilenames", () => {

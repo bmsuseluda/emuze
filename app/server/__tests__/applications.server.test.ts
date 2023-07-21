@@ -6,29 +6,30 @@ import { applications as applicationsTestData } from "../__testData__/applicatio
 import * as applicationsFromDB from "../applicationsDB.server";
 import { readFilenames } from "~/server/readWriteData.server";
 import { checkFlatpakIsInstalled } from "~/server/execute.server";
+import type { Mock } from "vitest";
 
-jest.mock("~/server/readWriteData.server", () => ({
-  readDirectorynames: jest.fn(),
-  readFilenames: jest.fn(),
+vi.mock("~/server/readWriteData.server", () => ({
+  readDirectorynames: vi.fn(),
+  readFilenames: vi.fn(),
 }));
 
-jest.mock("~/server/execute.server", () => ({
-  checkFlatpakIsInstalled: jest.fn(),
+vi.mock("~/server/execute.server", () => ({
+  checkFlatpakIsInstalled: vi.fn(),
 }));
 
-jest.mock("~/server/categories.server", () => ({
-  readCategories: jest.fn(),
+vi.mock("~/server/categories.server", () => ({
+  readCategories: vi.fn(),
 }));
 
 describe("applications.server", () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   describe("findExecutable", () => {
     it("Should return the executable from path", () => {
       // evaluate
-      (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
+      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
         "F:/games/Emulation/emulators/Blastem win32-0.6.2/test.config",
         "F:/games/Emulation/emulators/Blastem win32-0.6.2/no.ini",
         "F:/games/Emulation/emulators/Blastem win32-0.6.2/view.exe",
@@ -46,7 +47,7 @@ describe("applications.server", () => {
 
     it("Should return the executable from subpath", () => {
       // evaluate
-      (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
+      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
         "F:/games/Emulation/emulators/Blastem win32-0.6.2/view.exe",
         "F:/games/Emulation/emulators/Blastem win32-0.6.2/system/NewBlastemV2.exe",
       ]);
@@ -62,7 +63,7 @@ describe("applications.server", () => {
 
     it("Should return null because there is no executable in the main and subfolder", () => {
       // evaluate
-      (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
+      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
         "F:/games/Emulation/emulators/Blastem win32-0.6.2/view.exe",
       ]);
 
@@ -75,7 +76,7 @@ describe("applications.server", () => {
 
     it("Should return null because there is no executable in the main folder", () => {
       // evaluate
-      (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([]);
+      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([]);
 
       // execute
       const executable = findExecutable("", "pcsx2");
@@ -90,7 +91,7 @@ describe("applications.server", () => {
     const defaultApplication = applicationsFromDB.pcsx2;
     it("Should return old application if old application is installed", () => {
       const oldApplication = applicationsTestData.play;
-      (checkFlatpakIsInstalled as jest.Mock<boolean>).mockReturnValueOnce(true);
+      (checkFlatpakIsInstalled as Mock<any, boolean>).mockReturnValueOnce(true);
 
       const result = getInstalledApplicationForCategoryOnLinux(
         defaultApplication,
@@ -101,7 +102,7 @@ describe("applications.server", () => {
     });
 
     it("Should return default application if old application is not set and default application is installed", () => {
-      (checkFlatpakIsInstalled as jest.Mock<boolean>).mockReturnValueOnce(true);
+      (checkFlatpakIsInstalled as Mock<any, boolean>).mockReturnValueOnce(true);
 
       const result =
         getInstalledApplicationForCategoryOnLinux(defaultApplication);

@@ -26,6 +26,7 @@
     },
     "noEmit": true,
     "allowJs": false,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "types": ["vitest/globals"]
   }
 }

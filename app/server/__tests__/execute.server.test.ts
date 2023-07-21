@@ -14,19 +14,20 @@ import {
 } from "../__testData__/category";
 import type { General } from "~/types/jsonFiles/settings/general";
 import type { Appearance } from "~/types/jsonFiles/settings/appearance";
+import type { Mock } from "vitest";
 
-const execFileMock = jest.fn();
-jest.mock("child_process", () => ({
+const execFileMock = vi.fn();
+vi.mock("child_process", () => ({
   execFileSync: (applicationPath: string, entryPath: string) =>
     execFileMock(applicationPath, entryPath),
 }));
 
-jest.mock("~/server/categories.server", () => ({
-  readCategory: jest.fn(),
+vi.mock("~/server/categories.server", () => ({
+  readCategory: vi.fn(),
 }));
-jest.mock("~/server/settings.server", () => ({
-  readGeneral: jest.fn(),
-  readAppearance: jest.fn(),
+vi.mock("~/server/settings.server", () => ({
+  readGeneral: vi.fn(),
+  readAppearance: vi.fn(),
 }));
 
 const getFirstEntry = (
@@ -37,24 +38,24 @@ describe("execute.server", () => {
   const env = process.env;
 
   beforeEach(() => {
-    jest.resetAllMocks();
-    jest.resetModules();
+    vi.resetAllMocks();
+    vi.resetModules();
     process.env = { ...env };
   });
 
   describe("executeApplication", () => {
     describe("executeApplicationOnWindows", () => {
       beforeEach(() => {
-        (readGeneral as jest.Mock<General>).mockReturnValue({
+        (readGeneral as Mock<any, General>).mockReturnValue({
           isWindows: true,
         });
-        (readAppearance as jest.Mock<Appearance>).mockReturnValue({
+        (readAppearance as Mock<any, Appearance>).mockReturnValue({
           fullscreen: false,
         });
       });
 
       it("Should execute the entry with the defined application of the category", () => {
-        (readCategory as jest.Mock<Category>).mockReturnValueOnce(pcenginecd);
+        (readCategory as Mock<any, Category>).mockReturnValueOnce(pcenginecd);
         const entry = getFirstEntry(pcenginecd);
 
         executeApplication(pcenginecd.id, entry.id);
@@ -65,7 +66,7 @@ describe("execute.server", () => {
       });
 
       it("Should not execute the entry if the entry id is not known", () => {
-        (readCategory as jest.Mock<Category>).mockReturnValueOnce(pcenginecd);
+        (readCategory as Mock<any, Category>).mockReturnValueOnce(pcenginecd);
 
         executeApplication(pcenginecd.id, "unknownEntryId");
 
@@ -73,7 +74,7 @@ describe("execute.server", () => {
       });
 
       it("Should add optional params", () => {
-        (readCategory as jest.Mock<Category>).mockReturnValueOnce(neogeo);
+        (readCategory as Mock<any, Category>).mockReturnValueOnce(neogeo);
         const entryDirname = "F:/games/Emulation/roms/Neo Geo";
         const entry = getFirstEntry(neogeo);
 
@@ -92,7 +93,7 @@ describe("execute.server", () => {
       });
 
       it("Should add environment varables", () => {
-        (readCategory as jest.Mock<Category>).mockReturnValueOnce(pcenginecd);
+        (readCategory as Mock<any, Category>).mockReturnValueOnce(pcenginecd);
         const entry = getFirstEntry(pcenginecd);
 
         executeApplication(pcenginecd.id, entry.id);
@@ -108,16 +109,16 @@ describe("execute.server", () => {
 
     describe("executeApplicationOnLinux", () => {
       beforeEach(() => {
-        (readGeneral as jest.Mock<General>).mockReturnValue({
+        (readGeneral as Mock<any, General>).mockReturnValue({
           isWindows: false,
         });
-        (readAppearance as jest.Mock<Appearance>).mockReturnValue({
+        (readAppearance as Mock<any, Appearance>).mockReturnValue({
           fullscreen: false,
         });
       });
 
       it("Should execute the entry with the defined application of the category", () => {
-        (readCategory as jest.Mock<Category>).mockReturnValueOnce(
+        (readCategory as Mock<any, Category>).mockReturnValueOnce(
           pcenginecdLinux
         );
         const entry = getFirstEntry(pcenginecdLinux);
@@ -133,7 +134,7 @@ describe("execute.server", () => {
       });
 
       it("Should not execute the entry if the entry id is not known", () => {
-        (readCategory as jest.Mock<Category>).mockReturnValueOnce(
+        (readCategory as Mock<any, Category>).mockReturnValueOnce(
           pcenginecdLinux
         );
 
@@ -143,7 +144,7 @@ describe("execute.server", () => {
       });
 
       it("Should add optional params", () => {
-        (readCategory as jest.Mock<Category>).mockReturnValueOnce(neogeoLinux);
+        (readCategory as Mock<any, Category>).mockReturnValueOnce(neogeoLinux);
         const entryDirname = "F:/games/Emulation/roms/Neo Geo";
         const entry = getFirstEntry(neogeo);
 

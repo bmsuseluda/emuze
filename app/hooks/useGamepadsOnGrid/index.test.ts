@@ -21,7 +21,7 @@ describe("useGamepadsOnGrid", () => {
           ["row2element1", "row2element2", "row2element3"],
         ],
       };
-      const onSelectEntry = jest.fn();
+      const onSelectEntry = vi.fn();
 
       const { result } = renderHook(() =>
         useGamepadsOnGrid(entriesRefsGrid, onSelectEntry, true)
@@ -48,7 +48,7 @@ describe("useGamepadsOnGrid", () => {
           ["row2element1", "row2element2"],
         ],
       };
-      const onSelectEntry = jest.fn();
+      const onSelectEntry = vi.fn();
 
       const { result } = renderHook(() =>
         useGamepadsOnGrid(entriesRefsGrid, onSelectEntry, true)
@@ -84,7 +84,7 @@ describe("useGamepadsOnGrid", () => {
           ["row2element1", "row2element2", "row2element3"],
         ],
       };
-      const onSelectEntry = jest.fn();
+      const onSelectEntry = vi.fn();
 
       const { result } = renderHook(() =>
         useGamepadsOnGrid(entriesRefsGrid, onSelectEntry, false)
@@ -112,7 +112,7 @@ describe("useGamepadsOnGrid", () => {
           ["row2element1", "row2element2", "row2element3"],
         ],
       };
-      const onSelectEntry = jest.fn();
+      const onSelectEntry = vi.fn();
 
       const { result } = renderHook(() =>
         useGamepadsOnGrid(entriesRefsGrid, onSelectEntry, true)
@@ -139,7 +139,7 @@ describe("useGamepadsOnGrid", () => {
           ["row2element1", "row2element2", "row2element3"],
         ],
       };
-      const onSelectEntry = jest.fn();
+      const onSelectEntry = vi.fn();
 
       const { result } = renderHook(() =>
         useGamepadsOnGrid(entriesRefsGrid, onSelectEntry, false)
@@ -167,7 +167,7 @@ describe("useGamepadsOnGrid", () => {
           ["row2element1", "row2element2", "row2element3"],
         ],
       };
-      const onSelectEntry = jest.fn();
+      const onSelectEntry = vi.fn();
 
       const { result } = renderHook(() =>
         useGamepadsOnGrid(entriesRefsGrid, onSelectEntry, true)
@@ -194,7 +194,7 @@ describe("useGamepadsOnGrid", () => {
           ["row2element1", "row2element2", "row2element3"],
         ],
       };
-      const onSelectEntry = jest.fn();
+      const onSelectEntry = vi.fn();
 
       const { result } = renderHook(() =>
         useGamepadsOnGrid(entriesRefsGrid, onSelectEntry, false)
