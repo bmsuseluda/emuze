@@ -12,6 +12,6 @@
     "strict": true,
     "baseUrl": ".",
     "skipLibCheck": true,
-    "outDir": "../build/desktop"
+    "outDir": "../buildDesktop"
   }
 }

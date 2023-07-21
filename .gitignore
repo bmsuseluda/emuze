@@ -3,6 +3,8 @@ node_modules
 /.cache
 coverage
 /build
+/public/build
+/buildDesktop
 /dist
 /.idea
 .env

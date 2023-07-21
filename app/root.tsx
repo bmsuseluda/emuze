@@ -15,10 +15,10 @@ import { FullscreenProvider } from "~/provider/FullscreenProvider";
 import { FocusProvider } from "~/provider/FocusProvider";
 import type { FocusElement } from "~/types/focusElement";
 import { focusDefault } from "~/types/focusElement";
-import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
 import type { ReactNode } from "react";
 import { useFocus } from "~/hooks/useFocus";
 import { useGamepads } from "~/hooks/useGamepads";
+import { DataFunctionArgs } from "~/context";
 
 import styles from "./index.css";
 import { styled } from "../styled-system/jsx";

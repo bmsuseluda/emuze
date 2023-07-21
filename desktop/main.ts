@@ -12,11 +12,6 @@ const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
 };
 
 app.on("ready", async () => {
-  const publicFolder =
-    process.env.NODE_ENV === "development"
-      ? nodepath.join(app.getAppPath(), "..", "public")
-      : nodepath.join(app.getAppPath(), "..", "..", "public");
-
   const appearance = readAppearance();
   const fullscreen =
     app.commandLine.hasSwitch("fullscreen") || appearance?.fullscreen;
@@ -31,10 +26,8 @@ app.on("ready", async () => {
   }
 
   const url = await initRemix({
-    serverBuild: nodepath.join(__dirname),
-    publicFolder,
-    getLoadContext: (request) => ({
-      ...request,
+    serverBuild: nodepath.join(__dirname, "../build/index.js"),
+    getLoadContext: () => ({
       fullscreen: window.isFullScreen(),
     }),
   });
