@@ -12,8 +12,18 @@ export const Checked: Story = {
   args: {
     checked: true,
   },
+  render: (args) => (
+    <form>
+      <Checkbox {...args} />
+    </form>
+  ),
 };
 
 export const Unchecked: Story = {
   args: {},
+  render: (args) => (
+    <form>
+      <Checkbox {...args} />
+    </form>
+  ),
 };

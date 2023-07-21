@@ -55,7 +55,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.6.1",
     "@commitlint/config-conventional": "^17.6.1",
-    "@pandacss/dev": "^0.5.1",
+    "@pandacss/dev": "^0.7.0",
     "@remix-run/dev": "^1.19.0",
     "@remix-run/eslint-config": "^1.19.0",
     "@storybook/addon-essentials": "^7.1.0",

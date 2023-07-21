@@ -4,6 +4,7 @@ import { Dialog } from ".";
 import { Checkbox } from "~/components/Checkbox";
 import { Label } from "~/components/Label";
 import { useState } from "react";
+import { Button } from "~/components/Button";
 
 const meta = {
   component: Dialog,
@@ -35,7 +36,7 @@ const TriggerDialog = () => {
 
   return (
     <>
-      <button onClick={() => setOpen(true)}>open dialog</button>
+      <Button onClick={() => setOpen(true)}>open dialog</Button>
       <Dialog open={open} onClose={() => setOpen(false)}>
         hello
         <Checkbox

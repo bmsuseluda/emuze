@@ -32,7 +32,9 @@ const withThemeProvider: Decorator = (Story, context) => {
   const theme = themes[themeName];
   return (
     <StoryWrapper>
-      <Story {...context} />
+      <div style={{ padding: "2rem" }}>
+        <Story {...context} />
+      </div>
     </StoryWrapper>
   );
 };
