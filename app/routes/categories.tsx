@@ -28,7 +28,7 @@ import { layout } from "~/hooks/useGamepads/layouts";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElement } from "~/types/focusElement";
 import { styled } from "~/stitches";
-import type { DataFunctionArgs } from "@remix-run/server-runtime/dist/routeModules";
+import type { DataFunctionArgs } from "~/context";
 import type { PlatformId } from "~/server/categoriesDB.server";
 import { Typography } from "~/components/Typography";
 
