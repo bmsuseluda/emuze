@@ -1,5 +1,4 @@
 import "../app/index.css";
-// TODO: fix storybook with panda
 import type { Preview } from "@storybook/react";
 import { Decorator } from "@storybook/react";
 

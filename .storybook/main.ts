@@ -1,20 +1,11 @@
-// Necessary to use typescript alias. For more information see https://github.com/storybookjs/storybook/issues/6316
-import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
-import { StorybookConfig } from "@storybook/react-webpack5";
+import type { StorybookConfig } from "@storybook/react-vite";
 
 const config: StorybookConfig = {
   core: {
     disableTelemetry: true,
-    builder: {
-      name: "@storybook/builder-webpack5",
-      options: {
-        lazyCompilation: true,
-        fsCache: true,
-      },
-    },
   },
   framework: {
-    name: "@storybook/react-webpack5",
+    name: "@storybook/react-vite",
     options: {},
   },
   stories: ["../app/**/*.stories.mdx", "../app/**/*.stories.@(js|jsx|ts|tsx)"],
@@ -24,34 +15,6 @@ const config: StorybookConfig = {
     "@storybook/addon-interactions",
   ],
   staticDirs: ["../public"],
-  webpackFinal: async (config) => {
-    if (config.resolve) {
-      config.resolve.plugins = [new TsconfigPathsPlugin()];
-    }
-    return {
-      ...config,
-      module: {
-        ...config.module,
-        rules: [
-          ...(config.module?.rules || []),
-          {
-            test: /\.css$/,
-            use: [
-              {
-                loader: "style-loader",
-              },
-              {
-                loader: "css-loader",
-                options: {
-                  sourceMap: true,
-                },
-              },
-            ],
-          },
-        ],
-      },
-    };
-  },
   docs: {
     autodocs: true,
   },
