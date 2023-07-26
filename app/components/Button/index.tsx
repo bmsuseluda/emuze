@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import React, { forwardRef } from "react";
 import { IconChildrenWrapper } from "../IconChildrenWrapper";
 import { Typography } from "~/components/Typography";
@@ -31,7 +31,7 @@ export type Props = {
   children: ReactNode;
   loading?: boolean;
   icon?: ReactNode;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
+} & ComponentProps<"button">;
 
 export const Button = forwardRef<HTMLButtonElement, Props>(
   ({ children, loading = false, icon, ...rest }, ref) => (

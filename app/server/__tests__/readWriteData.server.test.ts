@@ -87,14 +87,16 @@ describe("readWriteData.server", () => {
   });
 
   describe("readDirectories", () => {
-    (readdirSync as unknown as ReadDirMock).mockReturnValueOnce([
-      new SimpleDirent("Hugo", true),
-      new SimpleDirent("Hugo 2.chd", false),
-      new SimpleDirent("game with unsupported file extension.wasd", false),
-    ]);
+    it("Should return directory names", () => {
+      (readdirSync as unknown as ReadDirMock).mockReturnValueOnce([
+        new SimpleDirent("Hugo", true),
+        new SimpleDirent("Hugo 2.chd", false),
+        new SimpleDirent("game with unsupported file extension.wasd", false),
+      ]);
 
-    expect(readDirectorynames(playstation.entryPath)).toStrictEqual([
-      nodepath.join(playstation.entryPath, "Hugo"),
-    ]);
+      expect(readDirectorynames(playstation.entryPath)).toStrictEqual([
+        nodepath.join(playstation.entryPath, "Hugo"),
+      ]);
+    });
   });
 });

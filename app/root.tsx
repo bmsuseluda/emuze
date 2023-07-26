@@ -18,7 +18,7 @@ import { focusDefault } from "~/types/focusElement";
 import type { ReactNode } from "react";
 import { useFocus } from "~/hooks/useFocus";
 import { useGamepads } from "~/hooks/useGamepads";
-import { DataFunctionArgs } from "~/context";
+import type { DataFunctionArgs } from "~/context";
 
 import styles from "./index.css";
 import { styled } from "../styled-system/jsx";

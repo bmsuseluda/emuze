@@ -1,4 +1,5 @@
 import { defineConfig, defineGlobalStyles } from "@pandacss/dev";
+import type { PropertyTransform } from "@pandacss/types";
 
 const globalCss = defineGlobalStyles({
   body: {
@@ -12,6 +13,15 @@ const globalCss = defineGlobalStyles({
     userSelect: "none",
   },
 });
+
+const borderRoundedTransform: PropertyTransform = (value, { token }) => {
+  if (!value) return {};
+  return {
+    borderRadius: token("radii.1"),
+    position: "relative",
+    overflow: "clip",
+  };
+};
 
 export default defineConfig({
   // Whether to use css reset
@@ -103,11 +113,7 @@ export default defineConfig({
       borderRounded: {
         className: "borderRounded",
         values: { type: "boolean" },
-        transform: (value, { token }) => ({
-          borderRadius: token("radii.1"),
-          position: "relative",
-          overflow: "clip",
-        }),
+        transform: borderRoundedTransform,
       },
     },
   },

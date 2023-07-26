@@ -1,12 +1,14 @@
-import { styled } from "~/stitches";
+import { styled } from "../../../styled-system/jsx";
 
 export const FormRow = styled("fieldset", {
-  display: "flex",
-  flexDirection: "column",
-  gap: "$1",
-  padding: "$1",
-  margin: 0,
-  roundedBorder: true,
-  borderWidth: "$1",
-  borderColor: "transparent",
+  base: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1",
+    padding: "1",
+    margin: 0,
+    borderRounded: true,
+    borderWidth: "1px",
+    borderColor: "transparent",
+  },
 });

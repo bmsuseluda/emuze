@@ -4,6 +4,7 @@
     "app/**/*.ts",
     "app/**/*.tsx",
     "styled-system",
+    "panda.config.ts",
     "app/**/*.css",
     ".storybook/**/*.ts",
     ".storybook/**/*.tsx",
