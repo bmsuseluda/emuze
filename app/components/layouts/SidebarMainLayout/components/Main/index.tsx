@@ -1,11 +1,16 @@
-import { styled } from "~/stitches";
 import type { ReactNode } from "react";
+import { styled } from "../../../../../../styled-system/jsx";
 
 const StyledMain = styled("main", {
-  flex: 6,
-  padding: "$1 0.5em $1 $2",
-  display: "flex",
-  backgroundColor: "$backgroundColor",
+  base: {
+    flex: 6,
+    paddingTop: "1",
+    paddingRight: "0.5em",
+    paddingBottom: "1",
+    paddingLeft: "2",
+    display: "flex",
+    backgroundColor: "backgroundColor",
+  },
 });
 
 type Props = {

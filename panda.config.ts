@@ -84,7 +84,7 @@ export default defineConfig({
       gradients: {
         default: {
           value:
-            "linear-gradient(45deg, $colors$backgroundColor, $colors$sidebarBackgroundColor)",
+            "linear-gradient(45deg, backgroundColor, sidebarBackgroundColor)",
         },
       },
       fonts: {

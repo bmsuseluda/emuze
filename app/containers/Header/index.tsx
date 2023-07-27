@@ -1,14 +1,18 @@
-import { styled } from "~/stitches";
+import { styled } from "../../../styled-system/jsx";
 
 const Headline = styled("h1", {
-  margin: 0,
-  padding: 0,
-  fontWeight: 400,
-  fontSize: "2rem",
+  base: {
+    margin: 0,
+    padding: 0,
+    fontWeight: 400,
+    fontSize: "2rem",
+  },
 });
 
 const StyledHeader = styled("header", {
-  marginBottom: "-0.8em",
+  base: {
+    marginBottom: "-0.8em",
+  },
 });
 
 export const Header = () => (

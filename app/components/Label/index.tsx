@@ -1,10 +1,12 @@
 import * as LabelPrimitive from "@radix-ui/react-label";
-import { styled } from "~/stitches";
+import { styled } from "../../../styled-system/jsx";
 
 export const Label = styled(LabelPrimitive.Root, {
-  color: "$color",
+  base: {
+    color: "color",
 
-  "&:hover": {
-    cursor: "pointer",
+    "&:hover": {
+      cursor: "pointer",
+    },
   },
 });

@@ -1,7 +1,7 @@
-import { styled } from "~/stitches";
 import { Headline } from "~/components/Headline";
 import type { ReactNode } from "react";
 import { forwardRef } from "react";
+import { styled } from "../../../../styled-system/jsx";
 
 interface Props {
   headline?: ReactNode;
@@ -9,39 +9,43 @@ interface Props {
 }
 
 const Layout = styled("div", {
-  display: "flex",
-  flexDirection: "column",
-  flex: 1,
-  gap: "1.5em",
+  base: {
+    display: "flex",
+    flexDirection: "column",
+    flex: 1,
+    gap: "1.5em",
+  },
 });
 
-const Wrapper = styled("div", { position: "relative", flex: 6 });
+const Wrapper = styled("div", { base: { position: "relative", flex: 6 } });
 const Absolute = styled("div", {
-  position: "absolute",
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  display: "flex",
-  flexDirection: "column",
-  gap: "$1",
+  base: {
+    position: "absolute",
+    inset: 0,
+    display: "flex",
+    flexDirection: "column",
+    gap: "1",
+  },
 });
 
 const List = styled("div", {
-  flex: 15,
-  overflowY: "auto",
-  paddingRight: "0.5em",
+  base: {
+    flex: 15,
+    overflowY: "auto",
+    paddingRight: "0.5em",
 
-  scrollbarColor: "$colors$sidebarBackgroundColor transparent",
+    scrollbarColor: "sidebarBackgroundColor transparent",
 
-  "&::-webkit-scrollbar": {
-    width: "0.5em",
+    "&::-webkit-scrollbar": {
+      width: "0.5em",
+    },
+
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "transparent",
+      borderRadius: "1",
+    },
   },
 
-  "&::-webkit-scrollbar-thumb": {
-    backgroundColor: "transparent",
-    borderRadius: "$1",
-  },
   variants: {
     scrollSmooth: {
       true: {
@@ -59,7 +63,7 @@ const List = styled("div", {
       false: {
         "&:hover": {
           "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "$sidebarBackgroundColor",
+            backgroundColor: "sidebarBackgroundColor",
           },
         },
       },
@@ -68,10 +72,12 @@ const List = styled("div", {
 });
 
 const ActionBar = styled("div", {
-  flex: 1,
-  display: "flex",
-  gap: "$1",
-  alignItems: "center",
+  base: {
+    flex: 1,
+    display: "flex",
+    gap: "1",
+    alignItems: "center",
+  },
 
   variants: {
     collapse: {

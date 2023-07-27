@@ -6,7 +6,7 @@ import {
   VscChromeMinimize,
   VscChromeRestore,
 } from "react-icons/vsc";
-import { styled } from "~/stitches";
+import { styled } from "../../../../../styled-system/jsx";
 
 const iconVariant: Record<WindowChangeEvents, IconType> = {
   close: VscChromeClose,
@@ -21,33 +21,40 @@ interface Props {
 }
 
 const Button = styled("button", {
-  margin: 0,
-  padding: "$1 15px",
-  lineHeight: "16px",
-  blockSize: "16px",
-  backgroundColor: "transparent",
-  border: "none",
-  color: "$color",
-  boxSizing: "content-box",
+  base: {
+    margin: 0,
+    paddingTop: "1",
+    paddingRight: "15px",
+    paddingBottom: "1",
+    paddingLeft: "15px",
+    lineHeight: "16px",
+    blockSize: "16px",
+    backgroundColor: "transparent",
+    border: "none",
+    color: "color",
+    boxSizing: "content-box",
 
-  "& svg": {
-    width: "16px",
-    height: "16px",
-    verticalAlign: "middle",
-  },
+    "& svg": {
+      width: "16px",
+      height: "16px",
+      verticalAlign: "middle",
+    },
 
-  "&:hover": {
-    backgroundColor: "#3d3c40b3",
-  },
+    "&:hover": {
+      backgroundColor: "#3d3c40b3",
+    },
 
-  "&:focus": {
-    outline: "none",
+    "&:focus": {
+      outline: "none",
+    },
   },
 });
 
 const CloseButton = styled(Button, {
-  "&:hover": {
-    backgroundColor: "#E81123",
+  base: {
+    "&:hover": {
+      backgroundColor: "#E81123",
+    },
   },
 });
 
