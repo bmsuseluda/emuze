@@ -1,39 +1,44 @@
 import { NavLink } from "@remix-run/react";
-import type { AnchorHTMLAttributes } from "react";
+import type { ComponentProps } from "react";
 import React from "react";
 import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
-import { styled } from "~/stitches";
 import type { RemixNavLinkProps } from "@remix-run/react/dist/components";
+import { styled } from "../../../styled-system/jsx";
+import { cva } from "../../../styled-system/css";
 
 type Props = {
   highlightIfActive?: boolean;
   icon?: React.ReactNode;
   children?: React.ReactNode;
-} & AnchorHTMLAttributes<HTMLAnchorElement> &
+} & ComponentProps<"a"> &
   RemixNavLinkProps;
 
-const StyledNavLink = styled(NavLink, {
-  textDecoration: "none",
-  color: "$color",
-  fontSize: "90%",
-  fontWeight: 500,
+const StyledNavLinkClassName = cva({
+  base: {
+    textDecoration: "none",
+    color: "color",
+    fontSize: "90%",
+    fontWeight: 500,
 
-  "&:focus": {
-    outline: "none",
+    "&:focus": {
+      outline: "none",
+    },
   },
 });
 
 const LinkSpan = styled(IconChildrenWrapper, {
-  borderRadius: "$1",
-  width: "100%",
-  boxSizing: "border-box",
-  padding: "0.5em",
+  base: {
+    borderRadius: "1",
+    width: "100%",
+    boxSizing: "border-box",
+    padding: "0.5em",
+  },
 
   variants: {
     active: {
       true: {
-        backgroundColor: "$accent",
-        color: "$colorOnAccent",
+        backgroundColor: "accent",
+        color: "colorOnAccent",
       },
     },
     circle: {
@@ -47,10 +52,11 @@ const LinkSpan = styled(IconChildrenWrapper, {
 
 export const Link = React.forwardRef<HTMLAnchorElement, Props>(
   ({ to, children, icon, highlightIfActive = true, ...rest }, ref) => (
-    <StyledNavLink
+    <NavLink
       to={to}
       prefetch="intent"
       draggable={false}
+      className={StyledNavLinkClassName()}
       {...rest}
       ref={ref}
     >
@@ -63,7 +69,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, Props>(
           {children}
         </LinkSpan>
       )}
-    </StyledNavLink>
+    </NavLink>
   )
 );
 

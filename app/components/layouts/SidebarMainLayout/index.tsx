@@ -1,20 +1,19 @@
-import type { CSS } from "@stitches/react";
-import { Box } from "~/components/Box";
-import { styled } from "~/stitches";
 import { Main } from "./components/Main";
 import { Sidebar } from "./components/Sidebar";
 import type { ReactNode } from "react";
+import { styled } from "../../../../styled-system/jsx";
 
 interface Props {
   children: ReactNode;
-  css?: CSS;
 }
 
-const Layout = styled(Box, {
-  display: "flex",
-  flex: 1,
-  color: "$color",
-  height: "100%",
+const Layout = styled("div", {
+  base: {
+    display: "flex",
+    flex: 1,
+    color: "color",
+    height: "100%",
+  },
 });
 
 export const SidebarMainLayout = ({ children, ...rest }: Props) => (

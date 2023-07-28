@@ -11,31 +11,31 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Checked: Story = {
-  args: {
-    children: (
-      <>
+  render: (args) => (
+    <form>
+      <CheckboxRow {...args}>
         <Checkbox
           id="alwaysGameNames"
           name="alwaysGameNames"
           defaultChecked={true}
         />
         <Label htmlFor="alwaysGameNames">Always show game names</Label>
-      </>
-    ),
-  },
+      </CheckboxRow>
+    </form>
+  ),
 };
 
 export const Unchecked: Story = {
-  args: {
-    children: (
-      <>
+  render: (args) => (
+    <form>
+      <CheckboxRow {...args}>
         <Checkbox
           id="alwaysGameNames"
           name="alwaysGameNames"
           defaultChecked={false}
         />
         <Label htmlFor="alwaysGameNames">Always show game names</Label>
-      </>
-    ),
-  },
+      </CheckboxRow>
+    </form>
+  ),
 };

@@ -1,0 +1,15 @@
+@layer reset, base, tokens, recipes, utilities;
+
+@font-face {
+    font-family: "Quicksand Light";
+    src: url("/Quicksand-VariableFont_wght.ttf") format("truetype");
+    font-display: block;
+}
+
+:root {
+    --font-quicksand-light: 'Quicksand Light';
+}
+
+.draggable {
+    -webkit-app-region: drag;
+}

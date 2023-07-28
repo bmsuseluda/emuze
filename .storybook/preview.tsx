@@ -1,8 +1,18 @@
+import "../app/index.css";
 import type { Preview } from "@storybook/react";
 import { Decorator } from "@storybook/react";
 
-import { globalStyles, ThemeName, themes } from "~/stitches";
-import { Box } from "~/components/Box";
+import { styled } from "../styled-system/jsx";
+
+const StoryWrapper = styled("div", {
+  base: {
+    backgroundColor: "backgroundColor",
+    padding: "2",
+    boxSizing: "border-box",
+    display: "flex",
+    flexDirection: "column",
+  },
+});
 
 const getColoredDiv = (color: string) => (
   <div
@@ -16,23 +26,18 @@ const getColoredDiv = (color: string) => (
   />
 );
 
+const themes = ["red"];
+const modes = ["dark", "light"];
+
 const withThemeProvider: Decorator = (Story, context) => {
-  const themeName = context.globals.theme as ThemeName;
-  const theme = themes[themeName];
-  globalStyles();
+  const themeName = context.globals.theme;
+  const modeName = context.globals.mode;
   return (
-    <Box
-      className={theme}
-      css={{
-        backgroundColor: "$backgroundColor",
-        padding: "$2",
-        boxSizing: "border-box",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <Story {...context} />
-    </Box>
+    <StoryWrapper data-theme={themeName} data-color-mode={modeName}>
+      <div style={{ padding: "2rem" }}>
+        <Story {...context} />
+      </div>
+    </StoryWrapper>
   );
 };
 
@@ -54,14 +59,27 @@ const preview: Preview = {
   globalTypes: {
     theme: {
       description: "Theme",
-      defaultValue: "dark",
+      defaultValue: "red",
       toolbar: {
         title: "Theme",
         icon: "lightning",
-        items: Object.keys(themes).map((themeName) => ({
+        items: themes.map((themeName) => ({
           value: themeName,
           title: themeName,
-          right: getColoredDiv(themeName === "dark" ? "black" : "white"),
+          right: getColoredDiv(themeName === "red" ? "red" : "white"),
+        })),
+      },
+    },
+    mode: {
+      description: "Mode",
+      defaultValue: "dark",
+      toolbar: {
+        title: "Mode",
+        icon: "lightning",
+        items: modes.map((modeName) => ({
+          value: modeName,
+          title: modeName,
+          right: getColoredDiv(modeName === "dark" ? "black" : "white"),
         })),
       },
     },

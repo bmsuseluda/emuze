@@ -1,27 +1,29 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import React, { forwardRef } from "react";
-import { styled } from "~/stitches";
 import { IconChildrenWrapper } from "../IconChildrenWrapper";
 import { Typography } from "~/components/Typography";
+import { styled } from "../../../styled-system/jsx";
 
 export const StyledButton = styled("button", {
-  backgroundColor: "$backgroundColor",
-  color: "$color",
-  fontWeight: "700",
-  roundedBorder: true,
-  borderWidth: "$2",
-  borderColor: "$sidebarBackgroundColor",
-  fontFamily: "inherit",
-  fontSize: "80%",
-  padding: "0.5rem",
-  cursor: "pointer",
-  textDecoration: "none",
-  outline: "none",
-  whiteSpace: "nowrap",
+  base: {
+    borderRounded: true,
+    backgroundColor: "backgroundColor",
+    color: "color",
+    fontWeight: "700",
+    borderColor: "sidebarBackgroundColor",
+    borderWidth: "2px",
+    fontFamily: "inherit",
+    fontSize: "80%",
+    padding: "0.5rem",
+    cursor: "pointer",
+    textDecoration: "none",
+    outline: "none",
+    whiteSpace: "nowrap",
 
-  "&:disabled": {
-    borderStyle: "dashed",
-    cursor: "not-allowed",
+    "&:disabled": {
+      borderStyle: "dashed",
+      cursor: "not-allowed",
+    },
   },
 });
 
@@ -29,7 +31,7 @@ export type Props = {
   children: ReactNode;
   loading?: boolean;
   icon?: ReactNode;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
+} & ComponentProps<"button">;
 
 export const Button = forwardRef<HTMLButtonElement, Props>(
   ({ children, loading = false, icon, ...rest }, ref) => (

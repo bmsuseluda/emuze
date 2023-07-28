@@ -27,10 +27,10 @@ import {
 import { layout } from "~/hooks/useGamepads/layouts";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElement } from "~/types/focusElement";
-import { styled } from "~/stitches";
 import type { DataFunctionArgs } from "~/context";
 import type { PlatformId } from "~/server/categoriesDB.server";
 import { Typography } from "~/components/Typography";
+import { styled } from "../../styled-system/jsx";
 
 type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
 type LoaderData = {
@@ -95,9 +95,11 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 };
 
 const Name = styled(Typography, {
-  overflow: "hidden",
-  whiteSpace: "nowrap",
-  textOverflow: "ellipsis",
+  base: {
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+  },
 });
 
 export default function Categories() {

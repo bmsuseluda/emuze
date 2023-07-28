@@ -157,10 +157,10 @@ act(() => {
 /* assert on the output */
 
 This ensures that you're testing the behavior the user would see in the browser. Learn more at https://fb.me/react-wrap-tests-with-act%s`,Wt(f.type),Cr(f))}var hy=py,Wp=!1;function vy(f){Wp===!1&&t.unstable_flushAllWithoutAsserting===void 0&&(f.mode&Y||f.mode&ri?(Wp=!0,He(!1,`In Concurrent or Sync modes, the "scheduler" module needs to be mocked to guarantee consistent behaviour across tests and browsers. For example, with jest: 
-jest.mock('scheduler', () => require('scheduler/unstable_mock'));
+vi.mock('scheduler', () => require('scheduler/unstable_mock'));
 
 For more info, visit https://fb.me/react-mock-scheduler`)):eu===!0&&(Wp=!0,He(!1,`Starting from React v17, the "scheduler" module will need to be mocked to guarantee consistent behaviour across tests and browsers. For example, with jest: 
-jest.mock('scheduler', () => require('scheduler/unstable_mock'));
+vi.mock('scheduler', () => require('scheduler/unstable_mock'));
 
 For more info, visit https://fb.me/react-mock-scheduler`)))}var $s=null;function my(f){{var d=Jt();if((f.mode&ri)!==xi&&(d===ni||d===Ni))for(var E=f;E!==null;){var C=E.alternate;if(C!==null)switch(E.tag){case O:var A=C.updateQueue;if(A!==null)for(var j=A.firstUpdate;j!==null;){var V=j.priority;if(V===ni||V===Ni){$s===null?$s=new Set([Wt(E.type)]):$s.add(Wt(E.type));break}j=j.next}break;case N:case ue:case re:if(E.memoizedState!==null&&E.memoizedState.baseUpdate!==null)for(var te=E.memoizedState.baseUpdate;te!==null;){var se=te.priority;if(se===ni||se===Ni){$s===null?$s=new Set([Wt(E.type)]):$s.add(Wt(E.type));break}if(te.next===E.memoizedState.baseUpdate)break;te=te.next}break;default:break}E=E.return}}}function p(){if($s!==null){var f=[];$s.forEach(function(d){return f.push(d)}),$s=null,f.length>0&&He(!1,`%s triggered a user-blocking update that suspended.
 

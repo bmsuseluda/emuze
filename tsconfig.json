@@ -3,6 +3,9 @@
     "remix.env.d.ts",
     "app/**/*.ts",
     "app/**/*.tsx",
+    "styled-system",
+    "panda.config.ts",
+    "app/**/*.css",
     ".storybook/**/*.ts",
     ".storybook/**/*.tsx",
     "./electronApi.d.ts"
@@ -24,6 +27,7 @@
     },
     "noEmit": true,
     "allowJs": false,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "types": ["vitest/globals"]
   }
 }

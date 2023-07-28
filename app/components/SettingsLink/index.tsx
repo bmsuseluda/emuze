@@ -1,32 +1,37 @@
-import { styled } from "~/stitches";
 import { Link as RemixLink } from "@remix-run/react";
 import type { AnchorHTMLAttributes } from "react";
 import React from "react";
 import { VscSettingsGear } from "react-icons/vsc";
 import type { RemixLinkProps } from "@remix-run/react/dist/components";
+import { styled } from "../../../styled-system/jsx";
 
 const Link = styled(RemixLink, {
-  position: "fixed",
-  top: 0,
-  right: "140px",
+  base: {
+    position: "fixed",
+    top: 0,
+    right: "140px",
 
-  margin: 0,
-  padding: "$1 15px",
-  lineHeight: "16px",
-  blockSize: "16px",
-  backgroundColor: "transparent",
-  border: "none",
-  color: "$color",
-  boxSizing: "content-box",
-  cursor: "inherit",
+    margin: 0,
+    paddingTop: "1",
+    paddingRight: "15px",
+    paddingBottom: "1",
+    paddingLeft: "15px",
+    lineHeight: "16px",
+    blockSize: "16px",
+    backgroundColor: "transparent",
+    border: "none",
+    color: "color",
+    boxSizing: "content-box",
+    cursor: "inherit",
 
-  "& svg": {
-    width: "16px",
-    height: "16px",
-  },
+    "& svg": {
+      width: "16px",
+      height: "16px",
+    },
 
-  "&:hover": {
-    backgroundColor: "#3d3c40b3",
+    "&:hover": {
+      backgroundColor: "#3d3c40b3",
+    },
   },
 
   variants: {

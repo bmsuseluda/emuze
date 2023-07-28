@@ -25,23 +25,15 @@ export const Disabled: Story = {
 
 export const WithIcon: Story = {
   args: {
-    children: (
-      <>
-        <IoMdRefresh />
-        import
-      </>
-    ),
+    children: "import",
+    icon: <IoMdRefresh />,
   },
 };
 
 export const Loading: Story = {
   args: {
-    children: (
-      <>
-        <IoMdRefresh />
-        loading
-      </>
-    ),
+    children: "loading",
+    icon: <IoMdRefresh />,
     loading: true,
   },
 };

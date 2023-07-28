@@ -1,6 +1,6 @@
 import { useTestId } from "~/hooks/useTestId";
-import { styled } from "~/stitches";
 import React from "react";
+import { styled } from "../../../../../styled-system/jsx";
 
 interface Props {
   id: string;
@@ -12,60 +12,71 @@ interface Props {
 }
 
 const Wrapper = styled("li", {
-  position: "relative",
-  minWidth: "200px",
-  maxWidth: "300px",
+  base: {
+    position: "relative",
+    minWidth: "200px",
+    maxWidth: "300px",
+  },
 });
 
 const Label = styled("label", {
-  display: "block",
-  backgroundColor: "$backgroundColor",
-  roundedBorder: true,
-});
+  base: {
+    display: "block",
+    backgroundColor: "backgroundColor",
+    borderRounded: true,
+    borderWidth: "4px",
+    borderStyle: "solid",
+    borderColor: "backgroundColor",
 
-const InnerBorder = styled("div", {
-  backgroundColor: "$backgroundColor",
-  display: "flex",
-  justifyContent: "flex-end",
-  roundedBorder: true,
-
-  variants: {
-    "data-imageUrl": {
-      false: {
-        background: "$gradients$default",
-      },
+    "&:has(*:checked)": {
+      borderColor: "accent",
     },
   },
 });
 
+const InnerBorder = styled("div", {
+  base: {
+    backgroundColor: "backgroundColor",
+    display: "flex",
+    justifyContent: "flex-end",
+    borderRounded: true,
+    borderWidth: "4px",
+    borderStyle: "solid",
+    borderColor: "backgroundColor",
+  },
+});
+
 const Name = styled("div", {
-  color: "white",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  right: 0,
-  userSelect: "none",
-  padding: "$1",
-  backgroundColor: "$transparentBackgroundColor",
-  fontWeight: 400,
-  fontSize: "80%",
+  base: {
+    color: "white",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    userSelect: "none",
+    padding: "1",
+    backgroundColor: "transparentBackgroundColor",
+    fontWeight: 400,
+    fontSize: "80%",
+  },
 });
 
 const Input = styled("input", {
-  position: "absolute",
-  top: "-4px",
-  left: "-4px",
-  width: "100%",
-  height: "100%",
-  zIndex: "-2",
-  "&:checked + label": {
-    borderColor: "$accent",
+  base: {
+    position: "absolute",
+    top: "-4px",
+    left: "-4px",
+    width: "100%",
+    height: "100%",
+    zIndex: "-2",
   },
 });
 
 const Image = styled("img", {
-  width: "100%",
-  height: "100%",
+  base: {
+    width: "100%",
+    height: "100%",
+  },
 });
 
 const getAdditionalInfo = (name: string) =>
@@ -108,22 +119,19 @@ export const Entry = React.forwardRef<HTMLInputElement, Props>(
 
     return (
       <Wrapper {...getTestId()}>
-        <Input
-          type="radio"
-          id={id}
-          name="entry"
-          value={id}
-          ref={ref}
-          {...getTestId("link")}
-        />
-        <Label htmlFor={id} onDoubleClick={onDoubleClick}>
-          <InnerBorder data-imageUrl={!!imageUrl}>
+        <Label onDoubleClick={onDoubleClick}>
+          <Input
+            type="radio"
+            name="entry"
+            value={id}
+            ref={ref}
+            {...getTestId("link")}
+          />
+          <InnerBorder>
             <Image
               src={imageUrl || fallbackImageUrl}
               alt={`${name} cover`}
               draggable={false}
-              width={300}
-              height={400}
             />
             {displayedName && <Name>{displayedName}</Name>}
           </InnerBorder>

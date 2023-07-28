@@ -3,16 +3,16 @@ import {
   MultipleFileDataCache,
 } from "~/server/FileDataCache.server";
 
-const readFileMock = jest.fn();
-const writeFileMock = jest.fn();
-jest.mock("~/server/readWriteData.server", () => ({
+const readFileMock = vi.fn();
+const writeFileMock = vi.fn();
+vi.mock("~/server/readWriteData.server", () => ({
   readFileHome: (path: string) => readFileMock(path),
   writeFileHome: (object: unknown, path: string) => writeFileMock(object, path),
 }));
 
 describe("FileDataCache", () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   describe("FileDataCache", () => {

@@ -11,22 +11,24 @@ import { chunk, fetchMetaData } from "../igdb.server";
 import { categories as categoriesDB } from "../categoriesDB.server";
 import { getExpiresOn } from "~/server/getExpiresOn.server";
 
-const igdbRequestMock = jest.fn();
-jest.mock("apicalypse", () => () => ({
-  fields: () => ({
-    where: () => ({
-      limit: () => ({
-        request: igdbRequestMock,
+const igdbRequestMock = vi.fn();
+vi.mock("apicalypse", () => ({
+  default: () => ({
+    fields: () => ({
+      where: () => ({
+        limit: () => ({
+          request: igdbRequestMock,
+        }),
       }),
     }),
   }),
 }));
 
-jest.mock("~/server/openDialog.server.ts", () => ({
-  openErrorDialog: jest.fn(),
+vi.mock("~/server/openDialog.server.ts", () => ({
+  openErrorDialog: vi.fn(),
 }));
 
-jest.mock("~/server/getExpiresOn.server.ts", () => {
+vi.mock("~/server/getExpiresOn.server.ts", () => {
   const getFutureDate = () => {
     const now = new Date();
     now.setDate(now.getDate() + 10);

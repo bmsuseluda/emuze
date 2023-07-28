@@ -1,50 +1,63 @@
 import { GiCheckMark } from "react-icons/gi";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
-import { styled } from "~/stitches";
 import React from "react";
+import { styled } from "../../../styled-system/jsx";
+
+const Wrapper = styled("div", {
+  base: {
+    backgroundColor: "backgroundColor",
+    borderWidth: "2px",
+    borderRadius: 4,
+    borderColor: "accent",
+    outline: "none",
+    width: 2,
+    height: 2,
+    "&:hover": {
+      cursor: "pointer",
+    },
+
+    "&:has(*:checked)": {
+      backgroundColor: "accent",
+    },
+  },
+});
 
 const StyledCheckbox = styled(CheckboxPrimitive.Root, {
-  all: "unset",
-  backgroundColor: "$backgroundColor",
-  borderStyle: "solid",
-  borderWidth: "$2",
-  borderColor: "$accent",
-  borderRadius: 4,
-  width: 25,
-  height: 25,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-
-  "&:hover": {
-    cursor: "pointer",
+  base: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
+    outline: "none",
   },
 });
 
 const StyledIndicator = styled(CheckboxPrimitive.Indicator, {
-  color: "$color",
-  width: "100%",
-  height: "100%",
-  padding: "2px",
-  backgroundColor: "$accent",
-  boxSizing: "border-box",
+  base: {
+    color: "color",
+    width: "100%",
+    height: "100%",
+    padding: "2px",
+    boxSizing: "border-box",
+  },
 });
 
 const Checkmark = styled(GiCheckMark, {
-  width: "100%",
-  height: "100%",
-  color: "$backgroundColor",
+  base: { width: "100%", height: "100%", color: "backgroundColor" },
 });
 
 export const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
 >((props, forwardedRef) => (
-  <StyledCheckbox {...props} ref={forwardedRef}>
-    <StyledIndicator>
-      <Checkmark />
-    </StyledIndicator>
-  </StyledCheckbox>
+  <Wrapper>
+    <StyledCheckbox {...props} ref={forwardedRef}>
+      <StyledIndicator>
+        <Checkmark />
+      </StyledIndicator>
+    </StyledCheckbox>
+  </Wrapper>
 ));
 
 Checkbox.displayName = "Checkbox";

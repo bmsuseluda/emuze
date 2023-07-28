@@ -1,7 +1,9 @@
-import { styled } from "~/stitches";
+import { styled } from "../../../styled-system/jsx";
 
 export const Ul = styled("ul", {
-  listStyleType: "none",
-  padding: 0,
-  margin: 0,
+  base: {
+    listStyleType: "none",
+    padding: 0,
+    margin: 0,
+  },
 });

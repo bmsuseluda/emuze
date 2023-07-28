@@ -1,30 +1,27 @@
-import { styled } from "~/stitches";
-import { keyframes } from "@stitches/react";
 import type { ReactNode } from "react";
-
-const rotate = keyframes({
-  "0%": { transform: "rotate(0deg)" },
-  "100%": { transform: "rotate(360deg)" },
-});
+import { styled } from "../../../styled-system/jsx";
 
 const Wrapper = styled("span", {
-  display: "flex",
-  flexDirection: "row",
-  gap: "0.5em",
-  alignItems: "center",
-  whiteSpace: "nowrap",
+  base: {
+    display: "flex",
+    flexDirection: "row",
+    gap: "0.5em",
+    alignItems: "center",
+    whiteSpace: "nowrap",
+    color: "color",
 
-  "> svg": {
-    minHeight: "1.2em",
-    minWidth: "1.2em",
-    verticalAlign: "middle",
+    "& > svg": {
+      minHeight: "1.2em",
+      minWidth: "1.2em",
+      verticalAlign: "middle",
+    },
   },
 
   variants: {
     rotate: {
       true: {
-        "> svg": {
-          animation: `${rotate} 2s linear infinite`,
+        "& > svg": {
+          animation: "spin 2s linear infinite",
         },
       },
     },

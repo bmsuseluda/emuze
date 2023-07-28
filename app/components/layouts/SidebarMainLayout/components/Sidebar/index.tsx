@@ -1,19 +1,24 @@
-import { styled } from "~/stitches";
 import { Ul } from "~/components/Ul";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 import { Separator } from "~/components/Separator";
 import type { ReactNode } from "react";
+import { styled } from "../../../../../../styled-system/jsx";
 
 const SidebarWrapper = styled("aside", {
-  background: "$gradients$default",
-  padding: "$1 0.5rem $1 $1",
-  display: "flex",
-  flexFlow: "column",
-  overflowX: "hidden",
-  overflowY: "auto",
-  width: "15rem",
-  transition: "width 0.5s ease-in-out",
-  gap: "1.5rem",
+  base: {
+    bgGradient: "default",
+    paddingTop: "1",
+    paddingRight: "0.5rem",
+    paddingBottom: "1",
+    paddingLeft: "1",
+    display: "flex",
+    flexFlow: "column",
+    overflowX: "hidden",
+    overflowY: "auto",
+    width: "15rem",
+    transition: "width 0.5s ease-in-out",
+    gap: "1.5rem",
+  },
 
   variants: {
     collapse: {
@@ -26,10 +31,12 @@ const SidebarWrapper = styled("aside", {
 });
 
 const StyledUl = styled(Ul, {
-  display: "flex",
-  flexDirection: "column",
-  gap: "$1",
-  overflowX: "hidden",
+  base: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1",
+    overflowX: "hidden",
+  },
 
   variants: {
     collapse: {

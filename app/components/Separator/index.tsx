@@ -1,7 +1,11 @@
-import { styled } from "~/stitches";
+import { styled } from "../../../styled-system/jsx";
 
 const Line = styled("span", {
-  borderBottom: "1px solid $color",
+  base: {
+    borderBottomStyle: "solid",
+    borderBottomColor: "color",
+    borderBottomWidth: "1px",
+  },
 });
 
 export const Separator = () => <Line />;

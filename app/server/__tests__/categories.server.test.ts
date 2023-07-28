@@ -40,34 +40,35 @@ import {
 import { getInstalledApplicationForCategory } from "~/server/applications.server";
 import type { Application } from "~/types/jsonFiles/applications";
 import { getExpiresOn } from "~/server/getExpiresOn.server";
+import type { Mock } from "vitest";
 
-const writeFileMock = jest.fn();
-jest.mock("~/server/readWriteData.server", () => ({
-  readFileHome: jest.fn(),
-  readDirectorynames: jest.fn(),
-  readFilenames: jest.fn(),
+const writeFileMock = vi.fn();
+vi.mock("~/server/readWriteData.server", () => ({
+  readFileHome: vi.fn(),
+  readDirectorynames: vi.fn(),
+  readFilenames: vi.fn(),
   writeFileHome: (object: unknown, path: string) => writeFileMock(object, path),
 }));
 
-jest.mock("~/server/applications.server", () => ({
-  getInstalledApplicationForCategory: jest.fn(),
+vi.mock("~/server/applications.server", () => ({
+  getInstalledApplicationForCategory: vi.fn(),
 }));
 
-jest.mock("~/server/settings.server.ts", () => ({
+vi.mock("~/server/settings.server.ts", () => ({
   readGeneral: () => general,
 }));
 
-jest.mock("~/server/openDialog.server.ts", () => ({
-  openErrorDialog: jest.fn(),
+vi.mock("~/server/openDialog.server.ts", () => ({
+  openErrorDialog: vi.fn(),
 }));
 
-jest.mock("fs");
+vi.mock("fs");
 
-jest.mock("~/server/igdb.server.ts", () => ({
-  fetchMetaData: jest.fn(),
+vi.mock("~/server/igdb.server.ts", () => ({
+  fetchMetaData: vi.fn(),
 }));
 
-jest.mock("~/server/getExpiresOn.server.ts", () => {
+vi.mock("~/server/getExpiresOn.server.ts", () => {
   const getFutureDate = () => {
     const now = new Date();
     now.setDate(now.getDate() + 10);
@@ -82,12 +83,12 @@ jest.mock("~/server/getExpiresOn.server.ts", () => {
 
 describe("categories.server", () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   describe("readEntriesWithMetaData", () => {
     it("Should filter excluded filenames (neogeo.zip) and find entryName from json file", async () => {
-      when(readFilenames as jest.Mock<string[]>)
+      when(readFilenames as Mock<any, string[]>)
         .calledWith(neogeo.entryPath, mameNeoGeo.fileExtensions)
         .mockReturnValueOnce([
           blazingstar.path,
@@ -98,7 +99,7 @@ describe("categories.server", () => {
         { ...blazingstar, name: "Blazing Star", id: `${blazingstar.id}0` },
       ];
 
-      (fetchMetaData as jest.Mock<Promise<Entry[]>>).mockResolvedValueOnce(
+      (fetchMetaData as Mock<any, Promise<Entry[]>>).mockResolvedValueOnce(
         expectedResult
       );
 
@@ -113,11 +114,11 @@ describe("categories.server", () => {
     });
 
     it("Should only fetch metaData for entries without metaData", async () => {
-      when(readFilenames as jest.Mock<string[]>)
+      when(readFilenames as Mock<any, string[]>)
         .calledWith(playstation.entryPath, duckstation.fileExtensions)
         .mockReturnValueOnce([finalfantasy7.path, hugo.path, hugo2.path]);
 
-      const fetchMetaDataMock = jest.fn().mockResolvedValue(
+      const fetchMetaDataMock = vi.fn().mockResolvedValue(
         addIndex([
           {
             ...finalfantasy7,
@@ -135,7 +136,7 @@ describe("categories.server", () => {
           },
         ])
       );
-      (fetchMetaData as jest.Mock<Promise<Entry[]>>).mockImplementation(
+      (fetchMetaData as Mock<any, Promise<Entry[]>>).mockImplementation(
         fetchMetaDataMock
       );
 
@@ -195,11 +196,11 @@ describe("categories.server", () => {
     });
 
     it("Should fetch metaData for all entries if there is no oldCategoryData", async () => {
-      when(readFilenames as jest.Mock<string[]>)
+      when(readFilenames as Mock<any, string[]>)
         .calledWith(playstation.entryPath, duckstation.fileExtensions)
         .mockReturnValueOnce([hugo.path, hugo2.path]);
 
-      const fetchMetaDataMock = jest.fn().mockResolvedValue(
+      const fetchMetaDataMock = vi.fn().mockResolvedValue(
         addIndex([
           {
             ...hugo,
@@ -217,7 +218,7 @@ describe("categories.server", () => {
           },
         ])
       );
-      (fetchMetaData as jest.Mock<Promise<Entry[]>>).mockImplementation(
+      (fetchMetaData as Mock<any, Promise<Entry[]>>).mockImplementation(
         fetchMetaDataMock
       );
 
@@ -256,30 +257,30 @@ describe("categories.server", () => {
   describe("importCategories", () => {
     it("Should import 3ds and pcengine data", async () => {
       // evaluate
-      (readDirectorynames as jest.Mock<string[]>).mockReturnValueOnce([
+      (readDirectorynames as Mock<any, string[]>).mockReturnValueOnce([
         nintendo3ds.entryPath,
         "unknown category",
         pcenginecd.entryPath,
       ]);
-      when(readFilenames as jest.Mock<string[]>)
+      when(readFilenames as Mock<any, string[]>)
         .calledWith(nintendo3ds.entryPath, citra.fileExtensions)
         .mockReturnValueOnce([metroidsamusreturns.path]);
-      when(readFilenames as jest.Mock<string[]>)
+      when(readFilenames as Mock<any, string[]>)
         .calledWith(pcenginecd.entryPath, mednafen.fileExtensions)
         .mockReturnValueOnce([cotton.path, gateofthunder.path]);
-      (readFileHome as jest.Mock<Category>).mockReturnValueOnce(nintendo3ds);
-      (readFileHome as jest.Mock<Category>).mockReturnValueOnce(pcenginecd);
-      (fetchMetaData as jest.Mock<Promise<Entry[]>>).mockResolvedValueOnce(
+      (readFileHome as Mock<any, Category>).mockReturnValueOnce(nintendo3ds);
+      (readFileHome as Mock<any, Category>).mockReturnValueOnce(pcenginecd);
+      (fetchMetaData as Mock<any, Promise<Entry[]>>).mockResolvedValueOnce(
         nintendo3ds.entries
       );
-      (fetchMetaData as jest.Mock<Promise<Entry[]>>).mockResolvedValueOnce(
+      (fetchMetaData as Mock<any, Promise<Entry[]>>).mockResolvedValueOnce(
         pcenginecd.entries
       );
       (
-        getInstalledApplicationForCategory as jest.Mock<Application>
+        getInstalledApplicationForCategory as Mock<any, Application>
       ).mockReturnValueOnce(applicationsTestData.citra);
       (
-        getInstalledApplicationForCategory as jest.Mock<Application>
+        getInstalledApplicationForCategory as Mock<any, Application>
       ).mockReturnValueOnce(applicationsTestData.mednafen);
 
       // execute
@@ -318,16 +319,16 @@ describe("categories.server", () => {
   describe("importEntries", () => {
     it("Should update entries and keep general category data", async () => {
       // evaluate
-      (readFileHome as jest.Mock<Category>).mockReturnValueOnce(playstation);
-      (readFilenames as jest.Mock<string[]>).mockReturnValueOnce([
+      (readFileHome as Mock<any, Category>).mockReturnValueOnce(playstation);
+      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
         hugo.path,
         hugo2.path,
       ]);
-      (fetchMetaData as jest.Mock<Promise<Entry[]>>).mockResolvedValueOnce(
+      (fetchMetaData as Mock<any, Promise<Entry[]>>).mockResolvedValueOnce(
         playstation.entries
       );
       (
-        getInstalledApplicationForCategory as jest.Mock<Application>
+        getInstalledApplicationForCategory as Mock<any, Application>
       ).mockReturnValueOnce(applicationsTestData.duckstation);
 
       // execute

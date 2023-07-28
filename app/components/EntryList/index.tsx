@@ -1,7 +1,6 @@
 import type { HTMLAttributes } from "react";
 import React, { useCallback, useRef } from "react";
 import { useTestId } from "~/hooks/useTestId";
-import { styled } from "~/stitches";
 import type { Entry as EntryType } from "~/types/jsonFiles/category";
 import { Ul } from "../Ul";
 import { Entry } from "./components/Entry";
@@ -12,6 +11,7 @@ import {
   useKeyboardEvent,
 } from "~/hooks/useGamepadEvent";
 import { layout } from "~/hooks/useGamepads/layouts";
+import { styled } from "../../../styled-system/jsx";
 
 type Props = {
   entries: EntryType[];
@@ -23,9 +23,11 @@ type Props = {
 } & HTMLAttributes<HTMLUListElement>;
 
 const List = styled(Ul, {
-  display: "grid",
-  gap: "$1",
-  gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+  base: {
+    display: "grid",
+    gap: "1",
+    gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+  },
 });
 
 export const EntryList = ({

@@ -8,10 +8,8 @@ import {
   useCatch,
   useLoaderData,
 } from "@remix-run/react";
-import { globalStyles, themes } from "./stitches";
-import { Box } from "./components/Box";
 import { Titlebar } from "./containers/Titlebar";
-import type { MetaFunction } from "@remix-run/node";
+import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { FullscreenProvider } from "~/provider/FullscreenProvider";
 import { FocusProvider } from "~/provider/FocusProvider";
@@ -20,7 +18,12 @@ import { focusDefault } from "~/types/focusElement";
 import type { ReactNode } from "react";
 import { useFocus } from "~/hooks/useFocus";
 import { useGamepads } from "~/hooks/useGamepads";
-import { DataFunctionArgs } from "~/context";
+import type { DataFunctionArgs } from "~/context";
+
+import styles from "./index.css";
+import { styled } from "../styled-system/jsx";
+
+export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 const GamepadProvider = ({ children }: { children: ReactNode }) => {
   const { isDisabled } = useFocus<FocusElement>("main");
@@ -30,7 +33,6 @@ const GamepadProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export default function App() {
-  globalStyles();
   const { fullscreen } = useLoaderData<typeof loader>();
 
   return (
@@ -39,7 +41,7 @@ export default function App() {
         <FocusProvider focusDefault={focusDefault}>
           <GamepadProvider>
             <FullscreenProvider fullscreenDefault={fullscreen}>
-              <Titlebar />
+              {!fullscreen && <Titlebar />}
               <Outlet />
             </FullscreenProvider>
           </GamepadProvider>
@@ -123,7 +125,7 @@ function Document({
   title?: string;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="red" data-color-mode="dark">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -141,18 +143,15 @@ function Document({
   );
 }
 
+const Wrapper = styled("div", {
+  base: {
+    height: "100vh",
+    display: "flex",
+    flexFlow: "column",
+    backgroundColor: "backgroundColor",
+  },
+});
+
 function Layout({ children }: { children: ReactNode }) {
-  return (
-    <Box
-      className={themes.dark}
-      css={{
-        height: "100vh",
-        display: "flex",
-        flexFlow: "column",
-        backgroundColor: "$backgroundColor",
-      }}
-    >
-      {children}
-    </Box>
-  );
+  return <Wrapper>{children}</Wrapper>;
 }

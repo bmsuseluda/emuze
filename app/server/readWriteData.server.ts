@@ -1,15 +1,20 @@
-import fs from "fs";
 import nodepath from "path";
 import { homedir } from "os";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from "fs";
 
 const homeDirectory = nodepath.join(homedir(), ".emuze");
 
 const readFiles = (path: string) =>
-  fs.readdirSync(path, { encoding: "utf8", withFileTypes: true });
+  readdirSync(path, { encoding: "utf8", withFileTypes: true });
 
 export const readDirectorynames = (path: string) =>
-  fs
-    .readdirSync(path, { encoding: "utf8", withFileTypes: true })
+  readdirSync(path, { encoding: "utf8", withFileTypes: true })
     .filter((file) => file.isDirectory())
     .map(({ name }) => nodepath.join(path, name));
 
@@ -37,7 +42,7 @@ export const readFilenames = (path: string, fileExtensions?: string[]) => {
 export const readFileHome = <T>(path: string): T | null => {
   const pathInHome = nodepath.join(homeDirectory, path);
   try {
-    const data = fs.readFileSync(pathInHome, "utf8");
+    const data = readFileSync(pathInHome, "utf8");
     return JSON.parse(data);
   } catch (error) {
     return null;
@@ -47,10 +52,10 @@ export const readFileHome = <T>(path: string): T | null => {
 export const writeFile = (object: unknown, path: string) => {
   // TODO: add success message, validation ...
   const dirname = nodepath.dirname(path);
-  if (!fs.existsSync(dirname)) {
-    fs.mkdirSync(dirname, { recursive: true });
+  if (!existsSync(dirname)) {
+    mkdirSync(dirname, { recursive: true });
   }
-  fs.writeFileSync(path, JSON.stringify(object));
+  writeFileSync(path, JSON.stringify(object));
 };
 
 export const writeFileHome = (object: unknown, path: string) => {
