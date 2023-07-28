@@ -8,7 +8,9 @@ const Input = styled("input", {
     borderColor: "sidebarBackgroundColor",
     backgroundColor: "backgroundColor",
     color: "color",
-    padding: "1",
+    paddingTop: "1",
+    paddingBottom: "1",
+    paddingLeft: "1",
     borderRadius: "1",
     outline: "none",
     width: "100%",
@@ -31,6 +33,9 @@ const Input = styled("input", {
     iconButton: {
       true: {
         paddingRight: "3",
+      },
+      false: {
+        paddingRight: "1",
       },
     },
   },

@@ -9,3 +9,7 @@
 :root {
     --font-quicksand-light: 'Quicksand Light';
 }
+
+.draggable {
+    -webkit-app-region: drag;
+}

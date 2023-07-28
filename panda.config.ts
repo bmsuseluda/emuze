@@ -14,43 +14,106 @@ const globalCss = defineGlobalStyles({
   },
 });
 
-const borderRoundedTransform: PropertyTransform = (value, { token }) => {
-  if (!value) return {};
-  return {
-    borderRadius: token("radii.1"),
-    position: "relative",
-    overflow: "clip",
-  };
+const borderRoundedTransform: PropertyTransform = (
+  value: boolean,
+  { token }
+) => {
+  if (value) {
+    return {
+      borderRadius: token("radii.1"),
+      position: "relative",
+      overflow: "clip",
+    };
+  }
+  return {};
 };
 
 export default defineConfig({
-  // Whether to use css reset
   preflight: true,
 
   jsxFramework: "react",
 
-  // The extension for the emitted JavaScript files
   outExtension: "js",
-  // Where to look for your css declarations
   include: ["./app/**/*.{ts,tsx}"],
 
-  // Files to exclude
   exclude: [],
 
   globalCss,
 
-  // Useful for theme customization
+  conditions: {
+    light: "[data-color-mode=light] &",
+    dark: "[data-color-mode=dark] &",
+    redTheme: "[data-theme=red] &",
+  },
+
   theme: {
-    tokens: {
+    semanticTokens: {
       colors: {
-        color: { value: "white" },
-        backgroundColor: { value: "black" },
-        transparentBackgroundColor: { value: "rgba(0, 0, 0, 0.6)" },
-        sidebarBackgroundColor: { value: "#4d4d4d" },
-        accent: { value: "#950909" },
-        colorOnAccent: { value: "white" },
-        error: { value: "#da1616" },
+        color: {
+          value: {
+            _redTheme: { _dark: "white", _light: "black" },
+          },
+        },
+        backgroundColor: {
+          value: {
+            _redTheme: { _dark: "black", _light: "white" },
+          },
+        },
+        transparentBackgroundColor: {
+          value: {
+            _redTheme: {
+              _dark: "rgba(0, 0, 0, 0.6)",
+              _light: "rgba(0, 0, 0, 0.6)",
+            },
+          },
+        },
+        sidebarBackgroundColor: {
+          value: {
+            _redTheme: {
+              _dark: "#4d4d4d",
+              _light: "#b3b2b2",
+            },
+          },
+        },
+        accent: {
+          value: {
+            _redTheme: {
+              _dark: "#950909",
+              _light: "#950909",
+            },
+          },
+        },
+        colorOnAccent: {
+          value: {
+            _redTheme: {
+              _dark: "white",
+              _light: "white",
+            },
+          },
+        },
+        error: {
+          value: {
+            _redTheme: {
+              _dark: "#da1616",
+              _light: "#950909",
+            },
+          },
+        },
       },
+      gradients: {
+        default: {
+          value: {
+            _redTheme: {
+              _dark:
+                "linear-gradient(45deg, {colors.backgroundColor}, {colors.sidebarBackgroundColor})",
+              _light:
+                "linear-gradient(45deg, {colors.backgroundColor}, {colors.sidebarBackgroundColor})",
+            },
+          },
+        },
+      },
+    },
+    tokens: {
       spacing: {
         1: { value: "0.8rem" },
         2: { value: "2rem" },
@@ -80,12 +143,6 @@ export default defineConfig({
       // },
       radii: {
         1: { value: "0.8rem" },
-      },
-      gradients: {
-        default: {
-          value:
-            "linear-gradient(45deg, backgroundColor, sidebarBackgroundColor)",
-        },
       },
       fonts: {
         quicksandLight: {
@@ -118,6 +175,5 @@ export default defineConfig({
     },
   },
 
-  // The output directory for your css system
   outdir: "styled-system",
 });

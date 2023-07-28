@@ -6173,15 +6173,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stitches/react@npm:^1.2.8":
-  version: 1.2.8
-  resolution: "@stitches/react@npm:1.2.8"
-  peerDependencies:
-    react: ">= 16.3.0"
-  checksum: 029795323cdedb5599ec0636526fc233b2cf41fa9c1f4a704b1f7f457c6170053384a7430afed45e25f73e348d7c391cf1379bc079943cd9cad44302234a5244
-  languageName: node
-  linkType: hard
-
 "@storybook/addon-actions@npm:7.1.1":
   version: 7.1.1
   resolution: "@storybook/addon-actions@npm:7.1.1"
@@ -12217,7 +12208,6 @@ __metadata:
     "@remix-run/serve": ^1.19.1
     "@remix-run/server-runtime": ^1.19.1
     "@remix-run/web-stream": ^1.0.3
-    "@stitches/react": ^1.2.8
     "@storybook/addon-essentials": ^7.1.1
     "@storybook/addon-interactions": ^7.1.1
     "@storybook/addon-links": ^7.1.1
@@ -12248,6 +12238,7 @@ __metadata:
     fast-xml-parser: ^4.2.6
     happy-dom: ^10.5.2
     husky: ^8.0.3
+    isbot: latest
     jest-when: ^3.5.2
     lint-staged: ^13.2.3
     lodash.debounce: ^4.0.8
@@ -15895,6 +15886,13 @@ __metadata:
   version: 5.0.0
   resolution: "isbinaryfile@npm:5.0.0"
   checksum: 25cc27388d51b8322c103f5894f9e72ec04e017734e57c4b70be2666501ec7e7f6cbb4a5fcfd15260a7cac979bd1ddb7f5231f5a3098c0695c4e7c049513dfaf
+  languageName: node
+  linkType: hard
+
+"isbot@npm:latest":
+  version: 3.6.13
+  resolution: "isbot@npm:3.6.13"
+  checksum: 87c8b868ea3ef1473e69dca20f0bd2078188ef3d3fc0d67c05bb09e32c3e386a6ed2a38cd912e3f99467957bbf58b22a6f536d43db959b6c2eab2eebdc5dec46
   languageName: node
   linkType: hard
 

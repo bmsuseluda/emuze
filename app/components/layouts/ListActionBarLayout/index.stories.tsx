@@ -4,7 +4,7 @@ import { Label } from "~/components/Label";
 import { TextInput } from "~/components/TextInput";
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { styled } from "~/stitches";
+import { styled } from "../../../../styled-system/jsx";
 
 const meta = {
   component: ListActionBarLayout,
@@ -14,8 +14,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const Wrapper = styled("div", {
-  height: "100vh",
-  display: "flex",
+  base: {
+    height: "100vh",
+    display: "flex",
+  },
 });
 
 export const ManyElements: Story = {

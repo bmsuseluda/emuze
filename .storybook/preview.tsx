@@ -2,7 +2,6 @@ import "../app/index.css";
 import type { Preview } from "@storybook/react";
 import { Decorator } from "@storybook/react";
 
-import { ThemeName, themes } from "~/stitches";
 import { styled } from "../styled-system/jsx";
 
 const StoryWrapper = styled("div", {
@@ -27,11 +26,14 @@ const getColoredDiv = (color: string) => (
   />
 );
 
+const themes = ["red"];
+const modes = ["dark", "light"];
+
 const withThemeProvider: Decorator = (Story, context) => {
-  const themeName = context.globals.theme as ThemeName;
-  const theme = themes[themeName];
+  const themeName = context.globals.theme;
+  const modeName = context.globals.mode;
   return (
-    <StoryWrapper>
+    <StoryWrapper data-theme={themeName} data-color-mode={modeName}>
       <div style={{ padding: "2rem" }}>
         <Story {...context} />
       </div>
@@ -57,14 +59,27 @@ const preview: Preview = {
   globalTypes: {
     theme: {
       description: "Theme",
-      defaultValue: "dark",
+      defaultValue: "red",
       toolbar: {
         title: "Theme",
         icon: "lightning",
-        items: Object.keys(themes).map((themeName) => ({
+        items: themes.map((themeName) => ({
           value: themeName,
           title: themeName,
-          right: getColoredDiv(themeName === "dark" ? "black" : "white"),
+          right: getColoredDiv(themeName === "red" ? "red" : "white"),
+        })),
+      },
+    },
+    mode: {
+      description: "Mode",
+      defaultValue: "dark",
+      toolbar: {
+        title: "Mode",
+        icon: "lightning",
+        items: modes.map((modeName) => ({
+          value: modeName,
+          title: modeName,
+          right: getColoredDiv(modeName === "dark" ? "black" : "white"),
         })),
       },
     },

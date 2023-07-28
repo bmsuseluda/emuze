@@ -1,6 +1,7 @@
 import { TextInput } from ".";
 
 import type { Meta, StoryObj } from "@storybook/react";
+import { FaFolderOpen } from "react-icons/fa";
 
 const meta = {
   component: TextInput,
@@ -13,8 +14,10 @@ export const Basic: Story = {
   args: {
     children: (
       <>
-        <TextInput.Input defaultValue="This is a TextInput" />
-        <TextInput.IconButton>choose</TextInput.IconButton>
+        <TextInput.Input defaultValue="This is a TextInput" iconButton />
+        <TextInput.IconButton>
+          <FaFolderOpen />
+        </TextInput.IconButton>
       </>
     ),
   },
@@ -24,8 +27,10 @@ export const Invalid: Story = {
   args: {
     children: (
       <>
-        <TextInput.Input required />
-        <TextInput.IconButton>choose</TextInput.IconButton>
+        <TextInput.Input required iconButton />
+        <TextInput.IconButton>
+          <FaFolderOpen />
+        </TextInput.IconButton>
       </>
     ),
   },

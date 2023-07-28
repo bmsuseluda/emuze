@@ -41,7 +41,7 @@ export default function App() {
         <FocusProvider focusDefault={focusDefault}>
           <GamepadProvider>
             <FullscreenProvider fullscreenDefault={fullscreen}>
-              <Titlebar />
+              {!fullscreen && <Titlebar />}
               <Outlet />
             </FullscreenProvider>
           </GamepadProvider>
@@ -125,7 +125,7 @@ function Document({
   title?: string;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="red" data-color-mode="dark">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
