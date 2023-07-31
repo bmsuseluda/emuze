@@ -1,5 +1,5 @@
 import { initRemix } from "remix-electron";
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, session } from "electron";
 import nodepath from "path";
 import { readAppearance } from "./readSettings";
 import * as dotenv from "dotenv";
@@ -12,6 +12,17 @@ const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
 };
 
 app.on("ready", async () => {
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        "Content-Security-Policy": [
+          "script-src 'self' https://emuze-api-d7jjhe73ba-uc.a.run.app/games",
+        ],
+      },
+    });
+  });
+
   const appearance = readAppearance();
   const fullscreen =
     app.commandLine.hasSwitch("fullscreen") || appearance?.fullscreen;
@@ -37,7 +48,6 @@ app.on("ready", async () => {
     frame: false,
     webPreferences: {
       preload: nodepath.join(__dirname, "preload.js"),
-      nodeIntegration: true,
     },
   });
 
