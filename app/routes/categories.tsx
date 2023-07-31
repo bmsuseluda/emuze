@@ -155,6 +155,7 @@ export default function Categories() {
                 formData?.get("_actionId") === actionIds.import
               }
               icon={<IoMdRefresh />}
+              aria-label="Import all"
             >
               {!collapseSidebar ? "Import all" : null}
             </Button>

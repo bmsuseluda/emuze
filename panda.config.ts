@@ -34,6 +34,10 @@ export default defineConfig({
   jsxFramework: "react",
 
   outExtension: "js",
+
+  minify: process.env.NODE_ENV === "production",
+  hash: process.env.NODE_ENV === "production",
+
   include: ["./app/**/*.{ts,tsx}"],
 
   exclude: [],
