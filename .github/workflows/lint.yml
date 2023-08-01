@@ -17,5 +17,7 @@ jobs:
           node-version: '16.x'
       - name: Install dependencies
         run: yarn
+      - name: Panda codegen
+        run: cross-env NODE_ENV=production yarn panda:codegen
       - name: Lint
         run: yarn lint
