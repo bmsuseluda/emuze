@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef } from "react";
 export const useRefsGrid = <T extends HTMLElement, R>(
   entryListRef: RefObject<HTMLUListElement>,
   entriesRefs: MutableRefObject<T[]>,
-  entries?: R[]
+  entries?: R[],
 ) => {
   const entriesRefsGrid = useRef<T[][]>([]);
 
@@ -47,7 +47,7 @@ export const useRefsGrid = <T extends HTMLElement, R>(
   useEffect(() => {
     if (entryListRef.current) {
       const resizeObserver = new ResizeObserver(
-        debounce(createRefsGrid, 200, { leading: false, trailing: true })
+        debounce(createRefsGrid, 200, { leading: false, trailing: true }),
       );
       resizeObserver.observe(entryListRef.current);
 

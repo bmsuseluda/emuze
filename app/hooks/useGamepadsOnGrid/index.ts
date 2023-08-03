@@ -10,7 +10,7 @@ import { useCallback, useEffect, useRef } from "react";
 export const useGamepadsOnGrid = <T>(
   entriesRefsGrid: MutableRefObject<T[][]>,
   onSelectEntry: (entry: T) => void,
-  isInFocus: boolean
+  isInFocus: boolean,
 ) => {
   const selectedX = useRef<number>();
   const selectedY = useRef<number>();
@@ -24,7 +24,7 @@ export const useGamepadsOnGrid = <T>(
         onSelectEntry(entry);
       }
     },
-    [onSelectEntry, selectedEntry, entriesRefsGrid]
+    [onSelectEntry, selectedEntry, entriesRefsGrid],
   );
 
   // TODO: Check if this could be done without useEffect
@@ -44,7 +44,7 @@ export const useGamepadsOnGrid = <T>(
 
   const getLastIndex = useCallback(
     (array: T[] | T[][]) => array.length - 1,
-    []
+    [],
   );
 
   const handleRight = useCallback(() => {
@@ -91,7 +91,7 @@ export const useGamepadsOnGrid = <T>(
           selectedY.current = selectedY.current + 1;
           if (!entriesRefsGrid.current[selectedY.current][selectedX.current]) {
             selectedX.current = getLastIndex(
-              entriesRefsGrid.current[selectedY.current]
+              entriesRefsGrid.current[selectedY.current],
             );
           }
           handleSelectEntry(selectedX.current, selectedY.current);

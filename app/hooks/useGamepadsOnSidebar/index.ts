@@ -9,7 +9,7 @@ import {
 // TODO: write tests
 export const useGamepadsOnSidebar = (
   selectedCategoryId: number,
-  isInFocus: boolean
+  isInFocus: boolean,
 ) => {
   const categoryLinksRefs = useRef<HTMLAnchorElement[]>([]);
 
@@ -61,13 +61,9 @@ export const useGamepadsOnSidebar = (
 
   const refCallback = useCallback(
     (index: number) => (ref: HTMLAnchorElement) => {
-      if (index === 0) {
-        categoryLinksRefs.current = [ref];
-      } else {
-        categoryLinksRefs.current.push(ref);
-      }
+      categoryLinksRefs.current[index] = ref;
     },
-    []
+    [],
   );
 
   return {
