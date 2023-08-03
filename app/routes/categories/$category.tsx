@@ -6,7 +6,7 @@ import { IoMdPlay, IoMdRefresh } from "react-icons/io";
 import { Button } from "~/components/Button";
 import { executeApplication } from "~/server/execute.server";
 import { importEntries, readCategory } from "~/server/categories.server";
-import { EntryList } from "~/components/EntryList";
+import { EntryListDynamic } from "~/components/EntryList";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 import { useTestId } from "~/hooks/useTestId";
 import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
@@ -22,7 +22,6 @@ import { readAppearance } from "~/server/settings.server";
 import type { DataFunctionArgs } from "~/context";
 import { useFullscreen } from "~/hooks/useFullscreen";
 import { SettingsLink } from "~/components/SettingsLink";
-import { useAddEntriesToRenderOnScrollEnd } from "~/hooks/useAddEntriesToRenderOnScrollEnd";
 import { BiError } from "react-icons/bi";
 import { Typography } from "~/components/Typography";
 
@@ -87,10 +86,7 @@ export default function Category() {
   const launchButtonRef = useRef<HTMLButtonElement>(null);
   const importButtonRef = useRef<HTMLButtonElement>(null);
   const settingsButtonRef = useRef<HTMLAnchorElement>(null);
-
-  const { listRef, entriesToRender } = useAddEntriesToRenderOnScrollEnd(
-    categoryData?.entries || []
-  );
+  const listRef = useRef<HTMLDivElement>(null);
 
   const { getTestId } = useTestId("category");
   const { isInFocus, disableFocus, switchFocus } =
@@ -137,7 +133,7 @@ export default function Category() {
     return null;
   }
 
-  const { id, name } = categoryData;
+  const { id, name, entries, application } = categoryData;
 
   return (
     <>
@@ -155,14 +151,15 @@ export default function Category() {
             scrollSmooth
             ref={listRef}
             list={
-              entriesToRender && (
-                <EntryList
+              entries && (
+                <EntryListDynamic
                   key={id}
-                  entries={entriesToRender}
+                  entries={entries}
                   alwaysGameNames={alwaysGameNames}
                   onExecute={onExecute}
                   onBack={onBack}
                   isInFocus={isInFocus}
+                  listRef={listRef}
                   {...getTestId("entries")}
                 />
               )
@@ -172,19 +169,13 @@ export default function Category() {
                 <Button
                   type="submit"
                   name="_actionId"
-                  disabled={
-                    !entriesToRender ||
-                    entriesToRender.length === 0 ||
-                    !categoryData.application
-                  }
+                  disabled={!entries || entries.length === 0 || !application}
                   value={actionIds.launch}
                   ref={launchButtonRef}
                   {...getTestId(["button", "launch"])}
-                  icon={!categoryData.application ? <BiError /> : <IoMdPlay />}
+                  icon={!application ? <BiError /> : <IoMdPlay />}
                 >
-                  {!categoryData.application
-                    ? "No installed emulators"
-                    : "Launch Game"}
+                  {!application ? "No installed emulators" : "Launch Game"}
                 </Button>
                 <Button
                   type="submit"

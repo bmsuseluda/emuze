@@ -1,12 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import type { RefObject } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Entry } from "~/types/jsonFiles/category";
 
 const entriesNumberForChunk = 100;
 
-export const useAddEntriesToRenderOnScrollEnd = (entries: Entry[]) => {
-  const listRef = useRef<HTMLDivElement>(null);
+export const useAddEntriesToRenderOnScrollEnd = (
+  listRef: RefObject<HTMLDivElement>,
+  entries: Entry[],
+) => {
   const [entriesToRender, setEntriesToRender] = useState(
-    entries.slice(0, entriesNumberForChunk)
+    entries.slice(0, entriesNumberForChunk),
   );
 
   useEffect(() => {
@@ -19,7 +22,7 @@ export const useAddEntriesToRenderOnScrollEnd = (entries: Entry[]) => {
         ...entriesToRender,
         ...entries.slice(
           entriesToRender.length,
-          entriesToRender.length + entriesNumberForChunk
+          entriesToRender.length + entriesNumberForChunk,
         ),
       ]);
     }
@@ -40,7 +43,7 @@ export const useAddEntriesToRenderOnScrollEnd = (entries: Entry[]) => {
     return () => {
       listRefCopy.current?.removeEventListener("scroll", addEntriesOnScrollEnd);
     };
-  }, [addEntriesToRender]);
+  }, [addEntriesToRender, listRef]);
 
   return {
     listRef,

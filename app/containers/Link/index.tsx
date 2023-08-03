@@ -70,7 +70,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, Props>(
         </LinkSpan>
       )}
     </NavLink>
-  )
+  ),
 );
 
 Link.displayName = "Link";

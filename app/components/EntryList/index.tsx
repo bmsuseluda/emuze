@@ -1,4 +1,4 @@
-import type { HTMLAttributes } from "react";
+import type { HTMLAttributes, RefObject } from "react";
 import React, { useCallback, useRef } from "react";
 import { useTestId } from "~/hooks/useTestId";
 import type { Entry as EntryType } from "~/types/jsonFiles/category";
@@ -12,6 +12,7 @@ import {
 } from "~/hooks/useGamepadEvent";
 import { layout } from "~/hooks/useGamepads/layouts";
 import { styled } from "../../../styled-system/jsx";
+import { useAddEntriesToRenderOnScrollEnd } from "~/hooks/useAddEntriesToRenderOnScrollEnd";
 
 type Props = {
   entries: EntryType[];
@@ -29,6 +30,19 @@ const List = styled(Ul, {
     gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
   },
 });
+
+export const EntryListDynamic = ({
+  entries,
+  listRef,
+  ...rest
+}: Props & { listRef: RefObject<HTMLDivElement> }) => {
+  const { entriesToRender } = useAddEntriesToRenderOnScrollEnd(
+    listRef,
+    entries || [],
+  );
+
+  return <EntryList entries={entriesToRender} {...rest} />;
+};
 
 export const EntryList = ({
   entries,
@@ -53,7 +67,7 @@ export const EntryList = ({
   const { selectedEntry, resetSelected } = useGamepadsOnGrid(
     entriesRefsGrid,
     selectEntry,
-    isInFocus
+    isInFocus,
   );
 
   const handleBack = useCallback(() => {
