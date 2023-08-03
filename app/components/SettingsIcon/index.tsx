@@ -1,9 +1,9 @@
 import type { IconType } from "react-icons";
 import { FaPaintBrush } from "react-icons/fa";
-import { GoSettings } from "react-icons/go";
+import { VscSettings } from "react-icons/vsc";
 
 const icons: Record<string, IconType> = {
-  general: GoSettings,
+  general: VscSettings,
   appearance: FaPaintBrush,
 };
 
