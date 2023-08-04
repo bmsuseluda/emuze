@@ -16,7 +16,7 @@ const globalCss = defineGlobalStyles({
 
 const borderRoundedTransform: PropertyTransform = (
   value: boolean,
-  { token }
+  { token },
 ) => {
   if (value) {
     return {

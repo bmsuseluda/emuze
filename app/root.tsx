@@ -32,6 +32,11 @@ const GamepadProvider = ({ children }: { children: ReactNode }) => {
   return <>{children}</>;
 };
 
+export const loader = ({ context }: DataFunctionArgs) => {
+  const fullscreen = context?.fullscreen as boolean;
+  return json({ fullscreen });
+};
+
 export default function App() {
   const { fullscreen } = useLoaderData<typeof loader>();
 
@@ -41,7 +46,7 @@ export default function App() {
         <FocusProvider focusDefault={focusDefault}>
           <GamepadProvider>
             <FullscreenProvider fullscreenDefault={fullscreen}>
-              {!fullscreen && <Titlebar />}
+              <Titlebar />
               <Outlet />
             </FullscreenProvider>
           </GamepadProvider>
@@ -111,11 +116,6 @@ export function CatchBoundary() {
     </Document>
   );
 }
-
-export const loader = ({ context }: DataFunctionArgs) => {
-  const fullscreen: boolean | undefined = context?.fullscreen as boolean;
-  return json({ fullscreen });
-};
 
 function Document({
   children,
