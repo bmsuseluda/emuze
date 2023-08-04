@@ -23,7 +23,7 @@ const Label = styled("label", {
   base: {
     display: "block",
     backgroundColor: "backgroundColor",
-    borderRounded: true,
+    borderRadius: "1",
     borderWidth: "4px",
     borderStyle: "solid",
     borderColor: "backgroundColor",
@@ -64,8 +64,8 @@ const Name = styled("div", {
 const Input = styled("input", {
   base: {
     position: "absolute",
-    top: "-4px",
-    left: "-4px",
+    top: 0,
+    left: 0,
     width: "100%",
     height: "100%",
     zIndex: "-2",
@@ -87,7 +87,7 @@ const fallbackImageUrl = "/fallback.png";
 export const getDisplayedName = (
   name: string,
   alwaysGameName: boolean,
-  isImage: boolean
+  isImage: boolean,
 ) => {
   const additionalInfo = getAdditionalInfo(name);
 
@@ -112,7 +112,7 @@ export const Entry = React.forwardRef<HTMLInputElement, Props>(
       onDoubleClick,
       "data-testid": dataTestId,
     },
-    ref
+    ref,
   ) => {
     const { getTestId } = useTestId(dataTestId);
     const displayedName = getDisplayedName(name, alwaysGameName, !!imageUrl);
@@ -138,6 +138,6 @@ export const Entry = React.forwardRef<HTMLInputElement, Props>(
         </Label>
       </Wrapper>
     );
-  }
+  },
 );
 Entry.displayName = "Entry";

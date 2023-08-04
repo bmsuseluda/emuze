@@ -1,5 +1,6 @@
 import { IconButton } from "./components/IconButton";
 import { styled } from "../../../styled-system/jsx";
+import { useFullscreen } from "~/hooks/useFullscreen";
 
 const Wrapper = styled("div", {
   base: {
@@ -35,14 +36,22 @@ const FakeSettingsButton = styled("div", {
   },
 });
 
-export const Titlebar = () => (
-  <Wrapper>
-    <Draggable className="draggable" />
-    <Buttons>
-      <FakeSettingsButton />
-      <IconButton variant="minimize" />
-      <IconButton variant="maximize" />
-      <IconButton variant="close" />
-    </Buttons>
-  </Wrapper>
-);
+export const Titlebar = () => {
+  const fullscreen = useFullscreen();
+
+  if (!fullscreen) {
+    return (
+      <Wrapper>
+        <Draggable className="draggable" />
+        <Buttons>
+          <FakeSettingsButton />
+          <IconButton variant="minimize" />
+          <IconButton variant="maximize" />
+          <IconButton variant="close" />
+        </Buttons>
+      </Wrapper>
+    );
+  }
+
+  return null;
+};
