@@ -2,6 +2,7 @@ import { Headline } from "~/components/Headline";
 import type { ReactNode } from "react";
 import { forwardRef } from "react";
 import { styled } from "../../../../styled-system/jsx";
+import { useFullscreen } from "~/hooks/useFullscreen";
 
 interface Props {
   headline?: ReactNode;
@@ -32,17 +33,9 @@ const List = styled("div", {
   base: {
     flex: 15,
     overflowY: "auto",
-    paddingRight: "0.5em",
-
-    scrollbarColor: "sidebarBackgroundColor transparent",
-
+    paddingRight: 0,
     "&::-webkit-scrollbar": {
-      width: "0.5em",
-    },
-
-    "&::-webkit-scrollbar-thumb": {
-      backgroundColor: "transparent",
-      borderRadius: "1",
+      display: "none",
     },
   },
 
@@ -52,15 +45,35 @@ const List = styled("div", {
         scrollBehavior: "smooth",
       },
     },
+    // TODO: remove if not necessary anymore. Right now all props you want to use in compoundVariants need to be in variants as well.
+    fullscreen: {
+      true: {},
+    },
     collapse: {
-      true: {
-        paddingRight: 0,
+      true: {},
+    },
+  },
+
+  compoundVariants: [
+    {
+      collapse: false,
+      fullscreen: false,
+      css: {
+        overflowY: "auto",
+        paddingRight: "0.5em",
+
+        scrollbarColor: "sidebarBackgroundColor transparent",
 
         "&::-webkit-scrollbar": {
-          display: "none",
+          display: "initial",
+          width: "0.5em",
         },
-      },
-      false: {
+
+        "&::-webkit-scrollbar-thumb": {
+          backgroundColor: "transparent",
+          borderRadius: "1",
+        },
+
         "&:hover": {
           "&::-webkit-scrollbar-thumb": {
             backgroundColor: "sidebarBackgroundColor",
@@ -68,7 +81,7 @@ const List = styled("div", {
         },
       },
     },
-  },
+  ],
 });
 
 const ActionBar = styled("div", {
@@ -99,15 +112,21 @@ interface ContainerProps {
 
 const ListActionBarContainer = forwardRef<HTMLDivElement, ContainerProps>(
   ({ list: listEntries, actions, scrollSmooth, collapse = false }, ref) => {
+    const fullscreen = useFullscreen();
     return (
       <Absolute>
-        <List ref={ref} scrollSmooth={scrollSmooth} collapse={collapse}>
+        <List
+          ref={ref}
+          scrollSmooth={scrollSmooth}
+          collapse={collapse}
+          fullscreen={fullscreen}
+        >
           {listEntries}
         </List>
         <ActionBar collapse={collapse}>{actions}</ActionBar>
       </Absolute>
     );
-  }
+  },
 );
 ListActionBarContainer.displayName = "ListActionBarContainer";
 
