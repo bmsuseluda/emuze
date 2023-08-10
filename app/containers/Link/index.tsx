@@ -4,7 +4,6 @@ import React from "react";
 import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import type { RemixNavLinkProps } from "@remix-run/react/dist/components";
 import { styled } from "../../../styled-system/jsx";
-import { cva } from "../../../styled-system/css";
 
 type Props = {
   highlightIfActive?: boolean;
@@ -13,7 +12,7 @@ type Props = {
 } & ComponentProps<"a"> &
   RemixNavLinkProps;
 
-const StyledNavLinkClassName = cva({
+const StyledNavLink = styled(NavLink, {
   base: {
     textDecoration: "none",
     color: "color",
@@ -52,11 +51,10 @@ const LinkSpan = styled(IconChildrenWrapper, {
 
 export const Link = React.forwardRef<HTMLAnchorElement, Props>(
   ({ to, children, icon, highlightIfActive = true, ...rest }, ref) => (
-    <NavLink
+    <StyledNavLink
       to={to}
       prefetch="intent"
       draggable={false}
-      className={StyledNavLinkClassName()}
       {...rest}
       ref={ref}
     >
@@ -69,7 +67,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, Props>(
           {children}
         </LinkSpan>
       )}
-    </NavLink>
+    </StyledNavLink>
   ),
 );
 

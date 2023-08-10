@@ -2,7 +2,7 @@ import type { RefObject } from "react";
 import { useCallback, useEffect, useState } from "react";
 import type { Entry } from "~/types/jsonFiles/category";
 
-const entriesNumberForChunk = 100;
+const entriesNumberForChunk = 60;
 
 export const useAddEntriesToRenderOnScrollEnd = (
   listRef: RefObject<HTMLDivElement>,
