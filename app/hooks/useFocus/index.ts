@@ -2,7 +2,7 @@ import { useCallback, useContext, useMemo } from "react";
 import { FocusContext } from "~/provider/FocusProvider";
 
 export const useFocus = <FocusElement extends string>(
-  elementId: FocusElement
+  elementId: FocusElement,
 ) => {
   const context = useContext(FocusContext);
   if (!context) {
@@ -13,28 +13,23 @@ export const useFocus = <FocusElement extends string>(
 
   const isInFocus = useMemo(
     () => elementInFocus === elementId,
-    [elementId, elementInFocus]
+    [elementId, elementInFocus],
   );
 
   const switchFocus = useCallback(
     (element: FocusElement) => {
       setElementInFocus(element);
     },
-    [setElementInFocus]
+    [setElementInFocus],
   );
 
+  // TODO: check if necessary
   const disableFocus = useCallback(() => {
     setElementInFocus();
   }, [setElementInFocus]);
 
-  const isDisabled = useMemo(
-    () => elementInFocus === undefined,
-    [elementInFocus]
-  );
-
   return {
     isInFocus,
-    isDisabled,
     switchFocus,
     disableFocus,
   };

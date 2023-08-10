@@ -13,10 +13,8 @@ import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { FullscreenProvider } from "~/provider/FullscreenProvider";
 import { FocusProvider } from "~/provider/FocusProvider";
-import type { FocusElement } from "~/types/focusElement";
 import { focusDefault } from "~/types/focusElement";
 import type { ReactNode } from "react";
-import { useFocus } from "~/hooks/useFocus";
 import { useGamepads } from "~/hooks/useGamepads";
 import type { DataFunctionArgs } from "~/context";
 
@@ -26,8 +24,7 @@ import { styled } from "../styled-system/jsx";
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 const GamepadProvider = ({ children }: { children: ReactNode }) => {
-  const { isDisabled } = useFocus<FocusElement>("main");
-  useGamepads(isDisabled);
+  useGamepads();
 
   return <>{children}</>;
 };
