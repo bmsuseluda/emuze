@@ -17,6 +17,7 @@ const Wrapper = styled("div", {
   base: {
     height: "100vh",
     display: "flex",
+    margin: "-2rem 0",
   },
 });
 

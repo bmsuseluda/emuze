@@ -34,9 +34,7 @@ const withThemeProvider: Decorator = (Story, context) => {
   const modeName = context.globals.mode;
   return (
     <StoryWrapper data-theme={themeName} data-color-mode={modeName}>
-      <div style={{ padding: "2rem" }}>
-        <Story {...context} />
-      </div>
+      <Story {...context} />
     </StoryWrapper>
   );
 };

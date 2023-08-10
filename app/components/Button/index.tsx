@@ -28,7 +28,7 @@ export const StyledButton = styled("button", {
 });
 
 export type Props = {
-  children: ReactNode;
+  children?: ReactNode;
   loading?: boolean;
   icon?: ReactNode;
 } & ComponentProps<"button">;
@@ -38,10 +38,10 @@ export const Button = forwardRef<HTMLButtonElement, Props>(
     <StyledButton {...rest} ref={ref}>
       <IconChildrenWrapper rotate={loading}>
         {icon}
-        <Typography>{children}</Typography>
+        {children && <Typography>{children}</Typography>}
       </IconChildrenWrapper>
     </StyledButton>
-  )
+  ),
 );
 
 Button.displayName = "Button";

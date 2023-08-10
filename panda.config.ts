@@ -30,16 +30,14 @@ const borderRoundedTransform: PropertyTransform = (
 
 export default defineConfig({
   preflight: true,
-
+  eject: true,
+  presets: ["@pandacss/preset-base"],
   jsxFramework: "react",
-
+  jsxStyleProps: "none",
   outExtension: "js",
-
   minify: process.env.NODE_ENV === "production",
   hash: process.env.NODE_ENV === "production",
-
-  include: ["./app/**/*.{ts,tsx}"],
-
+  include: ["./app/**/*.{ts,tsx}", "./.storybook/preview.tsx"],
   exclude: [],
 
   globalCss,

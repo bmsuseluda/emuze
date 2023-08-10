@@ -3,7 +3,6 @@ import * as RadixSelect from "@radix-ui/react-select";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { GiCheckMark } from "react-icons/gi";
 import { styled } from "../../../styled-system/jsx";
-import { cva } from "../../../styled-system/css";
 
 const SelectTrigger = styled(RadixSelect.SelectTrigger, {
   base: {
@@ -38,7 +37,7 @@ const SelectIcon = styled(RadixSelect.SelectIcon, {
   },
 });
 
-const StyledContentClassName = cva({
+const StyledContent = styled(RadixSelect.Content, {
   base: {
     display: "inline-flex",
     alignItems: "center",
@@ -98,23 +97,18 @@ const Trigger = forwardRef<HTMLButtonElement, RadixSelect.SelectTriggerProps>(
         <TiArrowSortedDown />
       </SelectIcon>
     </SelectTrigger>
-  )
+  ),
 );
 Trigger.displayName = "Trigger";
 
 const Content = forwardRef<HTMLDivElement, RadixSelect.SelectContentProps>(
   ({ children, ...rest }, ref) => (
-    <RadixSelect.Content
-      className={StyledContentClassName()}
-      position="popper"
-      sideOffset={5}
-      {...rest}
-    >
+    <StyledContent position="popper" sideOffset={5} {...rest} ref={ref}>
       <RadixSelect.Viewport>
         <RadixSelect.Group>{children}</RadixSelect.Group>
       </RadixSelect.Viewport>
-    </RadixSelect.Content>
-  )
+    </StyledContent>
+  ),
 );
 Content.displayName = "Content";
 
@@ -126,7 +120,7 @@ const Item = React.forwardRef<HTMLDivElement, RadixSelect.SelectItemProps>(
         <GiCheckMark />
       </StyledItemIndicator>
     </StyledItem>
-  )
+  ),
 );
 Item.displayName = "Item";
 

@@ -23,7 +23,7 @@ const SidebarWrapper = styled("aside", {
   variants: {
     collapse: {
       true: {
-        width: "3.5rem",
+        width: "4rem",
         paddingLeft: "0.5rem",
       },
     },
