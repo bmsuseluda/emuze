@@ -41,13 +41,13 @@ const removeRegion = (a: string) => a.replace(/\(.*\)|\[.*]/gi, "").trim();
 
 const findGameLocalization = (
   entryName: string,
-  gameLocalizations?: GameLocalization[]
+  gameLocalizations?: GameLocalization[],
 ) => gameLocalizations?.find(({ name }) => name && matchName(name, entryName));
 
 export const getCoverUrl = (entryName: string, gameData: Game) => {
   const localization = findGameLocalization(
     entryName,
-    gameData.game_localizations
+    gameData.game_localizations,
   );
 
   const gameId = localization?.cover?.image_id || gameData.cover?.image_id;
@@ -69,10 +69,10 @@ const gameFilters = [
 ];
 const filterGame = ({ name }: Entry): string[] => {
   const normalizedName = replaceSubTitleChar(
-    setCommaSeparatedArticleAsPrefix(removeRegion(name))
+    setCommaSeparatedArticleAsPrefix(removeRegion(name)),
   );
   return gameFilters.map((filter) =>
-    filterCaseInsensitive(filter, normalizedName)
+    filterCaseInsensitive(filter, normalizedName),
   );
 };
 
@@ -106,7 +106,7 @@ export interface GamesResponse {
 const fetchMetaDataForChunk = async (
   client: Apicalypse,
   platformId: number[],
-  entries: Entry[]
+  entries: Entry[],
 ) => {
   // TODO: check on limit in response
   const gamesResponse: GamesResponse = await client
@@ -116,7 +116,7 @@ const fetchMetaDataForChunk = async (
     ])
     .where(
       `platforms=(${platformId}) &
-            (${entries.flatMap(filterGame).join(" | ")})`
+            (${entries.flatMap(filterGame).join(" | ")})`,
     )
     .limit(500)
     .request(url);
@@ -127,7 +127,7 @@ const fetchMetaDataForChunk = async (
       ({ name, alternative_names, game_localizations }) =>
         matchName(name, entry.name) ||
         !!alternative_names?.find(({ name }) => matchName(name, entry.name)) ||
-        !!findGameLocalization(entry.name, game_localizations)
+        !!findGameLocalization(entry.name, game_localizations),
     );
     if (gameData) {
       const imageUrl = getCoverUrl(entry.name, gameData);
@@ -152,8 +152,8 @@ export const fetchMetaData = async (platformId: number[], entries: Entry[]) => {
 
     const entriesWithMetaData = await Promise.all(
       entryChunks.map((entryChunk) =>
-        fetchMetaDataForChunk(client, platformId, entryChunk)
-      )
+        fetchMetaDataForChunk(client, platformId, entryChunk),
+      ),
     );
 
     return entriesWithMetaData.flat();

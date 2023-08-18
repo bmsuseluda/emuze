@@ -5,6 +5,7 @@ import {
   importCategories,
   importEntries,
   paths,
+  readEntries,
   readEntriesWithMetaData,
 } from "../categories.server";
 import {
@@ -31,12 +32,7 @@ import type { Category, Entry } from "~/types/jsonFiles/category";
 import { general } from "../__testData__/general";
 import { fetchMetaData } from "~/server/igdb.server";
 import { categories as categoriesDB } from "../categoriesDB.server";
-import {
-  citra,
-  duckstation,
-  mameNeoGeo,
-  mednafen,
-} from "~/server/applicationsDB.server";
+import { citra, mameNeoGeo, mednafen } from "~/server/applicationsDB.server";
 import { getInstalledApplicationForCategory } from "~/server/applications.server";
 import type { Application } from "~/types/jsonFiles/applications";
 import { getExpiresOn } from "~/server/getExpiresOn.server";
@@ -86,8 +82,8 @@ describe("categories.server", () => {
     vi.resetAllMocks();
   });
 
-  describe("readEntriesWithMetaData", () => {
-    it("Should filter excluded filenames (neogeo.zip) and find entryName from json file", async () => {
+  describe("readEntries", () => {
+    it("Should filter excluded filenames (neogeo.zip) and find entryName from json file", () => {
       when(readFilenames as Mock<any, string[]>)
         .calledWith(neogeo.entryPath, mameNeoGeo.fileExtensions)
         .mockReturnValueOnce([
@@ -99,25 +95,14 @@ describe("categories.server", () => {
         { ...blazingstar, name: "Blazing Star", id: `${blazingstar.id}0` },
       ];
 
-      (fetchMetaData as Mock<any, Promise<Entry[]>>).mockResolvedValueOnce(
-        expectedResult
-      );
-
-      const result = await readEntriesWithMetaData(
-        neogeo.id,
-        neogeo.entryPath,
-        categoriesDB.neogeo.igdbPlatformIds,
-        neogeo.application.id
-      );
+      const result = readEntries(neogeo.entryPath, neogeo.application.id);
 
       expect(result).toStrictEqual(expectedResult);
     });
+  });
 
+  describe("readEntriesWithMetaData", () => {
     it("Should only fetch metaData for entries without metaData", async () => {
-      when(readFilenames as Mock<any, string[]>)
-        .calledWith(playstation.entryPath, duckstation.fileExtensions)
-        .mockReturnValueOnce([finalfantasy7.path, hugo.path, hugo2.path]);
-
       const fetchMetaDataMock = vi.fn().mockResolvedValue(
         addIndex([
           {
@@ -134,17 +119,14 @@ describe("categories.server", () => {
               expiresOn: getExpiresOn(),
             },
           },
-        ])
+        ]),
       );
       (fetchMetaData as Mock<any, Promise<Entry[]>>).mockImplementation(
-        fetchMetaDataMock
+        fetchMetaDataMock,
       );
 
       const result = await readEntriesWithMetaData(
-        playstation.id,
-        playstation.entryPath,
         categoriesDB.sonyplaystation.igdbPlatformIds,
-        playstation.application.id,
         addIndex([
           {
             ...finalfantasy7,
@@ -161,7 +143,7 @@ describe("categories.server", () => {
               expiresOn: getExpiresOn(),
             },
           },
-        ])
+        ]),
       );
 
       expect(result).toStrictEqual(
@@ -187,69 +169,11 @@ describe("categories.server", () => {
               expiresOn: getExpiresOn(),
             },
           },
-        ])
+        ]),
       );
       expect(fetchMetaDataMock).toHaveBeenCalledWith(
         categoriesDB.sonyplaystation.igdbPlatformIds,
-        addIndex([finalfantasy7, hugo])
-      );
-    });
-
-    it("Should fetch metaData for all entries if there is no oldCategoryData", async () => {
-      when(readFilenames as Mock<any, string[]>)
-        .calledWith(playstation.entryPath, duckstation.fileExtensions)
-        .mockReturnValueOnce([hugo.path, hugo2.path]);
-
-      const fetchMetaDataMock = vi.fn().mockResolvedValue(
-        addIndex([
-          {
-            ...hugo,
-            metaData: {
-              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.webp",
-              expiresOn: getExpiresOn(),
-            },
-          },
-          {
-            ...hugo2,
-            metaData: {
-              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.webp",
-              expiresOn: getExpiresOn(),
-            },
-          },
-        ])
-      );
-      (fetchMetaData as Mock<any, Promise<Entry[]>>).mockImplementation(
-        fetchMetaDataMock
-      );
-
-      const result = await readEntriesWithMetaData(
-        playstation.id,
-        playstation.entryPath,
-        categoriesDB.sonyplaystation.igdbPlatformIds,
-        playstation.application.id
-      );
-
-      expect(result).toStrictEqual(
-        addIndex([
-          {
-            ...hugo,
-            metaData: {
-              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.webp",
-              expiresOn: getExpiresOn(),
-            },
-          },
-          {
-            ...hugo2,
-            metaData: {
-              imageUrl: "https://www.allImagesComeFromHere.com/hugo2.webp",
-              expiresOn: getExpiresOn(),
-            },
-          },
-        ])
-      );
-      expect(fetchMetaDataMock).toHaveBeenCalledWith(
-        categoriesDB.sonyplaystation.igdbPlatformIds,
-        addIndex([hugo, hugo2])
+        addIndex([finalfantasy7, hugo]),
       );
     });
   });
@@ -271,10 +195,10 @@ describe("categories.server", () => {
       (readFileHome as Mock<any, Category>).mockReturnValueOnce(nintendo3ds);
       (readFileHome as Mock<any, Category>).mockReturnValueOnce(pcenginecd);
       (fetchMetaData as Mock<any, Promise<Entry[]>>).mockResolvedValueOnce(
-        nintendo3ds.entries
+        nintendo3ds.entries,
       );
       (fetchMetaData as Mock<any, Promise<Entry[]>>).mockResolvedValueOnce(
-        pcenginecd.entries
+        pcenginecd.entries,
       );
       (
         getInstalledApplicationForCategory as Mock<any, Application>
@@ -292,12 +216,12 @@ describe("categories.server", () => {
       expect(writeFileMock).toHaveBeenNthCalledWith(
         2,
         nintendo3ds,
-        nodepath.join(paths.entries, `${nintendo3ds.id}.json`)
+        nodepath.join(paths.entries, `${nintendo3ds.id}.json`),
       );
       expect(writeFileMock).toHaveBeenNthCalledWith(
         3,
         pcenginecd,
-        nodepath.join(paths.entries, `${pcenginecd.id}.json`)
+        nodepath.join(paths.entries, `${pcenginecd.id}.json`),
       );
       expect(writeFileMock).toHaveBeenNthCalledWith(
         4,
@@ -311,7 +235,7 @@ describe("categories.server", () => {
             name: pcenginecd.name,
           },
         ],
-        paths.categories
+        paths.categories,
       );
     });
   });
@@ -325,7 +249,7 @@ describe("categories.server", () => {
         hugo2.path,
       ]);
       (fetchMetaData as Mock<any, Promise<Entry[]>>).mockResolvedValueOnce(
-        playstation.entries
+        playstation.entries,
       );
       (
         getInstalledApplicationForCategory as Mock<any, Application>
@@ -337,7 +261,7 @@ describe("categories.server", () => {
       // expect
       expect(writeFileMock).toHaveBeenCalledWith(
         playstation,
-        nodepath.join(paths.entries, `${playstation.id}.json`)
+        nodepath.join(paths.entries, `${playstation.id}.json`),
       );
     });
   });
