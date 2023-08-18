@@ -21,43 +21,23 @@ const Wrapper = styled("li", {
 
 const Label = styled("label", {
   base: {
-    display: "block",
-    backgroundColor: "backgroundColor",
-    borderRadius: "1",
-    borderWidth: "4px",
-    borderStyle: "solid",
-    borderColor: "backgroundColor",
-
-    "&:has(*:checked)": {
-      borderColor: "accent",
-    },
-  },
-});
-
-const InnerBorder = styled("div", {
-  base: {
     backgroundColor: "backgroundColor",
     display: "flex",
     justifyContent: "flex-end",
-    borderRounded: true,
     borderWidth: "4px",
     borderStyle: "solid",
     borderColor: "backgroundColor",
-  },
-});
+    borderRadius: "1",
+    overflow: "clip",
 
-const Name = styled("div", {
-  base: {
-    color: "white",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    userSelect: "none",
-    padding: "1",
-    backgroundColor: "transparentBackgroundColor",
-    fontWeight: 400,
-    fontSize: "80%",
+    margin: "4px",
+    outlineWidth: "4px",
+    outlineStyle: "solid",
+    outlineColor: "backgroundColor",
+
+    "&:has(*:checked)": {
+      outlineColor: "accent",
+    },
   },
 });
 
@@ -72,10 +52,31 @@ const Input = styled("input", {
   },
 });
 
+const ImageWrapper = styled("div", {
+  base: {
+    position: "relative",
+  },
+});
+
 const Image = styled("img", {
   base: {
     width: "100%",
     height: "100%",
+  },
+});
+
+const Name = styled("div", {
+  base: {
+    color: "color",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    userSelect: "none",
+    padding: "1",
+    backgroundColor: "transparentBackgroundColor",
+    fontWeight: 400,
+    fontSize: "80%",
   },
 });
 
@@ -127,14 +128,14 @@ export const Entry = React.forwardRef<HTMLInputElement, Props>(
             ref={ref}
             {...getTestId("link")}
           />
-          <InnerBorder>
+          <ImageWrapper>
             <Image
               src={imageUrl || fallbackImageUrl}
               alt={`${name} cover`}
               draggable={false}
             />
             {displayedName && <Name>{displayedName}</Name>}
-          </InnerBorder>
+          </ImageWrapper>
         </Label>
       </Wrapper>
     );
