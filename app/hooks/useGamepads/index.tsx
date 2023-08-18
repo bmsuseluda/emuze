@@ -20,7 +20,7 @@ export const useGamepads = () => {
   const requestAnimationFrameRef = useRef<number>();
 
   const fireEventOnButtonPress = useCallback((gamepads: (Gamepad | null)[]) => {
-    if (!document.hidden && document.visibilityState === "visible")
+    if (!document.hidden && document.visibilityState === "visible") {
       gamepads.forEach((gamepad) => {
         if (gamepad) {
           const oldGamepad = findGamepad(oldGamepads.current, gamepad.index);
@@ -75,6 +75,8 @@ export const useGamepads = () => {
           });
         }
       });
+    }
+
     oldGamepads.current = gamepads;
   }, []);
 
