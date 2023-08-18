@@ -159,6 +159,10 @@ export default defineConfig({
           "0%": { transform: "scale(0)" },
           "100%": { transform: "scale(1)" },
         },
+        spin: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
         makeOpaque: {
           "0%": { opacity: 0 },
           "100%": { opacity: 1 },
