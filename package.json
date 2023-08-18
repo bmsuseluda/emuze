@@ -2,7 +2,7 @@
   "private": true,
   "name": "emuze",
   "description": "Launch your Games fast and simple",
-  "version": "0.28.4",
+  "version": "0.28.5",
   "author": "bmsuseluda <gunslinger@sensonar.de>",
   "email": "gunslinger@sensonar.de",
   "url": "https://github.com/bmsuseluda/emuze",
@@ -28,7 +28,7 @@
     "app:dist": "yarn app:distLinux && yarn app:distWindows",
     "app:distLinux": "yarn build && electron-builder --linux",
     "app:distWindows": "yarn build && electron-builder --win",
-    "storybook": "storybook dev -p 6006 --no-open",
+    "storybook": "yarn clean && cross-env NODE_ENV=development yarn panda:codegen && storybook dev -p 6006 --no-open",
     "build-storybook": "storybook build"
   },
   "dependencies": {
