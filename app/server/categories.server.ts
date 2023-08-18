@@ -57,13 +57,13 @@ const categoryDataCache = new MultipleFileDataCache<Category>();
 
 export const readCategory = (categoryId: string) =>
   categoryDataCache.readFile(
-    nodepath.join(paths.entries, `${categoryId}.json`)
+    nodepath.join(paths.entries, `${categoryId}.json`),
   );
 
 export const writeCategory = (category: Category) =>
   categoryDataCache.writeFile(
     category,
-    nodepath.join(paths.entries, `${category.id}.json`)
+    nodepath.join(paths.entries, `${category.id}.json`),
   );
 
 const sortFileNames = (a: string, b: string) => {
@@ -81,19 +81,17 @@ const sortEntries = (a: Entry, b: Entry) => sortFileNames(a.path, b.path);
 const filterFiles = (filenames: string[], filesToFilter?: string[]) => {
   if (filesToFilter) {
     return filenames.filter(
-      (filename) => !filesToFilter.includes(nodepath.basename(filename))
+      (filename) => !filesToFilter.includes(nodepath.basename(filename)),
     );
   }
 
   return filenames;
 };
 
-export const readEntriesWithMetaData = async (
-  categoryId: string,
+export const readEntries = (
   entryPath: string,
-  igdbPlatformIds: number[],
   applicationId: ApplicationId,
-  oldEntries?: Entry[]
+  oldEntries?: Entry[],
 ) => {
   const applicationData = getApplicationDataById(applicationId);
 
@@ -104,40 +102,57 @@ export const readEntriesWithMetaData = async (
 
     const filenamesFiltered = filterFiles(filenames, filteredFiles);
 
-    const entriesWithMetaData: Entry[] = [];
-    const entriesWithoutMetaData: Entry[] = [];
+    return filenamesFiltered
+      .map<Entry>((filename, index) => {
+        const extension = nodepath.extname(filename);
+        const [name] = nodepath.basename(filename).split(extension);
 
-    filenamesFiltered.forEach((filename, index) => {
-      const extension = nodepath.extname(filename);
-      const [name] = nodepath.basename(filename).split(extension);
-
-      const oldEntryData = oldEntries?.find(({ path }) => path === filename);
-      const now = new Date().getTime();
-      if (oldEntryData?.metaData && oldEntryData?.metaData?.expiresOn > now) {
-        entriesWithMetaData.push(oldEntryData);
-      } else {
-        const entry = {
-          id: convertToId(name, index),
-          name,
-          path: filename,
-        };
-
-        if (findEntryName) {
-          entriesWithoutMetaData.push({
-            ...entry,
-            name: findEntryName(entry, entryPath),
-          });
+        const oldEntryData = oldEntries?.find(({ path }) => path === filename);
+        if (oldEntryData) {
+          return oldEntryData;
         } else {
-          entriesWithoutMetaData.push(entry);
-        }
-      }
-    });
+          const entry = {
+            id: convertToId(name, index),
+            name,
+            path: filename,
+          };
 
-    return [
-      ...entriesWithMetaData,
-      ...(await fetchMetaData(igdbPlatformIds, entriesWithoutMetaData)),
-    ].sort(sortEntries);
+          if (findEntryName) {
+            return {
+              ...entry,
+              name: findEntryName(entry, entryPath),
+            };
+          } else {
+            return entry;
+          }
+        }
+      })
+      .sort(sortEntries);
   }
+
+  return oldEntries || [];
+};
+
+export const readEntriesWithMetaData = async (
+  igdbPlatformIds: number[],
+  entries: Entry[],
+) => {
+  const entriesWithMetaData: Entry[] = [];
+  const entriesWithoutMetaData: Entry[] = [];
+
+  entries.forEach((entry) => {
+    const now = new Date().getTime();
+    if (entry.metaData && entry.metaData?.expiresOn > now) {
+      entriesWithMetaData.push(entry);
+    } else {
+      entriesWithoutMetaData.push({ ...entry, metaData: undefined });
+    }
+  });
+
+  return [
+    ...entriesWithMetaData,
+    ...(await fetchMetaData(igdbPlatformIds, entriesWithoutMetaData)),
+  ].sort(sortEntries);
 };
 
 export const importEntries = async (category: string) => {
@@ -154,13 +169,13 @@ export const importEntries = async (category: string) => {
       oldApplication: oldCategoryData?.application,
     });
 
-    await readEntriesWithMetaData(
-      category,
+    const entries = readEntries(
       oldCategoryData.entryPath,
-      igdbPlatformIds,
       application?.id || defaultApplication.id,
-      oldCategoryData.entries
-    )
+      oldCategoryData.entries,
+    );
+
+    await readEntriesWithMetaData(igdbPlatformIds, entries)
       .then((entries) => {
         writeCategory({
           ...oldCategoryData,
@@ -171,45 +186,63 @@ export const importEntries = async (category: string) => {
       .catch((error) => {
         openErrorDialog(
           "Please try again later",
-          "Fetch covers from igdb failed"
+          "Fetch covers from igdb failed",
         );
         console.log("igdb error", error);
+        writeCategory({
+          ...oldCategoryData,
+          application,
+          entries,
+        });
       });
   }
 };
 
-const createCategoryData =
-  (
-    categoryDbData: CategoryDB,
-    categoryFolderName: string,
-    categoryFolderBaseName: string,
-    applicationsPath?: string
-  ) =>
-  async (): Promise<Category> => {
-    const { id, igdbPlatformIds, defaultApplication } = categoryDbData;
-    const oldCategoryData = readCategory(id);
-
-    const application = getInstalledApplicationForCategory({
-      applicationsPath,
-      defaultApplicationDB: defaultApplication,
-      oldApplication: oldCategoryData?.application,
-    });
-
-    return readEntriesWithMetaData(
-      id,
-      categoryFolderName,
-      igdbPlatformIds,
-      application?.id || defaultApplication.id,
-      oldCategoryData?.entries
-    ).then((entries) => ({
-      ...oldCategoryData,
-      id,
-      name: categoryFolderBaseName,
-      application,
-      entryPath: categoryFolderName,
-      entries,
-    }));
+const createCategoryDataWithMetaData =
+  (category: Category) => async (): Promise<Category> => {
+    const categoryDbData = getCategoryDataByName(category.name);
+    if (category.entries && categoryDbData) {
+      return readEntriesWithMetaData(
+        categoryDbData.igdbPlatformIds,
+        category.entries,
+      ).then((entries) => ({
+        ...category,
+        entries,
+      }));
+    }
+    return category;
   };
+
+const createCategoryData = (
+  categoryDbData: CategoryDB,
+  categoryFolderName: string,
+  categoryFolderBaseName: string,
+  applicationsPath?: string,
+) => {
+  const { id, defaultApplication } = categoryDbData;
+  const oldCategoryData = readCategory(id);
+
+  const application = getInstalledApplicationForCategory({
+    applicationsPath,
+    defaultApplicationDB: defaultApplication,
+    oldApplication: oldCategoryData?.application,
+  });
+
+  const entries = readEntries(
+    categoryFolderName,
+    application?.id || defaultApplication.id,
+    oldCategoryData?.entries,
+  );
+
+  return {
+    ...oldCategoryData,
+    id,
+    name: categoryFolderBaseName,
+    application,
+    entryPath: categoryFolderName,
+    entries,
+  };
+};
 
 export const importCategories = async () => {
   const generalData = readGeneral();
@@ -219,43 +252,63 @@ export const importCategories = async () => {
     const categoryFolderNames = readDirectorynames(categoriesPath);
     categoryFolderNames.sort(sortCaseInsensitive);
 
-    const getSupportedCategories = categoryFolderNames.reduce<
-      Array<() => Promise<Category>>
-    >((result, categoryFolderName) => {
-      const categoryFolderBasename = nodepath.basename(categoryFolderName);
-      const categoryDbData = getCategoryDataByName(categoryFolderBasename);
+    const categories = categoryFolderNames.reduce<Category[]>(
+      (result, categoryFolderName) => {
+        const categoryFolderBasename = nodepath.basename(categoryFolderName);
+        const categoryDbData = getCategoryDataByName(categoryFolderBasename);
 
-      if (categoryDbData) {
-        result.push(
-          createCategoryData(
+        if (categoryDbData) {
+          const categoryData = createCategoryData(
             categoryDbData,
             categoryFolderName,
             categoryFolderBasename,
-            applicationsPath
-          )
-        );
-      }
+            applicationsPath,
+          );
+          if (categoryData.entries && categoryData.entries.length > 0) {
+            result.push(categoryData);
+          }
+        }
 
-      return result;
-    }, []);
+        return result;
+      },
+      [],
+    );
 
-    await Promise.all(getSupportedCategories.map((func) => func()))
-      .then((categories) => {
-        const supportedCategories = categories.filter(
-          ({ entries }) => entries && entries.length > 0
-        );
-        deleteCategories();
-        supportedCategories.forEach((category) => {
-          writeCategory(category);
-        });
-        writeCategories(supportedCategories);
-      })
-      .catch((error) => {
+    const getCategoriesWithMetaData = categories.map<() => Promise<Category>>(
+      (category) => createCategoryDataWithMetaData(category),
+    );
+
+    await Promise.allSettled(
+      getCategoriesWithMetaData.map((func) => func()),
+    ).then((settledResult) => {
+      const categoriesWithUpdatedMetaData = settledResult.map(
+        (categorySettledResult, index) => {
+          if (categorySettledResult.status === "fulfilled") {
+            return categorySettledResult.value;
+          }
+
+          console.log("igdb error", categorySettledResult.reason);
+          return categories[index];
+        },
+      );
+
+      deleteCategories();
+      categoriesWithUpdatedMetaData.forEach((category) => {
+        writeCategory(category);
+      });
+      writeCategories(categoriesWithUpdatedMetaData);
+
+      if (
+        settledResult.find(
+          (categorySettledResult) =>
+            categorySettledResult.status === "rejected",
+        )
+      ) {
         openErrorDialog(
           "Please try again later",
-          "Fetch covers from igdb failed"
+          "Fetch covers from igdb failed",
         );
-        console.log("igdb error", error);
-      });
+      }
+    });
   }
 };
