@@ -86,12 +86,13 @@ Right now the following are supported:
 
 ### Keyboard Shortcuts
 
-`F11` - Toggle fullscreen
+`F11` Toggle fullscreen
 
 ### Commandline Arguments
 
-`--fullscreen` - Start in fullscreen
-`--no-sandbox` - Launch as a Non-Steam Game in SteamOS, see [Running on Steam Deck in Game mode](#running-on-steam-deck-in-game-mode) 
+`--fullscreen` Start in fullscreen
+
+`--no-sandbox` Launch as a Non-Steam Game in SteamOS, see [Running on Steam Deck in Game mode](#running-on-steam-deck-in-game-mode) 
 
 ## Known Issues
 
