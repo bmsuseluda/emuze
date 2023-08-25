@@ -22,7 +22,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: yarn app:distLinux && yarn changeset publish
+          publish: yarn release:linux
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -41,7 +41,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: yarn app:distWindows && yarn changeset publish
+          publish: yarn release:windows
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
