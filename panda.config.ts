@@ -1,5 +1,4 @@
-import { defineConfig, defineGlobalStyles } from "@pandacss/dev";
-import type { PropertyTransform } from "@pandacss/types";
+import { defineConfig, defineGlobalStyles, defineUtility } from "@pandacss/dev";
 
 const globalCss = defineGlobalStyles({
   body: {
@@ -14,19 +13,42 @@ const globalCss = defineGlobalStyles({
   },
 });
 
-const borderRoundedTransform: PropertyTransform = (
-  value: boolean,
-  { token },
-) => {
-  if (value) {
-    return {
-      borderRadius: token("radii.1"),
-      position: "relative",
-      overflow: "clip",
-    };
-  }
-  return {};
-};
+const trimFont = defineUtility({
+  className: "trimFont",
+  values: { type: "boolean" },
+  transform: (value: boolean) => {
+    if (value) {
+      return {
+        "&::before": {
+          content: "",
+          marginBottom: "-0.05em",
+          display: "table",
+        },
+        "&::after": {
+          content: "",
+          marginTop: "0",
+          display: "table",
+        },
+      };
+    }
+    return {};
+  },
+});
+
+const borderRounded = defineUtility({
+  className: "borderRounded",
+  values: { type: "boolean" },
+  transform: (value: boolean, { token }) => {
+    if (value) {
+      return {
+        borderRadius: token("radii.1"),
+        position: "relative",
+        overflow: "clip",
+      };
+    }
+    return {};
+  },
+});
 
 export default defineConfig({
   preflight: true,
@@ -173,11 +195,8 @@ export default defineConfig({
 
   utilities: {
     extend: {
-      borderRounded: {
-        className: "borderRounded",
-        values: { type: "boolean" },
-        transform: borderRoundedTransform,
-      },
+      borderRounded,
+      trimFont,
     },
   },
 
