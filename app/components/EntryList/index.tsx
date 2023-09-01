@@ -25,9 +25,20 @@ type Props = {
 
 const List = styled(Ul, {
   base: {
+    position: "relative",
     display: "grid",
     gap: "1",
     gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+  },
+});
+
+const IntersectionIndicator = styled("div", {
+  base: {
+    position: "absolute",
+    right: 0,
+    bottom: "1px",
+    zIndex: 0,
+    minHeight: "320px",
   },
 });
 
@@ -36,12 +47,13 @@ export const EntryListDynamic = ({
   listRef,
   ...rest
 }: Props & { listRef: RefObject<HTMLDivElement> }) => {
-  const { entriesToRender } = useAddEntriesToRenderOnScrollEnd(
-    listRef,
+  const { entriesToRender, inViewRef } = useAddEntriesToRenderOnScrollEnd(
     entries || [],
   );
 
-  return <EntryList entries={entriesToRender} {...rest} />;
+  return (
+    <EntryList entries={entriesToRender} inViewRef={inViewRef} {...rest} />
+  );
 };
 
 export const EntryList = ({
@@ -51,7 +63,8 @@ export const EntryList = ({
   onBack,
   onExecute,
   "data-testid": dataTestid,
-}: Props) => {
+  inViewRef,
+}: Props & { inViewRef?: RefObject<HTMLDivElement> }) => {
   const { getTestId } = useTestId(dataTestid);
 
   const entriesRefs = useRef<HTMLInputElement[]>([]);
@@ -112,6 +125,7 @@ export const EntryList = ({
           {...getTestId("entry")}
         />
       ))}
+      <IntersectionIndicator ref={inViewRef} />
     </List>
   );
 };
