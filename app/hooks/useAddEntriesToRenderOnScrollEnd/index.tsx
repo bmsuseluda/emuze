@@ -1,19 +1,15 @@
-import type { RefObject } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Entry } from "~/types/jsonFiles/category";
 
-const entriesNumberForChunk = 60;
+const entriesCountForChunk = 20;
 
-export const useAddEntriesToRenderOnScrollEnd = (
-  listRef: RefObject<HTMLDivElement>,
-  entries: Entry[],
-) => {
+export const useAddEntriesToRenderOnScrollEnd = (entries: Entry[]) => {
   const [entriesToRender, setEntriesToRender] = useState(
-    entries.slice(0, entriesNumberForChunk),
+    entries.slice(0, entriesCountForChunk),
   );
 
   useEffect(() => {
-    setEntriesToRender(entries.slice(0, entriesNumberForChunk));
+    setEntriesToRender(entries.slice(0, entriesCountForChunk));
   }, [entries]);
 
   const addEntriesToRender = useCallback(() => {
@@ -22,31 +18,40 @@ export const useAddEntriesToRenderOnScrollEnd = (
         ...entriesToRender,
         ...entries.slice(
           entriesToRender.length,
-          entriesToRender.length + entriesNumberForChunk,
+          entriesToRender.length + entriesCountForChunk,
         ),
       ]);
     }
   }, [entries, entriesToRender]);
 
-  useEffect(() => {
-    const listRefCopy = listRef;
-    const addEntriesOnScrollEnd = () => {
-      if (listRef.current) {
-        const { scrollHeight, scrollTop } = listRef.current;
-        if (scrollTop >= scrollHeight * 0.7) {
-          addEntriesToRender();
-        }
+  const inViewRef = useRef<HTMLDivElement>(null);
+
+  const intersectionCallback: IntersectionObserverCallback = useCallback(
+    (entries) => {
+      if (entries.length === 1 && entries[0].isIntersecting) {
+        addEntriesToRender();
       }
-    };
-    listRef.current?.addEventListener("scroll", addEntriesOnScrollEnd);
+    },
+    [addEntriesToRender],
+  );
+
+  useEffect(() => {
+    const inViewRefCopy = inViewRef;
+    const observer = new IntersectionObserver(intersectionCallback);
+
+    if (inViewRefCopy.current) {
+      observer.observe(inViewRefCopy.current);
+    }
 
     return () => {
-      listRefCopy.current?.removeEventListener("scroll", addEntriesOnScrollEnd);
+      if (inViewRefCopy.current) {
+        observer.unobserve(inViewRefCopy.current);
+      }
     };
-  }, [addEntriesToRender, listRef]);
+  }, [intersectionCallback, inViewRef]);
 
   return {
-    listRef,
     entriesToRender,
+    inViewRef,
   };
 };
