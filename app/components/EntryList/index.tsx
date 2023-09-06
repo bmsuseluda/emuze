@@ -1,5 +1,5 @@
-import type { HTMLAttributes, RefObject } from "react";
-import React, { useCallback, useRef } from "react";
+import type { ComponentPropsWithoutRef, ElementRef, RefObject } from "react";
+import { useCallback, useRef } from "react";
 import { useTestId } from "~/hooks/useTestId";
 import type { Entry as EntryType } from "~/types/jsonFiles/category";
 import { Ul } from "../Ul";
@@ -21,7 +21,7 @@ type Props = {
   onBack: () => void;
   onExecute: () => void;
   "data-testid"?: string;
-} & HTMLAttributes<HTMLUListElement>;
+} & ComponentPropsWithoutRef<"ul">;
 
 const List = styled(Ul, {
   base: {
@@ -42,11 +42,7 @@ const IntersectionIndicator = styled("div", {
   },
 });
 
-export const EntryListDynamic = ({
-  entries,
-  listRef,
-  ...rest
-}: Props & { listRef: RefObject<HTMLDivElement> }) => {
+export const EntryListDynamic = ({ entries, ...rest }: Props) => {
   const { entriesToRender, inViewRef } = useAddEntriesToRenderOnScrollEnd(
     entries || [],
   );
@@ -64,15 +60,15 @@ export const EntryList = ({
   onExecute,
   "data-testid": dataTestid,
   inViewRef,
-}: Props & { inViewRef?: RefObject<HTMLDivElement> }) => {
+}: Props & { inViewRef?: RefObject<ElementRef<"div">> }) => {
   const { getTestId } = useTestId(dataTestid);
 
-  const entriesRefs = useRef<HTMLInputElement[]>([]);
-  const entryListRef = useRef<HTMLUListElement>(null);
+  const entriesRefs = useRef<ElementRef<"input">[]>([]);
+  const entryListRef = useRef<ElementRef<"ul">>(null);
 
   const { entriesRefsGrid } = useRefsGrid(entryListRef, entriesRefs, entries);
 
-  const selectEntry = (entry: HTMLInputElement) => {
+  const selectEntry = (entry: ElementRef<"input">) => {
     entry.checked = true;
     entry.focus();
   };

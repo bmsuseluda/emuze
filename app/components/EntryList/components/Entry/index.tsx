@@ -1,5 +1,6 @@
 import { useTestId } from "~/hooks/useTestId";
-import React from "react";
+import type { ElementRef } from "react";
+import { forwardRef } from "react";
 import { styled } from "../../../../../styled-system/jsx";
 
 interface Props {
@@ -103,7 +104,7 @@ export const getDisplayedName = (
   return name;
 };
 
-export const Entry = React.forwardRef<HTMLInputElement, Props>(
+export const Entry = forwardRef<ElementRef<typeof Input>, Props>(
   (
     {
       id,

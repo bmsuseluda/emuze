@@ -14,6 +14,7 @@ import { SettingsIcon } from "~/components/SettingsIcon";
 import { useFullscreen } from "~/hooks/useFullscreen";
 import { CheckboxRow } from "~/components/CheckboxRow";
 import { useRefsGrid } from "~/hooks/useRefsGrid";
+import type { ElementRef } from "react";
 import { useCallback, useRef } from "react";
 import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
 import { useFocus } from "~/hooks/useFocus";
@@ -66,21 +67,21 @@ export default function Index() {
   const { alwaysGameNames, collapseSidebar } = useLoaderData<typeof loader>();
   const fullscreen = useFullscreen();
 
-  const saveButtonRef = useRef<HTMLButtonElement>(null);
-  const entryListRef = useRef<HTMLUListElement>(null);
-  const entriesRefs = useRef<HTMLButtonElement[]>([]);
+  const saveButtonRef = useRef<ElementRef<"button">>(null);
+  const entryListRef = useRef<ElementRef<"ul">>(null);
+  const entriesRefs = useRef<ElementRef<"button">[]>([]);
   const { isInFocus, switchFocus } = useFocus<FocusElement>("settingsMain");
 
   const { entriesRefsGrid } = useRefsGrid(entryListRef, entriesRefs, []);
 
-  const selectEntry = useCallback((entry: HTMLButtonElement) => {
+  const selectEntry = useCallback((entry: ElementRef<"button">) => {
     entry.focus();
   }, []);
 
   const { selectedEntry, resetSelected } = useGamepadsOnGrid(
     entriesRefsGrid,
     selectEntry,
-    isInFocus
+    isInFocus,
   );
 
   const onBack = useCallback(() => {

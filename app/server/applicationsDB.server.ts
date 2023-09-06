@@ -16,14 +16,14 @@ type Settings = {
 type OptionParamFunction = (entry: Entry, settings: Settings) => string[];
 type EnvironmentVariableFunction = (
   category: CategoryData,
-  settings: Settings
+  settings: Settings,
 ) => Record<string, string | null>;
 
 type FindEntryNameFunction = (entry: Entry, categoryPath: string) => string;
 
 export const findEntryNameByFolder: FindEntryNameFunction = (
   { name, path },
-  categoryPath
+  categoryPath,
 ) => {
   const entryFolderPath = nodepath.dirname(path);
   if (categoryPath !== entryFolderPath) {
@@ -57,6 +57,8 @@ export const pcsx2: Application = {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("-fullscreen");
+      optionParams.push("-bigpicture");
+      optionParams.push("-batch");
     }
     return optionParams;
   },
@@ -70,7 +72,7 @@ export const blastem: Application = {
   createOptionParams: (_, { appearance: { fullscreen } }) => {
     const optionParams = [];
     if (fullscreen) {
-      optionParams.push("-f");
+      optionParams.push("-fullscreen");
     }
     return optionParams;
   },
@@ -144,6 +146,8 @@ export const duckstation: Application = {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("-fullscreen");
+      optionParams.push("-bigpicture");
+      optionParams.push("-batch");
     }
     return optionParams;
   },
@@ -161,6 +165,13 @@ export const ppsspp: Application = {
   name: "PPSSPP",
   fileExtensions: [".cso", ".iso"],
   flatpakId: "org.ppsspp.PPSSPP",
+  createOptionParams: (_, { appearance: { fullscreen } }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("--fullscreen");
+    }
+    return optionParams;
+  },
 };
 
 export const snes9x: Application = {
@@ -182,6 +193,13 @@ export const melonds: Application = {
   name: "MelonDS",
   fileExtensions: [".nds"],
   flatpakId: "net.kuribo64.melonDS",
+  createOptionParams: (_, { appearance: { fullscreen } }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("--fullscreen");
+    }
+    return optionParams;
+  },
 };
 
 export const desmume: Application = {
@@ -226,15 +244,37 @@ export const mednafen: Application = {
 export const ares: Application = {
   id: "ares",
   name: "Ares",
-  fileExtensions: [".z64", ".sms", ".chd"],
+  fileExtensions: [
+    ".z64",
+    ".sms",
+    ".chd",
+    ".nes",
+    ".sfc",
+    ".smc",
+    ".68K",
+    ".bin",
+    ".sgd",
+    ".smd",
+    ".gb",
+    ".gba",
+    ".cue",
+    ".pce",
+  ],
   flatpakId: "dev.ares.ares",
+  createOptionParams: (_, { appearance: { fullscreen } }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("--fullscreen");
+    }
+    return optionParams;
+  },
 };
 
 export const mupen64plus: Application = {
   id: "mupen64plus",
   name: "Mupen64Plus",
   fileExtensions: [".z64"],
-  flatpakId: "io.github.m64p.m64p",
+  flatpakId: "io.github.simple64.simple64",
 };
 
 export const mgba: Application = {
@@ -242,6 +282,13 @@ export const mgba: Application = {
   name: "mgba",
   fileExtensions: [".gb", ".gba"],
   flatpakId: "io.mgba.mGBA",
+  createOptionParams: (_, { appearance: { fullscreen } }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("-fullscreen");
+    }
+    return optionParams;
+  },
 };
 
 export const flycast: Application = {
@@ -278,10 +325,10 @@ export const applications = {
 
 export const getApplicationDataByName = (name: string) =>
   Object.values(applications).find(({ id }) =>
-    name.toLowerCase().includes(id.toLowerCase())
+    name.toLowerCase().includes(id.toLowerCase()),
   );
 
 export const getApplicationDataById = (id: ApplicationId) =>
   Object.values(applications).find(
-    (application) => application.id.toLowerCase() === id.toLowerCase()
+    (application) => application.id.toLowerCase() === id.toLowerCase(),
   );

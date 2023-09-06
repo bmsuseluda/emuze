@@ -1,15 +1,15 @@
 import { NavLink } from "@remix-run/react";
-import type { ComponentProps } from "react";
-import React from "react";
+import type { ComponentPropsWithoutRef, ElementRef, ReactNode } from "react";
+import { forwardRef } from "react";
 import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import type { RemixNavLinkProps } from "@remix-run/react/dist/components";
 import { styled } from "../../../styled-system/jsx";
 
 type Props = {
   highlightIfActive?: boolean;
-  icon?: React.ReactNode;
-  children?: React.ReactNode;
-} & ComponentProps<"a"> &
+  icon?: ReactNode;
+  children?: ReactNode;
+} & ComponentPropsWithoutRef<"a"> &
   RemixNavLinkProps;
 
 const StyledNavLink = styled(NavLink, {
@@ -49,7 +49,7 @@ const LinkSpan = styled(IconChildrenWrapper, {
   },
 });
 
-export const Link = React.forwardRef<HTMLAnchorElement, Props>(
+export const Link = forwardRef<ElementRef<typeof StyledNavLink>, Props>(
   ({ to, children, icon, highlightIfActive = true, ...rest }, ref) => (
     <StyledNavLink
       to={to}

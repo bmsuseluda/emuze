@@ -1,3 +1,4 @@
+import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
@@ -83,10 +84,9 @@ export default function Category() {
   const { categoryData, alwaysGameNames } = useLoaderData<typeof loader>();
 
   const isFullscreen = useFullscreen();
-  const launchButtonRef = useRef<HTMLButtonElement>(null);
-  const importButtonRef = useRef<HTMLButtonElement>(null);
-  const settingsButtonRef = useRef<HTMLAnchorElement>(null);
-  const listRef = useRef<HTMLDivElement>(null);
+  const launchButtonRef = useRef<ElementRef<"button">>(null);
+  const importButtonRef = useRef<ElementRef<"button">>(null);
+  const settingsButtonRef = useRef<ElementRef<"a">>(null);
 
   const { getTestId } = useTestId("category");
   const { isInFocus, disableFocus, switchFocus } =
@@ -149,7 +149,6 @@ export default function Category() {
         <Form method="post">
           <ListActionBarLayout.ListActionBarContainer
             scrollSmooth
-            ref={listRef}
             list={
               entries && (
                 <EntryListDynamic
@@ -159,7 +158,6 @@ export default function Category() {
                   onExecute={onExecute}
                   onBack={onBack}
                   isInFocus={isInFocus}
-                  listRef={listRef}
                   {...getTestId("entries")}
                 />
               )

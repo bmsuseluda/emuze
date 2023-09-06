@@ -1,3 +1,4 @@
+import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
@@ -84,7 +85,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (_actionId === actionIds.chooseApplicationsPath) {
     const newApplicationsPath = openFolderDialog(
       "Select Emulators Folder",
-      typeof applicationsPath === "string" ? applicationsPath : undefined
+      typeof applicationsPath === "string" ? applicationsPath : undefined,
     );
     if (newApplicationsPath) {
       return json({
@@ -97,7 +98,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (_actionId === actionIds.chooseCategoriesPath) {
     const newCategoriesPath = openFolderDialog(
       "Select Roms Folder",
-      typeof categoriesPath === "string" ? categoriesPath : undefined
+      typeof categoriesPath === "string" ? categoriesPath : undefined,
     );
     if (newCategoriesPath) {
       return json({
@@ -125,9 +126,9 @@ export default function Index() {
   const newData = useActionData<General>();
 
   // TODO: Maybe create specific files for gamepad controls
-  const saveButtonRef = useRef<HTMLButtonElement>(null);
-  const entryListRef = useRef<HTMLUListElement>(null);
-  const entriesRefs = useRef<HTMLButtonElement[]>([]);
+  const saveButtonRef = useRef<ElementRef<"button">>(null);
+  const entryListRef = useRef<ElementRef<"ul">>(null);
+  const entriesRefs = useRef<ElementRef<"button">[]>([]);
   const { isInFocus, switchFocus } = useFocus<FocusElement>("settingsMain");
 
   const { entriesRefsGrid } = useRefsGrid(entryListRef, entriesRefs, []);
@@ -140,7 +141,7 @@ export default function Index() {
   const { selectedEntry, resetSelected } = useGamepadsOnGrid(
     entriesRefsGrid,
     selectEntry,
-    isInFocus
+    isInFocus,
   );
 
   const onBack = useCallback(() => {
@@ -170,7 +171,7 @@ export default function Index() {
   useKeyboardEvent("s", onSave);
 
   const [applicationPath, setApplicationPath] = useState(
-    defaultData.applicationsPath || ""
+    defaultData.applicationsPath || "",
   );
 
   useEffect(() => {
@@ -180,7 +181,7 @@ export default function Index() {
   }, [newData?.applicationsPath]);
 
   const [categoriesPath, setCategoriesPath] = useState(
-    defaultData.categoriesPath || ""
+    defaultData.categoriesPath || "",
   );
 
   useEffect(() => {

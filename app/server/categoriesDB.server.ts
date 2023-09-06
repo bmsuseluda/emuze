@@ -34,7 +34,7 @@ export const sonyplaystation: Category = {
   id: "sonyplaystation",
   names: ["Sony Playstation", "playstation", "psx", "ps1", "psone"],
   igdbPlatformIds: [7],
-  applications: [duckstation],
+  applications: [duckstation, mednafen],
   defaultApplication: duckstation,
 };
 
@@ -77,7 +77,7 @@ export const segamegadrive: Category = {
     "Genesis",
   ],
   igdbPlatformIds: [29],
-  applications: [blastem],
+  applications: [blastem, ares],
   defaultApplication: blastem,
 };
 
@@ -106,7 +106,7 @@ export const supernintendo: Category = {
     "Super Famicom",
   ],
   igdbPlatformIds: [19, 51, 58],
-  applications: [bsnes, snes9x],
+  applications: [bsnes, snes9x, ares],
   defaultApplication: bsnes,
 };
 
@@ -154,8 +154,8 @@ export const nintendoentertainmentsystem: Category = {
   id: "nintendoentertainmentsystem",
   names: ["Nintendo Entertainment System", "NES", "Famicom"],
   igdbPlatformIds: [18, 99],
-  applications: [nestopia],
-  defaultApplication: nestopia,
+  applications: [nestopia, ares],
+  defaultApplication: ares,
 };
 
 export const nintendo64: Category = {
@@ -170,7 +170,7 @@ export const nintendogameboy: Category = {
   id: "nintendogameboy",
   names: ["Nintendo Game Boy", "Game Boy", "GB"],
   igdbPlatformIds: [33, 22, 24],
-  applications: [mgba],
+  applications: [mgba, ares],
   defaultApplication: mgba,
 };
 
@@ -186,7 +186,7 @@ export const nintendogameboyadvance: Category = {
   id: "nintendogameboyadvance",
   names: ["Nintendo Game Boy Advance", "Game Boy Advance", "GBA"],
   igdbPlatformIds: [24],
-  applications: [mgba],
+  applications: [mgba, ares],
   defaultApplication: mgba,
 };
 
@@ -202,8 +202,8 @@ export const pcengine: Category = {
   id: "pcengine",
   names: ["PC Engine"],
   igdbPlatformIds: [86, 150],
-  applications: [mednafen],
-  defaultApplication: mednafen,
+  applications: [mednafen, ares],
+  defaultApplication: ares,
 };
 
 export const pcenginecd: Category = {
@@ -262,6 +262,6 @@ export const getCategoryDataByName = (name: string) =>
   Object.values(categories).find(
     ({ names }) =>
       !!names.find(
-        (categoryName) => categoryName.toLowerCase() === name.toLowerCase()
-      )
+        (categoryName) => categoryName.toLowerCase() === name.toLowerCase(),
+      ),
   );

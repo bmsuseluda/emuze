@@ -1,4 +1,5 @@
 import { layout } from "~/hooks/useGamepads/layouts";
+import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import {
   useGamepadButtonPressEvent,
@@ -11,7 +12,7 @@ export const useGamepadsOnSidebar = (
   selectedCategoryId: number,
   isInFocus: boolean,
 ) => {
-  const categoryLinksRefs = useRef<HTMLAnchorElement[]>([]);
+  const categoryLinksRefs = useRef<ElementRef<"a">[]>([]);
 
   const selected = useRef<number>(selectedCategoryId);
 
@@ -60,7 +61,7 @@ export const useGamepadsOnSidebar = (
   useKeyboardEvent("ArrowDown", onDown);
 
   const refCallback = useCallback(
-    (index: number) => (ref: HTMLAnchorElement) => {
+    (index: number) => (ref: ElementRef<"a">) => {
       categoryLinksRefs.current[index] = ref;
     },
     [],

@@ -1,9 +1,9 @@
 import debounce from "lodash.debounce";
-import type { MutableRefObject, RefObject } from "react";
+import type { ElementRef, MutableRefObject, RefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
 
 export const useRefsGrid = <T extends HTMLElement, R>(
-  entryListRef: RefObject<HTMLUListElement>,
+  entryListRef: RefObject<ElementRef<"ul">>,
   entriesRefs: MutableRefObject<T[]>,
   entries?: R[],
 ) => {

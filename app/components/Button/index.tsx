@@ -1,5 +1,5 @@
-import type { ComponentProps, ReactNode } from "react";
-import React, { forwardRef } from "react";
+import type { ComponentPropsWithoutRef, ElementRef, ReactNode } from "react";
+import { forwardRef } from "react";
 import { IconChildrenWrapper } from "../IconChildrenWrapper";
 import { Typography } from "~/components/Typography";
 import { styled } from "../../../styled-system/jsx";
@@ -31,9 +31,9 @@ export type Props = {
   children?: ReactNode;
   loading?: boolean;
   icon?: ReactNode;
-} & ComponentProps<"button">;
+} & ComponentPropsWithoutRef<typeof StyledButton>;
 
-export const Button = forwardRef<HTMLButtonElement, Props>(
+export const Button = forwardRef<ElementRef<typeof StyledButton>, Props>(
   ({ children, loading = false, icon, ...rest }, ref) => (
     <StyledButton {...rest} ref={ref}>
       <IconChildrenWrapper rotate={loading}>
