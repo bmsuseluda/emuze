@@ -1,5 +1,5 @@
 import { Headline } from "~/components/Headline";
-import type { ReactNode } from "react";
+import type { ElementRef, ReactNode } from "react";
 import { forwardRef } from "react";
 import { styled } from "../../../../styled-system/jsx";
 import { useFullscreen } from "~/hooks/useFullscreen";
@@ -110,24 +110,25 @@ interface ContainerProps {
   collapse?: boolean;
 }
 
-const ListActionBarContainer = forwardRef<HTMLDivElement, ContainerProps>(
-  ({ list: listEntries, actions, scrollSmooth, collapse = false }, ref) => {
-    const fullscreen = useFullscreen();
-    return (
-      <Absolute>
-        <List
-          ref={ref}
-          scrollSmooth={scrollSmooth}
-          collapse={collapse}
-          fullscreen={fullscreen}
-        >
-          {listEntries}
-        </List>
-        <ActionBar collapse={collapse}>{actions}</ActionBar>
-      </Absolute>
-    );
-  },
-);
+const ListActionBarContainer = forwardRef<
+  ElementRef<typeof List>,
+  ContainerProps
+>(({ list: listEntries, actions, scrollSmooth, collapse = false }, ref) => {
+  const fullscreen = useFullscreen();
+  return (
+    <Absolute>
+      <List
+        ref={ref}
+        scrollSmooth={scrollSmooth}
+        collapse={collapse}
+        fullscreen={fullscreen}
+      >
+        {listEntries}
+      </List>
+      <ActionBar collapse={collapse}>{actions}</ActionBar>
+    </Absolute>
+  );
+});
 ListActionBarContainer.displayName = "ListActionBarContainer";
 
 export const ListActionBarLayout = ({ headline, children }: Props) => (

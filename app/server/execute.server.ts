@@ -2,6 +2,7 @@ import { execFile, execFileSync } from "child_process";
 import { readCategory } from "~/server/categories.server";
 import { getApplicationDataById } from "~/server/applicationsDB.server";
 import { readAppearance, readGeneral } from "~/server/settings.server";
+import { openErrorDialog } from "~/server/openDialog.server";
 
 // TODO: separate os specific code
 const executeApplicationOnLinux = ({
@@ -28,7 +29,7 @@ const executeApplicationOnLinux = ({
 const executeApplicationOnWindows = (
   applicationPath: string,
   entryPath: string,
-  optionParams: string[]
+  optionParams: string[],
 ) => {
   // TODO: check how to get logs in error case but without freezing the application
   execFileSync(applicationPath, [...optionParams, entryPath]);
@@ -60,7 +61,7 @@ export const executeApplication = (category: string, entry: string) => {
             if (value) {
               process.env[key] = value;
             }
-          }
+          },
         );
       }
       const optionParams = createOptionParams
@@ -72,7 +73,7 @@ export const executeApplication = (category: string, entry: string) => {
           executeApplicationOnWindows(
             application.path,
             entryData.path,
-            optionParams
+            optionParams,
           );
         } else {
           executeApplicationOnLinux({
@@ -83,7 +84,7 @@ export const executeApplication = (category: string, entry: string) => {
           });
         }
       } catch (error) {
-        // openErrorDialog(error, `Launch of ${entryData.name} failed`);
+        openErrorDialog(error, `Launch of ${entryData.name} failed`);
         console.log("error", error);
       }
     }
@@ -100,7 +101,7 @@ export const checkFlatpakIsInstalled = (flatpakId: string) => {
 };
 export const checkFlatpakIsInstalledParallel = (flatpakId: string) =>
   new Promise<boolean>((resolve, reject) => {
-    execFile("flatpak", ["info", flatpakId], (error, stdout, stderr) => {
+    execFile("flatpak", ["info", flatpakId], (error, stdout) => {
       if (error) {
         reject(true);
       }

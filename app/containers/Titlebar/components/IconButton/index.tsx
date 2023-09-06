@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 import type { IconType } from "react-icons";
 import {
   VscChromeClose,
@@ -61,7 +61,7 @@ const CloseButton = styled(Button, {
 export const IconButton = ({
   variant,
   ...rest
-}: Props & ButtonHTMLAttributes<HTMLButtonElement>) => {
+}: Props & ComponentPropsWithoutRef<"button">) => {
   const Icon = iconVariant[variant];
 
   const handleClick = () => {

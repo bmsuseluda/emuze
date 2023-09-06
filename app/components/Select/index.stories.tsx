@@ -1,5 +1,4 @@
 import { Select } from ".";
-import React from "react";
 
 import type { Meta, StoryObj } from "@storybook/react";
 
@@ -14,7 +13,7 @@ export const Default: Story = {
   args: {},
   render: (args) => {
     return (
-      <Select.Root name="fruit" value="grapes">
+      <Select.Root name="fruit" value="grapes" {...args}>
         <Select.Trigger placeholder="Select a fruit…"></Select.Trigger>
         <Select.Content>
           <Select.Item value="apple">Apple</Select.Item>
@@ -32,7 +31,7 @@ export const Open: Story = {
   args: {},
   render: (args) => {
     return (
-      <Select.Root open>
+      <Select.Root open {...args}>
         <Select.Trigger placeholder="Select a fruit…"></Select.Trigger>
         <Select.Content>
           <Select.Item value="apple">Apple</Select.Item>

@@ -1,4 +1,5 @@
-import React, { forwardRef } from "react";
+import type { ComponentPropsWithoutRef, ElementRef } from "react";
+import { forwardRef } from "react";
 import * as RadixSelect from "@radix-ui/react-select";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { GiCheckMark } from "react-icons/gi";
@@ -89,39 +90,42 @@ const StyledItemIndicator = styled(RadixSelect.ItemIndicator, {
   },
 });
 
-const Trigger = forwardRef<HTMLButtonElement, RadixSelect.SelectTriggerProps>(
-  ({ placeholder, ...rest }, ref) => (
-    <SelectTrigger ref={ref} {...rest}>
-      <RadixSelect.Value placeholder={placeholder} />
-      <SelectIcon>
-        <TiArrowSortedDown />
-      </SelectIcon>
-    </SelectTrigger>
-  ),
-);
+const Trigger = forwardRef<
+  ElementRef<typeof SelectTrigger>,
+  ComponentPropsWithoutRef<typeof SelectTrigger>
+>(({ placeholder, ...rest }, ref) => (
+  <SelectTrigger ref={ref} {...rest}>
+    <RadixSelect.Value placeholder={placeholder} />
+    <SelectIcon>
+      <TiArrowSortedDown />
+    </SelectIcon>
+  </SelectTrigger>
+));
 Trigger.displayName = "Trigger";
 
-const Content = forwardRef<HTMLDivElement, RadixSelect.SelectContentProps>(
-  ({ children, ...rest }, ref) => (
-    <StyledContent position="popper" sideOffset={5} {...rest} ref={ref}>
-      <RadixSelect.Viewport>
-        <RadixSelect.Group>{children}</RadixSelect.Group>
-      </RadixSelect.Viewport>
-    </StyledContent>
-  ),
-);
+const Content = forwardRef<
+  ElementRef<typeof StyledContent>,
+  ComponentPropsWithoutRef<typeof StyledContent>
+>(({ children, ...rest }, ref) => (
+  <StyledContent position="popper" sideOffset={5} {...rest} ref={ref}>
+    <RadixSelect.Viewport>
+      <RadixSelect.Group>{children}</RadixSelect.Group>
+    </RadixSelect.Viewport>
+  </StyledContent>
+));
 Content.displayName = "Content";
 
-const Item = React.forwardRef<HTMLDivElement, RadixSelect.SelectItemProps>(
-  ({ children, ...props }, forwardedRef) => (
-    <StyledItem {...props} ref={forwardedRef}>
-      <RadixSelect.ItemText>{children}</RadixSelect.ItemText>
-      <StyledItemIndicator>
-        <GiCheckMark />
-      </StyledItemIndicator>
-    </StyledItem>
-  ),
-);
+const Item = forwardRef<
+  ElementRef<typeof StyledItem>,
+  ComponentPropsWithoutRef<typeof StyledItem>
+>(({ children, ...props }, ref) => (
+  <StyledItem {...props} ref={ref}>
+    <RadixSelect.ItemText>{children}</RadixSelect.ItemText>
+    <StyledItemIndicator>
+      <GiCheckMark />
+    </StyledItemIndicator>
+  </StyledItem>
+));
 Item.displayName = "Item";
 
 export const Select = {

@@ -1,6 +1,6 @@
 import { Link as RemixLink } from "@remix-run/react";
-import type { AnchorHTMLAttributes } from "react";
-import React from "react";
+import type { ElementRef } from "react";
+import { forwardRef } from "react";
 import { VscSettingsGear } from "react-icons/vsc";
 import type { RemixLinkProps } from "@remix-run/react/dist/components";
 import { styled } from "../../../styled-system/jsx";
@@ -47,10 +47,9 @@ const Link = styled(RemixLink, {
 type Props = {
   isFullscreen?: boolean;
   to?: string;
-} & AnchorHTMLAttributes<HTMLAnchorElement> &
-  Omit<RemixLinkProps, "to">;
+} & Omit<RemixLinkProps, "to">;
 
-export const SettingsLink = React.forwardRef<HTMLAnchorElement, Props>(
+export const SettingsLink = forwardRef<ElementRef<typeof Link>, Props>(
   ({ isFullscreen = false, to = "settings", ...rest }, ref) => (
     <Link
       {...rest}
@@ -64,7 +63,7 @@ export const SettingsLink = React.forwardRef<HTMLAnchorElement, Props>(
     >
       <VscSettingsGear />
     </Link>
-  )
+  ),
 );
 
 SettingsLink.displayName = "SettingsLink";

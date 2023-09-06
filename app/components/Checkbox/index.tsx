@@ -1,6 +1,7 @@
 import { GiCheckMark } from "react-icons/gi";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
-import React from "react";
+import type { ComponentPropsWithoutRef, ElementRef } from "react";
+import { forwardRef } from "react";
 import { styled } from "../../../styled-system/jsx";
 
 const Wrapper = styled("div", {
@@ -47,12 +48,12 @@ const Checkmark = styled(GiCheckMark, {
   base: { width: "100%", height: "100%", color: "backgroundColor" },
 });
 
-export const Checkbox = React.forwardRef<
-  React.ElementRef<typeof CheckboxPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
->((props, forwardedRef) => (
+export const Checkbox = forwardRef<
+  ElementRef<typeof StyledCheckbox>,
+  ComponentPropsWithoutRef<typeof StyledCheckbox>
+>((props, ref) => (
   <Wrapper>
-    <StyledCheckbox {...props} ref={forwardedRef}>
+    <StyledCheckbox {...props} ref={ref}>
       <StyledIndicator>
         <Checkmark />
       </StyledIndicator>

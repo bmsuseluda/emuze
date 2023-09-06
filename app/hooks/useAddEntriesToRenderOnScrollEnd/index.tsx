@@ -1,3 +1,4 @@
+import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Entry } from "~/types/jsonFiles/category";
 
@@ -24,7 +25,7 @@ export const useAddEntriesToRenderOnScrollEnd = (entries: Entry[]) => {
     }
   }, [entries, entriesToRender]);
 
-  const inViewRef = useRef<HTMLDivElement>(null);
+  const inViewRef = useRef<ElementRef<"div">>(null);
 
   const intersectionCallback: IntersectionObserverCallback = useCallback(
     (entries) => {
