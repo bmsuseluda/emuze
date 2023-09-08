@@ -262,7 +262,9 @@ export const ares: Application = {
   ],
   flatpakId: "dev.ares.ares",
   createOptionParams: (_, { appearance: { fullscreen } }) => {
-    const optionParams = [];
+    // keyboard f2
+    const hotkeyFullscreen = ["--setting", "Hotkey/ToggleFullscreen=0x1/0/2"];
+    const optionParams = [...hotkeyFullscreen];
     if (fullscreen) {
       optionParams.push("--fullscreen");
     }

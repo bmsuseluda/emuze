@@ -73,7 +73,7 @@ export default function Index() {
   useKeyboardEvent("Backspace", handleCloseOnFocus);
 
   return (
-    <Dialog open onClose={handleClose}>
+    <Dialog open onClose={handleClose} closable={categories.length > 0}>
       <SidebarMainLayout>
         <SidebarMainLayout.Sidebar
           headline="Settings"

@@ -21,6 +21,6 @@ export const openErrorDialog = (error: unknown, title: string) => {
   }
 
   if (errorMessage) {
-    dialog.showErrorBox(title, errorMessage);
+    dialog.showErrorBox(title, errorMessage.slice(0, 500));
   }
 };

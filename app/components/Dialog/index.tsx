@@ -46,28 +46,45 @@ const IconButton = styled("button", {
   },
 });
 
+export type DialogCloseEvent = {
+  preventDefault: () => void;
+};
+
 type Props = {
   children: ReactNode;
   open: boolean;
-  onClose: () => void;
+  onClose: (event: DialogCloseEvent) => void;
+  closable?: boolean;
 };
 
-export const Dialog = ({ children, open, onClose }: Props) => (
-  <RadixDialog.Root open={open}>
-    <DialogOverlay>
-      <DialogContent
-        onOpenAutoFocus={(event: Event) => {
-          event.preventDefault();
-        }}
-        onInteractOutside={onClose}
-      >
-        {children}
-        <RadixDialog.Close asChild onClick={onClose}>
-          <IconButton aria-label="Close">
-            <VscChromeClose />
-          </IconButton>
-        </RadixDialog.Close>
-      </DialogContent>
-    </DialogOverlay>
-  </RadixDialog.Root>
-);
+export const Dialog = ({ children, open, onClose, closable = true }: Props) => {
+  const handleClose = (event: DialogCloseEvent) => {
+    if (closable) {
+      onClose(event);
+    } else {
+      event.preventDefault();
+    }
+  };
+
+  return (
+    <RadixDialog.Root open={open}>
+      <DialogOverlay>
+        <DialogContent
+          onOpenAutoFocus={(event: Event) => {
+            event.preventDefault();
+          }}
+          onInteractOutside={handleClose}
+        >
+          {children}
+          {closable && (
+            <RadixDialog.Close asChild onClick={handleClose}>
+              <IconButton aria-label="Close">
+                <VscChromeClose />
+              </IconButton>
+            </RadixDialog.Close>
+          )}
+        </DialogContent>
+      </DialogOverlay>
+    </RadixDialog.Root>
+  );
+};

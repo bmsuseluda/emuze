@@ -3,7 +3,7 @@ import type { StickDirection } from "~/hooks/useGamepads/layouts";
 
 export const useGamepadButtonPressEvent = (
   index: number,
-  onGamepadEvent: () => void
+  onGamepadEvent: (event: Event) => void,
 ) => {
   useEffect(() => {
     addEventListener(`gamepadonbutton${index}press`, onGamepadEvent);
@@ -16,7 +16,7 @@ export const useGamepadButtonPressEvent = (
 
 export const useGamepadStickDirectionEvent = (
   stickDirection: StickDirection,
-  onGamepadEvent: () => void
+  onGamepadEvent: (event: Event) => void,
 ) => {
   useEffect(() => {
     addEventListener(`gamepadon${stickDirection}`, onGamepadEvent);
@@ -29,13 +29,13 @@ export const useGamepadStickDirectionEvent = (
 
 export const useKeyboardEvent = (
   keyboardKey: string,
-  onKeyboardEvent: () => void
+  onKeyboardEvent: (e: KeyboardEvent) => void,
 ) => {
   useEffect(() => {
     const handleKeyboardEvent = (e: KeyboardEvent) => {
       if (e.key === keyboardKey) {
         e.preventDefault();
-        onKeyboardEvent();
+        onKeyboardEvent(e);
       }
     };
 
