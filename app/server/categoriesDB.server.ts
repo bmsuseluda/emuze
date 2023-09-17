@@ -1,6 +1,9 @@
 import type { Application } from "~/server/applicationsDB.server";
 import {
   ares,
+  aresMegaDrive,
+  aresSega32x,
+  aresSegaCd,
   blastem,
   bsnes,
   citra,
@@ -63,7 +66,7 @@ export const segamastersystem: Category = {
   id: "segamastersystem",
   names: ["Sega Master System", "Master System", "SMS"],
   igdbPlatformIds: [64],
-  applications: [ares],
+  applications: [ares, blastem],
   defaultApplication: ares,
 };
 
@@ -77,16 +80,31 @@ export const segamegadrive: Category = {
     "Genesis",
   ],
   igdbPlatformIds: [29],
-  applications: [blastem, ares],
-  defaultApplication: blastem,
+  applications: [blastem, aresMegaDrive],
+  defaultApplication: aresMegaDrive,
+};
+
+export const sega32x: Category = {
+  id: "sega32x",
+  names: [
+    "Sega 32X",
+    "32X",
+    "Mega 32X",
+    "Genesis 32X",
+    "Mega Drive 32X",
+    "Super 32X",
+  ],
+  igdbPlatformIds: [30],
+  applications: [aresSega32x],
+  defaultApplication: aresSega32x,
 };
 
 export const segacd: Category = {
   id: "segacd",
   names: ["Sega CD", "Mega CD", "Sega Mega CD"],
   igdbPlatformIds: [78],
-  applications: [ares],
-  defaultApplication: ares,
+  applications: [aresSegaCd],
+  defaultApplication: aresSegaCd,
 };
 
 export const segadreamcast: Category = {
@@ -250,6 +268,7 @@ export const categories = {
   pcenginecd,
   segamastersystem,
   segamegadrive,
+  sega32x,
   segacd,
   segasaturn,
   segadreamcast,

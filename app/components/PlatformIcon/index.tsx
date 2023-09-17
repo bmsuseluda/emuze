@@ -27,6 +27,7 @@ const icons: Record<PlatformId, IconType> = {
   neogeocd: SiApplearcade,
   segamastersystem: SiSega,
   segamegadrive: SiSega,
+  sega32x: SiSega,
   segacd: SiSega,
   segasaturn: SiSega,
   segadreamcast: TiSpiral,

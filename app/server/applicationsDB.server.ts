@@ -67,7 +67,7 @@ export const pcsx2: Application = {
 export const blastem: Application = {
   id: "blastem",
   name: "BlastEm",
-  fileExtensions: [".68K", ".bin", ".sgd", ".smd"],
+  fileExtensions: [".68K", ".bin", ".sgd", ".smd", ".sms"],
   flatpakId: "com.retrodev.blastem",
   createOptionParams: (_, { appearance: { fullscreen } }) => {
     const optionParams = [];
@@ -98,15 +98,25 @@ const findMameArcadeGameName: FindEntryNameFunction = ({ name }) => {
   return entryName || name;
 };
 
+const getSharedMameOptionParams: OptionParamFunction = ({ path }) => {
+  const entryDirname = nodepath.dirname(path);
+  return [
+    "-w",
+    "-rompath",
+    entryDirname,
+    "-cfg_directory",
+    nodepath.join(entryDirname, "cfg"),
+    "-nvram_directory",
+    nodepath.join(entryDirname, "nvram"),
+  ];
+};
+
 export const mame: Application = {
   id: "mame",
   name: "Mame",
   fileExtensions: [".zip", ".chd"],
   flatpakId: "org.mamedev.MAME",
-  createOptionParams: ({ path }) => {
-    const entryDirname = nodepath.dirname(path);
-    return [...getSharedMameOptionParams(entryDirname)];
-  },
+  createOptionParams: getSharedMameOptionParams,
   findEntryName: findMameArcadeGameName,
 };
 
@@ -119,23 +129,14 @@ export const mameNeoGeo: Application = {
 export const mameNeoGeoCD: Application = {
   ...mame,
   id: "mameNeoGeoCD",
-  createOptionParams: ({ path }) => {
-    const entryDirname = nodepath.dirname(path);
-    return [...getSharedMameOptionParams(entryDirname), "neocdz", "-cdrm"];
-  },
+  createOptionParams: (...props) => [
+    ...getSharedMameOptionParams(...props),
+    "neocdz",
+    "-cdrm",
+  ],
   filteredFiles: ["neocdz.zip"],
   findEntryName: undefined,
 };
-
-const getSharedMameOptionParams = (entryDirname: string) => [
-  "-w",
-  "-rompath",
-  entryDirname,
-  "-cfg_directory",
-  nodepath.join(entryDirname, "cfg"),
-  "-nvram_directory",
-  nodepath.join(entryDirname, "nvram"),
-];
 
 export const duckstation: Application = {
   id: "duckstation",
@@ -241,6 +242,19 @@ export const mednafen: Application = {
   },
 };
 
+const getSharedAresOptionParams: OptionParamFunction = (
+  _,
+  { appearance: { fullscreen } },
+) => {
+  // keyboard f2
+  const hotkeyFullscreen = ["--setting", "Hotkey/ToggleFullscreen=0x1/0/2"];
+  const optionParams = [...hotkeyFullscreen];
+  if (fullscreen) {
+    optionParams.push("--fullscreen");
+  }
+  return optionParams;
+};
+
 export const ares: Application = {
   id: "ares",
   name: "Ares",
@@ -249,10 +263,6 @@ export const ares: Application = {
     ".sms",
     ".chd",
     ".nes",
-    ".sfc",
-    ".smc",
-    ".68K",
-    ".bin",
     ".sgd",
     ".smd",
     ".gb",
@@ -261,15 +271,37 @@ export const ares: Application = {
     ".pce",
   ],
   flatpakId: "dev.ares.ares",
-  createOptionParams: (_, { appearance: { fullscreen } }) => {
-    // keyboard f2
-    const hotkeyFullscreen = ["--setting", "Hotkey/ToggleFullscreen=0x1/0/2"];
-    const optionParams = [...hotkeyFullscreen];
-    if (fullscreen) {
-      optionParams.push("--fullscreen");
-    }
-    return optionParams;
-  },
+  createOptionParams: getSharedAresOptionParams,
+};
+
+export const aresMegaDrive: Application = {
+  ...ares,
+  id: "aresMegaDrive",
+  fileExtensions: [".sfc", ".smc", ".68K", ".bin"],
+  createOptionParams: (...props) => [
+    ...getSharedAresOptionParams(...props),
+    ...["--system", "Mega Drive"],
+  ],
+};
+
+export const aresSegaCd: Application = {
+  ...ares,
+  id: "aresSegaCd",
+  fileExtensions: ["chd"],
+  createOptionParams: (...props) => [
+    ...getSharedAresOptionParams(...props),
+    ...["--system", "Mega CD"],
+  ],
+};
+
+export const aresSega32x: Application = {
+  ...ares,
+  id: "aresSega32x",
+  fileExtensions: ["32x"],
+  createOptionParams: (...props) => [
+    ...getSharedAresOptionParams(...props),
+    ...["--system", "Mega 32X"],
+  ],
 };
 
 export const mupen64plus: Application = {
@@ -320,6 +352,9 @@ export const applications = {
   mameNeoGeo,
   mameNeoGeoCD,
   ares,
+  aresMegaDrive,
+  aresSegaCd,
+  aresSega32x,
   mupen64plus,
   mgba,
   flycast,
