@@ -222,12 +222,33 @@ export const nestopia: Application = {
   name: "Nestopia",
   fileExtensions: [".nes"],
   flatpakId: "ca._0ldsk00l.Nestopia",
+  createOptionParams: (_, { appearance: { fullscreen } }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("--fullscreen");
+    }
+    return optionParams;
+  },
+};
+
+export const punes: Application = {
+  id: "punes",
+  name: "puNES",
+  fileExtensions: [".nes"],
+  flatpakId: "io.github.punesemu.puNES",
+  createOptionParams: (_, { appearance: { fullscreen } }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("--fullscreen");
+    }
+    return optionParams;
+  },
 };
 
 export const mednafen: Application = {
   id: "mednafen",
   name: "Mednafen",
-  fileExtensions: [".cue", ".pce"],
+  fileExtensions: [".cue", ".pce", ".nes", ".sms"],
   flatpakId: "com.github.AmatCoder.mednaffe",
   flatpakOptionParams: ["--command=mednafen"],
   environmentVariables: ({ application }, { general: { isWindows } }) => {
@@ -339,7 +360,7 @@ export const aresMegaDrive: Application = {
 export const aresSegaCd: Application = {
   ...ares,
   id: "aresSegaCd",
-  fileExtensions: ["chd"],
+  fileExtensions: ["chd", "cue"],
   createOptionParams: (...props) => [
     ...getSharedAresOptionParams(...props),
     ...["--system", "Mega CD"],
@@ -399,6 +420,7 @@ export const applications = {
   desmume,
   dolphin,
   nestopia,
+  punes,
   mednafen,
   mame,
   mameNeoGeo,
