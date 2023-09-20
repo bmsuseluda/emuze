@@ -22,6 +22,7 @@ import {
   pcsx2,
   play,
   ppsspp,
+  punes,
   snes9x,
 } from "~/server/applicationsDB.server";
 
@@ -66,7 +67,7 @@ export const segamastersystem: Category = {
   id: "segamastersystem",
   names: ["Sega Master System", "Master System", "SMS"],
   igdbPlatformIds: [64],
-  applications: [ares, blastem],
+  applications: [ares, blastem, mednafen],
   defaultApplication: ares,
 };
 
@@ -172,8 +173,8 @@ export const nintendoentertainmentsystem: Category = {
   id: "nintendoentertainmentsystem",
   names: ["Nintendo Entertainment System", "NES", "Famicom"],
   igdbPlatformIds: [18, 99],
-  applications: [nestopia, ares],
-  defaultApplication: ares,
+  applications: [nestopia, punes, mednafen, ares],
+  defaultApplication: nestopia,
 };
 
 export const nintendo64: Category = {
