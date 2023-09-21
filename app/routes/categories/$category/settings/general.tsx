@@ -24,7 +24,6 @@ import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import { SettingsIcon } from "~/components/SettingsIcon";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElement } from "~/types/focusElement";
-import { useRefsGrid } from "~/hooks/useRefsGrid";
 import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
 import {
   useGamepadButtonPressEvent,
@@ -127,22 +126,15 @@ export default function Index() {
 
   // TODO: Maybe create specific files for gamepad controls
   const saveButtonRef = useRef<ElementRef<"button">>(null);
-  const entryListRef = useRef<ElementRef<"ul">>(null);
-  const entriesRefs = useRef<ElementRef<"button">[]>([]);
   const { isInFocus, switchFocus } = useFocus<FocusElement>("settingsMain");
-
-  const { entriesRefsGrid } = useRefsGrid(entryListRef, entriesRefs, []);
 
   const selectEntry = useCallback((entry: HTMLButtonElement) => {
     entry.focus();
   }, []);
 
   // TODO: check how to align gamepadsGrid navigation with native input usage (use navigation keys in text input)
-  const { selectedEntry, resetSelected } = useGamepadsOnGrid(
-    entriesRefsGrid,
-    selectEntry,
-    isInFocus,
-  );
+  const { entryListRef, entriesRefs, selectedEntry, resetSelected } =
+    useGamepadsOnGrid(selectEntry, isInFocus);
 
   const onBack = useCallback(() => {
     if (isInFocus) {

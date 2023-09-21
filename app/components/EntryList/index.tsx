@@ -1,10 +1,9 @@
 import type { ComponentPropsWithoutRef, ElementRef, RefObject } from "react";
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 import { useTestId } from "~/hooks/useTestId";
 import type { Entry as EntryType } from "~/types/jsonFiles/category";
 import { Ul } from "../Ul";
 import { Entry } from "./components/Entry";
-import { useRefsGrid } from "~/hooks/useRefsGrid";
 import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
 import {
   useGamepadButtonPressEvent,
@@ -63,21 +62,18 @@ export const EntryList = ({
 }: Props & { inViewRef?: RefObject<ElementRef<"div">> }) => {
   const { getTestId } = useTestId(dataTestid);
 
-  const entriesRefs = useRef<ElementRef<"input">[]>([]);
-  const entryListRef = useRef<ElementRef<"ul">>(null);
-
-  const { entriesRefsGrid } = useRefsGrid(entryListRef, entriesRefs, entries);
-
   const selectEntry = (entry: ElementRef<"input">) => {
     entry.checked = true;
     entry.focus();
   };
 
-  const { selectedEntry, resetSelected } = useGamepadsOnGrid(
-    entriesRefsGrid,
-    selectEntry,
-    isInFocus,
-  );
+  const {
+    entryListRef,
+    entriesRefs,
+    selectedEntry,
+    resetSelected,
+    updatePosition,
+  } = useGamepadsOnGrid(selectEntry, isInFocus);
 
   const handleBack = useCallback(() => {
     if (isInFocus) {
@@ -91,7 +87,6 @@ export const EntryList = ({
 
   const handleExecute = useCallback(() => {
     if (isInFocus) {
-      // TODO: selectedEntry.current won't set with mouse click, therefore doubleClick does not work
       if (selectedEntry.current) {
         onExecute();
       }
@@ -105,22 +100,33 @@ export const EntryList = ({
 
   return (
     <List ref={entryListRef} {...getTestId()}>
-      {entries.map(({ id, name, metaData }, index) => (
-        <Entry
-          id={id}
-          name={name}
-          imageUrl={metaData?.imageUrl}
-          alwaysGameName={alwaysGameNames}
-          onDoubleClick={handleExecute}
-          ref={(ref) => {
-            if (ref) {
-              entriesRefs.current[index] = ref;
-            }
-          }}
-          key={id}
-          {...getTestId("entry")}
-        />
-      ))}
+      {entries.map(({ id, name, metaData }, index) => {
+        const handleClick = () => {
+          selectedEntry.current = entriesRefs.current[index];
+          updatePosition();
+        };
+        const handleDoubleClick = () => {
+          onExecute();
+        };
+
+        return (
+          <Entry
+            id={id}
+            name={name}
+            imageUrl={metaData?.imageUrl}
+            alwaysGameName={alwaysGameNames}
+            onClick={handleClick}
+            onDoubleClick={handleDoubleClick}
+            ref={(ref) => {
+              if (ref) {
+                entriesRefs.current[index] = ref;
+              }
+            }}
+            key={id}
+            {...getTestId("entry")}
+          />
+        );
+      })}
       <IntersectionIndicator ref={inViewRef} />
     </List>
   );

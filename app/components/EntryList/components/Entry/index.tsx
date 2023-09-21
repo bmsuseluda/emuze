@@ -8,6 +8,7 @@ interface Props {
   name: string;
   alwaysGameName?: boolean;
   imageUrl?: string;
+  onClick: () => void;
   onDoubleClick: () => void;
   "data-testid"?: string;
 }
@@ -111,6 +112,7 @@ export const Entry = forwardRef<ElementRef<typeof Input>, Props>(
       name,
       alwaysGameName = false,
       imageUrl,
+      onClick,
       onDoubleClick,
       "data-testid": dataTestId,
     },
@@ -121,7 +123,7 @@ export const Entry = forwardRef<ElementRef<typeof Input>, Props>(
 
     return (
       <Wrapper {...getTestId()}>
-        <Label onDoubleClick={onDoubleClick}>
+        <Label onClick={onClick} onDoubleClick={onDoubleClick}>
           <Input
             type="radio"
             name="entry"

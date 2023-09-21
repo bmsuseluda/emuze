@@ -6,15 +6,36 @@ import {
 import { layout } from "~/hooks/useGamepads/layouts";
 import type { MutableRefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
+import { useRefsGrid } from "~/hooks/useRefsGrid";
 
-export const useGamepadsOnGrid = <T>(
-  entriesRefsGrid: MutableRefObject<T[][]>,
+export const useGamepadsOnGrid = <T extends HTMLElement>(
   onSelectEntry: (entry: T) => void,
+  // TODO: add function callback for leftOverTheEdge
   isInFocus: boolean,
 ) => {
   const selectedX = useRef<number>();
   const selectedY = useRef<number>();
   const selectedEntry = useRef<T>();
+
+  const updatePosition = useCallback(
+    (entriesRefsGrid: MutableRefObject<T[][]>) => () => {
+      if (selectedEntry.current) {
+        entriesRefsGrid.current.forEach((row, indexY) => {
+          const indexX = row.findIndex(
+            (entry) => entry === selectedEntry.current,
+          );
+          if (indexX >= 0) {
+            selectedX.current = indexX;
+            selectedY.current = indexY;
+          }
+        });
+      }
+    },
+    [],
+  );
+
+  const { entriesRefsGrid, entryListRef, entriesRefs } =
+    useRefsGrid(updatePosition);
 
   const handleSelectEntry = useCallback(
     (x: number, y: number) => {
@@ -136,5 +157,13 @@ export const useGamepadsOnGrid = <T>(
     selectedEntry.current = undefined;
   }, []);
 
-  return { selectedEntry, resetSelected, selectedX };
+  return {
+    selectedEntry,
+    resetSelected,
+    updatePosition: updatePosition(entriesRefsGrid),
+    entryListRef,
+    entriesRefs,
+    // TODO: only for tests for now. is it possible without?
+    entriesRefsGrid,
+  };
 };
