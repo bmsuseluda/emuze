@@ -1,13 +1,16 @@
 import debounce from "lodash.debounce";
-import type { ElementRef, MutableRefObject, RefObject } from "react";
+import type { ElementRef, MutableRefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
 
-export const useRefsGrid = <T extends HTMLElement, R>(
-  entryListRef: RefObject<ElementRef<"ul">>,
-  entriesRefs: MutableRefObject<T[]>,
-  entries?: R[],
+/**
+ * @param onCreateGrid callback when entriesRefsGrid will be created or updated
+ **/
+export const useRefsGrid = <T extends HTMLElement>(
+  onCreateGrid: (entriesRefsGrid: MutableRefObject<T[][]>) => () => void,
 ) => {
   const entriesRefsGrid = useRef<T[][]>([]);
+  const entriesRefs = useRef<T[]>([]);
+  const entryListRef = useRef<ElementRef<"ul">>(null);
 
   const createRefsGrid = useCallback(() => {
     const entriesGrid: T[][] = [];
@@ -38,11 +41,8 @@ export const useRefsGrid = <T extends HTMLElement, R>(
       addToRow(rowIndex, entry);
     });
     entriesRefsGrid.current = entriesGrid;
-  }, [entriesRefs]);
-
-  useEffect(() => {
-    createRefsGrid();
-  }, [entries, createRefsGrid]);
+    onCreateGrid(entriesRefsGrid)();
+  }, [entriesRefs, entriesRefsGrid, onCreateGrid]);
 
   useEffect(() => {
     if (entryListRef.current) {
@@ -58,7 +58,11 @@ export const useRefsGrid = <T extends HTMLElement, R>(
   }, [createRefsGrid, entryListRef]);
 
   return {
-    // Array containing entries refs structured on their rendered rows. The first array contains the rows on y-axis and the second array contains the entries refs in the row on x-axis [y-axis][x-axis]
+    /* Array containing entries refs structured on their rendered rows. The first array contains the rows on y-axis and the second array contains the entries refs in the row on x-axis [y-axis][x-axis] */
     entriesRefsGrid,
+    /* List Element that contains the entries */
+    entryListRef,
+    /* Array of all entries */
+    entriesRefs,
   };
 };
