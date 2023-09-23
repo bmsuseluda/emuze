@@ -23,11 +23,18 @@ describe("useGamepadsOnGrid", () => {
       };
       const onSelectEntry = vi.fn();
 
-      const { result } = renderHook(() =>
-        useGamepadsOnGrid(onSelectEntry, true),
+      const { result, rerender } = renderHook(
+        ({ isInFocus }) => useGamepadsOnGrid(onSelectEntry, isInFocus),
+        {
+          initialProps: {
+            isInFocus: false,
+          },
+        },
       );
 
-      result.current.entriesRefsGrid = entriesRefsGrid;
+      result.current.entriesRefsGrid.current = entriesRefsGrid.current;
+
+      rerender({ isInFocus: true });
 
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row1element1",
@@ -52,11 +59,18 @@ describe("useGamepadsOnGrid", () => {
       };
       const onSelectEntry = vi.fn();
 
-      const { result } = renderHook(() =>
-        useGamepadsOnGrid(onSelectEntry, true),
+      const { result, rerender } = renderHook(
+        ({ isInFocus }) => useGamepadsOnGrid(onSelectEntry, isInFocus),
+        {
+          initialProps: {
+            isInFocus: false,
+          },
+        },
       );
 
-      result.current.entriesRefsGrid = entriesRefsGrid;
+      result.current.entriesRefsGrid.current = entriesRefsGrid.current;
+
+      rerender({ isInFocus: true });
 
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row1element1",
@@ -120,11 +134,18 @@ describe("useGamepadsOnGrid", () => {
       };
       const onSelectEntry = vi.fn();
 
-      const { result } = renderHook(() =>
-        useGamepadsOnGrid(onSelectEntry, true),
+      const { result, rerender } = renderHook(
+        ({ isInFocus }) => useGamepadsOnGrid(onSelectEntry, isInFocus),
+        {
+          initialProps: {
+            isInFocus: false,
+          },
+        },
       );
 
-      result.current.entriesRefsGrid = entriesRefsGrid;
+      result.current.entriesRefsGrid.current = entriesRefsGrid.current;
+
+      rerender({ isInFocus: true });
 
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row1element1",
@@ -179,11 +200,18 @@ describe("useGamepadsOnGrid", () => {
       };
       const onSelectEntry = vi.fn();
 
-      const { result } = renderHook(() =>
-        useGamepadsOnGrid(onSelectEntry, true),
+      const { result, rerender } = renderHook(
+        ({ isInFocus }) => useGamepadsOnGrid(onSelectEntry, isInFocus),
+        {
+          initialProps: {
+            isInFocus: false,
+          },
+        },
       );
 
-      result.current.entriesRefsGrid = entriesRefsGrid;
+      result.current.entriesRefsGrid.current = entriesRefsGrid.current;
+
+      rerender({ isInFocus: true });
 
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row1element1",

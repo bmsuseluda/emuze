@@ -17,6 +17,32 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
   const selectedY = useRef<number>();
   const selectedEntry = useRef<T>();
 
+  const handleSelectEntry = useCallback(
+    (entriesRefsGrid: MutableRefObject<T[][]>, x: number, y: number) => {
+      if (entriesRefsGrid.current[y] && entriesRefsGrid.current[y][x]) {
+        const entry = entriesRefsGrid.current[y][x];
+        selectedEntry.current = entry;
+        onSelectEntry(entry);
+      }
+    },
+    [onSelectEntry, selectedEntry],
+  );
+
+  const selectFirstEntry = useCallback(
+    (entriesRefsGrid: MutableRefObject<T[][]>) => {
+      if (isInFocus) {
+        selectedX.current = 0;
+        selectedY.current = 0;
+        handleSelectEntry(
+          entriesRefsGrid,
+          selectedX.current,
+          selectedY.current,
+        );
+      }
+    },
+    [isInFocus, handleSelectEntry],
+  );
+
   const updatePosition = useCallback(
     (entriesRefsGrid: MutableRefObject<T[][]>) => () => {
       if (selectedEntry.current) {
@@ -29,26 +55,16 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
             selectedY.current = indexY;
           }
         });
+      } else {
+        selectFirstEntry(entriesRefsGrid);
       }
     },
-    [],
+    [selectFirstEntry],
   );
 
   const { entriesRefsGrid, entryListRef, entriesRefs } =
     useRefsGrid(updatePosition);
 
-  const handleSelectEntry = useCallback(
-    (x: number, y: number) => {
-      if (entriesRefsGrid.current[y] && entriesRefsGrid.current[y][x]) {
-        const entry = entriesRefsGrid.current[y][x];
-        selectedEntry.current = entry;
-        onSelectEntry(entry);
-      }
-    },
-    [onSelectEntry, selectedEntry, entriesRefsGrid],
-  );
-
-  // TODO: Check if this could be done without useEffect
   useEffect(() => {
     if (isInFocus) {
       if (
@@ -56,12 +72,16 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
         typeof selectedY.current === "undefined" ||
         typeof selectedEntry.current === "undefined"
       ) {
-        selectedX.current = 0;
-        selectedY.current = 0;
+        selectFirstEntry(entriesRefsGrid);
+      } else {
+        handleSelectEntry(
+          entriesRefsGrid,
+          selectedX.current,
+          selectedY.current,
+        );
       }
-      handleSelectEntry(selectedX.current, selectedY.current);
     }
-  }, [isInFocus, handleSelectEntry]);
+  }, [isInFocus, handleSelectEntry, selectFirstEntry, entriesRefsGrid]);
 
   const getLastIndex = useCallback(
     (array: T[] | T[][]) => array.length - 1,
@@ -80,7 +100,11 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
           getLastIndex(entriesRefsGrid.current[selectedY.current])
         ) {
           selectedX.current = selectedX.current + 1;
-          handleSelectEntry(selectedX.current, selectedY.current);
+          handleSelectEntry(
+            entriesRefsGrid,
+            selectedX.current,
+            selectedY.current,
+          );
         }
       }
     }
@@ -95,7 +119,11 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
       ) {
         if (selectedX.current > 0) {
           selectedX.current = selectedX.current - 1;
-          handleSelectEntry(selectedX.current, selectedY.current);
+          handleSelectEntry(
+            entriesRefsGrid,
+            selectedX.current,
+            selectedY.current,
+          );
         }
       }
     }
@@ -115,7 +143,11 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
               entriesRefsGrid.current[selectedY.current],
             );
           }
-          handleSelectEntry(selectedX.current, selectedY.current);
+          handleSelectEntry(
+            entriesRefsGrid,
+            selectedX.current,
+            selectedY.current,
+          );
         }
       }
     }
@@ -130,7 +162,11 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
       ) {
         if (selectedY.current > 0) {
           selectedY.current = selectedY.current - 1;
-          handleSelectEntry(selectedX.current, selectedY.current);
+          handleSelectEntry(
+            entriesRefsGrid,
+            selectedX.current,
+            selectedY.current,
+          );
         }
       }
     }

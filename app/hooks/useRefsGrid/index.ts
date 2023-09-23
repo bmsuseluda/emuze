@@ -3,10 +3,10 @@ import type { ElementRef, MutableRefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
 
 /**
- * @param onResize callback when entryList gets resized
+ * @param onCreateGrid callback when entriesRefsGrid will be created or updated
  **/
 export const useRefsGrid = <T extends HTMLElement>(
-  onResize: (entriesRefsGrid: MutableRefObject<T[][]>) => () => void,
+  onCreateGrid: (entriesRefsGrid: MutableRefObject<T[][]>) => () => void,
 ) => {
   const entriesRefsGrid = useRef<T[][]>([]);
   const entriesRefs = useRef<T[]>([]);
@@ -41,8 +41,8 @@ export const useRefsGrid = <T extends HTMLElement>(
       addToRow(rowIndex, entry);
     });
     entriesRefsGrid.current = entriesGrid;
-    onResize(entriesRefsGrid)();
-  }, [entriesRefs, entriesRefsGrid, onResize]);
+    onCreateGrid(entriesRefsGrid)();
+  }, [entriesRefs, entriesRefsGrid, onCreateGrid]);
 
   useEffect(() => {
     if (entryListRef.current) {
