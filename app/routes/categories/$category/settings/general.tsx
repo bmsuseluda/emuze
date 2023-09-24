@@ -133,7 +133,7 @@ export default function Index() {
   }, []);
 
   // TODO: check how to align gamepadsGrid navigation with native input usage (use navigation keys in text input)
-  const { entryListRef, entriesRefs, selectedEntry, resetSelected } =
+  const { entryListRef, entriesRefCallback, selectedEntry, resetSelected } =
     useGamepadsOnGrid(selectEntry, isInFocus);
 
   const onBack = useCallback(() => {
@@ -217,12 +217,7 @@ export default function Index() {
                         type="submit"
                         name="_actionId"
                         value={actionIds.chooseApplicationsPath}
-                        ref={(ref) => {
-                          if (ref) {
-                            // TODO: fix it
-                            entriesRefs.current.push(ref);
-                          }
-                        }}
+                        ref={entriesRefCallback(0)}
                       >
                         <FaFolderOpen />
                       </TextInput.IconButton>
@@ -247,11 +242,7 @@ export default function Index() {
                       type="submit"
                       name="_actionId"
                       value={actionIds.chooseCategoriesPath}
-                      ref={(ref) => {
-                        if (ref) {
-                          entriesRefs.current.push(ref);
-                        }
-                      }}
+                      ref={entriesRefCallback(isWindows ? 1 : 0)}
                     >
                       <FaFolderOpen />
                     </TextInput.IconButton>

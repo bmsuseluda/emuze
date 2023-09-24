@@ -73,7 +73,7 @@ export default function Index() {
     entry.focus();
   }, []);
 
-  const { entryListRef, entriesRefs, selectedEntry, resetSelected } =
+  const { entryListRef, entriesRefCallback, selectedEntry, resetSelected } =
     useGamepadsOnGrid(selectEntry, isInFocus);
 
   const onBack = useCallback(() => {
@@ -124,11 +124,7 @@ export default function Index() {
                     name="fullscreen"
                     checked={fullscreen}
                     onClick={() => electronAPI.changeWindow("fullscreen")}
-                    ref={(ref) => {
-                      if (ref) {
-                        entriesRefs.current[0] = ref;
-                      }
-                    }}
+                    ref={entriesRefCallback(0)}
                   />
                   <Label htmlFor="fullscreen">Fullscreen</Label>
                 </CheckboxRow>
@@ -139,11 +135,7 @@ export default function Index() {
                     id="alwaysGameNames"
                     name="alwaysGameNames"
                     defaultChecked={alwaysGameNames}
-                    ref={(ref) => {
-                      if (ref) {
-                        entriesRefs.current[1] = ref;
-                      }
-                    }}
+                    ref={entriesRefCallback(1)}
                   />
                   <Label htmlFor="alwaysGameNames">
                     Always show game names
@@ -156,11 +148,7 @@ export default function Index() {
                     id="collapseSidebar"
                     name="collapseSidebar"
                     defaultChecked={collapseSidebar}
-                    ref={(ref) => {
-                      if (ref) {
-                        entriesRefs.current[2] = ref;
-                      }
-                    }}
+                    ref={entriesRefCallback(2)}
                   />
                   <Label htmlFor="collapseSidebar">Collapse sidebar</Label>
                 </CheckboxRow>

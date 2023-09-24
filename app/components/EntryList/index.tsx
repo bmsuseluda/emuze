@@ -70,6 +70,7 @@ export const EntryList = ({
   const {
     entryListRef,
     entriesRefs,
+    entriesRefCallback,
     selectedEntry,
     resetSelected,
     updatePosition,
@@ -117,11 +118,7 @@ export const EntryList = ({
             alwaysGameName={alwaysGameNames}
             onClick={handleClick}
             onDoubleClick={handleDoubleClick}
-            ref={(ref) => {
-              if (ref) {
-                entriesRefs.current[index] = ref;
-              }
-            }}
+            ref={entriesRefCallback(index)}
             key={id}
             {...getTestId("entry")}
           />

@@ -57,6 +57,13 @@ export const useRefsGrid = <T extends HTMLElement>(
     }
   }, [createRefsGrid, entryListRef]);
 
+  const entriesRefCallback = useCallback(
+    (index: number) => (ref: T) => {
+      entriesRefs.current[index] = ref;
+    },
+    [entriesRefs],
+  );
+
   return {
     /* Array containing entries refs structured on their rendered rows. The first array contains the rows on y-axis and the second array contains the entries refs in the row on x-axis [y-axis][x-axis] */
     entriesRefsGrid,
@@ -64,5 +71,7 @@ export const useRefsGrid = <T extends HTMLElement>(
     entryListRef,
     /* Array of all entries */
     entriesRefs,
+    /* Ref callback for all entries */
+    entriesRefCallback,
   };
 };

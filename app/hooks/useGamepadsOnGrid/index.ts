@@ -62,7 +62,7 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
     [selectFirstEntry],
   );
 
-  const { entriesRefsGrid, entryListRef, entriesRefs } =
+  const { entriesRefsGrid, entryListRef, entriesRefs, entriesRefCallback } =
     useRefsGrid(updatePosition);
 
   useEffect(() => {
@@ -199,6 +199,7 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
     updatePosition: updatePosition(entriesRefsGrid),
     entryListRef,
     entriesRefs,
+    entriesRefCallback,
     // TODO: only for tests for now. is it possible without?
     entriesRefsGrid,
   };

@@ -60,7 +60,7 @@ export const useGamepadsOnSidebar = (
   useKeyboardEvent("ArrowUp", onUp);
   useKeyboardEvent("ArrowDown", onDown);
 
-  const refCallback = useCallback(
+  const categoryLinksRefCallback = useCallback(
     (index: number) => (ref: ElementRef<"a">) => {
       categoryLinksRefs.current[index] = ref;
     },
@@ -68,6 +68,6 @@ export const useGamepadsOnSidebar = (
   );
 
   return {
-    refCallback,
+    categoryLinksRefCallback,
   };
 };

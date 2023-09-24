@@ -112,9 +112,9 @@ export default function Categories() {
 
   const { isInFocus, switchFocus } = useFocus<FocusElement>("sidebar");
 
-  const { refCallback } = useGamepadsOnSidebar(
+  const { categoryLinksRefCallback } = useGamepadsOnSidebar(
     categoryLinks.findIndex(({ id }) => id === selectedCategoryId),
-    isInFocus
+    isInFocus,
   );
 
   const switchToMain = useCallback(() => {
@@ -168,7 +168,7 @@ export default function Categories() {
               to={to}
               icon={<PlatformIcon id={id} />}
               aria-label={name}
-              ref={refCallback(index)}
+              ref={categoryLinksRefCallback(index)}
               {...getTestId(["link", to])}
             >
               {collapseSidebar ? undefined : <Name>{name}</Name>}
