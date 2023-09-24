@@ -34,7 +34,6 @@ import { styled } from "../../styled-system/jsx";
 
 type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
 type LoaderData = {
-  selectedCategoryId: string;
   categoryLinks: CategoryLinks;
   collapseSidebar?: boolean;
 };
@@ -57,14 +56,12 @@ export const loader = ({ params }: DataFunctionArgs) => {
 
     return json({
       categoryLinks,
-      selectedCategoryId: category,
       collapseSidebar,
     });
   }
 
   return json({
     categoryLinks: [],
-    selectedCategoryId: category,
     collapseSidebar,
   });
 };
@@ -103,8 +100,7 @@ const Name = styled(Typography, {
 });
 
 export default function Categories() {
-  const { categoryLinks, selectedCategoryId, collapseSidebar } =
-    useLoaderData<LoaderData>();
+  const { categoryLinks, collapseSidebar } = useLoaderData<LoaderData>();
   const { getTestId } = useTestId("categories");
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -112,10 +108,7 @@ export default function Categories() {
 
   const { isInFocus, switchFocus } = useFocus<FocusElement>("sidebar");
 
-  const { categoryLinksRefCallback } = useGamepadsOnSidebar(
-    categoryLinks.findIndex(({ id }) => id === selectedCategoryId),
-    isInFocus,
-  );
+  const { categoryLinksRefCallback } = useGamepadsOnSidebar(isInFocus);
 
   const switchToMain = useCallback(() => {
     if (isInFocus) {

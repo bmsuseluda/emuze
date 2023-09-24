@@ -8,50 +8,50 @@ import {
 } from "~/hooks/useGamepadEvent";
 
 // TODO: write tests
-export const useGamepadsOnSidebar = (
-  selectedCategoryId: number,
-  isInFocus: boolean,
-) => {
+export const useGamepadsOnSidebar = (isInFocus: boolean) => {
   const categoryLinksRefs = useRef<ElementRef<"a">[]>([]);
 
-  const selected = useRef<number>(selectedCategoryId);
-
   const selectLink = useCallback((index: number) => {
-    categoryLinksRefs.current[index]?.focus();
-    categoryLinksRefs.current[index]?.click();
-    return index;
+    const currentLink = categoryLinksRefs.current.at(index);
+    if (currentLink) {
+      currentLink.focus();
+      currentLink.click();
+    }
   }, []);
 
+  const getCurrentIndex = useCallback(
+    () => categoryLinksRefs.current.findIndex((element) => element.ariaCurrent),
+    [],
+  );
+
   useEffect(() => {
-    const selectedLink = categoryLinksRefs.current[selected.current];
+    const selectedLink = categoryLinksRefs.current[getCurrentIndex()];
     if (isInFocus && selectedLink) {
       selectedLink.focus();
     }
-  }, [isInFocus]);
+  }, [isInFocus, getCurrentIndex]);
 
   const onDown = useCallback(() => {
     if (isInFocus) {
-      if (typeof selected.current === "undefined") {
-        selected.current = selectLink(0);
-      } else if (selected.current < categoryLinksRefs.current.length - 1) {
-        selected.current = selectLink(selected.current + 1);
-      } else if (selected.current === categoryLinksRefs.current.length - 1) {
-        selected.current = selectLink(0);
+      const currentIndex = getCurrentIndex();
+      if (currentIndex < categoryLinksRefs.current.length - 1) {
+        selectLink(currentIndex + 1);
+      } else if (currentIndex === categoryLinksRefs.current.length - 1) {
+        selectLink(0);
       }
     }
-  }, [isInFocus, selectLink]);
+  }, [isInFocus, selectLink, getCurrentIndex]);
 
   const onUp = useCallback(() => {
     if (isInFocus) {
-      if (typeof selected.current === "undefined") {
-        selected.current = selectLink(categoryLinksRefs.current.length - 1);
-      } else if (selected.current > 0) {
-        selected.current = selectLink(selected.current - 1);
-      } else if (selected.current === 0) {
-        selected.current = selectLink(categoryLinksRefs.current.length - 1);
+      const currentIndex = getCurrentIndex();
+      if (currentIndex > 0) {
+        selectLink(currentIndex - 1);
+      } else if (currentIndex === 0) {
+        selectLink(-1);
       }
     }
-  }, [isInFocus, selectLink]);
+  }, [isInFocus, selectLink, getCurrentIndex]);
 
   useGamepadButtonPressEvent(layout.buttons.DPadDown, onDown);
   useGamepadButtonPressEvent(layout.buttons.DPadUp, onUp);
