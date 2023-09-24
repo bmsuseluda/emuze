@@ -38,7 +38,7 @@ export const findEntryNameByFolder: FindEntryNameFunction = (
 export interface Application {
   id: ApplicationId;
   name: string;
-  fileExtensions: string[];
+  fileExtensions: `.${string}`[];
   environmentVariables?: EnvironmentVariableFunction;
   createOptionParams?: OptionParamFunction;
   flatpakId: string;
@@ -360,7 +360,7 @@ export const aresMegaDrive: Application = {
 export const aresSegaCd: Application = {
   ...ares,
   id: "aresSegaCd",
-  fileExtensions: ["chd", "cue"],
+  fileExtensions: [".chd", ".cue"],
   createOptionParams: (...props) => [
     ...getSharedAresOptionParams(...props),
     ...["--system", "Mega CD"],
@@ -370,7 +370,7 @@ export const aresSegaCd: Application = {
 export const aresSega32x: Application = {
   ...ares,
   id: "aresSega32x",
-  fileExtensions: ["32x"],
+  fileExtensions: [".32x"],
   createOptionParams: (...props) => [
     ...getSharedAresOptionParams(...props),
     ...["--system", "Mega 32X"],
