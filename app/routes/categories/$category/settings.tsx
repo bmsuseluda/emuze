@@ -37,7 +37,7 @@ export default function Index() {
     switchFocus("settingsSidebar");
   }, [switchFocus]);
 
-  const { refCallback } = useGamepadsOnSidebar(0, isInFocus);
+  const { categoryLinksRefCallback } = useGamepadsOnSidebar(0, isInFocus);
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -83,7 +83,7 @@ export default function Index() {
             <li key={id}>
               <Link
                 to={id}
-                ref={refCallback(index)}
+                ref={categoryLinksRefCallback(index)}
                 icon={<SettingsIcon id={id} />}
               >
                 {collapseSidebar ? undefined : name}
