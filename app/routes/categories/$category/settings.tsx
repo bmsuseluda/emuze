@@ -37,7 +37,7 @@ export default function Index() {
     switchFocus("settingsSidebar");
   }, [switchFocus]);
 
-  const { categoryLinksRefCallback } = useGamepadsOnSidebar(0, isInFocus);
+  const { categoryLinksRefCallback } = useGamepadsOnSidebar(isInFocus);
   const { pathname } = useLocation();
   const navigate = useNavigate();
 

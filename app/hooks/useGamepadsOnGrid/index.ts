@@ -88,7 +88,7 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
     [],
   );
 
-  const handleRight = useCallback(() => {
+  const onRight = useCallback(() => {
     if (isInFocus && entriesRefsGrid.current) {
       if (
         typeof selectedX.current !== "undefined" &&
@@ -110,7 +110,7 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
     }
   }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus]);
 
-  const handleLeft = useCallback(() => {
+  const onLeft = useCallback(() => {
     if (isInFocus && entriesRefsGrid.current) {
       if (
         typeof selectedX.current !== "undefined" &&
@@ -129,7 +129,7 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
     }
   }, [handleSelectEntry, entriesRefsGrid, isInFocus]);
 
-  const handleDown = useCallback(() => {
+  const onDown = useCallback(() => {
     if (isInFocus && entriesRefsGrid.current) {
       if (
         typeof selectedX.current !== "undefined" &&
@@ -153,7 +153,7 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
     }
   }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus]);
 
-  const handleUp = useCallback(() => {
+  const onUp = useCallback(() => {
     if (isInFocus && entriesRefsGrid.current) {
       if (
         typeof selectedX.current !== "undefined" &&
@@ -172,20 +172,20 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
     }
   }, [handleSelectEntry, entriesRefsGrid, isInFocus]);
 
-  useGamepadButtonPressEvent(layout.buttons.DPadRight, handleRight);
-  useGamepadButtonPressEvent(layout.buttons.DPadLeft, handleLeft);
-  useGamepadButtonPressEvent(layout.buttons.DPadDown, handleDown);
-  useGamepadButtonPressEvent(layout.buttons.DPadUp, handleUp);
+  useGamepadButtonPressEvent(layout.buttons.DPadRight, onRight);
+  useGamepadButtonPressEvent(layout.buttons.DPadLeft, onLeft);
+  useGamepadButtonPressEvent(layout.buttons.DPadDown, onDown);
+  useGamepadButtonPressEvent(layout.buttons.DPadUp, onUp);
 
-  useGamepadStickDirectionEvent("leftStickRight", handleRight);
-  useGamepadStickDirectionEvent("leftStickLeft", handleLeft);
-  useGamepadStickDirectionEvent("leftStickDown", handleDown);
-  useGamepadStickDirectionEvent("leftStickUp", handleUp);
+  useGamepadStickDirectionEvent("leftStickRight", onRight);
+  useGamepadStickDirectionEvent("leftStickLeft", onLeft);
+  useGamepadStickDirectionEvent("leftStickDown", onDown);
+  useGamepadStickDirectionEvent("leftStickUp", onUp);
 
-  useKeyboardEvent("ArrowRight", handleRight);
-  useKeyboardEvent("ArrowLeft", handleLeft);
-  useKeyboardEvent("ArrowDown", handleDown);
-  useKeyboardEvent("ArrowUp", handleUp);
+  useKeyboardEvent("ArrowRight", onRight);
+  useKeyboardEvent("ArrowLeft", onLeft);
+  useKeyboardEvent("ArrowDown", onDown);
+  useKeyboardEvent("ArrowUp", onUp);
 
   const resetSelected = useCallback(() => {
     selectedX.current = undefined;
