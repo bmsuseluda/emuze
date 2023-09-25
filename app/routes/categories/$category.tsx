@@ -89,18 +89,20 @@ export default function Category() {
   const settingsButtonRef = useRef<ElementRef<"a">>(null);
 
   const { getTestId } = useTestId("category");
-  const { isInFocus, disableFocus, switchFocus } =
+  const { isInFocus, disableFocus, switchFocus, enableFocus } =
     useFocus<FocusElement>("main");
 
   const { state, formData } = useNavigation();
+
+  /* Set focus again after launching */
   useEffect(() => {
     if (
       state === "loading" &&
       formData?.get("_actionId") === actionIds.launch
     ) {
-      switchFocus("main");
+      enableFocus();
     }
-  }, [state, formData, switchFocus]);
+  }, [state, formData, enableFocus]);
 
   const onBack = useCallback(() => {
     switchFocus("sidebar");
@@ -128,6 +130,12 @@ export default function Category() {
 
   useKeyboardEvent("i", onImport);
   useKeyboardEvent("Escape", onSettings);
+
+  const onEntryClick = useCallback(() => {
+    if (!isInFocus) {
+      enableFocus();
+    }
+  }, [isInFocus, enableFocus]);
 
   if (!categoryData) {
     return null;
@@ -158,6 +166,7 @@ export default function Category() {
                   onExecute={onExecute}
                   onBack={onBack}
                   isInFocus={isInFocus}
+                  onEntryClick={onEntryClick}
                   {...getTestId("entries")}
                 />
               )

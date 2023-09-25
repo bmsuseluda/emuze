@@ -31,7 +31,8 @@ export default function Index() {
   // TODO: check if collapse is good here
   const { categories, collapseSidebar } = useLoaderData<typeof loader>();
 
-  const { isInFocus, switchFocus } = useFocus<FocusElement>("settingsSidebar");
+  const { isInFocus, switchFocus, enableFocus } =
+    useFocus<FocusElement>("settingsSidebar");
 
   useEffect(() => {
     switchFocus("settingsSidebar");
@@ -72,6 +73,13 @@ export default function Index() {
   useGamepadButtonPressEvent(layout.buttons.B, handleCloseOnFocus);
   useKeyboardEvent("Backspace", handleCloseOnFocus);
 
+  // TODO: think about if this should be a callback from useGamepadsOnSidebar
+  const onLinkClick = useCallback(() => {
+    if (!isInFocus) {
+      enableFocus();
+    }
+  }, [isInFocus, enableFocus]);
+
   return (
     <Dialog open onClose={handleClose} closable={categories.length > 0}>
       <SidebarMainLayout>
@@ -85,6 +93,7 @@ export default function Index() {
                 to={id}
                 ref={categoryLinksRefCallback(index)}
                 icon={<SettingsIcon id={id} />}
+                onClick={onLinkClick}
               >
                 {collapseSidebar ? undefined : name}
               </Link>

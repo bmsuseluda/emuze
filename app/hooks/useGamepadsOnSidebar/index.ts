@@ -24,6 +24,7 @@ export const useGamepadsOnSidebar = (isInFocus: boolean) => {
     [],
   );
 
+  /* Set element focus on the selected link again if focus is set on sidebar again */
   useEffect(() => {
     const selectedLink = categoryLinksRefs.current[getCurrentIndex()];
     if (isInFocus && selectedLink) {

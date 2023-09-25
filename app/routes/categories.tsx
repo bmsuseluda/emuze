@@ -106,7 +106,8 @@ export default function Categories() {
   const navigate = useNavigate();
   const { state, formData } = useNavigation();
 
-  const { isInFocus, switchFocus } = useFocus<FocusElement>("sidebar");
+  const { isInFocus, switchFocus, enableFocus } =
+    useFocus<FocusElement>("sidebar");
 
   const { categoryLinksRefCallback } = useGamepadsOnSidebar(isInFocus);
 
@@ -131,6 +132,12 @@ export default function Categories() {
   useKeyboardEvent("Enter", switchToMain);
   useGamepadButtonPressEvent(layout.buttons.Start, onSettings);
   useKeyboardEvent("Escape", onSettings);
+
+  const onLinkClick = useCallback(() => {
+    if (!isInFocus) {
+      enableFocus();
+    }
+  }, [isInFocus, enableFocus]);
 
   return (
     <SidebarMainLayout>
@@ -162,6 +169,7 @@ export default function Categories() {
               icon={<PlatformIcon id={id} />}
               aria-label={name}
               ref={categoryLinksRefCallback(index)}
+              onClick={onLinkClick}
               {...getTestId(["link", to])}
             >
               {collapseSidebar ? undefined : <Name>{name}</Name>}

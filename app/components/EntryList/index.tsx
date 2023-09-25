@@ -18,6 +18,7 @@ type Props = {
   alwaysGameNames?: boolean;
   isInFocus: boolean;
   onBack: () => void;
+  onEntryClick: () => void;
   onExecute: () => void;
   "data-testid"?: string;
 } & ComponentPropsWithoutRef<"ul">;
@@ -57,6 +58,7 @@ export const EntryList = ({
   isInFocus,
   onBack,
   onExecute,
+  onEntryClick,
   "data-testid": dataTestid,
   inViewRef,
 }: Props & { inViewRef?: RefObject<ElementRef<"div">> }) => {
@@ -102,7 +104,9 @@ export const EntryList = ({
   return (
     <List ref={entryListRef} {...getTestId()}>
       {entries.map(({ id, name, metaData }, index) => {
+        // TODO: think about if this should be a callback from useGamepadsOnGrid
         const handleClick = () => {
+          onEntryClick();
           selectedEntry.current = entriesRefs.current[index];
           updatePosition();
         };
