@@ -27,10 +27,10 @@ import {
 import { layout } from "~/hooks/useGamepads/layouts";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElement } from "~/types/focusElement";
-import type { DataFunctionArgs } from "~/context";
 import type { PlatformId } from "~/server/categoriesDB.server";
 import { Typography } from "~/components/Typography";
 import { styled } from "../../styled-system/jsx";
+import type { DataFunctionArgs } from "~/context";
 
 type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
 type LoaderData = {
@@ -119,7 +119,7 @@ export default function Categories() {
 
   const onSettings = useCallback(() => {
     if (isInFocus) {
-      // TODO: check how to trigger settings button click instead like $category
+      // TODO: check how to trigger settings button click instead like $category. useNavigate rerenders every time
       navigate(`${pathname}/settings`);
     }
   }, [isInFocus, pathname, navigate]);

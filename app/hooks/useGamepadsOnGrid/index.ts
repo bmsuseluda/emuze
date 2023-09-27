@@ -46,20 +46,43 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
   const updatePosition = useCallback(
     (entriesRefsGrid: MutableRefObject<T[][]>) => () => {
       if (selectedEntry.current) {
-        entriesRefsGrid.current.forEach((row, indexY) => {
-          const indexX = row.findIndex(
-            (entry) => entry === selectedEntry.current,
-          );
-          if (indexX >= 0) {
-            selectedX.current = indexX;
-            selectedY.current = indexY;
+        const selectedEntryInGrid = entriesRefsGrid.current.find(
+          (row, indexY) => {
+            const indexX = row.findIndex(
+              (entry) => entry === selectedEntry.current,
+            );
+            if (indexX >= 0) {
+              selectedX.current = indexX;
+              selectedY.current = indexY;
+              return true;
+            }
+            return false;
+          },
+        );
+
+        // entry is not in the grid anymore
+        if (!selectedEntryInGrid) {
+          // select entry in the old position if possible, else select first entry
+          if (
+            selectedX.current &&
+            selectedY.current &&
+            entriesRefsGrid.current[selectedY.current] &&
+            entriesRefsGrid.current[selectedY.current][selectedX.current]
+          ) {
+            handleSelectEntry(
+              entriesRefsGrid,
+              selectedX.current,
+              selectedY.current,
+            );
+          } else {
+            selectFirstEntry(entriesRefsGrid);
           }
-        });
+        }
       } else {
         selectFirstEntry(entriesRefsGrid);
       }
     },
-    [selectFirstEntry],
+    [selectFirstEntry, handleSelectEntry],
   );
 
   const { entriesRefsGrid, entryListRef, entriesRefs, entriesRefCallback } =

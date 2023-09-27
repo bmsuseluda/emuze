@@ -20,11 +20,11 @@ import {
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElement } from "~/types/focusElement";
 import { readAppearance } from "~/server/settings.server";
-import type { DataFunctionArgs } from "~/context";
 import { useFullscreen } from "~/hooks/useFullscreen";
 import { SettingsLink } from "~/components/SettingsLink";
 import { BiError } from "react-icons/bi";
 import { Typography } from "~/components/Typography";
+import type { DataFunctionArgs } from "~/context";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -59,6 +59,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     const entry = form.get("entry");
     if (typeof entry === "string") {
       executeApplication(category, entry);
+      return { ok: true };
     }
   }
 
@@ -78,6 +79,19 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
       <p>{error.message}</p>
     </>
   );
+};
+
+export const shouldRevalidate = ({
+  actionResult,
+  defaultShouldRevalidate,
+}: {
+  actionResult: { ok: boolean };
+  defaultShouldRevalidate: boolean;
+}) => {
+  if (actionResult?.ok) {
+    return false;
+  }
+  return defaultShouldRevalidate;
 };
 
 export default function Category() {
@@ -160,7 +174,7 @@ export default function Category() {
             list={
               entries && (
                 <EntryListDynamic
-                  key={id}
+                  key={id + entries.length}
                   entries={entries}
                   alwaysGameNames={alwaysGameNames}
                   onExecute={onExecute}
