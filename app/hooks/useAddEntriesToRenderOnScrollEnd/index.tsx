@@ -1,5 +1,6 @@
 import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useDeepCompareEffect } from "react-use";
 import type { Entry } from "~/types/jsonFiles/category";
 
 const entriesCountForChunk = 20;
@@ -9,8 +10,15 @@ export const useAddEntriesToRenderOnScrollEnd = (entries: Entry[]) => {
     entries.slice(0, entriesCountForChunk),
   );
 
-  useEffect(() => {
-    setEntriesToRender(entries.slice(0, entriesCountForChunk));
+  useDeepCompareEffect(() => {
+    setEntriesToRender(
+      entries.slice(
+        0,
+        entriesCountForChunk < entriesToRender.length
+          ? entriesToRender.length
+          : entriesCountForChunk,
+      ),
+    );
   }, [entries]);
 
   const addEntriesToRender = useCallback(() => {
