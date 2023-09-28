@@ -119,10 +119,11 @@ export default function Categories() {
 
   const onSettings = useCallback(() => {
     if (isInFocus) {
+      switchFocus("settingsSidebar");
       // TODO: check how to trigger settings button click instead like $category. useNavigate rerenders every time
       navigate(`${pathname}/settings`);
     }
-  }, [isInFocus, pathname, navigate]);
+  }, [isInFocus, pathname, navigate, switchFocus]);
 
   // TODO: add tests
   useGamepadButtonPressEvent(layout.buttons.DPadRight, switchToMain);

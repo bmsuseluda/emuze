@@ -103,7 +103,7 @@ export default function Category() {
   const settingsButtonRef = useRef<ElementRef<"a">>(null);
 
   const { getTestId } = useTestId("category");
-  const { isInFocus, disableFocus, switchFocus, enableFocus } =
+  const { isInFocus, disableFocus, switchFocus, switchFocusBack, enableFocus } =
     useFocus<FocusElement>("main");
 
   const { state, formData } = useNavigation();
@@ -119,8 +119,8 @@ export default function Category() {
   }, [state, formData, enableFocus]);
 
   const onBack = useCallback(() => {
-    switchFocus("sidebar");
-  }, [switchFocus]);
+    switchFocusBack();
+  }, [switchFocusBack]);
 
   const onExecute = useCallback(() => {
     disableFocus();
@@ -135,9 +135,10 @@ export default function Category() {
 
   const onSettings = useCallback(() => {
     if (isInFocus) {
+      switchFocus("settingsSidebar");
       settingsButtonRef.current?.click();
     }
-  }, [isInFocus]);
+  }, [isInFocus, switchFocus]);
 
   useGamepadButtonPressEvent(layout.buttons.X, onImport);
   useGamepadButtonPressEvent(layout.buttons.Start, onSettings);

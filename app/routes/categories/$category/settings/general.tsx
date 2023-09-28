@@ -126,7 +126,7 @@ export default function Index() {
 
   // TODO: Maybe create specific files for gamepad controls
   const saveButtonRef = useRef<ElementRef<"button">>(null);
-  const { isInFocus, switchFocus } = useFocus<FocusElement>("settingsMain");
+  const { isInFocus, switchFocusBack } = useFocus<FocusElement>("settingsMain");
 
   const selectEntry = useCallback((entry: HTMLButtonElement) => {
     entry.focus();
@@ -139,9 +139,9 @@ export default function Index() {
   const onBack = useCallback(() => {
     if (isInFocus) {
       resetSelected();
-      switchFocus("settingsSidebar");
+      switchFocusBack();
     }
-  }, [isInFocus, resetSelected, switchFocus]);
+  }, [isInFocus, resetSelected, switchFocusBack]);
 
   const onToggle = useCallback(() => {
     if (isInFocus) {
