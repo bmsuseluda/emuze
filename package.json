@@ -30,7 +30,9 @@
     "app:distLinux": "yarn build && electron-builder --linux",
     "app:distWindows": "yarn build && electron-builder --win",
     "storybook": "yarn clean && cross-env NODE_ENV=development yarn panda:codegen && storybook dev -p 6006 --no-open",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test-ct": "yarn clean && cross-env NODE_ENV=production yarn panda:codegen && playwright test -c playwright-ct.config.ts",
+    "test-ct:ui": "yarn test-ct --ui"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.0.4",
@@ -58,6 +60,7 @@
     "@commitlint/cli": "^17.6.7",
     "@commitlint/config-conventional": "^17.6.7",
     "@pandacss/dev": "^0.12.1",
+    "@playwright/experimental-ct-react": "^1.39.0",
     "@remix-run/dev": "^1.19.3",
     "@remix-run/eslint-config": "^1.19.3",
     "@storybook/addon-essentials": "^7.2.2",
@@ -73,6 +76,7 @@
     "@types/apicalypse": "^0.1.1",
     "@types/jest-when": "^3.5.2",
     "@types/lodash.debounce": "^4.0.7",
+    "@types/node": "^20.8.7",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.4",
