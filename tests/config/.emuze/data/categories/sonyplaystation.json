@@ -1,0 +1,85 @@
+{
+  "id": "sonyplaystation",
+  "name": "Playstation",
+  "application": {
+    "id": "duckstation",
+    "name": "Duckstation",
+    "fileExtensions": [".chd", ".cue"],
+    "flatpakId": "org.duckstation.DuckStation"
+  },
+  "entryPath": "/home/dennisludwig/Documents/Emulation/Playstation",
+  "entries": [
+    {
+      "id": "crashbandicoot0",
+      "name": "Crash Bandicoot",
+      "path": "/home/dennisludwig/Documents/Emulation/Playstation/Crash Bandicoot.chd",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co555l.webp",
+        "expiresOn": 1696066334869
+      }
+    },
+    {
+      "id": "driver(disc1)1",
+      "name": "Driver (Disc 1)",
+      "path": "/home/dennisludwig/Documents/Emulation/Playstation/Driver (Disc 1).chd",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co6he0.webp",
+        "expiresOn": 1696066334869
+      }
+    },
+    {
+      "id": "driver(disc2)2",
+      "name": "Driver (Disc 2)",
+      "path": "/home/dennisludwig/Documents/Emulation/Playstation/Driver (Disc 2).chd",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co6he0.webp",
+        "expiresOn": 1696066334869
+      }
+    },
+    {
+      "id": "ehrgeiz3",
+      "name": "Ehrgeiz",
+      "path": "/home/dennisludwig/Documents/Emulation/Playstation/Ehrgeiz.chd",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co56p8.webp",
+        "expiresOn": 1696066334869
+      }
+    },
+    {
+      "id": "gex4",
+      "name": "Gex",
+      "path": "/home/dennisludwig/Documents/Emulation/Playstation/Gex.chd",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1p57.webp",
+        "expiresOn": 1696066334869
+      }
+    },
+    {
+      "id": "klonoa-doortophantomile5",
+      "name": "Klonoa - Door to Phantomile",
+      "path": "/home/dennisludwig/Documents/Emulation/Playstation/Klonoa - Door to Phantomile.chd",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3c4m.webp",
+        "expiresOn": 1696066334869
+      }
+    },
+    {
+      "id": "pong6",
+      "name": "Pong",
+      "path": "/home/dennisludwig/Documents/Emulation/Playstation/Pong.chd",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1qxt.webp",
+        "expiresOn": 1696755341331
+      }
+    },
+    {
+      "id": "ridgeracer7",
+      "name": "Ridge Racer",
+      "path": "/home/dennisludwig/Documents/Emulation/Playstation/Ridge Racer.chd",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co20gc.webp",
+        "expiresOn": 1696066334869
+      }
+    }
+  ]
+}

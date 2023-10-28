@@ -12,7 +12,7 @@ import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
 import { SettingsIcon } from "~/components/SettingsIcon";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElement } from "~/types/focusElement";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import {
   useGamepadButtonPressEvent,
   useGamepadStickDirectionEvent,
@@ -20,16 +20,21 @@ import {
 } from "~/hooks/useGamepadEvent";
 import { layout } from "~/hooks/useGamepads/layouts";
 import { Dialog } from "~/components/Dialog";
+import { readCategories } from "~/server/categories.server";
 
 export const loader = () => {
   const { collapseSidebar } = readAppearance();
+  const platforms = readCategories();
 
-  return json({ categories, collapseSidebar });
+  return json({ categories, collapseSidebar, platforms });
 };
 
 export default function Index() {
   // TODO: check if collapse is good here
-  const { categories, collapseSidebar } = useLoaderData<typeof loader>();
+  const { categories, collapseSidebar, platforms } =
+    useLoaderData<typeof loader>();
+
+  const closable = useMemo(() => platforms.length > 0, [platforms]);
 
   const { isInFocus, switchFocus, enableFocus } =
     useFocus<FocusElement>("settingsSidebar");
@@ -43,12 +48,14 @@ export default function Index() {
   const navigate = useNavigate();
 
   const handleClose = useCallback(() => {
-    // TODO: should be the element where we came from
-    switchFocus("main");
-    // TODO: use useState for dialog open and add some delay to show close animation
-    // TODO: replace with robust solution
-    navigate(pathname.split("/settings")[0]);
-  }, [pathname, navigate, switchFocus]);
+    if (closable) {
+      // TODO: should be the element where we came from
+      switchFocus("main");
+      // TODO: use useState for dialog open and add some delay to show close animation
+      // TODO: replace with robust solution
+      navigate(pathname.split("/settings")[0]);
+    }
+  }, [pathname, navigate, switchFocus, closable]);
 
   const handleCloseOnFocus = useCallback(() => {
     if (isInFocus) {
@@ -81,7 +88,7 @@ export default function Index() {
   }, [isInFocus, enableFocus]);
 
   return (
-    <Dialog open onClose={handleClose} closable={categories.length > 0}>
+    <Dialog open onClose={handleClose} closable={closable}>
       <SidebarMainLayout>
         <SidebarMainLayout.Sidebar
           headline="Settings"

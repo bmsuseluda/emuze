@@ -8,7 +8,10 @@ import {
   writeFileSync,
 } from "fs";
 
-const homeDirectory = nodepath.join(homedir(), ".emuze");
+const homeDirectory = nodepath.join(
+  process.env.EMUZE_CONFIG_PATH || homedir(),
+  ".emuze",
+);
 
 const readFiles = (path: string) =>
   readdirSync(path, { encoding: "utf8", withFileTypes: true });
@@ -31,8 +34,8 @@ export const readFilenames = (path: string, fileExtensions?: string[]) => {
     return filenames.filter((filename) =>
       fileExtensions.find(
         (value) =>
-          value.toLowerCase() === nodepath.extname(filename).toLowerCase()
-      )
+          value.toLowerCase() === nodepath.extname(filename).toLowerCase(),
+      ),
     );
   }
 

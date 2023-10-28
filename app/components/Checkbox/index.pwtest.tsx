@@ -3,9 +3,7 @@ import { Checkbox } from ".";
 
 test.use({ viewport: { width: 500, height: 500 } });
 
-test.describe.configure({ mode: "parallel" });
-
-test("Should render the button", async ({ mount }) => {
+test("Should render the checkbox", async ({ mount }) => {
   const component = await mount(
     <form>
       <Checkbox />

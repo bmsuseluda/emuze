@@ -8,7 +8,8 @@
     "app/**/*.css",
     ".storybook/**/*.ts",
     ".storybook/**/*.tsx",
-    "./electronApi.d.ts"
+    "./electronApi.d.ts",
+    "tests/**/*.ts"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2019"],

@@ -31,7 +31,13 @@
     "app:distWindows": "yarn build && electron-builder --win",
     "storybook": "yarn clean && cross-env NODE_ENV=development yarn panda:codegen && storybook dev -p 6006 --no-open",
     "build-storybook": "storybook build",
+    "e2e:dev": "yarn clean && cross-env NODE_ENV=development yarn panda:codegen && cross-env NODE_ENV=development concurrently -c \"auto\" -k 'yarn:e2e:dev:*'",
+    "e2e:dev:remix": "yarn dev:remix",
+    "e2e:dev:electron": "yarn build:electron && wait-on file:build/index.js && playwright test --ui",
+    "e2e:build": "yarn build && cross-env NODE_ENV=production playwright test",
+    "e2e:appDist": "yarn app:distLinux && cross-env NODE_ENV=production playwright test",
     "test-ct": "yarn clean && cross-env NODE_ENV=production yarn panda:codegen && playwright test -c playwright-ct.config.ts",
+    "test-ct:withoutClean": "playwright test -c playwright-ct.config.ts --ui",
     "test-ct:ui": "yarn test-ct --ui"
   },
   "dependencies": {
@@ -61,6 +67,7 @@
     "@commitlint/config-conventional": "^17.6.7",
     "@pandacss/dev": "^0.12.1",
     "@playwright/experimental-ct-react": "^1.39.0",
+    "@playwright/test": "^1.39.0",
     "@remix-run/dev": "^1.19.3",
     "@remix-run/eslint-config": "^1.19.3",
     "@storybook/addon-essentials": "^7.2.2",

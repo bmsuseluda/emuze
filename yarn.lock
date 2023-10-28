@@ -5665,6 +5665,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@playwright/test@npm:^1.39.0":
+  version: 1.39.0
+  resolution: "@playwright/test@npm:1.39.0"
+  dependencies:
+    playwright: 1.39.0
+  bin:
+    playwright: cli.js
+  checksum: e93e58fc1af4239f239b890374f066c9a758e2492d25e2c1a532f3f00782ab8e7706956a07540fd14882c74e75f5de36273621adce9b79afb8e36e6c15f1d539
+  languageName: node
+  linkType: hard
+
 "@radix-ui/number@npm:1.0.1":
   version: 1.0.1
   resolution: "@radix-ui/number@npm:1.0.1"
@@ -13004,6 +13015,7 @@ __metadata:
     "@commitlint/config-conventional": ^17.6.7
     "@pandacss/dev": ^0.12.1
     "@playwright/experimental-ct-react": ^1.39.0
+    "@playwright/test": ^1.39.0
     "@radix-ui/react-checkbox": ^1.0.4
     "@radix-ui/react-dialog": ^1.0.4
     "@radix-ui/react-label": ^2.0.2

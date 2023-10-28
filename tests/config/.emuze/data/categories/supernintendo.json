@@ -1,0 +1,202 @@
+{
+  "id": "supernintendo",
+  "name": "Super Nintendo Entertainment System",
+  "application": {
+    "id": "bsnes",
+    "name": "BSNES",
+    "fileExtensions": [".sfc", ".smc"],
+    "flatpakId": "dev.bsnes.bsnes"
+  },
+  "entryPath": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System",
+  "entries": [
+    {
+      "id": "animaniacs0",
+      "name": "Animaniacs",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Animaniacs.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co5v0y.webp",
+        "expiresOn": 1696066325141
+      }
+    },
+    {
+      "id": "axelay1",
+      "name": "Axelay",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Axelay.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co25my.webp",
+        "expiresOn": 1696066325141
+      }
+    },
+    {
+      "id": "bahamutlagoon2",
+      "name": "Bahamut Lagoon",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Bahamut Lagoon.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2c6p.webp",
+        "expiresOn": 1696066325141
+      }
+    },
+    {
+      "id": "batmanreturns3",
+      "name": "Batman Returns",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Batman Returns.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3bsp.webp",
+        "expiresOn": 1696066325141
+      }
+    },
+    {
+      "id": "donkeykongcountry(usa)4",
+      "name": "Donkey Kong Country (USA)",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Donkey Kong Country (USA).sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co70qn.webp",
+        "expiresOn": 1696066325141
+      }
+    },
+    {
+      "id": "donkeykongcountry25",
+      "name": "Donkey Kong Country 2",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Donkey Kong Country 2.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co217m.webp",
+        "expiresOn": 1696066325141
+      }
+    },
+    {
+      "id": "earthwormjim6",
+      "name": "Earthworm Jim",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Earthworm Jim.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co20g8.webp",
+        "expiresOn": 1696066325141
+      }
+    },
+    {
+      "id": "earthwormjim26",
+      "name": "Earthworm Jim 2",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Earthworm Jim 2.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co289m.webp",
+        "expiresOn": 1696585747253
+      }
+    },
+    {
+      "id": "finalfight9",
+      "name": "Final Fight",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Final Fight.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co6pyk.webp",
+        "expiresOn": 1696585747253
+      }
+    },
+    {
+      "id": "f-zero7",
+      "name": "F-Zero",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/F-Zero.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co6ufz.webp",
+        "expiresOn": 1696066325141
+      }
+    },
+    {
+      "id": "harvestmoon8",
+      "name": "Harvest Moon",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Harvest Moon.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co43o8.webp",
+        "expiresOn": 1696066325141
+      }
+    },
+    {
+      "id": "jakicrush9",
+      "name": "Jaki Crush",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Jaki Crush.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co6s18.webp",
+        "expiresOn": 1696066325141
+      }
+    },
+    {
+      "id": "megaman710",
+      "name": "Mega Man 7",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Mega Man 7.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co6o8y.webp",
+        "expiresOn": 1696066325141
+      }
+    },
+    {
+      "id": "megamanx13",
+      "name": "Mega Man X",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Mega Man X.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3tu2.webp",
+        "expiresOn": 1696585747253
+      }
+    },
+    {
+      "id": "megamanx214",
+      "name": "Mega Man X2",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Mega Man X2.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co63oi.webp",
+        "expiresOn": 1696585747253
+      }
+    },
+    {
+      "id": "megamanx311",
+      "name": "Mega Man X3",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Mega Man X3.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co55pa.webp",
+        "expiresOn": 1696066325141
+      }
+    },
+    {
+      "id": "secretofmana12",
+      "name": "Secret of Mana",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Secret of Mana.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2u6w.webp",
+        "expiresOn": 1696066325141
+      }
+    },
+    {
+      "id": "supermariokart13",
+      "name": "Super Mario Kart",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Super Mario Kart.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co21w8.webp",
+        "expiresOn": 1696066325141
+      }
+    },
+    {
+      "id": "supermetroid14",
+      "name": "Super Metroid",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Super Metroid.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co5osy.webp",
+        "expiresOn": 1696066325141
+      }
+    },
+    {
+      "id": "terranigma19",
+      "name": "Terranigma",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Terranigma.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co26g4.webp",
+        "expiresOn": 1696670894130
+      }
+    },
+    {
+      "id": "toystory16",
+      "name": "Toy Story",
+      "path": "/home/dennisludwig/Documents/Emulation/Super Nintendo Entertainment System/Toy Story.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co22aj.webp",
+        "expiresOn": 1696066325141
+      }
+    }
+  ]
+}
