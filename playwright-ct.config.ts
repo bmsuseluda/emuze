@@ -6,7 +6,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
  */
 export default defineConfig({
   testDir: "./",
-  testMatch: "*/*.pwtest.tsx",
+  testMatch: "app/*/*.pwtest.tsx",
   /* The base directory, relative to the config file, for snapshot files created with toMatchSnapshot and toHaveScreenshot. */
   snapshotDir: "./__snapshots__",
   /* Maximum time one test can run for. */
