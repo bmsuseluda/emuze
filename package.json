@@ -111,7 +111,7 @@
     "wait-on": "^7.0.1"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "sideEffects": false,
   "build": {
