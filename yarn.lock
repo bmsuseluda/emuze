@@ -13054,16 +13054,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^25.4.0":
-  version: 25.4.0
-  resolution: "electron@npm:25.4.0"
+"electron@npm:^25.9.3":
+  version: 25.9.3
+  resolution: "electron@npm:25.9.3"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^18.11.18"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 9bf5982e374c4ca18e0c6835852f1a239426c59ec8e28291d9984a29c26f3a38e7cc4b9d7c31fa292afcbbecf64f9a7790574c035e1095fdd4644f694d49f0ea
+  checksum: ab42ea9d8b112e85e38ba2f25ff2afbf42c457d729f4c3577b0e754591fdd11d2d3c89c96f2554518dd2a0afaae442919c2ec1da89da10699187f65ffe40a542
   languageName: node
   linkType: hard
 
@@ -13141,7 +13141,7 @@ __metadata:
     cross-env: "npm:^7.0.3"
     del-cli: "npm:^5.0.0"
     dotenv: "npm:^16.3.1"
-    electron: "npm:^25.4.0"
+    electron: "npm:^25.9.3"
     electron-builder: "npm:^24.6.3"
     electron-devtools-installer: "npm:^3.2.0"
     eslint: "npm:^8.46.0"
