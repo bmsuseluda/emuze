@@ -392,7 +392,7 @@ export const mgba: Application = {
   createOptionParams: (_, { appearance: { fullscreen } }) => {
     const optionParams = [];
     if (fullscreen) {
-      optionParams.push("-fullscreen");
+      optionParams.push("--fullscreen");
     }
     return optionParams;
   },

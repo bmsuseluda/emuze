@@ -5,10 +5,10 @@ import tsconfigPaths from "vite-tsconfig-paths";
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: "./",
-  testMatch: "app/*/*.pwtest.tsx",
+  testDir: "./app",
+  testMatch: "*/*.pwtest.tsx",
   /* The base directory, relative to the config file, for snapshot files created with toMatchSnapshot and toHaveScreenshot. */
-  snapshotDir: "./__snapshots__",
+  snapshotDir: "./__snapshots__/",
   /* Maximum time one test can run for. */
   timeout: 10 * 1000,
   /* Run tests in files in parallel */

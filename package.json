@@ -34,8 +34,8 @@
     "e2e:dev": "yarn clean && cross-env NODE_ENV=development yarn panda:codegen && cross-env NODE_ENV=development concurrently -c \"auto\" -k 'yarn:e2e:dev:*'",
     "e2e:dev:remix": "yarn dev:remix",
     "e2e:dev:electron": "yarn build:electron && wait-on file:build/index.js && playwright test --ui",
-    "e2e:build": "yarn build && cross-env NODE_ENV=production playwright test",
-    "e2e:appDist": "yarn app:distLinux && cross-env NODE_ENV=production playwright test",
+    "e2e:build": "yarn build && cross-env NODE_ENV=production playwright test --ui",
+    "e2e:appDist": "yarn app:distLinux && cross-env NODE_ENV=production playwright test --ui",
     "test-ct": "yarn clean && cross-env NODE_ENV=production yarn panda:codegen && playwright test -c playwright-ct.config.ts",
     "test-ct:withoutClean": "playwright test -c playwright-ct.config.ts --ui",
     "test-ct:ui": "yarn test-ct --ui"

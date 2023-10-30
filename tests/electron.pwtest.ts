@@ -132,3 +132,4 @@ test("Should open settings via keyboard", async () => {
 // TODO: test collapse sidebar setting
 // TODO: add offline test
 // TODO: add steps
+// TODO: add to pipeline
