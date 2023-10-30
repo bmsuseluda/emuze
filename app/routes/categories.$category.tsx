@@ -168,7 +168,7 @@ export default function Category() {
           </IconChildrenWrapper>
         }
       >
-        <Form method="post">
+        <Form method="POST">
           <ListActionBarLayout.ListActionBarContainer
             scrollSmooth
             list={

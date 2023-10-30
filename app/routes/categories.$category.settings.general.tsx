@@ -195,7 +195,7 @@ export default function Index() {
         </IconChildrenWrapper>
       }
     >
-      <Form method="post">
+      <Form method="POST">
         <ListActionBarLayout.ListActionBarContainer
           list={
             <FormBox ref={entryListRef}>
