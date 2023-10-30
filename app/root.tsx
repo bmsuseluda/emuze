@@ -9,7 +9,7 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import { Titlebar } from "~/containers/Titlebar";
-import type { LinksFunction, MetaFunction } from "@remix-run/node";
+import type { LinksFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { FullscreenProvider } from "~/provider/FullscreenProvider";
 import { FocusProvider } from "~/provider/FocusProvider";
@@ -53,10 +53,10 @@ export default function App() {
   );
 }
 
-export const meta: MetaFunction = () => ({
-  title: "emuze",
-  description: "Your library",
-});
+export const meta = () => [
+  { title: "emuze" },
+  { name: "description", content: "Your library" },
+];
 
 // https://remix.run/docs/en/v1/api/conventions#errorboundary
 export function ErrorBoundary({ error }: { error: Error }) {
