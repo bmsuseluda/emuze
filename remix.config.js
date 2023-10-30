@@ -6,27 +6,28 @@ module.exports = {
     return defineRoutes((route) => {
       route(
         "/settings",
-        "routes/categories/$category/settings.tsx",
+        "routes/categories.$category.settings.tsx",
         {
           id: "initial",
         },
         () => {
-          route("general", "routes/categories/$category/settings/general.tsx", {
+          route("general", "routes/categories.$category.settings.general.tsx", {
             id: "initialGeneral",
           });
           route(
             "appearance",
-            "routes/categories/$category/settings/appearance.tsx",
+            "routes/categories.$category.settings.appearance.tsx",
             {
               id: "initialAppearance",
-            }
+            },
           );
-        }
+        },
       );
     });
   },
   postcss: true,
   future: {
     v2_dev: true,
+    v2_routeConvention: true,
   },
 };

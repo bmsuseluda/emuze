@@ -8,7 +8,7 @@ import {
   useCatch,
   useLoaderData,
 } from "@remix-run/react";
-import { Titlebar } from "./containers/Titlebar";
+import { Titlebar } from "~/containers/Titlebar";
 import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { FullscreenProvider } from "~/provider/FullscreenProvider";
@@ -18,7 +18,7 @@ import type { ReactNode } from "react";
 import { useGamepads } from "~/hooks/useGamepads";
 import type { DataFunctionArgs } from "~/context";
 
-import styles from "./index.css";
+import styles from "app/index.css";
 import { styled } from "../styled-system/jsx";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
