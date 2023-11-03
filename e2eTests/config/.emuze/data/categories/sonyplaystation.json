@@ -1,0 +1,49 @@
+{
+  "id": "sonyplaystation",
+  "name": "Playstation",
+  "application": {
+    "id": "duckstation",
+    "name": "Duckstation",
+    "fileExtensions": [".chd", ".cue"],
+    "flatpakId": "org.duckstation.DuckStation"
+  },
+  "entryPath": "/home/dennisludwig/projects/emuze/e2eTests/testData/Playstation",
+  "entries": [
+    {
+      "id": "gex0",
+      "name": "Gex",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Playstation/Gex.chd",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1p57.webp",
+        "expiresOn": 1699889256501
+      }
+    },
+    {
+      "id": "klonoa-doortophantomile1",
+      "name": "Klonoa - Door to Phantomile",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Playstation/Klonoa - Door to Phantomile.chd",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3c4m.webp",
+        "expiresOn": 1699889256501
+      }
+    },
+    {
+      "id": "pong2",
+      "name": "Pong",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Playstation/Pong.chd",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1qxt.webp",
+        "expiresOn": 1699889256501
+      }
+    },
+    {
+      "id": "ridgeracer3",
+      "name": "Ridge Racer",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Playstation/Ridge Racer.chd",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co20gc.webp",
+        "expiresOn": 1699889256501
+      }
+    }
+  ]
+}

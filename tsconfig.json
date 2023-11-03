@@ -12,7 +12,7 @@
     ".storybook/**/*.ts",
     ".storybook/**/*.tsx",
     "./electronApi.d.ts",
-    "tests/**/*.ts"
+    "e2eTests/**/*.ts"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2019"],

@@ -1,0 +1,10 @@
+[
+  { "id": "arcade", "name": "Arcade" },
+  { "id": "nintendogameboy", "name": "Game Boy" },
+  { "id": "nintendo3ds", "name": "Nintendo 3DS" },
+  { "id": "nintendo64", "name": "Nintendo 64" },
+  { "id": "nintendods", "name": "Nintendo DS" },
+  { "id": "sonyplaystation", "name": "Playstation" },
+  { "id": "segamastersystem", "name": "Sega Master System" },
+  { "id": "supernintendo", "name": "Super Nintendo Entertainment System" }
+]

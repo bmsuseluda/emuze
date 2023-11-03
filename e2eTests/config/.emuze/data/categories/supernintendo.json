@@ -1,0 +1,148 @@
+{
+  "id": "supernintendo",
+  "name": "Super Nintendo Entertainment System",
+  "application": {
+    "id": "bsnes",
+    "name": "BSNES",
+    "fileExtensions": [".sfc", ".smc"],
+    "flatpakId": "dev.bsnes.bsnes"
+  },
+  "entryPath": "/home/dennisludwig/projects/emuze/e2eTests/testData/Super Nintendo Entertainment System",
+  "entries": [
+    {
+      "id": "animaniacs0",
+      "name": "Animaniacs",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Super Nintendo Entertainment System/Animaniacs.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co5v0y.webp",
+        "expiresOn": 1699889256757
+      }
+    },
+    {
+      "id": "bahamutlagoon1",
+      "name": "Bahamut Lagoon",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Super Nintendo Entertainment System/Bahamut Lagoon.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2c6p.webp",
+        "expiresOn": 1699889256757
+      }
+    },
+    {
+      "id": "earthwormjim3",
+      "name": "Earthworm Jim",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Super Nintendo Entertainment System/Earthworm Jim.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co20g8.webp",
+        "expiresOn": 1699889256757
+      }
+    },
+    {
+      "id": "earthwormjim22",
+      "name": "Earthworm Jim 2",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Super Nintendo Entertainment System/Earthworm Jim 2.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co289m.webp",
+        "expiresOn": 1699889256757
+      }
+    },
+    {
+      "id": "finalfight4",
+      "name": "Final Fight",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Super Nintendo Entertainment System/Final Fight.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co6pyk.webp",
+        "expiresOn": 1699889256757
+      }
+    },
+    {
+      "id": "harvestmoon5",
+      "name": "Harvest Moon",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Super Nintendo Entertainment System/Harvest Moon.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co43o8.webp",
+        "expiresOn": 1699889256757
+      }
+    },
+    {
+      "id": "megaman76",
+      "name": "Mega Man 7",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Super Nintendo Entertainment System/Mega Man 7.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co6o8y.webp",
+        "expiresOn": 1699889256757
+      }
+    },
+    {
+      "id": "megamanx7",
+      "name": "Mega Man X",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Super Nintendo Entertainment System/Mega Man X.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3tu2.webp",
+        "expiresOn": 1699889256757
+      }
+    },
+    {
+      "id": "megamanx28",
+      "name": "Mega Man X2",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Super Nintendo Entertainment System/Mega Man X2.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co63oi.webp",
+        "expiresOn": 1699889256757
+      }
+    },
+    {
+      "id": "megamanx39",
+      "name": "Mega Man X3",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Super Nintendo Entertainment System/Mega Man X3.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co55pa.webp",
+        "expiresOn": 1699889256757
+      }
+    },
+    {
+      "id": "secretofmana10",
+      "name": "Secret of Mana",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Super Nintendo Entertainment System/Secret of Mana.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2u6w.webp",
+        "expiresOn": 1699889256757
+      }
+    },
+    {
+      "id": "supermariokart11",
+      "name": "Super Mario Kart",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Super Nintendo Entertainment System/Super Mario Kart.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co21w8.webp",
+        "expiresOn": 1699889256757
+      }
+    },
+    {
+      "id": "supermetroid12",
+      "name": "Super Metroid",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Super Nintendo Entertainment System/Super Metroid.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co5osy.webp",
+        "expiresOn": 1699889256757
+      }
+    },
+    {
+      "id": "terranigma13",
+      "name": "Terranigma",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Super Nintendo Entertainment System/Terranigma.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co26g4.webp",
+        "expiresOn": 1699889256757
+      }
+    },
+    {
+      "id": "toystory14",
+      "name": "Toy Story",
+      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Super Nintendo Entertainment System/Toy Story.sfc",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co22aj.webp",
+        "expiresOn": 1699889256757
+      }
+    }
+  ]
+}
