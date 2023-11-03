@@ -93,8 +93,14 @@ export const bsnes: Application = {
 };
 
 const findMameArcadeGameName: FindEntryNameFunction = ({ name }) => {
-  // @ts-ignore TODO: check how to type this
-  const entryName = mameGames[name];
+  let entryName: string;
+  try {
+    entryName = (mameGames as Record<string, string>)[name];
+  } catch (error) {
+    console.log("findMameArcadeGameName", error);
+    return name;
+  }
+
   return entryName || name;
 };
 

@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/experimental-ct-react";
 import { Button } from ".";
+import { IoMdRefresh } from "react-icons/io";
 
 test.use({ viewport: { width: 500, height: 500 } });
 
@@ -17,5 +18,14 @@ test("Should render the button", async ({ mount }) => {
 
 test("Should render the button disabled", async ({ mount }) => {
   const component = await mount(<Button disabled>click me</Button>);
+  await expect(component).toBeDisabled();
+});
+
+test("Should render the button with an icon", async ({ mount }) => {
+  const component = await mount(
+    <Button icon={<IoMdRefresh />}>
+      <span>click me</span>
+    </Button>,
+  );
   await expect(component).toBeDisabled();
 });
