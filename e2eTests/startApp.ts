@@ -2,6 +2,7 @@ import { _electron as electron } from "@playwright/test";
 import nodepath from "path";
 
 export const startApp = async (configPath?: string) => {
+  process.env.IGDB_DEVELOPMENT_URL = "http://localhost:8080/games";
   process.env.EMUZE_CONFIG_PATH =
     configPath || nodepath.join(__dirname, "config");
   process.env.EMUZE_TEST_DATA_PATH = nodepath.join(__dirname, "testData");

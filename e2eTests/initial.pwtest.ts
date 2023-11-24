@@ -2,7 +2,6 @@ import { ElectronApplication, expect, Page, test } from "@playwright/test";
 import { startApp } from "./startApp";
 import nodepath from "path";
 import fs from "fs";
-import { GamesResponse, url } from "~/server/igdb.server";
 
 test.describe.configure({ mode: "serial" });
 
@@ -51,12 +50,7 @@ test("Should show initial config page", async () => {
 });
 
 test("Should import all", async () => {
-  await page.route(url, async (route) => {
-    const result: GamesResponse = {
-      data: [],
-    };
-    await route.fulfill({ json: result });
-  });
+  process.env.IGDB_DEVELOPMENT_URL = "http://localhost:8080/games";
 
   await page.getByRole("textbox", { name: "Roms Path" }).fill(testDataPath);
   await page.getByRole("button", { name: "Import all" }).click();

@@ -6,6 +6,8 @@ import { defineConfig } from "@playwright/test";
 export default defineConfig({
   testDir: "./e2eTests",
   testMatch: "*/*.pwtest.ts",
+  snapshotPathTemplate:
+    "{testDir}/{testFileDir}/__screenshots__/{projectName}/{arg}{ext}",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -16,12 +18,8 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: "html",
-  snapshotDir: "./__snapshots__/e2e",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://127.0.0.1:3000',
-
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
   },

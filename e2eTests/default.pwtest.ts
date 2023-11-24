@@ -10,6 +10,8 @@ test.beforeAll(async () => {
   const response = await startApp();
   app = response.app;
   page = response.page;
+
+  // TODO: copy config every time to make tests more reproducable
 });
 
 test.afterAll(async () => {
@@ -18,6 +20,7 @@ test.afterAll(async () => {
   }
 });
 
+// TODO: Create PageObjectModel for selectors and helper functions
 const switchToPlatformViaClick = async (
   page: Page,
   platformName: string,
