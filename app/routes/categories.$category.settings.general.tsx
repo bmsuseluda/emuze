@@ -46,18 +46,33 @@ const actionIds = {
   installMissingApplications: "installMissingApplications",
 };
 
+type Errors = {
+  applicationsPath?: string;
+  categoriesPath?: string;
+};
+
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
   const _actionId = form.get("_actionId");
   const applicationsPath = form.get("applicationsPath");
-  const categoriesPath = form.get("categoriesPath");
+  const categoriesPath = String(form.get("categoriesPath"));
 
   if (_actionId === actionIds.save) {
+    const errors: Errors = {};
     if (
-      (isWindows && typeof applicationsPath !== "string") ||
-      typeof categoriesPath !== "string"
+      isWindows &&
+      typeof applicationsPath === "string" &&
+      applicationsPath.length === 0
     ) {
-      throw new Error(`Form not submitted correctly.`);
+      errors.applicationsPath = "The Emulators Path is missing";
+    }
+
+    if (categoriesPath.length === 0) {
+      errors.categoriesPath = "The Roms Path is missing";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return json({ errors });
     }
 
     const fields: General = {
@@ -97,7 +112,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (_actionId === actionIds.chooseCategoriesPath) {
     const newCategoriesPath = openFolderDialog(
       "Select Roms Folder",
-      typeof categoriesPath === "string" ? categoriesPath : undefined,
+      categoriesPath,
     );
     if (newCategoriesPath) {
       return json({

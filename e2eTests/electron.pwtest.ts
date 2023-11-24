@@ -101,6 +101,11 @@ test("Should open settings via mouse", async () => {
   await expect(page.getByRole("heading", { name: "General" })).toBeVisible();
   await expect(page.getByRole("link", { name: "General" })).toBeFocused();
 
+  const arcadeLink = page.getByRole("link", {
+    name: "Arcade",
+  });
+  await expect(arcadeLink).toBe;
+
   await expect(page).toHaveScreenshot();
 
   await page.getByRole("link", { name: "Appearance" }).click();
