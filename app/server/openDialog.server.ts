@@ -1,13 +1,17 @@
 import { dialog } from "electron";
 
 export const openFolderDialog = (title: string, defaultPath?: string) => {
-  const directory = dialog.showOpenDialogSync({
-    title,
-    defaultPath,
-    properties: ["openDirectory"],
-  });
+  if (dialog) {
+    const directory = dialog.showOpenDialogSync({
+      title,
+      defaultPath,
+      properties: ["openDirectory"],
+    });
 
-  return directory ? directory[0] : undefined;
+    return directory ? directory[0] : undefined;
+  }
+
+  return undefined;
 };
 
 export const openErrorDialog = (error: unknown, title: string) => {
@@ -20,7 +24,7 @@ export const openErrorDialog = (error: unknown, title: string) => {
     console.log("unknown error type");
   }
 
-  if (errorMessage) {
+  if (errorMessage && dialog) {
     dialog.showErrorBox(title, errorMessage.slice(0, 500));
   }
 };

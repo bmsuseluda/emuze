@@ -123,7 +123,10 @@ export default function Index() {
                     id="fullscreen"
                     name="fullscreen"
                     checked={fullscreen}
-                    onClick={() => electronAPI.changeWindow("fullscreen")}
+                    onClick={() =>
+                      window.electronAPI &&
+                      window.electronAPI.changeWindow("fullscreen")
+                    }
                     ref={entriesRefCallback(0)}
                   />
                   <Label htmlFor="fullscreen">Fullscreen</Label>
