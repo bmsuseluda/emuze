@@ -12,6 +12,5 @@ coverage
 /test-results/
 /playwright-report/
 /playwright/.cache/
-/test-results/
-/playwright-report/
-/playwright/.cache/
+/e2eTests/defaultConfig/
+/e2eTests/emptyConfig/

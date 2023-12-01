@@ -1,17 +1,28 @@
 import { ElectronApplication, expect, Page, test } from "@playwright/test";
 import { startApp } from "./startApp";
+import nodepath from "path";
+import fs from "fs-extra";
+import { LibraryPage } from "./pages/libraryPage";
+import { SettingsPage } from "./pages/settingsPage";
 
 test.describe.configure({ mode: "serial" });
 
+const configFolderPath = nodepath.join(__dirname, "defaultConfig");
+
 let app: ElectronApplication;
 let page: Page;
+let libraryPage: LibraryPage;
+let settingsPage: SettingsPage;
 
 test.beforeAll(async () => {
-  const response = await startApp();
+  fs.rmSync(configFolderPath, { recursive: true, force: true });
+  fs.copySync(nodepath.join(__dirname, "config"), configFolderPath);
+  const response = await startApp(configFolderPath);
   app = response.app;
   page = response.page;
 
-  // TODO: copy config every time to make tests more reproducable
+  libraryPage = new LibraryPage(response.page);
+  settingsPage = new SettingsPage(response.page);
 });
 
 test.afterAll(async () => {
@@ -19,36 +30,6 @@ test.afterAll(async () => {
     await app.close();
   }
 });
-
-// TODO: Create PageObjectModel for selectors and helper functions
-const switchToPlatformViaClick = async (
-  page: Page,
-  platformName: string,
-  gameName?: string,
-) => {
-  const link = page.getByRole("link", {
-    name: platformName,
-  });
-  await expect(link).toBeVisible();
-  await expect(link).not.toBeFocused();
-  await expect(
-    page.getByRole("heading", { name: platformName }),
-  ).not.toBeVisible();
-  gameName &&
-    (await expect(
-      page.getByRole("radio", { name: gameName }),
-    ).not.toBeVisible());
-
-  await link.click();
-  await expect(page.getByRole("heading", { name: platformName })).toBeVisible();
-  await expect(link).toBeFocused();
-  gameName &&
-    (await expect(page.getByRole("radio", { name: gameName })).toBeVisible());
-};
-
-const returnToInitialPage = async (page: Page) => {
-  await switchToPlatformViaClick(page, "Arcade");
-};
 
 test.skip("import all", async () => {
   await page.getByRole("button", { name: "Import all" }).click();
@@ -59,79 +40,48 @@ test("Should show initial platform", async () => {
   await expect(page.getByRole("heading", { name: "emuze" })).toBeVisible();
   const title = await page.title();
   expect(title).toBe("emuze");
+  await libraryPage.expectIsInitialPlatform();
 
   await expect(page).toHaveScreenshot();
 });
 
 test("Should switch to another platform via click", async () => {
-  await switchToPlatformViaClick(
-    page,
+  await libraryPage.goToToPlatformViaClick(
     "Sega Master System",
     "Sonic the Hedgehog",
   );
 
-  await returnToInitialPage(page);
+  await libraryPage.gotToInitialPlatform();
 });
 
 test("Should switch to another platform via key down", async () => {
-  const arcadeLink = page.getByRole("link", {
-    name: "Arcade",
-  });
-  await expect(arcadeLink).toBeVisible();
-  await expect(arcadeLink).toBeFocused();
-  await expect(page.getByRole("heading", { name: "Arcade" })).toBeVisible();
+  await libraryPage.expectIsInitialPlatform();
 
   await page.keyboard.press("ArrowDown");
 
-  const gameBoyLink = page.getByRole("link", {
-    name: "Game Boy",
-  });
-  await expect(page.getByRole("heading", { name: "Game Boy" })).toBeVisible();
-  await expect(gameBoyLink).toBeFocused();
-  await expect(
-    page.getByRole("radio", { name: "Super Mario Land" }),
-  ).toBeVisible();
+  await libraryPage.expectIsPlatform("Game Boy", "Super Mario Land");
 
-  await returnToInitialPage(page);
+  await libraryPage.gotToInitialPlatform();
 });
 
 test("Should open settings via mouse", async () => {
-  const settingsHeadline = page.getByRole("heading", { name: "settings" });
-  await expect(settingsHeadline).not.toBeVisible();
-
-  await page.getByRole("link", { name: "settings" }).click();
-  await expect(settingsHeadline).toBeVisible();
-  await expect(page.getByRole("heading", { name: "General" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "General" })).toBeFocused();
-
-  const arcadeLink = page.getByRole("link", {
-    name: "Arcade",
-  });
-  await expect(arcadeLink).toBe;
+  await settingsPage.openSettingsViaClick();
 
   await expect(page).toHaveScreenshot();
 
-  await page.getByRole("link", { name: "Appearance" }).click();
-  await expect(page.getByRole("heading", { name: "Appearance" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Appearance" })).toBeFocused();
+  await settingsPage.goToToSubPageViaClick("Appearance");
 
-  await page.getByRole("button", { name: "close" }).click();
-  await expect(settingsHeadline).not.toBeVisible();
+  await settingsPage.closeSettingsViaClick();
 });
 
 test("Should open settings via keyboard", async () => {
-  const settingsHeadline = page.getByRole("heading", { name: "settings" });
-  await expect(settingsHeadline).not.toBeVisible();
-
-  await page.keyboard.press("Escape");
-  await expect(settingsHeadline).toBeVisible();
-  await expect(page.getByRole("heading", { name: "General" })).toBeVisible();
+  await settingsPage.openSettingsViaKeyboard();
 
   await page.keyboard.press("ArrowDown");
-  await expect(page.getByRole("heading", { name: "Appearance" })).toBeVisible();
 
-  await page.keyboard.press("Escape");
-  await expect(settingsHeadline).not.toBeVisible();
+  await settingsPage.expectIsSubPage("Appearance");
+
+  await settingsPage.closeSettingsViaKeyboard();
 });
 
 // TODO: use keyboard to go to grid and return
