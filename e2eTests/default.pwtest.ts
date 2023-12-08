@@ -31,11 +31,6 @@ test.afterAll(async () => {
   }
 });
 
-test.skip("import all", async () => {
-  await page.getByRole("button", { name: "Import all" }).click();
-  await expect(page.getByRole("link", { name: "Playstation" })).toBeVisible();
-});
-
 test("Should show initial platform", async () => {
   await expect(page.getByRole("heading", { name: "emuze" })).toBeVisible();
   const title = await page.title();
@@ -84,6 +79,19 @@ test("Should open settings via keyboard", async () => {
   await settingsPage.closeSettingsViaKeyboard();
 });
 
+test("import all", async () => {
+  const playstationPlatformName = "Playstation";
+  const playstationLink = page.getByRole("link", {
+    name: playstationPlatformName,
+  });
+
+  await expect(playstationLink).not.toBeVisible();
+
+  await libraryPage.importAllButton.click();
+
+  await libraryPage.goToToPlatformViaClick(playstationPlatformName, "Gex");
+});
+
 // TODO: use keyboard to go to grid and return
 // TODO: no emulator for platform is installed
 // TODO: import all with mocked api
@@ -96,3 +104,4 @@ test("Should open settings via keyboard", async () => {
 // TODO: add offline test
 // TODO: add steps
 // TODO: add to pipeline
+// TODO: remove full path in config json files
