@@ -7,6 +7,7 @@ import { applications as applicationsDB } from "../applicationsDB.server";
 
 import { executeApplication } from "../execute.server";
 import {
+  createAbsoluteEntryPath,
   neogeo,
   neogeoLinux,
   pcenginecd,
@@ -15,6 +16,7 @@ import {
 import type { General } from "~/types/jsonFiles/settings/general";
 import type { Appearance } from "~/types/jsonFiles/settings/appearance";
 import type { Mock } from "vitest";
+import { general } from "~/server/__testData__/general";
 
 const execFileMock = vi.fn();
 vi.mock("child_process", () => ({
@@ -31,7 +33,7 @@ vi.mock("~/server/settings.server", () => ({
 }));
 
 const getFirstEntry = (
-  category: Category & Required<Pick<Category, "entries">>
+  category: Category & Required<Pick<Category, "entries">>,
 ) => category.entries[0];
 
 describe("execute.server", () => {
@@ -47,6 +49,7 @@ describe("execute.server", () => {
     describe("executeApplicationOnWindows", () => {
       beforeEach(() => {
         (readGeneral as Mock<any, General>).mockReturnValue({
+          ...general,
           isWindows: true,
         });
         (readAppearance as Mock<any, Appearance>).mockReturnValue({
@@ -61,7 +64,7 @@ describe("execute.server", () => {
         executeApplication(pcenginecd.id, entry.id);
 
         expect(execFileMock).toHaveBeenCalledWith(pcenginecd.application.path, [
-          entry.path,
+          createAbsoluteEntryPath(pcenginecd.name, entry.path),
         ]);
       });
 
@@ -88,7 +91,7 @@ describe("execute.server", () => {
           nodepath.join(entryDirname, "cfg"),
           "-nvram_directory",
           nodepath.join(entryDirname, "nvram"),
-          entry.path,
+          createAbsoluteEntryPath(neogeo.name, entry.path),
         ]);
       });
 
@@ -99,10 +102,10 @@ describe("execute.server", () => {
         executeApplication(pcenginecd.id, entry.id);
 
         expect(execFileMock).toHaveBeenCalledWith(pcenginecd.application.path, [
-          entry.path,
+          createAbsoluteEntryPath(pcenginecd.name, entry.path),
         ]);
         expect(process.env.MEDNAFEN_HOME).toBe(
-          nodepath.dirname(pcenginecd.application.path)
+          nodepath.dirname(pcenginecd.application.path),
         );
       });
     });
@@ -110,6 +113,7 @@ describe("execute.server", () => {
     describe("executeApplicationOnLinux", () => {
       beforeEach(() => {
         (readGeneral as Mock<any, General>).mockReturnValue({
+          ...general,
           isWindows: false,
         });
         (readAppearance as Mock<any, Appearance>).mockReturnValue({
@@ -119,7 +123,7 @@ describe("execute.server", () => {
 
       it("Should execute the entry with the defined application of the category", () => {
         (readCategory as Mock<any, Category>).mockReturnValueOnce(
-          pcenginecdLinux
+          pcenginecdLinux,
         );
         const entry = getFirstEntry(pcenginecdLinux);
 
@@ -129,13 +133,13 @@ describe("execute.server", () => {
           "run",
           "--command=mednafen",
           applicationsDB.mednafen.flatpakId,
-          entry.path,
+          createAbsoluteEntryPath(pcenginecdLinux.name, entry.path),
         ]);
       });
 
       it("Should not execute the entry if the entry id is not known", () => {
         (readCategory as Mock<any, Category>).mockReturnValueOnce(
-          pcenginecdLinux
+          pcenginecdLinux,
         );
 
         executeApplication(pcenginecdLinux.id, "unknownEntryId");
@@ -160,7 +164,7 @@ describe("execute.server", () => {
           nodepath.join(entryDirname, "cfg"),
           "-nvram_directory",
           nodepath.join(entryDirname, "nvram"),
-          entry.path,
+          createAbsoluteEntryPath(neogeo.name, entry.path),
         ]);
       });
     });

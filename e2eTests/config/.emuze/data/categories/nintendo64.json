@@ -18,16 +18,11 @@
     ],
     "flatpakId": "dev.ares.ares"
   },
-  "entryPath": "/home/dennisludwig/projects/emuze/e2eTests/testData/Nintendo 64",
   "entries": [
     {
       "id": "mariokart640",
       "name": "Mario Kart 64",
-      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Nintendo 64/Mario Kart 64.z64",
-      "metaData": {
-        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co67hm.webp",
-        "expiresOn": 1701699779386
-      }
+      "path": "Mario Kart 64.z64"
     }
   ]
 }

@@ -11778,6 +11778,7 @@ __metadata:
     storybook: "npm:^7.5.2"
     ts-node: "npm:^10.9.1"
     typescript: "npm:5.1.6"
+    utility-types: "npm:^3.10.0"
     vite: "npm:^4.4.9"
     vite-tsconfig-paths: "npm:^4.2.0"
     vitest: "npm:^0.33.0"
@@ -22190,6 +22191,13 @@ __metadata:
     safe-buffer: "npm:^5.1.2"
     which-typed-array: "npm:^1.1.2"
   checksum: 8287e2fdff2a98997a3436663535856e6be76ca1c7b6ed167b89a3dd6fbaf6934338ca2e34a189bcd6c6cf415680d20472381ac681bff07d33ef98c6f7126296
+  languageName: node
+  linkType: hard
+
+"utility-types@npm:^3.10.0":
+  version: 3.10.0
+  resolution: "utility-types@npm:3.10.0"
+  checksum: 3ca80abfb9482b8f924110b643411d6a8c6bf84049e76212652fb46ccc9085c635485dd0351b63a8da6cf2cffbef32cc27d16e924dc7ad445881a481632b3da0
   languageName: node
   linkType: hard
 

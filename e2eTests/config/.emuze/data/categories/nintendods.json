@@ -7,16 +7,11 @@
     "fileExtensions": [".nds"],
     "flatpakId": "net.kuribo64.melonDS"
   },
-  "entryPath": "/home/dennisludwig/projects/emuze/e2eTests/testData/Nintendo DS",
   "entries": [
     {
       "id": "scribblenauts0",
       "name": "Scribblenauts",
-      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Nintendo DS/Scribblenauts.nds",
-      "metaData": {
-        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2d5u.webp",
-        "expiresOn": 1701699777316
-      }
+      "path": "Scribblenauts.nds"
     }
   ]
 }

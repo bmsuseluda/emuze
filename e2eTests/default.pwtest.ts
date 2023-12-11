@@ -103,5 +103,3 @@ test("import all", async () => {
 // TODO: test collapse sidebar setting
 // TODO: add offline test
 // TODO: add steps
-// TODO: add to pipeline
-// TODO: remove full path in config json files

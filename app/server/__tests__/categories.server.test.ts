@@ -17,6 +17,8 @@ import {
   addIndex,
   blazingstar,
   cotton,
+  createAbsoluteEntryPath,
+  createCategoryPath,
   finalfantasy7,
   gateofthunder,
   hugo,
@@ -32,7 +34,7 @@ import type { Category, Entry } from "~/types/jsonFiles/category";
 import { general } from "../__testData__/general";
 import { fetchMetaData } from "~/server/igdb.server";
 import { categories as categoriesDB } from "../categoriesDB.server";
-import { citra, mameNeoGeo, mednafen } from "~/server/applicationsDB.server";
+import { citra, mednafen } from "~/server/applicationsDB.server";
 import { getInstalledApplicationForCategory } from "~/server/applications.server";
 import type { Application } from "~/types/jsonFiles/applications";
 import { getExpiresOn } from "~/server/getExpiresOn.server";
@@ -84,18 +86,16 @@ describe("categories.server", () => {
 
   describe("readEntries", () => {
     it("Should filter excluded filenames (neogeo.zip) and find entryName from json file", () => {
-      when(readFilenames as Mock<any, string[]>)
-        .calledWith(neogeo.entryPath, mameNeoGeo.fileExtensions)
-        .mockReturnValueOnce([
-          blazingstar.path,
-          "F:/games/Emulation/roms/Neo Geo/neogeo.zip",
-        ]);
+      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
+        createAbsoluteEntryPath(neogeo.name, blazingstar.path),
+        createAbsoluteEntryPath(neogeo.name, "neogeo.zip"),
+      ]);
 
       const expectedResult: Entry[] = [
         { ...blazingstar, name: "Blazing Star", id: `${blazingstar.id}0` },
       ];
 
-      const result = readEntries(neogeo.entryPath, neogeo.application.id);
+      const result = readEntries(neogeo.name, neogeo.application.id);
 
       expect(result).toStrictEqual(expectedResult);
     });
@@ -182,16 +182,24 @@ describe("categories.server", () => {
     it("Should import 3ds and pcengine data", async () => {
       // evaluate
       (readDirectorynames as Mock<any, string[]>).mockReturnValueOnce([
-        nintendo3ds.entryPath,
+        nodepath.join(general.categoriesPath, nintendo3ds.name),
         "unknown category",
-        pcenginecd.entryPath,
+        createCategoryPath(pcenginecd.name),
       ]);
       when(readFilenames as Mock<any, string[]>)
-        .calledWith(nintendo3ds.entryPath, citra.fileExtensions)
-        .mockReturnValueOnce([metroidsamusreturns.path]);
+        .calledWith(createCategoryPath(nintendo3ds.name), citra.fileExtensions)
+        .mockReturnValueOnce([
+          createAbsoluteEntryPath(nintendo3ds.name, metroidsamusreturns.path),
+        ]);
       when(readFilenames as Mock<any, string[]>)
-        .calledWith(pcenginecd.entryPath, mednafen.fileExtensions)
-        .mockReturnValueOnce([cotton.path, gateofthunder.path]);
+        .calledWith(
+          createCategoryPath(pcenginecd.name),
+          mednafen.fileExtensions,
+        )
+        .mockReturnValueOnce([
+          createAbsoluteEntryPath(pcenginecd.name, cotton.path),
+          createAbsoluteEntryPath(pcenginecd.name, gateofthunder.path),
+        ]);
       (readFileHome as Mock<any, Category>).mockReturnValueOnce(nintendo3ds);
       (readFileHome as Mock<any, Category>).mockReturnValueOnce(pcenginecd);
       (fetchMetaData as Mock<any, Promise<Entry[]>>).mockResolvedValueOnce(
@@ -245,8 +253,8 @@ describe("categories.server", () => {
       // evaluate
       (readFileHome as Mock<any, Category>).mockReturnValueOnce(playstation);
       (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
-        hugo.path,
-        hugo2.path,
+        createAbsoluteEntryPath(playstation.name, hugo.path),
+        createAbsoluteEntryPath(playstation.name, hugo2.path),
       ]);
       (fetchMetaData as Mock<any, Promise<Entry[]>>).mockResolvedValueOnce(
         playstation.entries,

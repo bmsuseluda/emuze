@@ -1,9 +1,4 @@
-import {
-  findEntryNameByFolder,
-  getApplicationDataByName,
-  pcsx2,
-} from "../applicationsDB.server";
-import type { Entry } from "~/types/jsonFiles/category";
+import { getApplicationDataByName, pcsx2 } from "../applicationsDB.server";
 
 describe("getApplicationData", () => {
   [
@@ -19,31 +14,5 @@ describe("getApplicationData", () => {
 
   it("Should return undefined for unknown applicationName", () => {
     expect(getApplicationDataByName("unknown")).toBeUndefined();
-  });
-});
-
-describe("findEntryNameByFolder", () => {
-  it("Should return the folder name", () => {
-    const entry: Entry = {
-      id: "bbusters",
-      path: "/long folder structure/Arcade/Beast Busters/bbusters.zip",
-      name: "bbusters",
-    };
-    const categoryPath = "/long folder structure/Arcade";
-    const result = findEntryNameByFolder(entry, categoryPath);
-
-    expect(result).toBe("Beast Busters");
-  });
-
-  it("Should return the entry name if there is no corresponding folder for this entry", () => {
-    const entry: Entry = {
-      id: "crashbandicoot",
-      path: "/long folder structure/Sony Playstation/Crash Bandicoot.chd",
-      name: "Crash Bandicoot",
-    };
-    const categoryPath = "/long folder structure/Sony Playstation";
-    const result = findEntryNameByFolder(entry, categoryPath);
-
-    expect(result).toBe("Crash Bandicoot");
   });
 });

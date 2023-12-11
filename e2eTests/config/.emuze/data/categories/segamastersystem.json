@@ -18,16 +18,11 @@
     ],
     "flatpakId": "dev.ares.ares"
   },
-  "entryPath": "/home/dennisludwig/projects/emuze/e2eTests/testData/Sega Master System",
   "entries": [
     {
       "id": "sonicthehedgehog0",
       "name": "Sonic the Hedgehog",
-      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Sega Master System/Sonic the Hedgehog.sms",
-      "metaData": {
-        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1zuy.webp",
-        "expiresOn": 1701699778246
-      }
+      "path": "Sonic the Hedgehog.sms"
     }
   ]
 }

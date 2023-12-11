@@ -7,15 +7,14 @@
     "fileExtensions": [".gb", ".gba"],
     "flatpakId": "io.mgba.mGBA"
   },
-  "entryPath": "/home/dennisludwig/projects/emuze/e2eTests/testData/Game Boy",
   "entries": [
     {
       "id": "supermarioland0",
       "name": "Super Mario Land",
-      "path": "/home/dennisludwig/projects/emuze/e2eTests/testData/Game Boy/Super Mario Land.gb",
+      "path": "Super Mario Land.gb",
       "metaData": {
         "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co236c.webp",
-        "expiresOn": 1701699650361
+        "expiresOn": 1703149785523
       }
     }
   ]
