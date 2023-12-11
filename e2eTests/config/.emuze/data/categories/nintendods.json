@@ -1,12 +1,7 @@
 {
   "id": "nintendods",
   "name": "Nintendo DS",
-  "application": {
-    "id": "melonds",
-    "name": "MelonDS",
-    "fileExtensions": [".nds"],
-    "flatpakId": "net.kuribo64.melonDS"
-  },
+  "application": { "id": "melonds" },
   "entries": [
     {
       "id": "scribblenauts0",

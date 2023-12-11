@@ -12,7 +12,7 @@ import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
 import { fetchMetaData } from "~/server/igdb.server";
 import { readGeneral } from "~/server/settings.server";
 import type { ApplicationId } from "~/server/applicationsDB.server";
-import { getApplicationDataById } from "~/server/applicationsDB.server";
+import { applications } from "~/server/applicationsDB.server";
 import type {
   Category as CategoryDB,
   PlatformId,
@@ -62,7 +62,15 @@ export const readCategory = (categoryId: string) =>
 
 export const writeCategory = (category: Category) =>
   categoryDataCache.writeFile(
-    category,
+    {
+      ...category,
+      application: category.application?.id
+        ? {
+            id: category.application.id,
+            path: category.application.path,
+          }
+        : undefined,
+    },
     nodepath.join(paths.entries, `${category.id}.json`),
   );
 
@@ -93,7 +101,7 @@ export const readEntries = (
   applicationId: ApplicationId,
   oldEntries?: Entry[],
 ) => {
-  const applicationData = getApplicationDataById(applicationId);
+  const applicationData = applications[applicationId];
   const generalData = readGeneral();
 
   if (applicationData && generalData?.categoriesPath) {

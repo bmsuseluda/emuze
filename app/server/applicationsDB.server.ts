@@ -472,13 +472,3 @@ export const applications = {
   mgba,
   flycast,
 } satisfies Record<string, Application>;
-
-export const getApplicationDataByName = (name: string) =>
-  Object.values(applications).find(({ id }) =>
-    name.toLowerCase().includes(id.toLowerCase()),
-  );
-
-export const getApplicationDataById = (id: ApplicationId) =>
-  Object.values(applications).find(
-    (application) => application.id.toLowerCase() === id.toLowerCase(),
-  );

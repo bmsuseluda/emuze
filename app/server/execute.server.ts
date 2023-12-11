@@ -1,6 +1,6 @@
 import { execFile, execFileSync } from "child_process";
 import { readCategory } from "~/server/categories.server";
-import { getApplicationDataById } from "~/server/applicationsDB.server";
+import { applications } from "~/server/applicationsDB.server";
 import { readAppearance, readGeneral } from "~/server/settings.server";
 import { openErrorDialog } from "~/server/openDialog.server";
 import { createAbsoluteEntryPath } from "~/types/jsonFiles/category";
@@ -46,7 +46,7 @@ export const executeApplication = (category: string, entry: string) => {
       appearance: readAppearance(),
     };
     const { application, entries } = categoryData;
-    const applicationData = getApplicationDataById(application.id);
+    const applicationData = applications[application.id];
     const entryData = entries?.find((value) => value.id === entry);
 
     if (applicationData && entryData) {

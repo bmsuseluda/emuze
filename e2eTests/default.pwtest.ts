@@ -94,7 +94,6 @@ test("import all", async () => {
 
 // TODO: use keyboard to go to grid and return
 // TODO: no emulator for platform is installed
-// TODO: import all with mocked api
 // TODO: import for a platform with mocked api
 // TODO: load more games
 // TODO: start in fullscreen via command line
@@ -103,3 +102,4 @@ test("import all", async () => {
 // TODO: test collapse sidebar setting
 // TODO: add offline test
 // TODO: add steps
+// TODO: add windows specific tests with docker image

@@ -1,23 +1,7 @@
 {
   "id": "nintendo64",
   "name": "Nintendo 64",
-  "application": {
-    "id": "ares",
-    "name": "Ares",
-    "fileExtensions": [
-      ".z64",
-      ".sms",
-      ".chd",
-      ".nes",
-      ".sgd",
-      ".smd",
-      ".gb",
-      ".gba",
-      ".cue",
-      ".pce"
-    ],
-    "flatpakId": "dev.ares.ares"
-  },
+  "application": { "id": "ares" },
   "entries": [
     {
       "id": "mariokart640",

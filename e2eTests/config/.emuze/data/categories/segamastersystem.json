@@ -1,23 +1,7 @@
 {
   "id": "segamastersystem",
   "name": "Sega Master System",
-  "application": {
-    "id": "ares",
-    "name": "Ares",
-    "fileExtensions": [
-      ".z64",
-      ".sms",
-      ".chd",
-      ".nes",
-      ".sgd",
-      ".smd",
-      ".gb",
-      ".gba",
-      ".cue",
-      ".pce"
-    ],
-    "flatpakId": "dev.ares.ares"
-  },
+  "application": { "id": "ares" },
   "entries": [
     {
       "id": "sonicthehedgehog0",
