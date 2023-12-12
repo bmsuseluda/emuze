@@ -9,6 +9,7 @@ test.describe.configure({ mode: "serial" });
 
 const configFolderPath = nodepath.join(__dirname, "emptyConfig");
 const testDataPath = nodepath.join(__dirname, "testData");
+const testEmulatorsPath = nodepath.join(__dirname, "testEmulators");
 
 let app: ElectronApplication;
 let page: Page;
@@ -17,6 +18,7 @@ let settingsPage: SettingsPage;
 
 test.beforeAll(async () => {
   fs.rmSync(configFolderPath, { recursive: true, force: true });
+  process.env.EMUZE_IS_WINDOWS = "true";
   const response = await startApp(configFolderPath);
   app = response.app;
   page = response.page;
@@ -36,7 +38,7 @@ test("Should show initial config page", async () => {
   await expect(page.getByRole("textbox", { name: "Roms Path" })).toBeVisible();
   await expect(
     page.getByRole("textbox", { name: "Emulators Path" }),
-  ).not.toBeVisible();
+  ).toBeVisible();
 
   await expect(page).toHaveScreenshot();
 
@@ -51,12 +53,18 @@ test("Should show initial config page", async () => {
     await expect(
       page.getByRole("textbox", { name: "Roms Path" }),
     ).toHaveScreenshot();
+    await expect(
+      page.getByRole("textbox", { name: "Emulators Path" }),
+    ).toHaveScreenshot();
 
     // TODO: check of invalid state of input field
   });
 });
 
 test("Should import all", async () => {
+  await page
+    .getByRole("textbox", { name: "Emulators Path" })
+    .fill(testEmulatorsPath);
   await page.getByRole("textbox", { name: "Roms Path" }).fill(testDataPath);
   await page.getByRole("button", { name: "Import all" }).click();
 

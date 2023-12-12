@@ -20,7 +20,7 @@ export interface Game {
 }
 
 export const url =
-  process.env.IGDB_DEVELOPMENT_URL ||
+  process.env.EMUZE_IGDB_DEVELOPMENT_URL ||
   "https://emuze-api-d7jjhe73ba-uc.a.run.app/games";
 
 const igdbSubTitleChar = ":";

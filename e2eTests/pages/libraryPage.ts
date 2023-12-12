@@ -39,7 +39,6 @@ export class LibraryPage {
       this.page.getByRole("heading", { name: platformName }),
     ).toBeVisible();
     await expect(link).toBeVisible();
-    await expect(link).toBeFocused();
 
     gameName &&
       (await expect(

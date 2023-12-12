@@ -1,8 +1,13 @@
 import {
   findExecutable,
   getInstalledApplicationForCategoryOnLinux,
+  getInstalledApplicationForCategoryOnWindows,
 } from "../applications.server";
-import { applications as applicationsTestData } from "../__testData__/applications";
+import {
+  applications as applicationsTestData,
+  applicationsPath,
+  pcsx2,
+} from "../__testData__/applications";
 import * as applicationsFromDB from "../applicationsDB.server";
 import { readFilenames } from "~/server/readWriteData.server";
 import { checkFlatpakIsInstalled } from "~/server/execute.server";
@@ -41,7 +46,7 @@ describe("applications.server", () => {
 
       // expect
       expect(executable).toBe(
-        "F:/games/Emulation/emulators/Blastem win32-0.6.2/NewBlastemV2.exe"
+        "F:/games/Emulation/emulators/Blastem win32-0.6.2/NewBlastemV2.exe",
       );
     });
 
@@ -57,7 +62,7 @@ describe("applications.server", () => {
 
       // expect
       expect(executable).toBe(
-        "F:/games/Emulation/emulators/Blastem win32-0.6.2/system/NewBlastemV2.exe"
+        "F:/games/Emulation/emulators/Blastem win32-0.6.2/system/NewBlastemV2.exe",
       );
     });
 
@@ -86,7 +91,6 @@ describe("applications.server", () => {
     });
   });
 
-  // TODO: add tests for windows function
   describe("getInstalledApplicationForCategoryOnLinux", () => {
     const defaultApplication = applicationsFromDB.pcsx2;
     it("Should return old application if old application is installed", () => {
@@ -95,7 +99,7 @@ describe("applications.server", () => {
 
       const result = getInstalledApplicationForCategoryOnLinux(
         defaultApplication,
-        oldApplication
+        oldApplication,
       );
 
       expect(result).toBe(oldApplication);
@@ -113,6 +117,46 @@ describe("applications.server", () => {
     it("Should return undefined if no compatible application is installed", () => {
       const result =
         getInstalledApplicationForCategoryOnLinux(defaultApplication);
+
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe("getInstalledApplicationForCategoryOnWindows", () => {
+    const defaultApplication = applicationsFromDB.pcsx2;
+    it("Should return old application if old application is installed", () => {
+      const oldApplication = applicationsTestData.play;
+      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
+        oldApplication.path,
+      ]);
+
+      const result = getInstalledApplicationForCategoryOnWindows(
+        defaultApplication,
+        applicationsPath,
+        oldApplication,
+      );
+
+      expect(result).toBe(oldApplication);
+    });
+
+    it("Should return default application if old application is not set and default application is installed", () => {
+      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([pcsx2.path]);
+
+      const result = getInstalledApplicationForCategoryOnWindows(
+        defaultApplication,
+        applicationsPath,
+      );
+
+      expect(result).toStrictEqual({ ...defaultApplication, path: pcsx2.path });
+    });
+
+    it("Should return undefined if no compatible application is installed", () => {
+      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([]);
+
+      const result = getInstalledApplicationForCategoryOnWindows(
+        defaultApplication,
+        applicationsPath,
+      );
 
       expect(result).toBeUndefined();
     });

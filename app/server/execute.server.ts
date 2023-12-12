@@ -77,6 +77,7 @@ export const executeApplication = (category: string, entry: string) => {
         : [];
 
       try {
+        // TODO: check on isWindows
         if (application.path) {
           executeApplicationOnWindows(
             application.path,

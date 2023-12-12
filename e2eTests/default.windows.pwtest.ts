@@ -7,6 +7,7 @@ import { SettingsPage } from "./pages/settingsPage";
 
 test.describe.configure({ mode: "serial" });
 
+// TODO: use windows specific config
 const configFolderPath = nodepath.join(__dirname, "defaultConfig");
 
 let app: ElectronApplication;
@@ -17,6 +18,7 @@ let settingsPage: SettingsPage;
 test.beforeAll(async () => {
   fs.rmSync(configFolderPath, { recursive: true, force: true });
   fs.copySync(nodepath.join(__dirname, "config"), configFolderPath);
+  process.env.EMUZE_IS_WINDOWS = "true";
   const response = await startApp(configFolderPath);
   app = response.app;
   page = response.page;
@@ -102,5 +104,5 @@ test("import all", async () => {
 // TODO: test collapse sidebar setting
 // TODO: add offline test
 // TODO: add steps
+// TODO: add windows specific tests with docker image
 // TODO: test against the remix app and only against electron for specific electron features
-// TODO: remove absolute paths from unittests

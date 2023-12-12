@@ -3,6 +3,7 @@ import type { Required } from "utility-types";
 export type General = {
   applicationsPath?: string;
   categoriesPath?: string;
+  // TODO: Remove this
   isWindows?: boolean;
 };
 
