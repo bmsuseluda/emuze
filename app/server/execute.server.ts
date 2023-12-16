@@ -5,6 +5,7 @@ import { readAppearance, readGeneral } from "~/server/settings.server";
 import { openErrorDialog } from "~/server/openDialog.server";
 import { createAbsoluteEntryPath } from "~/types/jsonFiles/category";
 import { isGeneralConfigured } from "~/types/jsonFiles/settings/general";
+import { isApplicationWindows } from "~/types/jsonFiles/applications";
 
 // TODO: separate os specific code
 const executeApplicationOnLinux = ({
@@ -78,7 +79,7 @@ export const executeApplication = (category: string, entry: string) => {
 
       try {
         // TODO: check on isWindows
-        if (application.path) {
+        if (isApplicationWindows(application)) {
           executeApplicationOnWindows(
             application.path,
             absoluteEntryPath,

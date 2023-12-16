@@ -7,7 +7,7 @@ import { SettingsPage } from "./pages/settingsPage";
 
 test.describe.configure({ mode: "serial" });
 
-const configFolderPath = nodepath.join(__dirname, "emptyConfig");
+const configFolderPath = nodepath.join(__dirname, "emptyWindowsConfig");
 const testDataPath = nodepath.join(__dirname, "testData");
 const testEmulatorsPath = nodepath.join(__dirname, "testEmulators");
 

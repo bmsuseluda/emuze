@@ -8,6 +8,10 @@ export type General = {
 };
 
 export type GeneralConfigured = Required<General, "categoriesPath">;
+export type GeneralConfiguredWindows = Required<
+  GeneralConfigured,
+  "applicationsPath"
+>;
 
 export const isGeneralConfigured = (
   generalData: General | null,

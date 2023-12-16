@@ -1,6 +1,10 @@
 import nodepath from "path";
 
-import type { Application } from "~/types/jsonFiles/applications";
+import type {
+  Application,
+  ApplicationWindows,
+} from "~/types/jsonFiles/applications";
+import { isApplicationWindows } from "~/types/jsonFiles/applications";
 import type { Application as ApplicationDB } from "~/server/applicationsDB.server";
 import { applications as applicationsDB } from "~/server/applicationsDB.server";
 import { categories as categoriesDB } from "~/server/categoriesDB.server";
@@ -56,8 +60,12 @@ export const getInstalledApplicationForCategoryOnWindows = (
   defaultApplicationDB: ApplicationDB,
   applicationsPath: string,
   oldApplication?: Application,
-) => {
-  if (oldApplication && findExecutable(applicationsPath, oldApplication.id)) {
+): ApplicationWindows | undefined => {
+  if (
+    oldApplication &&
+    isApplicationWindows(oldApplication) &&
+    findExecutable(applicationsPath, oldApplication.id)
+  ) {
     return oldApplication;
   }
 

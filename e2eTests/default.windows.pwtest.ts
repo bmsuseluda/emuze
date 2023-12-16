@@ -7,8 +7,7 @@ import { SettingsPage } from "./pages/settingsPage";
 
 test.describe.configure({ mode: "serial" });
 
-// TODO: use windows specific config
-const configFolderPath = nodepath.join(__dirname, "defaultConfig");
+const configFolderPath = nodepath.join(__dirname, "defaultWindowsConfig");
 
 let app: ElectronApplication;
 let page: Page;
