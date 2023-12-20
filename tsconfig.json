@@ -6,9 +6,13 @@
     "styled-system",
     "panda.config.ts",
     "app/**/*.css",
+    "routes/**/*.ts",
+    "routes/**/*.tsx",
+    "routes/**/*.css",
     ".storybook/**/*.ts",
     ".storybook/**/*.tsx",
-    "./electronApi.d.ts"
+    "./electronApi.d.ts",
+    "e2eTests/**/*.ts"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2019"],

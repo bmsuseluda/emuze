@@ -9,3 +9,7 @@ coverage
 /.idea
 .env
 /styled-system/
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/e2eTests/*Config/

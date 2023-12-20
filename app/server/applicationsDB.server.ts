@@ -1,39 +1,30 @@
 import nodepath from "path";
 
-import type {
-  Category as CategoryData,
-  Entry,
-} from "~/types/jsonFiles/category";
-import type { General } from "~/types/jsonFiles/settings/general";
+import type { Category, Entry } from "~/types/jsonFiles/category";
+import type { GeneralConfigured } from "~/types/jsonFiles/settings/general";
 import type { Appearance } from "~/types/jsonFiles/settings/appearance";
 import mameGames from "~/server/mameMappings/mameMapping.json";
 
 type Settings = {
-  general: General;
+  general: GeneralConfigured;
   appearance: Appearance;
 };
 
-type OptionParamFunction = (entry: Entry, settings: Settings) => string[];
+type OptionParamFunction = ({
+  entryData,
+  categoryData,
+  settings,
+}: {
+  entryData: Entry;
+  categoryData: Category;
+  settings: Settings;
+}) => string[];
 type EnvironmentVariableFunction = (
-  category: CategoryData,
+  category: Category,
   settings: Settings,
 ) => Record<string, string | null>;
 
 type FindEntryNameFunction = (entry: Entry, categoryPath: string) => string;
-
-export const findEntryNameByFolder: FindEntryNameFunction = (
-  { name, path },
-  categoryPath,
-) => {
-  const entryFolderPath = nodepath.dirname(path);
-  if (categoryPath !== entryFolderPath) {
-    const entryNameByFolder = nodepath.dirname(path).split(nodepath.sep).at(-1);
-    if (entryNameByFolder) {
-      return entryNameByFolder;
-    }
-  }
-  return name;
-};
 
 export interface Application {
   id: ApplicationId;
@@ -53,7 +44,11 @@ export const pcsx2: Application = {
   fileExtensions: [".chd", ".iso"],
   flatpakId: "net.pcsx2.PCSX2",
   flatpakOptionParams: ["--command=pcsx2-qt"],
-  createOptionParams: (_, { appearance: { fullscreen } }) => {
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+  }) => {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("-fullscreen");
@@ -69,7 +64,11 @@ export const blastem: Application = {
   name: "BlastEm",
   fileExtensions: [".68K", ".bin", ".sgd", ".smd", ".sms"],
   flatpakId: "com.retrodev.blastem",
-  createOptionParams: (_, { appearance: { fullscreen } }) => {
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+  }) => {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("-fullscreen");
@@ -83,7 +82,11 @@ export const bsnes: Application = {
   name: "BSNES",
   fileExtensions: [".sfc", ".smc"],
   flatpakId: "dev.bsnes.bsnes",
-  createOptionParams: (_, { appearance: { fullscreen } }) => {
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+  }) => {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("--fullscreen");
@@ -93,13 +96,24 @@ export const bsnes: Application = {
 };
 
 const findMameArcadeGameName: FindEntryNameFunction = ({ name }) => {
-  // @ts-ignore TODO: check how to type this
-  const entryName = mameGames[name];
+  let entryName: string;
+  try {
+    entryName = (mameGames as Record<string, string>)[name];
+  } catch (error) {
+    console.log("findMameArcadeGameName", error);
+    return name;
+  }
+
   return entryName || name;
 };
 
-const getSharedMameOptionParams: OptionParamFunction = ({ path }) => {
-  const entryDirname = nodepath.dirname(path);
+const getSharedMameOptionParams: OptionParamFunction = ({
+  categoryData: { name },
+  settings: {
+    general: { categoriesPath },
+  },
+}) => {
+  const entryDirname = nodepath.join(categoriesPath, name);
   return [
     "-w",
     "-rompath",
@@ -143,7 +157,11 @@ export const duckstation: Application = {
   name: "Duckstation",
   fileExtensions: [".chd", ".cue"],
   flatpakId: "org.duckstation.DuckStation",
-  createOptionParams: (_, { appearance: { fullscreen } }) => {
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+  }) => {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("-fullscreen");
@@ -166,7 +184,11 @@ export const ppsspp: Application = {
   name: "PPSSPP",
   fileExtensions: [".cso", ".iso"],
   flatpakId: "org.ppsspp.PPSSPP",
-  createOptionParams: (_, { appearance: { fullscreen } }) => {
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+  }) => {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("--fullscreen");
@@ -194,7 +216,11 @@ export const melonds: Application = {
   name: "MelonDS",
   fileExtensions: [".nds"],
   flatpakId: "net.kuribo64.melonDS",
-  createOptionParams: (_, { appearance: { fullscreen } }) => {
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+  }) => {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("--fullscreen");
@@ -222,7 +248,11 @@ export const nestopia: Application = {
   name: "Nestopia",
   fileExtensions: [".nes"],
   flatpakId: "ca._0ldsk00l.Nestopia",
-  createOptionParams: (_, { appearance: { fullscreen } }) => {
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+  }) => {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("--fullscreen");
@@ -236,7 +266,11 @@ export const punes: Application = {
   name: "puNES",
   fileExtensions: [".nes"],
   flatpakId: "io.github.punesemu.puNES",
-  createOptionParams: (_, { appearance: { fullscreen } }) => {
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+  }) => {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("--fullscreen");
@@ -263,10 +297,11 @@ export const mednafen: Application = {
   },
 };
 
-const getSharedAresOptionParams: OptionParamFunction = (
-  _,
-  { appearance: { fullscreen } },
-) => {
+const getSharedAresOptionParams: OptionParamFunction = ({
+  settings: {
+    appearance: { fullscreen },
+  },
+}) => {
   // keyboard f2
   const hotkeyFullscreen = ["--setting", "Hotkey/ToggleFullscreen=0x1/0/2"];
   const virtualPad = [
@@ -389,10 +424,14 @@ export const mgba: Application = {
   name: "mgba",
   fileExtensions: [".gb", ".gba"],
   flatpakId: "io.mgba.mGBA",
-  createOptionParams: (_, { appearance: { fullscreen } }) => {
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+  }) => {
     const optionParams = [];
     if (fullscreen) {
-      optionParams.push("-fullscreen");
+      optionParams.push("--fullscreen");
     }
     return optionParams;
   },
@@ -433,13 +472,3 @@ export const applications = {
   mgba,
   flycast,
 } satisfies Record<string, Application>;
-
-export const getApplicationDataByName = (name: string) =>
-  Object.values(applications).find(({ id }) =>
-    name.toLowerCase().includes(id.toLowerCase()),
-  );
-
-export const getApplicationDataById = (id: ApplicationId) =>
-  Object.values(applications).find(
-    (application) => application.id.toLowerCase() === id.toLowerCase(),
-  );

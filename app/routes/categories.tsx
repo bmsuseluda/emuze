@@ -145,7 +145,7 @@ export default function Categories() {
         header={<Header />}
         collapse={collapseSidebar}
         actions={
-          <Form method="post">
+          <Form method="POST">
             <Button
               type="submit"
               name="_actionId"

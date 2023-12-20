@@ -2,7 +2,10 @@ import nodepath from "path";
 import fs from "fs";
 import { homedir } from "os";
 
-const homeDirectory = nodepath.join(homedir(), ".emuze");
+const homeDirectory = nodepath.join(
+  process.env.EMUZE_CONFIG_PATH || homedir(),
+  ".emuze",
+);
 const readFileHome = (path: string) => {
   const pathInHome = nodepath.join(homeDirectory, path);
   try {

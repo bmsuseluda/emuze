@@ -1,0 +1,16 @@
+{
+  "id": "nintendogameboy",
+  "name": "Game Boy",
+  "application": { "id": "mgba" },
+  "entries": [
+    {
+      "id": "supermarioland0",
+      "name": "Super Mario Land",
+      "path": "Super Mario Land.gb",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co236c.webp",
+        "expiresOn": 1703169288330
+      }
+    }
+  ]
+}

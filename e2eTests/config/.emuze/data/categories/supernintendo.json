@@ -1,0 +1,50 @@
+{
+  "id": "supernintendo",
+  "name": "Super Nintendo Entertainment System",
+  "application": { "id": "bsnes" },
+  "entries": [
+    { "id": "animaniacs0", "name": "Animaniacs", "path": "Animaniacs.sfc" },
+    {
+      "id": "bahamutlagoon1",
+      "name": "Bahamut Lagoon",
+      "path": "Bahamut Lagoon.sfc"
+    },
+    {
+      "id": "earthwormjim3",
+      "name": "Earthworm Jim",
+      "path": "Earthworm Jim.sfc"
+    },
+    {
+      "id": "earthwormjim22",
+      "name": "Earthworm Jim 2",
+      "path": "Earthworm Jim 2.sfc"
+    },
+    { "id": "finalfight4", "name": "Final Fight", "path": "Final Fight.sfc" },
+    {
+      "id": "harvestmoon5",
+      "name": "Harvest Moon",
+      "path": "Harvest Moon.sfc"
+    },
+    { "id": "megaman76", "name": "Mega Man 7", "path": "Mega Man 7.sfc" },
+    { "id": "megamanx7", "name": "Mega Man X", "path": "Mega Man X.sfc" },
+    { "id": "megamanx28", "name": "Mega Man X2", "path": "Mega Man X2.sfc" },
+    { "id": "megamanx39", "name": "Mega Man X3", "path": "Mega Man X3.sfc" },
+    {
+      "id": "secretofmana10",
+      "name": "Secret of Mana",
+      "path": "Secret of Mana.sfc"
+    },
+    {
+      "id": "supermariokart11",
+      "name": "Super Mario Kart",
+      "path": "Super Mario Kart.sfc"
+    },
+    {
+      "id": "supermetroid12",
+      "name": "Super Metroid",
+      "path": "Super Metroid.sfc"
+    },
+    { "id": "terranigma13", "name": "Terranigma", "path": "Terranigma.sfc" },
+    { "id": "toystory14", "name": "Toy Story", "path": "Toy Story.sfc" }
+  ]
+}

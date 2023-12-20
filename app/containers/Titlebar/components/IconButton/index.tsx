@@ -65,7 +65,7 @@ export const IconButton = ({
   const Icon = iconVariant[variant];
 
   const handleClick = () => {
-    electronAPI.changeWindow(variant);
+    window.electronAPI && window.electronAPI.changeWindow(variant);
   };
 
   if (variant === "close") {

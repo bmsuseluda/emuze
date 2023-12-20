@@ -7,7 +7,7 @@ type Result = Record<string, string | number>;
 
 const xmlParser = new XMLParser({ ignoreAttributes: false });
 
-const projectPath = nodepath.join(__dirname, "..", "..", "..");
+const projectPath = nodepath.join(__dirname, "..");
 const resultPath = nodepath.join(projectPath, "app", "server", "mameMappings");
 
 type Game = {
@@ -29,13 +29,13 @@ const filterDescription = (description: string) =>
 
 const addToObject = (
   objectToExtend: Result,
-  { "@_name": name, description }: Game
+  { "@_name": name, description }: Game,
 ) => {
   if (name && description) {
-    objectToExtend[name] =
-      typeof description === "string"
-        ? filterDescription(description)
-        : description;
+    const descriptionAsString =
+      typeof description === "number" ? description.toString() : description;
+
+    objectToExtend[name] = filterDescription(descriptionAsString);
   }
 };
 
@@ -59,17 +59,22 @@ const extractGames = (xmlData: string) => {
 };
 
 const importMame = () => {
-  const xmlData = spawnSync(
-    "flatpak",
-    ["run", "org.mamedev.MAME", "-listxml"],
-    {
-      encoding: "utf-8",
-      maxBuffer: 1000000000,
-    }
-  ).stdout.toString();
+  try {
+    const xmlData = spawnSync(
+      "flatpak",
+      ["run", "org.mamedev.MAME", "-listxml"],
+      {
+        encoding: "utf-8",
+        maxBuffer: 1000000000,
+      },
+    ).stdout.toString();
 
-  const result = extractGames(xmlData);
-  writeFile(result, nodepath.join(resultPath, "mameMapping.json"));
+    const result = extractGames(xmlData);
+
+    writeFile(result, nodepath.join(resultPath, "mameMapping.json"));
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 importMame();

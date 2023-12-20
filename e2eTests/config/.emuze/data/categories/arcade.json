@@ -1,0 +1,44 @@
+{
+  "id": "arcade",
+  "name": "Arcade",
+  "application": { "id": "mame" },
+  "entries": [
+    {
+      "id": "bbustersj1",
+      "name": "Beast Busters",
+      "path": "bbustersj.zip",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4bf6.webp",
+        "expiresOn": 1703169288313
+      }
+    },
+    {
+      "id": "btoads2",
+      "name": "Battletoads",
+      "path": "btoads.zip",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4wbu.webp",
+        "expiresOn": 1703169288313
+      }
+    },
+    { "id": "fakegame3", "name": "fakegame", "path": "fakegame.zip" },
+    {
+      "id": "nspirit0",
+      "name": "Ninja Spirit",
+      "path": "Ninja Spirit/nspirit.zip",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mwr.webp",
+        "expiresOn": 1703169288313
+      }
+    },
+    {
+      "id": "tmnt2a4",
+      "name": "Teenage Mutant Ninja Turtles - Turtles in Time",
+      "path": "tmnt2a.zip",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4vpe.webp",
+        "expiresOn": 1703169288313
+      }
+    }
+  ]
+}

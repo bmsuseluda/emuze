@@ -1,0 +1,12 @@
+{
+  "id": "segamastersystem",
+  "name": "Sega Master System",
+  "application": { "id": "ares" },
+  "entries": [
+    {
+      "id": "sonicthehedgehog0",
+      "name": "Sonic the Hedgehog",
+      "path": "Sonic the Hedgehog.sms"
+    }
+  ]
+}
