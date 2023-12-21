@@ -8,7 +8,7 @@ My main goal for emuze is to have a launcher that is as fast and simple as possi
 
 - Fast and responsive UI
 - Import all your emulators and roms with a click of just one button
-- Fetches Metadata from [igdb](www.igdb.com) based on the filenames of your roms
+- Fetches Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
 - Gamepad support (x-input only)
 
 ## Getting started
@@ -52,10 +52,10 @@ roms
 
 ## Metadata
 
-Metadata will be fetched from [igdb](www.igdb.com). The application crawls the name and alternative name of a game filtered by the specific platform.
+Metadata will be fetched from [igdb](https://www.igdb.com). The application crawls the name and alternative name of a game filtered by the specific platform.
 The Search is case-insensitive.
 
-> INFO: [igdb](www.igdb.com) is a community driven open source database for game information. If there is something missing or wrong, please help and correct it there.
+> INFO: [igdb](https://www.igdb.com) is a community driven open source database for game information. If there is something missing or wrong, please help and correct it there.
 
 ### Games with a Subtitle
 
@@ -100,13 +100,25 @@ Right now the following are supported:
 
 ## Running on Steam Deck in Game mode
 
-To run emuze on the Steam Deck, add the AppImage via `Add a Non-Steam Game`.
+To run emuze on the Steam Deck, mark the AppImage as executable and add it via `Add a Non-Steam Game`.
 
-Add `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
+Use `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
+
+### Steam Input Profile
+
+There is a Steam Input Profile with the name `emuze`, which has some hotkeys preconfigured for some emulators on the pack pedals of the Steam Deck.
+
+### Give Permission to your roms folder
+
+The emulators on the Steam Deck are distributed via Flatpaks which run in a Sandbox. Out of the box flatpaks can only access folders in your home directory.
+If your roms are stored somewhere else you can give access to this folder via `Flatseal`. You can find the app in the Discover-App-Store.
 
 ## Roadmap
 
 There is a lot i would like to work on. The following features are the bigger ones in no specific order.
 
+- Bundle emulators with emuze
+- Preconfigure all emulators
+- Release emuze on flathub
 - `Roms as Folder` support for emulators e.g. ScummVM or DosBox
 - Filter and sorting of roms
