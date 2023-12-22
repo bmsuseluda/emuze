@@ -106,7 +106,7 @@ Use `--no-sandbox` as a launch option to the added Shortcut in Steam via `Proper
 
 ### Steam Input Profile
 
-There is a Steam Input Profile with the name `emuze`, which has some hotkeys preconfigured for some emulators on the pack pedals of the Steam Deck.
+There is a Steam Input Profile with the name `emuze`, which has some hotkeys preconfigured for some emulators on the back pedals of the Steam Deck.
 
 ### Give Permission to your roms folder
 
