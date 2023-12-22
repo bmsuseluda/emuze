@@ -103,4 +103,3 @@ test("import all", async () => {
 // TODO: add offline test
 // TODO: add steps
 // TODO: test against the remix app and only against electron for specific electron features
-// TODO: remove absolute paths from unittests

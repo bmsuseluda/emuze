@@ -49,6 +49,7 @@ app.on("ready", async () => {
     webPreferences: {
       preload: nodepath.join(__dirname, "preload.js"),
     },
+    icon: nodepath.join(__dirname, "..", "public", "icon.png"),
   });
 
   ipcMain.handle("isFullscreen", () => window.isFullScreen());
