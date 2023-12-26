@@ -2,7 +2,7 @@
   "private": true,
   "name": "emuze",
   "description": "Launch your Games fast and simple",
-  "version": "0.34.0",
+  "version": "0.34.1",
   "author": "bmsuseluda <gunslinger@sensonar.de>",
   "email": "gunslinger@sensonar.de",
   "url": "https://github.com/bmsuseluda/emuze",
@@ -26,6 +26,7 @@
     "test:watch": "vitest --watch --passWithNoTests",
     "ts:check": "tsc --noEmit && yarn build:electron --noEmit",
     "lint": "yarn ts:check && eslint --fix app/**/*.{ts,tsx}",
+    "generate:icon": "ts-node ./generateIcon/index.ts",
     "mame:import": "ts-node ./mameImport/index.ts",
     "convertSvgs": "svgr --svgo-config svgo.config.js --config-file .svgrrc.js ./svgs",
     "app:dist": "yarn app:distLinux && yarn app:distWindows",
@@ -95,8 +96,8 @@
     "concurrently": "^8.2.0",
     "cross-env": "^7.0.3",
     "del-cli": "^5.0.0",
-    "electron": "26.6.1",
-    "electron-builder": "^24.6.3",
+    "electron": "26.6.3",
+    "electron-builder": "24.9.1",
     "electron-devtools-installer": "^3.2.0",
     "eslint": "^8.46.0",
     "eslint-plugin-react": "^7.33.1",
@@ -146,7 +147,8 @@
             "ia32"
           ]
         }
-      ]
+      ],
+      "icon": "public/icon.ico"
     },
     "nsis": {
       "oneClick": false,
@@ -164,7 +166,8 @@
           ]
         }
       ],
-      "category": "Emulator"
+      "category": "Emulator",
+      "icon": "public/icon.png"
     }
   },
   "main": "buildDesktop/main.js",
