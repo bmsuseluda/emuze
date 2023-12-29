@@ -1,6 +1,4 @@
-# emuze - Launch your Games fast and simple
-
-## Motivation
+# emuze
 
 My main goal for emuze is to have a launcher that is as fast and simple as possible. With this you don't have to configure every emulator and fine tune metadata of your roms. If your roms are named correctly, a click on the import button should import your emulators and roms altogether and therefore no configuration is necessary.
 
