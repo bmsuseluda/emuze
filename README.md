@@ -8,12 +8,12 @@ My main goal for emuze is to have a launcher that is as fast and simple as possi
 - Import all your emulators and roms with a click of just one button
 - Fetches Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
 - Gamepad support (x-input only)
-- windows and linux support
-- install missing emulators (linux only)
+- Windows and Linux support
+- Can install missing emulators (linux only)
 
 ## Getting started
 
-The application asks for the following folders to work:
+emuze asks for the following folders to work:
 
 - Emulators folder (windows only)
 - Roms folder
@@ -22,7 +22,7 @@ You can change the folders in the settings.
 
 ### Emulators Folder
 
-This is the folder where your emulators are installed. Is is only necessary on windows. On linux all emulators need to be installed via flatpak.
+This is the folder where your emulators are installed. It is only necessary on windows. On linux all emulators need to be installed via flatpak but emuze can do this for you.
 
 ```
 emulators
@@ -54,7 +54,7 @@ roms
 
 ## Metadata
 
-Metadata will be fetched from [igdb](https://www.igdb.com). The application crawls the name and alternative name of a game filtered by the specific platform.
+Metadata will be fetched from [igdb](https://www.igdb.com). emuze crawls the name and alternative name of a game filtered by the specific platform.
 The Search is case-insensitive.
 
 > INFO: [igdb](https://www.igdb.com) is a community driven open source database for game information. If there is something missing or wrong, please help and correct it there.
@@ -62,7 +62,7 @@ The Search is case-insensitive.
 ### Games with a Subtitle
 
 If a game has a subtitle, the subtitle needs to be in the file name.<br>
-For the title `Max Payne 2` the application wouldn't find metadata. Correct would be `Max Payne 2: The Fall of Max Payne.chd`.
+For the title `Max Payne 2` emuze wouldn't find metadata. Correct would be `Max Payne 2: The Fall of Max Payne.chd`.
 
 On windows special characters like `:` can't be part of a file name, therefore you have to write it the following:
 `Max Payne 2 - The Fall of Max Payne.chd`
@@ -77,7 +77,7 @@ If you have multiple versions of a game you can specify them in brackets, e.g. t
 
 ## Supported Emulators
 
-Every Emulator needs to be configured in the application by the developer.
+Every Emulator needs to be configured in the source code of emuze by the developer.
 Right now the following are supported:
 
 [applicationsDB.server.ts](app/server/applicationsDB.server.ts)
