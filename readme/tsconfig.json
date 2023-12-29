@@ -1,0 +1,20 @@
+{
+  "include": [
+    "scripts.ts",
+    "../app/server/categoriesDB.server.ts",
+    "../app/server/applicationsDB.server.ts"
+  ],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "strict": true,
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "paths": {
+      "~/*": ["../app/*"]
+    },
+    "outDir": "./build"
+  }
+}

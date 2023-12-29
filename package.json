@@ -42,7 +42,8 @@
     "e2e:appDist": "yarn app:distLinux && cross-env NODE_ENV=production playwright test --ui",
     "test-ct": "yarn clean && cross-env NODE_ENV=production yarn panda:codegen && playwright test -c playwright-ct.config.ts",
     "test-ct:withoutClean": "playwright test -c playwright-ct.config.ts --ui",
-    "test-ct:ui": "yarn test-ct --ui"
+    "test-ct:ui": "yarn test-ct --ui",
+    "generate:readme": "del-cli dist ./readme/build && tsc -p ./readme/tsconfig.json && tsc-alias -p ./readme/tsconfig.json && mmarkdown"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.0.4",
@@ -108,11 +109,13 @@
     "jest-when": "^3.5.2",
     "json-server": "^0.17.4",
     "lint-staged": "^13.2.3",
+    "mmarkdown": "^1.0.0",
     "prettier": "^3.0.1",
     "prop-types": "^15.8.1",
     "require-from-string": "^2.0.2",
     "storybook": "^7.5.2",
     "ts-node": "^10.9.1",
+    "tsc-alias": "^1.8.8",
     "typescript": "5.1.6",
     "utility-types": "^3.10.0",
     "vite": "^4.4.9",
@@ -158,6 +161,11 @@
       "category": "Emulator",
       "icon": "public/icons/icon512x512.png"
     }
+  },
+  "mmarkdown": {
+    "src": "./readme/Template.md",
+    "out": "./README.md",
+    "scripts": "./readme/build/readme/scripts.js"
   },
   "main": "buildDesktop/main.js",
   "packageManager": "yarn@4.0.1"

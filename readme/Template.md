@@ -82,30 +82,9 @@ Right now the following are supported:
 
 | Platform     | Emulators | Default Emulator |
 |--------------|-----------|------------------|
-| Sony Playstation | Duckstation<br>Mednafen | Duckstation |
-| Sony Playstation 2 | PCSX2<br>Play | PCSX2 |
-| Sony Playstation Portable | PPSSPP | PPSSPP |
-| Nintendo Entertainment System | Nestopia<br>puNES<br>Mednafen<br>Ares | Nestopia |
-| Super Nintendo Entertainment System | BSNES<br>Snes9x<br>Ares | BSNES |
-| Nintendo Game Boy | mgba<br>Ares | mgba |
-| Nintendo Game Boy Color | mgba | mgba |
-| Nintendo Game Boy Advance | mgba<br>Ares | mgba |
-| Nintendo DS | MelonDS<br>DeSmuME | MelonDS |
-| Nintendo 3DS | Citra | Citra |
-| Nintendo 64 | Ares<br>Mupen64Plus | Ares |
-| Nintendo Gamecube | Dolphin | Dolphin |
-| Nintendo Wii | Dolphin | Dolphin |
-| PC Engine | Mednafen<br>Ares | Ares |
-| PC Engine CD | Mednafen | Mednafen |
-| Sega Master System | Ares<br>BlastEm<br>Mednafen | Ares |
-| Sega Mega Drive | BlastEm<br>Ares | Ares |
-| Sega 32X | Ares | Ares |
-| Sega CD | Ares | Ares |
-| Sega Saturn | Mednafen | Mednafen |
-| Sega Dreamcast | Flycast | Flycast |
-| Arcade | Mame | Mame |
-| Neo Geo AES | Mame | Mame |
-| Neo Geo CD | Mame | Mame |
+```mmd
+return scripts.createPlatformsTable()
+```
 
 > INFO: If you miss an emulator or find an error in the configuration, please create a pull request or issue.
 
