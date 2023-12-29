@@ -10,6 +10,8 @@ My main goal for emuze is to have a launcher that is as fast and simple as possi
 - Import all your emulators and roms with a click of just one button
 - Fetches Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
 - Gamepad support (x-input only)
+- windows and linux support
+- install missing emulators (linux only)
 
 ## Getting started
 
@@ -117,8 +119,9 @@ If your roms are stored somewhere else you can give access to this folder via `F
 
 There is a lot i would like to work on. The following features are the bigger ones in no specific order.
 
-- Bundle emulators with emuze
+- Bundle emulators
 - Preconfigure all emulators
 - Release emuze on flathub
+- Bundle open source bios implementations
 - `Roms as Folder` support for emulators e.g. ScummVM or DosBox
 - Filter and sorting of roms
