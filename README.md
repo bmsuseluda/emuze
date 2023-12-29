@@ -15,12 +15,14 @@ My main goal for emuze is to have a launcher that is as fast and simple as possi
 
 The application asks for the following folders to work:
 
-- Emulators folder
+- Emulators folder (windows only)
 - Roms folder
 
 You can change the folders in the settings.
 
 ### Emulators Folder
+
+This is the folder where your emulators are installed. Is is only necessary on windows. On linux all emulators need to be installed via flatpak.
 
 ```
 emulators
@@ -123,3 +125,4 @@ There is a lot i would like to work on. The following features are the bigger on
 - Bundle open source bios implementations
 - `Roms as Folder` support for emulators e.g. ScummVM or DosBox
 - Filter and sorting of roms
+- Integrate `How long to beat`
