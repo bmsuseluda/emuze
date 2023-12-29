@@ -1,4 +1,5 @@
 import { initRemix } from "remix-electron";
+import { platform } from "os";
 import { app, BrowserWindow, ipcMain, session } from "electron";
 import nodepath from "path";
 import { readAppearance } from "./readSettings";
@@ -49,7 +50,10 @@ app.on("ready", async () => {
     webPreferences: {
       preload: nodepath.join(__dirname, "preload.js"),
     },
-    icon: nodepath.join(__dirname, "..", "public", "icon.png"),
+    icon:
+      platform() === "win32"
+        ? nodepath.join(__dirname, "..", "public", "icon.ico")
+        : nodepath.join(__dirname, "..", "public", "icons", "icon96x96.png"),
   });
 
   ipcMain.handle("isFullscreen", () => window.isFullScreen());

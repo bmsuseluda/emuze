@@ -2,7 +2,7 @@
   "private": true,
   "name": "emuze",
   "description": "Launch your Games fast and simple",
-  "version": "0.34.1",
+  "version": "0.34.2",
   "author": "bmsuseluda <gunslinger@sensonar.de>",
   "email": "gunslinger@sensonar.de",
   "url": "https://github.com/bmsuseluda/emuze",
@@ -136,15 +136,7 @@
         {
           "target": "nsis",
           "arch": [
-            "x64",
-            "ia32"
-          ]
-        },
-        {
-          "target": "portable",
-          "arch": [
-            "x64",
-            "ia32"
+            "x64"
           ]
         }
       ],
@@ -153,9 +145,6 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
-    },
-    "portable": {
-      "artifactName": "${name}-${version}-portable.${ext}"
     },
     "linux": {
       "target": [
@@ -167,7 +156,7 @@
         }
       ],
       "category": "Emulator",
-      "icon": "public/icon.png"
+      "icon": "public/icons/icon512x512.png"
     }
   },
   "main": "buildDesktop/main.js",
