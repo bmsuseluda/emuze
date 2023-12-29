@@ -1,10 +1,25 @@
 import nodepath from "path";
 import { execFileSync } from "child_process";
 
-const sizes = ["256", "512"];
+const sizes = [
+  "16",
+  "24",
+  "32",
+  "48",
+  "72",
+  "96",
+  "144",
+  "152",
+  "192",
+  "196",
+  "256",
+  "512",
+] as const;
 
-const getPngName = (size: string) =>
-  nodepath.join(__dirname, "pngs", `icon${size}.png`);
+const pngsDirectoryPath = nodepath.join("public", "icons");
+
+const getPngName = (size: (typeof sizes)[number]) =>
+  nodepath.join(pngsDirectoryPath, `icon${size}x${size}.png`);
 
 try {
   sizes.forEach((size) => {
@@ -17,7 +32,7 @@ try {
       size,
       "-o",
       getPngName(size),
-      nodepath.join(__dirname, "..", "artwork", "icon.svg"),
+      nodepath.join("artwork", "icon.svg"),
     ]);
   });
 
