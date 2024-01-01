@@ -1,5 +1,5 @@
 # emuze
-[Features](#features) | [Getting Started](#getting-started) | [Supported Platforms and Emulators](#supported-platforms-and-emulators) | [Configuration](#configuration) | [Roadmap](#roadmap)
+[Features](#features) | [Getting Started](#getting-started) | [Supported Platforms and Emulators](#supported-platforms-and-emulators) | [Roadmap](#roadmap)
 
 My main goal for emuze is to have a emulation launcher that is as fast and simple as possible. With this you don't have to configure every emulator and fine tune metadata of your roms.
 If your roms are named correctly, a click on the import button should import your emulators and roms altogether and therefore no configuration is necessary.
@@ -19,14 +19,18 @@ If your roms are named correctly, a click on the import button should import you
 
 ## Getting started
 
-emuze asks for the following folders to work:
+### Windows
 
-- Emulators folder (Windows only)
-- Roms folder
+[Download](https://github.com/bmsuseluda/emuze/releases/latest/emuze.exe) the latest version of emuze and install it.
+
+If you start emuze for the first time, it asks for the following folders to work:
+
+- [Emulators folder (Windows only)](#emulators-folder-windows-only)
+- [Roms folder](#roms-folder)
 
 You can change the folders in the settings.
 
-### Emulators Folder (Windows only)
+#### Emulators Folder (Windows only)
 
 This is the folder where your emulators are installed. It is only necessary on Windows.
 On Linux all emulators need to be installed via flatpak but emuze can do this for you.
@@ -42,6 +46,32 @@ emulators
 |---> duckstation-qt-x64-ReleaseLTCG.exe
 |---> ...
 ```
+
+### Linux
+
+For now emuze is only released as an AppImage. Your distribution needs to support Flatpaks.
+
+- [Download](https://github.com/bmsuseluda/emuze/releases/latest/emuze.AppImage) the latest version of emuze
+- Mark the AppImage as executable and start emuze
+- Choose the [folder where your Roms are located](#roms-folder)
+- [Give permission to your Roms folder](#give-permission-to-your-roms-folder-linux-only)
+
+### Steam Deck in Game mode
+
+For now emuze is only released as an AppImage.
+
+- Switch to Desktop
+- [Download](https://github.com/bmsuseluda/emuze/releases/latest/emuze.AppImage) the latest version of emuze
+- Mark the AppImage as executable and start emuze
+- Choose the [folder where your Roms are located](#roms-folder)
+- [Give permission to your Roms folder](#give-permission-to-your-roms-folder-linux-only)
+- Add it via `Add a Non-Steam Game` to Steam
+- Switch to Game Mode
+- Add `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
+
+#### Steam Input Profile
+
+There is a Steam Input Profile with the name `emuze`, which has some hotkeys preconfigured for some emulators on the back pedals of the Steam Deck.
 
 ### Roms Folder
 
@@ -59,17 +89,7 @@ roms
 |---> ...
 ```
 
-### Steam Deck in Game mode
-
-To run emuze on the Steam Deck, download and mark the AppImage as executable and add it via `Add a Non-Steam Game`.
-
-Use `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
-
-#### Steam Input Profile
-
-There is a Steam Input Profile with the name `emuze`, which has some hotkeys preconfigured for some emulators on the back pedals of the Steam Deck.
-
-#### Give Permission to your roms folder
+### Give Permission to your roms folder (Linux only)
 
 The emulators on the Steam Deck are distributed via Flatpaks which run in a Sandbox. Out of the box Flatpaks can only access folders in your home directory.
 If your roms are stored somewhere else you can give access to this folder via `Flatseal`. You can find the app in the Discover-App-Store.
@@ -104,7 +124,7 @@ Right now the following are supported:
 
 | Platform     | Emulators | Default Emulator |
 |--------------|-----------|------------------|
-| Sony Playstation | Duckstation<br>Mednafen | Duckstation |
+| Sony Playstation | DuckStation<br>Mednafen | DuckStation |
 | Sony Playstation 2 | PCSX2<br>Play | PCSX2 |
 | Sony Playstation Portable | PPSSPP | PPSSPP |
 | Nintendo Entertainment System | Nestopia<br>puNES<br>Mednafen<br>Ares | Nestopia |
@@ -130,18 +150,6 @@ Right now the following are supported:
 | Neo Geo CD | Mame | Mame |
 
 > INFO: If you miss an emulator or find an error in the configuration, please create a pull request or issue.
-
-## Configuration
-
-### Keyboard Shortcuts
-
-`F11` Toggle fullscreen
-
-### Commandline Arguments
-
-`--fullscreen` Start in fullscreen
-
-`--no-sandbox` Launch as a Non-Steam Game in SteamOS, see [Steam Deck in Game mode](#steam-deck-in-game-mode) 
 
 ## Roadmap
 
