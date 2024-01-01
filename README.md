@@ -65,7 +65,7 @@ For now emuze is only released as an AppImage.
 - Mark the AppImage as executable and start emuze
 - Choose the [folder where your Roms are located](#roms-folder)
 - [Give permission to your Roms folder](#give-permission-to-your-roms-folder-linux-only)
-- Add it via `Add a Non-Steam Game` to Steam
+- Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze`
 - Switch to Game Mode
 - Add `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
 
