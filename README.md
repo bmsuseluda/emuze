@@ -21,7 +21,7 @@ If your roms are named correctly, a click on the import button should import you
 
 ### Windows
 
-[Download](https://github.com/bmsuseluda/emuze/releases/latest/emuze.exe) the latest version of emuze and install it.
+[Download](https://github.com/bmsuseluda/emuze/releases/latest) the latest version of `emuze.exe` and install it.
 
 If you start emuze for the first time, it asks for the following folders to work:
 
@@ -51,7 +51,7 @@ emulators
 
 For now emuze is only released as an AppImage. Your distribution needs to support Flatpaks.
 
-- [Download](https://github.com/bmsuseluda/emuze/releases/latest/emuze.AppImage) the latest version of emuze
+- [Download](https://github.com/bmsuseluda/emuze/releases/latest) the latest version of `emuze.AppImage`
 - Mark the AppImage as executable and start emuze
 - Choose the [folder where your Roms are located](#roms-folder)
 - [Give permission to your Roms folder](#give-permission-to-your-roms-folder-linux-only)
@@ -61,7 +61,7 @@ For now emuze is only released as an AppImage. Your distribution needs to suppor
 For now emuze is only released as an AppImage.
 
 - Switch to Desktop
-- [Download](https://github.com/bmsuseluda/emuze/releases/latest/emuze.AppImage) the latest version of emuze
+- [Download](https://github.com/bmsuseluda/emuze/releases/latest) the latest version of `emuze.AppImage`
 - Mark the AppImage as executable and start emuze
 - Choose the [folder where your Roms are located](#roms-folder)
 - [Give permission to your Roms folder](#give-permission-to-your-roms-folder-linux-only)
