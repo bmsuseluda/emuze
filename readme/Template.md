@@ -1,4 +1,8 @@
-# emuze
+# 
+<p align="center">
+  <img src="https://github.com/bmsuseluda/emuze/blob/main/artwork/logo400x400.png" alt="Logo" />
+</p>
+
 [Features](#features) | [Getting Started](#getting-started) | [Supported Platforms and Emulators](#supported-platforms-and-emulators) | [Roadmap](#roadmap)
 
 My main goal for emuze is to have a emulation launcher that is as fast and simple as possible. With this you don't have to configure every emulator and fine tune metadata of your roms.
