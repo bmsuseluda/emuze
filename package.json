@@ -2,7 +2,7 @@
   "private": true,
   "name": "emuze",
   "description": "Launch your Games fast and simple",
-  "version": "0.34.2",
+  "version": "0.34.3",
   "author": "bmsuseluda <gunslinger@sensonar.de>",
   "email": "gunslinger@sensonar.de",
   "url": "https://github.com/bmsuseluda/emuze",
@@ -129,6 +129,7 @@
   "sideEffects": false,
   "build": {
     "appId": "org.emuze.emuze",
+    "artifactName": "${name}.${ext}",
     "files": [
       "buildDesktop",
       "build",

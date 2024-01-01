@@ -154,7 +154,7 @@ export const mameNeoGeoCD: Application = {
 
 export const duckstation: Application = {
   id: "duckstation",
-  name: "Duckstation",
+  name: "DuckStation",
   fileExtensions: [".chd", ".cue"],
   flatpakId: "org.duckstation.DuckStation",
   createOptionParams: ({
