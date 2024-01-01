@@ -1,4 +1,8 @@
-# emuze
+# 
+<p align="center">
+  <img src="https://github.com/bmsuseluda/emuze/blob/main/artwork/logo400x400.png" alt="Logo" />
+</p>
+
 [Features](#features) | [Getting Started](#getting-started) | [Supported Platforms and Emulators](#supported-platforms-and-emulators) | [Roadmap](#roadmap)
 
 My main goal for emuze is to have a emulation launcher that is as fast and simple as possible. With this you don't have to configure every emulator and fine tune metadata of your roms.
@@ -65,7 +69,7 @@ For now emuze is only released as an AppImage.
 - Mark the AppImage as executable and start emuze
 - Choose the [folder where your Roms are located](#roms-folder)
 - [Give permission to your Roms folder](#give-permission-to-your-roms-folder-linux-only)
-- Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze`
+- Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze` 
 - Switch to Game Mode
 - Add `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
 
