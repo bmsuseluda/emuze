@@ -7,7 +7,7 @@ const Wrapper = styled("div", {
     position: "fixed",
     top: 0,
     left: 0,
-    height: "25px",
+    height: "40px",
     width: "100%",
     display: "flex",
     justifyContent: "space-between",

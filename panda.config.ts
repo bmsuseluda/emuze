@@ -13,28 +13,6 @@ const globalCss = defineGlobalStyles({
   },
 });
 
-const trimFont = defineUtility({
-  className: "trimFont",
-  values: { type: "boolean" },
-  transform: (value: boolean) => {
-    if (value) {
-      return {
-        "&::before": {
-          content: "",
-          marginBottom: "-0.05em",
-          display: "table",
-        },
-        "&::after": {
-          content: "",
-          marginTop: "0",
-          display: "table",
-        },
-      };
-    }
-    return {};
-  },
-});
-
 const borderRounded = defineUtility({
   className: "borderRounded",
   values: { type: "boolean" },
@@ -172,6 +150,9 @@ export default defineConfig({
         quicksandLight: {
           value: "var(--font-quicksand-light)",
         },
+        annieUseYourTelescope: {
+          value: "var(--font-annie-use-your-telescope)",
+        },
       },
     },
 
@@ -196,7 +177,6 @@ export default defineConfig({
   utilities: {
     extend: {
       borderRounded,
-      trimFont,
     },
   },
 
