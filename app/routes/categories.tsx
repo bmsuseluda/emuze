@@ -142,7 +142,7 @@ export default function Categories() {
   return (
     <SidebarMainLayout>
       <SidebarMainLayout.Sidebar
-        header={<Header />}
+        header={<Header collapse={collapseSidebar} />}
         collapse={collapseSidebar}
         actions={
           <Form method="POST">

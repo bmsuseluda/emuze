@@ -174,7 +174,7 @@ export const duckstation: Application = {
 
 export const play: Application = {
   id: "play",
-  name: "Play",
+  name: "Play!",
   fileExtensions: [".iso", ".chd"],
   flatpakId: "org.purei.Play",
 };
