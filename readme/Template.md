@@ -17,6 +17,8 @@ If your roms are named correctly, a click on the import button should import you
 💻️ Windows, Linux and Steam Deck support  
 🔧 Can install missing emulators (Linux only)  
 
+<br>
+
 <p>
   <img src="https://github.com/bmsuseluda/emuze/blob/main/screenshots/library.png" alt="Library" />
 </p>
