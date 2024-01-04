@@ -1,0 +1,12 @@
+{
+  "id": "nintendo64",
+  "name": "Nintendo 64",
+  "application": { "id": "ares" },
+  "entries": [
+    {
+      "id": "mariokart640",
+      "name": "Mario Kart 64",
+      "path": "Mario Kart 64.z64"
+    }
+  ]
+}

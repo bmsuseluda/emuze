@@ -23,7 +23,19 @@ export const paths = {
 };
 
 const generalDataCache = new FileDataCache<General>(paths.general);
-export const readGeneral = () => generalDataCache.readFile();
+export const readGeneral = () => {
+  const testDataPath = process.env.EMUZE_TEST_DATA_PATH;
+  const result = generalDataCache.readFile();
+
+  if (testDataPath && result) {
+    return {
+      ...result,
+      categoriesPath: testDataPath,
+    };
+  }
+
+  return generalDataCache.readFile();
+};
 export const writeGeneral = (general: General) =>
   generalDataCache.writeFile(general);
 

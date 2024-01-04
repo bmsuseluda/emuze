@@ -3,7 +3,14 @@ node_modules
 /.cache
 coverage
 /build
+/public/build
+/buildDesktop
 /dist
 /.idea
 .env
-/styled-system
+/styled-system/
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/e2eTests/*Config/
+/readme/build/

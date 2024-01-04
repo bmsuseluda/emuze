@@ -2,7 +2,7 @@
   "private": true,
   "name": "emuze",
   "description": "Launch your Games fast and simple",
-  "version": "0.33.6",
+  "version": "0.35.0",
   "author": "bmsuseluda <gunslinger@sensonar.de>",
   "email": "gunslinger@sensonar.de",
   "url": "https://github.com/bmsuseluda/emuze",
@@ -11,26 +11,39 @@
     "prepare": "husky install && yarn panda:codegen",
     "clean": "del-cli dist build buildDesktop public/build coverage",
     "panda:codegen": "panda codegen --clean",
-    "dev": "yarn clean && cross-env NODE_ENV=development yarn panda:codegen && cross-env NODE_ENV=development concurrently -c \"auto\" -k 'yarn:dev:*'",
+    "template:dev": "yarn clean && cross-env NODE_ENV=development yarn panda:codegen && cross-env NODE_ENV=development concurrently -c \"auto\"",
+    "template:dev:electron": "yarn build:electron && wait-on file:build/index.js",
+    "dev-browser:remix": "yarn clean && cross-env NODE_ENV=development yarn panda:codegen && remix dev",
+    "dev": "yarn template:dev -k 'yarn:dev:*'",
     "dev:remix": "remix watch",
-    "dev:electron": "yarn build:electron && wait-on file:build/index.js && electron .",
+    "dev:electron": "yarn template:dev:electron && electron .",
     "build": "yarn clean && cross-env NODE_ENV=production yarn panda:codegen && concurrently -c \"auto\" 'yarn:build:*'",
     "build:remix": "remix build",
     "build:electron": "tsc -p ./desktop/tsconfig.json",
-    "start:electron": "cross-env NODE_ENV=production electron .",
     "start": "yarn build && yarn start:electron",
+    "start:electron": "cross-env NODE_ENV=production electron .",
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest --watch --passWithNoTests",
     "ts:check": "tsc --noEmit && yarn build:electron --noEmit",
     "lint": "yarn ts:check && eslint --fix app/**/*.{ts,tsx}",
-    "mame:build": "tsc -p ./mameImport/tsconfig.json",
-    "mame:import": "yarn mame:build && node ./build/mameImport/mameImport/index.js",
+    "generate:icon": "ts-node ./generateIcon/index.ts",
+    "generate:readme": "del-cli ./readme/build && tsc -p ./readme/tsconfig.json && tsc-alias -p ./readme/tsconfig.json && mmarkdown",
+    "mame:import": "ts-node ./mameImport/index.ts",
     "convertSvgs": "svgr --svgo-config svgo.config.js --config-file .svgrrc.js ./svgs",
     "app:dist": "yarn app:distLinux && yarn app:distWindows",
     "app:distLinux": "yarn build && electron-builder --linux",
     "app:distWindows": "yarn build && electron-builder --win",
     "storybook": "yarn clean && cross-env NODE_ENV=development yarn panda:codegen && storybook dev -p 6006 --no-open",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "e2e:dev": "yarn template:dev -k 'yarn:e2e:dev:*'",
+    "e2e:dev:mock-api": "yarn json-server --middlewares ./e2eTests/apiMockServer/middleware.js --watch ./e2eTests/apiMockServer/db.json --port 8080",
+    "e2e:dev:remix": "yarn dev:remix",
+    "e2e:dev:electron": "yarn template:dev:electron && playwright test --ui",
+    "e2e:build": "yarn build && cross-env NODE_ENV=production playwright test --ui",
+    "e2e:appDist": "yarn app:distLinux && cross-env NODE_ENV=production playwright test --ui",
+    "test-ct": "yarn clean && cross-env NODE_ENV=production yarn panda:codegen && playwright test -c playwright-ct.config.ts",
+    "test-ct:withoutClean": "playwright test -c playwright-ct.config.ts --ui",
+    "test-ct:ui": "yarn test-ct --ui"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.0.4",
@@ -50,61 +63,73 @@
     "lodash.debounce": "^4.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.10.1",
+    "react-icons": "^4.11.0",
     "react-use": "^17.4.0",
     "remix-electron": "^1.3.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.7",
     "@commitlint/config-conventional": "^17.6.7",
-    "@pandacss/dev": "^0.12.1",
+    "@pandacss/dev": "^0.19.0",
+    "@playwright/experimental-ct-react": "^1.39.0",
+    "@playwright/test": "^1.39.0",
     "@remix-run/dev": "^1.19.3",
     "@remix-run/eslint-config": "^1.19.3",
-    "@storybook/addon-essentials": "^7.2.2",
-    "@storybook/addon-interactions": "^7.2.2",
-    "@storybook/addon-links": "^7.2.2",
-    "@storybook/blocks": "^7.2.2",
-    "@storybook/react": "^7.2.2",
-    "@storybook/react-vite": "^7.2.2",
+    "@storybook/addon-essentials": "^7.5.2",
+    "@storybook/addon-interactions": "^7.5.2",
+    "@storybook/addon-links": "^7.5.2",
+    "@storybook/blocks": "^7.5.2",
+    "@storybook/react": "^7.5.2",
+    "@storybook/react-vite": "^7.5.2",
     "@svgr/cli": "^8.1.0",
     "@testing-library/dom": "^9.3.1",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/apicalypse": "^0.1.1",
+    "@types/fs-extra": "^11",
     "@types/jest-when": "^3.5.2",
+    "@types/json-server": "^0.14.7",
     "@types/lodash.debounce": "^4.0.7",
+    "@types/node": "^20.8.7",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.4",
     "concurrently": "^8.2.0",
     "cross-env": "^7.0.3",
     "del-cli": "^5.0.0",
-    "electron": "^25.4.0",
-    "electron-builder": "^24.6.3",
+    "electron": "26.6.3",
+    "electron-builder": "24.9.1",
     "electron-devtools-installer": "^3.2.0",
     "eslint": "^8.46.0",
     "eslint-plugin-react": "^7.33.1",
     "eslint-plugin-storybook": "^0.6.13",
+    "fs-extra": "^11.2.0",
     "happy-dom": "^10.6.3",
     "husky": "^8.0.3",
     "jest-when": "^3.5.2",
+    "json-server": "^0.17.4",
     "lint-staged": "^13.2.3",
+    "mmarkdown": "^1.0.0",
     "prettier": "^3.0.1",
     "prop-types": "^15.8.1",
     "require-from-string": "^2.0.2",
-    "storybook": "^7.2.2",
+    "storybook": "^7.5.2",
+    "ts-node": "^10.9.1",
+    "tsc-alias": "^1.8.8",
     "typescript": "5.1.6",
+    "utility-types": "^3.10.0",
     "vite": "^4.4.9",
     "vite-tsconfig-paths": "^4.2.0",
     "vitest": "^0.33.0",
     "wait-on": "^7.0.1"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "sideEffects": false,
   "build": {
     "appId": "org.emuze.emuze",
+    "artifactName": "${name}.${ext}",
     "files": [
       "buildDesktop",
       "build",
@@ -115,25 +140,15 @@
         {
           "target": "nsis",
           "arch": [
-            "x64",
-            "ia32"
-          ]
-        },
-        {
-          "target": "portable",
-          "arch": [
-            "x64",
-            "ia32"
+            "x64"
           ]
         }
-      ]
+      ],
+      "icon": "public/icon.ico"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
-    },
-    "portable": {
-      "artifactName": "${name}-${version}-portable.${ext}"
     },
     "linux": {
       "target": [
@@ -144,9 +159,15 @@
           ]
         }
       ],
-      "category": "Emulator"
+      "category": "Emulator",
+      "icon": "public/icons/icon512x512.png"
     }
   },
+  "mmarkdown": {
+    "src": "./readme/Template.md",
+    "out": "./README.md",
+    "scripts": "./readme/build/readme/scripts.js"
+  },
   "main": "buildDesktop/main.js",
-  "packageManager": "yarn@3.6.1"
+  "packageManager": "yarn@4.0.1"
 }

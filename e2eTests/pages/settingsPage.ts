@@ -1,0 +1,74 @@
+import { expect, Locator, Page } from "@playwright/test";
+
+export class SettingsPage {
+  readonly page: Page;
+  readonly initialSubPage = "General";
+  readonly settingsHeadline: Locator;
+  readonly closeButton: Locator;
+
+  constructor(page: Page) {
+    this.page = page;
+    this.settingsHeadline = this.page.getByRole("heading", {
+      name: "settings",
+    });
+    this.closeButton = this.page.getByRole("button", { name: "close" });
+  }
+
+  async openSettingsViaClick() {
+    await expect(this.settingsHeadline).not.toBeVisible();
+
+    await this.page.getByRole("link", { name: "settings" }).click();
+    await expect(this.settingsHeadline).toBeVisible();
+
+    await this.expectIsInitialSubPage();
+  }
+
+  async openSettingsViaKeyboard() {
+    await expect(this.settingsHeadline).not.toBeVisible();
+
+    await this.page.keyboard.press("Escape");
+    await expect(this.settingsHeadline).toBeVisible();
+
+    await this.expectIsInitialSubPage();
+  }
+
+  async closeSettingsViaClick() {
+    await this.closeButton.click();
+    await expect(this.settingsHeadline).not.toBeVisible();
+  }
+
+  async closeSettingsViaKeyboard() {
+    await this.page.keyboard.press("Escape");
+    await expect(this.settingsHeadline).not.toBeVisible();
+  }
+
+  async goToToSubPageViaClick(subPageName: string) {
+    const link = this.page.getByRole("link", {
+      name: subPageName,
+    });
+    await expect(link).toBeVisible();
+    await expect(link).not.toBeFocused();
+    await expect(
+      this.page.getByRole("heading", { name: subPageName }),
+    ).not.toBeVisible();
+
+    await link.click();
+
+    await this.expectIsSubPage(subPageName);
+  }
+
+  async expectIsSubPage(subPageName: string) {
+    const link = this.page.getByRole("link", {
+      name: subPageName,
+    });
+    await expect(
+      this.page.getByRole("heading", { name: subPageName }),
+    ).toBeVisible();
+    await expect(link).toBeFocused();
+  }
+
+  async expectIsInitialSubPage() {
+    await expect(this.settingsHeadline).toBeVisible();
+    await this.expectIsSubPage(this.initialSubPage);
+  }
+}

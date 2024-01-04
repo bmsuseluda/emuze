@@ -1,8 +1,8 @@
 import { Ul } from "~/components/Ul";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
-import { Separator } from "~/components/Separator";
 import type { ReactNode } from "react";
 import { styled } from "../../../../../../styled-system/jsx";
+import { Separator } from "~/components/Separator";
 
 const SidebarWrapper = styled("aside", {
   base: {
@@ -63,8 +63,8 @@ export const Sidebar = ({
   collapse = false,
 }: Props) => (
   <SidebarWrapper collapse={collapse}>
-    {!collapse && header}
-    {!collapse && header && <Separator />}
+    {header}
+    {header && <Separator />}
     <ListActionBarLayout headline={collapse ? undefined : headline}>
       <ListActionBarLayout.ListActionBarContainer
         list={

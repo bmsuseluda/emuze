@@ -1,6 +1,10 @@
 import nodepath from "path";
 
-import type { Application } from "~/types/jsonFiles/applications";
+import type {
+  Application,
+  ApplicationWindows,
+} from "~/types/jsonFiles/applications";
+import { isApplicationWindows } from "~/types/jsonFiles/applications";
 import type { Application as ApplicationDB } from "~/server/applicationsDB.server";
 import { applications as applicationsDB } from "~/server/applicationsDB.server";
 import { categories as categoriesDB } from "~/server/categoriesDB.server";
@@ -24,7 +28,7 @@ export const paths = {
 
 export const findExecutable = (path: string, id: string): string | null => {
   const executables = readFilenames(path, [".exe"]).filter((filename) =>
-    nodepath.basename(filename).toLowerCase().includes(id)
+    nodepath.basename(filename).toLowerCase().includes(id),
   );
 
   if (executables.length > 0) {
@@ -36,7 +40,7 @@ export const findExecutable = (path: string, id: string): string | null => {
 
 export const getInstalledApplicationForCategoryOnLinux = (
   defaultApplicationDB: ApplicationDB,
-  oldApplication?: Application
+  oldApplication?: Application,
 ) => {
   if (
     oldApplication &&
@@ -55,14 +59,22 @@ export const getInstalledApplicationForCategoryOnLinux = (
 export const getInstalledApplicationForCategoryOnWindows = (
   defaultApplicationDB: ApplicationDB,
   applicationsPath: string,
-  oldApplication?: Application
-) => {
-  if (oldApplication && findExecutable(applicationsPath, oldApplication.id)) {
+  oldApplication?: Application,
+): ApplicationWindows | undefined => {
+  if (
+    oldApplication &&
+    isApplicationWindows(oldApplication) &&
+    findExecutable(applicationsPath, oldApplication.id)
+  ) {
     return oldApplication;
   }
 
-  if (findExecutable(applicationsPath, defaultApplicationDB.id)) {
-    return defaultApplicationDB;
+  const executableDefaultApplication = findExecutable(
+    applicationsPath,
+    defaultApplicationDB.id,
+  );
+  if (executableDefaultApplication) {
+    return { ...defaultApplicationDB, path: executableDefaultApplication };
   }
 
   return undefined;
@@ -81,13 +93,13 @@ export const getInstalledApplicationForCategory = ({
     return getInstalledApplicationForCategoryOnWindows(
       defaultApplicationDB,
       applicationsPath,
-      oldApplication
+      oldApplication,
     );
   }
 
   return getInstalledApplicationForCategoryOnLinux(
     defaultApplicationDB,
-    oldApplication
+    oldApplication,
   );
 };
 
@@ -98,8 +110,8 @@ export const installMissingApplicationsOnLinux = async () => {
         .map(({ id }) => readCategory(id))
         .filter(
           (category): category is Category =>
-            !!category && !category?.application
-        )
+            !!category && !category?.application,
+        ),
     ),
   ];
 

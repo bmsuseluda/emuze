@@ -1,11 +1,6 @@
-import nodepath from "path";
-
 import type { Application } from "~/types/jsonFiles/applications";
 
-export const getDirectoryname = (path: string) => {
-  const basename = nodepath.basename(path);
-  return path.split(basename)[0];
-};
+export const applicationsPath = "F:/games/Emulation/emulators";
 
 export const pcsx2 = {
   path: "F:/games/Emulation/emulators/Pcsx2-v1.7.2242-windows-64bit-AVX2/pcsx2x64-avx2.exe",

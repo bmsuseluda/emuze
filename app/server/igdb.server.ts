@@ -19,8 +19,8 @@ export interface Game {
   game_localizations?: GameLocalization[];
 }
 
-const url =
-  process.env.IGDB_DEVELOPMENT_URL ||
+export const url =
+  process.env.EMUZE_IGDB_DEVELOPMENT_URL ||
   "https://emuze-api-d7jjhe73ba-uc.a.run.app/games";
 
 const igdbSubTitleChar = ":";

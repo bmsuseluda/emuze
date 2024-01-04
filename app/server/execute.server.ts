@@ -1,19 +1,22 @@
 import { execFile, execFileSync } from "child_process";
 import { readCategory } from "~/server/categories.server";
-import { getApplicationDataById } from "~/server/applicationsDB.server";
+import { applications } from "~/server/applicationsDB.server";
 import { readAppearance, readGeneral } from "~/server/settings.server";
 import { openErrorDialog } from "~/server/openDialog.server";
+import { createAbsoluteEntryPath } from "~/types/jsonFiles/category";
+import { isGeneralConfigured } from "~/types/jsonFiles/settings/general";
+import { isApplicationWindows } from "~/types/jsonFiles/applications";
 
 // TODO: separate os specific code
 const executeApplicationOnLinux = ({
   applicationFlatpakOptionParams,
   applicationFlatpakId,
-  entryPath,
+  absoluteEntryPath,
   optionParams,
 }: {
   applicationFlatpakOptionParams?: string[];
   applicationFlatpakId: string;
-  entryPath: string;
+  absoluteEntryPath: string;
   optionParams?: string[];
 }) => {
   // TODO: check how to get logs in error case but without freezing the application
@@ -22,32 +25,38 @@ const executeApplicationOnLinux = ({
     ...(applicationFlatpakOptionParams ? applicationFlatpakOptionParams : []),
     applicationFlatpakId,
     ...(optionParams ? optionParams : []),
-    entryPath,
+    absoluteEntryPath,
   ]);
 };
 
 const executeApplicationOnWindows = (
   applicationPath: string,
-  entryPath: string,
+  absoluteEntryPath: string,
   optionParams: string[],
 ) => {
   // TODO: check how to get logs in error case but without freezing the application
-  execFileSync(applicationPath, [...optionParams, entryPath]);
+  execFileSync(applicationPath, [...optionParams, absoluteEntryPath]);
 };
 
 export const executeApplication = (category: string, entry: string) => {
   const generalData = readGeneral();
   const categoryData = readCategory(category);
-  if (categoryData?.application && generalData) {
+  if (categoryData?.application && isGeneralConfigured(generalData)) {
     const settings = {
       general: generalData,
       appearance: readAppearance(),
     };
     const { application, entries } = categoryData;
-    const applicationData = getApplicationDataById(application.id);
+    const applicationData = applications[application.id];
     const entryData = entries?.find((value) => value.id === entry);
 
     if (applicationData && entryData) {
+      const absoluteEntryPath = createAbsoluteEntryPath(
+        generalData.categoriesPath,
+        categoryData.name,
+        entryData.path,
+      );
+
       const {
         environmentVariables,
         createOptionParams,
@@ -65,21 +74,22 @@ export const executeApplication = (category: string, entry: string) => {
         );
       }
       const optionParams = createOptionParams
-        ? createOptionParams(entryData, settings)
+        ? createOptionParams({ entryData, categoryData, settings })
         : [];
 
       try {
-        if (application.path) {
+        // TODO: check on isWindows
+        if (isApplicationWindows(application)) {
           executeApplicationOnWindows(
             application.path,
-            entryData.path,
+            absoluteEntryPath,
             optionParams,
           );
         } else {
           executeApplicationOnLinux({
             applicationFlatpakOptionParams: flatpakOptionParams,
             applicationFlatpakId: flatpakId,
-            entryPath: entryData.path,
+            absoluteEntryPath,
             optionParams,
           });
         }

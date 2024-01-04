@@ -5,6 +5,8 @@ import nodepath from "path";
 import { readDirectorynames, readFilenames } from "../readWriteData.server";
 import {
   cotton,
+  createAbsoluteEntryPath,
+  createCategoryPath,
   gateofthunder,
   hugo,
   hugo2,
@@ -53,13 +55,19 @@ describe("readWriteData.server", () => {
       ]);
 
       expect(
-        readFilenames(pcenginecd.entryPath, mednafen.fileExtensions)
-      ).toStrictEqual([cotton.path, gateofthunder.path]);
+        readFilenames(
+          createCategoryPath(pcenginecd.name),
+          mednafen.fileExtensions,
+        ),
+      ).toStrictEqual([
+        createAbsoluteEntryPath(pcenginecd.name, cotton.path),
+        createAbsoluteEntryPath(pcenginecd.name, gateofthunder.path),
+      ]);
     });
 
     it("Should return filenames with supported filenames from subfolders", () => {
       when(readdirSync as unknown as ReadDirMock)
-        .calledWith(playstation.entryPath, {
+        .calledWith(createCategoryPath(playstation.name), {
           encoding: "utf8",
           withFileTypes: true,
         })
@@ -70,10 +78,13 @@ describe("readWriteData.server", () => {
         ]);
 
       when(readdirSync as unknown as ReadDirMock)
-        .calledWith(nodepath.join(playstation.entryPath, "Hugo"), {
-          encoding: "utf8",
-          withFileTypes: true,
-        })
+        .calledWith(
+          nodepath.join(createCategoryPath(playstation.name), "Hugo"),
+          {
+            encoding: "utf8",
+            withFileTypes: true,
+          },
+        )
         .mockReturnValueOnce([
           new SimpleDirent("Hugo.chd", false),
           new SimpleDirent("game without file extension", false),
@@ -81,8 +92,14 @@ describe("readWriteData.server", () => {
         ]);
 
       expect(
-        readFilenames(playstation.entryPath, duckstation.fileExtensions)
-      ).toStrictEqual([hugo.path, hugo2.path]);
+        readFilenames(
+          createCategoryPath(playstation.name),
+          duckstation.fileExtensions,
+        ),
+      ).toStrictEqual([
+        createAbsoluteEntryPath(playstation.name, hugo.path),
+        createAbsoluteEntryPath(playstation.name, hugo2.path),
+      ]);
     });
   });
 
@@ -94,8 +111,10 @@ describe("readWriteData.server", () => {
         new SimpleDirent("game with unsupported file extension.wasd", false),
       ]);
 
-      expect(readDirectorynames(playstation.entryPath)).toStrictEqual([
-        nodepath.join(playstation.entryPath, "Hugo"),
+      expect(
+        readDirectorynames(createCategoryPath(playstation.name)),
+      ).toStrictEqual([
+        nodepath.join(createCategoryPath(playstation.name), "Hugo"),
       ]);
     });
   });

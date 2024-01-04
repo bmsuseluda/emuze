@@ -12,7 +12,7 @@ import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
 import { fetchMetaData } from "~/server/igdb.server";
 import { readGeneral } from "~/server/settings.server";
 import type { ApplicationId } from "~/server/applicationsDB.server";
-import { getApplicationDataById } from "~/server/applicationsDB.server";
+import { applications } from "~/server/applicationsDB.server";
 import type {
   Category as CategoryDB,
   PlatformId,
@@ -62,7 +62,15 @@ export const readCategory = (categoryId: string) =>
 
 export const writeCategory = (category: Category) =>
   categoryDataCache.writeFile(
-    category,
+    {
+      ...category,
+      application: category.application?.id
+        ? {
+            id: category.application.id,
+            path: category.application.path,
+          }
+        : undefined,
+    },
     nodepath.join(paths.entries, `${category.id}.json`),
   );
 
@@ -89,14 +97,20 @@ const filterFiles = (filenames: string[], filesToFilter?: string[]) => {
 };
 
 export const readEntries = (
-  entryPath: string,
+  categoryName: string,
   applicationId: ApplicationId,
   oldEntries?: Entry[],
 ) => {
-  const applicationData = getApplicationDataById(applicationId);
+  const applicationData = applications[applicationId];
+  const generalData = readGeneral();
 
-  if (applicationData) {
-    const filenames = readFilenames(entryPath, applicationData.fileExtensions);
+  if (applicationData && generalData?.categoriesPath) {
+    const categoriesPath = generalData.categoriesPath;
+    const categoryPath = nodepath.join(categoriesPath, categoryName);
+    const filenames = readFilenames(
+      categoryPath,
+      applicationData.fileExtensions,
+    );
 
     const { findEntryName, filteredFiles } = applicationData;
 
@@ -114,13 +128,13 @@ export const readEntries = (
           const entry = {
             id: convertToId(name, index),
             name,
-            path: filename,
+            path: nodepath.relative(categoryPath, filename),
           };
 
           if (findEntryName) {
             return {
               ...entry,
-              name: findEntryName(entry, entryPath),
+              name: findEntryName(entry, categoryName),
             };
           } else {
             return entry;
@@ -170,7 +184,7 @@ export const importEntries = async (category: string) => {
     });
 
     const entries = readEntries(
-      oldCategoryData.entryPath,
+      oldCategoryData.name,
       application?.id || defaultApplication.id,
       oldCategoryData.entries,
     );
@@ -215,10 +229,9 @@ const createCategoryDataWithMetaData =
 
 const createCategoryData = (
   categoryDbData: CategoryDB,
-  categoryFolderName: string,
   categoryFolderBaseName: string,
   applicationsPath?: string,
-) => {
+): Category => {
   const { id, defaultApplication } = categoryDbData;
   const oldCategoryData = readCategory(id);
 
@@ -229,7 +242,7 @@ const createCategoryData = (
   });
 
   const entries = readEntries(
-    categoryFolderName,
+    categoryFolderBaseName,
     application?.id || defaultApplication.id,
     oldCategoryData?.entries,
   );
@@ -239,7 +252,6 @@ const createCategoryData = (
     id,
     name: categoryFolderBaseName,
     application,
-    entryPath: categoryFolderName,
     entries,
   };
 };
@@ -260,7 +272,6 @@ export const importCategories = async () => {
         if (categoryDbData) {
           const categoryData = createCategoryData(
             categoryDbData,
-            categoryFolderName,
             categoryFolderBasename,
             applicationsPath,
           );

@@ -1,0 +1,25 @@
+{
+  "id": "nintendo3ds",
+  "name": "Nintendo 3DS",
+  "application": { "id": "citra" },
+  "entries": [
+    {
+      "id": "kidicarus-uprising0",
+      "name": "Kid Icarus - Uprising",
+      "path": "Kid Icarus - Uprising.3ds",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1wwr.webp",
+        "expiresOn": 1703169288334
+      }
+    },
+    {
+      "id": "metroid-samusreturns1",
+      "name": "Metroid - Samus Returns",
+      "path": "Metroid - Samus Returns.3ds",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co3j82.webp",
+        "expiresOn": 1703169288334
+      }
+    }
+  ]
+}
