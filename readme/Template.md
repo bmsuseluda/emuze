@@ -1,9 +1,8 @@
-# 
 <p align="center">
   <img src="https://github.com/bmsuseluda/emuze/blob/main/artwork/logo400x400.png" alt="Logo" />
 </p>
 
-[💥 Features](#-features) | [🚀 Getting Started](#-getting-started) | [🪄 Metadata](#-metadata) | [🕹️ Supported Platforms and Emulators](#-supported-platforms-and-emulators) | [🌈 Roadmap](#-roadmap)
+💥 [Features](#-features) | 🚀 [Getting Started](#-getting-started) | 🪄 [Metadata](#-metadata) | 🕹️ [Supported Systems](#-supported-systems) | 🌈 [Roadmap](#-roadmap)
 
 My main goal for emuze is to have a emulation launcher that is as fast and simple as possible. With this you don't have to configure every emulator and fine tune metadata of your roms.
 If your roms are named correctly, a click on the import button should import your emulators and roms altogether and therefore no configuration is necessary.
@@ -81,7 +80,7 @@ There is a Steam Input Profile with the name `emuze`, which has some hotkeys pre
 
 ### Roms Folder
 
-The roms need to be grouped by their platform. E.g. `Final Fantasy VII.chd` needs to be stored in a folder `Playstation`.
+The Roms need to be grouped by their System. E.g. `Final Fantasy VII.chd` needs to be stored in a folder `Playstation`.
 
 ```
 roms
@@ -110,7 +109,7 @@ Metadata provides additional information about your games, e.g.
 
 > INFO: Right now, emuze only fetches Cover for your games.
 
-Metadata will be fetched from [igdb](https://www.igdb.com). emuze crawls the name and alternative name of a game filtered by the specific platform.
+Metadata will be fetched from [igdb](https://www.igdb.com). emuze crawls the name and alternative name of a game filtered by the specific system.
 The Search is case-insensitive.
 
 > INFO: [igdb](https://www.igdb.com) is a community driven open source database for game information. If there is something missing or wrong, please help and correct it there.
@@ -131,15 +130,15 @@ If you have a game with multiple discs, like `Final Fantasy VII`, the file name 
 
 If you have multiple versions of a game you can specify them in brackets, e.g. the file name for the japanese version of `Castlevania` would be `Castlevania (J).nes`.
 
-## 🕹️ Supported Platforms and Emulators
+## 🕹️ Supported Systems
 
-Every Platform and Emulator needs to be configured in the source code of emuze by the developer.
+Every System and Emulator needs to be configured in the source code of emuze by the developer.
 Right now the following are supported:
 
-| Platform     | Emulators | Default Emulator |
-|--------------|-----------|------------------|
+| System | Emulators | Default Emulator |
+|--------|-----------|------------------|
 ```mmd
-return scripts.createPlatformsTable()
+return scripts.createSystemsTable()
 ```
 
 > INFO: If you miss an emulator or find an error in the configuration, please create a pull request or issue.

@@ -1,6 +1,6 @@
 import { categories } from "~/server/categoriesDB.server";
 
-export const createPlatformsTable = () =>
+export const createSystemsTable = () =>
   Object.values(categories)
     .map((category) => {
       return `| ${category.names[0]} | ${category.applications

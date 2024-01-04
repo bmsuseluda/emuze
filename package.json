@@ -27,6 +27,7 @@
     "ts:check": "tsc --noEmit && yarn build:electron --noEmit",
     "lint": "yarn ts:check && eslint --fix app/**/*.{ts,tsx}",
     "generate:icon": "ts-node ./generateIcon/index.ts",
+    "generate:readme": "del-cli ./readme/build && tsc -p ./readme/tsconfig.json && tsc-alias -p ./readme/tsconfig.json && mmarkdown",
     "mame:import": "ts-node ./mameImport/index.ts",
     "convertSvgs": "svgr --svgo-config svgo.config.js --config-file .svgrrc.js ./svgs",
     "app:dist": "yarn app:distLinux && yarn app:distWindows",
@@ -42,8 +43,7 @@
     "e2e:appDist": "yarn app:distLinux && cross-env NODE_ENV=production playwright test --ui",
     "test-ct": "yarn clean && cross-env NODE_ENV=production yarn panda:codegen && playwright test -c playwright-ct.config.ts",
     "test-ct:withoutClean": "playwright test -c playwright-ct.config.ts --ui",
-    "test-ct:ui": "yarn test-ct --ui",
-    "generate:readme": "del-cli dist ./readme/build && tsc -p ./readme/tsconfig.json && tsc-alias -p ./readme/tsconfig.json && mmarkdown"
+    "test-ct:ui": "yarn test-ct --ui"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.0.4",
