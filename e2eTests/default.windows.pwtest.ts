@@ -78,6 +78,9 @@ test("Should open settings via keyboard", async () => {
 
   await settingsPage.expectIsSubPage(settingsPage.appearancePage.name);
 
+  await page.keyboard.press("ArrowRight");
+  await expect(settingsPage.appearancePage.fullscreen).toBeFocused();
+
   await settingsPage.closeSettingsViaKeyboard();
 });
 

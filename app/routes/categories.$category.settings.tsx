@@ -36,7 +36,7 @@ export default function Index() {
 
   const closable = useMemo(() => platforms.length > 0, [platforms]);
 
-  const { isInFocus, switchFocus, switchFocusBack, enableFocus } =
+  const { isInFocus, switchFocus, switchFocusBackMultiple, enableFocus } =
     useFocus<FocusElement>("settingsSidebar");
 
   const { categoryLinksRefCallback } = useGamepadsOnSidebar(isInFocus);
@@ -45,12 +45,12 @@ export default function Index() {
 
   const handleClose = useCallback(() => {
     if (closable) {
-      switchFocusBack();
+      switchFocusBackMultiple("settingsMain", "settingsSidebar");
       // TODO: use useState for dialog open and add some delay to show close animation
       // TODO: replace with robust solution
       navigate(pathname.split("/settings")[0]);
     }
-  }, [pathname, navigate, switchFocusBack, closable]);
+  }, [pathname, navigate, switchFocusBackMultiple, closable]);
 
   const handleCloseOnFocus = useCallback(() => {
     if (isInFocus) {
