@@ -16,8 +16,8 @@ const Input = styled("input", {
     width: "100%",
     boxSizing: "border-box",
     fontFamily: "inherit",
-    fontSize: "80%",
-    fontWeight: 300,
+    fontSize: "100%",
+    fontWeight: 400,
 
     "&:focus": {
       borderColor: "accent",
@@ -51,6 +51,11 @@ const IconButton = styled("button", {
     marginBottom: "auto",
     cursor: "pointer",
     color: "color",
+
+    "&:focus": {
+      border: "none",
+      outline: "none",
+    },
 
     "& > svg": {
       minWidth: "1.3rem",

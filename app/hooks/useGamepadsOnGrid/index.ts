@@ -4,15 +4,38 @@ import {
   useKeyboardEvent,
 } from "~/hooks/useGamepadEvent";
 import { layout } from "~/hooks/useGamepads/layouts";
-import type { MutableRefObject } from "react";
+import type { MutableRefObject, RefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import { useRefsGrid } from "~/hooks/useRefsGrid";
 
-export const useGamepadsOnGrid = <T extends HTMLElement>(
-  onSelectEntry: (entry: T) => void,
-  // TODO: add function callback for leftOverTheEdge
-  isInFocus: boolean,
-) => {
+export interface Result<T> {
+  selectedEntry: MutableRefObject<T | undefined>;
+  resetSelected: () => void;
+  updatePosition: () => void;
+  entryListRef: RefObject<HTMLUListElement>;
+  entriesRefs: MutableRefObject<T[]>;
+  entriesRefCallback: (index: number) => (ref: T) => void;
+  // TODO: only for tests for now. is it possible without?
+  entriesRefsGrid: MutableRefObject<T[][]>;
+}
+
+interface Props<T> {
+  onSelectEntry: (entry: T) => void;
+  isInFocus: boolean;
+  onLeftOverTheEdge?: (props: Result<T>) => void;
+  onRightOverTheEdge?: (props: Result<T>) => void;
+  onTopOverTheEdge?: (props: Result<T>) => void;
+  onBottomOverTheEdge?: (props: Result<T>) => void;
+}
+
+export const useGamepadsOnGrid = <T extends HTMLElement>({
+  onSelectEntry,
+  isInFocus,
+  onLeftOverTheEdge,
+  onRightOverTheEdge,
+  onTopOverTheEdge,
+  onBottomOverTheEdge,
+}: Props<T>): Result<T> => {
   const selectedX = useRef<number>();
   const selectedY = useRef<number>();
   const selectedEntry = useRef<T>();
@@ -111,6 +134,33 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
     [],
   );
 
+  const resetSelected = useCallback(() => {
+    selectedX.current = undefined;
+    selectedY.current = undefined;
+    selectedEntry.current = undefined;
+  }, []);
+
+  const createResult = useCallback(
+    (): Result<T> => ({
+      entriesRefCallback,
+      entriesRefs,
+      entriesRefsGrid,
+      entryListRef,
+      resetSelected,
+      selectedEntry,
+      updatePosition: updatePosition(entriesRefsGrid),
+    }),
+    [
+      entriesRefCallback,
+      entriesRefs,
+      entriesRefsGrid,
+      entryListRef,
+      resetSelected,
+      selectedEntry,
+      updatePosition,
+    ],
+  );
+
   const onRight = useCallback(() => {
     if (isInFocus && entriesRefsGrid.current) {
       if (
@@ -118,20 +168,29 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
         typeof selectedY.current !== "undefined" &&
         entriesRefsGrid.current[selectedY.current]
       ) {
-        if (
-          selectedX.current <
-          getLastIndex(entriesRefsGrid.current[selectedY.current])
-        ) {
+        const lastIndex = getLastIndex(
+          entriesRefsGrid.current[selectedY.current],
+        );
+        if (selectedX.current < lastIndex) {
           selectedX.current = selectedX.current + 1;
           handleSelectEntry(
             entriesRefsGrid,
             selectedX.current,
             selectedY.current,
           );
+        } else if (selectedX.current === lastIndex && onRightOverTheEdge) {
+          onRightOverTheEdge(createResult());
         }
       }
     }
-  }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus]);
+  }, [
+    handleSelectEntry,
+    getLastIndex,
+    entriesRefsGrid,
+    isInFocus,
+    onRightOverTheEdge,
+    createResult,
+  ]);
 
   const onLeft = useCallback(() => {
     if (isInFocus && entriesRefsGrid.current) {
@@ -147,10 +206,18 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
             selectedX.current,
             selectedY.current,
           );
+        } else if (selectedX.current === 0 && onLeftOverTheEdge) {
+          onLeftOverTheEdge(createResult());
         }
       }
     }
-  }, [handleSelectEntry, entriesRefsGrid, isInFocus]);
+  }, [
+    handleSelectEntry,
+    entriesRefsGrid,
+    isInFocus,
+    onLeftOverTheEdge,
+    createResult,
+  ]);
 
   const onDown = useCallback(() => {
     if (isInFocus && entriesRefsGrid.current) {
@@ -159,7 +226,8 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
         typeof selectedY.current !== "undefined" &&
         entriesRefsGrid.current[selectedY.current]
       ) {
-        if (selectedY.current < getLastIndex(entriesRefsGrid.current)) {
+        const lastIndex = getLastIndex(entriesRefsGrid.current);
+        if (selectedY.current < lastIndex) {
           selectedY.current = selectedY.current + 1;
           if (!entriesRefsGrid.current[selectedY.current][selectedX.current]) {
             selectedX.current = getLastIndex(
@@ -171,10 +239,19 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
             selectedX.current,
             selectedY.current,
           );
+        } else if (selectedY.current === lastIndex && onBottomOverTheEdge) {
+          onBottomOverTheEdge(createResult());
         }
       }
     }
-  }, [handleSelectEntry, getLastIndex, entriesRefsGrid, isInFocus]);
+  }, [
+    handleSelectEntry,
+    getLastIndex,
+    entriesRefsGrid,
+    isInFocus,
+    onBottomOverTheEdge,
+    createResult,
+  ]);
 
   const onUp = useCallback(() => {
     if (isInFocus && entriesRefsGrid.current) {
@@ -190,10 +267,18 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
             selectedX.current,
             selectedY.current,
           );
+        } else if (selectedY.current === 0 && onTopOverTheEdge) {
+          onTopOverTheEdge(createResult());
         }
       }
     }
-  }, [handleSelectEntry, entriesRefsGrid, isInFocus]);
+  }, [
+    handleSelectEntry,
+    entriesRefsGrid,
+    isInFocus,
+    onTopOverTheEdge,
+    createResult,
+  ]);
 
   useGamepadButtonPressEvent(layout.buttons.DPadRight, onRight);
   useGamepadButtonPressEvent(layout.buttons.DPadLeft, onLeft);
@@ -210,20 +295,5 @@ export const useGamepadsOnGrid = <T extends HTMLElement>(
   useKeyboardEvent("ArrowDown", onDown);
   useKeyboardEvent("ArrowUp", onUp);
 
-  const resetSelected = useCallback(() => {
-    selectedX.current = undefined;
-    selectedY.current = undefined;
-    selectedEntry.current = undefined;
-  }, []);
-
-  return {
-    selectedEntry,
-    resetSelected,
-    updatePosition: updatePosition(entriesRefsGrid),
-    entryListRef,
-    entriesRefs,
-    entriesRefCallback,
-    // TODO: only for tests for now. is it possible without?
-    entriesRefsGrid,
-  };
+  return createResult();
 };

@@ -15,6 +15,7 @@ import { useFullscreen } from "~/hooks/useFullscreen";
 import { CheckboxRow } from "~/components/CheckboxRow";
 import type { ElementRef } from "react";
 import { useCallback, useRef } from "react";
+import type { Result } from "~/hooks/useGamepadsOnGrid";
 import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElement } from "~/types/focusElement";
@@ -73,15 +74,33 @@ export default function Index() {
     entry.focus();
   }, []);
 
+  const goBack = useCallback(
+    (resetSelected: () => void) => {
+      resetSelected();
+      switchFocusBack();
+    },
+    [switchFocusBack],
+  );
+
+  const onLeftOverTheEdge = useCallback(
+    ({ resetSelected }: Result<ElementRef<"button">>) => {
+      goBack(resetSelected);
+    },
+    [goBack],
+  );
+
   const { entryListRef, entriesRefCallback, selectedEntry, resetSelected } =
-    useGamepadsOnGrid(selectEntry, isInFocus);
+    useGamepadsOnGrid({
+      onSelectEntry: selectEntry,
+      isInFocus,
+      onLeftOverTheEdge,
+    });
 
   const onBack = useCallback(() => {
     if (isInFocus) {
-      resetSelected();
-      switchFocusBack();
+      goBack(resetSelected);
     }
-  }, [isInFocus, resetSelected, switchFocusBack]);
+  }, [isInFocus, resetSelected, goBack]);
 
   const onToggle = useCallback(() => {
     if (isInFocus) {
