@@ -1,9 +1,15 @@
-import type { ComponentPropsWithoutRef, ElementRef, RefObject } from "react";
+import type {
+  ComponentPropsWithoutRef,
+  ElementRef,
+  MutableRefObject,
+  RefObject,
+} from "react";
 import { useCallback } from "react";
 import { useTestId } from "~/hooks/useTestId";
 import type { Entry as EntryType } from "~/types/jsonFiles/category";
 import { Ul } from "../Ul";
 import { Entry } from "./components/Entry";
+import type { Result } from "~/hooks/useGamepadsOnGrid";
 import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
 import {
   useGamepadButtonPressEvent,
@@ -69,6 +75,27 @@ export const EntryList = ({
     entry.focus();
   };
 
+  const goBack = useCallback(
+    (
+      selectedEntry: MutableRefObject<ElementRef<"input"> | undefined>,
+      resetSelected: () => void,
+    ) => {
+      if (selectedEntry.current) {
+        selectedEntry.current.checked = false;
+        resetSelected();
+      }
+      onBack();
+    },
+    [onBack],
+  );
+
+  const onLeftOverTheEdge = useCallback(
+    ({ selectedEntry, resetSelected }: Result<ElementRef<"input">>) => {
+      goBack(selectedEntry, resetSelected);
+    },
+    [goBack],
+  );
+
   const {
     entryListRef,
     entriesRefs,
@@ -76,17 +103,17 @@ export const EntryList = ({
     selectedEntry,
     resetSelected,
     updatePosition,
-  } = useGamepadsOnGrid(selectEntry, isInFocus);
+  } = useGamepadsOnGrid({
+    onSelectEntry: selectEntry,
+    isInFocus,
+    onLeftOverTheEdge,
+  });
 
   const handleBack = useCallback(() => {
     if (isInFocus) {
-      if (selectedEntry.current) {
-        selectedEntry.current.checked = false;
-        resetSelected();
-      }
-      onBack();
+      goBack(selectedEntry, resetSelected);
     }
-  }, [isInFocus, resetSelected, selectedEntry, onBack]);
+  }, [isInFocus, resetSelected, selectedEntry, goBack]);
 
   const handleExecute = useCallback(() => {
     if (isInFocus) {

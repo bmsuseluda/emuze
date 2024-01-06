@@ -134,10 +134,7 @@ export default function Category() {
   }, [isInFocus]);
 
   const onSettings = useCallback(() => {
-    // if (isInFocus) {
-    //   switchFocus("settingsSidebar");
     settingsButtonRef.current?.click();
-    // }
   }, []);
 
   useGamepadButtonPressEvent(layout.buttons.X, onImport);

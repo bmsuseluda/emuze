@@ -24,6 +24,7 @@ import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import { SettingsIcon } from "~/components/SettingsIcon";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElement } from "~/types/focusElement";
+import type { Result } from "~/hooks/useGamepadsOnGrid";
 import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
 import {
   useGamepadButtonPressEvent,
@@ -148,16 +149,34 @@ export default function Index() {
     entry.focus();
   }, []);
 
+  const goBack = useCallback(
+    (resetSelected: () => void) => {
+      resetSelected();
+      switchFocusBack();
+    },
+    [switchFocusBack],
+  );
+
+  const onLeftOverTheEdge = useCallback(
+    ({ resetSelected }: Result<ElementRef<"button">>) => {
+      goBack(resetSelected);
+    },
+    [goBack],
+  );
+
   // TODO: check how to align gamepadsGrid navigation with native input usage (use navigation keys in text input)
   const { entryListRef, entriesRefCallback, selectedEntry, resetSelected } =
-    useGamepadsOnGrid(selectEntry, isInFocus);
+    useGamepadsOnGrid({
+      onSelectEntry: selectEntry,
+      isInFocus,
+      onLeftOverTheEdge,
+    });
 
   const onBack = useCallback(() => {
     if (isInFocus) {
-      resetSelected();
-      switchFocusBack();
+      goBack(resetSelected);
     }
-  }, [isInFocus, resetSelected, switchFocusBack]);
+  }, [isInFocus, resetSelected, goBack]);
 
   const onToggle = useCallback(() => {
     if (isInFocus) {

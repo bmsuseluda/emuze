@@ -16,6 +16,7 @@ let settingsPage: SettingsPage;
 
 test.beforeAll(async () => {
   fs.rmSync(configFolderPath, { recursive: true, force: true });
+  // TODO: set emulators path in config
   fs.copySync(nodepath.join(__dirname, "config"), configFolderPath);
   process.env.EMUZE_IS_WINDOWS = "true";
   const response = await startApp(configFolderPath);
