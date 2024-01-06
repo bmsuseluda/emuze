@@ -1,10 +1,15 @@
 import { expect, Locator, Page } from "@playwright/test";
+import { SettingsGeneralPage } from "./settingsGeneralPage";
+import { SettingsAppearancePage } from "./settingsAppearancePage";
 
 export class SettingsPage {
   readonly page: Page;
-  readonly initialSubPage = "General";
+  readonly initialSubPage: string;
   readonly settingsHeadline: Locator;
   readonly closeButton: Locator;
+
+  readonly generalPage: SettingsGeneralPage;
+  readonly appearancePage: SettingsAppearancePage;
 
   constructor(page: Page) {
     this.page = page;
@@ -12,6 +17,10 @@ export class SettingsPage {
       name: "settings",
     });
     this.closeButton = this.page.getByRole("button", { name: "Close Modal" });
+
+    this.generalPage = new SettingsGeneralPage(page);
+    this.appearancePage = new SettingsAppearancePage(page);
+    this.initialSubPage = this.generalPage.name;
   }
 
   async openSettingsViaClick() {

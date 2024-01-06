@@ -65,7 +65,7 @@ test("Should open settings via mouse", async () => {
 
   await expect(page).toHaveScreenshot();
 
-  await settingsPage.goToToSubPageViaClick("Appearance");
+  await settingsPage.goToToSubPageViaClick(settingsPage.appearancePage.name);
 
   await settingsPage.closeSettingsViaClick();
 });
@@ -75,7 +75,7 @@ test("Should open settings via keyboard", async () => {
 
   await page.keyboard.press("ArrowDown");
 
-  await settingsPage.expectIsSubPage("Appearance");
+  await settingsPage.expectIsSubPage(settingsPage.appearancePage.name);
 
   await settingsPage.closeSettingsViaKeyboard();
 });

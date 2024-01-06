@@ -35,10 +35,8 @@ test.afterAll(async () => {
 test("Should show initial config page", async () => {
   await settingsPage.expectIsInitialSubPage();
   await expect(settingsPage.closeButton).not.toBeVisible();
-  await expect(page.getByRole("textbox", { name: "Roms Path" })).toBeVisible();
-  await expect(
-    page.getByRole("textbox", { name: "Emulators Path" }),
-  ).toBeVisible();
+  await expect(settingsPage.generalPage.romsPath).toBeVisible();
+  await expect(settingsPage.generalPage.emulatorsPath).toBeVisible();
 
   await expect(page).toHaveScreenshot();
 
@@ -49,24 +47,18 @@ test("Should show initial config page", async () => {
   });
 
   await test.step("Should prevent from submitting without roms path", async () => {
-    await page.getByRole("button", { name: "Import all" }).click();
-    await expect(
-      page.getByRole("textbox", { name: "Roms Path" }),
-    ).toHaveScreenshot();
-    await expect(
-      page.getByRole("textbox", { name: "Emulators Path" }),
-    ).toHaveScreenshot();
+    await settingsPage.generalPage.importAllButton.click();
+    await expect(settingsPage.generalPage.romsPath).toHaveScreenshot();
+    await expect(settingsPage.generalPage.emulatorsPath).toHaveScreenshot();
 
     // TODO: check of invalid state of input field
   });
 });
 
 test("Should import all", async () => {
-  await page
-    .getByRole("textbox", { name: "Emulators Path" })
-    .fill(testEmulatorsPath);
-  await page.getByRole("textbox", { name: "Roms Path" }).fill(testDataPath);
-  await page.getByRole("button", { name: "Import all" }).click();
+  await settingsPage.generalPage.emulatorsPath.fill(testEmulatorsPath);
+  await settingsPage.generalPage.romsPath.fill(testDataPath);
+  await settingsPage.generalPage.importAllButton.click();
 
   await expect(settingsPage.closeButton).toBeVisible();
   await settingsPage.closeSettingsViaClick();
