@@ -39,6 +39,21 @@ export const useFocus = <FocusElement extends string>(
     }
   }, [focusHistory, setElementInFocus, focusElement]);
 
+  const switchFocusBackMultiple = useCallback(
+    (...elementsToRemove: FocusElement[]) => {
+      if (focusHistory.current.length > 0) {
+        elementsToRemove.forEach((elementToRemove) => {
+          const index = focusHistory.current.indexOf(elementToRemove);
+          if (index !== -1) {
+            focusHistory.current.splice(index, 1);
+          }
+        });
+        setElementInFocus(focusHistory.current.pop());
+      }
+    },
+    [focusHistory, setElementInFocus],
+  );
+
   const disableFocus = useCallback(() => {
     setElementInFocus();
   }, [setElementInFocus]);
@@ -53,6 +68,7 @@ export const useFocus = <FocusElement extends string>(
     isInFocus,
     switchFocus,
     switchFocusBack,
+    switchFocusBackMultiple,
     disableFocus,
     enableFocus,
   };
