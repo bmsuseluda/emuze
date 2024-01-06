@@ -52,6 +52,7 @@ type Errors = {
 };
 
 export const action: ActionFunction = async ({ request }) => {
+  console.log("action");
   const form = await request.formData();
   const _actionId = form.get("_actionId");
   const applicationsPath = form.get("applicationsPath");
@@ -141,7 +142,7 @@ export default function Index() {
 
   // TODO: Maybe create specific files for gamepad controls
   const saveButtonRef = useRef<ElementRef<"button">>(null);
-  const { isInFocus, switchFocus } = useFocus<FocusElement>("settingsMain");
+  const { isInFocus, switchFocusBack } = useFocus<FocusElement>("settingsMain");
 
   const selectEntry = useCallback((entry: HTMLButtonElement) => {
     entry.focus();
@@ -154,9 +155,9 @@ export default function Index() {
   const onBack = useCallback(() => {
     if (isInFocus) {
       resetSelected();
-      switchFocus("settingsSidebar");
+      switchFocusBack();
     }
-  }, [isInFocus, resetSelected, switchFocus]);
+  }, [isInFocus, resetSelected, switchFocusBack]);
 
   const onToggle = useCallback(() => {
     if (isInFocus) {
@@ -220,6 +221,7 @@ export default function Index() {
                     <Label htmlFor="applicationsPath">Emulators Path</Label>
                     <TextInput>
                       <TextInput.Input
+                        type="text"
                         name="applicationsPath"
                         id="applicationsPath"
                         value={applicationPath}
@@ -245,6 +247,7 @@ export default function Index() {
                   <Label htmlFor="categoriesPath">Roms Path</Label>
                   <TextInput>
                     <TextInput.Input
+                      type="text"
                       name="categoriesPath"
                       id="categoriesPath"
                       value={categoriesPath}

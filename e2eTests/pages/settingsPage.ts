@@ -1,17 +1,26 @@
 import { expect, Locator, Page } from "@playwright/test";
+import { SettingsGeneralPage } from "./settingsGeneralPage";
+import { SettingsAppearancePage } from "./settingsAppearancePage";
 
 export class SettingsPage {
   readonly page: Page;
-  readonly initialSubPage = "General";
+  readonly initialSubPage: string;
   readonly settingsHeadline: Locator;
   readonly closeButton: Locator;
+
+  readonly generalPage: SettingsGeneralPage;
+  readonly appearancePage: SettingsAppearancePage;
 
   constructor(page: Page) {
     this.page = page;
     this.settingsHeadline = this.page.getByRole("heading", {
       name: "settings",
     });
-    this.closeButton = this.page.getByRole("button", { name: "close" });
+    this.closeButton = this.page.getByRole("button", { name: "Close Modal" });
+
+    this.generalPage = new SettingsGeneralPage(page);
+    this.appearancePage = new SettingsAppearancePage(page);
+    this.initialSubPage = this.generalPage.name;
   }
 
   async openSettingsViaClick() {
@@ -33,11 +42,13 @@ export class SettingsPage {
   }
 
   async closeSettingsViaClick() {
+    await expect(this.settingsHeadline).toBeVisible();
     await this.closeButton.click();
     await expect(this.settingsHeadline).not.toBeVisible();
   }
 
   async closeSettingsViaKeyboard() {
+    await expect(this.settingsHeadline).toBeVisible();
     await this.page.keyboard.press("Escape");
     await expect(this.settingsHeadline).not.toBeVisible();
   }
@@ -64,6 +75,7 @@ export class SettingsPage {
     await expect(
       this.page.getByRole("heading", { name: subPageName }),
     ).toBeVisible();
+    // TODO: replace with is marked red
     await expect(link).toBeFocused();
   }
 

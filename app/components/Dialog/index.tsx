@@ -1,9 +1,8 @@
-import * as RadixDialog from "@radix-ui/react-dialog";
 import { VscChromeClose } from "react-icons/vsc";
 import type { ReactNode } from "react";
 import { styled } from "../../../styled-system/jsx";
 
-const DialogOverlay = styled(RadixDialog.Overlay, {
+const DialogOverlay = styled("div", {
   base: {
     backgroundColor: "transparentBackgroundColor",
     position: "fixed",
@@ -15,7 +14,7 @@ const DialogOverlay = styled(RadixDialog.Overlay, {
   },
 });
 
-const DialogContent = styled(RadixDialog.Content, {
+const DialogContent = styled("div", {
   base: {
     backgroundColor: "sidebarBackgroundColor",
     color: "color",
@@ -48,43 +47,40 @@ const IconButton = styled("button", {
 
 export type DialogCloseEvent = {
   preventDefault: () => void;
+  stopPropagation: () => void;
 };
 
 type Props = {
   children: ReactNode;
   open: boolean;
-  onClose: (event: DialogCloseEvent) => void;
+  onClose: (event?: DialogCloseEvent) => void;
   closable?: boolean;
 };
 
 export const Dialog = ({ children, open, onClose, closable = true }: Props) => {
-  const handleClose = (event: DialogCloseEvent) => {
+  const handleClose = (event?: DialogCloseEvent) => {
+    event?.stopPropagation();
     if (closable) {
       onClose(event);
     } else {
-      event.preventDefault();
+      event?.preventDefault();
     }
   };
 
   return (
-    <RadixDialog.Root open={open}>
-      <DialogOverlay>
-        <DialogContent
-          onOpenAutoFocus={(event: Event) => {
-            event.preventDefault();
-          }}
-          onInteractOutside={handleClose}
-        >
-          {children}
-          {closable && (
-            <RadixDialog.Close asChild onClick={handleClose}>
-              <IconButton aria-label="Close">
-                <VscChromeClose />
-              </IconButton>
-            </RadixDialog.Close>
-          )}
-        </DialogContent>
-      </DialogOverlay>
-    </RadixDialog.Root>
+    <DialogOverlay onClick={handleClose}>
+      <DialogContent
+        onClick={(event) => {
+          event.stopPropagation();
+        }}
+      >
+        {children}
+        {closable && (
+          <IconButton aria-label="Close Modal" onClick={handleClose}>
+            <VscChromeClose />
+          </IconButton>
+        )}
+      </DialogContent>
+    </DialogOverlay>
   );
 };

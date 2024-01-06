@@ -9,7 +9,7 @@ export const useFocus = <FocusElement extends string>(
     throw new Error("useFocus must be used within a FocusProvider");
   }
 
-  const { elementInFocus, setElementInFocus } = context;
+  const { elementInFocus, setElementInFocus, focusHistory } = context;
 
   const isInFocus = useMemo(
     () => elementInFocus === focusElement,
@@ -17,23 +17,42 @@ export const useFocus = <FocusElement extends string>(
   );
 
   const switchFocus = useCallback(
-    (element: FocusElement) => {
-      setElementInFocus(element);
+    (nextFocusElement: FocusElement) => {
+      const actualFocus = elementInFocus || focusElement;
+      if (!focusHistory.current.includes(actualFocus)) {
+        focusHistory.current.push(actualFocus);
+      }
+      setElementInFocus(nextFocusElement);
     },
-    [setElementInFocus],
+    [setElementInFocus, focusHistory, elementInFocus, focusElement],
   );
+
+  const switchFocusBack = useCallback(() => {
+    // TODO: Should i check on isInFocus?
+    if (focusHistory.current.length > 0) {
+      const lastFocusElement = focusHistory.current.pop();
+      if (lastFocusElement === focusElement) {
+        setElementInFocus(focusHistory.current.pop());
+      } else {
+        setElementInFocus(lastFocusElement);
+      }
+    }
+  }, [focusHistory, setElementInFocus, focusElement]);
 
   const disableFocus = useCallback(() => {
     setElementInFocus();
   }, [setElementInFocus]);
 
   const enableFocus = useCallback(() => {
-    setElementInFocus(focusElement);
-  }, [setElementInFocus, focusElement]);
+    if (focusElement !== elementInFocus) {
+      switchFocus(focusElement);
+    }
+  }, [switchFocus, focusElement, elementInFocus]);
 
   return {
     isInFocus,
     switchFocus,
+    switchFocusBack,
     disableFocus,
     enableFocus,
   };

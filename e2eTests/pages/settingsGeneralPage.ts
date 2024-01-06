@@ -1,0 +1,20 @@
+import { Locator, Page } from "@playwright/test";
+
+export class SettingsGeneralPage {
+  readonly page: Page;
+  readonly headline: Locator;
+  readonly name = "General";
+  readonly romsPath: Locator;
+  readonly emulatorsPath: Locator;
+  readonly importAllButton: Locator;
+
+  constructor(page: Page) {
+    this.page = page;
+    this.headline = this.page.getByRole("heading", {
+      name: this.name,
+    });
+    this.romsPath = page.getByRole("textbox", { name: "Roms Path" });
+    this.emulatorsPath = page.getByRole("textbox", { name: "Emulators Path" });
+    this.importAllButton = page.getByRole("button", { name: "Import all" });
+  }
+}

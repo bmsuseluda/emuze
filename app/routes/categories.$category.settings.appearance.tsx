@@ -67,7 +67,7 @@ export default function Index() {
   const fullscreen = useFullscreen();
 
   const saveButtonRef = useRef<ElementRef<"button">>(null);
-  const { isInFocus, switchFocus } = useFocus<FocusElement>("settingsMain");
+  const { isInFocus, switchFocusBack } = useFocus<FocusElement>("settingsMain");
 
   const selectEntry = useCallback((entry: ElementRef<"button">) => {
     entry.focus();
@@ -79,9 +79,9 @@ export default function Index() {
   const onBack = useCallback(() => {
     if (isInFocus) {
       resetSelected();
-      switchFocus("settingsSidebar");
+      switchFocusBack();
     }
-  }, [isInFocus, resetSelected, switchFocus]);
+  }, [isInFocus, resetSelected, switchFocusBack]);
 
   const onToggle = useCallback(() => {
     if (isInFocus) {

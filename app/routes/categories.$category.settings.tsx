@@ -12,7 +12,7 @@ import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
 import { SettingsIcon } from "~/components/SettingsIcon";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElement } from "~/types/focusElement";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import {
   useGamepadButtonPressEvent,
   useGamepadStickDirectionEvent,
@@ -36,12 +36,8 @@ export default function Index() {
 
   const closable = useMemo(() => platforms.length > 0, [platforms]);
 
-  const { isInFocus, switchFocus, enableFocus } =
+  const { isInFocus, switchFocus, switchFocusBack, enableFocus } =
     useFocus<FocusElement>("settingsSidebar");
-
-  useEffect(() => {
-    switchFocus("settingsSidebar");
-  }, [switchFocus]);
 
   const { categoryLinksRefCallback } = useGamepadsOnSidebar(isInFocus);
   const { pathname } = useLocation();
@@ -49,13 +45,12 @@ export default function Index() {
 
   const handleClose = useCallback(() => {
     if (closable) {
-      // TODO: should be the element where we came from
-      switchFocus("main");
+      switchFocusBack();
       // TODO: use useState for dialog open and add some delay to show close animation
       // TODO: replace with robust solution
       navigate(pathname.split("/settings")[0]);
     }
-  }, [pathname, navigate, switchFocus, closable]);
+  }, [pathname, navigate, switchFocusBack, closable]);
 
   const handleCloseOnFocus = useCallback(() => {
     if (isInFocus) {

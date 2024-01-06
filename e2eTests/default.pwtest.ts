@@ -64,7 +64,7 @@ test("Should open settings via mouse", async () => {
 
   await expect(page).toHaveScreenshot();
 
-  await settingsPage.goToToSubPageViaClick("Appearance");
+  await settingsPage.goToToSubPageViaClick(settingsPage.appearancePage.name);
 
   await settingsPage.closeSettingsViaClick();
 });
@@ -74,9 +74,17 @@ test("Should open settings via keyboard", async () => {
 
   await page.keyboard.press("ArrowDown");
 
-  await settingsPage.expectIsSubPage("Appearance");
+  await settingsPage.expectIsSubPage(settingsPage.appearancePage.name);
 
   await settingsPage.closeSettingsViaKeyboard();
+});
+
+test("Should check if focus history is valid after settings closed", async () => {
+  await libraryPage.expectIsInitialPlatform();
+
+  await page.keyboard.press("ArrowDown");
+
+  await libraryPage.expectIsPlatform("Game Boy", "Super Mario Land");
 });
 
 test("import all", async () => {
@@ -103,3 +111,4 @@ test("import all", async () => {
 // TODO: add offline test
 // TODO: add steps
 // TODO: test against the remix app and only against electron for specific electron features
+// TODO: keyboard navigation in settings pages
