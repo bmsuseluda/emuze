@@ -2,6 +2,7 @@ import type { MutableRefObject, ReactNode } from "react";
 import { createContext, useRef, useState } from "react";
 
 type FocusContextState = {
+  // TODO: Check how to use generics to make it type safe
   elementInFocus?: string;
   setElementInFocus: (elementInFocus?: string) => void;
   focusHistory: MutableRefObject<string[]>;

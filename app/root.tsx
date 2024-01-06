@@ -14,13 +14,14 @@ import type { LinksFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { FullscreenProvider } from "~/provider/FullscreenProvider";
 import { FocusProvider } from "~/provider/FocusProvider";
-import { focusDefault } from "~/types/focusElement";
+import { getFocusDefault } from "~/types/focusElement";
 import type { ReactNode } from "react";
 import { useGamepads } from "~/hooks/useGamepads";
 import type { DataFunctionArgs } from "~/context";
 
 import styles from "app/index.css";
 import { styled } from "../styled-system/jsx";
+import { readGeneral } from "~/server/settings.server";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
@@ -32,11 +33,14 @@ const GamepadProvider = ({ children }: { children: ReactNode }) => {
 
 export const loader = ({ context }: DataFunctionArgs) => {
   const fullscreen = context?.fullscreen as boolean;
-  return json({ fullscreen });
+  const general = readGeneral();
+  const focusDefault = getFocusDefault(general);
+
+  return json({ fullscreen, focusDefault });
 };
 
 export default function App() {
-  const { fullscreen } = useLoaderData<typeof loader>();
+  const { fullscreen, focusDefault } = useLoaderData<typeof loader>();
 
   return (
     <Document>

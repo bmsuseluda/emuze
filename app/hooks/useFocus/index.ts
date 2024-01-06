@@ -18,15 +18,17 @@ export const useFocus = <FocusElement extends string>(
 
   const switchFocus = useCallback(
     (nextFocusElement: FocusElement) => {
-      if (!focusHistory.current.includes(focusElement)) {
-        focusHistory.current.push(focusElement);
+      const actualFocus = elementInFocus || focusElement;
+      if (!focusHistory.current.includes(actualFocus)) {
+        focusHistory.current.push(actualFocus);
       }
       setElementInFocus(nextFocusElement);
     },
-    [setElementInFocus, focusHistory, focusElement],
+    [setElementInFocus, focusHistory, elementInFocus, focusElement],
   );
 
   const switchFocusBack = useCallback(() => {
+    // TODO: Should i check on isInFocus?
     if (focusHistory.current.length > 0) {
       const lastFocusElement = focusHistory.current.pop();
       if (lastFocusElement === focusElement) {

@@ -1,13 +1,6 @@
 import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import {
-  Form,
-  Outlet,
-  useLoaderData,
-  useLocation,
-  useNavigate,
-  useNavigation,
-} from "@remix-run/react";
+import { Form, Outlet, useLoaderData, useNavigation } from "@remix-run/react";
 import { IoMdRefresh } from "react-icons/io";
 import { Button } from "~/components/Button";
 import { importCategories, readCategories } from "~/server/categories.server";
@@ -102,8 +95,6 @@ const Name = styled(Typography, {
 export default function Categories() {
   const { categoryLinks, collapseSidebar } = useLoaderData<LoaderData>();
   const { getTestId } = useTestId("categories");
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
   const { state, formData } = useNavigation();
 
   const { isInFocus, switchFocus, enableFocus } =
@@ -119,11 +110,10 @@ export default function Categories() {
 
   const onSettings = useCallback(() => {
     if (isInFocus) {
-      switchFocus("settingsSidebar");
-      // TODO: check how to trigger settings button click instead like $category. useNavigate rerenders every time
-      navigate(`${pathname}/settings`);
+      // switchFocus("settingsSidebar");
+      document.getElementById("settings")?.click();
     }
-  }, [isInFocus, pathname, navigate, switchFocus]);
+  }, [isInFocus]);
 
   // TODO: add tests
   useGamepadButtonPressEvent(layout.buttons.DPadRight, switchToMain);

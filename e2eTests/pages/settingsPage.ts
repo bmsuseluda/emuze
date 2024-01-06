@@ -11,7 +11,7 @@ export class SettingsPage {
     this.settingsHeadline = this.page.getByRole("heading", {
       name: "settings",
     });
-    this.closeButton = this.page.getByRole("button", { name: "close" });
+    this.closeButton = this.page.getByRole("button", { name: "Close Modal" });
   }
 
   async openSettingsViaClick() {
@@ -33,11 +33,13 @@ export class SettingsPage {
   }
 
   async closeSettingsViaClick() {
+    await expect(this.settingsHeadline).toBeVisible();
     await this.closeButton.click();
     await expect(this.settingsHeadline).not.toBeVisible();
   }
 
   async closeSettingsViaKeyboard() {
+    await expect(this.settingsHeadline).toBeVisible();
     await this.page.keyboard.press("Escape");
     await expect(this.settingsHeadline).not.toBeVisible();
   }
@@ -64,6 +66,7 @@ export class SettingsPage {
     await expect(
       this.page.getByRole("heading", { name: subPageName }),
     ).toBeVisible();
+    // TODO: replace with is marked red
     await expect(link).toBeFocused();
   }
 

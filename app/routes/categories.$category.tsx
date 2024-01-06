@@ -134,11 +134,11 @@ export default function Category() {
   }, [isInFocus]);
 
   const onSettings = useCallback(() => {
-    if (isInFocus) {
-      switchFocus("settingsSidebar");
-      settingsButtonRef.current?.click();
-    }
-  }, [isInFocus, switchFocus]);
+    // if (isInFocus) {
+    //   switchFocus("settingsSidebar");
+    settingsButtonRef.current?.click();
+    // }
+  }, []);
 
   useGamepadButtonPressEvent(layout.buttons.X, onImport);
   useGamepadButtonPressEvent(layout.buttons.Start, onSettings);
@@ -218,7 +218,13 @@ export default function Category() {
           />
         </Form>
       </ListActionBarLayout>
-      <SettingsLink isFullscreen={isFullscreen} ref={settingsButtonRef} />
+      <SettingsLink
+        isFullscreen={isFullscreen}
+        onClick={() => {
+          switchFocus("settingsSidebar");
+        }}
+        ref={settingsButtonRef}
+      />
       <Outlet />
     </>
   );

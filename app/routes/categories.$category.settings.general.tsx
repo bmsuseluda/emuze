@@ -52,6 +52,7 @@ type Errors = {
 };
 
 export const action: ActionFunction = async ({ request }) => {
+  console.log("action");
   const form = await request.formData();
   const _actionId = form.get("_actionId");
   const applicationsPath = form.get("applicationsPath");
@@ -220,6 +221,7 @@ export default function Index() {
                     <Label htmlFor="applicationsPath">Emulators Path</Label>
                     <TextInput>
                       <TextInput.Input
+                        type="text"
                         name="applicationsPath"
                         id="applicationsPath"
                         value={applicationPath}
@@ -245,6 +247,7 @@ export default function Index() {
                   <Label htmlFor="categoriesPath">Roms Path</Label>
                   <TextInput>
                     <TextInput.Input
+                      type="text"
                       name="categoriesPath"
                       id="categoriesPath"
                       value={categoriesPath}
