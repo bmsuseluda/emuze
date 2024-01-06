@@ -79,6 +79,14 @@ test("Should open settings via keyboard", async () => {
   await settingsPage.closeSettingsViaKeyboard();
 });
 
+test("Should check if focus history is valid after settings closed", async () => {
+  await libraryPage.expectIsInitialPlatform();
+
+  await page.keyboard.press("ArrowDown");
+
+  await libraryPage.expectIsPlatform("Game Boy", "Super Mario Land");
+});
+
 test("import all", async () => {
   const playstationPlatformName = "Playstation";
   const playstationLink = page.getByRole("link", {
@@ -103,5 +111,4 @@ test("import all", async () => {
 // TODO: add offline test
 // TODO: add steps
 // TODO: test against the remix app and only against electron for specific electron features
-// TODO: add tests for focus history
 // TODO: keyboard navigation in settings pages
