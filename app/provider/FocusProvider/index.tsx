@@ -17,14 +17,19 @@ export const FocusContext = createContext<FocusContextState>(defaultState);
 
 type Props = {
   focusDefault?: string;
+  focusHistoryDefault?: string[];
   children: ReactNode;
 };
 
-export const FocusProvider = ({ focusDefault, children }: Props) => {
+export const FocusProvider = ({
+  focusDefault,
+  focusHistoryDefault,
+  children,
+}: Props) => {
   const [elementInFocus, setElementInFocus] = useState<string | undefined>(
     focusDefault,
   );
-  const focusHistory = useRef<string[]>([]);
+  const focusHistory = useRef<string[]>(focusHistoryDefault || []);
 
   return (
     <FocusContext.Provider

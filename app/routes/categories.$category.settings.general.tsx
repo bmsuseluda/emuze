@@ -53,7 +53,6 @@ type Errors = {
 };
 
 export const action: ActionFunction = async ({ request }) => {
-  console.log("action");
   const form = await request.formData();
   const _actionId = form.get("_actionId");
   const applicationsPath = form.get("applicationsPath");
