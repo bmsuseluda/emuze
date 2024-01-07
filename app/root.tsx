@@ -14,7 +14,7 @@ import type { LinksFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { FullscreenProvider } from "~/provider/FullscreenProvider";
 import { FocusProvider } from "~/provider/FocusProvider";
-import { getFocusDefault } from "~/types/focusElement";
+import { getFocusDefault, getFocusHistoryDefault } from "~/types/focusElement";
 import type { ReactNode } from "react";
 import { useGamepads } from "~/hooks/useGamepads";
 import type { DataFunctionArgs } from "~/context";
@@ -35,17 +35,22 @@ export const loader = ({ context }: DataFunctionArgs) => {
   const fullscreen = context?.fullscreen as boolean;
   const general = readGeneral();
   const focusDefault = getFocusDefault(general);
+  const focusHistoryDefault = getFocusHistoryDefault(general);
 
-  return json({ fullscreen, focusDefault });
+  return json({ fullscreen, focusDefault, focusHistoryDefault });
 };
 
 export default function App() {
-  const { fullscreen, focusDefault } = useLoaderData<typeof loader>();
+  const { fullscreen, focusDefault, focusHistoryDefault } =
+    useLoaderData<typeof loader>();
 
   return (
     <Document>
       <Layout>
-        <FocusProvider focusDefault={focusDefault}>
+        <FocusProvider
+          focusDefault={focusDefault}
+          focusHistoryDefault={focusHistoryDefault}
+        >
           <GamepadProvider>
             <FullscreenProvider fullscreenDefault={fullscreen}>
               <Titlebar />

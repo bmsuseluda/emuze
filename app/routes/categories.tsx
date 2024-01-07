@@ -110,7 +110,6 @@ export default function Categories() {
 
   const onSettings = useCallback(() => {
     if (isInFocus) {
-      // switchFocus("settingsSidebar");
       document.getElementById("settings")?.click();
     }
   }, [isInFocus]);

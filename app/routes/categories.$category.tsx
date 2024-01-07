@@ -119,8 +119,10 @@ export default function Category() {
   }, [state, formData, enableFocus]);
 
   const onBack = useCallback(() => {
-    switchFocusBack();
-  }, [switchFocusBack]);
+    if (isInFocus) {
+      switchFocusBack();
+    }
+  }, [switchFocusBack, isInFocus]);
 
   const onExecute = useCallback(() => {
     disableFocus();
@@ -134,8 +136,10 @@ export default function Category() {
   }, [isInFocus]);
 
   const onSettings = useCallback(() => {
-    settingsButtonRef.current?.click();
-  }, []);
+    if (isInFocus) {
+      settingsButtonRef.current?.click();
+    }
+  }, [isInFocus]);
 
   useGamepadButtonPressEvent(layout.buttons.X, onImport);
   useGamepadButtonPressEvent(layout.buttons.Start, onSettings);
