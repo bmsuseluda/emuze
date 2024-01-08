@@ -1,5 +1,5 @@
 import type { ElementRef } from "react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, Outlet, useLoaderData, useNavigation } from "@remix-run/react";
@@ -25,6 +25,7 @@ import { SettingsLink } from "~/components/SettingsLink";
 import { BiError } from "react-icons/bi";
 import { Typography } from "~/components/Typography";
 import type { DataFunctionArgs } from "~/context";
+import { useEnableFocusAfterAction } from "~/hooks/useEnableFocusAfterAction";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -109,14 +110,7 @@ export default function Category() {
   const { state, formData } = useNavigation();
 
   /* Set focus again after launching */
-  useEffect(() => {
-    if (
-      state === "loading" &&
-      formData?.get("_actionId") === actionIds.launch
-    ) {
-      enableFocus();
-    }
-  }, [state, formData, enableFocus]);
+  useEnableFocusAfterAction(enableFocus, [actionIds.launch]);
 
   const onBack = useCallback(() => {
     if (isInFocus) {
