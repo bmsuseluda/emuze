@@ -28,11 +28,10 @@ const Buttons = styled("div", {
   },
 });
 
+// TODO: replace with real settings button
 const FakeSettingsButton = styled("div", {
   base: {
-    width: "16px",
-    height: "16px",
-    padding: "12.8px 15px",
+    padding: "23px",
   },
 });
 
