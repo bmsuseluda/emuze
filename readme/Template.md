@@ -141,6 +141,8 @@ Right now the following are supported:
 return scripts.createSystemsTable()
 ```
 
+> ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
+
 > INFO: If you miss an emulator or find an error in the configuration, please create a pull request or issue.
 
 ## 🌈 Roadmap

@@ -13,9 +13,6 @@ const Wrapper = styled("div", {
     outline: "none",
     width: 2,
     height: 2,
-    "&:hover": {
-      cursor: "pointer",
-    },
 
     "&:has(*:checked)": {
       backgroundColor: "accent",
@@ -31,6 +28,7 @@ const StyledCheckbox = styled(CheckboxPrimitive.Root, {
     width: "100%",
     height: "100%",
     outline: "none",
+    cursor: "pointer",
   },
 });
 
@@ -45,7 +43,11 @@ const StyledIndicator = styled(CheckboxPrimitive.Indicator, {
 });
 
 const Checkmark = styled(GiCheckMark, {
-  base: { width: "100%", height: "100%", color: "backgroundColor" },
+  base: {
+    width: "100%",
+    height: "100%",
+    color: "backgroundColor",
+  },
 });
 
 export const Checkbox = forwardRef<

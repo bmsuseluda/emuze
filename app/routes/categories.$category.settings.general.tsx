@@ -33,6 +33,7 @@ import {
 import { layout } from "~/hooks/useGamepads/layouts";
 import { TextInput } from "~/components/TextInput";
 import { installMissingApplicationsOnLinux } from "~/server/applications.server";
+import { useEnableFocusAfterAction } from "~/hooks/useEnableFocusAfterAction";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
@@ -142,7 +143,8 @@ export default function Index() {
 
   // TODO: Maybe create specific files for gamepad controls
   const saveButtonRef = useRef<ElementRef<"button">>(null);
-  const { isInFocus, switchFocusBack } = useFocus<FocusElement>("settingsMain");
+  const { isInFocus, switchFocusBack, disableFocus, enableFocus } =
+    useFocus<FocusElement>("settingsMain");
 
   const selectEntry = useCallback((entry: HTMLButtonElement) => {
     entry.focus();
@@ -218,6 +220,16 @@ export default function Index() {
 
   const { state, formData } = useNavigation();
 
+  /* Set focus again after open file explorer */
+  useEnableFocusAfterAction(enableFocus, [
+    actionIds.chooseApplicationsPath,
+    actionIds.chooseCategoriesPath,
+  ]);
+
+  const onOpenFileDialog = useCallback(() => {
+    disableFocus();
+  }, [disableFocus]);
+
   return (
     <ListActionBarLayout
       headline={
@@ -253,6 +265,7 @@ export default function Index() {
                         name="_actionId"
                         value={actionIds.chooseApplicationsPath}
                         ref={entriesRefCallback(0)}
+                        onClick={onOpenFileDialog}
                       >
                         <FaFolderOpen />
                       </TextInput.IconButton>
@@ -279,6 +292,7 @@ export default function Index() {
                       name="_actionId"
                       value={actionIds.chooseCategoriesPath}
                       ref={entriesRefCallback(isWindows ? 1 : 0)}
+                      onClick={onOpenFileDialog}
                     >
                       <FaFolderOpen />
                     </TextInput.IconButton>
