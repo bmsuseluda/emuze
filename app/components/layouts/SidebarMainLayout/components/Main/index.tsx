@@ -10,6 +10,7 @@ const StyledMain = styled("main", {
     paddingLeft: "2",
     display: "flex",
     backgroundColor: "backgroundColor",
+    minWidth: "25rem",
   },
 });
 

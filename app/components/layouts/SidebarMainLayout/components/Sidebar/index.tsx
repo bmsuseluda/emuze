@@ -16,7 +16,8 @@ const SidebarWrapper = styled("aside", {
     overflowX: "hidden",
     overflowY: "auto",
     width: "15rem",
-    transition: "width 0.5s ease-in-out",
+    minWidth: "15rem",
+    transition: "width 0.5s ease-in-out, min-width 0.5s ease-in-out",
     gap: "1.5rem",
   },
 
@@ -24,6 +25,7 @@ const SidebarWrapper = styled("aside", {
     collapse: {
       true: {
         width: "4rem",
+        minWidth: "4rem",
         paddingLeft: "0.5rem",
       },
     },
