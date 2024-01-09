@@ -4,6 +4,7 @@ import { app, BrowserWindow, ipcMain, session } from "electron";
 import nodepath from "path";
 import { readAppearance } from "./readSettings";
 import * as dotenv from "dotenv";
+import { autoUpdater } from "electron-updater";
 
 dotenv.config();
 
@@ -13,6 +14,8 @@ const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
 };
 
 app.on("ready", async () => {
+  await autoUpdater.checkForUpdatesAndNotify();
+
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
       responseHeaders: {
