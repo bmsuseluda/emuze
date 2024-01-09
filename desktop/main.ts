@@ -57,6 +57,8 @@ app.on("ready", async () => {
       platform() === "win32"
         ? nodepath.join(__dirname, "..", "public", "icon.ico")
         : nodepath.join(__dirname, "..", "public", "icons", "icon96x96.png"),
+    minWidth: 650,
+    minHeight: 600,
   });
 
   ipcMain.handle("isFullscreen", () => window.isFullScreen());

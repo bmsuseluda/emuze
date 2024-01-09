@@ -15,6 +15,7 @@ const Layout = styled("div", {
     flexDirection: "column",
     flex: 1,
     gap: "1.5em",
+    width: "100%",
   },
 });
 
@@ -43,6 +44,7 @@ const List = styled("div", {
     scrollSmooth: {
       true: {
         scrollBehavior: "smooth",
+        scrollPadding: "50% 0",
       },
     },
     // TODO: remove if not necessary anymore. Right now all props you want to use in compoundVariants need to be in variants as well.
