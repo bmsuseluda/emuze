@@ -2,7 +2,7 @@ import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { IoMdDownload, IoMdSave } from "react-icons/io";
+import { IoMdDownload, IoMdRefresh } from "react-icons/io";
 import { FaFolderOpen } from "react-icons/fa";
 import {
   Form,
@@ -312,7 +312,7 @@ export default function Index() {
                   formData?.get("_actionId") === actionIds.save
                 }
                 ref={saveButtonRef}
-                icon={<IoMdSave />}
+                icon={<IoMdRefresh />}
               >
                 Import all
               </Button>
