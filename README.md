@@ -26,7 +26,7 @@ If your roms are named correctly, a click on the import button should import you
 
 ### Windows
 
-[Download](https://github.com/bmsuseluda/emuze/releases/latest) the latest version of `emuze.exe` and install it.
+[Download](https://github.com/bmsuseluda/emuze/releases/latest) the latest version of `emuze-Setup-[latest Versionnumber].exe` and install it.
 
 If you start emuze for the first time, it asks for the following folders to work:
 
@@ -56,7 +56,7 @@ emulators
 
 For now emuze is only released as an AppImage. Your distribution needs to support Flatpaks.
 
-- [Download](https://github.com/bmsuseluda/emuze/releases/latest) the latest version of `emuze.AppImage`
+- [Download](https://github.com/bmsuseluda/emuze/releases/latest) the latest version of `emuze-[latest Versionnumber].AppImage`
 - Mark the AppImage as executable and start emuze
 - Choose the [folder where your Roms are located](#roms-folder)
 - [Give permission to your Roms folder](#give-permission-to-your-roms-folder-linux-only)
@@ -66,7 +66,7 @@ For now emuze is only released as an AppImage. Your distribution needs to suppor
 For now emuze is only released as an AppImage.
 
 - Switch to Desktop
-- [Download](https://github.com/bmsuseluda/emuze/releases/latest) the latest version of `emuze.AppImage`
+- [Download](https://github.com/bmsuseluda/emuze/releases/latest) the latest version of `emuze-[latest Versionnumber].AppImage`
 - Mark the AppImage as executable and start emuze
 - Choose the [folder where your Roms are located](#roms-folder)
 - [Give permission to your Roms folder](#give-permission-to-your-roms-folder-linux-only)
@@ -107,12 +107,14 @@ Metadata provides additional information about your games, e.g.
 - Genre
 - ...
 
-> INFO: Right now, emuze only fetches Cover for your games.
+> [!NOTE]
+> Right now, emuze only fetches Cover for your games.
 
 Metadata will be fetched from [igdb](https://www.igdb.com). emuze crawls the name and alternative name of a game filtered by the specific system.
 The Search is case-insensitive.
 
-> INFO: [igdb](https://www.igdb.com) is a community driven open source database for game information. If there is something missing or wrong, please help and correct it there.
+> [!NOTE]
+> [igdb](https://www.igdb.com) is a community driven open source database for game information. If there is something missing or wrong, please help and correct it there.
 
 ### Games with a Subtitle
 
@@ -164,7 +166,8 @@ Right now the following are supported:
 
 > ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
 
-> INFO: If you miss an emulator or find an error in the configuration, please create a pull request or issue.
+> [!NOTE]
+> If you miss an emulator or find an error in the configuration, please create a pull request or issue.
 
 ## 🌈 Roadmap
 
