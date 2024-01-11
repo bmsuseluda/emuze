@@ -56,20 +56,17 @@ type Errors = {
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData();
   const _actionId = form.get("_actionId");
-  const applicationsPath = form.get("applicationsPath");
-  const categoriesPath = String(form.get("categoriesPath"));
+  const applicationsPath = form.get("applicationsPath")?.toString();
+  const categoriesPath = form.get("categoriesPath")?.toString();
 
   if (_actionId === actionIds.save) {
     const errors: Errors = {};
-    if (
-      isWindows &&
-      typeof applicationsPath === "string" &&
-      applicationsPath.length === 0
-    ) {
+
+    if (isWindows && (!applicationsPath || applicationsPath.length === 0)) {
       errors.applicationsPath = "The Emulators Path is missing";
     }
 
-    if (categoriesPath.length === 0) {
+    if (!categoriesPath || categoriesPath.length === 0) {
       errors.categoriesPath = "The Roms Path is missing";
     }
 
