@@ -1,6 +1,7 @@
 <p align="center">
-  <img src="https://github.com/bmsuseluda/emuze/blob/main/artwork/logo400x400.png" alt="Logo" />
+  <img src="https://raw.githubusercontent.com/bmsuseluda/emuze/main/artwork/logo400x400.png" alt="Logo" />
 </p>
+
 
 💥 [Features](#-features) | 🚀 [Getting Started](#-getting-started) | 🪄 [Metadata](#-metadata) | 🕹️ [Supported Systems](#-supported-systems) | 🌈 [Roadmap](#-roadmap)
 
@@ -9,24 +10,26 @@ If your roms are named correctly, a click on the import button should import you
 
 ## 💥 Features
 
-⚡️ Fast and responsive UI  
-🚂 Import all your emulators and roms with a click of a button  
-🪄 Fetches Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms  
-🎮️ Gamepad support (x-input only)  
-💻️ Windows, Linux and Steam Deck support  
-🔧 Can install missing emulators (Linux only)  
+- ⚡️ Fast and responsive UI  
+- 🚂 Import all your emulators and roms with a click of a button  
+- 🪄 Fetches Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms  
+- 🎮️ Gamepad support (x-input only)  
+- 💻️ Windows, Linux and Steam Deck support  
+- 🔧 Can install missing emulators (Linux only)  
 
 <br>
 
 <p>
-  <img src="https://github.com/bmsuseluda/emuze/blob/main/screenshots/library.png" alt="Library" />
+  <img src="https://github.com/bmsuseluda/emuze/blob/main/screenshots/library.png?raw=true" alt="Library" />
 </p>
 
 ## 🚀 Getting started
 
 ### Windows
 
-[Download](https://github.com/bmsuseluda/emuze/releases/latest) the latest version of `emuze-Setup-[latest Versionnumber].exe` and install it.
+```mmd
+return scripts.getWindowsDownloadLink()
+```
 
 If you start emuze for the first time, it asks for the following folders to work:
 
@@ -56,23 +59,27 @@ emulators
 
 For now emuze is only released as an AppImage. Your distribution needs to support Flatpaks.
 
-- [Download](https://github.com/bmsuseluda/emuze/releases/latest) the latest version of `emuze-[latest Versionnumber].AppImage`
-- Mark the AppImage as executable and start emuze
-- Choose the [folder where your Roms are located](#roms-folder)
-- [Give permission to your Roms folder](#give-permission-to-your-roms-folder-linux-only)
+```mmd
+return scripts.getLinuxDownloadLink('1) ')
+```
+2) Mark the AppImage as executable and start emuze
+3) Choose the [folder where your Roms are located](#roms-folder)
+4) [Give permission to your Roms folder](#give-permission-to-your-roms-folder-linux-only)
 
 ### Steam Deck in Game mode
 
 For now emuze is only released as an AppImage.
 
-- Switch to Desktop
-- [Download](https://github.com/bmsuseluda/emuze/releases/latest) the latest version of `emuze-[latest Versionnumber].AppImage`
-- Mark the AppImage as executable and start emuze
-- Choose the [folder where your Roms are located](#roms-folder)
-- [Give permission to your Roms folder](#give-permission-to-your-roms-folder-linux-only)
-- Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze` 
-- Switch to Game Mode
-- Add `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
+1) Switch to Desktop
+```mmd
+return scripts.getLinuxDownloadLink('2) ')
+```
+3) Mark the AppImage as executable and start emuze
+4) Choose the [folder where your Roms are located](#roms-folder)
+5) [Give permission to your Roms folder](#give-permission-to-your-roms-folder-linux-only)
+6) Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze` 
+7) Switch to Game Mode
+8) Add `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
 
 #### Steam Input Profile
 
@@ -102,18 +109,18 @@ If your roms are stored somewhere else you can give access to this folder via `F
 ## 🪄 Metadata
 
 Metadata provides additional information about your games, e.g.
-- Cover
+- Cover art
 - Description
 - Genre
 - ...
 
 > [!NOTE]
-> Right now, emuze only fetches Cover for your games.
+> Right now, emuze only fetches Cover art for your games.
 
 Metadata will be fetched from [igdb](https://www.igdb.com). emuze crawls the name and alternative name of a game filtered by the specific system.
 The Search is case-insensitive.
 
-> [!NOTE]
+> [!TIP]
 > [igdb](https://www.igdb.com) is a community driven open source database for game information. If there is something missing or wrong, please help and correct it there.
 
 ### Games with a Subtitle
@@ -142,10 +149,10 @@ Right now the following are supported:
 ```mmd
 return scripts.createSystemsTable()
 ```
-
+> [!IMPORTANT]  
 > ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
 
-> [!NOTE]
+> [!TIP]
 > If you miss an emulator or find an error in the configuration, please create a pull request or issue.
 
 ## 🌈 Roadmap
