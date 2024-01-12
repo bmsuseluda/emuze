@@ -5,7 +5,6 @@ import {
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration,
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
@@ -109,7 +108,6 @@ function Document({
       </head>
       <body>
         {children}
-        <ScrollRestoration />
         <Scripts />
         <LiveReload />
       </body>

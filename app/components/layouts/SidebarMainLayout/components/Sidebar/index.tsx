@@ -76,6 +76,7 @@ export const Sidebar = ({
         }
         actions={actions}
         collapse={collapse}
+        scrollSmooth
       />
     </ListActionBarLayout>
   </SidebarWrapper>
