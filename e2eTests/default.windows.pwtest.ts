@@ -8,6 +8,7 @@ import { SettingsPage } from "./pages/settingsPage";
 test.describe.configure({ mode: "serial" });
 
 const configFolderPath = nodepath.join(__dirname, "defaultWindowsConfig");
+const testEmulatorsPath = nodepath.join(__dirname, "testEmulators");
 
 let app: ElectronApplication;
 let page: Page;
@@ -16,8 +17,8 @@ let settingsPage: SettingsPage;
 
 test.beforeAll(async () => {
   fs.rmSync(configFolderPath, { recursive: true, force: true });
-  // TODO: set emulators path in config
   fs.copySync(nodepath.join(__dirname, "config"), configFolderPath);
+  process.env.EMUZE_TEST_EMULATORS_PATH = testEmulatorsPath;
   process.env.EMUZE_IS_WINDOWS = "true";
   const response = await startApp(configFolderPath);
   app = response.app;
@@ -100,7 +101,9 @@ test("import all", async () => {
 
   await expect(playstationLink).not.toBeVisible();
 
-  await libraryPage.importAllButton.click();
+  await settingsPage.openSettingsViaClick();
+  await settingsPage.generalPage.importAllButton.click();
+  await settingsPage.closeSettingsViaClick();
 
   await libraryPage.goToToPlatformViaClick(playstationPlatformName, "Gex");
 });

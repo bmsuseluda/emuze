@@ -1,13 +1,11 @@
-import { expect, Locator, Page } from "@playwright/test";
+import { expect, Page } from "@playwright/test";
 
 export class LibraryPage {
   readonly page: Page;
   readonly initialPlatform = "Arcade";
-  readonly importAllButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.importAllButton = page.getByRole("button", { name: "Import all" });
   }
 
   async goToToPlatformViaClick(platformName: string, gameName?: string) {

@@ -34,6 +34,8 @@ import { layout } from "~/hooks/useGamepads/layouts";
 import { TextInput } from "~/components/TextInput";
 import { installMissingApplicationsOnLinux } from "~/server/applications.server";
 import { useEnableFocusAfterAction } from "~/hooks/useEnableFocusAfterAction";
+import { useGamepadConnected } from "~/hooks/useGamepadConnected";
+import Xboxx from "~/components/Icons/Xboxx";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
@@ -137,6 +139,8 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 export default function Index() {
   const defaultData = useLoaderData<typeof loader>();
   const newData = useActionData<General>();
+
+  const { isGamepadConnected } = useGamepadConnected();
 
   // TODO: Maybe create specific files for gamepad controls
   const saveButtonRef = useRef<ElementRef<"button">>(null);
@@ -309,7 +313,7 @@ export default function Index() {
                   formData?.get("_actionId") === actionIds.save
                 }
                 ref={saveButtonRef}
-                icon={<IoMdRefresh />}
+                icon={isGamepadConnected ? <Xboxx /> : <IoMdRefresh />}
               >
                 Import all
               </Button>

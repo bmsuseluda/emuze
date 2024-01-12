@@ -25,12 +25,14 @@ export const paths = {
 const generalDataCache = new FileDataCache<General>(paths.general);
 export const readGeneral = () => {
   const testDataPath = process.env.EMUZE_TEST_DATA_PATH;
+  const testEmulatorsPath = process.env.EMUZE_TEST_EMULATORS_PATH;
   const result = generalDataCache.readFile();
 
-  if (testDataPath && result) {
+  if (result) {
     return {
       ...result,
-      categoriesPath: testDataPath,
+      categoriesPath: testDataPath || result.categoriesPath,
+      applicationsPath: testEmulatorsPath || result.applicationsPath,
     };
   }
 

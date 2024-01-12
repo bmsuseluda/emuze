@@ -15,20 +15,14 @@ import { FullscreenProvider } from "~/provider/FullscreenProvider";
 import { FocusProvider } from "~/provider/FocusProvider";
 import { getFocusDefault, getFocusHistoryDefault } from "~/types/focusElement";
 import type { ReactNode } from "react";
-import { useGamepads } from "~/hooks/useGamepads";
 import type { DataFunctionArgs } from "~/context";
 
 import styles from "app/index.css";
 import { styled } from "../styled-system/jsx";
 import { readGeneral } from "~/server/settings.server";
+import { GamepadProvider } from "~/provider/GamepadProvider";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
-
-const GamepadProvider = ({ children }: { children: ReactNode }) => {
-  useGamepads();
-
-  return <>{children}</>;
-};
 
 export const loader = ({ context }: DataFunctionArgs) => {
   const fullscreen = context?.fullscreen as boolean;

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { StickDirection } from "~/hooks/useGamepads/layouts";
 import { layout } from "~/hooks/useGamepads/layouts";
 
@@ -18,6 +18,7 @@ const dispatchStickDirectionEvent = (stickDirection: StickDirection) => {
 export const useGamepads = () => {
   const oldGamepads = useRef<(Gamepad | null)[]>([]);
   const requestAnimationFrameRef = useRef<number>();
+  const [isGamepadConnected, setGamepadConnected] = useState(false);
 
   const fireEventOnButtonPress = useCallback((gamepads: (Gamepad | null)[]) => {
     if (!document.hidden && document.visibilityState === "visible") {
@@ -95,6 +96,7 @@ export const useGamepads = () => {
 
   useEffect(() => {
     window.addEventListener("gamepadconnected", () => {
+      setGamepadConnected(true);
       requestAnimationFrameRef.current = requestAnimationFrame(update);
     });
 
@@ -112,4 +114,8 @@ export const useGamepads = () => {
       }
     };
   }, [update]);
+
+  return {
+    isGamepadConnected,
+  };
 };

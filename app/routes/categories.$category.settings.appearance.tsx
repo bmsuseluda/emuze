@@ -24,6 +24,8 @@ import {
   useKeyboardEvent,
 } from "~/hooks/useGamepadEvent";
 import { layout } from "~/hooks/useGamepads/layouts";
+import { useGamepadConnected } from "~/hooks/useGamepadConnected";
+import Xboxx from "~/components/Icons/Xboxx";
 
 export const loader = () => {
   const appearance = readAppearance();
@@ -66,6 +68,8 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 export default function Index() {
   const { alwaysGameNames, collapseSidebar } = useLoaderData<typeof loader>();
   const fullscreen = useFullscreen();
+
+  const { isGamepadConnected } = useGamepadConnected();
 
   const saveButtonRef = useRef<ElementRef<"button">>(null);
   const { isInFocus, switchFocusBack } = useFocus<FocusElement>("settingsMain");
@@ -183,7 +187,7 @@ export default function Index() {
               name="_actionId"
               value={actionIds.save}
               ref={saveButtonRef}
-              icon={<IoMdSave />}
+              icon={isGamepadConnected ? <Xboxx /> : <IoMdSave />}
             >
               Save settings
             </Button>
