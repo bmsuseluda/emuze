@@ -11663,18 +11663,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-devtools-installer@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "electron-devtools-installer@npm:3.2.0"
-  dependencies:
-    rimraf: "npm:^3.0.2"
-    semver: "npm:^7.2.1"
-    tslib: "npm:^2.1.0"
-    unzip-crx-3: "npm:^0.2.0"
-  checksum: e48390567f7344a0aa3a184413064ea366992fc1f0d247177bfe4f6c4b732ee3088c9d19409156650edb2c6982b97cbf1983cfd7b486c6ee7ef314ad0cabc06e
-  languageName: node
-  linkType: hard
-
 "electron-publish@npm:24.9.4":
   version: 24.9.4
   resolution: "electron-publish@npm:24.9.4"
@@ -11822,7 +11810,6 @@ __metadata:
     dotenv: "npm:^16.3.1"
     electron: "npm:26.6.5"
     electron-builder: "npm:24.11.0"
-    electron-devtools-installer: "npm:^3.2.0"
     electron-updater: "npm:^6.1.8"
     eslint: "npm:^8.46.0"
     eslint-plugin-react: "npm:^7.33.1"
@@ -14676,13 +14663,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"immediate@npm:~3.0.5":
-  version: 3.0.6
-  resolution: "immediate@npm:3.0.6"
-  checksum: f9b3486477555997657f70318cc8d3416159f208bec4cca3ff3442fd266bc23f50f0c9bd8547e1371a6b5e82b821ec9a7044a4f7b944798b25aa3cc6d5e63e62
-  languageName: node
-  linkType: hard
-
 "import-fresh@npm:^3.0.0, import-fresh@npm:^3.2.1, import-fresh@npm:^3.3.0":
   version: 3.3.0
   resolution: "import-fresh@npm:3.3.0"
@@ -15913,18 +15893,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jszip@npm:^3.1.0":
-  version: 3.10.1
-  resolution: "jszip@npm:3.10.1"
-  dependencies:
-    lie: "npm:~3.3.0"
-    pako: "npm:~1.0.2"
-    readable-stream: "npm:~2.3.6"
-    setimmediate: "npm:^1.0.5"
-  checksum: bfbfbb9b0a27121330ac46ab9cdb3b4812433faa9ba4a54742c87ca441e31a6194ff70ae12acefa5fe25406c432290e68003900541d948a169b23d30c34dd984
-  languageName: node
-  linkType: hard
-
 "keyv@npm:^4.0.0":
   version: 4.1.1
   resolution: "keyv@npm:4.1.1"
@@ -16019,15 +15987,6 @@ __metadata:
     prelude-ls: "npm:^1.2.1"
     type-check: "npm:~0.4.0"
   checksum: 2e4720ff79f21ae08d42374b0a5c2f664c5be8b6c8f565bb4e1315c96ed3a8acaa9de788ffed82d7f2378cf36958573de07ef92336cb5255ed74d08b8318c9ee
-  languageName: node
-  linkType: hard
-
-"lie@npm:~3.3.0":
-  version: 3.3.0
-  resolution: "lie@npm:3.3.0"
-  dependencies:
-    immediate: "npm:~3.0.5"
-  checksum: f335ce67fe221af496185d7ce39c8321304adb701e122942c495f4f72dcee8803f9315ee572f5f8e8b08b9e8d7195da91b9fad776e8864746ba8b5e910adf76e
   languageName: node
   linkType: hard
 
@@ -17490,17 +17449,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mkdirp@npm:^0.5.1":
-  version: 0.5.5
-  resolution: "mkdirp@npm:0.5.5"
-  dependencies:
-    minimist: "npm:^1.2.5"
-  bin:
-    mkdirp: bin/cmd.js
-  checksum: 3bce20ea525f9477befe458ab85284b0b66c8dc3812f94155af07c827175948cdd8114852ac6c6d82009b13c1048c37f6d98743eb019651ee25c39acc8aabe7d
-  languageName: node
-  linkType: hard
-
 "mkdirp@npm:^0.5.4":
   version: 0.5.6
   resolution: "mkdirp@npm:0.5.6"
@@ -18353,13 +18301,6 @@ __metadata:
   version: 0.2.9
   resolution: "pako@npm:0.2.9"
   checksum: 627c6842e90af0b3a9ee47345bd66485a589aff9514266f4fa9318557ad819c46fedf97510f2cef9b6224c57913777966a05cb46caf6a9b31177a5401a06fe15
-  languageName: node
-  linkType: hard
-
-"pako@npm:~1.0.2":
-  version: 1.0.11
-  resolution: "pako@npm:1.0.11"
-  checksum: 1ad07210e894472685564c4d39a08717e84c2a68a70d3c1d9e657d32394ef1670e22972a433cbfe48976cb98b154ba06855dcd3fcfba77f60f1777634bec48c0
   languageName: node
   linkType: hard
 
@@ -20414,17 +20355,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.2.1":
-  version: 7.3.8
-  resolution: "semver@npm:7.3.8"
-  dependencies:
-    lru-cache: "npm:^6.0.0"
-  bin:
-    semver: bin/semver.js
-  checksum: c8c04a4d41d30cffa7277904e0ad6998623dd61e36bca9578b0128d8c683b705a3924beada55eae7fa004fb30a9359a53a4ead2b68468d778b602f3b1a28f8e3
-  languageName: node
-  linkType: hard
-
 "semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5":
   version: 7.3.5
   resolution: "semver@npm:7.3.5"
@@ -20569,13 +20499,6 @@ __metadata:
   version: 1.0.1
   resolution: "set-harmonic-interval@npm:1.0.1"
   checksum: 14b9ce98625af9e0d80165a5c8ceb76ce1206df641197e020780e570f268f5427961138d3f47591962e2626b498a051a4488eaa646e5473373f843d7e9e468d4
-  languageName: node
-  linkType: hard
-
-"setimmediate@npm:^1.0.5":
-  version: 1.0.5
-  resolution: "setimmediate@npm:1.0.5"
-  checksum: 76e3f5d7f4b581b6100ff819761f04a984fa3f3990e72a6554b57188ded53efce2d3d6c0932c10f810b7c59414f85e2ab3c11521877d1dea1ce0b56dc906f485
   languageName: node
   linkType: hard
 
@@ -22494,17 +22417,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unzip-crx-3@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "unzip-crx-3@npm:0.2.0"
-  dependencies:
-    jszip: "npm:^3.1.0"
-    mkdirp: "npm:^0.5.1"
-    yaku: "npm:^0.16.6"
-  checksum: fcc381e9dda6fa7c3e99d285bcc87baffd9010b0dd0927027799c2a17fab9873417323d164d93ff6babe6bb757a8d5d266e891040f4364b9989e2608465545fe
-  languageName: node
-  linkType: hard
-
 "update-browserslist-db@npm:^1.0.11":
   version: 1.0.11
   resolution: "update-browserslist-db@npm:1.0.11"
@@ -23382,13 +23294,6 @@ __metadata:
   version: 5.0.8
   resolution: "y18n@npm:5.0.8"
   checksum: 5f1b5f95e3775de4514edbb142398a2c37849ccfaf04a015be5d75521e9629d3be29bd4432d23c57f37e5b61ade592fb0197022e9993f81a06a5afbdcda9346d
-  languageName: node
-  linkType: hard
-
-"yaku@npm:^0.16.6":
-  version: 0.16.7
-  resolution: "yaku@npm:0.16.7"
-  checksum: 13de5e1249e1299f67fef0c39153fcf1be8ddc89ce4b8c99951bbf4fe67d7803cd0c2001fbfec35af9338a894e0bf58db8ee4bf33d06752b5d66090c32a6fd3e
   languageName: node
   linkType: hard
 
