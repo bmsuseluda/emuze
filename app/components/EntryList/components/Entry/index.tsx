@@ -1,6 +1,6 @@
 import { useTestId } from "~/hooks/useTestId";
 import type { ElementRef } from "react";
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import { styled } from "../../../../../styled-system/jsx";
 
 interface Props {
@@ -91,10 +91,14 @@ export const getDisplayedName = (
   name: string,
   alwaysGameName: boolean,
   isImage: boolean,
+  error: boolean,
 ) => {
-  const additionalInfo = getAdditionalInfo(name);
+  if (error) {
+    return name;
+  }
 
   if (!alwaysGameName && isImage) {
+    const additionalInfo = getAdditionalInfo(name);
     if (additionalInfo) {
       return additionalInfo;
     } else {
@@ -103,6 +107,20 @@ export const getDisplayedName = (
   }
 
   return name;
+};
+
+const getImageSrc = ({
+  imageUrl,
+  error,
+}: {
+  imageUrl?: string;
+  error: boolean;
+}) => {
+  if (error || !imageUrl) {
+    return fallbackImageUrl;
+  }
+
+  return imageUrl;
 };
 
 export const Entry = forwardRef<ElementRef<typeof Input>, Props>(
@@ -118,8 +136,14 @@ export const Entry = forwardRef<ElementRef<typeof Input>, Props>(
     },
     ref,
   ) => {
+    const [error, setError] = useState(false);
     const { getTestId } = useTestId(dataTestId);
-    const displayedName = getDisplayedName(name, alwaysGameName, !!imageUrl);
+    const displayedName = getDisplayedName(
+      name,
+      alwaysGameName,
+      !!imageUrl,
+      error,
+    );
 
     return (
       <Wrapper {...getTestId()}>
@@ -133,9 +157,12 @@ export const Entry = forwardRef<ElementRef<typeof Input>, Props>(
           />
           <ImageWrapper>
             <Image
-              src={imageUrl || fallbackImageUrl}
+              src={getImageSrc({ error, imageUrl })}
               alt={`${name} cover`}
               draggable={false}
+              onError={() => {
+                setError(true);
+              }}
             />
             {displayedName && <Name>{displayedName}</Name>}
           </ImageWrapper>

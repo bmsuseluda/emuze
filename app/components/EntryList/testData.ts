@@ -72,4 +72,13 @@ export const entries: Entry[] = [
     name: "Earthworm Jim",
     path: "F:/games/Emulation/roms/Super Nintendo/Earthworm Jim.sfc",
   },
+  {
+    id: "powerrangers",
+    name: "Power Rangers",
+    path: "F:/games/Emulation/roms/Super Nintendo/Power Rangers.sfc",
+    metaData: {
+      imageUrl: "brokenpicture.webp",
+      expiresOn: getExpiresOn(),
+    },
+  },
 ];

@@ -37,15 +37,6 @@ app.on("ready", async () => {
   const fullscreen =
     app.commandLine.hasSwitch("fullscreen") || appearance?.fullscreen;
 
-  if (process.env.NODE_ENV === "development") {
-    const {
-      default: installExtension,
-      REACT_DEVELOPER_TOOLS,
-    } = require("electron-devtools-installer");
-
-    await installExtension(REACT_DEVELOPER_TOOLS);
-  }
-
   const url = await initRemix({
     serverBuild: nodepath.join(__dirname, "../build/index.js"),
     getLoadContext: () => ({
