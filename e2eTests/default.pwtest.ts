@@ -98,7 +98,9 @@ test("import all", async () => {
 
   await expect(playstationLink).not.toBeVisible();
 
-  await libraryPage.importAllButton.click();
+  await settingsPage.openSettingsViaClick();
+  await settingsPage.generalPage.importAllButton.click();
+  await settingsPage.closeSettingsViaClick();
 
   await libraryPage.goToToPlatformViaClick(playstationPlatformName, "Gex");
 });

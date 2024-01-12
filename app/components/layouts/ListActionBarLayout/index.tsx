@@ -107,7 +107,7 @@ const ActionBar = styled("div", {
 
 interface ContainerProps {
   list: ReactNode;
-  actions: ReactNode;
+  actions?: ReactNode;
   scrollSmooth?: boolean;
   collapse?: boolean;
 }
@@ -127,7 +127,7 @@ const ListActionBarContainer = forwardRef<
       >
         {listEntries}
       </List>
-      <ActionBar collapse={collapse}>{actions}</ActionBar>
+      {actions && <ActionBar collapse={collapse}>{actions}</ActionBar>}
     </Absolute>
   );
 });

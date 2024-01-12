@@ -26,6 +26,9 @@ import { BiError } from "react-icons/bi";
 import { Typography } from "~/components/Typography";
 import type { DataFunctionArgs } from "~/context";
 import { useEnableFocusAfterAction } from "~/hooks/useEnableFocusAfterAction";
+import Xboxa from "~/components/Icons/Xboxa";
+import Xboxx from "~/components/Icons/Xboxx";
+import { useGamepadConnected } from "~/hooks/useGamepadConnected";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -112,6 +115,8 @@ export default function Category() {
   /* Set focus again after launching */
   useEnableFocusAfterAction(enableFocus, [actionIds.launch]);
 
+  const { isGamepadConnected } = useGamepadConnected();
+
   const onBack = useCallback(() => {
     if (isInFocus) {
       switchFocusBack();
@@ -190,7 +195,15 @@ export default function Category() {
                   value={actionIds.launch}
                   ref={launchButtonRef}
                   {...getTestId(["button", "launch"])}
-                  icon={!application ? <BiError /> : <IoMdPlay />}
+                  icon={
+                    !application ? (
+                      <BiError />
+                    ) : isGamepadConnected ? (
+                      <Xboxa />
+                    ) : (
+                      <IoMdPlay />
+                    )
+                  }
                 >
                   {!application ? "No installed emulators" : "Launch Game"}
                 </Button>
@@ -204,7 +217,7 @@ export default function Category() {
                     formData?.get("_actionId") === actionIds.import
                   }
                   {...getTestId(["button", "import"])}
-                  icon={<IoMdRefresh />}
+                  icon={isGamepadConnected ? <Xboxx /> : <IoMdRefresh />}
                 >
                   Import Games
                 </Button>

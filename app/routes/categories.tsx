@@ -1,9 +1,6 @@
-import type { ActionFunction } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, Outlet, useLoaderData, useNavigation } from "@remix-run/react";
-import { IoMdRefresh } from "react-icons/io";
-import { Button } from "~/components/Button";
-import { importCategories, readCategories } from "~/server/categories.server";
+import { Outlet, useLoaderData } from "@remix-run/react";
+import { readCategories } from "~/server/categories.server";
 import { SidebarMainLayout } from "~/components/layouts/SidebarMainLayout";
 import { Link } from "~/containers/Link";
 import { Header } from "~/containers/Header";
@@ -59,21 +56,6 @@ export const loader = ({ params }: DataFunctionArgs) => {
   });
 };
 
-const actionIds = {
-  import: "importAll",
-};
-
-export const action: ActionFunction = async ({ request }) => {
-  const form = await request.formData();
-  const _actionId = form.get("_actionId");
-  if (_actionId === actionIds.import) {
-    await importCategories();
-    throw redirect("/categories");
-  }
-
-  return null;
-};
-
 export const ErrorBoundary = ({ error }: { error: Error }) => {
   console.error(error);
   return (
@@ -95,7 +77,6 @@ const Name = styled(Typography, {
 export default function Categories() {
   const { categoryLinks, collapseSidebar } = useLoaderData<LoaderData>();
   const { getTestId } = useTestId("categories");
-  const { state, formData } = useNavigation();
 
   const { isInFocus, switchFocus, enableFocus } =
     useFocus<FocusElement>("sidebar");
@@ -134,23 +115,6 @@ export default function Categories() {
       <SidebarMainLayout.Sidebar
         header={<Header collapse={collapseSidebar} />}
         collapse={collapseSidebar}
-        actions={
-          <Form method="POST">
-            <Button
-              type="submit"
-              name="_actionId"
-              value={actionIds.import}
-              loading={
-                state === "submitting" &&
-                formData?.get("_actionId") === actionIds.import
-              }
-              icon={<IoMdRefresh />}
-              aria-label="Import all"
-            >
-              {!collapseSidebar ? "Import all" : null}
-            </Button>
-          </Form>
-        }
       >
         {categoryLinks.map(({ id, name, to }, index) => (
           <li key={to}>
