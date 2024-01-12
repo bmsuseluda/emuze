@@ -14,7 +14,13 @@ const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
 };
 
 app.on("ready", async () => {
-  await autoUpdater.checkForUpdatesAndNotify();
+  autoUpdater.checkForUpdatesAndNotify().then((result) => {
+    if (result) {
+      console.log({
+        version: result?.updateInfo.version,
+      });
+    }
+  });
 
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
