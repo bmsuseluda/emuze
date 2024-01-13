@@ -13,7 +13,7 @@ If your roms are named correctly, a click on the import button should import you
 - ⚡️ Fast and responsive UI  
 - 🚂 Import all your emulators and roms with a click of a button  
 - 🪄 Fetches Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms  
-- 🎮️ Gamepad support (x-input only)  
+- 🎮️ Gamepad support 
 - 💻️ Windows, Linux and Steam Deck support  
 - 🔧 Can install missing emulators (Linux only)  
 
@@ -166,5 +166,4 @@ There is a lot i would like to work on. The following features are the bigger on
 - `Roms as Folder` support for emulators e.g. ScummVM or DosBox
 - Filter and sorting of roms
 - Integrate `How long to beat`
-- Support PlayStation and Switch Controller
 - Add option to convert bin/cue and iso files to chd

@@ -9,9 +9,10 @@ export const useGamepadConnected = () => {
     );
   }
 
-  const { isGamepadConnected } = context;
+  const { isGamepadConnected, gamepadType } = context;
 
   return {
     isGamepadConnected,
+    gamepadType,
   };
 };
