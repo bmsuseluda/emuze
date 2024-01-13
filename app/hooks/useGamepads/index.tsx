@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { StickDirection } from "~/hooks/useGamepads/layouts";
 import { layout } from "~/hooks/useGamepads/layouts";
+import type { GamepadType } from "~/hooks/useGamepads/gamepadTypeMapping";
+import { identifyGamepadType } from "~/hooks/useGamepads/gamepadTypeMapping";
 
 const findGamepad = (gamepads: (Gamepad | null)[], gamepadIndex: number) =>
   gamepads.find((gamepad) => gamepad?.index === gamepadIndex);
@@ -14,11 +16,11 @@ const dispatchStickDirectionEvent = (stickDirection: StickDirection) => {
   dispatchEvent(new CustomEvent(`gamepadon${stickDirection}`));
 };
 
-// TODO: create npm package
 export const useGamepads = () => {
   const oldGamepads = useRef<(Gamepad | null)[]>([]);
   const requestAnimationFrameRef = useRef<number>();
   const [isGamepadConnected, setGamepadConnected] = useState(false);
+  const [gamepadType, setGamepadType] = useState<GamepadType>("XBox");
 
   const fireEventOnButtonPress = useCallback((gamepads: (Gamepad | null)[]) => {
     if (!document.hidden && document.visibilityState === "visible") {
@@ -81,7 +83,6 @@ export const useGamepads = () => {
     oldGamepads.current = gamepads;
   }, []);
 
-  // TODO: is a debounce necessary?
   const update = useCallback(() => {
     if (requestAnimationFrameRef.current) {
       const gamepads = navigator.getGamepads();
@@ -95,8 +96,10 @@ export const useGamepads = () => {
   }, [fireEventOnButtonPress]);
 
   useEffect(() => {
-    window.addEventListener("gamepadconnected", () => {
+    window.addEventListener("gamepadconnected", ({ gamepad: { id } }) => {
       setGamepadConnected(true);
+      setGamepadType(identifyGamepadType(id));
+
       requestAnimationFrameRef.current = requestAnimationFrame(update);
     });
 
@@ -117,5 +120,6 @@ export const useGamepads = () => {
 
   return {
     isGamepadConnected,
+    gamepadType,
   };
 };

@@ -26,9 +26,8 @@ import { BiError } from "react-icons/bi";
 import { Typography } from "~/components/Typography";
 import type { DataFunctionArgs } from "~/context";
 import { useEnableFocusAfterAction } from "~/hooks/useEnableFocusAfterAction";
-import Xboxa from "~/components/Icons/Xboxa";
-import Xboxx from "~/components/Icons/Xboxx";
 import { useGamepadConnected } from "~/hooks/useGamepadConnected";
+import { GamepadButtonIcon } from "~/components/GamepadButtonIcon";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -115,7 +114,7 @@ export default function Category() {
   /* Set focus again after launching */
   useEnableFocusAfterAction(enableFocus, [actionIds.launch]);
 
-  const { isGamepadConnected } = useGamepadConnected();
+  const { isGamepadConnected, gamepadType } = useGamepadConnected();
 
   const onBack = useCallback(() => {
     if (isInFocus) {
@@ -199,7 +198,10 @@ export default function Category() {
                     !application ? (
                       <BiError />
                     ) : isGamepadConnected ? (
-                      <Xboxa />
+                      <GamepadButtonIcon
+                        buttonIndex={layout.buttons.A}
+                        gamepadType={gamepadType}
+                      />
                     ) : (
                       <IoMdPlay />
                     )
@@ -217,7 +219,16 @@ export default function Category() {
                     formData?.get("_actionId") === actionIds.import
                   }
                   {...getTestId(["button", "import"])}
-                  icon={isGamepadConnected ? <Xboxx /> : <IoMdRefresh />}
+                  icon={
+                    isGamepadConnected ? (
+                      <GamepadButtonIcon
+                        buttonIndex={layout.buttons.X}
+                        gamepadType={gamepadType}
+                      />
+                    ) : (
+                      <IoMdRefresh />
+                    )
+                  }
                 >
                   Import Games
                 </Button>
