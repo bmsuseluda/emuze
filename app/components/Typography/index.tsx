@@ -9,7 +9,7 @@ export const Typography = styled("span", {
     },
     _after: {
       content: '""',
-      marginTop: "0",
+      marginTop: "-0.1em",
       display: "table",
     },
   },

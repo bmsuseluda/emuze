@@ -336,7 +336,16 @@ export default function Index() {
                     formData?.get("_actionId") ===
                       actionIds.installMissingApplications
                   }
-                  icon={<IoMdDownload />}
+                  icon={
+                    isGamepadConnected ? (
+                      <GamepadButtonIcon
+                        buttonIndex={layout.buttons.Y}
+                        gamepadType={gamepadType}
+                      />
+                    ) : (
+                      <IoMdDownload />
+                    )
+                  }
                 >
                   Install Emulators
                 </Button>

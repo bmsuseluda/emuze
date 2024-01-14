@@ -26,10 +26,13 @@ const iconMapping: Record<
 
 type Props = {
   buttonIndex: number;
-  gamepadType: GamepadType;
+  gamepadType?: GamepadType;
 };
 
-export const GamepadButtonIcon = ({ buttonIndex, gamepadType }: Props) => {
+export const GamepadButtonIcon = ({
+  buttonIndex,
+  gamepadType = "XBox",
+}: Props) => {
   const Icon = iconMapping[gamepadType][buttonIndex];
 
   return <Icon />;

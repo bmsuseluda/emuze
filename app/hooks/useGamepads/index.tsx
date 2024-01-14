@@ -20,7 +20,7 @@ export const useGamepads = () => {
   const oldGamepads = useRef<(Gamepad | null)[]>([]);
   const requestAnimationFrameRef = useRef<number>();
   const [isGamepadConnected, setGamepadConnected] = useState(false);
-  const [gamepadType, setGamepadType] = useState<GamepadType>("XBox");
+  const [gamepadType, setGamepadType] = useState<GamepadType>();
 
   const fireEventOnButtonPress = useCallback((gamepads: (Gamepad | null)[]) => {
     if (!document.hidden && document.visibilityState === "visible") {
@@ -98,7 +98,7 @@ export const useGamepads = () => {
   useEffect(() => {
     window.addEventListener("gamepadconnected", ({ gamepad: { id } }) => {
       setGamepadConnected(true);
-      setGamepadType(identifyGamepadType(id));
+      setGamepadType((gamepadType) => gamepadType || identifyGamepadType(id));
 
       requestAnimationFrameRef.current = requestAnimationFrame(update);
     });

@@ -68,7 +68,7 @@ export const layout = {
 
     /**
      * XBox: Back<br>
-     * PlayStation: Back / Select<br>
+     * PlayStation: Select / Share<br>
      * Nintendo: Select / -
      */
     Back: 8,
