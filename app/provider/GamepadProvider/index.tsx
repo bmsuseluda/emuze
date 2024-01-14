@@ -5,7 +5,7 @@ import type { GamepadType } from "~/hooks/useGamepads/gamepadTypeMapping";
 
 type GamepadContextState = {
   isGamepadConnected: boolean;
-  gamepadType: GamepadType;
+  gamepadType?: GamepadType;
 };
 
 const defaultState: GamepadContextState = {

@@ -3,17 +3,16 @@ export type GamepadType = "Nintendo" | "XBox" | "PlayStation";
 const gamepadTypeMapping: { gamepadType: GamepadType; idParts: string[] }[] = [
   {
     gamepadType: "Nintendo",
-    idParts: ["nintendo", "pro controller"],
+    idParts: [
+      "vendor: 057e",
+      "nintendo",
+      "pro controller",
+      "8bitdo pro 2 (standard gamepad vendor: 045e product: 02e0)",
+    ],
   },
   {
     gamepadType: "PlayStation",
-    idParts: [
-      "playstation",
-      "dual shock",
-      "dualshock",
-      "dual sense",
-      "dualsense",
-    ],
+    idParts: ["vendor: 054c", "vendor: 7545", "vendor: 2563", "playstation"],
   },
   {
     gamepadType: "XBox",
