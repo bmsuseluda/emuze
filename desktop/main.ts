@@ -58,6 +58,13 @@ app.on("ready", async () => {
     minHeight: 600,
   });
 
+  window.on("blur", () => {
+    window.webContents.send("blur");
+  });
+  window.on("focus", () => {
+    window.webContents.send("focus");
+  });
+
   ipcMain.handle("isFullscreen", () => window.isFullScreen());
 
   ipcMain.on("changeWindow", (_event, name: WindowChangeEvents) => {

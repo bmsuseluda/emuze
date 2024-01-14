@@ -19,6 +19,7 @@ const dispatchStickDirectionEvent = (stickDirection: StickDirection) => {
 export const useGamepads = () => {
   const oldGamepads = useRef<(Gamepad | null)[]>([]);
   const requestAnimationFrameRef = useRef<number>();
+  const focusRef = useRef<boolean>(true);
   const [isGamepadConnected, setGamepadConnected] = useState(false);
   const [gamepadType, setGamepadType] = useState<GamepadType>();
 
@@ -88,7 +89,9 @@ export const useGamepads = () => {
       const gamepads = navigator.getGamepads();
       if (gamepads && gamepads.length > 0 && gamepads.find(Boolean)) {
         fireEventOnButtonPress(gamepads);
-        requestAnimationFrameRef.current = requestAnimationFrame(update);
+        if (focusRef.current) {
+          requestAnimationFrameRef.current = requestAnimationFrame(update);
+        }
       } else {
         cancelAnimationFrame(requestAnimationFrameRef.current);
       }
@@ -110,6 +113,23 @@ export const useGamepads = () => {
         requestAnimationFrameRef.current = requestAnimationFrame(update);
       }
     });
+
+    // TODO: find a way to move electron specific functions out of here
+    window.electronAPI &&
+      window.electronAPI.onBlur(() => {
+        if (requestAnimationFrameRef.current) {
+          console.log("blur");
+          focusRef.current = false;
+          cancelAnimationFrame(requestAnimationFrameRef.current);
+        }
+      });
+
+    window.electronAPI &&
+      window.electronAPI.onFocus(() => {
+        console.log("focus");
+        focusRef.current = true;
+        requestAnimationFrameRef.current = requestAnimationFrame(update);
+      });
 
     return () => {
       if (requestAnimationFrameRef.current) {

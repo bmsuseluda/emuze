@@ -12,9 +12,13 @@ export const electronAPI = {
     ipcRenderer.send("changeWindow", eventName),
   onFullscreen: (callback: (fullscreen: boolean) => void) =>
     ipcRenderer.on("fullscreen", (_event, fullscreen: boolean) =>
-      callback(fullscreen)
+      callback(fullscreen),
     ),
   isFullscreen: () => ipcRenderer.invoke("isFullscreen"),
+  onBlur: (callback: () => void) =>
+    ipcRenderer.on("blur", (_event) => callback()),
+  onFocus: (callback: () => void) =>
+    ipcRenderer.on("focus", (_event) => callback()),
 };
 
 contextBridge.exposeInMainWorld("electronAPI", electronAPI);
