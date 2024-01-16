@@ -140,12 +140,12 @@ export default function Index() {
   const defaultData = useLoaderData<typeof loader>();
   const newData = useActionData<General>();
 
-  const { isGamepadConnected, gamepadType } = useGamepadConnected();
+  const { isGamepadConnected, gamepadType, disableGamepads, enableGamepads } =
+    useGamepadConnected();
 
   // TODO: Maybe create specific files for gamepad controls
   const saveButtonRef = useRef<ElementRef<"button">>(null);
-  const { isInFocus, switchFocusBack, disableFocus, enableFocus } =
-    useFocus<FocusElement>("settingsMain");
+  const { isInFocus, switchFocusBack } = useFocus<FocusElement>("settingsMain");
 
   const selectEntry = useCallback((entry: HTMLButtonElement) => {
     entry.focus();
@@ -222,14 +222,14 @@ export default function Index() {
   const { state, formData } = useNavigation();
 
   /* Set focus again after open file explorer */
-  useEnableFocusAfterAction(enableFocus, [
+  useEnableFocusAfterAction(enableGamepads, [
     actionIds.chooseApplicationsPath,
     actionIds.chooseCategoriesPath,
   ]);
 
   const onOpenFileDialog = useCallback(() => {
-    disableFocus();
-  }, [disableFocus]);
+    disableGamepads();
+  }, [disableGamepads]);
 
   return (
     <ListActionBarLayout
