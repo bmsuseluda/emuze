@@ -106,15 +106,16 @@ export default function Category() {
   const settingsButtonRef = useRef<ElementRef<"a">>(null);
 
   const { getTestId } = useTestId("category");
-  const { isInFocus, disableFocus, switchFocus, switchFocusBack, enableFocus } =
+  const { isInFocus, switchFocus, switchFocusBack } =
     useFocus<FocusElement>("main");
 
   const { state, formData } = useNavigation();
 
-  /* Set focus again after launching */
-  useEnableFocusAfterAction(enableFocus, [actionIds.launch]);
+  const { isGamepadConnected, gamepadType, enableGamepads, disableGamepads } =
+    useGamepadConnected();
 
-  const { isGamepadConnected, gamepadType } = useGamepadConnected();
+  /* Set focus again after launching */
+  useEnableFocusAfterAction(enableGamepads, [actionIds.launch]);
 
   const onBack = useCallback(() => {
     if (isInFocus) {
@@ -123,9 +124,9 @@ export default function Category() {
   }, [switchFocusBack, isInFocus]);
 
   const onExecute = useCallback(() => {
-    disableFocus();
+    disableGamepads();
     launchButtonRef.current?.click();
-  }, [disableFocus]);
+  }, [disableGamepads]);
 
   const onImport = useCallback(() => {
     if (isInFocus) {
@@ -147,9 +148,9 @@ export default function Category() {
 
   const onEntryClick = useCallback(() => {
     if (!isInFocus) {
-      enableFocus();
+      enableGamepads();
     }
-  }, [isInFocus, enableFocus]);
+  }, [isInFocus, enableGamepads]);
 
   if (!categoryData) {
     return null;

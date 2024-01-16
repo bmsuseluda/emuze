@@ -98,6 +98,18 @@ export const useGamepads = () => {
     }
   }, [fireEventOnButtonPress]);
 
+  const disableGamepads = useCallback(() => {
+    if (requestAnimationFrameRef.current) {
+      focusRef.current = false;
+      cancelAnimationFrame(requestAnimationFrameRef.current);
+    }
+  }, []);
+
+  const enableGamepads = useCallback(() => {
+    focusRef.current = true;
+    requestAnimationFrameRef.current = requestAnimationFrame(update);
+  }, [update]);
+
   useEffect(() => {
     window.addEventListener("gamepadconnected", ({ gamepad: { id } }) => {
       setGamepadConnected(true);
@@ -114,23 +126,6 @@ export const useGamepads = () => {
       }
     });
 
-    // TODO: find a way to move electron specific functions out of here
-    window.electronAPI &&
-      window.electronAPI.onBlur(() => {
-        if (requestAnimationFrameRef.current) {
-          console.log("blur");
-          focusRef.current = false;
-          cancelAnimationFrame(requestAnimationFrameRef.current);
-        }
-      });
-
-    window.electronAPI &&
-      window.electronAPI.onFocus(() => {
-        console.log("focus");
-        focusRef.current = true;
-        requestAnimationFrameRef.current = requestAnimationFrame(update);
-      });
-
     return () => {
       if (requestAnimationFrameRef.current) {
         cancelAnimationFrame(requestAnimationFrameRef.current);
@@ -141,5 +136,7 @@ export const useGamepads = () => {
   return {
     isGamepadConnected,
     gamepadType,
+    disableGamepads,
+    enableGamepads,
   };
 };
