@@ -140,7 +140,7 @@ export default function Index() {
   const defaultData = useLoaderData<typeof loader>();
   const newData = useActionData<General>();
 
-  const { isGamepadConnected, gamepadType, disableGamepads, enableGamepads } =
+  const { gamepadType, disableGamepads, enableGamepads } =
     useGamepadConnected();
 
   // TODO: Maybe create specific files for gamepad controls
@@ -314,7 +314,7 @@ export default function Index() {
                 }
                 ref={saveButtonRef}
                 icon={
-                  isGamepadConnected ? (
+                  gamepadType ? (
                     <GamepadButtonIcon
                       buttonIndex={layout.buttons.X}
                       gamepadType={gamepadType}
@@ -337,7 +337,7 @@ export default function Index() {
                       actionIds.installMissingApplications
                   }
                   icon={
-                    isGamepadConnected ? (
+                    gamepadType ? (
                       <GamepadButtonIcon
                         buttonIndex={layout.buttons.Y}
                         gamepadType={gamepadType}

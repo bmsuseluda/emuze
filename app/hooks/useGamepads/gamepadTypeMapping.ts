@@ -8,6 +8,7 @@ const gamepadTypeMapping: { gamepadType: GamepadType; idParts: string[] }[] = [
       "nintendo",
       "pro controller",
       "8bitdo pro 2 (standard gamepad vendor: 045e product: 02e0)",
+      "8Bitdo SFC30 GamePad",
     ],
   },
   {

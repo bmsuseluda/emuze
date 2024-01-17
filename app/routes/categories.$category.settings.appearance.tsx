@@ -69,7 +69,7 @@ export default function Index() {
   const { alwaysGameNames, collapseSidebar } = useLoaderData<typeof loader>();
   const fullscreen = useFullscreen();
 
-  const { isGamepadConnected, gamepadType } = useGamepadConnected();
+  const { gamepadType } = useGamepadConnected();
 
   const saveButtonRef = useRef<ElementRef<"button">>(null);
   const { isInFocus, switchFocusBack } = useFocus<FocusElement>("settingsMain");
@@ -188,7 +188,7 @@ export default function Index() {
               value={actionIds.save}
               ref={saveButtonRef}
               icon={
-                isGamepadConnected ? (
+                gamepadType ? (
                   <GamepadButtonIcon
                     buttonIndex={layout.buttons.X}
                     gamepadType={gamepadType}

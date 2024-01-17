@@ -98,6 +98,7 @@ export default function Categories() {
   // TODO: add tests
   useGamepadButtonPressEvent(layout.buttons.DPadRight, switchToMain);
   useGamepadStickDirectionEvent("leftStickRight", switchToMain);
+  useGamepadStickDirectionEvent("extraStickRight", switchToMain);
   useKeyboardEvent("ArrowRight", switchToMain);
   useGamepadButtonPressEvent(layout.buttons.A, switchToMain);
   useKeyboardEvent("Enter", switchToMain);
