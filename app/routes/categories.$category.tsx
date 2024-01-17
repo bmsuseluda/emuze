@@ -111,7 +111,7 @@ export default function Category() {
 
   const { state, formData } = useNavigation();
 
-  const { isGamepadConnected, gamepadType, enableGamepads, disableGamepads } =
+  const { gamepadType, enableGamepads, disableGamepads } =
     useGamepadConnected();
 
   /* Set focus again after launching */
@@ -198,7 +198,7 @@ export default function Category() {
                   icon={
                     !application ? (
                       <BiError />
-                    ) : isGamepadConnected ? (
+                    ) : gamepadType ? (
                       <GamepadButtonIcon
                         buttonIndex={layout.buttons.A}
                         gamepadType={gamepadType}
@@ -221,7 +221,7 @@ export default function Category() {
                   }
                   {...getTestId(["button", "import"])}
                   icon={
-                    isGamepadConnected ? (
+                    gamepadType ? (
                       <GamepadButtonIcon
                         buttonIndex={layout.buttons.X}
                         gamepadType={gamepadType}

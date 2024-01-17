@@ -20,7 +20,6 @@ export const useGamepads = () => {
   const oldGamepads = useRef<(Gamepad | null)[]>([]);
   const requestAnimationFrameRef = useRef<number>();
   const focusRef = useRef<boolean>(true);
-  const [isGamepadConnected, setGamepadConnected] = useState(false);
   const [gamepadType, setGamepadType] = useState<GamepadType>();
 
   const fireEventOnButtonPress = useCallback((gamepads: (Gamepad | null)[]) => {
@@ -41,6 +40,7 @@ export const useGamepads = () => {
               ) &&
               isStickPressed(stickValue)
             ) {
+              // TODO: simplify with generic function
               switch (index) {
                 case layout.axes.leftStickX: {
                   if (stickValue > 0) {
@@ -74,6 +74,22 @@ export const useGamepads = () => {
                   }
                   break;
                 }
+                case layout.axes.extraStickX: {
+                  if (stickValue > 0) {
+                    dispatchStickDirectionEvent("extraStickRight");
+                  } else {
+                    dispatchStickDirectionEvent("extraStickLeft");
+                  }
+                  break;
+                }
+                case layout.axes.extraStickY: {
+                  if (stickValue > 0) {
+                    dispatchStickDirectionEvent("extraStickDown");
+                  } else {
+                    dispatchStickDirectionEvent("extraStickUp");
+                  }
+                  break;
+                }
               }
             }
           });
@@ -85,23 +101,21 @@ export const useGamepads = () => {
   }, []);
 
   const update = useCallback(() => {
-    if (requestAnimationFrameRef.current) {
+    if (requestAnimationFrameRef.current && focusRef.current) {
       const gamepads = navigator.getGamepads();
       if (gamepads && gamepads.length > 0 && gamepads.find(Boolean)) {
         fireEventOnButtonPress(gamepads);
-        if (focusRef.current) {
-          requestAnimationFrameRef.current = requestAnimationFrame(update);
-        }
-      } else {
-        cancelAnimationFrame(requestAnimationFrameRef.current);
       }
+      requestAnimationFrameRef.current = requestAnimationFrame(update);
     }
   }, [fireEventOnButtonPress]);
 
   const disableGamepads = useCallback(() => {
     if (requestAnimationFrameRef.current) {
       focusRef.current = false;
-      cancelAnimationFrame(requestAnimationFrameRef.current);
+      if (requestAnimationFrameRef.current) {
+        cancelAnimationFrame(requestAnimationFrameRef.current);
+      }
     }
   }, []);
 
@@ -110,31 +124,38 @@ export const useGamepads = () => {
     requestAnimationFrameRef.current = requestAnimationFrame(update);
   }, [update]);
 
+  const handleVisibilityChange = useCallback(() => {
+    if (document.hidden) {
+      disableGamepads();
+    } else {
+      enableGamepads();
+    }
+  }, [enableGamepads, disableGamepads]);
+
   useEffect(() => {
     window.addEventListener("gamepadconnected", ({ gamepad: { id } }) => {
-      setGamepadConnected(true);
       setGamepadType((gamepadType) => gamepadType || identifyGamepadType(id));
-
-      requestAnimationFrameRef.current = requestAnimationFrame(update);
     });
+  }, []);
 
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden && requestAnimationFrameRef.current) {
-        cancelAnimationFrame(requestAnimationFrameRef.current);
-      } else {
-        requestAnimationFrameRef.current = requestAnimationFrame(update);
-      }
-    });
+  useEffect(() => {
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [handleVisibilityChange]);
+
+  useEffect(() => {
+    enableGamepads();
 
     return () => {
       if (requestAnimationFrameRef.current) {
         cancelAnimationFrame(requestAnimationFrameRef.current);
       }
     };
-  }, [update]);
+  }, [enableGamepads]);
 
   return {
-    isGamepadConnected,
     gamepadType,
     disableGamepads,
     enableGamepads,

@@ -6,7 +6,11 @@ export type StickDirection =
   | "rightStickUp"
   | "rightStickDown"
   | "rightStickLeft"
-  | "rightStickRight";
+  | "rightStickRight"
+  | "extraStickUp"
+  | "extraStickDown"
+  | "extraStickLeft"
+  | "extraStickRight";
 
 export const layout = {
   buttons: {
@@ -126,5 +130,7 @@ export const layout = {
     leftStickY: 1,
     rightStickX: 2,
     rightStickY: 3,
+    extraStickX: 4,
+    extraStickY: 5,
   },
 };

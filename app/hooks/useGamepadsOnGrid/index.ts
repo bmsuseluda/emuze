@@ -290,6 +290,11 @@ export const useGamepadsOnGrid = <T extends HTMLElement>({
   useGamepadStickDirectionEvent("leftStickDown", onDown);
   useGamepadStickDirectionEvent("leftStickUp", onUp);
 
+  useGamepadStickDirectionEvent("extraStickRight", onRight);
+  useGamepadStickDirectionEvent("extraStickLeft", onLeft);
+  useGamepadStickDirectionEvent("extraStickDown", onDown);
+  useGamepadStickDirectionEvent("extraStickUp", onUp);
+
   useKeyboardEvent("ArrowRight", onRight);
   useKeyboardEvent("ArrowLeft", onLeft);
   useKeyboardEvent("ArrowDown", onDown);

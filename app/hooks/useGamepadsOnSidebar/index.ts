@@ -58,8 +58,10 @@ export const useGamepadsOnSidebar = (isInFocus: boolean) => {
   useGamepadButtonPressEvent(layout.buttons.DPadUp, onUp);
   useGamepadStickDirectionEvent("leftStickDown", onDown);
   useGamepadStickDirectionEvent("leftStickUp", onUp);
-  useKeyboardEvent("ArrowUp", onUp);
+  useGamepadStickDirectionEvent("extraStickDown", onDown);
+  useGamepadStickDirectionEvent("extraStickUp", onUp);
   useKeyboardEvent("ArrowDown", onDown);
+  useKeyboardEvent("ArrowUp", onUp);
 
   const categoryLinksRefCallback = useCallback(
     (index: number) => (ref: ElementRef<"a">) => {
