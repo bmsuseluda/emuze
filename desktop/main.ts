@@ -14,23 +14,21 @@ const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
 };
 
 app.on("ready", async () => {
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        "Content-Security-Policy": ["script-src 'self'; object-src 'none';"],
+      },
+    });
+  });
+
   autoUpdater.checkForUpdatesAndNotify().then((result) => {
     if (result) {
       console.log({
         version: result?.updateInfo.version,
       });
     }
-  });
-
-  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-    callback({
-      responseHeaders: {
-        ...details.responseHeaders,
-        "Content-Security-Policy": [
-          "script-src 'self' https://emuze-api-d7jjhe73ba-uc.a.run.app/games",
-        ],
-      },
-    });
   });
 
   const appearance = readAppearance();
@@ -48,6 +46,11 @@ app.on("ready", async () => {
     show: false,
     frame: false,
     webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true,
+      webSecurity: true,
+      allowRunningInsecureContent: false,
       preload: nodepath.join(__dirname, "preload.js"),
     },
     icon:

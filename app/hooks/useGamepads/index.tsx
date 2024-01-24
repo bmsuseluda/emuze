@@ -16,19 +16,61 @@ const dispatchStickDirectionEvent = (stickDirection: StickDirection) => {
   dispatchEvent(new CustomEvent(`gamepadon${stickDirection}`));
 };
 
+const isValveGamepad = (gamepad: Gamepad | null) =>
+  gamepad && gamepad.id.includes("Vendor: 28de");
+
+const isMaskedGamepad = (valveGamepads: (Gamepad | null)[], gamepad: Gamepad) =>
+  valveGamepads.find(
+    (valveGamepad) =>
+      valveGamepad &&
+      Math.abs(valveGamepad.timestamp - gamepad.timestamp) <= 10,
+  );
+
+export const excludeMaskedGamepads = (gamepads: (Gamepad | null)[]) => {
+  const valveGamepads = filterValveGamepads(gamepads);
+
+  return gamepads.filter(
+    (gamepad) =>
+      gamepad &&
+      (isValveGamepad(gamepad) || !isMaskedGamepad(valveGamepads, gamepad)),
+  );
+};
+
+const filterValveGamepads = (gamepads: (Gamepad | null)[]) =>
+  gamepads.filter(isValveGamepad);
+
+export const identifyGamepadTypeUnmasked = (gamepad: Gamepad) => {
+  if (isValveGamepad(gamepad)) {
+    const maskedGamepad = navigator
+      .getGamepads()
+      .find(
+        (otherGamepad) =>
+          otherGamepad && isMaskedGamepad([gamepad], otherGamepad),
+      );
+
+    if (maskedGamepad) {
+      return identifyGamepadType(maskedGamepad.id);
+    }
+  } else {
+    return identifyGamepadType(gamepad.id);
+  }
+};
+
 export const useGamepads = () => {
   const oldGamepads = useRef<(Gamepad | null)[]>([]);
   const requestAnimationFrameRef = useRef<number>();
   const focusRef = useRef<boolean>(true);
   const [gamepadType, setGamepadType] = useState<GamepadType>();
 
+  // TODO: split function
   const fireEventOnButtonPress = useCallback((gamepads: (Gamepad | null)[]) => {
     if (!document.hidden && document.visibilityState === "visible") {
       gamepads.forEach((gamepad) => {
         if (gamepad) {
           const oldGamepad = findGamepad(oldGamepads.current, gamepad.index);
           gamepad.buttons.forEach((button, index) => {
-            if (!oldGamepad?.buttons[index].pressed && button.pressed) {
+            if (!oldGamepad?.buttons[index]?.pressed && button.pressed) {
+              setGamepadType(identifyGamepadTypeUnmasked(gamepad));
               dispatchEvent(new CustomEvent(`gamepadonbutton${index}press`));
             }
           });
@@ -40,6 +82,8 @@ export const useGamepads = () => {
               ) &&
               isStickPressed(stickValue)
             ) {
+              setGamepadType(identifyGamepadTypeUnmasked(gamepad));
+
               // TODO: simplify with generic function
               switch (index) {
                 case layout.axes.leftStickX: {
@@ -101,21 +145,19 @@ export const useGamepads = () => {
   }, []);
 
   const update = useCallback(() => {
-    if (requestAnimationFrameRef.current && focusRef.current) {
+    if (focusRef.current) {
       const gamepads = navigator.getGamepads();
-      if (gamepads && gamepads.length > 0 && gamepads.find(Boolean)) {
-        fireEventOnButtonPress(gamepads);
+      if (gamepads.length > 0 && gamepads.find(Boolean)) {
+        fireEventOnButtonPress(excludeMaskedGamepads(gamepads));
       }
       requestAnimationFrameRef.current = requestAnimationFrame(update);
     }
   }, [fireEventOnButtonPress]);
 
   const disableGamepads = useCallback(() => {
+    focusRef.current = false;
     if (requestAnimationFrameRef.current) {
-      focusRef.current = false;
-      if (requestAnimationFrameRef.current) {
-        cancelAnimationFrame(requestAnimationFrameRef.current);
-      }
+      cancelAnimationFrame(requestAnimationFrameRef.current);
     }
   }, []);
 
@@ -131,12 +173,6 @@ export const useGamepads = () => {
       enableGamepads();
     }
   }, [enableGamepads, disableGamepads]);
-
-  useEffect(() => {
-    window.addEventListener("gamepadconnected", ({ gamepad: { id } }) => {
-      setGamepadType((gamepadType) => gamepadType || identifyGamepadType(id));
-    });
-  }, []);
 
   useEffect(() => {
     document.addEventListener("visibilitychange", handleVisibilityChange);
