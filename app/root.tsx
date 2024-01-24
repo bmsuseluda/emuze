@@ -118,6 +118,10 @@ function Document({
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="script-src 'self' 'unsafe-inline'; object-src 'none';"
+        />
         {title ? <title>{title}</title> : null}
         <Meta />
         <Links />

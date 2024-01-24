@@ -109,7 +109,6 @@ test("import all", async () => {
 // TODO: no emulator for platform is installed
 // TODO: import for a platform with mocked api
 // TODO: load more games
-// TODO: start in fullscreen via command line
 // TODO: test fullscreen setting
 // TODO: test always show game name setting
 // TODO: test collapse sidebar setting
