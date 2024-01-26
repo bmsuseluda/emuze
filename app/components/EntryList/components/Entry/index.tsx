@@ -57,6 +57,7 @@ const Input = styled("input", {
 const ImageWrapper = styled("div", {
   base: {
     position: "relative",
+    width: "100%",
   },
 });
 

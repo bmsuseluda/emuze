@@ -16,6 +16,9 @@ const dispatchStickDirectionEvent = (stickDirection: StickDirection) => {
   dispatchEvent(new CustomEvent(`gamepadon${stickDirection}`));
 };
 
+const filterValveGamepads = (gamepads: (Gamepad | null)[]) =>
+  gamepads.filter(isValveGamepad);
+
 const isValveGamepad = (gamepad: Gamepad | null) =>
   gamepad && gamepad.id.includes("Vendor: 28de");
 
@@ -35,9 +38,6 @@ export const excludeMaskedGamepads = (gamepads: (Gamepad | null)[]) => {
       (isValveGamepad(gamepad) || !isMaskedGamepad(valveGamepads, gamepad)),
   );
 };
-
-const filterValveGamepads = (gamepads: (Gamepad | null)[]) =>
-  gamepads.filter(isValveGamepad);
 
 export const identifyGamepadTypeUnmasked = (gamepad: Gamepad) => {
   if (isValveGamepad(gamepad)) {
