@@ -186,7 +186,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.18.9, @babel/core@npm:^7.22.20":
+"@babel/core@npm:^7.18.9":
   version: 7.23.2
   resolution: "@babel/core@npm:7.23.2"
   dependencies:
@@ -2350,7 +2350,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-react-jsx-self@npm:^7.18.6, @babel/plugin-transform-react-jsx-self@npm:^7.22.5":
+"@babel/plugin-transform-react-jsx-self@npm:^7.18.6":
   version: 7.22.5
   resolution: "@babel/plugin-transform-react-jsx-self@npm:7.22.5"
   dependencies:
@@ -2372,7 +2372,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-react-jsx-source@npm:^7.19.6, @babel/plugin-transform-react-jsx-source@npm:^7.22.5":
+"@babel/plugin-transform-react-jsx-source@npm:^7.19.6":
   version: 7.22.5
   resolution: "@babel/plugin-transform-react-jsx-source@npm:7.22.5"
   dependencies:
@@ -5086,31 +5086,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/experimental-ct-core@npm:1.41.1":
-  version: 1.41.1
-  resolution: "@playwright/experimental-ct-core@npm:1.41.1"
-  dependencies:
-    playwright: "npm:1.41.1"
-    playwright-core: "npm:1.41.1"
-    vite: "npm:^4.4.12"
-  bin:
-    playwright: cli.js
-  checksum: 177f43ac9aa05d194a432d8e786cc98189461d99ed71e9a91cada27d21b8ed37a1d8ce7cb33657e1cf33eac32e5e7e550288911fbcf2593da4ff3ef0d1185406
-  languageName: node
-  linkType: hard
-
-"@playwright/experimental-ct-react@npm:^1.41.1":
-  version: 1.41.1
-  resolution: "@playwright/experimental-ct-react@npm:1.41.1"
-  dependencies:
-    "@playwright/experimental-ct-core": "npm:1.41.1"
-    "@vitejs/plugin-react": "npm:^4.0.0"
-  bin:
-    playwright: cli.js
-  checksum: 5dbcc1e8c2e5e6179845f315ad7dbe8ef802c794823d7bb520db2af3c88cf7325a414e845204948a48ed974e458e2741dac7729ed84e1eb18b96fc46083d8404
-  languageName: node
-  linkType: hard
-
 "@playwright/test@npm:^1.41.1":
   version: 1.41.1
   resolution: "@playwright/test@npm:1.41.1"
@@ -7439,7 +7414,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/babel__core@npm:^7.18.0, @types/babel__core@npm:^7.20.2":
+"@types/babel__core@npm:^7.18.0":
   version: 7.20.3
   resolution: "@types/babel__core@npm:7.20.3"
   dependencies:
@@ -8550,21 +8525,6 @@ __metadata:
   peerDependencies:
     vite: ^4.1.0-beta.0
   checksum: 54baf15170faed08c5c050ed6ac3b071e743d703f2c26ae685bf362bbaa2d8a733a98af0639f0662d474d95a6d91d008da9de8f3a51cc3e6660c4e642399cf2c
-  languageName: node
-  linkType: hard
-
-"@vitejs/plugin-react@npm:^4.0.0":
-  version: 4.1.0
-  resolution: "@vitejs/plugin-react@npm:4.1.0"
-  dependencies:
-    "@babel/core": "npm:^7.22.20"
-    "@babel/plugin-transform-react-jsx-self": "npm:^7.22.5"
-    "@babel/plugin-transform-react-jsx-source": "npm:^7.22.5"
-    "@types/babel__core": "npm:^7.20.2"
-    react-refresh: "npm:^0.14.0"
-  peerDependencies:
-    vite: ^4.2.0
-  checksum: 97cdc60c572c1c9081f498723fc4ed4353dead01d649325b6cd7a8ae3cedc5ecdcfb7e3deacfe814cb10825a1e96bed2a853d1f2109057c0033fe68d6cd78020
   languageName: node
   linkType: hard
 
@@ -11815,7 +11775,6 @@ __metadata:
     "@commitlint/cli": "npm:^18.6.0"
     "@commitlint/config-conventional": "npm:^18.6.0"
     "@pandacss/dev": "npm:^0.28.0"
-    "@playwright/experimental-ct-react": "npm:^1.41.1"
     "@playwright/test": "npm:^1.41.1"
     "@radix-ui/react-checkbox": "npm:^1.0.4"
     "@radix-ui/react-dialog": "npm:^1.0.5"
@@ -12490,7 +12449,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.18.0, esbuild@npm:^0.18.10":
+"esbuild@npm:^0.18.0":
   version: 0.18.15
   resolution: "esbuild@npm:0.18.15"
   dependencies:
@@ -19463,7 +19422,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.1.10, postcss@npm:^8.4.27":
+"postcss@npm:^8.1.10":
   version: 8.4.27
   resolution: "postcss@npm:8.4.27"
   dependencies:
@@ -20769,20 +20728,6 @@ __metadata:
   bin:
     rollup: dist/bin/rollup
   checksum: eb96057d96d503b6845294bd1d145bc806a1c5aff2f3e8c5f0411597f4b776f2054253abb12d617bc255334e699fb5d04ddf0ddf17e9013946d040373ff56c05
-  languageName: node
-  linkType: hard
-
-"rollup@npm:^3.27.1":
-  version: 3.28.0
-  resolution: "rollup@npm:3.28.0"
-  dependencies:
-    fsevents: "npm:~2.3.2"
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  bin:
-    rollup: dist/bin/rollup
-  checksum: f478bc815f520fb0293fe65a1ed44a35e6b15373efb5c35aa23ba1b63a7a7bf9880a805f1f1dcd4a32fbce8c647077eb5a074fdc48e8e944281fd6e61805c2cf
   languageName: node
   linkType: hard
 
@@ -23454,46 +23399,6 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 3f458f8aa81baf2c407d63b6463bb9536d8473f7f41b06824b7b2f3a7c628855e85d16e10d3b92a19020d9c5cdfe88c48b14c142ec88f2dc5caa96d6e402ddec
-  languageName: node
-  linkType: hard
-
-"vite@npm:^4.4.12":
-  version: 4.5.2
-  resolution: "vite@npm:4.5.2"
-  dependencies:
-    esbuild: "npm:^0.18.10"
-    fsevents: "npm:~2.3.2"
-    postcss: "npm:^8.4.27"
-    rollup: "npm:^3.27.1"
-  peerDependencies:
-    "@types/node": ">= 14"
-    less: "*"
-    lightningcss: ^1.21.0
-    sass: "*"
-    stylus: "*"
-    sugarss: "*"
-    terser: ^5.4.0
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  peerDependenciesMeta:
-    "@types/node":
-      optional: true
-    less:
-      optional: true
-    lightningcss:
-      optional: true
-    sass:
-      optional: true
-    stylus:
-      optional: true
-    sugarss:
-      optional: true
-    terser:
-      optional: true
-  bin:
-    vite: bin/vite.js
-  checksum: 3feb39f8da038fb2b1ad074c19a9579c263c1d7a872c5c6e0269b82d67805bb8c93cf9fc393e852807483ae9a918b1ac2861c72f73ee92fb3935ea68333a2cf7
   languageName: node
   linkType: hard
 
