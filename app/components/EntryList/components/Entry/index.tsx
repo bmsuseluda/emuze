@@ -1,6 +1,6 @@
 import { useTestId } from "~/hooks/useTestId";
-import type { ElementRef } from "react";
-import { forwardRef, useState } from "react";
+import type { ElementRef, SyntheticEvent } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { styled } from "../../../../../styled-system/jsx";
 
 interface Props {
@@ -110,14 +110,8 @@ export const getDisplayedName = (
   return name;
 };
 
-const getImageSrc = ({
-  imageUrl,
-  error,
-}: {
-  imageUrl?: string;
-  error: boolean;
-}) => {
-  if (error || !imageUrl) {
+const getImageSrc = ({ imageUrl }: { imageUrl?: string }) => {
+  if (!imageUrl) {
     return fallbackImageUrl;
   }
 
@@ -139,12 +133,34 @@ export const Entry = forwardRef<ElementRef<typeof Input>, Props>(
   ) => {
     const [error, setError] = useState(false);
     const { getTestId } = useTestId(dataTestId);
+
+    // TODO: remove ref and useEffect if bug is resolved https://github.com/facebook/react/issues/15446
+    const imageRef = useRef<ElementRef<"img">>(null);
+    useEffect(() => {
+      if (imageRef && imageRef.current) {
+        const { complete, naturalHeight } = imageRef.current;
+        const errorLoadingImgBeforeHydration = complete && naturalHeight === 0;
+
+        if (errorLoadingImgBeforeHydration) {
+          setError(true);
+          imageRef.current.src = fallbackImageUrl;
+        }
+      }
+    }, []);
+
     const displayedName = getDisplayedName(
       name,
       alwaysGameName,
       !!imageUrl,
       error,
     );
+
+    const handleImageError = (
+      event: SyntheticEvent<HTMLImageElement, Event>,
+    ) => {
+      setError(true);
+      event.currentTarget.src = fallbackImageUrl;
+    };
 
     return (
       <Wrapper {...getTestId()}>
@@ -158,12 +174,11 @@ export const Entry = forwardRef<ElementRef<typeof Input>, Props>(
           />
           <ImageWrapper>
             <Image
-              src={getImageSrc({ error, imageUrl })}
+              src={getImageSrc({ imageUrl })}
               alt={`${name} cover`}
               draggable={false}
-              onError={() => {
-                setError(true);
-              }}
+              onError={handleImageError}
+              ref={imageRef}
             />
             {displayedName && <Name>{displayedName}</Name>}
           </ImageWrapper>
