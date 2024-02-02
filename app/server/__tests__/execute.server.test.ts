@@ -1,4 +1,5 @@
 import nodepath from "path";
+import type childProcess from "child_process";
 
 import { readCategory } from "~/server/categories.server";
 import { readAppearance, readGeneral } from "~/server/settings.server";
@@ -19,10 +20,14 @@ import type { Mock } from "vitest";
 import { general } from "~/server/__testData__/general";
 
 const execFileMock = vi.fn();
-vi.mock("child_process", () => ({
-  execFileSync: (applicationPath: string, entryPath: string) =>
-    execFileMock(applicationPath, entryPath),
-}));
+vi.mock("child_process", async (importOriginal) => {
+  const original = await importOriginal<typeof childProcess>();
+  return {
+    ...original,
+    execFileSync: (applicationPath: string, entryPath: string) =>
+      execFileMock(applicationPath, entryPath),
+  };
+});
 
 vi.mock("~/server/categories.server", () => ({
   readCategory: vi.fn(),

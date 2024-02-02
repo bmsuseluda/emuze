@@ -92,7 +92,7 @@ const StyledItemIndicator = styled(RadixSelect.ItemIndicator, {
 
 const Trigger = forwardRef<
   ElementRef<typeof SelectTrigger>,
-  ComponentPropsWithoutRef<typeof SelectTrigger>
+  ComponentPropsWithoutRef<typeof SelectTrigger> & { placeholder?: string }
 >(({ placeholder, ...rest }, ref) => (
   <SelectTrigger ref={ref} {...rest}>
     <RadixSelect.Value placeholder={placeholder} />
