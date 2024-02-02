@@ -182,7 +182,7 @@ export const play: Application = {
 export const ppsspp: Application = {
   id: "ppsspp",
   name: "PPSSPP",
-  fileExtensions: [".cso", ".iso"],
+  fileExtensions: [".chd", ".cso", ".iso"],
   flatpakId: "org.ppsspp.PPSSPP",
   createOptionParams: ({
     settings: {
@@ -274,6 +274,7 @@ export const punes: Application = {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("--fullscreen");
+      optionParams.push("yes");
     }
     return optionParams;
   },
