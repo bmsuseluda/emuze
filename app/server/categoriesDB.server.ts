@@ -23,6 +23,7 @@ import {
   play,
   ppsspp,
   punes,
+  rosaliesMupenGui,
   snes9x,
 } from "~/server/applicationsDB.server";
 
@@ -181,7 +182,7 @@ export const nintendo64: Category = {
   id: "nintendo64",
   names: ["Nintendo 64", "N64"],
   igdbPlatformIds: [4],
-  applications: [ares, mupen64plus],
+  applications: [ares, rosaliesMupenGui, mupen64plus],
   defaultApplication: ares,
 };
 
