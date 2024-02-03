@@ -239,8 +239,20 @@ export const desmume: Application = {
 export const dolphin: Application = {
   id: "dolphin",
   name: "Dolphin",
-  fileExtensions: [".iso"],
+  fileExtensions: [".iso", ".rvz"],
   flatpakId: "org.DolphinEmu.dolphin-emu",
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+  }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("--config");
+      optionParams.push("Dolphin.Display.Fullscreen=True");
+    }
+    return optionParams;
+  },
 };
 
 export const nestopia: Application = {
@@ -420,6 +432,24 @@ export const mupen64plus: Application = {
   flatpakId: "io.github.simple64.simple64",
 };
 
+export const rosaliesMupenGui: Application = {
+  id: "rosaliesMupenGui",
+  name: "Rosalie's Mupen GUI",
+  fileExtensions: [".z64"],
+  flatpakId: "com.github.Rosalie241.RMG",
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+  }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("--fullscreen");
+    }
+    return optionParams;
+  },
+};
+
 export const mgba: Application = {
   id: "mgba",
   name: "mgba",
@@ -443,6 +473,18 @@ export const flycast: Application = {
   name: "Flycast",
   fileExtensions: [".cue", ".chd"],
   flatpakId: "org.flycast.Flycast",
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+  }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("--config");
+      optionParams.push("window:fullscreen=yes");
+    }
+    return optionParams;
+  },
 };
 
 export type ApplicationId = keyof typeof applications;
@@ -470,6 +512,7 @@ export const applications = {
   aresSegaCd,
   aresSega32x,
   mupen64plus,
+  rosaliesMupenGui,
   mgba,
   flycast,
 } satisfies Record<string, Application>;
