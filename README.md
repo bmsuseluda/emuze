@@ -27,7 +27,7 @@ If your roms are named correctly, a click on the import button should import you
 
 ### Windows
 
-[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.42.0/emuze-Setup-0.42.0.exe) the latest Version of emuze and install it.
+[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.43.0/emuze-Setup-0.43.0.exe) the latest Version of emuze and install it.
 
 If you start emuze for the first time, it asks for the following folders to work:
 
@@ -57,7 +57,7 @@ emulators
 
 For now emuze is only released as an AppImage. Your distribution needs to support Flatpaks.
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.42.0/emuze-0.42.0.AppImage) the latest Version of emuze
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.43.0/emuze-0.43.0.AppImage) the latest Version of emuze
 
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
@@ -68,7 +68,7 @@ For now emuze is only released as an AppImage. Your distribution needs to suppor
 For now emuze is only released as an AppImage.
 
 1) Switch to Desktop
-2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.42.0/emuze-0.42.0.AppImage) the latest Version of emuze
+2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.43.0/emuze-0.43.0.AppImage) the latest Version of emuze
 
 3) Mark the AppImage as executable and start emuze
 4) Choose the [folder where your Roms are located](#roms-folder)
@@ -152,7 +152,7 @@ Right now the following are supported:
 | Nintendo Game Boy Advance | mgba<br>Ares | mgba |
 | Nintendo DS | MelonDS<br>DeSmuME | MelonDS |
 | Nintendo 3DS | Citra | Citra |
-| Nintendo 64 | Ares<br>Mupen64Plus | Ares |
+| Nintendo 64 | Ares<br>Rosalie's Mupen GUI<br>Mupen64Plus | Ares |
 | Nintendo Gamecube | Dolphin | Dolphin |
 | Nintendo Wii | Dolphin | Dolphin |
 | PC Engine | Mednafen<br>Ares | Ares |
