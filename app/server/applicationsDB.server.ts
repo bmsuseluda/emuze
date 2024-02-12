@@ -62,7 +62,7 @@ export const pcsx2: Application = {
 export const blastem: Application = {
   id: "blastem",
   name: "BlastEm",
-  fileExtensions: [".68K", ".bin", ".sgd", ".smd", ".sms"],
+  fileExtensions: [".68K", ".bin", ".sgd", ".smd", ".sms", ".gg"],
   flatpakId: "com.retrodev.blastem",
   createOptionParams: ({
     settings: {
@@ -193,6 +193,7 @@ export const ppsspp: Application = {
     if (fullscreen) {
       optionParams.push("--fullscreen");
     }
+    optionParams.push("--pause-menu-exit");
     return optionParams;
   },
 };
@@ -251,6 +252,7 @@ export const dolphin: Application = {
       optionParams.push("--config");
       optionParams.push("Dolphin.Display.Fullscreen=True");
     }
+    optionParams.push("--batch");
     return optionParams;
   },
 };
@@ -295,7 +297,7 @@ export const punes: Application = {
 export const mednafen: Application = {
   id: "mednafen",
   name: "Mednafen",
-  fileExtensions: [".cue", ".pce", ".nes", ".sms"],
+  fileExtensions: [".cue", ".pce", ".nes", ".sms", ".gg"],
   flatpakId: "com.github.AmatCoder.mednaffe",
   flatpakOptionParams: ["--command=mednafen"],
   environmentVariables: ({ application }, { general: { isWindows } }) => {
@@ -382,6 +384,7 @@ export const ares: Application = {
   fileExtensions: [
     ".z64",
     ".sms",
+    ".gg",
     ".chd",
     ".nes",
     ".sgd",
@@ -471,7 +474,7 @@ export const mgba: Application = {
 export const flycast: Application = {
   id: "flycast",
   name: "Flycast",
-  fileExtensions: [".cue", ".chd"],
+  fileExtensions: [".cue", ".chd", ".gdi", ".cdi"],
   flatpakId: "org.flycast.Flycast",
   createOptionParams: ({
     settings: {

@@ -39,6 +39,7 @@ const icons: Record<PlatformId, IconType> = {
   pcengine: MdVideogameAsset,
   pcenginecd: MdVideogameAsset,
   segamastersystem: SiSega,
+  segagamegear: SiSega,
   segamegadrive: SiSega,
   sega32x: SiSega,
   segacd: SiSega,

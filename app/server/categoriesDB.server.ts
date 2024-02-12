@@ -72,6 +72,14 @@ export const segamastersystem: Category = {
   defaultApplication: ares,
 };
 
+export const segagamegear: Category = {
+  id: "segagamegear",
+  names: ["Sega Game Gear", "Game Gear"],
+  igdbPlatformIds: [35],
+  applications: [ares, blastem, mednafen],
+  defaultApplication: ares,
+};
+
 export const segamegadrive: Category = {
   id: "segamegadrive",
   names: [
@@ -269,6 +277,7 @@ export const categories = {
   pcengine,
   pcenginecd,
   segamastersystem,
+  segagamegear,
   segamegadrive,
   sega32x,
   segacd,

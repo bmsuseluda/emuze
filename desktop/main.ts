@@ -1,4 +1,3 @@
-// @ts-ignore
 import { initRemix } from "remix-electron";
 import { platform } from "os";
 import { app, BrowserWindow, ipcMain, session } from "electron";
