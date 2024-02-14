@@ -27,7 +27,6 @@ export const icons: Record<PlatformId, IconType> = {
   nintendo64: SvgNintendo64,
   nintendogameboy: SvgGameboy,
   nintendogameboycolor: SvgGameboy,
-  // TODO: use another
   nintendogameboyadvance: SvgGba,
   nintendogamecube: SiNintendogamecube,
   nintendowii: SiWii,
