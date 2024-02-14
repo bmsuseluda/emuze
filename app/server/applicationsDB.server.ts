@@ -257,6 +257,62 @@ export const dolphin: Application = {
   },
 };
 
+export const yuzu: Application = {
+  id: "yuzu",
+  name: "yuzu",
+  fileExtensions: [".xci", ".nsp"],
+  flatpakId: "org.yuzu_emu.yuzu",
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+  }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("-f");
+    }
+    optionParams.push("-g");
+    return optionParams;
+  },
+};
+
+export const ryujinx: Application = {
+  id: "ryujinx",
+  name: "Ryujinx",
+  fileExtensions: [".xci", ".nsp"],
+  flatpakId: "org.ryujinx.Ryujinx",
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+  }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("--fullscreen");
+    }
+    return optionParams;
+  },
+};
+
+export const cemu: Application = {
+  id: "cemu",
+  name: "Cemu",
+  fileExtensions: [".wud", ".wux", ".wua"],
+  flatpakId: "info.cemu.Cemu",
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+  }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("-f");
+    }
+    optionParams.push("-g");
+    return optionParams;
+  },
+};
+
 export const nestopia: Application = {
   id: "nestopia",
   name: "Nestopia",
@@ -504,6 +560,9 @@ export const applications = {
   melonds,
   desmume,
   dolphin,
+  yuzu,
+  ryujinx,
+  cemu,
   nestopia,
   punes,
   mednafen,
