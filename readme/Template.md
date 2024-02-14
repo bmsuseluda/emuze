@@ -45,9 +45,9 @@ On Linux all emulators need to be installed via flatpak but emuze can do this fo
 
 ```
 emulators
-|-> Mesen.0.9.9
+|-> ares-v135
 |---> ...
-|---> Mesen.exe
+|---> ares.exe
 |---> ...
 |-> duckstation-Windows-x64-release
 |---> ...
