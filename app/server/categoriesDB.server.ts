@@ -6,6 +6,7 @@ import {
   aresSegaCd,
   blastem,
   bsnes,
+  cemu,
   citra,
   desmume,
   dolphin,
@@ -24,7 +25,9 @@ import {
   ppsspp,
   punes,
   rosaliesMupenGui,
+  ryujinx,
   snes9x,
+  yuzu,
 } from "~/server/applicationsDB.server";
 
 export interface Category {
@@ -68,6 +71,14 @@ export const segamastersystem: Category = {
   id: "segamastersystem",
   names: ["Sega Master System", "Master System", "SMS"],
   igdbPlatformIds: [64],
+  applications: [ares, blastem, mednafen],
+  defaultApplication: ares,
+};
+
+export const segagamegear: Category = {
+  id: "segagamegear",
+  names: ["Sega Game Gear", "Game Gear", "GameGear"],
+  igdbPlatformIds: [35],
   applications: [ares, blastem, mednafen],
   defaultApplication: ares,
 };
@@ -170,6 +181,22 @@ export const nintendowii: Category = {
   defaultApplication: dolphin,
 };
 
+export const nintendowiiu: Category = {
+  id: "nintendowiiu",
+  names: ["Nintendo Wii U", "Wii U", "Nintendo WiiU", "WiiU"],
+  igdbPlatformIds: [41],
+  applications: [cemu],
+  defaultApplication: cemu,
+};
+
+export const nintendoswitch: Category = {
+  id: "nintendoswitch",
+  names: ["Nintendo Switch", "Switch"],
+  igdbPlatformIds: [130],
+  applications: [yuzu, ryujinx],
+  defaultApplication: yuzu,
+};
+
 export const nintendoentertainmentsystem: Category = {
   id: "nintendoentertainmentsystem",
   names: ["Nintendo Entertainment System", "NES", "Famicom"],
@@ -220,16 +247,32 @@ export const segasaturn: Category = {
 
 export const pcengine: Category = {
   id: "pcengine",
-  names: ["PC Engine"],
-  igdbPlatformIds: [86, 150],
+  names: [
+    "PC Engine",
+    "TurboGrafx-16",
+    "TurboGrafx",
+    "Turbo Grafx",
+    "TurboGrafx 16",
+    "Turbo Grafx 16",
+    "CoreGrafx",
+  ],
+  igdbPlatformIds: [86],
   applications: [mednafen, ares],
   defaultApplication: ares,
 };
 
 export const pcenginecd: Category = {
   id: "pcenginecd",
-  names: ["PC Engine CD"],
-  igdbPlatformIds: [128, 150],
+  names: ["PC Engine CD", "TurboGrafx-CD", "TurboGrafx CD"],
+  igdbPlatformIds: [150],
+  applications: [mednafen],
+  defaultApplication: mednafen,
+};
+
+export const pcenginesupergrafx: Category = {
+  id: "pcenginesupergrafx",
+  names: ["PC Engine SuperGrafx", "SuperGrafx"],
+  igdbPlatformIds: [128],
   applications: [mednafen],
   defaultApplication: mednafen,
 };
@@ -266,9 +309,13 @@ export const categories = {
   nintendo64,
   nintendogamecube,
   nintendowii,
+  nintendowiiu,
+  nintendoswitch,
   pcengine,
   pcenginecd,
+  pcenginesupergrafx,
   segamastersystem,
+  segagamegear,
   segamegadrive,
   sega32x,
   segacd,
