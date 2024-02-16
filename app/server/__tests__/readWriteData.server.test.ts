@@ -55,10 +55,10 @@ describe("readWriteData.server", () => {
       ]);
 
       expect(
-        readFilenames(
-          createCategoryPath(pcenginecd.name),
-          mednafen.fileExtensions,
-        ),
+        readFilenames({
+          path: createCategoryPath(pcenginecd.name),
+          fileExtensions: mednafen.fileExtensions,
+        }),
       ).toStrictEqual([
         createAbsoluteEntryPath(pcenginecd.name, cotton.path),
         createAbsoluteEntryPath(pcenginecd.name, gateofthunder.path),
@@ -92,10 +92,10 @@ describe("readWriteData.server", () => {
         ]);
 
       expect(
-        readFilenames(
-          createCategoryPath(playstation.name),
-          duckstation.fileExtensions,
-        ),
+        readFilenames({
+          path: createCategoryPath(playstation.name),
+          fileExtensions: duckstation.fileExtensions,
+        }),
       ).toStrictEqual([
         createAbsoluteEntryPath(playstation.name, hugo.path),
         createAbsoluteEntryPath(playstation.name, hugo2.path),

@@ -21,11 +21,19 @@ export const readDirectorynames = (path: string) =>
     .filter((file) => file.isDirectory())
     .map(({ name }) => nodepath.join(path, name));
 
-export const readFilenames = (path: string, fileExtensions?: string[]) => {
+export const readFilenames = ({
+  path,
+  fileExtensions,
+  entryAsDirectory,
+}: {
+  path: string;
+  fileExtensions?: string[];
+  entryAsDirectory?: boolean;
+}) => {
   const filenames: string[] = readFiles(path).flatMap((file) => {
     const filePath = nodepath.join(path, file.name);
-    if (file.isDirectory()) {
-      return readFilenames(filePath);
+    if (file.isDirectory() && !entryAsDirectory) {
+      return readFilenames({ path: filePath });
     }
     return filePath;
   });

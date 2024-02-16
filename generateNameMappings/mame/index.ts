@@ -1,14 +1,14 @@
 import nodepath from "path";
 import { XMLParser } from "fast-xml-parser";
-import { writeFile } from "../app/server/readWriteData.server";
+import { writeFile } from "../../app/server/readWriteData.server";
 import { spawnSync } from "child_process";
 
 type Result = Record<string, string | number>;
 
 const xmlParser = new XMLParser({ ignoreAttributes: false });
 
-const projectPath = nodepath.join(__dirname, "..");
-const resultPath = nodepath.join(projectPath, "app", "server", "mameMappings");
+const projectPath = nodepath.join(__dirname, "..", "..");
+const resultPath = nodepath.join(projectPath, "app", "server", "nameMappings");
 
 type Game = {
   "@_name": string;
@@ -71,7 +71,7 @@ const importMame = () => {
 
     const result = extractGames(xmlData);
 
-    writeFile(result, nodepath.join(resultPath, "mameMapping.json"));
+    writeFile(result, nodepath.join(resultPath, "mame.json"));
   } catch (error) {
     console.log(error);
   }

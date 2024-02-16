@@ -1,9 +1,11 @@
 import nodepath from "path";
 
 import type { Category, Entry } from "~/types/jsonFiles/category";
+import { createAbsoluteEntryPath } from "~/types/jsonFiles/category";
 import type { GeneralConfigured } from "~/types/jsonFiles/settings/general";
 import type { Appearance } from "~/types/jsonFiles/settings/appearance";
-import mameGames from "~/server/mameMappings/mameMapping.json";
+import mameGames from "~/server/nameMappings/mame.json";
+import { spawnSync } from "child_process";
 
 type Settings = {
   general: GeneralConfigured;
@@ -14,22 +16,34 @@ type OptionParamFunction = ({
   entryData,
   categoryData,
   settings,
+  absoluteEntryPath,
 }: {
   entryData: Entry;
   categoryData: Category;
   settings: Settings;
+  absoluteEntryPath: string;
 }) => string[];
 type EnvironmentVariableFunction = (
   category: Category,
   settings: Settings,
 ) => Record<string, string | null>;
 
-type FindEntryNameFunction = (entry: Entry, categoryPath: string) => string;
+type FindEntryNameFunction = ({
+  entry,
+  categoriesPath,
+  categoryName,
+}: {
+  entry: Entry;
+  categoriesPath: string;
+  categoryName: string;
+}) => string;
 
 export interface Application {
   id: ApplicationId;
   name: string;
-  fileExtensions: `.${string}`[];
+  fileExtensions?: `.${string}`[];
+  entryAsDirectory?: boolean;
+  omitAbsoluteEntryPathAsLastParam?: boolean;
   environmentVariables?: EnvironmentVariableFunction;
   createOptionParams?: OptionParamFunction;
   flatpakId: string;
@@ -95,7 +109,7 @@ export const bsnes: Application = {
   },
 };
 
-const findMameArcadeGameName: FindEntryNameFunction = ({ name }) => {
+const findMameArcadeGameName: FindEntryNameFunction = ({ entry: { name } }) => {
   let entryName: string;
   try {
     entryName = (mameGames as Record<string, string>)[name];
@@ -105,6 +119,56 @@ const findMameArcadeGameName: FindEntryNameFunction = ({ name }) => {
   }
 
   return entryName || name;
+};
+
+// const findScummVmGameName: FindEntryNameFunction = ({
+//   entry: { name, path },
+//   categoryPath,
+//   categoryName,
+// }) => {
+//   let entryName: string;
+//   console.log({ path, name, categoryPath });
+//   try {
+//     entryName = (scummVmGames as Record<string, string>)[name];
+//   } catch (error) {
+//     console.log("findScummVmGameName", error);
+//     return name;
+//   }
+//
+//   return entryName || name;
+// };
+
+const findScummVmGameName: FindEntryNameFunction = ({
+  entry: { name, path },
+  categoriesPath,
+  categoryName,
+}) => {
+  const absoluteEntryPath = createAbsoluteEntryPath(
+    categoriesPath,
+    categoryName,
+    path,
+  );
+  // TODO: add windows way
+  const data = spawnSync(
+    "flatpak",
+    ["run", scummvm.flatpakId, `--path=${absoluteEntryPath}`, "--detect"],
+    {
+      encoding: "utf-8",
+      maxBuffer: 1000000000,
+    },
+  ).stdout.toString();
+  console.log({ absoluteEntryPath, data });
+
+  const rows = data.split("\n");
+  const entryNameRow = rows.find((row) => row.match(/\w+:\w+.*/));
+  if (entryNameRow) {
+    // split by minimum of 3 whitespaces
+    const [, name] = entryNameRow.split(/\s{3,}/);
+    console.log({ name: name.split("(")[0].trim() });
+    return name.split("(")[0].trim();
+  }
+
+  return name;
 };
 
 const getSharedMameOptionParams: OptionParamFunction = ({
@@ -546,6 +610,65 @@ export const flycast: Application = {
   },
 };
 
+export const dosboxx: Application = {
+  id: "dosboxx",
+  name: "DOSBox-X",
+  fileExtensions: [".exe"],
+  flatpakId: "com.dosbox_x.DOSBox-X",
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+  }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("-fullscreen");
+    }
+    return optionParams;
+  },
+};
+
+export const dosboxstaging: Application = {
+  id: "dosboxstaging",
+  name: "DOSBox-Staging",
+  fileExtensions: [".exe"],
+  flatpakId: "io.github.dosbox-staging",
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+  }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("--fullscreen");
+    }
+    return optionParams;
+  },
+};
+
+export const scummvm: Application = {
+  id: "scummvm",
+  name: "ScummVM",
+  flatpakId: "org.scummvm.ScummVM",
+  entryAsDirectory: true,
+  omitAbsoluteEntryPathAsLastParam: true,
+  createOptionParams: ({
+    settings: {
+      appearance: { fullscreen },
+    },
+    absoluteEntryPath,
+  }) => {
+    const optionParams = [];
+    if (fullscreen) {
+      optionParams.push("--fullscreen");
+    }
+    optionParams.push(`--path=${absoluteEntryPath}`);
+    optionParams.push("--auto-detect");
+    return optionParams;
+  },
+  findEntryName: findScummVmGameName,
+};
+
 export type ApplicationId = keyof typeof applications;
 
 export const applications = {
@@ -577,4 +700,7 @@ export const applications = {
   rosaliesMupenGui,
   mgba,
   flycast,
+  dosboxx,
+  dosboxstaging,
+  scummvm,
 } satisfies Record<string, Application>;

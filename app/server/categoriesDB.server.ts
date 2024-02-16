@@ -26,6 +26,7 @@ import {
   punes,
   rosaliesMupenGui,
   ryujinx,
+  scummvm,
   snes9x,
   yuzu,
 } from "~/server/applicationsDB.server";
@@ -293,6 +294,23 @@ export const neogeocd: Category = {
   defaultApplication: mameNeoGeoCD,
 };
 
+// TODO: Find a way to identify executable
+// export const dos: Category = {
+//   id: "dos",
+//   names: ["DOS", "MS DOS", "Microsoft DOS"],
+//   igdbPlatformIds: [13],
+//   applications: [dosboxstaging, dosboxx],
+//   defaultApplication: dosboxstaging,
+// };
+
+export const scumm: Category = {
+  id: "scumm",
+  names: ["Scumm", "Scumm VM", "ScummVM"],
+  igdbPlatformIds: [6, 13],
+  applications: [scummvm],
+  defaultApplication: scummvm,
+};
+
 export type PlatformId = keyof typeof categories;
 
 export const categories = {
@@ -324,6 +342,7 @@ export const categories = {
   arcade,
   neogeo,
   neogeocd,
+  scumm,
 } satisfies Record<string, Category>;
 
 export const getCategoryDataByName = (name: string) =>

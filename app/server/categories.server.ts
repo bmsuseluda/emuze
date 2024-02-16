@@ -107,10 +107,11 @@ export const readEntries = (
   if (applicationData && generalData?.categoriesPath) {
     const categoriesPath = generalData.categoriesPath;
     const categoryPath = nodepath.join(categoriesPath, categoryName);
-    const filenames = readFilenames(
-      categoryPath,
-      applicationData.fileExtensions,
-    );
+    const filenames = readFilenames({
+      path: categoryPath,
+      fileExtensions: applicationData.fileExtensions,
+      entryAsDirectory: applicationData.entryAsDirectory,
+    });
 
     const { findEntryName, filteredFiles } = applicationData;
 
@@ -119,7 +120,10 @@ export const readEntries = (
     return filenamesFiltered
       .map<Entry>((filename, index) => {
         const extension = nodepath.extname(filename);
-        const [name] = nodepath.basename(filename).split(extension);
+        const name =
+          extension.length > 0
+            ? nodepath.basename(filename).split(extension)[0]
+            : nodepath.basename(filename);
 
         const oldEntryData = oldEntries?.find(({ path }) => path === filename);
         if (oldEntryData) {
@@ -134,7 +138,7 @@ export const readEntries = (
           if (findEntryName) {
             return {
               ...entry,
-              name: findEntryName(entry, categoryName),
+              name: findEntryName({ entry, categoriesPath, categoryName }),
             };
           } else {
             return entry;
