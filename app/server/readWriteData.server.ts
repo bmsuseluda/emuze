@@ -30,12 +30,23 @@ export const readFilenames = ({
   fileExtensions?: string[];
   entryAsDirectory?: boolean;
 }) => {
-  const filenames: string[] = readFiles(path).flatMap((file) => {
+  const filenames: string[] = [];
+
+  readFiles(path).forEach((file) => {
     const filePath = nodepath.join(path, file.name);
-    if (file.isDirectory() && !entryAsDirectory) {
-      return readFilenames({ path: filePath });
+
+    if (entryAsDirectory) {
+      if (file.isDirectory()) {
+        filenames.push(filePath);
+      }
+    } else {
+      if (file.isDirectory()) {
+        readFilenames({ path: filePath }).forEach((filename) =>
+          filenames.push(filename),
+        );
+      }
+      filenames.push(filePath);
     }
-    return filePath;
   });
 
   if (fileExtensions) {

@@ -74,17 +74,7 @@ export const writeCategory = (category: Category) =>
     nodepath.join(paths.entries, `${category.id}.json`),
   );
 
-const sortFileNames = (a: string, b: string) => {
-  const aWithoutPath = nodepath.basename(a);
-  const bWithoutPath = nodepath.basename(b);
-  const aExtname = nodepath.extname(aWithoutPath);
-  const bExtname = nodepath.extname(bWithoutPath);
-  const aWithoutFileExtension = aWithoutPath.split(aExtname)[0];
-  const bWithoutFileExtension = bWithoutPath.split(bExtname)[0];
-  return sortCaseInsensitive(aWithoutFileExtension, bWithoutFileExtension);
-};
-
-const sortEntries = (a: Entry, b: Entry) => sortFileNames(a.path, b.path);
+const sortEntries = (a: Entry, b: Entry) => sortCaseInsensitive(a.name, b.name);
 
 const filterFiles = (filenames: string[], filesToFilter?: string[]) => {
   if (filesToFilter) {
