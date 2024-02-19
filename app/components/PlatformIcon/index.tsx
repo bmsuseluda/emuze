@@ -7,7 +7,6 @@ import {
   SiNintendoswitch,
   SiSega,
   SiWii,
-  SiWiiu,
 } from "react-icons/si";
 import { FaGamepad } from "react-icons/fa";
 import { MdVideogameAsset } from "react-icons/md";
@@ -32,13 +31,14 @@ export const icons: Record<PlatformId, IconType> = {
   nintendogameboyadvance: SvgGba,
   nintendogamecube: SiNintendogamecube,
   nintendowii: SiWii,
-  nintendowiiu: SiWiiu,
+  // nintendowiiu: SiWiiu,
   nintendoswitch: SiNintendoswitch,
   // TODO: use seperate
   nintendods: SiNintendo3Ds,
   nintendo3ds: SiNintendo3Ds,
   sonyplaystation: IoLogoPlaystation,
   sonyplaystation2: IoLogoPlaystation,
+  sonyplaystation3: IoLogoPlaystation,
   sonypsp: SvgPsp,
   arcade: SiApplearcade,
   neogeo: SiApplearcade,

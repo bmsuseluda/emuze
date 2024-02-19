@@ -60,6 +60,28 @@ export const pcenginecdLinux = {
   entries: addIndex([cotton, gateofthunder]),
 } satisfies Category;
 
+export const monkeyIsland: Entry = {
+  id: "monkey1",
+  name: "The Secret of Monkey Island",
+  path: "monkey1",
+};
+
+export const bladerunner: Entry = {
+  id: "bladerunner",
+  name: "Blade Runner",
+  path: "bladerunner",
+};
+
+export const scumm = {
+  id: "scumm",
+  name: "Scumm",
+  application: {
+    id: "scummvm",
+    path: "F:/games/Emulation/emulators/scummvm/scummvm.exe",
+  },
+  entries: addIndex([monkeyIsland, bladerunner]),
+} satisfies Category;
+
 export const fahrenheit: Entry = {
   id: "fahrenheit",
   name: "Fahrenheit",

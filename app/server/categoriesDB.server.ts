@@ -6,7 +6,6 @@ import {
   aresSegaCd,
   blastem,
   bsnes,
-  cemu,
   citra,
   desmume,
   dolphin,
@@ -25,6 +24,7 @@ import {
   ppsspp,
   punes,
   rosaliesMupenGui,
+  rpcs3,
   ryujinx,
   scummvm,
   snes9x,
@@ -53,6 +53,14 @@ export const sonyplaystation2: Category = {
   igdbPlatformIds: [8],
   applications: [pcsx2, play],
   defaultApplication: pcsx2,
+};
+
+export const sonyplaystation3: Category = {
+  id: "sonyplaystation3",
+  names: ["Sony Playstation 3", "playstation 3", "ps3"],
+  igdbPlatformIds: [9],
+  applications: [rpcs3],
+  defaultApplication: rpcs3,
 };
 
 export const sonypsp: Category = {
@@ -182,13 +190,14 @@ export const nintendowii: Category = {
   defaultApplication: dolphin,
 };
 
-export const nintendowiiu: Category = {
-  id: "nintendowiiu",
-  names: ["Nintendo Wii U", "Wii U", "Nintendo WiiU", "WiiU"],
-  igdbPlatformIds: [41],
-  applications: [cemu],
-  defaultApplication: cemu,
-};
+// TODO: Cemu needs a specific folder structure
+// export const nintendowiiu: Category = {
+//   id: "nintendowiiu",
+//   names: ["Nintendo Wii U", "Wii U", "Nintendo WiiU", "WiiU"],
+//   igdbPlatformIds: [41],
+//   applications: [cemu],
+//   defaultApplication: cemu,
+// };
 
 export const nintendoswitch: Category = {
   id: "nintendoswitch",
@@ -280,7 +289,7 @@ export const pcenginesupergrafx: Category = {
 
 export const neogeo: Category = {
   id: "neogeo",
-  names: ["Neo Geo AES", "Neo Geo MVS", "Neo Geo"],
+  names: ["Neo Geo", "Neo Geo AES", "Neo Geo MVS"],
   igdbPlatformIds: [79, 80],
   applications: [mameNeoGeo],
   defaultApplication: mameNeoGeo,
@@ -316,6 +325,7 @@ export type PlatformId = keyof typeof categories;
 export const categories = {
   sonyplaystation,
   sonyplaystation2,
+  sonyplaystation3,
   sonypsp,
   nintendoentertainmentsystem,
   supernintendo,
@@ -327,7 +337,6 @@ export const categories = {
   nintendo64,
   nintendogamecube,
   nintendowii,
-  nintendowiiu,
   nintendoswitch,
   pcengine,
   pcenginecd,

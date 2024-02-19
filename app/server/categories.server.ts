@@ -79,7 +79,13 @@ const sortEntries = (a: Entry, b: Entry) => sortCaseInsensitive(a.name, b.name);
 const filterFiles = (filenames: string[], filesToFilter?: string[]) => {
   if (filesToFilter) {
     return filenames.filter(
-      (filename) => !filesToFilter.includes(nodepath.basename(filename)),
+      (filename) =>
+        !filesToFilter.find((fileToFilter) =>
+          nodepath
+            .basename(filename)
+            .toLowerCase()
+            .includes(fileToFilter.toLowerCase()),
+        ),
     );
   }
 

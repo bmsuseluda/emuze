@@ -51,9 +51,8 @@ export const readFilenames = ({
 
   if (fileExtensions) {
     return filenames.filter((filename) =>
-      fileExtensions.find(
-        (value) =>
-          value.toLowerCase() === nodepath.extname(filename).toLowerCase(),
+      fileExtensions.find((value) =>
+        filename.toLowerCase().endsWith(value.toLowerCase()),
       ),
     );
   }

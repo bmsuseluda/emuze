@@ -4,14 +4,17 @@ import nodepath from "path";
 
 import { readDirectorynames, readFilenames } from "../readWriteData.server";
 import {
+  bladerunner,
   cotton,
   createAbsoluteEntryPath,
   createCategoryPath,
   gateofthunder,
   hugo,
   hugo2,
+  monkeyIsland,
   pcenginecd,
   playstation,
+  scumm,
 } from "../__testData__/category";
 import { duckstation, mednafen } from "~/server/applicationsDB.server";
 import type { Mock } from "vitest";
@@ -101,7 +104,25 @@ describe("readWriteData.server", () => {
         createAbsoluteEntryPath(playstation.name, hugo2.path),
       ]);
     });
-    //   TODO: add tests for entryAsDirectory
+
+    it("Should return directory paths only, if entryAsDirectory is true", () => {
+      (readdirSync as unknown as ReadDirMock).mockReturnValueOnce([
+        new SimpleDirent("Monkey Island.pak", false),
+        new SimpleDirent(monkeyIsland.id, true),
+        new SimpleDirent(bladerunner.id, true),
+        new SimpleDirent("favorite games.txt", false),
+      ]);
+
+      expect(
+        readFilenames({
+          path: createCategoryPath(scumm.name),
+          entryAsDirectory: true,
+        }),
+      ).toStrictEqual([
+        createAbsoluteEntryPath(scumm.name, monkeyIsland.path),
+        createAbsoluteEntryPath(scumm.name, bladerunner.path),
+      ]);
+    });
   });
 
   describe("readDirectories", () => {
