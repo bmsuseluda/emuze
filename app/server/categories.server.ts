@@ -11,7 +11,10 @@ import { convertToId } from "~/server/convertToId.server";
 import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
 import { fetchMetaData } from "~/server/igdb.server";
 import { readGeneral } from "~/server/settings.server";
-import type { ApplicationId } from "~/server/applicationsDB.server";
+import type {
+  ApplicationId,
+  ExcludeFilesFunction,
+} from "~/server/applicationsDB.server";
 import { applications } from "~/server/applicationsDB.server";
 import type {
   Category as CategoryDB,
@@ -76,15 +79,16 @@ export const writeCategory = (category: Category) =>
 
 const sortEntries = (a: Entry, b: Entry) => sortCaseInsensitive(a.name, b.name);
 
-const filterFiles = (filenames: string[], filesToFilter?: string[]) => {
-  if (filesToFilter) {
+const filterFiles = (
+  filenames: string[],
+  excludeFiles?: ExcludeFilesFunction,
+) => {
+  if (excludeFiles) {
+    const filesToExclude = excludeFiles(filenames);
     return filenames.filter(
       (filename) =>
-        !filesToFilter.find((fileToFilter) =>
-          nodepath
-            .basename(filename)
-            .toLowerCase()
-            .includes(fileToFilter.toLowerCase()),
+        !filesToExclude.find((fileToExclude) =>
+          filename.toLowerCase().includes(fileToExclude.toLowerCase()),
         ),
     );
   }
@@ -109,9 +113,9 @@ export const readEntries = (
       entryAsDirectory: applicationData.entryAsDirectory,
     });
 
-    const { findEntryName, filteredFiles } = applicationData;
+    const { findEntryName, excludeFiles } = applicationData;
 
-    const filenamesFiltered = filterFiles(filenames, filteredFiles);
+    const filenamesFiltered = filterFiles(filenames, excludeFiles);
 
     return filenamesFiltered
       .map<Entry>((filename, index) => {

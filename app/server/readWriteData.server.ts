@@ -41,21 +41,24 @@ export const readFilenames = ({
       }
     } else {
       if (file.isDirectory()) {
-        readFilenames({ path: filePath }).forEach((filename) =>
-          filenames.push(filename),
-        );
+        readFilenames({
+          path: filePath,
+          fileExtensions,
+          entryAsDirectory,
+        }).forEach((filename) => filenames.push(filename));
       }
-      filenames.push(filePath);
+
+      if (
+        !file.isDirectory() &&
+        (!fileExtensions ||
+          fileExtensions.find((value) =>
+            filePath.toLowerCase().endsWith(value.toLowerCase()),
+          ))
+      ) {
+        filenames.push(filePath);
+      }
     }
   });
-
-  if (fileExtensions) {
-    return filenames.filter((filename) =>
-      fileExtensions.find((value) =>
-        filename.toLowerCase().endsWith(value.toLowerCase()),
-      ),
-    );
-  }
 
   return filenames;
 };

@@ -40,6 +40,8 @@ type FindEntryNameFunction = ({
   categoryName: string;
 }) => string;
 
+export type ExcludeFilesFunction = (filenames: string[]) => string[];
+
 export interface Application {
   id: ApplicationId;
   name: string;
@@ -51,7 +53,7 @@ export interface Application {
   flatpakId: string;
   flatpakOptionParams?: string[];
   findEntryName?: FindEntryNameFunction;
-  filteredFiles?: string[];
+  excludeFiles?: ExcludeFilesFunction;
 }
 
 export const pcsx2: Application = {
@@ -123,102 +125,6 @@ const findMameArcadeGameName: FindEntryNameFunction = ({ entry: { name } }) => {
   return entryName || name;
 };
 
-const findScummVmGameNameViaMapping: FindEntryNameFunction = ({
-  entry: { name },
-}) => {
-  let entryName: string;
-  try {
-    entryName = (scummVmGames as Record<string, string>)[name];
-  } catch (error) {
-    console.log("findScummVmGameName", error);
-    return name;
-  }
-
-  return entryName || name;
-};
-
-const findScummVmGameNameViaDetectLinux = (absoluteEntryPath: string) => {
-  // TODO: what to do if the emulator is not installed?
-  return spawnSync(
-    "flatpak",
-    ["run", scummvm.flatpakId, `--path=${absoluteEntryPath}`, "--detect"],
-    {
-      encoding: "utf-8",
-      maxBuffer: 1000000000,
-    },
-  ).stdout.toString();
-};
-
-const findScummVmGameNameViaDetect: FindEntryNameFunction = ({
-  entry: { name, path },
-  categoriesPath,
-  categoryName,
-}) => {
-  const absoluteEntryPath = createAbsoluteEntryPath(
-    categoriesPath,
-    categoryName,
-    path,
-  );
-  // TODO: add windows way
-  // TODO: what to do if the emulator is not installed?
-  const data = findScummVmGameNameViaDetectLinux(absoluteEntryPath);
-
-  const rows = data.split("\n");
-  const entryNameRow = rows.find((row) => row.match(/\w+:\w+.*/));
-  if (entryNameRow) {
-    // split by minimum of 3 whitespaces
-    const [, name] = entryNameRow.split(/\s{3,}/);
-    return name.split("(")[0].trim();
-  }
-
-  return name;
-};
-
-const findScummVmGameName: FindEntryNameFunction = (props) => {
-  const detectedName = findScummVmGameNameViaDetect(props);
-  if (detectedName) {
-    return detectedName;
-  }
-
-  const mappedName = findScummVmGameNameViaMapping(props);
-  if (mappedName) {
-    return mappedName;
-  }
-
-  return props.entry.name;
-};
-
-/**
- * Find the 9digit serial number and map to the Gamename.
- *
- * @param name EBOOT.BIN
- * @param path e.g. 'dev_hdd0/game/NPUB30493/USRDIR/EBOOT.BIN' or '/games/BLES01658-[Dragon Ball Z Budokai HD Collection]/PS3_GAME/USRDIR/EBOOT.BIN'
- */
-const findPlaystation3GameName: FindEntryNameFunction = ({
-  entry: { name, path },
-}) => {
-  let entryName: string | null = null;
-
-  const id = path
-    .split(nodepath.sep)
-    .reverse()
-    .find(
-      (pathSegment) =>
-        pathSegment.match(/\w{9}/) || pathSegment.match(/\w{9}-\[(.*)]/),
-    );
-
-  if (id) {
-    try {
-      entryName = (ps3Games as Record<string, string>)[id.split("-")[0]];
-    } catch (error) {
-      console.log("findPs3GameName", error);
-      return name;
-    }
-  }
-
-  return entryName || name;
-};
-
 const getSharedMameOptionParams: OptionParamFunction = ({
   categoryData: { name },
   settings: {
@@ -249,7 +155,7 @@ export const mame: Application = {
 export const mameNeoGeo: Application = {
   ...mame,
   id: "mameNeoGeo",
-  filteredFiles: ["neogeo.zip"],
+  excludeFiles: () => ["neogeo.zip"],
 };
 
 export const mameNeoGeoCD: Application = {
@@ -260,7 +166,7 @@ export const mameNeoGeoCD: Application = {
     "neocdz",
     "-cdrm",
   ],
-  filteredFiles: ["neocdz.zip"],
+  excludeFiles: () => ["neocdz.zip"],
   findEntryName: undefined,
 };
 
@@ -303,6 +209,71 @@ export const play: Application = {
   },
 };
 
+/**
+ * Find the 9digit serial number from path
+ * TODO: check if serial is valid
+ *
+ * @param path  e.g. 'dev_hdd0/game/NPUB30493/USRDIR/EBOOT.BIN' or '/games/BLES01658-[Dragon Ball Z Budokai HD Collection]/PS3_GAME/USRDIR/EBOOT.BIN'
+ */
+export const findPlaystation3Serial = (path: string): string | undefined =>
+  path
+    .split(nodepath.sep)
+    .reverse()
+    .find(
+      (pathSegment) =>
+        pathSegment.match(/\w{9}/) || pathSegment.match(/\w{9}-\[(.*)]/),
+    )
+    ?.split("-")[0];
+
+/**
+ * Find the 9digit serial number and map to the Gamename.
+ *
+ * @param name EBOOT.BIN
+ * @param path e.g. 'dev_hdd0/game/NPUB30493/USRDIR/EBOOT.BIN' or '/games/BLES01658-[Dragon Ball Z Budokai HD Collection]/PS3_GAME/USRDIR/EBOOT.BIN'
+ */
+const findPlaystation3GameName: FindEntryNameFunction = ({
+  entry: { name, path },
+}) => {
+  let entryName: string | null = null;
+
+  const serial = findPlaystation3Serial(path);
+
+  if (serial) {
+    try {
+      entryName = (ps3Games as Record<string, string>)[serial];
+    } catch (error) {
+      console.log("findPs3GameName", error);
+      return name;
+    }
+  }
+
+  return entryName || name;
+};
+
+/**
+ * Exclude files without serial and files that are just update files for physical games
+ */
+export const excludePlaystationFiles: ExcludeFilesFunction = (filepaths) => {
+  const filepathsTemp = [...filepaths];
+  return filepaths.filter((filepath, index) => {
+    const serial = findPlaystation3Serial(filepath);
+
+    const foundExclude =
+      !serial ||
+      filepathsTemp.find(
+        (otherFilepath) =>
+          otherFilepath !== filepath &&
+          serial === findPlaystation3Serial(otherFilepath),
+      );
+
+    if (foundExclude) {
+      filepathsTemp.splice(index);
+    }
+
+    return foundExclude;
+  });
+};
+
 export const rpcs3: Application = {
   id: "rpcs3",
   name: "RPCS3",
@@ -321,6 +292,7 @@ export const rpcs3: Application = {
     }
     return optionParams;
   },
+  excludeFiles: excludePlaystationFiles,
 };
 
 export const ppsspp: Application = {
@@ -724,6 +696,72 @@ export const dosboxstaging: Application = {
     }
     return optionParams;
   },
+};
+
+const findScummVmGameNameViaMapping: FindEntryNameFunction = ({
+  entry: { name },
+}) => {
+  let entryName: string;
+  try {
+    entryName = (scummVmGames as Record<string, string>)[name];
+  } catch (error) {
+    console.log("findScummVmGameName", error);
+    return name;
+  }
+
+  return entryName || name;
+};
+
+const findScummVmGameNameViaDetectLinux = (absoluteEntryPath: string) => {
+  // TODO: what to do if the emulator is not installed?
+  return spawnSync(
+    "flatpak",
+    ["run", scummvm.flatpakId, `--path=${absoluteEntryPath}`, "--detect"],
+    {
+      encoding: "utf-8",
+      maxBuffer: 1000000000,
+    },
+  ).stdout.toString();
+};
+
+// TODO: add tests
+const findScummVmGameNameViaDetect: FindEntryNameFunction = ({
+  entry: { name, path },
+  categoriesPath,
+  categoryName,
+}) => {
+  const absoluteEntryPath = createAbsoluteEntryPath(
+    categoriesPath,
+    categoryName,
+    path,
+  );
+  // TODO: add windows way
+  // TODO: what to do if the emulator is not installed?
+  const data = findScummVmGameNameViaDetectLinux(absoluteEntryPath);
+
+  const rows = data.split("\n");
+  const entryNameRow = rows.find((row) => row.match(/\w+:\w+.*/));
+  if (entryNameRow) {
+    // split by minimum of 3 whitespaces
+    const [, name] = entryNameRow.split(/\s{3,}/);
+    return name.split("(")[0].trim();
+  }
+
+  return name;
+};
+
+const findScummVmGameName: FindEntryNameFunction = (props) => {
+  const detectedName = findScummVmGameNameViaDetect(props);
+  if (detectedName) {
+    return detectedName;
+  }
+
+  const mappedName = findScummVmGameNameViaMapping(props);
+  if (mappedName) {
+    return mappedName;
+  }
+
+  return props.entry.name;
 };
 
 export const scummvm: Application = {
