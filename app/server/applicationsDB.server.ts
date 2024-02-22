@@ -1,13 +1,11 @@
 import nodepath from "path";
 
 import type { Category, Entry } from "~/types/jsonFiles/category";
-import { createAbsoluteEntryPath } from "~/types/jsonFiles/category";
 import type { GeneralConfigured } from "~/types/jsonFiles/settings/general";
 import type { Appearance } from "~/types/jsonFiles/settings/appearance";
 import mameGames from "~/server/nameMappings/mame.json";
 import scummVmGames from "~/server/nameMappings/scummvm.json";
 import ps3Games from "~/server/nameMappings/ps3.json";
-import { spawnSync } from "child_process";
 
 type Settings = {
   general: GeneralConfigured;
@@ -211,7 +209,6 @@ export const play: Application = {
 
 /**
  * Find the 9digit serial number from path
- * TODO: check if serial is valid
  *
  * @param path  e.g. 'dev_hdd0/game/NPUB30493/USRDIR/EBOOT.BIN' or '/games/BLES01658-[Dragon Ball Z Budokai HD Collection]/PS3_GAME/USRDIR/EBOOT.BIN'
  */
@@ -221,7 +218,7 @@ export const findPlaystation3Serial = (path: string): string | undefined =>
     .reverse()
     .find(
       (pathSegment) =>
-        pathSegment.match(/\w{9}/) || pathSegment.match(/\w{9}-\[(.*)]/),
+        pathSegment.match(/^\w{9}$/) || pathSegment.match(/^\w{9}-\[(.*)]$/),
     )
     ?.split("-")[0];
 
@@ -712,57 +709,57 @@ const findScummVmGameNameViaMapping: FindEntryNameFunction = ({
   return entryName || name;
 };
 
-const findScummVmGameNameViaDetectLinux = (absoluteEntryPath: string) => {
-  // TODO: what to do if the emulator is not installed?
-  return spawnSync(
-    "flatpak",
-    ["run", scummvm.flatpakId, `--path=${absoluteEntryPath}`, "--detect"],
-    {
-      encoding: "utf-8",
-      maxBuffer: 1000000000,
-    },
-  ).stdout.toString();
-};
-
-// TODO: add tests
-const findScummVmGameNameViaDetect: FindEntryNameFunction = ({
-  entry: { name, path },
-  categoriesPath,
-  categoryName,
-}) => {
-  const absoluteEntryPath = createAbsoluteEntryPath(
-    categoriesPath,
-    categoryName,
-    path,
-  );
-  // TODO: add windows way
-  // TODO: what to do if the emulator is not installed?
-  const data = findScummVmGameNameViaDetectLinux(absoluteEntryPath);
-
-  const rows = data.split("\n");
-  const entryNameRow = rows.find((row) => row.match(/\w+:\w+.*/));
-  if (entryNameRow) {
-    // split by minimum of 3 whitespaces
-    const [, name] = entryNameRow.split(/\s{3,}/);
-    return name.split("(")[0].trim();
-  }
-
-  return name;
-};
-
-const findScummVmGameName: FindEntryNameFunction = (props) => {
-  const detectedName = findScummVmGameNameViaDetect(props);
-  if (detectedName) {
-    return detectedName;
-  }
-
-  const mappedName = findScummVmGameNameViaMapping(props);
-  if (mappedName) {
-    return mappedName;
-  }
-
-  return props.entry.name;
-};
+// TODO: check if this is a good pattern. It depends on executing the emulator for every game
+// const findScummVmGameNameViaDetectLinux = (absoluteEntryPath: string) => {
+//   // TODO: what to do if the emulator is not installed?
+//   return spawnSync(
+//     "flatpak",
+//     ["run", scummvm.flatpakId, `--path=${absoluteEntryPath}`, "--detect"],
+//     {
+//       encoding: "utf-8",
+//       maxBuffer: 1000000000,
+//     },
+//   ).stdout.toString();
+// };
+//
+// const findScummVmGameNameViaDetect: FindEntryNameFunction = ({
+//   entry: { name, path },
+//   categoriesPath,
+//   categoryName,
+// }) => {
+//   const absoluteEntryPath = createAbsoluteEntryPath(
+//     categoriesPath,
+//     categoryName,
+//     path,
+//   );
+//   // TODO: add windows way
+//   // TODO: what to do if the emulator is not installed?
+//   const data = findScummVmGameNameViaDetectLinux(absoluteEntryPath);
+//
+//   const rows = data.split("\n");
+//   const entryNameRow = rows.find((row) => row.match(/\w+:\w+.*/));
+//   if (entryNameRow) {
+//     // split by minimum of 3 whitespaces
+//     const [, name] = entryNameRow.split(/\s{3,}/);
+//     return name.split("(")[0].trim();
+//   }
+//
+//   return name;
+// };
+//
+// const findScummVmGameName: FindEntryNameFunction = (props) => {
+//   const detectedName = findScummVmGameNameViaDetect(props);
+//   if (detectedName) {
+//     return detectedName;
+//   }
+//
+//   const mappedName = findScummVmGameNameViaMapping(props);
+//   if (mappedName) {
+//     return mappedName;
+//   }
+//
+//   return props.entry.name;
+// };
 
 export const scummvm: Application = {
   id: "scummvm",
@@ -784,7 +781,7 @@ export const scummvm: Application = {
     optionParams.push("--auto-detect");
     return optionParams;
   },
-  findEntryName: findScummVmGameName,
+  findEntryName: findScummVmGameNameViaMapping,
 };
 
 export type ApplicationId = keyof typeof applications;

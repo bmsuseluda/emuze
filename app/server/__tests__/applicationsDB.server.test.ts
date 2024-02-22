@@ -21,20 +21,19 @@ describe("applicationsDB.server", () => {
   });
 
   describe("excludePlaystationFiles", () => {
-    // TODO: check if serial is valid
-    // it("Should return files that do not have a serial in path", () => {
-    //   const filenames = [
-    //     "dev_hdd0/game/BLES00441/USRDIR/EBOOT.BIN",
-    //     "dev_hdd0/game/NPUB30493/USRDIR/EBOOT.BIN",
-    //     "dev_hdd0/game/Test12345dfs/USRDIR/EBOOT.BIN",
-    //   ];
-    //
-    //   const filenamesToExclude = [
-    //     "dev_hdd0/game/Test12345dfs/USRDIR/EBOOT.BIN",
-    //   ];
-    //
-    //   expect(excludePlaystationFiles(filenames)).toEqual(filenamesToExclude);
-    // });
+    it("Should return files that do not have a serial in path", () => {
+      const filenames = [
+        "dev_hdd0/game/BLES00441/USRDIR/EBOOT.BIN",
+        "dev_hdd0/game/NPUB30493/USRDIR/EBOOT.BIN",
+        "dev_hdd0/game/Test12345dfs/USRDIR/EBOOT.BIN",
+      ];
+
+      const filenamesToExclude = [
+        "dev_hdd0/game/Test12345dfs/USRDIR/EBOOT.BIN",
+      ];
+
+      expect(excludePlaystationFiles(filenames)).toEqual(filenamesToExclude);
+    });
 
     it("Should return files that are just update files for physical games", () => {
       const filenames = [

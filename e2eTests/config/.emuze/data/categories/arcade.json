@@ -4,20 +4,20 @@
   "application": { "id": "mame" },
   "entries": [
     {
-      "id": "bbustersj1",
-      "name": "Beast Busters",
-      "path": "bbustersj.zip",
-      "metaData": {
-        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4bf6.webp",
-        "expiresOn": 1703169288313
-      }
-    },
-    {
       "id": "btoads2",
       "name": "Battletoads",
       "path": "btoads.zip",
       "metaData": {
         "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4wbu.webp",
+        "expiresOn": 1703169288313
+      }
+    },
+    {
+      "id": "bbustersj1",
+      "name": "Beast Busters",
+      "path": "bbustersj.zip",
+      "metaData": {
+        "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co4bf6.webp",
         "expiresOn": 1703169288313
       }
     },
