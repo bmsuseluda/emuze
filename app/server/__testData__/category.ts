@@ -131,6 +131,18 @@ export const bayoubilly: Entry = {
   path: "Adventures of Bayou Billy, The (E).nes",
 };
 
+export const boyandhisblob: Entry = {
+  id: "boyandhisblob,a(e)",
+  name: "Boy and his Blob, A (E)",
+  path: "Boy and his Blob, A (E).nes",
+};
+
+export const commanderkeen4: Entry = {
+  id: "keen4e",
+  name: "Commander Keen in Goodbye, Galaxy!: Secret of the Oracle",
+  path: "keen4e.exe",
+};
+
 export const turtles2: Entry = {
   id: "teenagemutantheroturtlesii-thearcadegame",
   name: "Teenage Mutant Hero Turtles II - The Arcade Game",

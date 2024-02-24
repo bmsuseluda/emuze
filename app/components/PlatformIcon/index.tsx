@@ -7,11 +7,12 @@ import {
   SiNintendoswitch,
   SiSega,
   SiWii,
+  SiWiiu,
 } from "react-icons/si";
 import { FaGamepad } from "react-icons/fa";
 import { MdVideogameAsset } from "react-icons/md";
 import { TiSpiral } from "react-icons/ti";
-// import { GrDos } from "react-icons/gr";
+import { GrDos } from "react-icons/gr";
 import { LuComputer } from "react-icons/lu";
 import type { PlatformId } from "~/server/categoriesDB.server";
 import SvgGameboy from "~/components/Icons/Gameboy";
@@ -31,7 +32,7 @@ export const icons: Record<PlatformId, IconType> = {
   nintendogameboyadvance: SvgGba,
   nintendogamecube: SiNintendogamecube,
   nintendowii: SiWii,
-  // nintendowiiu: SiWiiu,
+  nintendowiiu: SiWiiu,
   nintendoswitch: SiNintendoswitch,
   // TODO: use seperate
   nintendods: SiNintendo3Ds,
@@ -45,7 +46,7 @@ export const icons: Record<PlatformId, IconType> = {
   // TODO: use https://thenounproject.com/icon/neo-geo-221035/
   neogeocd: SiApplearcade,
   segadreamcast: TiSpiral,
-  // dos: GrDos,
+  dos: GrDos,
   scumm: LuComputer,
 
   // TODO: replace the following icons

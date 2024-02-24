@@ -6,9 +6,11 @@ import {
   aresSegaCd,
   blastem,
   bsnes,
+  cemu,
   citra,
   desmume,
   dolphin,
+  dosboxstaging,
   duckstation,
   flycast,
   mame,
@@ -190,14 +192,13 @@ export const nintendowii: Category = {
   defaultApplication: dolphin,
 };
 
-// TODO: Cemu needs a specific folder structure
-// export const nintendowiiu: Category = {
-//   id: "nintendowiiu",
-//   names: ["Nintendo Wii U", "Wii U", "Nintendo WiiU", "WiiU"],
-//   igdbPlatformIds: [41],
-//   applications: [cemu],
-//   defaultApplication: cemu,
-// };
+export const nintendowiiu: Category = {
+  id: "nintendowiiu",
+  names: ["Nintendo Wii U", "Wii U", "Nintendo WiiU", "WiiU"],
+  igdbPlatformIds: [41],
+  applications: [cemu],
+  defaultApplication: cemu,
+};
 
 export const nintendoswitch: Category = {
   id: "nintendoswitch",
@@ -303,14 +304,13 @@ export const neogeocd: Category = {
   defaultApplication: mameNeoGeoCD,
 };
 
-// TODO: Find a way to identify executable
-// export const dos: Category = {
-//   id: "dos",
-//   names: ["DOS", "MS DOS", "Microsoft DOS"],
-//   igdbPlatformIds: [13],
-//   applications: [dosboxstaging, dosboxx],
-//   defaultApplication: dosboxstaging,
-// };
+export const dos: Category = {
+  id: "dos",
+  names: ["DOS (Alpha)", "DOS", "MS DOS", "Microsoft DOS"],
+  igdbPlatformIds: [13],
+  applications: [dosboxstaging],
+  defaultApplication: dosboxstaging,
+};
 
 export const scumm: Category = {
   id: "scumm",
@@ -337,6 +337,7 @@ export const categories = {
   nintendo64,
   nintendogamecube,
   nintendowii,
+  nintendowiiu,
   nintendoswitch,
   pcengine,
   pcenginecd,
@@ -352,6 +353,7 @@ export const categories = {
   neogeo,
   neogeocd,
   scumm,
+  dos,
 } satisfies Record<string, Category>;
 
 export const getCategoryDataByName = (name: string) =>

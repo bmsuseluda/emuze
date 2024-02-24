@@ -6,6 +6,7 @@ import type { Appearance } from "~/types/jsonFiles/settings/appearance";
 import mameGames from "~/server/nameMappings/mame.json";
 import scummVmGames from "~/server/nameMappings/scummvm.json";
 import ps3Games from "~/server/nameMappings/ps3.json";
+import dosGames from "~/server/nameMappings/dos.json";
 
 type Settings = {
   general: GeneralConfigured;
@@ -111,17 +112,24 @@ export const bsnes: Application = {
   },
 };
 
-const findMameArcadeGameName: FindEntryNameFunction = ({ entry: { name } }) => {
-  let entryName: string;
+const findGameNameById = (
+  id: string,
+  mapping: Record<string, string>,
+  applicationName: string,
+) => {
+  let gameName: string;
   try {
-    entryName = (mameGames as Record<string, string>)[name];
+    gameName = mapping[id];
   } catch (error) {
-    console.log("findMameArcadeGameName", error);
-    return name;
+    console.log("findGameNameById", applicationName, error);
+    return id;
   }
 
-  return entryName || name;
+  return gameName || id;
 };
+
+const findMameArcadeGameName: FindEntryNameFunction = ({ entry: { name } }) =>
+  findGameNameById(name, mameGames, "mame");
 
 const getSharedMameOptionParams: OptionParamFunction = ({
   categoryData: { name },
@@ -252,7 +260,7 @@ const findPlaystation3GameName: FindEntryNameFunction = ({
  */
 export const excludePlaystationFiles: ExcludeFilesFunction = (filepaths) => {
   const filepathsTemp = [...filepaths];
-  return filepaths.filter((filepath, index) => {
+  return filepaths.filter((filepath) => {
     const serial = findPlaystation3Serial(filepath);
 
     const foundExclude =
@@ -264,7 +272,10 @@ export const excludePlaystationFiles: ExcludeFilesFunction = (filepaths) => {
       );
 
     if (foundExclude) {
-      filepathsTemp.splice(index);
+      filepathsTemp.splice(
+        filepathsTemp.findIndex((filepathTemp) => filepathTemp === filepath),
+        1,
+      );
     }
 
     return foundExclude;
@@ -410,7 +421,7 @@ export const ryujinx: Application = {
 export const cemu: Application = {
   id: "cemu",
   name: "Cemu",
-  fileExtensions: [".wud", ".wux", ".wua"],
+  fileExtensions: [".wud", ".wux", ".wua", ".rpx"],
   flatpakId: "info.cemu.Cemu",
   createOptionParams: ({
     settings: {
@@ -659,55 +670,74 @@ export const flycast: Application = {
   },
 };
 
-export const dosboxx: Application = {
-  id: "dosboxx",
-  name: "DOSBox-X",
-  fileExtensions: [".exe"],
-  flatpakId: "com.dosbox_x.DOSBox-X",
-  createOptionParams: ({
-    settings: {
-      appearance: { fullscreen },
-    },
-  }) => {
-    const optionParams = [];
-    if (fullscreen) {
-      optionParams.push("-fullscreen");
-    }
-    return optionParams;
-  },
-};
+/**
+ * Returns filenames that are not the configured file to start the game.
+ *
+ * @param filenames
+ */
+export const excludeDosSecondaryFiles: ExcludeFilesFunction = (filenames) =>
+  filenames.filter((filename) => {
+    const filenameWithoutFoldername = nodepath.basename(filename);
+
+    return !(dosGames as Record<string, string>)[
+      filenameWithoutFoldername.toLowerCase()
+    ];
+  });
+
+const findDosGameName: FindEntryNameFunction = ({ entry: { path } }) =>
+  findGameNameById(nodepath.basename(path).toLowerCase(), dosGames, "dos");
+
+// export const dosboxx: Application = {
+//   id: "dosboxx",
+//   name: "DOSBox-X",
+//   fileExtensions: [".exe"],
+//   flatpakId: "com.dosbox_x.DOSBox-X",
+//   excludeFiles: excludeDosSecondaryFiles,
+//   createOptionParams: ({
+//     settings: {
+//       appearance: { fullscreen },
+//     },
+//   }) => {
+//     const optionParams = [];
+//     if (fullscreen) {
+//       optionParams.push("-fullscreen");
+//     }
+//     return optionParams;
+//   },
+//   findEntryName: findDosGameName,
+// };
 
 export const dosboxstaging: Application = {
   id: "dosboxstaging",
   name: "DOSBox-Staging",
   fileExtensions: [".exe"],
   flatpakId: "io.github.dosbox-staging",
+  excludeFiles: excludeDosSecondaryFiles,
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
     },
+    absoluteEntryPath,
+    entryData: { path },
   }) => {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("--fullscreen");
     }
+    optionParams.push("--working-dir", nodepath.dirname(absoluteEntryPath));
+    optionParams.push(
+      "-c",
+      "loadfix",
+      nodepath.basename(path, nodepath.extname(path)),
+    );
     return optionParams;
   },
+  findEntryName: findDosGameName,
 };
 
 const findScummVmGameNameViaMapping: FindEntryNameFunction = ({
   entry: { name },
-}) => {
-  let entryName: string;
-  try {
-    entryName = (scummVmGames as Record<string, string>)[name];
-  } catch (error) {
-    console.log("findScummVmGameName", error);
-    return name;
-  }
-
-  return entryName || name;
-};
+}) => findGameNameById(name, scummVmGames, "scummvm");
 
 // TODO: check if this is a good pattern. It depends on executing the emulator for every game
 // const findScummVmGameNameViaDetectLinux = (absoluteEntryPath: string) => {
@@ -816,7 +846,6 @@ export const applications = {
   rosaliesMupenGui,
   mgba,
   flycast,
-  dosboxx,
   dosboxstaging,
   scummvm,
 } satisfies Record<string, Application>;

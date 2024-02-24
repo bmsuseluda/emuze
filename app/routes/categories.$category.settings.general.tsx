@@ -145,6 +145,7 @@ export default function Index() {
 
   // TODO: Maybe create specific files for gamepad controls
   const saveButtonRef = useRef<ElementRef<"button">>(null);
+  const installEmulatorsButtonRef = useRef<ElementRef<"button">>(null);
   const { isInFocus, switchFocusBack } = useFocus<FocusElement>("settingsMain");
 
   const selectEntry = useCallback((entry: HTMLButtonElement) => {
@@ -192,12 +193,19 @@ export default function Index() {
     }
   }, [isInFocus]);
 
+  const onInstallEmulators = useCallback(() => {
+    if (isInFocus) {
+      installEmulatorsButtonRef.current?.click();
+    }
+  }, [isInFocus]);
+
   useGamepadButtonPressEvent(layout.buttons.B, onBack);
   useKeyboardEvent("Backspace", onBack);
   useGamepadButtonPressEvent(layout.buttons.A, onToggle);
   useKeyboardEvent("Enter", onToggle);
   useGamepadButtonPressEvent(layout.buttons.X, onSave);
-  useKeyboardEvent("s", onSave);
+  useKeyboardEvent("i", onSave);
+  useGamepadButtonPressEvent(layout.buttons.Y, onInstallEmulators);
 
   const [applicationPath, setApplicationPath] = useState(
     defaultData.applicationsPath || "",
@@ -336,6 +344,7 @@ export default function Index() {
                     formData?.get("_actionId") ===
                       actionIds.installMissingApplications
                   }
+                  ref={installEmulatorsButtonRef}
                   icon={
                     gamepadType ? (
                       <GamepadButtonIcon
