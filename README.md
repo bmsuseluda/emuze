@@ -27,7 +27,7 @@ If your roms are named correctly, a click on the import button should import you
 
 ### Windows
 
-[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.44.0/emuze-Setup-0.44.0.exe) the latest Version of emuze and install it.
+[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.45.0/emuze-Setup-0.45.0.exe) the latest Version of emuze and install it.
 
 If you start emuze for the first time, it asks for the following folders to work:
 
@@ -57,7 +57,7 @@ emulators
 
 For now emuze is only released as an AppImage. Your distribution needs to support Flatpaks.
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.44.0/emuze-0.44.0.AppImage) the latest Version of emuze
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.45.0/emuze-0.45.0.AppImage) the latest Version of emuze
 
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
@@ -68,7 +68,7 @@ For now emuze is only released as an AppImage. Your distribution needs to suppor
 For now emuze is only released as an AppImage.
 
 1) Switch to Desktop
-2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.44.0/emuze-0.44.0.AppImage) the latest Version of emuze
+2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.45.0/emuze-0.45.0.AppImage) the latest Version of emuze
 
 3) Mark the AppImage as executable and start emuze
 4) Choose the [folder where your Roms are located](#roms-folder)
@@ -144,6 +144,7 @@ Right now the following are supported:
 |--------|-----------|------------------|
 | Sony Playstation | DuckStation<br>Mednafen | DuckStation |
 | Sony Playstation 2 | PCSX2<br>Play! | PCSX2 |
+| Sony Playstation 3 | RPCS3 | RPCS3 |
 | Sony Playstation Portable | PPSSPP | PPSSPP |
 | Nintendo Entertainment System | Nestopia<br>puNES<br>Mednafen<br>Ares | Nestopia |
 | Super Nintendo Entertainment System | BSNES<br>Snes9x<br>Ares | BSNES |
@@ -168,8 +169,10 @@ Right now the following are supported:
 | Sega Saturn | Mednafen | Mednafen |
 | Sega Dreamcast | Flycast | Flycast |
 | Arcade | Mame | Mame |
-| Neo Geo AES | Mame | Mame |
+| Neo Geo | Mame | Mame |
 | Neo Geo CD | Mame | Mame |
+| Scumm | ScummVM | ScummVM |
+| DOS (Alpha) | DOSBox-Staging | DOSBox-Staging |
 
 > [!IMPORTANT]  
 > ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
