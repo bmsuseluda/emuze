@@ -687,26 +687,6 @@ export const excludeDosSecondaryFiles: ExcludeFilesFunction = (filenames) =>
 const findDosGameName: FindEntryNameFunction = ({ entry: { path } }) =>
   findGameNameById(nodepath.basename(path).toLowerCase(), dosGames, "dos");
 
-// export const dosboxx: Application = {
-//   id: "dosboxx",
-//   name: "DOSBox-X",
-//   fileExtensions: [".exe"],
-//   flatpakId: "com.dosbox_x.DOSBox-X",
-//   excludeFiles: excludeDosSecondaryFiles,
-//   createOptionParams: ({
-//     settings: {
-//       appearance: { fullscreen },
-//     },
-//   }) => {
-//     const optionParams = [];
-//     if (fullscreen) {
-//       optionParams.push("-fullscreen");
-//     }
-//     return optionParams;
-//   },
-//   findEntryName: findDosGameName,
-// };
-
 export const dosboxstaging: Application = {
   id: "dosboxstaging",
   name: "DOSBox-Staging",
