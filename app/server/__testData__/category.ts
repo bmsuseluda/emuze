@@ -60,6 +60,28 @@ export const pcenginecdLinux = {
   entries: addIndex([cotton, gateofthunder]),
 } satisfies Category;
 
+export const monkeyIsland: Entry = {
+  id: "monkey1",
+  name: "The Secret of Monkey Island",
+  path: "monkey1",
+};
+
+export const bladerunner: Entry = {
+  id: "bladerunner",
+  name: "Blade Runner",
+  path: "bladerunner",
+};
+
+export const scumm = {
+  id: "scumm",
+  name: "Scumm",
+  application: {
+    id: "scummvm",
+    path: "F:/games/Emulation/emulators/scummvm/scummvm.exe",
+  },
+  entries: addIndex([monkeyIsland, bladerunner]),
+} satisfies Category;
+
 export const fahrenheit: Entry = {
   id: "fahrenheit",
   name: "Fahrenheit",
@@ -107,6 +129,18 @@ export const bayoubilly: Entry = {
   id: "adventuresofbayoubilly,the(e)",
   name: "Adventures of Bayou Billy, The (E)",
   path: "Adventures of Bayou Billy, The (E).nes",
+};
+
+export const boyandhisblob: Entry = {
+  id: "boyandhisblob,a(e)",
+  name: "Boy and his Blob, A (E)",
+  path: "Boy and his Blob, A (E).nes",
+};
+
+export const commanderkeen4: Entry = {
+  id: "keen4e",
+  name: "Commander Keen in Goodbye, Galaxy!: Secret of the Oracle",
+  path: "keen4e.exe",
 };
 
 export const turtles2: Entry = {

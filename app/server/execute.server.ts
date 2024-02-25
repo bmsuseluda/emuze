@@ -13,29 +13,48 @@ const executeApplicationOnLinux = ({
   applicationFlatpakId,
   absoluteEntryPath,
   optionParams,
+  omitAbsoluteEntryPathAsLastParam,
 }: {
   applicationFlatpakOptionParams?: string[];
   applicationFlatpakId: string;
   absoluteEntryPath: string;
-  optionParams?: string[];
+  optionParams: string[];
+  omitAbsoluteEntryPathAsLastParam?: boolean;
 }) => {
+  const params = ["run"];
+  if (applicationFlatpakOptionParams) {
+    params.push(...applicationFlatpakOptionParams);
+  }
+  params.push(applicationFlatpakId);
+  params.push(...optionParams);
+
+  if (!omitAbsoluteEntryPathAsLastParam) {
+    params.push(absoluteEntryPath);
+  }
+
   // TODO: check how to get logs in error case but without freezing the application
-  execFileSync("flatpak", [
-    "run",
-    ...(applicationFlatpakOptionParams ? applicationFlatpakOptionParams : []),
-    applicationFlatpakId,
-    ...(optionParams ? optionParams : []),
-    absoluteEntryPath,
-  ]);
+  execFileSync("flatpak", params);
 };
 
-const executeApplicationOnWindows = (
-  applicationPath: string,
-  absoluteEntryPath: string,
-  optionParams: string[],
-) => {
+const executeApplicationOnWindows = ({
+  applicationPath,
+  absoluteEntryPath,
+  optionParams,
+  omitAbsoluteEntryPathAsLastParam,
+}: {
+  applicationPath: string;
+  absoluteEntryPath: string;
+  optionParams: string[];
+  omitAbsoluteEntryPathAsLastParam?: boolean;
+}) => {
+  const params = [];
+  params.push(...optionParams);
+
+  if (!omitAbsoluteEntryPathAsLastParam) {
+    params.push(absoluteEntryPath);
+  }
   // TODO: check how to get logs in error case but without freezing the application
-  execFileSync(applicationPath, [...optionParams, absoluteEntryPath]);
+  execFileSync(applicationPath, params);
 };
 
 export const executeApplication = (category: string, entry: string) => {
@@ -74,23 +93,32 @@ export const executeApplication = (category: string, entry: string) => {
         );
       }
       const optionParams = createOptionParams
-        ? createOptionParams({ entryData, categoryData, settings })
+        ? createOptionParams({
+            entryData,
+            categoryData,
+            settings,
+            absoluteEntryPath,
+          })
         : [];
 
       try {
         // TODO: check on isWindows
         if (isApplicationWindows(application)) {
-          executeApplicationOnWindows(
-            application.path,
+          executeApplicationOnWindows({
+            applicationPath: application.path,
             absoluteEntryPath,
             optionParams,
-          );
+            omitAbsoluteEntryPathAsLastParam:
+              applicationData.omitAbsoluteEntryPathAsLastParam,
+          });
         } else {
           executeApplicationOnLinux({
             applicationFlatpakOptionParams: flatpakOptionParams,
             applicationFlatpakId: flatpakId,
             absoluteEntryPath,
             optionParams,
+            omitAbsoluteEntryPathAsLastParam:
+              applicationData.omitAbsoluteEntryPathAsLastParam,
           });
         }
       } catch (error) {

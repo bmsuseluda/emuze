@@ -30,7 +30,7 @@ const replaceSubTitleChar = (a: string) =>
   a.replace(windowsSubTitleChar, igdbSubTitleChar);
 
 const setCommaSeparatedArticleAsPrefix = (a: string) => {
-  if (a.includes(",")) {
+  if (a.match(/, \w{1,3}$/)) {
     const [gameName, article] = a.split(",");
     return `${article.trim()} ${gameName}`;
   }
@@ -67,6 +67,7 @@ const gameFilters = [
   "alternative_names.name",
   "game_localizations.name",
 ];
+// TODO: add tests
 const filterGame = ({ name }: Entry): string[] => {
   const normalizedName = replaceSubTitleChar(
     setCommaSeparatedArticleAsPrefix(removeRegion(name)),

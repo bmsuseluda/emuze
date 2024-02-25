@@ -21,23 +21,44 @@ export const readDirectorynames = (path: string) =>
     .filter((file) => file.isDirectory())
     .map(({ name }) => nodepath.join(path, name));
 
-export const readFilenames = (path: string, fileExtensions?: string[]) => {
-  const filenames: string[] = readFiles(path).flatMap((file) => {
-    const filePath = nodepath.join(path, file.name);
-    if (file.isDirectory()) {
-      return readFilenames(filePath);
-    }
-    return filePath;
-  });
+export const readFilenames = ({
+  path,
+  fileExtensions,
+  entryAsDirectory,
+}: {
+  path: string;
+  fileExtensions?: string[];
+  entryAsDirectory?: boolean;
+}) => {
+  const filenames: string[] = [];
 
-  if (fileExtensions) {
-    return filenames.filter((filename) =>
-      fileExtensions.find(
-        (value) =>
-          value.toLowerCase() === nodepath.extname(filename).toLowerCase(),
-      ),
-    );
-  }
+  readFiles(path).forEach((file) => {
+    const filePath = nodepath.join(path, file.name);
+
+    if (entryAsDirectory) {
+      if (file.isDirectory()) {
+        filenames.push(filePath);
+      }
+    } else {
+      if (file.isDirectory()) {
+        readFilenames({
+          path: filePath,
+          fileExtensions,
+          entryAsDirectory,
+        }).forEach((filename) => filenames.push(filename));
+      }
+
+      if (
+        !file.isDirectory() &&
+        (!fileExtensions ||
+          fileExtensions.find((value) =>
+            filePath.toLowerCase().endsWith(value.toLowerCase()),
+          ))
+      ) {
+        filenames.push(filePath);
+      }
+    }
+  });
 
   return filenames;
 };

@@ -124,8 +124,10 @@ export default function Category() {
   }, [switchFocusBack, isInFocus]);
 
   const onExecute = useCallback(() => {
-    disableGamepads();
-    launchButtonRef.current?.click();
+    if (launchButtonRef.current && !launchButtonRef.current.disabled) {
+      disableGamepads();
+      launchButtonRef.current.click();
+    }
   }, [disableGamepads]);
 
   const onImport = useCallback(() => {

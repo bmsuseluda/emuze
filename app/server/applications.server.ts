@@ -27,8 +27,8 @@ export const paths = {
 };
 
 export const findExecutable = (path: string, id: string): string | null => {
-  const executables = readFilenames(path, [".exe"]).filter((filename) =>
-    nodepath.basename(filename).toLowerCase().includes(id),
+  const executables = readFilenames({ path, fileExtensions: [".exe"] }).filter(
+    (filename) => nodepath.basename(filename).toLowerCase().includes(id),
   );
 
   if (executables.length > 0) {

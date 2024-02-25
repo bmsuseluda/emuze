@@ -187,15 +187,18 @@ describe("categories.server", () => {
         createCategoryPath(pcenginecd.name),
       ]);
       when(readFilenames as Mock<any, string[]>)
-        .calledWith(createCategoryPath(nintendo3ds.name), citra.fileExtensions)
+        .calledWith({
+          path: createCategoryPath(nintendo3ds.name),
+          fileExtensions: citra.fileExtensions,
+        })
         .mockReturnValueOnce([
           createAbsoluteEntryPath(nintendo3ds.name, metroidsamusreturns.path),
         ]);
       when(readFilenames as Mock<any, string[]>)
-        .calledWith(
-          createCategoryPath(pcenginecd.name),
-          mednafen.fileExtensions,
-        )
+        .calledWith({
+          path: createCategoryPath(pcenginecd.name),
+          fileExtensions: mednafen.fileExtensions,
+        })
         .mockReturnValueOnce([
           createAbsoluteEntryPath(pcenginecd.name, cotton.path),
           createAbsoluteEntryPath(pcenginecd.name, gateofthunder.path),

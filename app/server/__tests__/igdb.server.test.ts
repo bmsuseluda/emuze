@@ -1,5 +1,7 @@
 import {
   bayoubilly,
+  boyandhisblob,
+  commanderkeen4,
   fahrenheit,
   finalfantasy7,
   hugo,
@@ -65,7 +67,7 @@ describe("igdb.server", () => {
 
     const entriesWithImages = await fetchMetaData(
       categoriesDB.sonyplaystation.igdbPlatformIds,
-      [hugo, hugo2]
+      [hugo, hugo2],
     );
 
     expect(entriesWithImages).toStrictEqual([
@@ -106,7 +108,7 @@ describe("igdb.server", () => {
 
     const entriesWithImages = await fetchMetaData(
       categoriesDB.sonyplaystation2.igdbPlatformIds,
-      [fahrenheit]
+      [fahrenheit],
     );
 
     expect(entriesWithImages).toStrictEqual([
@@ -141,7 +143,7 @@ describe("igdb.server", () => {
 
     const entriesWithImages = await fetchMetaData(
       categoriesDB.sonyplaystation.igdbPlatformIds,
-      [finalfantasy7]
+      [finalfantasy7],
     );
 
     expect(entriesWithImages).toStrictEqual([
@@ -197,11 +199,26 @@ describe("igdb.server", () => {
             image_id: "bayoubillyimg",
           },
         },
+        {
+          name: "A Boy and his Blob",
+          cover: {
+            image_id: "boyandhisblobimg",
+          },
+        },
+        {
+          name: "Commander Keen in Goodbye, Galaxy!: Secret of the Oracle",
+          cover: {
+            image_id: "keen4img",
+          },
+        },
       ],
     };
     igdbRequestMock.mockResolvedValue(igdbResponse);
 
-    const entriesWithImages = await fetchMetaData([18], [bayoubilly]);
+    const entriesWithImages = await fetchMetaData(
+      [18],
+      [bayoubilly, boyandhisblob, commanderkeen4],
+    );
 
     expect(entriesWithImages).toStrictEqual([
       {
@@ -210,6 +227,22 @@ describe("igdb.server", () => {
           expiresOn: getExpiresOn(),
           imageUrl:
             "https://images.igdb.com/igdb/image/upload/t_cover_big/bayoubillyimg.webp",
+        },
+      },
+      {
+        ...boyandhisblob,
+        metaData: {
+          expiresOn: getExpiresOn(),
+          imageUrl:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/boyandhisblobimg.webp",
+        },
+      },
+      {
+        ...commanderkeen4,
+        metaData: {
+          expiresOn: getExpiresOn(),
+          imageUrl:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/keen4img.webp",
         },
       },
     ]);

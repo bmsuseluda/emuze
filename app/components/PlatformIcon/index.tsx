@@ -12,6 +12,8 @@ import {
 import { FaGamepad } from "react-icons/fa";
 import { MdVideogameAsset } from "react-icons/md";
 import { TiSpiral } from "react-icons/ti";
+import { GrDos } from "react-icons/gr";
+import { LuComputer } from "react-icons/lu";
 import type { PlatformId } from "~/server/categoriesDB.server";
 import SvgGameboy from "~/components/Icons/Gameboy";
 import SvgNintendo64 from "~/components/Icons/Nintendo64";
@@ -37,12 +39,15 @@ export const icons: Record<PlatformId, IconType> = {
   nintendo3ds: SiNintendo3Ds,
   sonyplaystation: IoLogoPlaystation,
   sonyplaystation2: IoLogoPlaystation,
+  sonyplaystation3: IoLogoPlaystation,
   sonypsp: SvgPsp,
   arcade: SiApplearcade,
   neogeo: SiApplearcade,
   // TODO: use https://thenounproject.com/icon/neo-geo-221035/
   neogeocd: SiApplearcade,
   segadreamcast: TiSpiral,
+  dos: GrDos,
+  scumm: LuComputer,
 
   // TODO: replace the following icons
   pcengine: MdVideogameAsset,

@@ -11,7 +11,10 @@ import { convertToId } from "~/server/convertToId.server";
 import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
 import { fetchMetaData } from "~/server/igdb.server";
 import { readGeneral } from "~/server/settings.server";
-import type { ApplicationId } from "~/server/applicationsDB.server";
+import type {
+  ApplicationId,
+  ExcludeFilesFunction,
+} from "~/server/applicationsDB.server";
 import { applications } from "~/server/applicationsDB.server";
 import type {
   Category as CategoryDB,
@@ -74,22 +77,19 @@ export const writeCategory = (category: Category) =>
     nodepath.join(paths.entries, `${category.id}.json`),
   );
 
-const sortFileNames = (a: string, b: string) => {
-  const aWithoutPath = nodepath.basename(a);
-  const bWithoutPath = nodepath.basename(b);
-  const aExtname = nodepath.extname(aWithoutPath);
-  const bExtname = nodepath.extname(bWithoutPath);
-  const aWithoutFileExtension = aWithoutPath.split(aExtname)[0];
-  const bWithoutFileExtension = bWithoutPath.split(bExtname)[0];
-  return sortCaseInsensitive(aWithoutFileExtension, bWithoutFileExtension);
-};
+const sortEntries = (a: Entry, b: Entry) => sortCaseInsensitive(a.name, b.name);
 
-const sortEntries = (a: Entry, b: Entry) => sortFileNames(a.path, b.path);
-
-const filterFiles = (filenames: string[], filesToFilter?: string[]) => {
-  if (filesToFilter) {
+const filterFiles = (
+  filenames: string[],
+  excludeFiles?: ExcludeFilesFunction,
+) => {
+  if (excludeFiles) {
+    const filesToExclude = excludeFiles(filenames);
     return filenames.filter(
-      (filename) => !filesToFilter.includes(nodepath.basename(filename)),
+      (filename) =>
+        !filesToExclude.find((fileToExclude) =>
+          filename.toLowerCase().includes(fileToExclude.toLowerCase()),
+        ),
     );
   }
 
@@ -107,19 +107,23 @@ export const readEntries = (
   if (applicationData && generalData?.categoriesPath) {
     const categoriesPath = generalData.categoriesPath;
     const categoryPath = nodepath.join(categoriesPath, categoryName);
-    const filenames = readFilenames(
-      categoryPath,
-      applicationData.fileExtensions,
-    );
+    const filenames = readFilenames({
+      path: categoryPath,
+      fileExtensions: applicationData.fileExtensions,
+      entryAsDirectory: applicationData.entryAsDirectory,
+    });
 
-    const { findEntryName, filteredFiles } = applicationData;
+    const { findEntryName, excludeFiles } = applicationData;
 
-    const filenamesFiltered = filterFiles(filenames, filteredFiles);
+    const filenamesFiltered = filterFiles(filenames, excludeFiles);
 
     return filenamesFiltered
       .map<Entry>((filename, index) => {
         const extension = nodepath.extname(filename);
-        const [name] = nodepath.basename(filename).split(extension);
+        const name =
+          extension.length > 0
+            ? nodepath.basename(filename).split(extension)[0]
+            : nodepath.basename(filename);
 
         const oldEntryData = oldEntries?.find(({ path }) => path === filename);
         if (oldEntryData) {
@@ -134,7 +138,7 @@ export const readEntries = (
           if (findEntryName) {
             return {
               ...entry,
-              name: findEntryName(entry, categoryName),
+              name: findEntryName({ entry, categoriesPath, categoryName }),
             };
           } else {
             return entry;
