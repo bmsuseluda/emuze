@@ -1,10 +1,6 @@
-import {
-  excludeDosSecondaryFiles,
-  excludePlaystationFiles,
-  findPlaystation3Serial,
-} from "~/server/applicationsDB.server";
+import { excludePlaystationFiles, findPlaystation3Serial } from "..";
 
-describe("applicationsDB.server", () => {
+describe("applicationsDB.rpcs3.server", () => {
   describe("findPlaystation3Serial", () => {
     it("Should return serial for digital game", () => {
       expect(
@@ -55,28 +51,6 @@ describe("applicationsDB.server", () => {
       ];
 
       expect(excludePlaystationFiles(filenames)).toEqual(filenamesToExclude);
-    });
-  });
-
-  // TODO: redo
-  describe("excludeDosSecondaryFiles", () => {
-    it("Should return files that are not named like the folder", () => {
-      const filenames = [
-        "digdogs/DIGDOGS.EXE",
-        "digdogs/S0.EXE",
-        "digdogs/S1.EXE",
-        "digdogs/S2.EXE",
-        "digdogs/SPEAKER.EXE",
-      ];
-
-      const filenamesToExclude = [
-        "digdogs/S0.EXE",
-        "digdogs/S1.EXE",
-        "digdogs/S2.EXE",
-        "digdogs/SPEAKER.EXE",
-      ];
-
-      expect(excludeDosSecondaryFiles(filenames)).toEqual(filenamesToExclude);
     });
   });
 });

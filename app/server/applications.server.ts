@@ -5,7 +5,7 @@ import type {
   ApplicationWindows,
 } from "~/types/jsonFiles/applications";
 import { isApplicationWindows } from "~/types/jsonFiles/applications";
-import type { Application as ApplicationDB } from "~/server/applicationsDB.server";
+import type { Application as ApplicationDB } from "~/server/applicationsDB.server/types";
 import { applications as applicationsDB } from "~/server/applicationsDB.server";
 import { categories as categoriesDB } from "~/server/categoriesDB.server";
 import { readFilenames } from "~/server/readWriteData.server";

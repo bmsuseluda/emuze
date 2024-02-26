@@ -11,11 +11,9 @@ import { convertToId } from "~/server/convertToId.server";
 import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
 import { fetchMetaData } from "~/server/igdb.server";
 import { readGeneral } from "~/server/settings.server";
-import type {
-  ApplicationId,
-  ExcludeFilesFunction,
-} from "~/server/applicationsDB.server";
+import type { ApplicationId } from "~/server/applicationsDB.server";
 import { applications } from "~/server/applicationsDB.server";
+import type { ExcludeFilesFunction } from "~/server/applicationsDB.server/types";
 import type {
   Category as CategoryDB,
   PlatformId,

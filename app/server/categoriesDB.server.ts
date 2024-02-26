@@ -1,5 +1,7 @@
-import type { Application } from "~/server/applicationsDB.server";
-import {
+import type { Application } from "~/server/applicationsDB.server/types";
+import { applications } from "~/server/applicationsDB.server";
+
+const {
   ares,
   aresMegaDrive,
   aresSega32x,
@@ -31,7 +33,7 @@ import {
   scummvm,
   snes9x,
   yuzu,
-} from "~/server/applicationsDB.server";
+} = applications;
 
 export interface Category {
   id: PlatformId;
