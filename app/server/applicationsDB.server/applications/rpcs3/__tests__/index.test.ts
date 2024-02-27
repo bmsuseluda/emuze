@@ -1,6 +1,6 @@
 import { excludePlaystationFiles, findPlaystation3Serial } from "..";
 
-describe("applicationsDB.rpcs3.server", () => {
+describe("applicationsDB.rpcs3", () => {
   describe("findPlaystation3Serial", () => {
     it("Should return serial for digital game", () => {
       expect(

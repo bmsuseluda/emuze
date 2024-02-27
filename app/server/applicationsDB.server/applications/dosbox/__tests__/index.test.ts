@@ -1,22 +1,18 @@
 import { excludeDosSecondaryFiles } from "..";
 
-describe("applicationsDB.dosbox.server", () => {
-  // TODO: redo
+describe("applicationsDB.dosbox", () => {
   describe("excludeDosSecondaryFiles", () => {
     it("Should return files that are not named like the folder", () => {
       const filenames = [
-        "digdogs/DIGDOGS.EXE",
-        "digdogs/S0.EXE",
-        "digdogs/S1.EXE",
-        "digdogs/S2.EXE",
-        "digdogs/SPEAKER.EXE",
+        "Dig Dogs/DIGDOGS.EXE",
+        "Dig Dogs/S0.EXE",
+        "Worms United/WORMS.BAT",
+        "Worms United/BIN/WRMS.EXE",
       ];
 
       const filenamesToExclude = [
-        "digdogs/S0.EXE",
-        "digdogs/S1.EXE",
-        "digdogs/S2.EXE",
-        "digdogs/SPEAKER.EXE",
+        "Dig Dogs/S0.EXE",
+        "Worms United/BIN/WRMS.EXE",
       ];
 
       expect(excludeDosSecondaryFiles(filenames)).toEqual(filenamesToExclude);

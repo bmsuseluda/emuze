@@ -29,17 +29,22 @@ const mountDiscDrive = (
   directoryName: string,
   filenameWithoutExtension: string,
 ) => {
+  let fileToMount;
   if (
     existsSync(nodepath.join(directoryName, `${filenameWithoutExtension}.DAT`))
   ) {
-    return ["-c", `imgmount D ${filenameWithoutExtension}.DAT -t iso`];
+    fileToMount = `${filenameWithoutExtension}.DAT`;
   }
 
   const gogFiles = readdirSync(directoryName).filter((file) =>
     file.endsWith(".gog"),
   );
   if (gogFiles.length > 0) {
-    return ["-c", `imgmount D ${gogFiles[0]} -t iso`];
+    fileToMount = gogFiles[0];
+  }
+
+  if (fileToMount) {
+    return ["-c", `imgmount D ${fileToMount} -t iso`];
   }
 
   return [];
