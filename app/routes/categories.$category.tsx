@@ -28,6 +28,7 @@ import type { DataFunctionArgs } from "~/context";
 import { useEnableFocusAfterAction } from "~/hooks/useEnableFocusAfterAction";
 import { useGamepadConnected } from "~/hooks/useGamepadConnected";
 import { GamepadButtonIcon } from "~/components/GamepadButtonIcon";
+import type { PlatformId } from "~/server/categoriesDB.server/types";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -37,7 +38,7 @@ export const loader = ({ params }: DataFunctionArgs) => {
   }
 
   // TODO: check what todo if categoryData is null
-  const categoryData = readCategory(category);
+  const categoryData = readCategory(category as PlatformId);
 
   const { alwaysGameNames } = readAppearance();
   return json({ categoryData, alwaysGameNames });
@@ -61,13 +62,13 @@ export const action: ActionFunction = async ({ request, params }) => {
   if (_actionId === actionIds.launch) {
     const entry = form.get("entry");
     if (typeof entry === "string") {
-      executeApplication(category, entry);
+      executeApplication(category as PlatformId, entry);
       return { ok: true };
     }
   }
 
   if (_actionId === actionIds.import) {
-    await importEntries(category);
+    await importEntries(category as PlatformId);
   }
 
   return null;

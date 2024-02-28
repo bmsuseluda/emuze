@@ -11,13 +11,15 @@ import { convertToId } from "~/server/convertToId.server";
 import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
 import { fetchMetaData } from "~/server/igdb.server";
 import { readGeneral } from "~/server/settings.server";
-import type { ApplicationId } from "~/server/applicationsDB.server";
+import type {
+  ApplicationId,
+  ExcludeFilesFunction,
+} from "~/server/applicationsDB.server/types";
 import { applications } from "~/server/applicationsDB.server";
-import type { ExcludeFilesFunction } from "~/server/applicationsDB.server/types";
 import type {
   Category as CategoryDB,
   PlatformId,
-} from "~/server/categoriesDB.server";
+} from "~/server/categoriesDB.server/types";
 import {
   categories,
   getCategoryDataByName,
@@ -56,7 +58,7 @@ const deleteCategories = () => {
 
 const categoryDataCache = new MultipleFileDataCache<Category>();
 
-export const readCategory = (categoryId: string) =>
+export const readCategory = (categoryId: PlatformId) =>
   categoryDataCache.readFile(
     nodepath.join(paths.entries, `${categoryId}.json`),
   );
@@ -171,7 +173,7 @@ export const readEntriesWithMetaData = async (
   ].sort(sortEntries);
 };
 
-export const importEntries = async (category: string) => {
+export const importEntries = async (category: PlatformId) => {
   const categoryDbData = categories[category as PlatformId];
   const oldCategoryData = readCategory(category);
   const generalData = readGeneral();

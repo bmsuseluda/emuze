@@ -1,4 +1,9 @@
-import { ElectronApplication, expect, Page, test } from "@playwright/test";
+import {
+  type ElectronApplication,
+  expect,
+  type Page,
+  test,
+} from "@playwright/test";
 import { startApp } from "./startApp";
 import nodepath from "path";
 import fs from "fs-extra";

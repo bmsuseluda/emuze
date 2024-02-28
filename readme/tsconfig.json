@@ -1,8 +1,8 @@
 {
   "include": [
     "scripts.ts",
-    "../app/server/categoriesDB.server.ts",
-    "../app/server/applicationsDB.server.ts"
+    "../app/server/categoriesDB.server/index.ts",
+    "../app/server/applicationsDB.server/index.ts"
   ],
   "compilerOptions": {
     "esModuleInterop": true,

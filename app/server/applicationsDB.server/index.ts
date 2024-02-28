@@ -345,8 +345,6 @@ export const flycast: Application = {
   },
 };
 
-export type ApplicationId = keyof typeof applications;
-
 export const applications = {
   duckstation,
   pcsx2,

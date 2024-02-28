@@ -14,7 +14,7 @@ import { MdVideogameAsset } from "react-icons/md";
 import { TiSpiral } from "react-icons/ti";
 import { GrDos } from "react-icons/gr";
 import { LuComputer } from "react-icons/lu";
-import type { PlatformId } from "~/server/categoriesDB.server";
+import type { PlatformId } from "~/server/categoriesDB.server/types";
 import SvgGameboy from "~/components/Icons/Gameboy";
 import SvgNintendo64 from "~/components/Icons/Nintendo64";
 import SvgGba from "~/components/Icons/Gba";

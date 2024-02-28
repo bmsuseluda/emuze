@@ -1,6 +1,5 @@
 import "../app/index.css";
-import type { Preview } from "@storybook/react";
-import { Decorator } from "@storybook/react";
+import type { Decorator, Preview } from "@storybook/react";
 
 import { styled } from "../styled-system/jsx";
 

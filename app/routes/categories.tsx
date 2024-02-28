@@ -17,7 +17,7 @@ import {
 import { layout } from "~/hooks/useGamepads/layouts";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElement } from "~/types/focusElement";
-import type { PlatformId } from "~/server/categoriesDB.server";
+import type { PlatformId } from "~/server/categoriesDB.server/types";
 import { Typography } from "~/components/Typography";
 import { styled } from "../../styled-system/jsx";
 import type { DataFunctionArgs } from "~/context";

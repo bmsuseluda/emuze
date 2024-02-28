@@ -12,7 +12,9 @@
     ".storybook/**/*.ts",
     ".storybook/**/*.tsx",
     "./electronApi.d.ts",
-    "e2eTests/**/*.ts"
+    "e2eTests/**/*.ts",
+    "generateIcon/**/*.ts",
+    "generateNameMappings/**/*.ts"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2019"],

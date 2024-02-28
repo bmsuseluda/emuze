@@ -1,4 +1,4 @@
-import type { PlatformId } from "~/server/categoriesDB.server";
+import type { PlatformId } from "~/server/categoriesDB.server/types";
 import type { Application } from "~/types/jsonFiles/applications";
 import nodepath from "path";
 
