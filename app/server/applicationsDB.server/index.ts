@@ -16,6 +16,7 @@ import {
   aresSegaCd,
 } from "~/server/applicationsDB.server/applications/ares";
 import { punes } from "~/server/applicationsDB.server/applications/punes";
+import { isWindows } from "~/server/operationsystem.server";
 
 export const pcsx2: Application = {
   id: "pcsx2",
@@ -271,9 +272,9 @@ export const mednafen: Application = {
   fileExtensions: [".cue", ".pce", ".nes", ".sms", ".gg"],
   flatpakId: "com.github.AmatCoder.mednaffe",
   flatpakOptionParams: ["--command=mednafen"],
-  environmentVariables: ({ application }, { general: { isWindows } }) => {
+  environmentVariables: ({ application }) => {
     const environmentVariables = {};
-    if (isWindows && application?.path) {
+    if (isWindows() && application?.path) {
       return {
         ...environmentVariables,
         MEDNAFEN_HOME: nodepath.dirname(application.path),

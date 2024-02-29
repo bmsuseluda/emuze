@@ -211,7 +211,7 @@ export default function Category() {
                     )
                   }
                 >
-                  {!application ? "No installed emulators" : "Launch Game"}
+                  {!application ? "No installed Emulators" : "Launch Game"}
                 </Button>
                 <Button
                   type="submit"

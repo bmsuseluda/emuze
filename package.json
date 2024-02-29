@@ -58,7 +58,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
+    "@babel/preset-env": "^7.24.0",
     "@babel/preset-react": "^7.23.3",
+    "@babel/preset-typescript": "^7.23.3",
     "@commitlint/cli": "^19.0.3",
     "@commitlint/config-conventional": "^19.0.3",
     "@pandacss/dev": "^0.33.0",
@@ -77,6 +79,7 @@
     "@testing-library/user-event": "^14.5.2",
     "@types/apicalypse": "^0.1.5",
     "@types/babel__core": "^7.20.5",
+    "@types/babel__preset-env": "^7",
     "@types/fs-extra": "^11.0.4",
     "@types/jest-when": "^3.5.5",
     "@types/json-server": "^0.14.7",

@@ -40,7 +40,7 @@ import { GamepadButtonIcon } from "~/components/GamepadButtonIcon";
 export const loader = () => {
   const general: General = readGeneral() || {};
   const categories = readCategories();
-  return json({ ...general, isWindows, categories });
+  return json({ ...general, isWindows: isWindows(), categories });
 };
 
 const actionIds = {
@@ -64,7 +64,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (_actionId === actionIds.save) {
     const errors: Errors = {};
 
-    if (isWindows && (!applicationsPath || applicationsPath.length === 0)) {
+    if (isWindows() && (!applicationsPath || applicationsPath.length === 0)) {
       errors.applicationsPath = "The Emulators Path is missing";
     }
 
@@ -78,7 +78,7 @@ export const action: ActionFunction = async ({ request }) => {
 
     const fields: General = {
       applicationsPath:
-        isWindows && typeof applicationsPath === "string"
+        isWindows() && typeof applicationsPath === "string"
           ? applicationsPath
           : undefined,
       categoriesPath,
@@ -300,7 +300,7 @@ export default function Index() {
                       type="submit"
                       name="_actionId"
                       value={actionIds.chooseCategoriesPath}
-                      ref={entriesRefCallback(isWindows ? 1 : 0)}
+                      ref={entriesRefCallback(defaultData.isWindows ? 1 : 0)}
                       onClick={onOpenFileDialog}
                     >
                       <FaFolderOpen />
@@ -334,7 +334,7 @@ export default function Index() {
               >
                 Import all
               </Button>
-              {!isWindows && defaultData.categories.length > 0 && (
+              {!defaultData.isWindows && defaultData.categories.length > 0 && (
                 <Button
                   type="submit"
                   name="_actionId"

@@ -53,9 +53,9 @@ describe("execute.server", () => {
   describe("executeApplication", () => {
     describe("executeApplicationOnWindows", () => {
       beforeEach(() => {
+        vi.stubEnv("EMUZE_IS_WINDOWS", "true");
         (readGeneral as Mock<any, General>).mockReturnValue({
           ...general,
-          isWindows: true,
         });
         (readAppearance as Mock<any, Appearance>).mockReturnValue({
           fullscreen: false,
@@ -119,7 +119,6 @@ describe("execute.server", () => {
       beforeEach(() => {
         (readGeneral as Mock<any, General>).mockReturnValue({
           ...general,
-          isWindows: false,
         });
         (readAppearance as Mock<any, Appearance>).mockReturnValue({
           fullscreen: false,

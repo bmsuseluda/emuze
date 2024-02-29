@@ -89,7 +89,7 @@ export const getInstalledApplicationForCategory = ({
   defaultApplicationDB: ApplicationDB;
   oldApplication?: Application;
 }) => {
-  if (isWindows && applicationsPath) {
+  if (isWindows() && applicationsPath) {
     return getInstalledApplicationForCategoryOnWindows(
       defaultApplicationDB,
       applicationsPath,
@@ -103,6 +103,7 @@ export const getInstalledApplicationForCategory = ({
   );
 };
 
+// TODO: add tests
 export const installMissingApplicationsOnLinux = async () => {
   const categoriesWithoutApplication = [
     ...new Set(

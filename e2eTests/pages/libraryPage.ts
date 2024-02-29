@@ -1,11 +1,19 @@
-import { expect, type Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 
 export class LibraryPage {
   readonly page: Page;
   readonly initialPlatform = "Arcade";
+  readonly launchGameButton: Locator;
+  readonly noInstalledEmulatorsButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
+    this.launchGameButton = page.getByRole("button", {
+      name: "Launch Game",
+    });
+    this.noInstalledEmulatorsButton = page.getByRole("button", {
+      name: "No installed Emulators",
+    });
   }
 
   async goToToPlatformViaClick(platformName: string, gameName?: string) {

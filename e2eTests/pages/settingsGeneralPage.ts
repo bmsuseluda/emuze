@@ -7,6 +7,7 @@ export class SettingsGeneralPage {
   readonly romsPath: Locator;
   readonly emulatorsPath: Locator;
   readonly importAllButton: Locator;
+  readonly installEmulators: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -16,5 +17,8 @@ export class SettingsGeneralPage {
     this.romsPath = page.getByRole("textbox", { name: "Roms Path" });
     this.emulatorsPath = page.getByRole("textbox", { name: "Emulators Path" });
     this.importAllButton = page.getByRole("button", { name: "Import all" });
+    this.installEmulators = page.getByRole("button", {
+      name: "Install Emulators",
+    });
   }
 }

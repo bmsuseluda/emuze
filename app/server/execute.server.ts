@@ -7,6 +7,7 @@ import { createAbsoluteEntryPath } from "~/types/jsonFiles/category";
 import { isGeneralConfigured } from "~/types/jsonFiles/settings/general";
 import { isApplicationWindows } from "~/types/jsonFiles/applications";
 import type { PlatformId } from "~/server/categoriesDB.server/types";
+import { isWindows } from "./operationsystem.server";
 
 // TODO: separate os specific code
 const executeApplicationOnLinux = ({
@@ -103,8 +104,7 @@ export const executeApplication = (category: PlatformId, entry: string) => {
         : [];
 
       try {
-        // TODO: check on isWindows
-        if (isApplicationWindows(application)) {
+        if (isWindows() && isApplicationWindows(application)) {
           executeApplicationOnWindows({
             applicationPath: application.path,
             absoluteEntryPath,

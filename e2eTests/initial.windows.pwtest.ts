@@ -68,9 +68,11 @@ test("Should import all", async () => {
   await expect(settingsPage.closeButton).toBeVisible();
   await settingsPage.closeSettingsViaClick();
   await libraryPage.expectIsInitialPlatform();
+  await expect(libraryPage.noInstalledEmulatorsButton).toBeVisible();
   await expect(page).toHaveScreenshot();
 
   await page.keyboard.press("ArrowDown");
 
   await libraryPage.expectIsPlatform("Game Boy", "Super Mario Land");
+  await expect(libraryPage.noInstalledEmulatorsButton).toBeVisible();
 });

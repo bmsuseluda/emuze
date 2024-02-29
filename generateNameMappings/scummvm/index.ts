@@ -1,4 +1,5 @@
 import nodepath from "path";
+// Import can't be shortend because path aliases do not work
 import { writeFile } from "../../app/server/readWriteData.server";
 import { spawnSync } from "child_process";
 
