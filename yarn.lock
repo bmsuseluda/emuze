@@ -4889,6 +4889,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@kmamal/sdl@npm:^0.10.2":
+  version: 0.10.2
+  resolution: "@kmamal/sdl@npm:0.10.2"
+  dependencies:
+    tar: "npm:^6.2.0"
+  checksum: ea10a7fd6665bd03ef1d971d01a7a9ebba3ef32d09c45a4afec7e796cf58881f3a59df55dd9ad31ec5a89c0797819850bd891f0160bc46fa78b54b67ae101db4
+  languageName: node
+  linkType: hard
+
 "@malept/cross-spawn-promise@npm:^1.1.0":
   version: 1.1.1
   resolution: "@malept/cross-spawn-promise@npm:1.1.1"
@@ -12236,6 +12245,7 @@ __metadata:
     "@babel/preset-typescript": "npm:^7.23.3"
     "@commitlint/cli": "npm:^19.0.3"
     "@commitlint/config-conventional": "npm:^19.0.3"
+    "@kmamal/sdl": "npm:^0.10.2"
     "@pandacss/dev": "npm:^0.33.0"
     "@playwright/test": "npm:^1.42.0"
     "@radix-ui/react-checkbox": "npm:^1.0.4"
@@ -22854,6 +22864,20 @@ __metadata:
     mkdirp: "npm:^1.0.3"
     yallist: "npm:^4.0.0"
   checksum: 5bf69e135e82b6135767654940b8b4cdb984d1e01b3a2e1cb28d27ef4a9e2db8e4b305dac8fa0c26d18d5cea00d13bf85349a19998d0ead91393d8b9939910ac
+  languageName: node
+  linkType: hard
+
+"tar@npm:^6.2.0":
+  version: 6.2.0
+  resolution: "tar@npm:6.2.0"
+  dependencies:
+    chownr: "npm:^2.0.0"
+    fs-minipass: "npm:^2.0.0"
+    minipass: "npm:^5.0.0"
+    minizlib: "npm:^2.1.1"
+    mkdirp: "npm:^1.0.3"
+    yallist: "npm:^4.0.0"
+  checksum: 2042bbb14830b5cd0d584007db0eb0a7e933e66d1397e72a4293768d2332449bc3e312c266a0887ec20156dea388d8965e53b4fc5097f42d78593549016da089
   languageName: node
   linkType: hard
 

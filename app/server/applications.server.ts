@@ -120,11 +120,13 @@ export const installMissingApplicationsOnLinux = async () => {
     const defaultApplication = categoriesDB[category.id].defaultApplication;
     const flatpakId = defaultApplication.flatpakId;
     return checkFlatpakIsInstalledParallel(flatpakId).catch(() => {
-      installFlatpak(flatpakId);
-      writeCategory({
-        ...category,
-        application: defaultApplication,
-      });
+      const isInstalled = installFlatpak(flatpakId);
+      if (isInstalled) {
+        writeCategory({
+          ...category,
+          application: defaultApplication,
+        });
+      }
     });
   });
   await Promise.all(functions);

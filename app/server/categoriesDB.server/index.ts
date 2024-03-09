@@ -200,8 +200,8 @@ export const nintendoswitch: Category = {
   id: "nintendoswitch",
   names: ["Nintendo Switch", "Switch"],
   igdbPlatformIds: [130],
-  applications: [yuzu, ryujinx],
-  defaultApplication: yuzu,
+  applications: [ryujinx, yuzu],
+  defaultApplication: ryujinx,
 };
 
 export const nintendoentertainmentsystem: Category = {
@@ -209,7 +209,7 @@ export const nintendoentertainmentsystem: Category = {
   names: ["Nintendo Entertainment System", "NES", "Famicom"],
   igdbPlatformIds: [18, 99],
   applications: [nestopia, punes, mednafen, ares],
-  defaultApplication: nestopia,
+  defaultApplication: punes,
 };
 
 export const nintendo64: Category = {

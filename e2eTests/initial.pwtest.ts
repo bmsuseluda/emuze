@@ -63,10 +63,10 @@ test("Should import all", async () => {
 
   await expect(settingsPage.closeButton).toBeVisible();
   await page.keyboard.press("Escape");
-  await libraryPage.expectIsInitialPlatform();
+  await libraryPage.expectIsInitialSystem();
   await expect(page).toHaveScreenshot();
 
   await page.keyboard.press("ArrowDown");
 
-  await libraryPage.expectIsPlatform("Game Boy", "Super Mario Land");
+  await libraryPage.expectIsSystem("Game Boy", "Super Mario Land");
 });

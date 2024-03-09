@@ -10,59 +10,18 @@ const getSharedAresOptionParams: OptionParamFunction = ({
 }) => {
   // keyboard f2
   const hotkeyFullscreen = ["--setting", "Hotkey/ToggleFullscreen=0x1/0/2"];
-  const virtualPad = [
-    "--setting",
-    "Input/Driver=SDL",
-    "--setting",
-    "VirtualPad1/Pad.Up=0x3/1/1/Lo;;",
-    "--setting",
-    "VirtualPad1/Pad.Down=0x3/1/1/Hi;;",
-    "--setting",
-    "VirtualPad1/Pad.Left=0x3/1/0/Lo;;",
-    "--setting",
-    "VirtualPad1/Pad.Right=0x3/1/0/Hi;;",
-    "--setting",
-    "VirtualPad1/Select=0x3/3/6;;",
-    "--setting",
-    "VirtualPad1/Start=0x3/3/7;;",
-    "--setting",
-    "VirtualPad1/A..South=0x3/3/0;;",
-    "--setting",
-    "VirtualPad1/B..East=0x3/3/1;;",
-    "--setting",
-    "VirtualPad1/X..West=0x3/3/2;;",
-    "--setting",
-    "VirtualPad1/Y..North=0x3/3/3;;",
-    "--setting",
-    "VirtualPad1/L-Bumper=0x3/3/4;;",
-    "--setting",
-    "VirtualPad1/R-Bumper=0x3/3/5;;",
-    "--setting",
-    "VirtualPad1/L-Trigger=0x3/0/2/Hi;;",
-    "--setting",
-    "VirtualPad1/R-Trigger=0x3/0/5/Hi;;",
-    "--setting",
-    "VirtualPad1/L-Stick..Click=0x3/3/9;;",
-    "--setting",
-    "VirtualPad1/R-Stick..Click=0x3/3/10;;",
-    "--setting",
-    "VirtualPad1/L-Up=0x3/0/1/Lo;;",
-    "--setting",
-    "VirtualPad1/L-Down=0x3/0/1/Hi;;",
-    "--setting",
-    "VirtualPad1/L-Left=0x3/0/0/Lo;;",
-    "--setting",
-    "VirtualPad1/L-Right=0x3/0/0/Hi;;",
-    "--setting",
-    "VirtualPad1/R-Up=0x3/0/4/Lo;;",
-    "--setting",
-    "VirtualPad1/R-Down=0x3/0/4/Hi;;",
-    "--setting",
-    "VirtualPad1/R-Left=0x3/0/3/Lo;;",
-    "--setting",
-    "VirtualPad1/R-Right=0x3/0/3/Hi;;",
+  // save state F1
+  const hotkeySave = ["--setting", "Hotkey/SaveState=0x1/0/1"];
+  // load state F3
+  const hotkeyLoad = ["--setting", "Hotkey/LoadState=0x1/0/3"];
+  // TODO: Check how to setup gamepad keys
+  const inputSDL = ["--setting", "Input/Driver=SDL"];
+  const optionParams = [
+    ...hotkeyFullscreen,
+    ...hotkeySave,
+    ...hotkeyLoad,
+    ...inputSDL,
   ];
-  const optionParams = [...hotkeyFullscreen, ...virtualPad];
   if (fullscreen) {
     optionParams.push("--fullscreen");
   }

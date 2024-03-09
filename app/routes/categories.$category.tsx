@@ -11,7 +11,7 @@ import { EntryListDynamic } from "~/components/EntryList";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 import { useTestId } from "~/hooks/useTestId";
 import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
-import { PlatformIcon } from "~/components/PlatformIcon";
+import { SystemIcon } from "app/components/SystemIcon";
 import { layout } from "~/hooks/useGamepads/layouts";
 import {
   useGamepadButtonPressEvent,
@@ -28,7 +28,7 @@ import type { DataFunctionArgs } from "~/context";
 import { useEnableFocusAfterAction } from "~/hooks/useEnableFocusAfterAction";
 import { useGamepadConnected } from "~/hooks/useGamepadConnected";
 import { GamepadButtonIcon } from "~/components/GamepadButtonIcon";
-import type { PlatformId } from "~/server/categoriesDB.server/types";
+import type { SystemId } from "~/server/categoriesDB.server/types";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -38,7 +38,7 @@ export const loader = ({ params }: DataFunctionArgs) => {
   }
 
   // TODO: check what todo if categoryData is null
-  const categoryData = readCategory(category as PlatformId);
+  const categoryData = readCategory(category as SystemId);
 
   const { alwaysGameNames } = readAppearance();
   return json({ categoryData, alwaysGameNames });
@@ -62,13 +62,13 @@ export const action: ActionFunction = async ({ request, params }) => {
   if (_actionId === actionIds.launch) {
     const entry = form.get("entry");
     if (typeof entry === "string") {
-      executeApplication(category as PlatformId, entry);
+      executeApplication(category as SystemId, entry);
       return { ok: true };
     }
   }
 
   if (_actionId === actionIds.import) {
-    await importEntries(category as PlatformId);
+    await importEntries(category as SystemId);
   }
 
   return null;
@@ -167,7 +167,7 @@ export default function Category() {
         key={id}
         headline={
           <IconChildrenWrapper>
-            <PlatformIcon id={id} />
+            <SystemIcon id={id} />
             <Typography {...getTestId("name")}>{name}</Typography>
           </IconChildrenWrapper>
         }

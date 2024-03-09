@@ -1,6 +1,6 @@
 import type { Application } from "~/server/applicationsDB.server/types";
 
-export type PlatformId =
+export type SystemId =
   | "sonyplaystation"
   | "sonyplaystation2"
   | "sonyplaystation3"
@@ -34,7 +34,7 @@ export type PlatformId =
   | "dos";
 
 export interface Category {
-  id: PlatformId;
+  id: SystemId;
   names: string[];
   igdbPlatformIds: number[];
   applications: Application[];

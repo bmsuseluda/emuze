@@ -5,7 +5,7 @@ import { SidebarMainLayout } from "~/components/layouts/SidebarMainLayout";
 import { Link } from "~/containers/Link";
 import { Header } from "~/containers/Header";
 import { useTestId } from "~/hooks/useTestId";
-import { PlatformIcon } from "~/components/PlatformIcon";
+import { SystemIcon } from "app/components/SystemIcon";
 import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
 import { readAppearance } from "~/server/settings.server";
 import { useCallback } from "react";
@@ -17,12 +17,12 @@ import {
 import { layout } from "~/hooks/useGamepads/layouts";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElement } from "~/types/focusElement";
-import type { PlatformId } from "~/server/categoriesDB.server/types";
+import type { SystemId } from "~/server/categoriesDB.server/types";
 import { Typography } from "~/components/Typography";
 import { styled } from "../../styled-system/jsx";
 import type { DataFunctionArgs } from "~/context";
 
-type CategoryLinks = Array<{ id: PlatformId; name: string; to: string }>;
+type CategoryLinks = Array<{ id: SystemId; name: string; to: string }>;
 type LoaderData = {
   categoryLinks: CategoryLinks;
   collapseSidebar?: boolean;
@@ -121,7 +121,7 @@ export default function Categories() {
           <li key={to}>
             <Link
               to={to}
-              icon={<PlatformIcon id={id} />}
+              icon={<SystemIcon id={id} />}
               aria-label={name}
               ref={categoryLinksRefCallback(index)}
               onClick={onLinkClick}

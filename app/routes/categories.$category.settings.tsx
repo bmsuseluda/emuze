@@ -24,17 +24,17 @@ import { readCategories } from "~/server/categories.server";
 
 export const loader = () => {
   const { collapseSidebar } = readAppearance();
-  const platforms = readCategories();
+  const systems = readCategories();
 
-  return json({ categories, collapseSidebar, platforms });
+  return json({ categories, collapseSidebar, systems });
 };
 
 export default function Index() {
   // TODO: check if collapse is good here
-  const { categories, collapseSidebar, platforms } =
+  const { categories, collapseSidebar, systems } =
     useLoaderData<typeof loader>();
 
-  const closable = useMemo(() => platforms.length > 0, [platforms]);
+  const closable = useMemo(() => systems.length > 0, [systems]);
 
   const { isInFocus, switchFocus, switchFocusBackMultiple, enableFocus } =
     useFocus<FocusElement>("settingsSidebar");

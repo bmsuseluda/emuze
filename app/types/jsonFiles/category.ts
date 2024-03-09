@@ -1,4 +1,4 @@
-import type { PlatformId } from "~/server/categoriesDB.server/types";
+import type { SystemId } from "~/server/categoriesDB.server/types";
 import type { Application } from "~/types/jsonFiles/applications";
 import nodepath from "path";
 
@@ -15,7 +15,7 @@ export interface Entry {
 }
 
 export interface Category {
-  id: PlatformId;
+  id: SystemId;
   name: string;
   application?: Application;
   entries?: Entry[];

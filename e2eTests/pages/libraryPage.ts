@@ -2,7 +2,7 @@ import { expect, type Locator, type Page } from "@playwright/test";
 
 export class LibraryPage {
   readonly page: Page;
-  readonly initialPlatform = "Arcade";
+  readonly initialSystem = "Arcade";
   readonly launchGameButton: Locator;
   readonly noInstalledEmulatorsButton: Locator;
 
@@ -16,14 +16,14 @@ export class LibraryPage {
     });
   }
 
-  async goToToPlatformViaClick(platformName: string, gameName?: string) {
+  async goToToSystemViaClick(systemName: string, gameName?: string) {
     const link = this.page.getByRole("link", {
-      name: platformName,
+      name: systemName,
     });
     await expect(link).toBeVisible();
     await expect(link).not.toBeFocused();
     await expect(
-      this.page.getByRole("heading", { name: platformName }),
+      this.page.getByRole("heading", { name: systemName }),
     ).not.toBeVisible();
 
     gameName &&
@@ -33,16 +33,16 @@ export class LibraryPage {
 
     await link.click();
 
-    await this.expectIsPlatform(platformName, gameName);
+    await this.expectIsSystem(systemName, gameName);
   }
 
-  async expectIsPlatform(platformName: string, gameName?: string) {
+  async expectIsSystem(systemName: string, gameName?: string) {
     const link = this.page.getByRole("link", {
-      name: platformName,
+      name: systemName,
     });
 
     await expect(
-      this.page.getByRole("heading", { name: platformName }),
+      this.page.getByRole("heading", { name: systemName }),
     ).toBeVisible();
     await expect(link).toBeVisible();
 
@@ -52,11 +52,11 @@ export class LibraryPage {
       ).toBeVisible());
   }
 
-  async gotToInitialPlatform() {
-    await this.goToToPlatformViaClick(this.initialPlatform);
+  async gotToInitialSystem() {
+    await this.goToToSystemViaClick(this.initialSystem);
   }
 
-  async expectIsInitialPlatform() {
-    await this.expectIsPlatform(this.initialPlatform);
+  async expectIsInitialSystem() {
+    await this.expectIsSystem(this.initialSystem);
   }
 }

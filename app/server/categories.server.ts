@@ -18,7 +18,7 @@ import type {
 import { applications } from "~/server/applicationsDB.server";
 import type {
   Category as CategoryDB,
-  PlatformId,
+  SystemId,
 } from "~/server/categoriesDB.server/types";
 import {
   categories,
@@ -58,7 +58,7 @@ const deleteCategories = () => {
 
 const categoryDataCache = new MultipleFileDataCache<Category>();
 
-export const readCategory = (categoryId: PlatformId) =>
+export const readCategory = (categoryId: SystemId) =>
   categoryDataCache.readFile(
     nodepath.join(paths.entries, `${categoryId}.json`),
   );
@@ -173,8 +173,8 @@ export const readEntriesWithMetaData = async (
   ].sort(sortEntries);
 };
 
-export const importEntries = async (category: PlatformId) => {
-  const categoryDbData = categories[category as PlatformId];
+export const importEntries = async (category: SystemId) => {
+  const categoryDbData = categories[category as SystemId];
   const oldCategoryData = readCategory(category);
   const generalData = readGeneral();
 

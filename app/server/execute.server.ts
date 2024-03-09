@@ -6,7 +6,7 @@ import { openErrorDialog } from "~/server/openDialog.server";
 import { createAbsoluteEntryPath } from "~/types/jsonFiles/category";
 import { isGeneralConfigured } from "~/types/jsonFiles/settings/general";
 import { isApplicationWindows } from "~/types/jsonFiles/applications";
-import type { PlatformId } from "~/server/categoriesDB.server/types";
+import type { SystemId } from "~/server/categoriesDB.server/types";
 import { isWindows } from "./operationsystem.server";
 
 // TODO: separate os specific code
@@ -59,7 +59,7 @@ const executeApplicationOnWindows = ({
   execFileSync(applicationPath, params);
 };
 
-export const executeApplication = (category: PlatformId, entry: string) => {
+export const executeApplication = (category: SystemId, entry: string) => {
   const generalData = readGeneral();
   const categoryData = readCategory(category);
   if (categoryData?.application && isGeneralConfigured(generalData)) {

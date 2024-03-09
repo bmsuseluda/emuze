@@ -14,14 +14,14 @@ import { MdVideogameAsset } from "react-icons/md";
 import { TiSpiral } from "react-icons/ti";
 import { GrDos } from "react-icons/gr";
 import { LuComputer } from "react-icons/lu";
-import type { PlatformId } from "~/server/categoriesDB.server/types";
+import type { SystemId } from "~/server/categoriesDB.server/types";
 import SvgGameboy from "~/components/Icons/Gameboy";
 import SvgNintendo64 from "~/components/Icons/Nintendo64";
 import SvgGba from "~/components/Icons/Gba";
 import SvgPsp from "~/components/Icons/Psp";
 import Gamegear from "~/components/Icons/Gamegear";
 
-export const icons: Record<PlatformId, IconType> = {
+export const icons: Record<SystemId, IconType> = {
   // TODO: use https://thenounproject.com/icon/game-controller-193591/
   nintendoentertainmentsystem: MdVideogameAsset,
   supernintendo: FaGamepad,
@@ -71,7 +71,7 @@ type Props = {
   id: keyof typeof icons;
 };
 
-export const PlatformIcon = ({ id }: Props) => {
+export const SystemIcon = ({ id }: Props) => {
   const Icon = icons[id];
 
   if (Icon) {

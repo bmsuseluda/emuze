@@ -1,4 +1,4 @@
-import { icons, PlatformIcon } from ".";
+import { icons, SystemIcon } from ".";
 
 import type { Meta, StoryObj } from "@storybook/react";
 import { styled } from "styled-system/jsx";
@@ -6,8 +6,8 @@ import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import { Typography } from "~/components/Typography";
 
 const meta = {
-  component: PlatformIcon,
-} satisfies Meta<typeof PlatformIcon>;
+  component: SystemIcon,
+} satisfies Meta<typeof SystemIcon>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -25,13 +25,13 @@ export const Default: Story = {
     id: "arcade",
   },
   render: () => {
-    const platformIcons = Object.keys(icons).map((id) => (
+    const systemIcons = Object.keys(icons).map((id) => (
       <IconChildrenWrapper key={id}>
-        <PlatformIcon id={id as keyof typeof icons} />
+        <SystemIcon id={id as keyof typeof icons} />
         <Typography>{id}</Typography>
       </IconChildrenWrapper>
     ));
 
-    return <Wrapper>{platformIcons}</Wrapper>;
+    return <Wrapper>{systemIcons}</Wrapper>;
   },
 };
