@@ -17,7 +17,6 @@
   "/keen3.exe": "Commander Keen in Invasion of the Vorticons: Keen Must Die!",
   "/keen4e.exe": "Commander Keen in Goodbye, Galaxy!: Secret of the Oracle",
   "/keen5e.exe": "Commander Keen in Goodbye, Galaxy!: The Armageddon Machine",
-  "/keeper.exe": "Dungeon Keeper",
   "mega race 2/megarace.exe": "MegaRace 2",
   "megarace 2/megarace.exe": "MegaRace 2",
   "/megarace.exe": "MegaRace",
@@ -31,6 +30,9 @@
   "/rayman.exe": "Rayman",
   "/sc2k.exe": "Sim City 2000",
   "/dragon/sw.exe": "Shadow Warrior",
+  "/wolf3d.exe": "Wolfenstein 3D",
+  "/spear.exe": "Spear of Destiny",
   "/worms.bat": "Worms United",
-  "/ww.exe": "Wacky Wheels"
+  "/ww.exe": "Wacky Wheels",
+  "/zyclunt.exe": "Zyclunt"
 }

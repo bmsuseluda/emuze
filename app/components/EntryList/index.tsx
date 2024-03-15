@@ -25,6 +25,7 @@ type Props = {
   isInFocus: boolean;
   onBack: () => void;
   onEntryClick: () => void;
+  onSelectEntryByGamepad: () => void;
   onExecute: () => void;
   "data-testid"?: string;
 } & ComponentPropsWithoutRef<"ul">;
@@ -65,12 +66,14 @@ export const EntryList = ({
   onBack,
   onExecute,
   onEntryClick,
+  onSelectEntryByGamepad,
   "data-testid": dataTestid,
   inViewRef,
 }: Props & { inViewRef?: RefObject<ElementRef<"div">> }) => {
   const { getTestId } = useTestId(dataTestid);
 
   const selectEntry = (entry: ElementRef<"input">) => {
+    onSelectEntryByGamepad();
     entry.checked = true;
     entry.focus();
   };

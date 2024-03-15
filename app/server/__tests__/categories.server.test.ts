@@ -40,6 +40,14 @@ import type { Application } from "~/types/jsonFiles/applications";
 import { getExpiresOn } from "~/server/getExpiresOn.server";
 import type { Mock } from "vitest";
 
+vi.mock("@kmamal/sdl", () => ({
+  default: () => ({
+    controller: {
+      devices: [],
+    },
+  }),
+}));
+
 const writeFileMock = vi.fn();
 vi.mock("~/server/readWriteData.server", () => ({
   readFileHome: vi.fn(),

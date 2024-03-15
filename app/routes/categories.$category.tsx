@@ -8,7 +8,10 @@ import { Button } from "~/components/Button";
 import { executeApplication } from "~/server/execute.server";
 import { importEntries, readCategory } from "~/server/categories.server";
 import { EntryListDynamic } from "~/components/EntryList";
-import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
+import {
+  ListActionBarLayout,
+  scrollPadding,
+} from "~/components/layouts/ListActionBarLayout";
 import { useTestId } from "~/hooks/useTestId";
 import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import { SystemIcon } from "app/components/SystemIcon";
@@ -105,6 +108,7 @@ export default function Category() {
   const launchButtonRef = useRef<ElementRef<"button">>(null);
   const importButtonRef = useRef<ElementRef<"button">>(null);
   const settingsButtonRef = useRef<ElementRef<"a">>(null);
+  const listRef = useRef<ElementRef<"div">>(null);
 
   const { getTestId } = useTestId("category");
   const { isInFocus, switchFocus, switchFocusBack } =
@@ -150,10 +154,23 @@ export default function Category() {
   useKeyboardEvent("Escape", onSettings);
 
   const onEntryClick = useCallback(() => {
+    if (listRef?.current) {
+      // Remove scrollPadding if entry is clicked by mouse to prevent centering the element, otherwise it would be difficult to double click a entry.
+      listRef.current.style.scrollPadding = "inherit";
+    }
+
     if (!isInFocus) {
+      switchFocus("main");
       enableGamepads();
     }
-  }, [isInFocus, enableGamepads]);
+  }, [isInFocus, enableGamepads, switchFocus]);
+
+  const onSelectEntryByGamepad = useCallback(() => {
+    if (listRef?.current) {
+      // Add scrollPadding if entry was selected by gamepad to center the element.
+      listRef.current.style.scrollPadding = scrollPadding;
+    }
+  }, []);
 
   if (!categoryData) {
     return null;
@@ -175,6 +192,7 @@ export default function Category() {
         <Form method="POST">
           <ListActionBarLayout.ListActionBarContainer
             scrollSmooth
+            ref={listRef}
             list={
               entries && (
                 <EntryListDynamic
@@ -185,6 +203,7 @@ export default function Category() {
                   onBack={onBack}
                   isInFocus={isInFocus}
                   onEntryClick={onEntryClick}
+                  onSelectEntryByGamepad={onSelectEntryByGamepad}
                   {...getTestId("entries")}
                 />
               )

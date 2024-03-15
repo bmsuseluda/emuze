@@ -1,5 +1,13 @@
 import { parseScummDetectResult } from "~/server/applicationsDB.server/applications/scummvm";
 
+vi.mock("@kmamal/sdl", () => ({
+  default: () => ({
+    controller: {
+      devices: [],
+    },
+  }),
+}));
+
 describe("applicationsDB.scummvm", () => {
   describe("parseScummDetectResult", () => {
     it("Should return the name of the game", () => {

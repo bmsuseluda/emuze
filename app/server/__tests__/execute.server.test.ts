@@ -19,6 +19,14 @@ import type { Appearance } from "~/types/jsonFiles/settings/appearance";
 import type { Mock } from "vitest";
 import { general } from "~/server/__testData__/general";
 
+vi.mock("@kmamal/sdl", () => ({
+  default: () => ({
+    controller: {
+      devices: [],
+    },
+  }),
+}));
+
 const execFileMock = vi.fn();
 vi.mock("child_process", async (importOriginal) => {
   const original = await importOriginal<typeof childProcess>();

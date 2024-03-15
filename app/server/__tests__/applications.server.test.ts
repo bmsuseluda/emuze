@@ -13,6 +13,14 @@ import { readFilenames } from "~/server/readWriteData.server";
 import { checkFlatpakIsInstalled } from "~/server/execute.server";
 import type { Mock } from "vitest";
 
+vi.mock("@kmamal/sdl", () => ({
+  default: () => ({
+    controller: {
+      devices: [],
+    },
+  }),
+}));
+
 vi.mock("~/server/readWriteData.server", () => ({
   readDirectorynames: vi.fn(),
   readFilenames: vi.fn(),
