@@ -1,9 +1,9 @@
-import type { DataFunctionArgs as RemixDataFunctionArgs } from "@remix-run/server-runtime";
+import type { LoaderFunctionArgs } from "@remix-run/server-runtime";
 
 export type LoadContext = {
   fullscreen: boolean;
 };
 
-export type DataFunctionArgs = Omit<RemixDataFunctionArgs, "context"> & {
+export type DataFunctionArgs = Omit<LoaderFunctionArgs, "context"> & {
   context: LoadContext;
 };

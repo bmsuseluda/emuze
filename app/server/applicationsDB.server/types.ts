@@ -72,6 +72,7 @@ export type ApplicationId =
 export interface Application {
   id: ApplicationId;
   name: string;
+  executable?: `${string}.exe`;
   fileExtensions?: `${string}.${string}`[];
   entryAsDirectory?: boolean;
   omitAbsoluteEntryPathAsLastParam?: boolean;

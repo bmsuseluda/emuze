@@ -22,11 +22,6 @@ const Input = styled("input", {
     "&:focus": {
       borderColor: "accent",
     },
-
-    "&:invalid": {
-      borderColor: "error",
-      borderStyle: "dashed",
-    },
   },
 
   variants: {
@@ -67,7 +62,21 @@ const IconButton = styled("button", {
   },
 });
 
+const Error = styled("p", {
+  base: {
+    color: "error",
+  },
+});
+
 const Wrapper = styled("div", {
+  base: {
+    display: "flex",
+    gap: "0.5rem",
+    flexDirection: "column",
+  },
+});
+
+const ChildrenWrapper = styled("div", {
   base: {
     position: "relative",
 
@@ -77,13 +86,30 @@ const Wrapper = styled("div", {
       },
     },
   },
+  variants: {
+    error: {
+      true: {
+        "& > input": {
+          borderColor: "error",
+          borderStyle: "dashed",
+        },
+      },
+    },
+  },
 });
 
 type Props = {
   children: ReactNode;
+  error?: string;
+  label?: string;
 };
 
-export const TextInput = ({ children }: Props) => <Wrapper>{children}</Wrapper>;
+export const TextInput = ({ children, error, label }: Props) => (
+  <Wrapper role="group" aria-label={label}>
+    <ChildrenWrapper error={!!error}>{children}</ChildrenWrapper>
+    {error && <Error>{error}</Error>}
+  </Wrapper>
+);
 
 TextInput.Input = Input;
 TextInput.IconButton = IconButton;

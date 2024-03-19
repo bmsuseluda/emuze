@@ -5,6 +5,7 @@ export class LibraryPage {
   readonly initialSystem = "Arcade";
   readonly launchGameButton: Locator;
   readonly noInstalledEmulatorsButton: Locator;
+  readonly importGamesButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -14,9 +15,12 @@ export class LibraryPage {
     this.noInstalledEmulatorsButton = page.getByRole("button", {
       name: "No installed Emulators",
     });
+    this.importGamesButton = page.getByRole("button", {
+      name: "Import Games",
+    });
   }
 
-  async goToToSystemViaClick(systemName: string, gameName?: string) {
+  async goToSystemViaClick(systemName: string, gameName?: string) {
     const link = this.page.getByRole("link", {
       name: systemName,
     });
@@ -53,7 +57,7 @@ export class LibraryPage {
   }
 
   async gotToInitialSystem() {
-    await this.goToToSystemViaClick(this.initialSystem);
+    await this.goToSystemViaClick(this.initialSystem);
   }
 
   async expectIsInitialSystem() {

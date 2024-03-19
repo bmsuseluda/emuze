@@ -2,12 +2,18 @@ import type { ElementRef } from "react";
 import { useCallback, useRef } from "react";
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Form, Outlet, useLoaderData, useNavigation } from "@remix-run/react";
+import {
+  Form,
+  Outlet,
+  redirect,
+  useLoaderData,
+  useNavigation,
+} from "@remix-run/react";
 import { IoMdPlay, IoMdRefresh } from "react-icons/io";
 import { Button } from "~/components/Button";
 import { executeApplication } from "~/server/execute.server";
 import { importEntries, readCategory } from "~/server/categories.server";
-import { EntryListDynamic } from "~/components/EntryList";
+import { GameGridDynamic } from "app/components/GameGrid";
 import {
   ListActionBarLayout,
   scrollPadding,
@@ -22,7 +28,7 @@ import {
 } from "~/hooks/useGamepadEvent";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElement } from "~/types/focusElement";
-import { readAppearance } from "~/server/settings.server";
+import { readAppearance, readGeneral } from "~/server/settings.server";
 import { useFullscreen } from "~/hooks/useFullscreen";
 import { SettingsLink } from "~/components/SettingsLink";
 import { BiError } from "react-icons/bi";
@@ -32,6 +38,8 @@ import { useEnableFocusAfterAction } from "~/hooks/useEnableFocusAfterAction";
 import { useGamepadConnected } from "~/hooks/useGamepadConnected";
 import { GamepadButtonIcon } from "~/components/GamepadButtonIcon";
 import type { SystemId } from "~/server/categoriesDB.server/types";
+import fs from "fs";
+import nodepath from "path";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -40,8 +48,11 @@ export const loader = ({ params }: DataFunctionArgs) => {
     throw Error("category empty");
   }
 
-  // TODO: check what todo if categoryData is null
   const categoryData = readCategory(category as SystemId);
+
+  if (!categoryData?.name) {
+    throw redirect("settings");
+  }
 
   const { alwaysGameNames } = readAppearance();
   return json({ categoryData, alwaysGameNames });
@@ -59,14 +70,29 @@ export const action: ActionFunction = async ({ request, params }) => {
     throw Error("category empty");
   }
 
+  const general = readGeneral();
+  const categoryData = readCategory(category as SystemId);
+
+  if (
+    !general?.categoriesPath ||
+    !categoryData?.name ||
+    !fs.existsSync(nodepath.join(general.categoriesPath, categoryData.name))
+  ) {
+    throw redirect("settings");
+  }
+
   const form = await request.formData();
   const _actionId = form.get("_actionId");
 
   if (_actionId === actionIds.launch) {
-    const entry = form.get("entry");
-    if (typeof entry === "string") {
-      executeApplication(category as SystemId, entry);
-      return { ok: true };
+    const game = form.get("game");
+    if (typeof game === "string") {
+      try {
+        executeApplication(category as SystemId, game);
+        return { ok: true };
+      } catch (e) {
+        throw redirect("errorDialog");
+      }
     }
   }
 
@@ -78,12 +104,11 @@ export const action: ActionFunction = async ({ request, params }) => {
 };
 
 export const ErrorBoundary = ({ error }: { error: Error }) => {
-  // TODO: Replace with something good
   console.error(error);
   return (
     <>
       <h2>Error!</h2>
-      <p>{error.message}</p>
+      <p>{error?.message}</p>
     </>
   );
 };
@@ -195,15 +220,15 @@ export default function Category() {
             ref={listRef}
             list={
               entries && (
-                <EntryListDynamic
+                <GameGridDynamic
                   key={id + entries.length}
-                  entries={entries}
+                  games={entries}
                   alwaysGameNames={alwaysGameNames}
                   onExecute={onExecute}
                   onBack={onBack}
                   isInFocus={isInFocus}
-                  onEntryClick={onEntryClick}
-                  onSelectEntryByGamepad={onSelectEntryByGamepad}
+                  onGameClick={onEntryClick}
+                  onSelectGameByGamepad={onSelectEntryByGamepad}
                   {...getTestId("entries")}
                 />
               )

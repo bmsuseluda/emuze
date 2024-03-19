@@ -53,7 +53,7 @@ export class SettingsPage {
     await expect(this.settingsHeadline).not.toBeVisible();
   }
 
-  async goToToSubPageViaClick(subPageName: string) {
+  async goToSubPageViaClick(subPageName: string) {
     const link = this.page.getByRole("link", {
       name: subPageName,
     });

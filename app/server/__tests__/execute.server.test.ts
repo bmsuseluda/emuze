@@ -18,6 +18,7 @@ import type { General } from "~/types/jsonFiles/settings/general";
 import type { Appearance } from "~/types/jsonFiles/settings/appearance";
 import type { Mock } from "vitest";
 import { general } from "~/server/__testData__/general";
+import { existsSync } from "fs";
 
 vi.mock("@kmamal/sdl", () => ({
   default: () => ({
@@ -34,6 +35,14 @@ vi.mock("child_process", async (importOriginal) => {
     ...original,
     execFileSync: (applicationPath: string, entryPath: string) =>
       execFileMock(applicationPath, entryPath),
+  };
+});
+
+vi.mock("fs", async () => {
+  const actual = await vi.importActual<object>("fs");
+  return {
+    ...actual,
+    existsSync: vi.fn(),
   };
 });
 
@@ -68,6 +77,7 @@ describe("execute.server", () => {
         (readAppearance as Mock<any, Appearance>).mockReturnValue({
           fullscreen: false,
         });
+        (existsSync as unknown as Mock<any, boolean>).mockReturnValueOnce(true);
       });
 
       it("Should execute the entry with the defined application of the category", () => {
@@ -131,6 +141,7 @@ describe("execute.server", () => {
         (readAppearance as Mock<any, Appearance>).mockReturnValue({
           fullscreen: false,
         });
+        (existsSync as unknown as Mock<any, boolean>).mockReturnValueOnce(true);
       });
 
       it("Should execute the entry with the defined application of the category", () => {

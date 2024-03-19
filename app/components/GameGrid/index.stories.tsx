@@ -1,17 +1,17 @@
-import { EntryList } from ".";
-import { entries } from "./testData";
+import { GameGrid } from ".";
+import { games } from "./testData";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
-  component: EntryList,
-} satisfies Meta<typeof EntryList>;
+  component: GameGrid,
+} satisfies Meta<typeof GameGrid>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   args: {
-    entries,
+    games,
     onExecute: () => {
       alert("launch");
     },
@@ -21,7 +21,7 @@ export const Basic: Story = {
 
 export const WithAlwaysGameName: Story = {
   args: {
-    entries,
+    games,
     alwaysGameNames: true,
     onExecute: () => {
       alert("launch");

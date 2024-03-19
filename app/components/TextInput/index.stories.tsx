@@ -27,11 +27,12 @@ export const Invalid: Story = {
   args: {
     children: (
       <>
-        <TextInput.Input required iconButton />
+        <TextInput.Input iconButton />
         <TextInput.IconButton>
           <FaFolderOpen />
         </TextInput.IconButton>
       </>
     ),
+    error: "This is a Error",
   },
 };

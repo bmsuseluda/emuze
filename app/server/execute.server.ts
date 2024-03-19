@@ -2,12 +2,13 @@ import { execFile, execFileSync } from "child_process";
 import { readCategory } from "~/server/categories.server";
 import { applications } from "~/server/applicationsDB.server";
 import { readAppearance, readGeneral } from "~/server/settings.server";
-import { openErrorDialog } from "~/server/openDialog.server";
 import { createAbsoluteEntryPath } from "~/types/jsonFiles/category";
 import { isGeneralConfigured } from "~/types/jsonFiles/settings/general";
 import { isApplicationWindows } from "~/types/jsonFiles/applications";
 import type { SystemId } from "~/server/categoriesDB.server/types";
 import { isWindows } from "./operationsystem.server";
+import { existsSync } from "fs";
+import { setErrorDialog } from "./errorDialog.server";
 
 // TODO: separate os specific code
 const executeApplicationOnLinux = ({
@@ -78,53 +79,64 @@ export const executeApplication = (category: SystemId, entry: string) => {
         entryData.path,
       );
 
-      const {
-        environmentVariables,
-        createOptionParams,
-        flatpakId,
-        flatpakOptionParams,
-      } = applicationData;
+      if (existsSync(absoluteEntryPath)) {
+        const {
+          environmentVariables,
+          createOptionParams,
+          flatpakId,
+          flatpakOptionParams,
+        } = applicationData;
 
-      if (environmentVariables) {
-        Object.entries(environmentVariables(categoryData, settings)).forEach(
-          ([key, value]) => {
-            if (value) {
-              process.env[key] = value;
-            }
-          },
-        );
-      }
-      const optionParams = createOptionParams
-        ? createOptionParams({
-            entryData,
-            categoryData,
-            settings,
-            absoluteEntryPath,
-          })
-        : [];
-
-      try {
-        if (isWindows() && isApplicationWindows(application)) {
-          executeApplicationOnWindows({
-            applicationPath: application.path,
-            absoluteEntryPath,
-            optionParams,
-            omitAbsoluteEntryPathAsLastParam:
-              applicationData.omitAbsoluteEntryPathAsLastParam,
-          });
-        } else {
-          executeApplicationOnLinux({
-            applicationFlatpakOptionParams: flatpakOptionParams,
-            applicationFlatpakId: flatpakId,
-            absoluteEntryPath,
-            optionParams,
-            omitAbsoluteEntryPathAsLastParam:
-              applicationData.omitAbsoluteEntryPathAsLastParam,
-          });
+        if (environmentVariables) {
+          Object.entries(environmentVariables(categoryData, settings)).forEach(
+            ([key, value]) => {
+              if (value) {
+                process.env[key] = value;
+              }
+            },
+          );
         }
-      } catch (error) {
-        openErrorDialog(error, `Launch of ${entryData.name} failed`);
-        console.log("error", error);
+        const optionParams = createOptionParams
+          ? createOptionParams({
+              entryData,
+              categoryData,
+              settings,
+              absoluteEntryPath,
+            })
+          : [];
+
+        try {
+          if (isWindows() && isApplicationWindows(application)) {
+            executeApplicationOnWindows({
+              applicationPath: application.path,
+              absoluteEntryPath,
+              optionParams,
+              omitAbsoluteEntryPathAsLastParam:
+                applicationData.omitAbsoluteEntryPathAsLastParam,
+            });
+          } else {
+            executeApplicationOnLinux({
+              applicationFlatpakOptionParams: flatpakOptionParams,
+              applicationFlatpakId: flatpakId,
+              absoluteEntryPath,
+              optionParams,
+              omitAbsoluteEntryPathAsLastParam:
+                applicationData.omitAbsoluteEntryPathAsLastParam,
+            });
+          }
+        } catch (error) {
+          console.log("error", error);
+          if (error instanceof Error) {
+            setErrorDialog(`Launch of ${entryData.name} failed`, error.message);
+          }
+          throw new Error();
+        }
+      } else {
+        setErrorDialog(
+          `Launch of ${entryData.name} failed`,
+          `${entryData.path} does not exist anymore`,
+        );
+        throw new Error();
       }
     }
   }

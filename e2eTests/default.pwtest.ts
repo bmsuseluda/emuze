@@ -22,6 +22,7 @@ let settingsPage: SettingsPage;
 test.beforeAll(async () => {
   fs.rmSync(configFolderPath, { recursive: true, force: true });
   fs.copySync(nodepath.join(__dirname, "config"), configFolderPath);
+  process.env.EMUZE_TEST_ROMS_PATH = nodepath.join(__dirname, "testRoms");
   const response = await startApp(configFolderPath);
   app = response.app;
   page = response.page;
@@ -46,7 +47,7 @@ test("Should show initial system", async () => {
 });
 
 test("Should switch to another system via click", async () => {
-  await libraryPage.goToToSystemViaClick(
+  await libraryPage.goToSystemViaClick(
     "Sega Master System",
     "Sonic the Hedgehog",
   );
@@ -66,11 +67,11 @@ test("Should switch to another system via key down", async () => {
 
 test("Should open settings via mouse", async () => {
   await settingsPage.openSettingsViaClick();
-  await expect(settingsPage.generalPage.installEmulators).toBeVisible();
+  await expect(settingsPage.generalPage.installEmulatorsButton).toBeVisible();
 
   await expect(page).toHaveScreenshot();
 
-  await settingsPage.goToToSubPageViaClick(settingsPage.appearancePage.name);
+  await settingsPage.goToSubPageViaClick(settingsPage.appearancePage.name);
 
   await settingsPage.closeSettingsViaClick();
 });
@@ -108,7 +109,7 @@ test("import all", async () => {
   await settingsPage.generalPage.importAllButton.click();
   await settingsPage.closeSettingsViaClick();
 
-  await libraryPage.goToToSystemViaClick(playstationSystemName, "Gex");
+  await libraryPage.goToSystemViaClick(playstationSystemName, "Gex");
 });
 
 // TODO: use keyboard to go to grid and return

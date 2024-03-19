@@ -26,14 +26,14 @@ export const paths = {
 
 const generalDataCache = new FileDataCache<General>(paths.general);
 export const readGeneral = () => {
-  const testDataPath = process.env.EMUZE_TEST_DATA_PATH;
+  const testRomsPath = process.env.EMUZE_TEST_ROMS_PATH;
   const testEmulatorsPath = process.env.EMUZE_TEST_EMULATORS_PATH;
   const result = generalDataCache.readFile();
 
   if (result) {
     return {
       ...result,
-      categoriesPath: testDataPath || result.categoriesPath,
+      categoriesPath: testRomsPath || result.categoriesPath,
       applicationsPath: testEmulatorsPath || result.applicationsPath,
     };
   }

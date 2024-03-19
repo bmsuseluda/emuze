@@ -1,6 +1,6 @@
 import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { ActionFunction } from "@remix-run/node";
+import type { ActionFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { IoMdDownload, IoMdRefresh } from "react-icons/io";
 import { FaFolderOpen } from "react-icons/fa";
@@ -36,17 +36,44 @@ import { installMissingApplicationsOnLinux } from "~/server/applications.server"
 import { useEnableFocusAfterAction } from "~/hooks/useEnableFocusAfterAction";
 import { useGamepadConnected } from "~/hooks/useGamepadConnected";
 import { GamepadButtonIcon } from "~/components/GamepadButtonIcon";
+import fs from "fs";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
   const categories = readCategories();
-  return json({ ...general, isWindows: isWindows(), categories });
+
+  const errors: Errors = {};
+
+  if (
+    isWindows() &&
+    general.applicationsPath &&
+    general.applicationsPath.length > 0
+  ) {
+    const errorApplicationsPath = validatePathExist(
+      applicationsPathLabel,
+      general.applicationsPath,
+    );
+    if (errorApplicationsPath) {
+      errors.applicationsPath = errorApplicationsPath;
+    }
+  }
+  if (general.categoriesPath && general.categoriesPath.length > 0) {
+    const errorCategoriesPath = validatePathExist(
+      categoriesPathLabel,
+      general.categoriesPath,
+    );
+    if (errorCategoriesPath) {
+      errors.categoriesPath = errorCategoriesPath;
+    }
+  }
+
+  return json({ ...general, isWindows: isWindows(), categories, errors });
 };
 
 const actionIds = {
   chooseApplicationsPath: "chooseApplicationsPath",
   chooseCategoriesPath: "chooseCategoriesPath",
-  save: "save",
+  importAll: "importAll",
   installMissingApplications: "installMissingApplications",
 };
 
@@ -55,21 +82,68 @@ type Errors = {
   categoriesPath?: string;
 };
 
-export const action: ActionFunction = async ({ request }) => {
+const validatePathRequired = (label: string, path?: string) => {
+  if (!path || path.length === 0) {
+    return `The ${label} is missing`;
+  }
+
+  return undefined;
+};
+
+const validatePathExist = (label: string, path?: string) => {
+  if (!path || !fs.existsSync(path)) {
+    return `The ${label} does not exist`;
+  }
+
+  return undefined;
+};
+
+const validatePath = (label: string, path?: string) => {
+  const errorPathRequired = validatePathRequired(label, path);
+  if (errorPathRequired) {
+    return errorPathRequired;
+  }
+  const errorPathExist = validatePathExist(label, path);
+  if (errorPathExist) {
+    return errorPathExist;
+  }
+
+  return undefined;
+};
+
+const categoriesPathLabel = "Roms Path";
+const applicationsPathLabel = "Emulators Path";
+
+type ActionReturn = {
+  applicationsPath?: string;
+  categoriesPath?: string;
+  errors?: Errors;
+};
+
+export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await request.formData();
   const _actionId = form.get("_actionId");
   const applicationsPath = form.get("applicationsPath")?.toString();
   const categoriesPath = form.get("categoriesPath")?.toString();
 
-  if (_actionId === actionIds.save) {
+  if (_actionId === actionIds.importAll) {
     const errors: Errors = {};
 
-    if (isWindows() && (!applicationsPath || applicationsPath.length === 0)) {
-      errors.applicationsPath = "The Emulators Path is missing";
+    if (isWindows()) {
+      const errorApplicationsPath = validatePath(
+        applicationsPathLabel,
+        applicationsPath,
+      );
+      if (errorApplicationsPath) {
+        errors.applicationsPath = errorApplicationsPath;
+      }
     }
-
-    if (!categoriesPath || categoriesPath.length === 0) {
-      errors.categoriesPath = "The Roms Path is missing";
+    const errorCategoriesPath = validatePath(
+      categoriesPathLabel,
+      categoriesPath,
+    );
+    if (errorCategoriesPath) {
+      errors.categoriesPath = errorCategoriesPath;
     }
 
     if (Object.keys(errors).length > 0) {
@@ -83,6 +157,7 @@ export const action: ActionFunction = async ({ request }) => {
           : undefined,
       categoriesPath,
     };
+
     writeGeneral(fields);
     await importCategories();
 
@@ -138,13 +213,13 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 export default function Index() {
   const defaultData = useLoaderData<typeof loader>();
-  const newData = useActionData<General>();
+  const newData = useActionData<ActionReturn>();
 
   const { gamepadType, disableGamepads, enableGamepads } =
     useGamepadConnected();
 
   // TODO: Maybe create specific files for gamepad controls
-  const saveButtonRef = useRef<ElementRef<"button">>(null);
+  const importAllButtonRef = useRef<ElementRef<"button">>(null);
   const installEmulatorsButtonRef = useRef<ElementRef<"button">>(null);
   const { isInFocus, switchFocusBack } = useFocus<FocusElement>("settingsMain");
 
@@ -187,9 +262,9 @@ export default function Index() {
     }
   }, [isInFocus, selectedEntry]);
 
-  const onSave = useCallback(() => {
+  const onImportAll = useCallback(() => {
     if (isInFocus) {
-      saveButtonRef.current?.click();
+      importAllButtonRef.current?.click();
     }
   }, [isInFocus]);
 
@@ -203,8 +278,8 @@ export default function Index() {
   useKeyboardEvent("Backspace", onBack);
   useGamepadButtonPressEvent(layout.buttons.A, onToggle);
   useKeyboardEvent("Enter", onToggle);
-  useGamepadButtonPressEvent(layout.buttons.X, onSave);
-  useKeyboardEvent("i", onSave);
+  useGamepadButtonPressEvent(layout.buttons.X, onImportAll);
+  useKeyboardEvent("i", onImportAll);
   useGamepadButtonPressEvent(layout.buttons.Y, onInstallEmulators);
 
   const [applicationPath, setApplicationPath] = useState(
@@ -257,8 +332,16 @@ export default function Index() {
               {defaultData.isWindows && (
                 <li>
                   <FormRow>
-                    <Label htmlFor="applicationsPath">Emulators Path</Label>
-                    <TextInput>
+                    <Label htmlFor="applicationsPath">
+                      {applicationsPathLabel}
+                    </Label>
+                    <TextInput
+                      label={applicationsPathLabel}
+                      error={
+                        defaultData.errors.applicationsPath ||
+                        newData?.errors?.applicationsPath
+                      }
+                    >
                       <TextInput.Input
                         type="text"
                         name="applicationsPath"
@@ -284,8 +367,14 @@ export default function Index() {
               )}
               <li>
                 <FormRow>
-                  <Label htmlFor="categoriesPath">Roms Path</Label>
-                  <TextInput>
+                  <Label htmlFor="categoriesPath">{categoriesPathLabel}</Label>
+                  <TextInput
+                    label={categoriesPathLabel}
+                    error={
+                      defaultData.errors.categoriesPath ||
+                      newData?.errors?.categoriesPath
+                    }
+                  >
                     <TextInput.Input
                       type="text"
                       name="categoriesPath"
@@ -315,12 +404,12 @@ export default function Index() {
               <Button
                 type="submit"
                 name="_actionId"
-                value={actionIds.save}
+                value={actionIds.importAll}
                 loading={
                   state === "submitting" &&
-                  formData?.get("_actionId") === actionIds.save
+                  formData?.get("_actionId") === actionIds.importAll
                 }
-                ref={saveButtonRef}
+                ref={importAllButtonRef}
                 icon={
                   gamepadType ? (
                     <GamepadButtonIcon

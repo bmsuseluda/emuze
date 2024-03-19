@@ -6,9 +6,9 @@ import type {
 } from "react";
 import { useCallback } from "react";
 import { useTestId } from "~/hooks/useTestId";
-import type { Entry as EntryType } from "~/types/jsonFiles/category";
+import type { Entry as GameType } from "~/types/jsonFiles/category";
 import { Ul } from "../Ul";
-import { Entry } from "./components/Entry";
+import { Game } from "./components/Game";
 import type { Result } from "~/hooks/useGamepadsOnGrid";
 import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
 import {
@@ -20,12 +20,12 @@ import { styled } from "../../../styled-system/jsx";
 import { useAddEntriesToRenderOnScrollEnd } from "~/hooks/useAddEntriesToRenderOnScrollEnd";
 
 type Props = {
-  entries: EntryType[];
+  games: GameType[];
   alwaysGameNames?: boolean;
   isInFocus: boolean;
   onBack: () => void;
-  onEntryClick: () => void;
-  onSelectEntryByGamepad: () => void;
+  onGameClick: () => void;
+  onSelectGameByGamepad: () => void;
   onExecute: () => void;
   "data-testid"?: string;
 } & ComponentPropsWithoutRef<"ul">;
@@ -49,42 +49,40 @@ const IntersectionIndicator = styled("div", {
   },
 });
 
-export const EntryListDynamic = ({ entries, ...rest }: Props) => {
+export const GameGridDynamic = ({ games, ...rest }: Props) => {
   const { entriesToRender, inViewRef } = useAddEntriesToRenderOnScrollEnd(
-    entries || [],
+    games || [],
   );
 
-  return (
-    <EntryList entries={entriesToRender} inViewRef={inViewRef} {...rest} />
-  );
+  return <GameGrid games={entriesToRender} inViewRef={inViewRef} {...rest} />;
 };
 
-export const EntryList = ({
-  entries,
+export const GameGrid = ({
+  games,
   alwaysGameNames = false,
   isInFocus,
   onBack,
   onExecute,
-  onEntryClick,
-  onSelectEntryByGamepad,
+  onGameClick,
+  onSelectGameByGamepad,
   "data-testid": dataTestid,
   inViewRef,
 }: Props & { inViewRef?: RefObject<ElementRef<"div">> }) => {
   const { getTestId } = useTestId(dataTestid);
 
-  const selectEntry = (entry: ElementRef<"input">) => {
-    onSelectEntryByGamepad();
-    entry.checked = true;
-    entry.focus();
+  const selectEntry = (game: ElementRef<"input">) => {
+    onSelectGameByGamepad();
+    game.checked = true;
+    game.focus();
   };
 
   const goBack = useCallback(
     (
-      selectedEntry: MutableRefObject<ElementRef<"input"> | undefined>,
+      selectedGame: MutableRefObject<ElementRef<"input"> | undefined>,
       resetSelected: () => void,
     ) => {
-      if (selectedEntry.current) {
-        selectedEntry.current.checked = false;
+      if (selectedGame.current) {
+        selectedGame.current.checked = false;
         resetSelected();
       }
       onBack();
@@ -133,10 +131,10 @@ export const EntryList = ({
 
   return (
     <List ref={entryListRef} {...getTestId()}>
-      {entries.map(({ id, name, metaData }, index) => {
+      {games.map(({ id, name, metaData }, index) => {
         // TODO: think about if this should be a callback from useGamepadsOnGrid
         const handleClick = () => {
-          onEntryClick();
+          onGameClick();
           selectedEntry.current = entriesRefs.current[index];
           updatePosition();
         };
@@ -145,7 +143,7 @@ export const EntryList = ({
         };
 
         return (
-          <Entry
+          <Game
             id={id}
             name={name}
             imageUrl={metaData?.imageUrl}
@@ -154,7 +152,7 @@ export const EntryList = ({
             onDoubleClick={handleDoubleClick}
             ref={entriesRefCallback(index)}
             key={id}
-            {...getTestId("entry")}
+            {...getTestId("game")}
           />
         );
       })}

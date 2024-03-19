@@ -30,7 +30,6 @@ export const loader = () => {
 };
 
 export default function Index() {
-  // TODO: check if collapse is good here
   const { categories, collapseSidebar, systems } =
     useLoaderData<typeof loader>();
 
@@ -46,7 +45,6 @@ export default function Index() {
   const handleClose = useCallback(() => {
     if (closable) {
       switchFocusBackMultiple("settingsMain", "settingsSidebar");
-      // TODO: use useState for dialog open and add some delay to show close animation
       // TODO: replace with robust solution
       navigate(pathname.split("/settings")[0]);
     }
@@ -84,7 +82,12 @@ export default function Index() {
   }, [isInFocus, enableFocus]);
 
   return (
-    <Dialog open onClose={handleClose} closable={closable}>
+    <Dialog
+      open
+      onClose={handleClose}
+      closable={closable}
+      smaller={collapseSidebar}
+    >
       <SidebarMainLayout>
         <SidebarMainLayout.Sidebar
           headline="Settings"

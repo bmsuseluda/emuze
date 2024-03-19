@@ -61,7 +61,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
   return (
     <>
       <h2>Error!</h2>
-      <p>{error.message}</p>
+      <p>{error?.message}</p>
     </>
   );
 };

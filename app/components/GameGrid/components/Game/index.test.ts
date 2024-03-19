@@ -1,6 +1,6 @@
 import { getDisplayedName } from ".";
 
-describe("Entry", () => {
+describe("Game", () => {
   describe("getDisplayedName", () => {
     const gameNameWithoutAdditionalInfo = "Final Fantasy VII";
     const additionalInfo = "Disc 1";

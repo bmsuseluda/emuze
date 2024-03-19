@@ -36,6 +36,7 @@ const Label = styled("label", {
     outlineWidth: "4px",
     outlineStyle: "solid",
     outlineColor: "backgroundColor",
+    transition: "outline-color 0.2s ease-in-out",
 
     "&:has(*:checked)": {
       outlineColor: "accent",
@@ -118,7 +119,7 @@ const getImageSrc = ({ imageUrl }: { imageUrl?: string }) => {
   return imageUrl;
 };
 
-export const Entry = forwardRef<ElementRef<typeof Input>, Props>(
+export const Game = forwardRef<ElementRef<typeof Input>, Props>(
   (
     {
       id,
@@ -167,7 +168,7 @@ export const Entry = forwardRef<ElementRef<typeof Input>, Props>(
         <Label onClick={onClick} onDoubleClick={onDoubleClick}>
           <Input
             type="radio"
-            name="entry"
+            name="game"
             value={id}
             ref={ref}
             {...getTestId("link")}
@@ -187,4 +188,4 @@ export const Entry = forwardRef<ElementRef<typeof Input>, Props>(
     );
   },
 );
-Entry.displayName = "Entry";
+Game.displayName = "Game";

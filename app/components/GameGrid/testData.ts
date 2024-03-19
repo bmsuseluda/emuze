@@ -1,7 +1,7 @@
 import type { Entry } from "~/types/jsonFiles/category";
 import { getExpiresOn } from "~/server/getExpiresOn.server";
 
-export const entries: Entry[] = [
+export const games: Entry[] = [
   {
     id: "animaniacs",
     name: "Animaniacs",

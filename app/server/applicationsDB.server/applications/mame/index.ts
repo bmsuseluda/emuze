@@ -31,6 +31,7 @@ const getSharedMameOptionParams: OptionParamFunction = ({
 export const mame: Application = {
   id: "mame",
   name: "Mame",
+  executable: "mame.exe",
   fileExtensions: [".zip", ".chd"],
   flatpakId: "org.mamedev.MAME",
   createOptionParams: getSharedMameOptionParams,

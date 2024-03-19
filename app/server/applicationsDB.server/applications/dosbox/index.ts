@@ -126,6 +126,7 @@ const createOptionParams: OptionParamFunction = ({
 export const dosboxstaging: Application = {
   id: "dosboxstaging",
   name: "DOSBox-Staging",
+  executable: "dosbox.exe",
   fileExtensions: [".exe", ".bat"],
   flatpakId: "io.github.dosbox-staging",
   excludeFiles: excludeDosSecondaryFiles,
