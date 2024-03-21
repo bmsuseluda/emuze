@@ -121,81 +121,85 @@ type ActionReturn = {
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
-  const form = await request.formData();
-  const _actionId = form.get("_actionId");
-  const applicationsPath = form.get("applicationsPath")?.toString();
-  const categoriesPath = form.get("categoriesPath")?.toString();
+  try {
+    const form = await request.formData();
+    const _actionId = form.get("_actionId");
+    const applicationsPath = form.get("applicationsPath")?.toString();
+    const categoriesPath = form.get("categoriesPath")?.toString();
 
-  if (_actionId === actionIds.importAll) {
-    const errors: Errors = {};
+    if (_actionId === actionIds.importAll) {
+      const errors: Errors = {};
 
-    if (isWindows()) {
-      const errorApplicationsPath = validatePath(
-        applicationsPathLabel,
-        applicationsPath,
+      if (isWindows()) {
+        const errorApplicationsPath = validatePath(
+          applicationsPathLabel,
+          applicationsPath,
+        );
+        if (errorApplicationsPath) {
+          errors.applicationsPath = errorApplicationsPath;
+        }
+      }
+      const errorCategoriesPath = validatePath(
+        categoriesPathLabel,
+        categoriesPath,
       );
-      if (errorApplicationsPath) {
-        errors.applicationsPath = errorApplicationsPath;
+      if (errorCategoriesPath) {
+        errors.categoriesPath = errorCategoriesPath;
+      }
+
+      if (Object.keys(errors).length > 0) {
+        return json({ errors });
+      }
+
+      const fields: General = {
+        applicationsPath:
+          isWindows() && typeof applicationsPath === "string"
+            ? applicationsPath
+            : undefined,
+        categoriesPath,
+      };
+
+      writeGeneral(fields);
+      await importCategories();
+
+      const categories = readCategories();
+
+      if (categories?.length > 0) {
+        throw redirect(`/categories/${categories[0].id}/settings/general`);
       }
     }
-    const errorCategoriesPath = validatePath(
-      categoriesPathLabel,
-      categoriesPath,
-    );
-    if (errorCategoriesPath) {
-      errors.categoriesPath = errorCategoriesPath;
+
+    if (_actionId === actionIds.installMissingApplications) {
+      await installMissingApplicationsOnLinux();
     }
 
-    if (Object.keys(errors).length > 0) {
-      return json({ errors });
+    if (_actionId === actionIds.chooseApplicationsPath) {
+      const newApplicationsPath = openFolderDialog(
+        "Select Emulators Folder",
+        typeof applicationsPath === "string" ? applicationsPath : undefined,
+      );
+      if (newApplicationsPath) {
+        return json({
+          applicationsPath: newApplicationsPath,
+          categoriesPath,
+        });
+      }
     }
 
-    const fields: General = {
-      applicationsPath:
-        isWindows() && typeof applicationsPath === "string"
-          ? applicationsPath
-          : undefined,
-      categoriesPath,
-    };
-
-    writeGeneral(fields);
-    await importCategories();
-
-    const categories = readCategories();
-
-    if (categories?.length > 0) {
-      throw redirect(`/categories/${categories[0].id}/settings/general`);
-    }
-  }
-
-  if (_actionId === actionIds.installMissingApplications) {
-    await installMissingApplicationsOnLinux();
-  }
-
-  if (_actionId === actionIds.chooseApplicationsPath) {
-    const newApplicationsPath = openFolderDialog(
-      "Select Emulators Folder",
-      typeof applicationsPath === "string" ? applicationsPath : undefined,
-    );
-    if (newApplicationsPath) {
-      return json({
-        applicationsPath: newApplicationsPath,
+    if (_actionId === actionIds.chooseCategoriesPath) {
+      const newCategoriesPath = openFolderDialog(
+        "Select Roms Folder",
         categoriesPath,
-      });
+      );
+      if (newCategoriesPath) {
+        return json({
+          applicationsPath,
+          categoriesPath: newCategoriesPath,
+        });
+      }
     }
-  }
-
-  if (_actionId === actionIds.chooseCategoriesPath) {
-    const newCategoriesPath = openFolderDialog(
-      "Select Roms Folder",
-      categoriesPath,
-    );
-    if (newCategoriesPath) {
-      return json({
-        applicationsPath,
-        categoriesPath: newCategoriesPath,
-      });
-    }
+  } catch (e) {
+    return redirect("errorDialog");
   }
 
   return null;

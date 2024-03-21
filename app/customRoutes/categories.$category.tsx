@@ -51,7 +51,7 @@ export const loader = ({ params }: DataFunctionArgs) => {
   const categoryData = readCategory(category as SystemId);
 
   if (!categoryData?.name) {
-    throw redirect("settings");
+    return redirect("settings");
   }
 
   const { alwaysGameNames } = readAppearance();
@@ -64,40 +64,40 @@ const actionIds = {
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
-  const { category } = params;
-  if (!category) {
-    console.log("category empty");
-    throw Error("category empty");
-  }
+  try {
+    const { category } = params;
+    if (!category) {
+      console.log("category empty");
+      throw Error("category empty");
+    }
 
-  const general = readGeneral();
-  const categoryData = readCategory(category as SystemId);
+    const general = readGeneral();
+    const categoryData = readCategory(category as SystemId);
 
-  if (
-    !general?.categoriesPath ||
-    !categoryData?.name ||
-    !fs.existsSync(nodepath.join(general.categoriesPath, categoryData.name))
-  ) {
-    throw redirect("settings");
-  }
+    if (
+      !general?.categoriesPath ||
+      !categoryData?.name ||
+      !fs.existsSync(nodepath.join(general.categoriesPath, categoryData.name))
+    ) {
+      return redirect("settings");
+    }
 
-  const form = await request.formData();
-  const _actionId = form.get("_actionId");
+    const form = await request.formData();
+    const _actionId = form.get("_actionId");
 
-  if (_actionId === actionIds.launch) {
-    const game = form.get("game");
-    if (typeof game === "string") {
-      try {
+    if (_actionId === actionIds.launch) {
+      const game = form.get("game");
+      if (typeof game === "string") {
         executeApplication(category as SystemId, game);
         return { ok: true };
-      } catch (e) {
-        throw redirect("errorDialog");
       }
     }
-  }
 
-  if (_actionId === actionIds.import) {
-    await importEntries(category as SystemId);
+    if (_actionId === actionIds.import) {
+      await importEntries(category as SystemId);
+    }
+  } catch (e) {
+    return redirect("errorDialog");
   }
 
   return null;
@@ -188,14 +188,15 @@ export default function Category() {
       switchFocus("main");
       enableGamepads();
     }
-  }, [isInFocus, enableGamepads, switchFocus]);
 
-  const onSelectEntryByGamepad = useCallback(() => {
-    if (listRef?.current) {
-      // Add scrollPadding if entry was selected by gamepad to center the element.
-      listRef.current.style.scrollPadding = scrollPadding;
-    }
-  }, []);
+    setTimeout(() => {
+      if (listRef?.current) {
+        // Add scrollPadding if entry was selected by gamepad to center the element.
+        // Needs to be in a timeout to reactivate the feature afterwards
+        listRef.current.style.scrollPadding = scrollPadding;
+      }
+    }, 10);
+  }, [isInFocus, enableGamepads, switchFocus]);
 
   if (!categoryData) {
     return null;
@@ -228,7 +229,6 @@ export default function Category() {
                   onBack={onBack}
                   isInFocus={isInFocus}
                   onGameClick={onEntryClick}
-                  onSelectGameByGamepad={onSelectEntryByGamepad}
                   {...getTestId("entries")}
                 />
               )

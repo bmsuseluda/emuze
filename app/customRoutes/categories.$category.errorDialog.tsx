@@ -4,7 +4,8 @@ import { useLoaderData, useSubmit } from "@remix-run/react";
 import { ErrorDialog } from "~/components/ErrorDialog";
 import { useFocus } from "~/hooks/useFocus";
 import type { FocusElement } from "~/types/focusElement";
-import { useCallback, useEffect } from "react";
+import type { ElementRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
   useGamepadButtonPressEvent,
   useKeyboardEvent,
@@ -34,6 +35,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 export default function RenderComponent() {
   const { errorDialog } = useLoaderData<typeof loader>();
+  const listRef = useRef<ElementRef<"div">>(null);
   const submit = useSubmit();
   const { switchFocusBack, switchFocus, isInFocus } =
     useFocus<FocusElement>("errorDialog");
@@ -55,6 +57,28 @@ export default function RenderComponent() {
     }
   }, [switchFocusBack, submit, isInFocus]);
 
+  const handleScrollDown = useCallback(() => {
+    if (isInFocus && listRef?.current) {
+      const scrollHeight = listRef.current.clientHeight;
+      const scrollTop = listRef.current.scrollTop;
+      listRef.current.scroll({
+        behavior: "smooth",
+        top: scrollTop + scrollHeight / 2,
+      });
+    }
+  }, [isInFocus]);
+
+  const handleScrollUp = useCallback(() => {
+    if (isInFocus && listRef?.current) {
+      const scrollHeight = listRef.current.clientHeight;
+      const scrollTop = listRef.current.scrollTop;
+      listRef.current.scroll({
+        behavior: "smooth",
+        top: scrollTop - scrollHeight / 2,
+      });
+    }
+  }, [isInFocus]);
+
   useGamepadButtonPressEvent(layout.buttons.X, handleClose);
   useGamepadButtonPressEvent(layout.buttons.B, handleClose);
   useGamepadButtonPressEvent(layout.buttons.Start, handleClose);
@@ -62,6 +86,10 @@ export default function RenderComponent() {
   useKeyboardEvent("Enter", handleClose);
   useKeyboardEvent("Escape", handleClose);
   useKeyboardEvent("Backspace", handleClose);
+  useKeyboardEvent("ArrowDown", handleScrollDown);
+  useKeyboardEvent("ArrowUp", handleScrollUp);
 
-  return <ErrorDialog {...errorDialog} onClose={handleClose} />;
+  return (
+    <ErrorDialog {...errorDialog} onClose={handleClose} listRef={listRef} />
+  );
 }
