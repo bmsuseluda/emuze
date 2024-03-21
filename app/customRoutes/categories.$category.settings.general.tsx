@@ -6,6 +6,7 @@ import { IoMdDownload, IoMdRefresh } from "react-icons/io";
 import { FaFolderOpen } from "react-icons/fa";
 import {
   Form,
+  Outlet,
   useActionData,
   useLoaderData,
   useNavigation,
@@ -319,48 +320,84 @@ export default function Index() {
   }, [disableGamepads]);
 
   return (
-    <ListActionBarLayout
-      headline={
-        <IconChildrenWrapper>
-          <SettingsIcon id="general" />
-          <span>
-            <span>General</span>
-          </span>
-        </IconChildrenWrapper>
-      }
-    >
-      <Form method="POST">
-        <ListActionBarLayout.ListActionBarContainer
-          list={
-            <FormBox ref={entryListRef}>
-              {defaultData.isWindows && (
+    <>
+      <ListActionBarLayout
+        headline={
+          <IconChildrenWrapper>
+            <SettingsIcon id="general" />
+            <span>
+              <span>General</span>
+            </span>
+          </IconChildrenWrapper>
+        }
+      >
+        <Form method="POST">
+          <ListActionBarLayout.ListActionBarContainer
+            list={
+              <FormBox ref={entryListRef}>
+                {defaultData.isWindows && (
+                  <li>
+                    <FormRow>
+                      <Label htmlFor="applicationsPath">
+                        {applicationsPathLabel}
+                      </Label>
+                      <TextInput
+                        label={applicationsPathLabel}
+                        error={
+                          defaultData.errors.applicationsPath ||
+                          newData?.errors?.applicationsPath
+                        }
+                      >
+                        <TextInput.Input
+                          type="text"
+                          name="applicationsPath"
+                          id="applicationsPath"
+                          value={applicationPath}
+                          onChange={(event) =>
+                            setApplicationPath(event.target.value)
+                          }
+                          iconButton
+                        />
+                        <TextInput.IconButton
+                          type="submit"
+                          name="_actionId"
+                          value={actionIds.chooseApplicationsPath}
+                          ref={entriesRefCallback(0)}
+                          onClick={onOpenFileDialog}
+                        >
+                          <FaFolderOpen />
+                        </TextInput.IconButton>
+                      </TextInput>
+                    </FormRow>
+                  </li>
+                )}
                 <li>
                   <FormRow>
-                    <Label htmlFor="applicationsPath">
-                      {applicationsPathLabel}
+                    <Label htmlFor="categoriesPath">
+                      {categoriesPathLabel}
                     </Label>
                     <TextInput
-                      label={applicationsPathLabel}
+                      label={categoriesPathLabel}
                       error={
-                        defaultData.errors.applicationsPath ||
-                        newData?.errors?.applicationsPath
+                        defaultData.errors.categoriesPath ||
+                        newData?.errors?.categoriesPath
                       }
                     >
                       <TextInput.Input
                         type="text"
-                        name="applicationsPath"
-                        id="applicationsPath"
-                        value={applicationPath}
+                        name="categoriesPath"
+                        id="categoriesPath"
+                        value={categoriesPath}
                         onChange={(event) =>
-                          setApplicationPath(event.target.value)
+                          setCategoriesPath(event.target.value)
                         }
                         iconButton
                       />
                       <TextInput.IconButton
                         type="submit"
                         name="_actionId"
-                        value={actionIds.chooseApplicationsPath}
-                        ref={entriesRefCallback(0)}
+                        value={actionIds.chooseCategoriesPath}
+                        ref={entriesRefCallback(defaultData.isWindows ? 1 : 0)}
                         onClick={onOpenFileDialog}
                       >
                         <FaFolderOpen />
@@ -368,94 +405,64 @@ export default function Index() {
                     </TextInput>
                   </FormRow>
                 </li>
-              )}
-              <li>
-                <FormRow>
-                  <Label htmlFor="categoriesPath">{categoriesPathLabel}</Label>
-                  <TextInput
-                    label={categoriesPathLabel}
-                    error={
-                      defaultData.errors.categoriesPath ||
-                      newData?.errors?.categoriesPath
-                    }
-                  >
-                    <TextInput.Input
-                      type="text"
-                      name="categoriesPath"
-                      id="categoriesPath"
-                      value={categoriesPath}
-                      onChange={(event) =>
-                        setCategoriesPath(event.target.value)
-                      }
-                      iconButton
-                    />
-                    <TextInput.IconButton
-                      type="submit"
-                      name="_actionId"
-                      value={actionIds.chooseCategoriesPath}
-                      ref={entriesRefCallback(defaultData.isWindows ? 1 : 0)}
-                      onClick={onOpenFileDialog}
-                    >
-                      <FaFolderOpen />
-                    </TextInput.IconButton>
-                  </TextInput>
-                </FormRow>
-              </li>
-            </FormBox>
-          }
-          actions={
-            <>
-              <Button
-                type="submit"
-                name="_actionId"
-                value={actionIds.importAll}
-                loading={
-                  state === "submitting" &&
-                  formData?.get("_actionId") === actionIds.importAll
-                }
-                ref={importAllButtonRef}
-                icon={
-                  gamepadType ? (
-                    <GamepadButtonIcon
-                      buttonIndex={layout.buttons.X}
-                      gamepadType={gamepadType}
-                    />
-                  ) : (
-                    <IoMdRefresh />
-                  )
-                }
-              >
-                Import all
-              </Button>
-              {!defaultData.isWindows && defaultData.categories.length > 0 && (
+              </FormBox>
+            }
+            actions={
+              <>
                 <Button
                   type="submit"
                   name="_actionId"
-                  value={actionIds.installMissingApplications}
+                  value={actionIds.importAll}
                   loading={
                     state === "submitting" &&
-                    formData?.get("_actionId") ===
-                      actionIds.installMissingApplications
+                    formData?.get("_actionId") === actionIds.importAll
                   }
-                  ref={installEmulatorsButtonRef}
+                  ref={importAllButtonRef}
                   icon={
                     gamepadType ? (
                       <GamepadButtonIcon
-                        buttonIndex={layout.buttons.Y}
+                        buttonIndex={layout.buttons.X}
                         gamepadType={gamepadType}
                       />
                     ) : (
-                      <IoMdDownload />
+                      <IoMdRefresh />
                     )
                   }
                 >
-                  Install Emulators
+                  Import all
                 </Button>
-              )}
-            </>
-          }
-        />
-      </Form>
-    </ListActionBarLayout>
+                {!defaultData.isWindows &&
+                  defaultData.categories.length > 0 && (
+                    <Button
+                      type="submit"
+                      name="_actionId"
+                      value={actionIds.installMissingApplications}
+                      loading={
+                        state === "submitting" &&
+                        formData?.get("_actionId") ===
+                          actionIds.installMissingApplications
+                      }
+                      ref={installEmulatorsButtonRef}
+                      icon={
+                        gamepadType ? (
+                          <GamepadButtonIcon
+                            buttonIndex={layout.buttons.Y}
+                            gamepadType={gamepadType}
+                          />
+                        ) : (
+                          <IoMdDownload />
+                        )
+                      }
+                    >
+                      Install Emulators
+                    </Button>
+                  )}
+              </>
+            }
+          />
+        </Form>
+      </ListActionBarLayout>
+      <Outlet />
+    </>
   );
 }

@@ -29,7 +29,7 @@ import {
   FileDataCache,
   MultipleFileDataCache,
 } from "~/server/FileDataCache.server";
-import { openErrorDialog } from "~/server/openDialog.server";
+import { setErrorDialog } from "~/server/errorDialog.server";
 
 export const paths = {
   categories: "data/categories.json",
@@ -125,7 +125,9 @@ export const readEntries = (
             ? nodepath.basename(filename).split(extension)[0]
             : nodepath.basename(filename);
 
-        const oldEntryData = oldEntries?.find(({ path }) => path === filename);
+        const oldEntryData = oldEntries?.find(
+          ({ path }) => path === nodepath.relative(categoryPath, filename),
+        );
         if (oldEntryData) {
           return oldEntryData;
         } else {
@@ -202,16 +204,19 @@ export const importEntries = async (category: SystemId) => {
         });
       })
       .catch((error) => {
-        openErrorDialog(
+        setErrorDialog(
+          "Fetch MetaData from igdb failed",
           "Please try again later",
-          "Fetch covers from igdb failed",
         );
-        console.log("igdb error", error);
+        console.log("igdb error", error, entries);
+
+        // Write data anyway to add or remove games
         writeCategory({
           ...oldCategoryData,
           application,
           entries,
         });
+        throw new Error();
       });
   }
 };
@@ -319,10 +324,11 @@ export const importCategories = async () => {
             categorySettledResult.status === "rejected",
         )
       ) {
-        openErrorDialog(
+        setErrorDialog(
+          "Fetch MetaData from igdb failed",
           "Please try again later",
-          "Fetch covers from igdb failed",
         );
+        throw new Error();
       }
     });
   }

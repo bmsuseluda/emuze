@@ -36,7 +36,7 @@ const Label = styled("label", {
     outlineWidth: "4px",
     outlineStyle: "solid",
     outlineColor: "backgroundColor",
-    transition: "outline-color 0.2s ease-in-out",
+    transition: "outline-color 0.1s ease-in-out",
 
     "&:has(*:checked)": {
       outlineColor: "accent",

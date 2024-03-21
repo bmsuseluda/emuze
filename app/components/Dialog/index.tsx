@@ -22,7 +22,6 @@ const DialogContent = styled("div", {
     boxShadow: "0px 0px 20px 10px black",
     borderRounded: true,
     borderWidth: "0.2rem",
-    borderColor: "sidebarBackgroundColor",
 
     width: "55rem",
     maxWidth: "90vw",
@@ -37,6 +36,14 @@ const DialogContent = styled("div", {
     smaller: {
       true: {
         maxWidth: "60vw",
+      },
+    },
+    variant: {
+      default: {
+        borderColor: "sidebarBackgroundColor",
+      },
+      accent: {
+        borderColor: "accent",
       },
     },
   },
@@ -66,6 +73,7 @@ type Props = {
   onClose: (event?: DialogCloseEvent) => void;
   closable?: boolean;
   smaller?: boolean;
+  variant?: "default" | "accent";
 };
 
 export const Dialog = ({
@@ -74,6 +82,7 @@ export const Dialog = ({
   onClose,
   closable = true,
   smaller = false,
+  variant = "default",
 }: Props) => {
   const handleClose = (event?: DialogCloseEvent) => {
     event?.stopPropagation();
@@ -92,6 +101,7 @@ export const Dialog = ({
             event.stopPropagation();
           }}
           smaller={smaller}
+          variant={variant}
         >
           {children}
           {closable && (

@@ -1,30 +1,15 @@
 import { styled } from "styled-system/jsx";
 import { Dialog } from "~/components/Dialog";
-import { Headline } from "~/components/Headline";
 import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import { Typography } from "~/components/Typography";
 import { MdErrorOutline } from "react-icons/md";
-
-const Body = styled("div", {
-  base: {
-    position: "relative",
-    paddingTop: "1",
-    paddingRight: "0.5em",
-    paddingBottom: "1",
-    paddingLeft: "2",
-    display: "flex",
-    flexDirection: "column",
-    gap: "1",
-    backgroundColor: "backgroundColor",
-    minWidth: "25rem",
-    height: "100%",
-  },
-});
+import { ListActionBarLayout } from "../layouts/ListActionBarLayout";
+import { SidebarMainLayout } from "~/components/layouts/SidebarMainLayout";
+import type { ForwardedRef } from "react";
 
 const Stacktrace = styled("p", {
   base: {
     whiteSpace: "pre-wrap",
-    overflowY: "scroll",
   },
 });
 
@@ -32,23 +17,33 @@ type Props = {
   title?: string;
   stacktrace?: string;
   onClose: () => void;
+  listRef?: ForwardedRef<HTMLDivElement>;
 };
 
-// TODO: add radix scrollarea
 export const ErrorDialog = ({
   title = "An unexpected error has occurred",
   stacktrace = "An unexpected error has occurred",
   onClose,
+  listRef,
 }: Props) => (
-  <Dialog open onClose={onClose}>
-    <Body>
-      <Headline>
-        <IconChildrenWrapper>
-          <MdErrorOutline />
-          <Typography>{title}</Typography>
-        </IconChildrenWrapper>
-      </Headline>
-      <Stacktrace>{stacktrace}</Stacktrace>
-    </Body>
+  <Dialog open onClose={onClose} variant="accent" smaller={true}>
+    <SidebarMainLayout>
+      <SidebarMainLayout.Main>
+        <ListActionBarLayout
+          headline={
+            <IconChildrenWrapper>
+              <MdErrorOutline />
+              <Typography>{title}</Typography>
+            </IconChildrenWrapper>
+          }
+        >
+          <ListActionBarLayout.ListActionBarContainer
+            ref={listRef}
+            scrollSmooth
+            list={<Stacktrace>{stacktrace}</Stacktrace>}
+          />
+        </ListActionBarLayout>
+      </SidebarMainLayout.Main>
+    </SidebarMainLayout>
   </Dialog>
 );

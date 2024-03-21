@@ -43,4 +43,4 @@ var appConfig = {
     },
     postcss: true,
 };
-exports.default = appConfig;
+module.exports = appConfig;

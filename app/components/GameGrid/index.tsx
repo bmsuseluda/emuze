@@ -25,7 +25,6 @@ type Props = {
   isInFocus: boolean;
   onBack: () => void;
   onGameClick: () => void;
-  onSelectGameByGamepad: () => void;
   onExecute: () => void;
   "data-testid"?: string;
 } & ComponentPropsWithoutRef<"ul">;
@@ -64,14 +63,12 @@ export const GameGrid = ({
   onBack,
   onExecute,
   onGameClick,
-  onSelectGameByGamepad,
   "data-testid": dataTestid,
   inViewRef,
 }: Props & { inViewRef?: RefObject<ElementRef<"div">> }) => {
   const { getTestId } = useTestId(dataTestid);
 
   const selectEntry = (game: ElementRef<"input">) => {
-    onSelectGameByGamepad();
     game.checked = true;
     game.focus();
   };

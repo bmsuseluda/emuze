@@ -79,7 +79,9 @@ export default function RenderComponent() {
     }
   }, [isInFocus]);
 
-  useGamepadButtonPressEvent(layout.buttons.X, handleClose);
+  useGamepadButtonPressEvent(layout.buttons.A, handleClose);
+  useGamepadButtonPressEvent(layout.buttons.DPadUp, handleScrollUp);
+  useGamepadButtonPressEvent(layout.buttons.DPadDown, handleScrollDown);
   useGamepadButtonPressEvent(layout.buttons.B, handleClose);
   useGamepadButtonPressEvent(layout.buttons.Start, handleClose);
 
