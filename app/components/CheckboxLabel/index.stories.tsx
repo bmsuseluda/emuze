@@ -1,11 +1,11 @@
-import { CheckboxRow } from ".";
-import { Checkbox } from "~/components/Checkbox";
-import { Label } from "~/components/Label";
+import { CheckboxLabel } from ".";
+
 import type { Meta, StoryObj } from "@storybook/react";
+import { Checkbox } from "~/components/Checkbox";
 
 const meta = {
-  component: CheckboxRow,
-} satisfies Meta<typeof CheckboxRow>;
+  component: CheckboxLabel,
+} satisfies Meta<typeof CheckboxLabel>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -13,14 +13,14 @@ type Story = StoryObj<typeof meta>;
 export const Checked: Story = {
   render: (args) => (
     <form>
-      <CheckboxRow {...args}>
+      <CheckboxLabel {...args}>
         <Checkbox
           id="alwaysGameNames"
           name="alwaysGameNames"
           defaultChecked={true}
         />
-        <Label htmlFor="alwaysGameNames">Always show game names</Label>
-      </CheckboxRow>
+        Always show game names
+      </CheckboxLabel>
     </form>
   ),
 };
@@ -28,14 +28,14 @@ export const Checked: Story = {
 export const Unchecked: Story = {
   render: (args) => (
     <form>
-      <CheckboxRow {...args}>
+      <CheckboxLabel {...args}>
         <Checkbox
           id="alwaysGameNames"
           name="alwaysGameNames"
           defaultChecked={false}
         />
-        <Label htmlFor="alwaysGameNames">Always show game names</Label>
-      </CheckboxRow>
+        Always show game names
+      </CheckboxLabel>
     </form>
   ),
 };

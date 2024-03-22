@@ -18,6 +18,7 @@ const Wrapper = styled("li", {
     position: "relative",
     minWidth: "200px",
     maxWidth: "300px",
+    transition: "width 0.1s ease-in-out",
   },
 });
 

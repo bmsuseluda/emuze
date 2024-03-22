@@ -21,7 +21,6 @@ const borderRounded = defineUtility({
       return {
         borderRadius: token("radii.1"),
         position: "relative",
-        overflow: "clip",
       };
     }
     return {};

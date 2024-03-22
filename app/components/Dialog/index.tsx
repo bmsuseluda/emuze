@@ -29,6 +29,7 @@ const DialogContent = styled("div", {
     height: "60vh",
     maxHeight: "90vh",
     animation: "scaleUp 150ms",
+    overflow: "clip",
     "&:focus": { outline: "none" },
   },
 

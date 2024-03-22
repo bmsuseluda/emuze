@@ -166,7 +166,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       const categories = readCategories();
 
       if (categories?.length > 0) {
-        throw redirect(`/categories/${categories[0].id}/settings/general`);
+        return redirect(`/categories/${categories[0].id}/settings/general`);
       }
     }
 

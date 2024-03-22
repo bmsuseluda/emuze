@@ -4,7 +4,6 @@ import { IoMdSave } from "react-icons/io";
 import { Form, useLoaderData } from "@remix-run/react";
 import { Button } from "~/components/Button";
 import { FormBox } from "~/components/FormBox";
-import { Label } from "~/components/Label";
 import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 import { readAppearance, writeAppearance } from "~/server/settings.server";
 import { Checkbox } from "~/components/Checkbox";
@@ -12,7 +11,7 @@ import type { Appearance } from "~/types/jsonFiles/settings/appearance";
 import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import { SettingsIcon } from "~/components/SettingsIcon";
 import { useFullscreen } from "~/hooks/useFullscreen";
-import { CheckboxRow } from "~/components/CheckboxRow";
+import { CheckboxLabel } from "~/components/CheckboxLabel";
 import type { ElementRef } from "react";
 import { useCallback, useRef } from "react";
 import type { Result } from "~/hooks/useGamepadsOnGrid";
@@ -138,10 +137,11 @@ export default function Index() {
     >
       <Form method="POST">
         <ListActionBarLayout.ListActionBarContainer
+          scrollSmooth
           list={
             <FormBox ref={entryListRef}>
               <li>
-                <CheckboxRow>
+                <CheckboxLabel>
                   <Checkbox
                     id="fullscreen"
                     name="fullscreen"
@@ -152,32 +152,30 @@ export default function Index() {
                     }
                     ref={entriesRefCallback(0)}
                   />
-                  <Label htmlFor="fullscreen">Fullscreen</Label>
-                </CheckboxRow>
+                  Fullscreen
+                </CheckboxLabel>
               </li>
               <li>
-                <CheckboxRow>
+                <CheckboxLabel>
                   <Checkbox
                     id="alwaysGameNames"
                     name="alwaysGameNames"
                     defaultChecked={alwaysGameNames}
                     ref={entriesRefCallback(1)}
                   />
-                  <Label htmlFor="alwaysGameNames">
-                    Always show game names
-                  </Label>
-                </CheckboxRow>
+                  Always show game names
+                </CheckboxLabel>
               </li>
               <li>
-                <CheckboxRow>
+                <CheckboxLabel>
                   <Checkbox
                     id="collapseSidebar"
                     name="collapseSidebar"
                     defaultChecked={collapseSidebar}
                     ref={entriesRefCallback(2)}
                   />
-                  <Label htmlFor="collapseSidebar">Collapse sidebar</Label>
-                </CheckboxRow>
+                  Collapse sidebar
+                </CheckboxLabel>
               </li>
             </FormBox>
           }

@@ -1,16 +1,22 @@
+import * as LabelPrimitive from "@radix-ui/react-label";
 import { styled } from "../../../styled-system/jsx";
 
-// TODO: Check if this could be replaced with formrow
-export const CheckboxRow = styled("fieldset", {
+export const CheckboxLabel = styled(LabelPrimitive.Root, {
   base: {
-    display: "flex",
+    display: "inline-flex",
+    flexDirection: "row",
     alignItems: "center",
     gap: "1",
-    padding: "1",
+    padding: 1,
     margin: 0,
     borderRounded: true,
     borderWidth: "1px",
     borderColor: "transparent",
+    color: "color",
+
+    "&:hover": {
+      cursor: "pointer",
+    },
 
     "&:focus-within": {
       borderColor: "accent",
