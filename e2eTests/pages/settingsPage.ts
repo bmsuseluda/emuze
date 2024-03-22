@@ -1,4 +1,4 @@
-import { expect, Locator, Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 import { SettingsGeneralPage } from "./settingsGeneralPage";
 import { SettingsAppearancePage } from "./settingsAppearancePage";
 
@@ -53,7 +53,7 @@ export class SettingsPage {
     await expect(this.settingsHeadline).not.toBeVisible();
   }
 
-  async goToToSubPageViaClick(subPageName: string) {
+  async goToSubPageViaClick(subPageName: string) {
     const link = this.page.getByRole("link", {
       name: subPageName,
     });

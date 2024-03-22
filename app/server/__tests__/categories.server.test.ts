@@ -30,7 +30,7 @@ import {
   playstation,
 } from "../__testData__/category";
 import { applications as applicationsTestData } from "../__testData__/applications";
-import type { Category, Entry } from "~/types/jsonFiles/category";
+import type { Category, Entry, MetaData } from "~/types/jsonFiles/category";
 import { general } from "../__testData__/general";
 import { fetchMetaData } from "~/server/igdb.server";
 import { categories as categoriesDB } from "../categoriesDB.server";
@@ -39,6 +39,14 @@ import { getInstalledApplicationForCategory } from "~/server/applications.server
 import type { Application } from "~/types/jsonFiles/applications";
 import { getExpiresOn } from "~/server/getExpiresOn.server";
 import type { Mock } from "vitest";
+
+vi.mock("@kmamal/sdl", () => ({
+  default: () => ({
+    controller: {
+      devices: [],
+    },
+  }),
+}));
 
 const writeFileMock = vi.fn();
 vi.mock("~/server/readWriteData.server", () => ({
@@ -96,6 +104,39 @@ describe("categories.server", () => {
       ];
 
       const result = readEntries(neogeo.name, neogeo.application.id);
+
+      expect(result).toStrictEqual(expectedResult);
+    });
+
+    it("Should return oldData if exist", () => {
+      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
+        createAbsoluteEntryPath(playstation.name, hugo.path),
+        createAbsoluteEntryPath(playstation.name, hugo2.path),
+      ]);
+
+      const hugoMetaData: MetaData = {
+        imageUrl: "https://www.allImagesComeFromHere.com/hugo.webp",
+        expiresOn: getExpiresOn(),
+      };
+
+      const oldEntries: Entry[] = [
+        {
+          ...hugo,
+          id: `${hugo.id}0`,
+          metaData: hugoMetaData,
+        },
+      ];
+
+      const expectedResult: Entry[] = [
+        { ...hugo, metaData: hugoMetaData, id: `${hugo.id}0` },
+        { ...hugo2, id: `${hugo2.id}1` },
+      ];
+
+      const result = readEntries(
+        playstation.name,
+        playstation.application.id,
+        oldEntries,
+      );
 
       expect(result).toStrictEqual(expectedResult);
     });

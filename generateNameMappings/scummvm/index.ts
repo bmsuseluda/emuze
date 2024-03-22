@@ -1,16 +1,22 @@
 import nodepath from "path";
+// Import can't be shortend because path aliases do not work
 import { writeFile } from "../../app/server/readWriteData.server";
 import { spawnSync } from "child_process";
 
-type Result = Record<string, string | number>;
+export type Result = Record<string, string | number>;
 
 const projectPath = nodepath.join(__dirname, "..", "..");
-const resultPath = nodepath.join(projectPath, "app", "server", "nameMappings");
+const resultPath = nodepath.join(
+  projectPath,
+  "app",
+  "server",
+  "applicationsDB.server",
+  "applications",
+  "scummvm",
+  "nameMapping",
+);
 
-/**
- * Example row: sci:fairytales                 Mixed-up Fairy Tales
- */
-const extractGames = (data: string) => {
+export const extractGames = (data: string) => {
   const objectToExtend: Result = {};
 
   const rows = data.split("\n");
@@ -19,7 +25,7 @@ const extractGames = (data: string) => {
     if (row.match(/\w+:\w+.*/)) {
       // split by minimum of 3 whitespaces
       const [engineAndId, name] = row.split(/\s{3,}/);
-      const [engine, id] = engineAndId.split(":");
+      const [, id] = engineAndId.split(":");
       objectToExtend[id] = name;
     }
   });

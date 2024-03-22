@@ -33,7 +33,6 @@ type Props = {
   rotate?: boolean;
 };
 
-// TODO: add story
 export const IconChildrenWrapper = ({
   children,
   rotate = false,

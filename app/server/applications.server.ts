@@ -5,7 +5,10 @@ import type {
   ApplicationWindows,
 } from "~/types/jsonFiles/applications";
 import { isApplicationWindows } from "~/types/jsonFiles/applications";
-import type { Application as ApplicationDB } from "~/server/applicationsDB.server";
+import type {
+  Application as ApplicationDB,
+  ApplicationId,
+} from "~/server/applicationsDB.server/types";
 import { applications as applicationsDB } from "~/server/applicationsDB.server";
 import { categories as categoriesDB } from "~/server/categoriesDB.server";
 import { readFilenames } from "~/server/readWriteData.server";
@@ -26,9 +29,19 @@ export const paths = {
   applications: "data/applications.json",
 };
 
-export const findExecutable = (path: string, id: string): string | null => {
+export const findExecutable = (
+  path: string,
+  id: ApplicationId,
+): string | null => {
+  const configuredExecutable = applicationsDB[id].executable;
   const executables = readFilenames({ path, fileExtensions: [".exe"] }).filter(
-    (filename) => nodepath.basename(filename).toLowerCase().includes(id),
+    (filename) => {
+      const basename = nodepath.basename(filename).toLowerCase();
+      return (
+        basename === configuredExecutable?.toLowerCase() ||
+        basename.includes(id)
+      );
+    },
   );
 
   if (executables.length > 0) {
@@ -89,7 +102,7 @@ export const getInstalledApplicationForCategory = ({
   defaultApplicationDB: ApplicationDB;
   oldApplication?: Application;
 }) => {
-  if (isWindows && applicationsPath) {
+  if (isWindows() && applicationsPath) {
     return getInstalledApplicationForCategoryOnWindows(
       defaultApplicationDB,
       applicationsPath,
@@ -103,6 +116,7 @@ export const getInstalledApplicationForCategory = ({
   );
 };
 
+// TODO: add tests
 export const installMissingApplicationsOnLinux = async () => {
   const categoriesWithoutApplication = [
     ...new Set(
@@ -119,11 +133,13 @@ export const installMissingApplicationsOnLinux = async () => {
     const defaultApplication = categoriesDB[category.id].defaultApplication;
     const flatpakId = defaultApplication.flatpakId;
     return checkFlatpakIsInstalledParallel(flatpakId).catch(() => {
-      installFlatpak(flatpakId);
-      writeCategory({
-        ...category,
-        application: defaultApplication,
-      });
+      const isInstalled = installFlatpak(flatpakId);
+      if (isInstalled) {
+        writeCategory({
+          ...category,
+          application: defaultApplication,
+        });
+      }
     });
   });
   await Promise.all(functions);

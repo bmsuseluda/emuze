@@ -1,4 +1,9 @@
-import { ElectronApplication, expect, Page, test } from "@playwright/test";
+import {
+  type ElectronApplication,
+  expect,
+  type Page,
+  test,
+} from "@playwright/test";
 import { startApp } from "./startApp";
 import nodepath from "path";
 import fs from "fs";
@@ -8,7 +13,7 @@ import { SettingsPage } from "./pages/settingsPage";
 test.describe.configure({ mode: "serial" });
 
 const configFolderPath = nodepath.join(__dirname, "emptyConfig");
-const testDataPath = nodepath.join(__dirname, "testData");
+const testRomsPath = nodepath.join(__dirname, "testRoms");
 
 let app: ElectronApplication;
 let page: Page;
@@ -34,6 +39,9 @@ test("Should show initial config page", async () => {
   await settingsPage.expectIsInitialSubPage();
   await expect(settingsPage.closeButton).not.toBeVisible();
   await expect(settingsPage.generalPage.romsPath).toBeVisible();
+  await expect(
+    settingsPage.generalPage.romsPathRequiredError,
+  ).not.toBeVisible();
   await expect(settingsPage.generalPage.emulatorsPath).not.toBeVisible();
 
   await expect(page).toHaveScreenshot();
@@ -46,22 +54,23 @@ test("Should show initial config page", async () => {
 
   await test.step("Should prevent from submitting without roms path", async () => {
     await settingsPage.generalPage.importAllButton.click();
-    await expect(settingsPage.generalPage.romsPath).toHaveScreenshot();
-
-    // TODO: check of invalid state of input field
+    await expect(settingsPage.generalPage.romsPathRequiredError).toBeVisible();
+    await expect(
+      settingsPage.generalPage.page.getByRole("group", { name: "Roms Path" }),
+    ).toHaveScreenshot();
   });
 });
 
 test("Should import all", async () => {
-  await settingsPage.generalPage.romsPath.fill(testDataPath);
+  await settingsPage.generalPage.romsPath.fill(testRomsPath);
   await settingsPage.generalPage.importAllButton.click();
 
   await expect(settingsPage.closeButton).toBeVisible();
   await page.keyboard.press("Escape");
-  await libraryPage.expectIsInitialPlatform();
+  await libraryPage.expectIsInitialSystem();
   await expect(page).toHaveScreenshot();
 
   await page.keyboard.press("ArrowDown");
 
-  await libraryPage.expectIsPlatform("Game Boy", "Super Mario Land");
+  await libraryPage.expectIsSystem("Game Boy", "Super Mario Land");
 });

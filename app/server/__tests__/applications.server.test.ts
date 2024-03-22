@@ -13,6 +13,14 @@ import { readFilenames } from "~/server/readWriteData.server";
 import { checkFlatpakIsInstalled } from "~/server/execute.server";
 import type { Mock } from "vitest";
 
+vi.mock("@kmamal/sdl", () => ({
+  default: () => ({
+    controller: {
+      devices: [],
+    },
+  }),
+}));
+
 vi.mock("~/server/readWriteData.server", () => ({
   readDirectorynames: vi.fn(),
   readFilenames: vi.fn(),
@@ -32,6 +40,23 @@ describe("applications.server", () => {
   });
 
   describe("findExecutable", () => {
+    it("Should return the configured executable from path", () => {
+      // evaluate
+      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
+        "F:/games/Emulation/emulators/dosbox-staging-v0.81.0/test.config",
+        "F:/games/Emulation/emulators/dosbox-staging-v0.81.0/no.ini",
+        "F:/games/Emulation/emulators/dosbox-staging-v0.81.0/dosbox.exe",
+      ]);
+
+      // execute
+      const executable = findExecutable("", "dosboxstaging");
+
+      // expect
+      expect(executable).toBe(
+        "F:/games/Emulation/emulators/dosbox-staging-v0.81.0/dosbox.exe",
+      );
+    });
+
     it("Should return the executable from path", () => {
       // evaluate
       (readFilenames as Mock<any, string[]>).mockReturnValueOnce([

@@ -1,5 +1,5 @@
 import type { Required } from "utility-types";
-import type { ApplicationId } from "~/server/applicationsDB.server";
+import type { ApplicationId } from "~/server/applicationsDB.server/types";
 
 export interface Application {
   id: ApplicationId;

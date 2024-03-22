@@ -13,6 +13,14 @@ import { chunk, fetchMetaData } from "../igdb.server";
 import { categories as categoriesDB } from "../categoriesDB.server";
 import { getExpiresOn } from "~/server/getExpiresOn.server";
 
+vi.mock("@kmamal/sdl", () => ({
+  default: () => ({
+    controller: {
+      devices: [],
+    },
+  }),
+}));
+
 const igdbRequestMock = vi.fn();
 vi.mock("apicalypse", () => ({
   default: () => ({

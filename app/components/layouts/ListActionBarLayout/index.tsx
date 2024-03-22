@@ -9,6 +9,8 @@ interface Props {
   children: ReactNode;
 }
 
+export const scrollPadding = "50% 0";
+
 const Layout = styled("div", {
   base: {
     display: "flex",
@@ -44,7 +46,7 @@ const List = styled("div", {
     scrollSmooth: {
       true: {
         scrollBehavior: "smooth",
-        scrollPadding: "50% 0",
+        scrollPadding,
       },
     },
     // TODO: remove if not necessary anymore. Right now all props you want to use in compoundVariants need to be in variants as well.

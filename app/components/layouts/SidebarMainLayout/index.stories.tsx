@@ -1,7 +1,7 @@
 import { SidebarMainLayout } from ".";
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { PlatformIcon } from "~/components/PlatformIcon";
+import { SystemIcon } from "app/components/SystemIcon";
 import { styled } from "../../../../styled-system/jsx";
 
 const meta = {
@@ -101,9 +101,9 @@ export const WithSidebarCollapsed: Story = {
     children: (
       <>
         <SidebarMainLayout.Sidebar headline="Categories" collapse>
-          <PlatformIcon id="neogeo" />
-          <PlatformIcon id="nintendogameboy" />
-          <PlatformIcon id="sonyplaystation" />
+          <SystemIcon id="neogeo" />
+          <SystemIcon id="nintendogameboy" />
+          <SystemIcon id="sonyplaystation" />
         </SidebarMainLayout.Sidebar>
         <SidebarMainLayout.Main>This is the main</SidebarMainLayout.Main>
       </>

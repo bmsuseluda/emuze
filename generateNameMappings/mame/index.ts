@@ -8,7 +8,15 @@ type Result = Record<string, string | number>;
 const xmlParser = new XMLParser({ ignoreAttributes: false });
 
 const projectPath = nodepath.join(__dirname, "..", "..");
-const resultPath = nodepath.join(projectPath, "app", "server", "nameMappings");
+const resultPath = nodepath.join(
+  projectPath,
+  "app",
+  "server",
+  "applicationsDB.server",
+  "applications",
+  "mame",
+  "nameMapping",
+);
 
 type Game = {
   "@_name": string;

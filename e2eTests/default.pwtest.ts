@@ -1,4 +1,9 @@
-import { ElectronApplication, expect, Page, test } from "@playwright/test";
+import {
+  type ElectronApplication,
+  expect,
+  type Page,
+  test,
+} from "@playwright/test";
 import { startApp } from "./startApp";
 import nodepath from "path";
 import fs from "fs-extra";
@@ -17,6 +22,7 @@ let settingsPage: SettingsPage;
 test.beforeAll(async () => {
   fs.rmSync(configFolderPath, { recursive: true, force: true });
   fs.copySync(nodepath.join(__dirname, "config"), configFolderPath);
+  process.env.EMUZE_TEST_ROMS_PATH = nodepath.join(__dirname, "testRoms");
   const response = await startApp(configFolderPath);
   app = response.app;
   page = response.page;
@@ -31,40 +37,41 @@ test.afterAll(async () => {
   }
 });
 
-test("Should show initial platform", async () => {
+test("Should show initial system", async () => {
   await expect(page.getByRole("heading", { name: "emuze" })).toBeVisible();
   const title = await page.title();
   expect(title).toBe("emuze");
-  await libraryPage.expectIsInitialPlatform();
+  await libraryPage.expectIsInitialSystem();
 
   await expect(page).toHaveScreenshot();
 });
 
-test("Should switch to another platform via click", async () => {
-  await libraryPage.goToToPlatformViaClick(
+test("Should switch to another system via click", async () => {
+  await libraryPage.goToSystemViaClick(
     "Sega Master System",
     "Sonic the Hedgehog",
   );
 
-  await libraryPage.gotToInitialPlatform();
+  await libraryPage.gotToInitialSystem();
 });
 
-test("Should switch to another platform via key down", async () => {
-  await libraryPage.expectIsInitialPlatform();
+test("Should switch to another system via key down", async () => {
+  await libraryPage.expectIsInitialSystem();
 
   await page.keyboard.press("ArrowDown");
 
-  await libraryPage.expectIsPlatform("Game Boy", "Super Mario Land");
+  await libraryPage.expectIsSystem("Game Boy", "Super Mario Land");
 
-  await libraryPage.gotToInitialPlatform();
+  await libraryPage.gotToInitialSystem();
 });
 
 test("Should open settings via mouse", async () => {
   await settingsPage.openSettingsViaClick();
+  await expect(settingsPage.generalPage.installEmulatorsButton).toBeVisible();
 
   await expect(page).toHaveScreenshot();
 
-  await settingsPage.goToToSubPageViaClick(settingsPage.appearancePage.name);
+  await settingsPage.goToSubPageViaClick(settingsPage.appearancePage.name);
 
   await settingsPage.closeSettingsViaClick();
 });
@@ -83,17 +90,17 @@ test("Should open settings via keyboard", async () => {
 });
 
 test("Should check if focus history is valid after settings closed", async () => {
-  await libraryPage.expectIsInitialPlatform();
+  await libraryPage.expectIsInitialSystem();
 
   await page.keyboard.press("ArrowDown");
 
-  await libraryPage.expectIsPlatform("Game Boy", "Super Mario Land");
+  await libraryPage.expectIsSystem("Game Boy", "Super Mario Land");
 });
 
 test("import all", async () => {
-  const playstationPlatformName = "Playstation";
+  const playstationSystemName = "Playstation";
   const playstationLink = page.getByRole("link", {
-    name: playstationPlatformName,
+    name: playstationSystemName,
   });
 
   await expect(playstationLink).not.toBeVisible();
@@ -102,12 +109,12 @@ test("import all", async () => {
   await settingsPage.generalPage.importAllButton.click();
   await settingsPage.closeSettingsViaClick();
 
-  await libraryPage.goToToPlatformViaClick(playstationPlatformName, "Gex");
+  await libraryPage.goToSystemViaClick(playstationSystemName, "Gex");
 });
 
 // TODO: use keyboard to go to grid and return
-// TODO: no emulator for platform is installed
-// TODO: import for a platform with mocked api
+// TODO: no emulator for system is installed
+// TODO: import for a system with mocked api
 // TODO: load more games
 // TODO: test fullscreen setting
 // TODO: test always show game name setting

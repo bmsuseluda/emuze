@@ -14,12 +14,12 @@ import { readGeneral } from "~/server/settings.server";
 import type {
   ApplicationId,
   ExcludeFilesFunction,
-} from "~/server/applicationsDB.server";
+} from "~/server/applicationsDB.server/types";
 import { applications } from "~/server/applicationsDB.server";
 import type {
   Category as CategoryDB,
-  PlatformId,
-} from "~/server/categoriesDB.server";
+  SystemId,
+} from "~/server/categoriesDB.server/types";
 import {
   categories,
   getCategoryDataByName,
@@ -29,7 +29,7 @@ import {
   FileDataCache,
   MultipleFileDataCache,
 } from "~/server/FileDataCache.server";
-import { openErrorDialog } from "~/server/openDialog.server";
+import { setErrorDialog } from "~/server/errorDialog.server";
 
 export const paths = {
   categories: "data/categories.json",
@@ -58,7 +58,7 @@ const deleteCategories = () => {
 
 const categoryDataCache = new MultipleFileDataCache<Category>();
 
-export const readCategory = (categoryId: string) =>
+export const readCategory = (categoryId: SystemId) =>
   categoryDataCache.readFile(
     nodepath.join(paths.entries, `${categoryId}.json`),
   );
@@ -125,7 +125,9 @@ export const readEntries = (
             ? nodepath.basename(filename).split(extension)[0]
             : nodepath.basename(filename);
 
-        const oldEntryData = oldEntries?.find(({ path }) => path === filename);
+        const oldEntryData = oldEntries?.find(
+          ({ path }) => path === nodepath.relative(categoryPath, filename),
+        );
         if (oldEntryData) {
           return oldEntryData;
         } else {
@@ -173,8 +175,8 @@ export const readEntriesWithMetaData = async (
   ].sort(sortEntries);
 };
 
-export const importEntries = async (category: string) => {
-  const categoryDbData = categories[category as PlatformId];
+export const importEntries = async (category: SystemId) => {
+  const categoryDbData = categories[category as SystemId];
   const oldCategoryData = readCategory(category);
   const generalData = readGeneral();
 
@@ -202,16 +204,19 @@ export const importEntries = async (category: string) => {
         });
       })
       .catch((error) => {
-        openErrorDialog(
+        setErrorDialog(
+          "Fetch MetaData from igdb failed",
           "Please try again later",
-          "Fetch covers from igdb failed",
         );
-        console.log("igdb error", error);
+        console.log("igdb error", error, entries);
+
+        // Write data anyway to add or remove games
         writeCategory({
           ...oldCategoryData,
           application,
           entries,
         });
+        throw new Error();
       });
   }
 };
@@ -319,10 +324,11 @@ export const importCategories = async () => {
             categorySettledResult.status === "rejected",
         )
       ) {
-        openErrorDialog(
+        setErrorDialog(
+          "Fetch MetaData from igdb failed",
           "Please try again later",
-          "Fetch covers from igdb failed",
         );
+        throw new Error();
       }
     });
   }

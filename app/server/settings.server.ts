@@ -2,9 +2,11 @@ import type { General } from "~/types/jsonFiles/settings/general";
 import type { Appearance } from "~/types/jsonFiles/settings/appearance";
 import { FileDataCache } from "~/server/FileDataCache.server";
 
-export type Category = { id: string; name: string; to: string };
+export type SettingsID = "general" | "appearance";
 
-export const categories: Category[] = [
+export type Category = { id: SettingsID; name: string; to: SettingsID };
+
+export const categories = [
   {
     id: "general",
     name: "General",
@@ -15,23 +17,23 @@ export const categories: Category[] = [
     name: "Appearance",
     to: "appearance",
   },
-];
+] satisfies Category[];
 
 export const paths = {
   general: "data/settings/general.json",
   appearance: "data/settings/appearance.json",
-};
+} satisfies Record<SettingsID, string>;
 
 const generalDataCache = new FileDataCache<General>(paths.general);
 export const readGeneral = () => {
-  const testDataPath = process.env.EMUZE_TEST_DATA_PATH;
+  const testRomsPath = process.env.EMUZE_TEST_ROMS_PATH;
   const testEmulatorsPath = process.env.EMUZE_TEST_EMULATORS_PATH;
   const result = generalDataCache.readFile();
 
   if (result) {
     return {
       ...result,
-      categoriesPath: testDataPath || result.categoriesPath,
+      categoriesPath: testRomsPath || result.categoriesPath,
       applicationsPath: testEmulatorsPath || result.applicationsPath,
     };
   }

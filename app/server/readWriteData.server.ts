@@ -35,6 +35,7 @@ export const readFilenames = ({
   readFiles(path).forEach((file) => {
     const filePath = nodepath.join(path, file.name);
 
+    // TODO: check if readdirSync with recursive option would be an option here
     if (entryAsDirectory) {
       if (file.isDirectory()) {
         filenames.push(filePath);
