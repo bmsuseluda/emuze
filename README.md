@@ -146,7 +146,7 @@ Right now the following are supported:
 | Sony Playstation 2 | PCSX2<br>Play! | PCSX2 |
 | Sony Playstation 3 | RPCS3 | RPCS3 |
 | Sony Playstation Portable | PPSSPP | PPSSPP |
-| Nintendo Entertainment System | Nestopia<br>puNES<br>Mednafen<br>Ares | Nestopia |
+| Nintendo Entertainment System | Nestopia<br>puNES<br>Mednafen<br>Ares | puNES |
 | Super Nintendo Entertainment System | BSNES<br>Snes9x<br>Ares | BSNES |
 | Nintendo Game Boy | mgba<br>Ares | mgba |
 | Nintendo Game Boy Color | mgba | mgba |
@@ -157,7 +157,7 @@ Right now the following are supported:
 | Nintendo Gamecube | Dolphin | Dolphin |
 | Nintendo Wii | Dolphin | Dolphin |
 | Nintendo Wii U | Cemu | Cemu |
-| Nintendo Switch | yuzu<br>Ryujinx | yuzu |
+| Nintendo Switch | yuzu<br>Ryujinx | Ryujinx |
 | PC Engine | Mednafen<br>Ares | Ares |
 | PC Engine CD | Mednafen | Mednafen |
 | PC Engine SuperGrafx | Mednafen | Mednafen |
