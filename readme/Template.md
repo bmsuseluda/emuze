@@ -22,6 +22,9 @@ If your roms are named correctly, a click on the import button should import you
 <p>
   <img src="https://github.com/bmsuseluda/emuze/blob/main/screenshots/library.png?raw=true" alt="Library" />
 </p>
+<p>
+  <img src="https://github.com/bmsuseluda/emuze/blob/main/screenshots/library_collapsed.png?raw=true" alt="Library collapsed" />
+</p>
 
 ## 🚀 Getting started
 
