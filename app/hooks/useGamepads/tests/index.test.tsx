@@ -11,7 +11,6 @@ describe("useGamepads", () => {
         mapping: "standard",
         axes: [],
         buttons: [],
-        hapticActuators: [],
         vibrationActuator: null,
       };
 
@@ -23,7 +22,6 @@ describe("useGamepads", () => {
         mapping: "",
         axes: [],
         buttons: [],
-        hapticActuators: [],
         vibrationActuator: null,
       };
 
@@ -35,7 +33,6 @@ describe("useGamepads", () => {
         mapping: "standard",
         axes: [],
         buttons: [],
-        hapticActuators: [],
         vibrationActuator: null,
       };
 

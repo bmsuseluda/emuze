@@ -163,7 +163,6 @@ There is a lot i would like to work on. The following features are the bigger on
 - Preconfigure all emulators
 - Release emuze as a Flatpak on Flathub
 - Bundle open source bios implementations
-- `Roms as Folder` support for emulators e.g. ScummVM or DosBox
 - Filter and sorting of roms
 - Integrate `How long to beat`
 - Add option to convert bin/cue and iso files to chd

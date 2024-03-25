@@ -157,7 +157,7 @@ Right now the following are supported:
 | Nintendo Gamecube | Dolphin | Dolphin |
 | Nintendo Wii | Dolphin | Dolphin |
 | Nintendo Wii U | Cemu | Cemu |
-| Nintendo Switch | yuzu<br>Ryujinx | Ryujinx |
+| Nintendo Switch | Ryujinx<br>yuzu | Ryujinx |
 | PC Engine | Mednafen<br>Ares | Ares |
 | PC Engine CD | Mednafen | Mednafen |
 | PC Engine SuperGrafx | Mednafen | Mednafen |

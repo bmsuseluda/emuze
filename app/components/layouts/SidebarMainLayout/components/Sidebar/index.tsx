@@ -13,12 +13,11 @@ const SidebarWrapper = styled("aside", {
     paddingLeft: "1",
     display: "flex",
     flexFlow: "column",
-    overflowX: "hidden",
+    overflowX: "clip",
     overflowY: "auto",
     width: "15rem",
     minWidth: "15rem",
     transition: "width 0.5s ease-in-out, min-width 0.5s ease-in-out",
-    gap: "1.5rem",
   },
 
   variants: {
@@ -32,12 +31,20 @@ const SidebarWrapper = styled("aside", {
   },
 });
 
+const HeaderWrapper = styled("div", {
+  base: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "{sizes.scrollMask}",
+  },
+});
+
 const StyledUl = styled(Ul, {
   base: {
     display: "flex",
     flexDirection: "column",
     gap: "1",
-    overflowX: "hidden",
+    overflowX: "clip",
   },
 
   variants: {
@@ -65,8 +72,12 @@ export const Sidebar = ({
   collapse = false,
 }: Props) => (
   <SidebarWrapper collapse={collapse}>
-    {header}
-    {header && <Separator />}
+    {header && (
+      <HeaderWrapper>
+        {header}
+        <Separator />
+      </HeaderWrapper>
+    )}
     <ListActionBarLayout headline={collapse ? undefined : headline}>
       <ListActionBarLayout.ListActionBarContainer
         list={

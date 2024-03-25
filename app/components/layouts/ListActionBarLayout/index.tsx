@@ -9,14 +9,11 @@ interface Props {
   children: ReactNode;
 }
 
-export const scrollPadding = "50% 0";
-
 const Layout = styled("div", {
   base: {
     display: "flex",
     flexDirection: "column",
     flex: 1,
-    gap: "1.5em",
     width: "100%",
   },
 });
@@ -28,7 +25,6 @@ const Absolute = styled("div", {
     inset: 0,
     display: "flex",
     flexDirection: "column",
-    gap: "1",
   },
 });
 
@@ -36,7 +32,21 @@ const List = styled("div", {
   base: {
     flex: 15,
     overflowY: "auto",
-    paddingRight: 0,
+
+    maskImage:
+      "linear-gradient(" +
+      "to bottom, " +
+      "transparent, " +
+      "{colors.backgroundColor} {sizes.scrollMask} calc(100% - {sizes.scrollMask}), " +
+      "transparent)," +
+      "linear-gradient({colors.backgroundColor}, {colors.backgroundColor})",
+    maskSize:
+      "calc(100% - {sizes.scrollbarWidth}) 100%, {sizes.scrollbarWidth} 100%",
+    maskPosition: "0 0, 100% 0",
+    maskRepeat: "no-repeat, no-repeat",
+
+    padding: "{sizes.scrollMask} 0",
+
     "&::-webkit-scrollbar": {
       display: "none",
     },
@@ -46,7 +56,7 @@ const List = styled("div", {
     scrollSmooth: {
       true: {
         scrollBehavior: "smooth",
-        scrollPadding,
+        scrollPadding: "scrollPadding",
       },
     },
     // TODO: remove if not necessary anymore. Right now all props you want to use in compoundVariants need to be in variants as well.
@@ -63,14 +73,13 @@ const List = styled("div", {
       collapse: false,
       fullscreen: false,
       css: {
-        overflowY: "auto",
-        paddingRight: "0.5em",
+        paddingRight: "{sizes.scrollbarWidth}",
 
         scrollbarColor: "sidebarBackgroundColor transparent",
 
         "&::-webkit-scrollbar": {
           display: "initial",
-          width: "0.5em",
+          width: "scrollbarWidth",
         },
 
         "&::-webkit-scrollbar-thumb": {
