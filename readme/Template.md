@@ -67,7 +67,6 @@ return scripts.getLinuxDownloadLink('1) ')
 ```
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
-4) [Give permission to your Roms folder](#give-permission-to-your-roms-folder-linux-only)
 
 ### Steam Deck in Game mode
 
@@ -79,10 +78,9 @@ return scripts.getLinuxDownloadLink('2) ')
 ```
 3) Mark the AppImage as executable and start emuze
 4) Choose the [folder where your Roms are located](#roms-folder)
-5) [Give permission to your Roms folder](#give-permission-to-your-roms-folder-linux-only)
-6) Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze` 
+5) Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze` 
+6) Add `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
 7) Switch to Game Mode
-8) Add `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
 
 #### Steam Input Profile
 
@@ -97,17 +95,13 @@ roms
 |-> Playstation
 |---> Tekken 2.chd
 |---> Crash Bandicoot.chd
+|---> Final Fantasy VII.chd
 |---> ...
 |-> Super Nintendo
 |---> Super Metroid.sfc
 |---> Terranigma.sfc
 |---> ...
 ```
-
-### Give Permission to your roms folder (Linux only)
-
-The emulators on the Steam Deck are distributed via Flatpaks which run in a Sandbox. Out of the box Flatpaks can only access folders in your home directory.
-If your roms are stored somewhere else you can give access to this folder via `Flatseal`. You can find the app in the Discover-App-Store.
 
 ## 🪄 Metadata
 
