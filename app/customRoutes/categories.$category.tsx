@@ -14,10 +14,7 @@ import { Button } from "~/components/Button";
 import { executeApplication } from "~/server/execute.server";
 import { importEntries, readCategory } from "~/server/categories.server";
 import { GameGridDynamic } from "app/components/GameGrid";
-import {
-  ListActionBarLayout,
-  scrollPadding,
-} from "~/components/layouts/ListActionBarLayout";
+import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
 import { useTestId } from "~/hooks/useTestId";
 import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
 import { SystemIcon } from "app/components/SystemIcon";
@@ -193,7 +190,8 @@ export default function Category() {
       if (listRef?.current) {
         // Add scrollPadding if entry was selected by gamepad to center the element.
         // Needs to be in a timeout to reactivate the feature afterwards
-        listRef.current.style.scrollPadding = scrollPadding;
+        // If you change this value, change it in panda config as well
+        listRef.current.style.scrollPadding = "50% 0";
       }
     }, 10);
   }, [isInFocus, enableGamepads, switchFocus]);

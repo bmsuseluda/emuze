@@ -18,7 +18,7 @@ const Wrapper = styled("li", {
     position: "relative",
     minWidth: "200px",
     maxWidth: "300px",
-    transition: "width 0.1s ease-in-out",
+    transition: "0.1s ease-in-out",
   },
 });
 
@@ -53,6 +53,7 @@ const Input = styled("input", {
     width: "100%",
     height: "100%",
     zIndex: "-2",
+    opacity: 0,
   },
 });
 

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { GamepadButtonIcon } from ".";
 import { layout } from "~/hooks/useGamepads/layouts";
+import { Button } from "~/components/Button";
 
 const meta = {
   component: GamepadButtonIcon,
@@ -15,6 +16,7 @@ export const XboxA: Story = {
     gamepadType: "XBox",
     buttonIndex: layout.buttons.A,
   },
+  render: (args) => <Button icon={<GamepadButtonIcon {...args} />}></Button>,
 };
 
 export const NintendoB: Story = {
@@ -22,6 +24,7 @@ export const NintendoB: Story = {
     gamepadType: "Nintendo",
     buttonIndex: layout.buttons.A,
   },
+  render: (args) => <Button icon={<GamepadButtonIcon {...args} />}></Button>,
 };
 
 export const PlayStationX: Story = {
@@ -29,4 +32,5 @@ export const PlayStationX: Story = {
     gamepadType: "PlayStation",
     buttonIndex: layout.buttons.A,
   },
+  render: (args) => <Button icon={<GamepadButtonIcon {...args} />}></Button>,
 };

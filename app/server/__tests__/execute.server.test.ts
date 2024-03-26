@@ -154,6 +154,7 @@ describe("execute.server", () => {
 
         expect(execFileMock).toHaveBeenCalledWith("flatpak", [
           "run",
+          "--filesystem=F:/games/Emulation/roms",
           "--command=mednafen",
           applicationsDB.mednafen.flatpakId,
           createAbsoluteEntryPath(pcenginecdLinux.name, entry.path),
@@ -179,6 +180,7 @@ describe("execute.server", () => {
 
         expect(execFileMock).toHaveBeenCalledWith("flatpak", [
           "run",
+          "--filesystem=F:/games/Emulation/roms",
           applicationsDB.mame.flatpakId,
           "-w",
           "-rompath",

@@ -16,6 +16,12 @@ export const Basic: Story = {
       alert("launch");
     },
     isInFocus: true,
+    onBack: () => {
+      alert("back");
+    },
+    onGameClick: () => {
+      alert("game click");
+    },
   },
 };
 
@@ -27,5 +33,11 @@ export const WithAlwaysGameName: Story = {
       alert("launch");
     },
     isInFocus: true,
+    onBack: () => {
+      alert("back");
+    },
+    onGameClick: () => {
+      alert("game click");
+    },
   },
 };

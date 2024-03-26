@@ -15,6 +15,7 @@
     "paths": {
       "~/*": ["../app/*"]
     },
-    "outDir": "./build"
+    "outDir": "./build",
+    "target": "ESNext"
   }
 }

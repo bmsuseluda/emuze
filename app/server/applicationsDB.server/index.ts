@@ -1,21 +1,17 @@
 import nodepath from "path";
 
-import type { Application } from "~/server/applicationsDB.server/types";
-import { scummvm } from "app/server/applicationsDB.server/applications/scummvm";
-import { dosboxstaging } from "app/server/applicationsDB.server/applications/dosbox";
-import {
-  mame,
-  mameNeoGeo,
-  mameNeoGeoCD,
-} from "app/server/applicationsDB.server/applications/mame";
-import { rpcs3 } from "app/server/applicationsDB.server/applications/rpcs3";
+import type { Application } from "./types";
+import { scummvm } from "./applications/scummvm";
+import { dosboxstaging } from "./applications/dosbox";
+import { mame, mameNeoGeo, mameNeoGeoCD } from "./applications/mame";
+import { rpcs3 } from "./applications/rpcs3";
 import {
   ares,
   aresMegaDrive,
   aresSega32x,
   aresSegaCd,
-} from "~/server/applicationsDB.server/applications/ares";
-import { punes } from "~/server/applicationsDB.server/applications/punes";
+} from "./applications/ares";
+import { punes } from "./applications/punes";
 import { isWindows } from "~/server/operationsystem.server";
 
 export const pcsx2: Application = {

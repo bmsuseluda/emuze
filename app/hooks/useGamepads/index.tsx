@@ -4,9 +4,6 @@ import { layout } from "~/hooks/useGamepads/layouts";
 import type { GamepadType } from "~/hooks/useGamepads/gamepadTypeMapping";
 import { identifyGamepadType } from "~/hooks/useGamepads/gamepadTypeMapping";
 
-const findGamepad = (gamepads: (Gamepad | null)[], gamepadIndex: number) =>
-  gamepads.find((gamepad) => gamepad?.index === gamepadIndex);
-
 const isStickPressed = (stickValue: number) => {
   const normalizedStickValue = stickValue < 0 ? stickValue * -1 : stickValue;
   return normalizedStickValue > 0.5;
@@ -56,32 +53,41 @@ export const identifyGamepadTypeUnmasked = (gamepad: Gamepad) => {
   }
 };
 
+const isThrottled = (oldGamepad?: Gamepad | null) =>
+  !oldGamepad || new Date().getTime() - oldGamepad.timestamp > 250;
+
 export const useGamepads = () => {
-  const oldGamepads = useRef<(Gamepad | null)[]>([]);
+  const oldGamepads = useRef<Record<number, Gamepad>>({});
   const requestAnimationFrameRef = useRef<number>();
   const focusRef = useRef<boolean>(true);
   const [gamepadType, setGamepadType] = useState<GamepadType>();
+
+  const addGamepad = (gamepad: Gamepad) => {
+    oldGamepads.current = {
+      ...oldGamepads.current,
+      [gamepad.index]: {
+        ...gamepad,
+        timestamp: new Date().getTime(),
+      },
+    };
+  };
 
   // TODO: split function
   const fireEventOnButtonPress = useCallback((gamepads: (Gamepad | null)[]) => {
     if (!document.hidden && document.visibilityState === "visible") {
       gamepads.forEach((gamepad) => {
         if (gamepad) {
-          const oldGamepad = findGamepad(oldGamepads.current, gamepad.index);
+          const oldGamepad = oldGamepads.current[gamepad.index];
           gamepad.buttons.forEach((button, index) => {
-            if (!oldGamepad?.buttons[index]?.pressed && button.pressed) {
+            if (button.pressed && isThrottled(oldGamepad)) {
               setGamepadType(identifyGamepadTypeUnmasked(gamepad));
               dispatchEvent(new CustomEvent(`gamepadonbutton${index}press`));
+
+              addGamepad(gamepad);
             }
           });
           gamepad.axes.forEach((stickValue, index) => {
-            if (
-              !(
-                oldGamepad?.axes[index] &&
-                isStickPressed(oldGamepad.axes[index])
-              ) &&
-              isStickPressed(stickValue)
-            ) {
+            if (isStickPressed(stickValue) && isThrottled(oldGamepad)) {
               setGamepadType(identifyGamepadTypeUnmasked(gamepad));
 
               // TODO: simplify with generic function
@@ -135,13 +141,13 @@ export const useGamepads = () => {
                   break;
                 }
               }
+
+              addGamepad(gamepad);
             }
           });
         }
       });
     }
-
-    oldGamepads.current = gamepads;
   }, []);
 
   const update = useCallback(() => {
