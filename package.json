@@ -12,7 +12,7 @@
     "panda:codegen": "panda codegen --clean",
     "dev": "yarn clean && yarn panda:codegen && yarn transpileConfigs && remix dev",
     "dev:electron": "yarn clean && yarn panda:codegen && yarn build:electron && yarn transpileConfigs && remix dev --command 'electron .'",
-    "transpileConfigs": "tsc -p ./configsToTs/tsconfig.json && cp ./buildConfig/remix.config.js .",
+    "transpileConfigs": "tsc -p ./configsToTs/tsconfig.json && shx cp ./buildConfig/remix.config.js .",
     "build": "yarn clean && cross-env NODE_ENV=production yarn panda:codegen && concurrently -c 'auto' 'yarn:build:*'",
     "build:remix": "yarn transpileConfigs && remix build",
     "build:electron": "tsc -p ./desktop/tsconfig.json",
@@ -35,6 +35,7 @@
     "e2e:electron": "yarn build && playwright test --ui"
   },
   "dependencies": {
+    "@kmamal/sdl": "^0.10.4",
     "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-label": "^2.0.2",
@@ -108,6 +109,7 @@
     "prettier": "^3.2.5",
     "prop-types": "^15.8.1",
     "require-from-string": "^2.0.2",
+    "shx": "^0.3.4",
     "storybook": "^8.0.4",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.8",
