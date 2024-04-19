@@ -145,7 +145,7 @@ export const supernintendo: Category = {
   ],
   igdbPlatformIds: [19, 51, 58],
   applications: [bsnes, snes9x, ares],
-  defaultApplication: bsnes,
+  defaultApplication: ares,
 };
 
 export const nintendods: Category = {
