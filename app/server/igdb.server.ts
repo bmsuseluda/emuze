@@ -2,6 +2,7 @@ import type { Entry } from "~/types/jsonFiles/category";
 import type { Apicalypse } from "apicalypse";
 import apicalypse from "apicalypse";
 import { getExpiresOn } from "~/server/getExpiresOn.server";
+import { retryPromise } from "~/promiseRetry";
 
 interface GameLocalization {
   name?: string;
@@ -110,17 +111,22 @@ const fetchMetaDataForChunk = async (
   entries: Entry[],
 ) => {
   // TODO: check on limit in response
-  const gamesResponse: GamesResponse = await client
-    .fields([
-      "name",
-      "cover.image_id,alternative_names.name,game_localizations.name,game_localizations.cover.image_id",
-    ])
-    .where(
-      `platforms=(${platformId}) &
+  const gamesResponse: GamesResponse = await retryPromise(
+    () =>
+      client
+        .fields([
+          "name",
+          "cover.image_id,alternative_names.name,game_localizations.name,game_localizations.cover.image_id",
+        ])
+        .where(
+          `platforms=(${platformId}) &
             (${entries.flatMap(filterGame).join(" | ")})`,
-    )
-    .limit(500)
-    .request(url);
+        )
+        .limit(500)
+        .request(url),
+    3,
+    1000,
+  );
 
   const expiresOn = getExpiresOn();
   return entries.map((entry) => {

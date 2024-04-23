@@ -120,6 +120,8 @@ export default defineConfig({
         2: { value: "2rem" },
         3: { value: "3rem" },
         4: { value: "5rem" },
+        // If you change this value, change it in customRoutes/categories.$category.tsx as well
+        scrollPadding: { value: "50% 0" },
       },
       sizes: {
         1: { value: "1rem" },
@@ -127,6 +129,8 @@ export default defineConfig({
         3: { value: "3rem" },
         4: { value: "4rem" },
         5: { value: "5rem" },
+        scrollbarWidth: { value: "0.5rem" },
+        scrollMask: { value: "1.5rem" },
       },
       borders: {
         2: {

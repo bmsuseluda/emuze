@@ -17,14 +17,16 @@ const executeApplicationOnLinux = ({
   absoluteEntryPath,
   optionParams,
   omitAbsoluteEntryPathAsLastParam,
+  categoriesPath,
 }: {
   applicationFlatpakOptionParams?: string[];
   applicationFlatpakId: string;
   absoluteEntryPath: string;
   optionParams: string[];
   omitAbsoluteEntryPathAsLastParam?: boolean;
+  categoriesPath: string;
 }) => {
-  const params = ["run"];
+  const params = ["run", `--filesystem=${categoriesPath}`];
   if (applicationFlatpakOptionParams) {
     params.push(...applicationFlatpakOptionParams);
   }
@@ -35,7 +37,6 @@ const executeApplicationOnLinux = ({
     params.push(absoluteEntryPath);
   }
 
-  // TODO: check how to get logs in error case but without freezing the application
   execFileSync("flatpak", params);
 };
 
@@ -56,7 +57,7 @@ const executeApplicationOnWindows = ({
   if (!omitAbsoluteEntryPathAsLastParam) {
     params.push(absoluteEntryPath);
   }
-  // TODO: check how to get logs in error case but without freezing the application
+
   execFileSync(applicationPath, params);
 };
 
@@ -122,6 +123,7 @@ export const executeApplication = (category: SystemId, entry: string) => {
               optionParams,
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
+              categoriesPath: generalData.categoriesPath,
             });
           }
         } catch (error) {
