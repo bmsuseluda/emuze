@@ -10,6 +10,7 @@ import {
   aresMegaDrive,
   aresSega32x,
   aresSegaCd,
+  aresSuperNintendo,
 } from "./applications/ares";
 import { punes } from "./applications/punes";
 import { isWindows } from "~/server/operationsystem.server";
@@ -141,6 +142,13 @@ export const citra: Application = {
   name: "Citra",
   fileExtensions: [".3ds"],
   flatpakId: "org.citra_emu.citra",
+};
+
+export const lime3ds: Application = {
+  id: "lime3ds",
+  name: "Lime3DS",
+  fileExtensions: [".3ds"],
+  flatpakId: "io.github.lime3ds.Lime3DS",
 };
 
 export const melonds: Application = {
@@ -353,6 +361,7 @@ export const applications = {
   bsnes,
   snes9x,
   citra,
+  lime3ds,
   melonds,
   desmume,
   dolphin,
@@ -366,6 +375,7 @@ export const applications = {
   mameNeoGeo,
   mameNeoGeoCD,
   ares,
+  aresSuperNintendo,
   aresMegaDrive,
   aresSegaCd,
   aresSega32x,

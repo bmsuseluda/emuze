@@ -7,6 +7,7 @@ import {
   dolphin,
   duckstation,
   flycast,
+  lime3ds,
   mednafen,
   melonds,
   mgba,
@@ -26,6 +27,7 @@ import {
   aresMegaDrive,
   aresSega32x,
   aresSegaCd,
+  aresSuperNintendo,
 } from "../applicationsDB.server/applications/ares";
 import {
   mame,
@@ -144,8 +146,8 @@ export const supernintendo: Category = {
     "Super Famicom",
   ],
   igdbPlatformIds: [19, 51, 58],
-  applications: [bsnes, snes9x, ares],
-  defaultApplication: ares,
+  applications: [bsnes, snes9x, aresSuperNintendo],
+  defaultApplication: aresSuperNintendo,
 };
 
 export const nintendods: Category = {
@@ -160,8 +162,8 @@ export const nintendo3ds: Category = {
   id: "nintendo3ds",
   names: ["Nintendo 3DS", "3DS"],
   igdbPlatformIds: [37, 137],
-  applications: [citra],
-  defaultApplication: citra,
+  applications: [citra, lime3ds],
+  defaultApplication: lime3ds,
 };
 
 export const nintendogamecube: Category = {

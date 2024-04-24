@@ -488,6 +488,16 @@ export const ares: Application = {
   createOptionParams: getSharedAresOptionParams,
 };
 
+export const aresSuperNintendo: Application = {
+  ...ares,
+  id: "aresSuperNintendo",
+  fileExtensions: [".sfc"],
+  createOptionParams: (...props) => [
+    ...getSharedAresOptionParams(...props),
+    ...["--system", "Super Famicom"],
+  ],
+};
+
 export const aresMegaDrive: Application = {
   ...ares,
   id: "aresMegaDrive",
