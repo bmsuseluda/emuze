@@ -22,12 +22,15 @@ If your roms are named correctly, a click on the import button should import you
 <p>
   <img src="https://github.com/bmsuseluda/emuze/blob/main/screenshots/library.png?raw=true" alt="Library" />
 </p>
+<p>
+  <img src="https://github.com/bmsuseluda/emuze/blob/main/screenshots/library_collapsed.png?raw=true" alt="Library collapsed" />
+</p>
 
 ## 🚀 Getting started
 
 ### Windows
 
-[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.46.0/emuze-Setup-0.46.0.exe) the latest Version of emuze and install it.
+[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.47.1/emuze-Setup-0.47.1.exe) the latest Version of emuze and install it.
 
 If you start emuze for the first time, it asks for the following folders to work:
 
@@ -57,25 +60,23 @@ emulators
 
 For now emuze is only released as an AppImage. Your distribution needs to support Flatpaks.
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.46.0/emuze-0.46.0.AppImage) the latest Version of emuze
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.47.1/emuze-0.47.1.AppImage) the latest Version of emuze
 
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
-4) [Give permission to your Roms folder](#give-permission-to-your-roms-folder-linux-only)
 
 ### Steam Deck in Game mode
 
 For now emuze is only released as an AppImage.
 
 1) Switch to Desktop
-2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.46.0/emuze-0.46.0.AppImage) the latest Version of emuze
+2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.47.1/emuze-0.47.1.AppImage) the latest Version of emuze
 
 3) Mark the AppImage as executable and start emuze
 4) Choose the [folder where your Roms are located](#roms-folder)
-5) [Give permission to your Roms folder](#give-permission-to-your-roms-folder-linux-only)
-6) Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze` 
+5) Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze` 
+6) Add `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
 7) Switch to Game Mode
-8) Add `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
 
 #### Steam Input Profile
 
@@ -90,17 +91,13 @@ roms
 |-> Playstation
 |---> Tekken 2.chd
 |---> Crash Bandicoot.chd
+|---> Final Fantasy VII.chd
 |---> ...
 |-> Super Nintendo
 |---> Super Metroid.sfc
 |---> Terranigma.sfc
 |---> ...
 ```
-
-### Give Permission to your roms folder (Linux only)
-
-The emulators on the Steam Deck are distributed via Flatpaks which run in a Sandbox. Out of the box Flatpaks can only access folders in your home directory.
-If your roms are stored somewhere else you can give access to this folder via `Flatseal`. You can find the app in the Discover-App-Store.
 
 ## 🪄 Metadata
 
@@ -147,12 +144,12 @@ Right now the following are supported:
 | Sony Playstation 3 | RPCS3 | RPCS3 |
 | Sony Playstation Portable | PPSSPP | PPSSPP |
 | Nintendo Entertainment System | Nestopia<br>puNES<br>Mednafen<br>Ares | puNES |
-| Super Nintendo Entertainment System | BSNES<br>Snes9x<br>Ares | BSNES |
+| Super Nintendo Entertainment System | BSNES<br>Snes9x<br>Ares | Ares |
 | Nintendo Game Boy | mgba<br>Ares | mgba |
 | Nintendo Game Boy Color | mgba | mgba |
 | Nintendo Game Boy Advance | mgba<br>Ares | mgba |
 | Nintendo DS | MelonDS<br>DeSmuME | MelonDS |
-| Nintendo 3DS | Citra | Citra |
+| Nintendo 3DS | Citra<br>Lime3DS | Lime3DS |
 | Nintendo 64 | Ares<br>Rosalie's Mupen GUI<br>Mupen64Plus | Ares |
 | Nintendo Gamecube | Dolphin | Dolphin |
 | Nintendo Wii | Dolphin | Dolphin |
