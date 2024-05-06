@@ -211,7 +211,7 @@ export const nintendoentertainmentsystem: Category = {
   names: ["Nintendo Entertainment System", "NES", "Famicom"],
   igdbPlatformIds: [18, 99],
   applications: [nestopia, punes, mednafen, ares],
-  defaultApplication: punes,
+  defaultApplication: ares,
 };
 
 export const nintendo64: Category = {
@@ -288,7 +288,7 @@ export const pcenginesupergrafx: Category = {
 
 export const neogeo: Category = {
   id: "neogeo",
-  names: ["Neo Geo", "Neo Geo AES", "Neo Geo MVS"],
+  names: ["Neo Geo", "Neo Geo AES", "Neo Geo MVS", "NeoGeo"],
   igdbPlatformIds: [79, 80],
   applications: [mameNeoGeo],
   defaultApplication: mameNeoGeo,
@@ -296,10 +296,26 @@ export const neogeo: Category = {
 
 export const neogeocd: Category = {
   id: "neogeocd",
-  names: ["Neo Geo CD"],
+  names: ["Neo Geo CD", "NeoGeo CD"],
   igdbPlatformIds: [136],
   applications: [mameNeoGeoCD],
   defaultApplication: mameNeoGeoCD,
+};
+
+export const neogeopocket: Category = {
+  id: "neogeopocket",
+  names: ["Neo Geo Pocket", "NeoGeo Pocket"],
+  igdbPlatformIds: [119, 120],
+  applications: [ares],
+  defaultApplication: ares,
+};
+
+export const neogeopocketcolor: Category = {
+  id: "neogeopocketcolor",
+  names: ["Neo Geo Pocket Color", "NeoGeo Pocket Color"],
+  igdbPlatformIds: [120],
+  applications: [ares],
+  defaultApplication: ares,
 };
 
 export const dos: Category = {
@@ -348,6 +364,8 @@ export const categories = {
   arcade,
   neogeo,
   neogeocd,
+  neogeopocket,
+  neogeopocketcolor,
   scumm,
   dos,
 } satisfies Record<string, Category>;

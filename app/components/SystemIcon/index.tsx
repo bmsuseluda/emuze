@@ -20,6 +20,7 @@ import SvgNintendo64 from "~/components/Icons/Nintendo64";
 import SvgGba from "~/components/Icons/Gba";
 import SvgPsp from "~/components/Icons/Psp";
 import Gamegear from "~/components/Icons/Gamegear";
+import Neogeopocket from "~/components/Icons/Neogeopocket";
 
 export const icons: Record<SystemId, IconType> = {
   // TODO: use https://thenounproject.com/icon/game-controller-193591/
@@ -45,6 +46,8 @@ export const icons: Record<SystemId, IconType> = {
   neogeo: SiApplearcade,
   // TODO: use https://thenounproject.com/icon/neo-geo-221035/
   neogeocd: SiApplearcade,
+  neogeopocket: Neogeopocket,
+  neogeopocketcolor: Neogeopocket,
   segadreamcast: TiSpiral,
   dos: GrDos,
   scumm: LuComputer,

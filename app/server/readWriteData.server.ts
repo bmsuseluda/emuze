@@ -8,7 +8,7 @@ import {
   writeFileSync,
 } from "fs";
 
-const homeDirectory = nodepath.join(
+export const homeDirectory = nodepath.join(
   process.env.EMUZE_CONFIG_PATH || homedir(),
   ".emuze",
 );

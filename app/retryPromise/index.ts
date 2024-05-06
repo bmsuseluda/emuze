@@ -1,6 +1,7 @@
 const delay = (milliseconds: number) =>
   new Promise((resolve) => setTimeout(resolve, milliseconds));
 
+// TODO: add exponential backoff for delay
 export const retryPromise = async <T>(
   promise: () => Promise<T>,
   retries: number,

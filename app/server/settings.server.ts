@@ -1,6 +1,6 @@
 import type { General } from "~/types/jsonFiles/settings/general";
 import type { Appearance } from "~/types/jsonFiles/settings/appearance";
-import { FileDataCache } from "~/server/FileDataCache.server";
+import { FileDataCache } from "./FileDataCache.server";
 
 export type SettingsID = "general" | "appearance";
 

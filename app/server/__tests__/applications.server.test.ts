@@ -7,8 +7,9 @@ import {
   applications as applicationsTestData,
   applicationsPath,
   pcsx2,
+  play,
 } from "../__testData__/applications";
-import * as applicationsFromDB from "../applicationsDB.server";
+import * as categoriesFromDB from "../categoriesDB.server";
 import { readFilenames } from "~/server/readWriteData.server";
 import { checkFlatpakIsInstalled } from "~/server/execute.server";
 import type { Mock } from "vitest";
@@ -117,13 +118,15 @@ describe("applications.server", () => {
   });
 
   describe("getInstalledApplicationForCategoryOnLinux", () => {
-    const defaultApplication = applicationsFromDB.pcsx2;
+    const defaultApplication =
+      categoriesFromDB.sonyplaystation2.defaultApplication;
+
     it("Should return old application if old application is installed", () => {
       const oldApplication = applicationsTestData.play;
       (checkFlatpakIsInstalled as Mock<any, boolean>).mockReturnValueOnce(true);
 
       const result = getInstalledApplicationForCategoryOnLinux(
-        defaultApplication,
+        categoriesFromDB.sonyplaystation2.applications,
         oldApplication,
       );
 
@@ -133,22 +136,39 @@ describe("applications.server", () => {
     it("Should return default application if old application is not set and default application is installed", () => {
       (checkFlatpakIsInstalled as Mock<any, boolean>).mockReturnValueOnce(true);
 
-      const result =
-        getInstalledApplicationForCategoryOnLinux(defaultApplication);
+      const result = getInstalledApplicationForCategoryOnLinux([
+        defaultApplication,
+      ]);
 
       expect(result).toBe(defaultApplication);
     });
 
+    it("Should return installed application if old application and default application are not set", () => {
+      (checkFlatpakIsInstalled as Mock<any, boolean>).mockReturnValueOnce(
+        false,
+      );
+      (checkFlatpakIsInstalled as Mock<any, boolean>).mockReturnValueOnce(true);
+
+      const result = getInstalledApplicationForCategoryOnLinux(
+        categoriesFromDB.sonyplaystation2.applications,
+      );
+
+      expect(result).toBe(categoriesFromDB.sonyplaystation2.applications[1]);
+    });
+
     it("Should return undefined if no compatible application is installed", () => {
-      const result =
-        getInstalledApplicationForCategoryOnLinux(defaultApplication);
+      const result = getInstalledApplicationForCategoryOnLinux([
+        defaultApplication,
+      ]);
 
       expect(result).toBeUndefined();
     });
   });
 
   describe("getInstalledApplicationForCategoryOnWindows", () => {
-    const defaultApplication = applicationsFromDB.pcsx2;
+    const defaultApplication =
+      categoriesFromDB.sonyplaystation2.defaultApplication;
+
     it("Should return old application if old application is installed", () => {
       const oldApplication = applicationsTestData.play;
       (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
@@ -156,7 +176,7 @@ describe("applications.server", () => {
       ]);
 
       const result = getInstalledApplicationForCategoryOnWindows(
-        defaultApplication,
+        [defaultApplication],
         applicationsPath,
         oldApplication,
       );
@@ -168,18 +188,33 @@ describe("applications.server", () => {
       (readFilenames as Mock<any, string[]>).mockReturnValueOnce([pcsx2.path]);
 
       const result = getInstalledApplicationForCategoryOnWindows(
-        defaultApplication,
+        [defaultApplication],
         applicationsPath,
       );
 
       expect(result).toStrictEqual({ ...defaultApplication, path: pcsx2.path });
     });
 
+    it("Should return installed application if old application and default application are not set", () => {
+      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([]);
+      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([play.path]);
+
+      const result = getInstalledApplicationForCategoryOnWindows(
+        categoriesFromDB.sonyplaystation2.applications,
+        applicationsPath,
+      );
+
+      expect(result).toStrictEqual({
+        ...categoriesFromDB.sonyplaystation2.applications[1],
+        path: play.path,
+      });
+    });
+
     it("Should return undefined if no compatible application is installed", () => {
       (readFilenames as Mock<any, string[]>).mockReturnValueOnce([]);
 
       const result = getInstalledApplicationForCategoryOnWindows(
-        defaultApplication,
+        [defaultApplication],
         applicationsPath,
       );
 

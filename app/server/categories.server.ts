@@ -185,7 +185,7 @@ export const importEntries = async (category: SystemId) => {
     const { igdbPlatformIds, defaultApplication } = categoryDbData;
     const application = getInstalledApplicationForCategory({
       applicationsPath,
-      defaultApplicationDB: defaultApplication,
+      categoryDB: categoryDbData,
       oldApplication: oldCategoryData?.application,
     });
 
@@ -246,7 +246,7 @@ const createCategoryData = (
 
   const application = getInstalledApplicationForCategory({
     applicationsPath,
-    defaultApplicationDB: defaultApplication,
+    categoryDB: categoryDbData,
     oldApplication: oldCategoryData?.application,
   });
 

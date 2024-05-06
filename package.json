@@ -164,6 +164,6 @@
     "out": "./README.md",
     "scripts": "./readme/build/readme/scripts.js"
   },
-  "main": "buildDesktop/main.js",
+  "main": "buildDesktop/desktop/main.js",
   "packageManager": "yarn@4.0.1"
 }

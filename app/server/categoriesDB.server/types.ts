@@ -30,6 +30,8 @@ export type SystemId =
   | "arcade"
   | "neogeo"
   | "neogeocd"
+  | "neogeopocket"
+  | "neogeopocketcolor"
   | "scumm"
   | "dos";
 

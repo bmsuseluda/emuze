@@ -2,9 +2,10 @@ import { initRemix } from "remix-electron";
 import { platform } from "os";
 import { app, BrowserWindow, ipcMain, session } from "electron";
 import nodepath from "path";
-import { readAppearance } from "./readSettings";
 import * as dotenv from "dotenv";
 import { autoUpdater } from "electron-updater";
+import { readAppearance } from "../app/server/settings.server";
+import { createLogFile, isDebug } from "../app/server/debug.server";
 
 dotenv.config();
 
@@ -31,12 +32,16 @@ app.on("ready", async () => {
     }
   });
 
+  if (isDebug()) {
+    createLogFile();
+  }
+
   const appearance = readAppearance();
   const fullscreen =
     app.commandLine.hasSwitch("fullscreen") || appearance?.fullscreen;
 
   const url = await initRemix({
-    serverBuild: nodepath.join(__dirname, "../build/index.js"),
+    serverBuild: nodepath.join(__dirname, "../../build/index.js"),
     getLoadContext: () => ({
       fullscreen: window.isFullScreen(),
     }),

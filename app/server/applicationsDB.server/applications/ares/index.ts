@@ -4,6 +4,7 @@ import type {
 } from "~/server/applicationsDB.server/types";
 import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
+import { log } from "~/server/debug.server";
 
 type GamepadGroupId = "Axis" | "HAT" | "Button";
 const gamepadGroupId: Record<GamepadGroupId, number> = {
@@ -438,6 +439,8 @@ const getVirtualGamepad = ({
 const getVirtualGamepads = () => {
   const gamepads = sdl.controller.devices;
 
+  log("debug", "gamepads", gamepads);
+
   return gamepads.flatMap(getVirtualGamepad);
 };
 
@@ -483,6 +486,8 @@ export const ares: Application = {
     ".gba",
     ".cue",
     ".pce",
+    ".ngp",
+    ".ngc",
   ],
   flatpakId: "dev.ares.ares",
   createOptionParams: getSharedAresOptionParams,
