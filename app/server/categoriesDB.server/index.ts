@@ -368,6 +368,7 @@ export const categories = {
   neogeopocketcolor,
   scumm,
   dos,
+  //   TODO: can not use SystemId type here. Check why
 } satisfies Record<string, Category>;
 
 export const getCategoryDataByName = (name: string) =>

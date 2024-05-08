@@ -5,64 +5,38 @@ import type {
 import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
 import { log } from "~/server/debug.server";
+import type { SystemId } from "~/server/categoriesDB.server/types";
+import type {
+  AresButtonId,
+  GamepadGroupId,
+  PhysicalGamepadButton,
+  SdlButtonId,
+  SdlButtonMapping,
+} from "~/server/applicationsDB.server/applications/ares/types";
+import { PhysicalGamepad } from "~/server/applicationsDB.server/applications/ares/PhysicalGamepad";
 
-type GamepadGroupId = "Axis" | "HAT" | "Button";
+const systemsWithAnalogStick: SystemId[] = [
+  "sonyplaystation",
+  "sonyplaystation2",
+  "sonyplaystation3",
+  "sonypsp",
+  "nintendo64",
+  "nintendogamecube",
+  "nintendo3ds",
+  "nintendowii",
+  "nintendowiiu",
+  "nintendoswitch",
+  "segadreamcast",
+];
+
+const hasAnalogStick = (systemId: SystemId) =>
+  systemsWithAnalogStick.includes(systemId);
+
 const gamepadGroupId: Record<GamepadGroupId, number> = {
   Axis: 0,
   HAT: 1,
   Button: 3,
 };
-
-type AresButtonId =
-  | "Pad.Up"
-  | "Pad.Down"
-  | "Pad.Left"
-  | "Pad.Right"
-  | "Select"
-  | "Start"
-  | "A..South"
-  | "B..East"
-  | "X..West"
-  | "Y..North"
-  | "L-Bumper"
-  | "R-Bumper"
-  | "L-Trigger"
-  | "R-Trigger"
-  | "L-Stick..Click"
-  | "R-Stick..Click"
-  | "L-Up"
-  | "L-Down"
-  | "L-Left"
-  | "L-Right"
-  | "R-Up"
-  | "R-Down"
-  | "R-Left"
-  | "R-Right";
-
-type SdlButtonId =
-  | "a"
-  | "b"
-  | "x"
-  | "y"
-  | "back"
-  | "start"
-  | "guide"
-  | "dpdown"
-  | "dpleft"
-  | "dpright"
-  | "dpup"
-  | "leftshoulder"
-  | "rightshoulder"
-  | "lefttrigger"
-  | "righttrigger"
-  | "leftstick"
-  | "rightstick"
-  | "leftx"
-  | "lefty"
-  | "rightx"
-  | "righty";
-
-type SdlButtonMapping = Partial<Record<SdlButtonId, string>>;
 
 /**
  *
@@ -79,81 +53,82 @@ const createSdlMappingObject = (sdlMapping: string) =>
       return accumulator;
     }, {});
 
-// TODO: Should this function work for HAT as well?
-const getButtonIndex = (
-  mappingObject: SdlButtonMapping,
-  buttonId: SdlButtonId,
-): string | undefined =>
-  mappingObject[buttonId]?.replace("b", "").replace("a", "");
-
 type VirtualGamepad = {
   gamepadIndex: number;
   buttonId: AresButtonId;
 };
 
-type PhysicalGamepad = {
-  deviceId: string;
-  groupId: GamepadGroupId;
-  inputId?: string;
-  qualifier?: "Hi" | "Lo";
-};
+const getPhysicalGamepadString = (
+  physicalGamepadButton: PhysicalGamepadButton | null,
+) =>
+  physicalGamepadButton && physicalGamepadButton.inputId
+    ? [
+        physicalGamepadButton.deviceId,
+        gamepadGroupId[physicalGamepadButton.groupId].toString(),
+        physicalGamepadButton.inputId,
+        physicalGamepadButton.qualifier || null,
+      ]
+        .filter(Boolean)
+        .join("/")
+    : null;
 
 const getVirtualGamepadButton = (
   virtualGamepad: VirtualGamepad,
-  physicalGamepad: PhysicalGamepad,
+  ...physicalGamepadButtons: (PhysicalGamepadButton | null)[]
 ) => {
-  if (physicalGamepad.inputId) {
+  const physicalGamepadStrings = physicalGamepadButtons
+    .map(getPhysicalGamepadString)
+    .filter(Boolean);
+
+  if (physicalGamepadStrings.length > 0) {
     const virtualGamepadString = [
       `VirtualPad${virtualGamepad.gamepadIndex + 1}`,
       virtualGamepad.buttonId,
     ].join("/");
 
-    const physicalGamepadString = [
-      physicalGamepad.deviceId,
-      gamepadGroupId[physicalGamepad.groupId].toString(),
-      physicalGamepad.inputId,
-      physicalGamepad.qualifier || null,
-    ]
-      .filter(Boolean)
-      .join("/");
-
-    return ["--setting", `${virtualGamepadString}=${physicalGamepadString};;`];
+    return [
+      "--setting",
+      //   TODO: check if it is a problem if there are less then 3 ';'
+      `${virtualGamepadString}=${physicalGamepadStrings.join(";")}`,
+    ];
   }
 
   return [];
 };
 
 /**
- * Maps dpad if available, else left stick
- *
- * @param deviceId
- * @param gamepadIndex
- * @param mappingObject
+ * Maps dpad if available, else left stick.
  */
 const getVirtualGamepadDpad = (
-  deviceId: string,
   gamepadIndex: number,
   mappingObject: SdlButtonMapping,
+  physicalGamepad: PhysicalGamepad,
+  systemId: SystemId,
 ) => {
   if (mappingObject.dpup) {
+    const systemHasAnalogStick = hasAnalogStick(systemId);
     if (mappingObject.dpup.startsWith("h")) {
       //     hat
       return [
         ...getVirtualGamepadButton(
           { gamepadIndex, buttonId: "Pad.Left" },
-          { deviceId, groupId: "HAT", inputId: "0", qualifier: "Lo" },
+          physicalGamepad.getDpadHatLeft(),
+          !systemHasAnalogStick ? physicalGamepad.getLeftStickLeft() : null,
         ),
         ...getVirtualGamepadButton(
           { gamepadIndex, buttonId: "Pad.Right" },
-          { deviceId, groupId: "HAT", inputId: "0", qualifier: "Hi" },
+          physicalGamepad.getDpadHatRight(),
+          !systemHasAnalogStick ? physicalGamepad.getLeftStickRight() : null,
         ),
         ...getVirtualGamepadButton(
           { gamepadIndex, buttonId: "Pad.Up" },
-          { deviceId, groupId: "HAT", inputId: "1", qualifier: "Lo" },
+          physicalGamepad.getDpadHatUp(),
+          !systemHasAnalogStick ? physicalGamepad.getLeftStickUp() : null,
         ),
         ...getVirtualGamepadButton(
           { gamepadIndex, buttonId: "Pad.Down" },
-          { deviceId, groupId: "HAT", inputId: "1", qualifier: "Hi" },
+          physicalGamepad.getDpadHatDown(),
+          !systemHasAnalogStick ? physicalGamepad.getLeftStickDown() : null,
         ),
       ];
     } else {
@@ -161,35 +136,23 @@ const getVirtualGamepadDpad = (
       return [
         ...getVirtualGamepadButton(
           { gamepadIndex, buttonId: "Pad.Left" },
-          {
-            deviceId,
-            groupId: "Button",
-            inputId: getButtonIndex(mappingObject, "dpleft"),
-          },
+          physicalGamepad.getDpadLeft(),
+          !systemHasAnalogStick ? physicalGamepad.getLeftStickLeft() : null,
         ),
         ...getVirtualGamepadButton(
           { gamepadIndex, buttonId: "Pad.Right" },
-          {
-            deviceId,
-            groupId: "Button",
-            inputId: getButtonIndex(mappingObject, "dpright"),
-          },
+          physicalGamepad.getDpadRight(),
+          !systemHasAnalogStick ? physicalGamepad.getLeftStickRight() : null,
         ),
         ...getVirtualGamepadButton(
           { gamepadIndex, buttonId: "Pad.Up" },
-          {
-            deviceId,
-            groupId: "Button",
-            inputId: getButtonIndex(mappingObject, "dpup"),
-          },
+          physicalGamepad.getDpadUp(),
+          !systemHasAnalogStick ? physicalGamepad.getLeftStickUp() : null,
         ),
         ...getVirtualGamepadButton(
           { gamepadIndex, buttonId: "Pad.Down" },
-          {
-            deviceId,
-            groupId: "Button",
-            inputId: getButtonIndex(mappingObject, "dpdown"),
-          },
+          physicalGamepad.getDpadDown(),
+          !systemHasAnalogStick ? physicalGamepad.getLeftStickDown() : null,
         ),
       ];
     }
@@ -198,39 +161,19 @@ const getVirtualGamepadDpad = (
     return [
       ...getVirtualGamepadButton(
         { gamepadIndex, buttonId: "Pad.Up" },
-        {
-          deviceId,
-          groupId: "Axis",
-          inputId: getButtonIndex(mappingObject, "lefty"),
-          qualifier: "Lo",
-        },
+        physicalGamepad.getLeftStickUp(),
       ),
       ...getVirtualGamepadButton(
         { gamepadIndex, buttonId: "Pad.Down" },
-        {
-          deviceId,
-          groupId: "Axis",
-          inputId: getButtonIndex(mappingObject, "lefty"),
-          qualifier: "Hi",
-        },
+        physicalGamepad.getLeftStickDown(),
       ),
       ...getVirtualGamepadButton(
         { gamepadIndex, buttonId: "Pad.Left" },
-        {
-          deviceId,
-          groupId: "Axis",
-          inputId: getButtonIndex(mappingObject, "leftx"),
-          qualifier: "Lo",
-        },
+        physicalGamepad.getLeftStickLeft(),
       ),
       ...getVirtualGamepadButton(
         { gamepadIndex, buttonId: "Pad.Right" },
-        {
-          deviceId,
-          groupId: "Axis",
-          inputId: getButtonIndex(mappingObject, "leftx"),
-          qualifier: "Hi",
-        },
+        physicalGamepad.getLeftStickRight(),
       ),
     ];
   }
@@ -243,211 +186,120 @@ const getIndexForDeviceId = (index: number) => {
   return "";
 };
 
-const getVirtualGamepad = ({
-  vendor,
-  product,
-  mapping,
-  id,
-}: Sdl.Controller.Device) => {
-  const deviceIdIndex = getIndexForDeviceId(id);
-  const deviceId = `0x${deviceIdIndex}${vendor.toString(16).padStart(deviceIdIndex.length > 0 ? 4 : 3, "0")}${product.toString(16).padStart(4, "0")}`;
+const getVirtualGamepad =
+  (systemId: SystemId) =>
+  ({ vendor, product, mapping, id }: Sdl.Controller.Device) => {
+    const deviceIdIndex = getIndexForDeviceId(id);
+    const deviceId = `0x${deviceIdIndex}${vendor.toString(16).padStart(deviceIdIndex.length > 0 ? 4 : 3, "0")}${product.toString(16).padStart(4, "0")}`;
 
-  const mappingObject = createSdlMappingObject(mapping);
+    const mappingObject = createSdlMappingObject(mapping);
+    const physicalGamepad = new PhysicalGamepad(deviceId, mappingObject);
 
-  return [
-    ...getVirtualGamepadDpad(deviceId, id, mappingObject),
+    return [
+      ...getVirtualGamepadDpad(id, mappingObject, physicalGamepad, systemId),
 
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "Select" },
-      {
-        deviceId,
-        groupId: "Button",
-        inputId: getButtonIndex(mappingObject, "back"),
-      },
-    ),
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "Start" },
-      {
-        deviceId,
-        groupId: "Button",
-        inputId: getButtonIndex(mappingObject, "start"),
-      },
-    ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "Select" },
+        physicalGamepad.getBack(),
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "Start" },
+        physicalGamepad.getStart(),
+      ),
 
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "A..South" },
-      {
-        deviceId,
-        groupId: "Button",
-        inputId: getButtonIndex(mappingObject, "a"),
-      },
-    ),
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "B..East" },
-      {
-        deviceId,
-        groupId: "Button",
-        inputId: getButtonIndex(mappingObject, "b"),
-      },
-    ),
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "X..West" },
-      {
-        deviceId,
-        groupId: "Button",
-        inputId: getButtonIndex(mappingObject, "x"),
-      },
-    ),
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "Y..North" },
-      {
-        deviceId,
-        groupId: "Button",
-        inputId: getButtonIndex(mappingObject, "y"),
-      },
-    ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "A..South" },
+        physicalGamepad.getA(),
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "B..East" },
+        physicalGamepad.getB(),
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "X..West" },
+        physicalGamepad.getX(),
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "Y..North" },
+        physicalGamepad.getY(),
+      ),
 
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "L-Bumper" },
-      {
-        deviceId,
-        groupId: "Button",
-        inputId: getButtonIndex(mappingObject, "leftshoulder"),
-      },
-    ),
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "R-Bumper" },
-      {
-        deviceId,
-        groupId: "Button",
-        inputId: getButtonIndex(mappingObject, "rightshoulder"),
-      },
-    ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "L-Bumper" },
+        physicalGamepad.getLeftShoulder(),
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "R-Bumper" },
+        physicalGamepad.getRightShoulder(),
+      ),
 
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "L-Trigger" },
-      {
-        deviceId,
-        groupId: "Axis",
-        inputId: getButtonIndex(mappingObject, "lefttrigger"),
-        qualifier: "Hi",
-      },
-    ),
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "R-Trigger" },
-      {
-        deviceId,
-        groupId: "Axis",
-        inputId: getButtonIndex(mappingObject, "righttrigger"),
-        qualifier: "Hi",
-      },
-    ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "L-Trigger" },
+        physicalGamepad.getLeftTrigger(),
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "R-Trigger" },
+        physicalGamepad.getRightTrigger(),
+      ),
 
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "L-Stick..Click" },
-      {
-        deviceId,
-        groupId: "Button",
-        inputId: getButtonIndex(mappingObject, "leftstick"),
-      },
-    ),
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "R-Stick..Click" },
-      {
-        deviceId,
-        groupId: "Button",
-        inputId: getButtonIndex(mappingObject, "rightstick"),
-      },
-    ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "L-Stick..Click" },
+        physicalGamepad.getLeftStickClick(),
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "R-Stick..Click" },
+        physicalGamepad.getRightStickClick(),
+      ),
 
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "L-Up" },
-      {
-        deviceId,
-        groupId: "Axis",
-        inputId: getButtonIndex(mappingObject, "lefty"),
-        qualifier: "Lo",
-      },
-    ),
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "L-Down" },
-      {
-        deviceId,
-        groupId: "Axis",
-        inputId: getButtonIndex(mappingObject, "lefty"),
-        qualifier: "Hi",
-      },
-    ),
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "L-Left" },
-      {
-        deviceId,
-        groupId: "Axis",
-        inputId: getButtonIndex(mappingObject, "leftx"),
-        qualifier: "Lo",
-      },
-    ),
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "L-Right" },
-      {
-        deviceId,
-        groupId: "Axis",
-        inputId: getButtonIndex(mappingObject, "leftx"),
-        qualifier: "Hi",
-      },
-    ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "L-Up" },
+        physicalGamepad.getLeftStickUp(),
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "L-Down" },
+        physicalGamepad.getLeftStickDown(),
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "L-Left" },
+        physicalGamepad.getLeftStickLeft(),
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "L-Right" },
+        physicalGamepad.getLeftStickRight(),
+      ),
 
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "R-Up" },
-      {
-        deviceId,
-        groupId: "Axis",
-        inputId: getButtonIndex(mappingObject, "righty"),
-        qualifier: "Lo",
-      },
-    ),
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "R-Down" },
-      {
-        deviceId,
-        groupId: "Axis",
-        inputId: getButtonIndex(mappingObject, "righty"),
-        qualifier: "Hi",
-      },
-    ),
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "R-Left" },
-      {
-        deviceId,
-        groupId: "Axis",
-        inputId: getButtonIndex(mappingObject, "rightx"),
-        qualifier: "Lo",
-      },
-    ),
-    ...getVirtualGamepadButton(
-      { gamepadIndex: id, buttonId: "R-Right" },
-      {
-        deviceId,
-        groupId: "Axis",
-        inputId: getButtonIndex(mappingObject, "rightx"),
-        qualifier: "Hi",
-      },
-    ),
-  ];
-};
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "R-Up" },
+        physicalGamepad.getRightStickUp(),
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "R-Down" },
+        physicalGamepad.getRightStickDown(),
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "R-Left" },
+        physicalGamepad.getRightStickLeft(),
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: id, buttonId: "R-Right" },
+        physicalGamepad.getRightStickRight(),
+      ),
+    ];
+  };
 
-const getVirtualGamepads = () => {
+const getVirtualGamepads = (systemId: SystemId) => {
   const gamepads = sdl.controller.devices;
 
   log("debug", "gamepads", gamepads);
 
-  return gamepads.flatMap(getVirtualGamepad);
+  return gamepads.flatMap(getVirtualGamepad(systemId));
 };
 
 const getSharedAresOptionParams: OptionParamFunction = ({
   settings: {
     appearance: { fullscreen },
   },
+  categoryData: { id },
 }) => {
   // keyboard f2
   const hotkeyFullscreen = ["--setting", "Hotkey/ToggleFullscreen=0x1/0/2"];
@@ -462,7 +314,7 @@ const getSharedAresOptionParams: OptionParamFunction = ({
     ...hotkeySave,
     ...hotkeyLoad,
     ...inputSDL,
-    ...getVirtualGamepads(),
+    ...getVirtualGamepads(id),
   ];
   if (fullscreen) {
     optionParams.push("--fullscreen");
