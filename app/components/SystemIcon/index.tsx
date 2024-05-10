@@ -14,13 +14,13 @@ import { MdVideogameAsset } from "react-icons/md";
 import { TiSpiral } from "react-icons/ti";
 import { GrDos } from "react-icons/gr";
 import { LuComputer } from "react-icons/lu";
-import type { SystemId } from "~/server/categoriesDB.server/types";
-import SvgGameboy from "~/components/Icons/Gameboy";
-import SvgNintendo64 from "~/components/Icons/Nintendo64";
-import SvgGba from "~/components/Icons/Gba";
-import SvgPsp from "~/components/Icons/Psp";
-import Gamegear from "~/components/Icons/Gamegear";
-import Neogeopocket from "~/components/Icons/Neogeopocket";
+import SvgGameboy from "../Icons/Gameboy";
+import SvgNintendo64 from "../Icons/Nintendo64";
+import SvgGba from "../Icons/Gba";
+import SvgPsp from "../Icons/Psp";
+import Gamegear from "../Icons/Gamegear";
+import Neogeopocket from "../Icons/Neogeopocket";
+import type { SystemId } from "../../server/categoriesDB.server/systemId";
 
 export const icons: Record<SystemId, IconType> = {
   // TODO: use https://thenounproject.com/icon/game-controller-193591/
@@ -70,9 +70,9 @@ export const icons: Record<SystemId, IconType> = {
   segasaturn: SiSega,
 };
 
-type Props = {
+interface Props {
   id: keyof typeof icons;
-};
+}
 
 export const SystemIcon = ({ id }: Props) => {
   const Icon = icons[id];

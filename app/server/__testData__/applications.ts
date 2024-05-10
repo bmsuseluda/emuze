@@ -1,4 +1,4 @@
-import type { Application } from "~/types/jsonFiles/applications";
+import type { Application } from "../../types/jsonFiles/applications";
 
 export const applicationsPath = "F:/games/Emulation/emulators";
 

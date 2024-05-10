@@ -1,4 +1,4 @@
-export type SVGRProps = {
+export interface SVGRProps {
   title?: string;
   titleId?: string;
-};
+}

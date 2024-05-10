@@ -1,4 +1,4 @@
-import { categories } from "~/server/categoriesDB.server";
+import { categories } from "../app/server/categoriesDB.server";
 
 export const createSystemsTable = () =>
   Object.values(categories)

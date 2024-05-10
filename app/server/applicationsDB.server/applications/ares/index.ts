@@ -1,36 +1,15 @@
-import type {
-  Application,
-  OptionParamFunction,
-} from "~/server/applicationsDB.server/types";
+import type { Application, OptionParamFunction } from "../../types";
 import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
-import { log } from "~/server/debug.server";
-import type { SystemId } from "~/server/categoriesDB.server/types";
+import { log } from "../../../debug.server";
 import type {
   AresButtonId,
   GamepadGroupId,
   PhysicalGamepadButton,
   SdlButtonId,
   SdlButtonMapping,
-} from "~/server/applicationsDB.server/applications/ares/types";
-import { PhysicalGamepad } from "~/server/applicationsDB.server/applications/ares/PhysicalGamepad";
-
-const systemsWithAnalogStick: SystemId[] = [
-  "sonyplaystation",
-  "sonyplaystation2",
-  "sonyplaystation3",
-  "sonypsp",
-  "nintendo64",
-  "nintendogamecube",
-  "nintendo3ds",
-  "nintendowii",
-  "nintendowiiu",
-  "nintendoswitch",
-  "segadreamcast",
-];
-
-const hasAnalogStick = (systemId: SystemId) =>
-  systemsWithAnalogStick.includes(systemId);
+} from "./types";
+import { PhysicalGamepad } from "./PhysicalGamepad";
 
 const gamepadGroupId: Record<GamepadGroupId, number> = {
   Axis: 0,
@@ -53,10 +32,10 @@ const createSdlMappingObject = (sdlMapping: string) =>
       return accumulator;
     }, {});
 
-type VirtualGamepad = {
+interface VirtualGamepad {
   gamepadIndex: number;
   buttonId: AresButtonId;
-};
+}
 
 const getPhysicalGamepadString = (
   physicalGamepadButton: PhysicalGamepadButton | null,
@@ -103,10 +82,9 @@ const getVirtualGamepadDpad = (
   gamepadIndex: number,
   mappingObject: SdlButtonMapping,
   physicalGamepad: PhysicalGamepad,
-  systemId: SystemId,
+  systemHasAnalogStick: boolean,
 ) => {
   if (mappingObject.dpup) {
-    const systemHasAnalogStick = hasAnalogStick(systemId);
     if (mappingObject.dpup.startsWith("h")) {
       //     hat
       return [
@@ -187,7 +165,7 @@ const getIndexForDeviceId = (index: number) => {
 };
 
 const getVirtualGamepad =
-  (systemId: SystemId) =>
+  (systemHasAnalogStick: boolean) =>
   ({ vendor, product, mapping, id }: Sdl.Controller.Device) => {
     const deviceIdIndex = getIndexForDeviceId(id);
     const deviceId = `0x${deviceIdIndex}${vendor.toString(16).padStart(deviceIdIndex.length > 0 ? 4 : 3, "0")}${product.toString(16).padStart(4, "0")}`;
@@ -196,7 +174,12 @@ const getVirtualGamepad =
     const physicalGamepad = new PhysicalGamepad(deviceId, mappingObject);
 
     return [
-      ...getVirtualGamepadDpad(id, mappingObject, physicalGamepad, systemId),
+      ...getVirtualGamepadDpad(
+        id,
+        mappingObject,
+        physicalGamepad,
+        systemHasAnalogStick,
+      ),
 
       ...getVirtualGamepadButton(
         { gamepadIndex: id, buttonId: "Select" },
@@ -287,12 +270,12 @@ const getVirtualGamepad =
     ];
   };
 
-const getVirtualGamepads = (systemId: SystemId) => {
+const getVirtualGamepads = (systemHasAnalogStick: boolean) => {
   const gamepads = sdl.controller.devices;
 
   log("debug", "gamepads", gamepads);
 
-  return gamepads.flatMap(getVirtualGamepad(systemId));
+  return gamepads.flatMap(getVirtualGamepad(systemHasAnalogStick));
 };
 
 const getSharedAresOptionParams: OptionParamFunction = ({
@@ -314,7 +297,8 @@ const getSharedAresOptionParams: OptionParamFunction = ({
     ...hotkeySave,
     ...hotkeyLoad,
     ...inputSDL,
-    ...getVirtualGamepads(id),
+    // ...getVirtualGamepads(categories[id].hasAnalogStick),
+    ...getVirtualGamepads(true),
   ];
   if (fullscreen) {
     optionParams.push("--fullscreen");

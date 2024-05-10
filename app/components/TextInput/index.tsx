@@ -98,11 +98,11 @@ const ChildrenWrapper = styled("div", {
   },
 });
 
-type Props = {
+interface Props {
   children: ReactNode;
   error?: string;
   label?: string;
-};
+}
 
 export const TextInput = ({ children, error, label }: Props) => (
   <Wrapper role="group" aria-label={label}>

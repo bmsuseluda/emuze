@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import type { StickDirection } from "~/hooks/useGamepads/layouts";
+import type { StickDirection } from "../useGamepads/layouts";
 
 export const useGamepadButtonPressEvent = (
   index: number,

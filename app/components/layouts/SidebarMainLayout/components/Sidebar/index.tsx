@@ -1,8 +1,8 @@
-import { Ul } from "~/components/Ul";
-import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
+import { Ul } from "../../../../Ul";
+import { ListActionBarLayout } from "../../../ListActionBarLayout";
 import type { ReactNode } from "react";
 import { styled } from "../../../../../../styled-system/jsx";
-import { Separator } from "~/components/Separator";
+import { Separator } from "../../../../Separator";
 
 const SidebarWrapper = styled("aside", {
   base: {

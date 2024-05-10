@@ -1,14 +1,14 @@
-import { execFile, execFileSync } from "child_process";
-import { readCategory } from "~/server/categories.server";
-import { applications } from "~/server/applicationsDB.server";
-import { readAppearance, readGeneral } from "~/server/settings.server";
-import { createAbsoluteEntryPath } from "~/types/jsonFiles/category";
-import { isGeneralConfigured } from "~/types/jsonFiles/settings/general";
-import { isApplicationWindows } from "~/types/jsonFiles/applications";
-import type { SystemId } from "~/server/categoriesDB.server/types";
+import { execFileSync } from "child_process";
+import { readCategory } from "./categories.server";
+import { applications } from "./applicationsDB.server";
+import { readAppearance, readGeneral } from "./settings.server";
+import { createAbsoluteEntryPath } from "../types/jsonFiles/category";
+import { isGeneralConfigured } from "../types/jsonFiles/settings/general";
+import { isApplicationWindows } from "../types/jsonFiles/applications";
 import { isWindows } from "./operationsystem.server";
 import { existsSync } from "fs";
 import { setErrorDialog } from "./errorDialog.server";
+import type { SystemId } from "./categoriesDB.server/systemId";
 
 // TODO: separate os specific code
 const executeApplicationOnLinux = ({
@@ -143,26 +143,6 @@ export const executeApplication = (category: SystemId, entry: string) => {
     }
   }
 };
-
-export const checkFlatpakIsInstalled = (flatpakId: string) => {
-  try {
-    execFileSync("flatpak", ["info", flatpakId]);
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
-export const checkFlatpakIsInstalledParallel = (flatpakId: string) =>
-  new Promise<boolean>((resolve, reject) => {
-    execFile("flatpak", ["info", flatpakId], (error, stdout) => {
-      if (error) {
-        reject(true);
-      }
-      if (stdout) {
-        resolve(true);
-      }
-    });
-  });
 
 export const installFlatpak = (flatpakId: string) => {
   try {

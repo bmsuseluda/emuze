@@ -1,16 +1,15 @@
 import { NavLink } from "@remix-run/react";
-import type { ComponentPropsWithoutRef, ElementRef, ReactNode } from "react";
+import type { ElementRef, ReactNode } from "react";
 import { forwardRef } from "react";
-import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
+import { IconChildrenWrapper } from "../../components/IconChildrenWrapper";
 import type { RemixNavLinkProps } from "@remix-run/react/dist/components";
 import { styled } from "../../../styled-system/jsx";
 
-type Props = {
+interface Props extends RemixNavLinkProps {
   highlightIfActive?: boolean;
   icon?: ReactNode;
   children?: ReactNode;
-} & ComponentPropsWithoutRef<"a"> &
-  RemixNavLinkProps;
+}
 
 const StyledNavLink = styled(NavLink, {
   base: {

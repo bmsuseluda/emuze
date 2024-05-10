@@ -1,6 +1,6 @@
 import { IconChildrenWrapper } from ".";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Typography } from "~/components/Typography";
+import { Typography } from "../Typography";
 import { IoMdRefresh } from "react-icons/io";
 
 const meta = {

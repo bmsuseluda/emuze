@@ -1,7 +1,7 @@
 import { CheckboxLabel } from ".";
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Checkbox } from "~/components/Checkbox";
+import { Checkbox } from "../Checkbox";
 
 const meta = {
   component: CheckboxLabel,

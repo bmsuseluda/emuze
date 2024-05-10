@@ -2,7 +2,7 @@ import type {
   PhysicalGamepadButton,
   SdlButtonId,
   SdlButtonMapping,
-} from "~/server/applicationsDB.server/applications/ares/types";
+} from "./types";
 
 // TODO: Should this function work for HAT as well?
 const getButtonIndex = (

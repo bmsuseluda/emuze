@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { StickDirection } from "~/hooks/useGamepads/layouts";
-import { layout } from "~/hooks/useGamepads/layouts";
-import type { GamepadType } from "~/hooks/useGamepads/gamepadTypeMapping";
-import { identifyGamepadType } from "~/hooks/useGamepads/gamepadTypeMapping";
+import type { StickDirection } from "./layouts";
+import { layout } from "./layouts";
+import type { GamepadType } from "./gamepadTypeMapping";
+import { identifyGamepadType } from "./gamepadTypeMapping";
 
 const isStickPressed = (stickValue: number) => {
   const normalizedStickValue = stickValue < 0 ? stickValue * -1 : stickValue;

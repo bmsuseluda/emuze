@@ -1,5 +1,5 @@
-import type { Application } from "~/types/jsonFiles/applications";
-import { Select } from "~/components/Select";
+import type { Application } from "../../types/jsonFiles/applications";
+import { Select } from "../Select";
 
 type Props = {
   application: Application;

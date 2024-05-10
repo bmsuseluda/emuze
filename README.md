@@ -143,7 +143,7 @@ Right now the following are supported:
 | Sony Playstation 2 | PCSX2<br>Play! | PCSX2 |
 | Sony Playstation 3 | RPCS3 | RPCS3 |
 | Sony Playstation Portable | PPSSPP | PPSSPP |
-| Nintendo Entertainment System | Nestopia<br>puNES<br>Mednafen<br>Ares | puNES |
+| Nintendo Entertainment System | Nestopia<br>puNES<br>Mednafen<br>Ares | Ares |
 | Super Nintendo Entertainment System | BSNES<br>Snes9x<br>Ares | Ares |
 | Nintendo Game Boy | mgba<br>Ares | mgba |
 | Nintendo Game Boy Color | mgba | mgba |
@@ -168,6 +168,8 @@ Right now the following are supported:
 | Arcade | Mame | Mame |
 | Neo Geo | Mame | Mame |
 | Neo Geo CD | Mame | Mame |
+| Neo Geo Pocket | Ares | Ares |
+| Neo Geo Pocket Color | Ares | Ares |
 | Scumm | ScummVM | ScummVM |
 | DOS (Alpha) | DOSBox-Staging | DOSBox-Staging |
 

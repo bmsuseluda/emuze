@@ -1,7 +1,7 @@
-export type ErrorDialog = {
+export interface ErrorDialog {
   title?: string;
   stacktrace?: string;
-};
+}
 
 const errorDialog: ErrorDialog = {};
 

@@ -1,14 +1,10 @@
-import type {
-  Application,
-  FindEntryNameFunction,
-} from "~/server/applicationsDB.server/types";
-import { findGameNameById } from "~/server/applicationsDB.server/nameMappings/findGameNameById";
+import type { Application, FindEntryNameFunction } from "../../types";
+import { findGameNameById } from "../../nameMappings/findGameNameById";
 import scummVmGames from "./nameMapping/scummvm.json";
 import { spawnSync } from "child_process";
-import { createAbsoluteEntryPath } from "~/types/jsonFiles/category";
-import { checkFlatpakIsInstalled } from "~/server/execute.server";
-import { readCategory } from "~/server/categories.server";
-import { isApplicationWindows } from "~/types/jsonFiles/applications";
+import { createAbsoluteEntryPath } from "../../../../types/jsonFiles/category";
+import { isApplicationWindows } from "../../../../types/jsonFiles/applications";
+import { checkFlatpakIsInstalled } from "../../checkFlatpakInstalled";
 
 const findScummVmGameNameViaMapping: FindEntryNameFunction = ({
   entry: { name },
@@ -62,6 +58,7 @@ const findScummVmGameNameViaDetect: FindEntryNameFunction = ({
   entry: { name, path },
   categoriesPath,
   categoryName,
+  installedApplication,
 }) => {
   const absoluteEntryPath = createAbsoluteEntryPath(
     categoriesPath,
@@ -69,12 +66,12 @@ const findScummVmGameNameViaDetect: FindEntryNameFunction = ({
     path,
   );
 
-  const categoryData = readCategory("scumm");
-  const application = categoryData?.application;
-
-  if (application) {
-    const data = isApplicationWindows(application)
-      ? findScummVmGameNameViaDetectWindows(absoluteEntryPath, application.path)
+  if (installedApplication) {
+    const data = isApplicationWindows(installedApplication)
+      ? findScummVmGameNameViaDetectWindows(
+          absoluteEntryPath,
+          installedApplication.path,
+        )
       : findScummVmGameNameViaDetectLinux(absoluteEntryPath);
 
     if (data) {

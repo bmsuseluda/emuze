@@ -1,20 +1,14 @@
 {
   "include": [
     "remix.env.d.ts",
-    "app/**/*.ts",
-    "app/**/*.tsx",
+    "app/**/*",
     "styled-system",
     "panda.config.ts",
-    "app/**/*.css",
-    "routes/**/*.ts",
-    "routes/**/*.tsx",
-    "routes/**/*.css",
-    ".storybook/**/*.ts",
-    ".storybook/**/*.tsx",
+    ".storybook/**/*",
     "./electronApi.d.ts",
-    "e2eTests/**/*.ts",
-    "generateIcon/**/*.ts",
-    "generateNameMappings/**/*.ts"
+    "e2eTests/**/*",
+    "generateIcon/**/*",
+    "generateNameMappings/**/*"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2019"],
@@ -28,7 +22,6 @@
     "baseUrl": ".",
     "skipLibCheck": true,
     "paths": {
-      "~/*": ["./app/*"],
       "@emotion/core": ["./types/emotion.d.ts"]
     },
     "noEmit": true,

@@ -12,7 +12,7 @@ import {
   readDirectorynames,
   readFileHome,
   readFilenames,
-} from "~/server/readWriteData.server";
+} from "../readWriteData.server";
 import {
   addIndex,
   blazingstar,
@@ -30,14 +30,14 @@ import {
   playstation,
 } from "../__testData__/category";
 import { applications as applicationsTestData } from "../__testData__/applications";
-import type { Category, Entry, MetaData } from "~/types/jsonFiles/category";
+import type { Category, Entry, MetaData } from "../../types/jsonFiles/category";
 import { general } from "../__testData__/general";
-import { fetchMetaData } from "~/server/igdb.server";
+import { fetchMetaData } from "../igdb.server";
 import { categories as categoriesDB } from "../categoriesDB.server";
-import { citra, mednafen } from "~/server/applicationsDB.server";
-import { getInstalledApplicationForCategory } from "~/server/applications.server";
-import type { Application } from "~/types/jsonFiles/applications";
-import { getExpiresOn } from "~/server/getExpiresOn.server";
+import { citra, mednafen } from "../applicationsDB.server";
+import { getInstalledApplicationForCategory } from "../applications.server";
+import type { Application } from "../../types/jsonFiles/applications";
+import { getExpiresOn } from "../getExpiresOn.server";
 import type { Mock } from "vitest";
 
 vi.mock("@kmamal/sdl", () => ({
@@ -49,32 +49,32 @@ vi.mock("@kmamal/sdl", () => ({
 }));
 
 const writeFileMock = vi.fn();
-vi.mock("~/server/readWriteData.server", () => ({
+vi.mock("../readWriteData.server", () => ({
   readFileHome: vi.fn(),
   readDirectorynames: vi.fn(),
   readFilenames: vi.fn(),
   writeFileHome: (object: unknown, path: string) => writeFileMock(object, path),
 }));
 
-vi.mock("~/server/applications.server", () => ({
+vi.mock("../applications.server", () => ({
   getInstalledApplicationForCategory: vi.fn(),
 }));
 
-vi.mock("~/server/settings.server.ts", () => ({
+vi.mock("../settings.server.ts", () => ({
   readGeneral: () => general,
 }));
 
-vi.mock("~/server/openDialog.server.ts", () => ({
+vi.mock("../openDialog.server.ts", () => ({
   openErrorDialog: vi.fn(),
 }));
 
 vi.mock("fs");
 
-vi.mock("~/server/igdb.server.ts", () => ({
+vi.mock("../igdb.server.ts", () => ({
   fetchMetaData: vi.fn(),
 }));
 
-vi.mock("~/server/getExpiresOn.server.ts", () => {
+vi.mock("../getExpiresOn.server.ts", () => {
   const getFutureDate = () => {
     const now = new Date();
     now.setDate(now.getDate() + 10);
@@ -103,7 +103,10 @@ describe("categories.server", () => {
         { ...blazingstar, name: "Blazing Star", id: `${blazingstar.id}0` },
       ];
 
-      const result = readEntries(neogeo.name, neogeo.application.id);
+      const result = readEntries({
+        categoryName: neogeo.name,
+        applicationId: neogeo.application.id,
+      });
 
       expect(result).toStrictEqual(expectedResult);
     });
@@ -132,11 +135,11 @@ describe("categories.server", () => {
         { ...hugo2, id: `${hugo2.id}1` },
       ];
 
-      const result = readEntries(
-        playstation.name,
-        playstation.application.id,
+      const result = readEntries({
+        categoryName: playstation.name,
+        applicationId: playstation.application.id,
         oldEntries,
-      );
+      });
 
       expect(result).toStrictEqual(expectedResult);
     });

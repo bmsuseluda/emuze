@@ -1,6 +1,6 @@
-import type { SystemId } from "~/server/categoriesDB.server/types";
-import type { Application } from "~/types/jsonFiles/applications";
+import type { Application } from "./applications";
 import nodepath from "path";
+import type { SystemId } from "../../server/categoriesDB.server/systemId";
 
 export interface MetaData {
   imageUrl?: string;

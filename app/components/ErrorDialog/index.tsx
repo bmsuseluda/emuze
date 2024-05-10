@@ -1,11 +1,11 @@
-import { styled } from "styled-system/jsx";
-import { Dialog } from "~/components/Dialog";
-import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
-import { Typography } from "~/components/Typography";
+import { Dialog } from "../Dialog";
+import { IconChildrenWrapper } from "../IconChildrenWrapper";
+import { Typography } from "../Typography";
 import { MdErrorOutline } from "react-icons/md";
 import { ListActionBarLayout } from "../layouts/ListActionBarLayout";
-import { SidebarMainLayout } from "~/components/layouts/SidebarMainLayout";
+import { SidebarMainLayout } from "../layouts/SidebarMainLayout";
 import type { ForwardedRef } from "react";
+import { styled } from "../../../styled-system/jsx";
 
 const Stacktrace = styled("p", {
   base: {
@@ -13,12 +13,12 @@ const Stacktrace = styled("p", {
   },
 });
 
-type Props = {
+interface Props {
   title?: string;
   stacktrace?: string;
   onClose: () => void;
   listRef?: ForwardedRef<HTMLDivElement>;
-};
+}
 
 export const ErrorDialog = ({
   title = "An unexpected error has occurred",

@@ -14,9 +14,6 @@
     "skipLibCheck": true,
     "allowJs": false,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "../buildDesktop",
-    "paths": {
-      "~/*": ["../app/*"]
-    }
+    "outDir": "../buildDesktop"
   }
 }

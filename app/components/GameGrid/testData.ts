@@ -1,5 +1,5 @@
-import type { Entry } from "~/types/jsonFiles/category";
-import { getExpiresOn } from "~/server/getExpiresOn.server";
+import type { Entry } from "../../types/jsonFiles/category";
+import { getExpiresOn } from "../../server/getExpiresOn.server";
 
 export const games: Entry[] = [
   {

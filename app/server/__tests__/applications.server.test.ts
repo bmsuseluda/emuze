@@ -10,9 +10,9 @@ import {
   play,
 } from "../__testData__/applications";
 import * as categoriesFromDB from "../categoriesDB.server";
-import { readFilenames } from "~/server/readWriteData.server";
-import { checkFlatpakIsInstalled } from "~/server/execute.server";
+import { readFilenames } from "../readWriteData.server";
 import type { Mock } from "vitest";
+import { checkFlatpakIsInstalled } from "../applicationsDB.server/checkFlatpakInstalled";
 
 vi.mock("@kmamal/sdl", () => ({
   default: () => ({
@@ -22,16 +22,16 @@ vi.mock("@kmamal/sdl", () => ({
   }),
 }));
 
-vi.mock("~/server/readWriteData.server", () => ({
+vi.mock("../readWriteData.server", () => ({
   readDirectorynames: vi.fn(),
   readFilenames: vi.fn(),
 }));
 
-vi.mock("~/server/execute.server", () => ({
+vi.mock("../applicationsDB.server/checkFlatpakInstalled", () => ({
   checkFlatpakIsInstalled: vi.fn(),
 }));
 
-vi.mock("~/server/categories.server", () => ({
+vi.mock("../categories.server", () => ({
   readCategories: vi.fn(),
 }));
 

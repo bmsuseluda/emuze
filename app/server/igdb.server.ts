@@ -1,8 +1,8 @@
-import type { Entry } from "~/types/jsonFiles/category";
+import type { Entry } from "../types/jsonFiles/category";
 import type { Apicalypse } from "apicalypse";
 import apicalypse from "apicalypse";
-import { getExpiresOn } from "~/server/getExpiresOn.server";
-import { retryPromise } from "app/retryPromise";
+import { getExpiresOn } from "./getExpiresOn.server";
+import { retryPromise } from "../retryPromise";
 
 interface GameLocalization {
   name?: string;

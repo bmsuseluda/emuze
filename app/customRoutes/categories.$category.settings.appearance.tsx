@@ -2,29 +2,29 @@ import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { IoMdSave } from "react-icons/io";
 import { Form, useLoaderData } from "@remix-run/react";
-import { Button } from "~/components/Button";
-import { FormBox } from "~/components/FormBox";
-import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
-import { readAppearance, writeAppearance } from "~/server/settings.server";
-import { Checkbox } from "~/components/Checkbox";
-import type { Appearance } from "~/types/jsonFiles/settings/appearance";
-import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
-import { SettingsIcon } from "~/components/SettingsIcon";
-import { useFullscreen } from "~/hooks/useFullscreen";
-import { CheckboxLabel } from "~/components/CheckboxLabel";
+import { Button } from "../components/Button";
+import { FormBox } from "../components/FormBox";
+import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
+import { readAppearance, writeAppearance } from "../server/settings.server";
+import { Checkbox } from "../components/Checkbox";
+import type { Appearance } from "../types/jsonFiles/settings/appearance";
+import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
+import { SettingsIcon } from "../components/SettingsIcon";
+import { useFullscreen } from "../hooks/useFullscreen";
+import { CheckboxLabel } from "../components/CheckboxLabel";
 import type { ElementRef } from "react";
 import { useCallback, useRef } from "react";
-import type { Result } from "~/hooks/useGamepadsOnGrid";
-import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
-import { useFocus } from "~/hooks/useFocus";
-import type { FocusElement } from "~/types/focusElement";
+import type { Result } from "../hooks/useGamepadsOnGrid";
+import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid";
+import { useFocus } from "../hooks/useFocus";
+import type { FocusElement } from "../types/focusElement";
 import {
   useGamepadButtonPressEvent,
   useKeyboardEvent,
-} from "~/hooks/useGamepadEvent";
-import { layout } from "~/hooks/useGamepads/layouts";
-import { useGamepadConnected } from "~/hooks/useGamepadConnected";
-import { GamepadButtonIcon } from "~/components/GamepadButtonIcon";
+} from "../hooks/useGamepadEvent";
+import { layout } from "../hooks/useGamepads/layouts";
+import { useGamepadConnected } from "../hooks/useGamepadConnected";
+import { GamepadButtonIcon } from "../components/GamepadButtonIcon";
 
 export const loader = () => {
   const appearance = readAppearance();

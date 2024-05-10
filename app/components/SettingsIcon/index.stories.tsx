@@ -1,9 +1,9 @@
 import { icons, SettingsIcon } from ".";
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { styled } from "styled-system/jsx";
-import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
-import { Typography } from "~/components/Typography";
+import { styled } from "../../../styled-system/jsx";
+import { IconChildrenWrapper } from "../IconChildrenWrapper";
+import { Typography } from "../Typography";
 
 const meta = {
   component: SettingsIcon,

@@ -1,6 +1,6 @@
 import { IconButton } from "./components/IconButton";
 import { styled } from "../../../styled-system/jsx";
-import { useFullscreen } from "~/hooks/useFullscreen";
+import { useFullscreen } from "../../hooks/useFullscreen";
 
 const Wrapper = styled("div", {
   base: {

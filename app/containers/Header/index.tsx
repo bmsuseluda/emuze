@@ -56,9 +56,9 @@ export const Headline = styled("h1", {
   },
 });
 
-type Props = {
+interface Props {
   collapse?: boolean;
-};
+}
 
 export const Header = ({ collapse }: Props) => (
   <Wrapper collapse={collapse}>

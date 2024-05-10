@@ -16,7 +16,7 @@ import {
   playstation,
   scumm,
 } from "../__testData__/category";
-import { duckstation, mednafen } from "~/server/applicationsDB.server";
+import { duckstation, mednafen } from "../applicationsDB.server";
 import type { Mock } from "vitest";
 
 vi.mock("@kmamal/sdl", () => ({

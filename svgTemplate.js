@@ -4,7 +4,7 @@ const propTypesTemplate = (
 ) => {
   return tpl`
   ${imports};
-  import type { SVGRProps } from "~/types/svgProps";
+  import type { SVGRProps } from "../../types/svgProps";
   
   const ${componentName} = (${props}) => (
     ${jsx}

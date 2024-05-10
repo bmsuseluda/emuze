@@ -12,9 +12,6 @@
     "baseUrl": ".",
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "paths": {
-      "~/*": ["../app/*"]
-    },
     "outDir": "./build",
     "target": "ESNext"
   }

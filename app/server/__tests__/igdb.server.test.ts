@@ -11,7 +11,7 @@ import {
 import type { GamesResponse } from "../igdb.server";
 import { chunk, fetchMetaData } from "../igdb.server";
 import { categories as categoriesDB } from "../categoriesDB.server";
-import { getExpiresOn } from "~/server/getExpiresOn.server";
+import { getExpiresOn } from "../getExpiresOn.server";
 
 vi.mock("@kmamal/sdl", () => ({
   default: () => ({
@@ -34,11 +34,11 @@ vi.mock("apicalypse", () => ({
   }),
 }));
 
-vi.mock("~/server/openDialog.server.ts", () => ({
+vi.mock("../openDialog.server.ts", () => ({
   openErrorDialog: vi.fn(),
 }));
 
-vi.mock("~/server/getExpiresOn.server.ts", () => {
+vi.mock("../getExpiresOn.server.ts", () => {
   const getFutureDate = () => {
     const now = new Date();
     now.setDate(now.getDate() + 10);

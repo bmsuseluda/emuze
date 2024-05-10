@@ -1,6 +1,6 @@
-import type { Category, Entry } from "~/types/jsonFiles/category";
+import type { Category, Entry } from "../../types/jsonFiles/category";
 import nodepath from "path";
-import { general } from "~/server/__testData__/general";
+import { general } from "./general";
 
 export const addIndex = (entries: Entry[]) =>
   entries.map((entry, index) => ({ ...entry, id: `${entry.id}${index}` }));

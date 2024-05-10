@@ -1,35 +1,23 @@
 import fs from "fs";
 import nodepath from "path";
 
-import type { Category as CategorySlim } from "~/types/jsonFiles/categories";
-import type { Category, Entry } from "~/types/jsonFiles/category";
-import {
-  readDirectorynames,
-  readFilenames,
-} from "~/server/readWriteData.server";
-import { convertToId } from "~/server/convertToId.server";
-import { sortCaseInsensitive } from "~/server/sortCaseInsensitive.server";
-import { fetchMetaData } from "~/server/igdb.server";
-import { readGeneral } from "~/server/settings.server";
-import type {
-  ApplicationId,
-  ExcludeFilesFunction,
-} from "~/server/applicationsDB.server/types";
-import { applications } from "~/server/applicationsDB.server";
-import type {
-  Category as CategoryDB,
-  SystemId,
-} from "~/server/categoriesDB.server/types";
-import {
-  categories,
-  getCategoryDataByName,
-} from "~/server/categoriesDB.server";
-import { getInstalledApplicationForCategory } from "~/server/applications.server";
-import {
-  FileDataCache,
-  MultipleFileDataCache,
-} from "~/server/FileDataCache.server";
-import { setErrorDialog } from "~/server/errorDialog.server";
+import type { Category as CategorySlim } from "../types/jsonFiles/categories";
+import type { Category, Entry } from "../types/jsonFiles/category";
+import { readDirectorynames, readFilenames } from "./readWriteData.server";
+import { convertToId } from "./convertToId.server";
+import { sortCaseInsensitive } from "./sortCaseInsensitive.server";
+import { fetchMetaData } from "./igdb.server";
+import { readGeneral } from "./settings.server";
+import type { ExcludeFilesFunction } from "./applicationsDB.server/types";
+import { applications } from "./applicationsDB.server";
+import type { Category as CategoryDB } from "./categoriesDB.server/types";
+import { categories, getCategoryDataByName } from "./categoriesDB.server";
+import { getInstalledApplicationForCategory } from "./applications.server";
+import { FileDataCache, MultipleFileDataCache } from "./FileDataCache.server";
+import { setErrorDialog } from "./errorDialog.server";
+import type { ApplicationId } from "./applicationsDB.server/applicationId";
+import type { SystemId } from "./categoriesDB.server/systemId";
+import type { Application } from "../types/jsonFiles/applications";
 
 export const paths = {
   categories: "data/categories.json",
@@ -96,24 +84,31 @@ const filterFiles = (
   return filenames;
 };
 
-export const readEntries = (
-  categoryName: string,
-  applicationId: ApplicationId,
-  oldEntries?: Entry[],
-) => {
-  const applicationData = applications[applicationId];
+export const readEntries = ({
+  categoryName,
+  applicationId,
+  installedApplication,
+  oldEntries,
+}: {
+  categoryName: string;
+  applicationId: ApplicationId;
+  installedApplication?: Application;
+  oldEntries?: Entry[];
+}) => {
+  const applicationDbData = applications[applicationId];
   const generalData = readGeneral();
 
-  if (applicationData && generalData?.categoriesPath) {
+  if (applicationDbData && generalData?.categoriesPath) {
+    const { findEntryName, excludeFiles, fileExtensions, entryAsDirectory } =
+      applicationDbData;
+
     const categoriesPath = generalData.categoriesPath;
     const categoryPath = nodepath.join(categoriesPath, categoryName);
     const filenames = readFilenames({
       path: categoryPath,
-      fileExtensions: applicationData.fileExtensions,
-      entryAsDirectory: applicationData.entryAsDirectory,
+      fileExtensions,
+      entryAsDirectory,
     });
-
-    const { findEntryName, excludeFiles } = applicationData;
 
     const filenamesFiltered = filterFiles(filenames, excludeFiles);
 
@@ -140,7 +135,12 @@ export const readEntries = (
           if (findEntryName) {
             return {
               ...entry,
-              name: findEntryName({ entry, categoriesPath, categoryName }),
+              name: findEntryName({
+                entry,
+                categoriesPath,
+                categoryName,
+                installedApplication,
+              }),
             };
           } else {
             return entry;
@@ -176,24 +176,26 @@ export const readEntriesWithMetaData = async (
 };
 
 export const importEntries = async (category: SystemId) => {
-  const categoryDbData = categories[category as SystemId];
+  const categoryDbData = categories[category];
   const oldCategoryData = readCategory(category);
   const generalData = readGeneral();
 
   if (oldCategoryData && categoryDbData && generalData) {
     const { applicationsPath } = generalData;
     const { igdbPlatformIds, defaultApplication } = categoryDbData;
+
     const application = getInstalledApplicationForCategory({
       applicationsPath,
       categoryDB: categoryDbData,
       oldApplication: oldCategoryData?.application,
     });
 
-    const entries = readEntries(
-      oldCategoryData.name,
-      application?.id || defaultApplication.id,
-      oldCategoryData.entries,
-    );
+    const entries = readEntries({
+      categoryName: oldCategoryData.name,
+      applicationId: application?.id || defaultApplication.id,
+      installedApplication: application,
+      oldEntries: oldCategoryData.entries,
+    });
 
     await readEntriesWithMetaData(igdbPlatformIds, entries)
       .then((entries) => {
@@ -250,11 +252,12 @@ const createCategoryData = (
     oldApplication: oldCategoryData?.application,
   });
 
-  const entries = readEntries(
-    categoryFolderBaseName,
-    application?.id || defaultApplication.id,
-    oldCategoryData?.entries,
-  );
+  const entries = readEntries({
+    categoryName: categoryFolderBaseName,
+    applicationId: application?.id || defaultApplication.id,
+    installedApplication: application,
+    oldEntries: oldCategoryData?.entries,
+  });
 
   return {
     ...oldCategoryData,

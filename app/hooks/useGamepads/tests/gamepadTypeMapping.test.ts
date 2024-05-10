@@ -1,5 +1,5 @@
-import type { GamepadType } from "~/hooks/useGamepads/gamepadTypeMapping";
-import { identifyGamepadType } from "~/hooks/useGamepads/gamepadTypeMapping";
+import type { GamepadType } from "../gamepadTypeMapping";
+import { identifyGamepadType } from "../gamepadTypeMapping";
 
 describe("gamepadTypeMapping", () => {
   type Props = {

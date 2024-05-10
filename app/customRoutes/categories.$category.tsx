@@ -10,33 +10,33 @@ import {
   useNavigation,
 } from "@remix-run/react";
 import { IoMdPlay, IoMdRefresh } from "react-icons/io";
-import { Button } from "~/components/Button";
-import { executeApplication } from "~/server/execute.server";
-import { importEntries, readCategory } from "~/server/categories.server";
-import { GameGridDynamic } from "app/components/GameGrid";
-import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
-import { useTestId } from "~/hooks/useTestId";
-import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
-import { SystemIcon } from "app/components/SystemIcon";
-import { layout } from "~/hooks/useGamepads/layouts";
+import { Button } from "../components/Button";
+import { executeApplication } from "../server/execute.server";
+import { importEntries, readCategory } from "../server/categories.server";
+import { GameGridDynamic } from "../components/GameGrid";
+import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
+import { useTestId } from "../hooks/useTestId";
+import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
+import { SystemIcon } from "../components/SystemIcon";
+import { layout } from "../hooks/useGamepads/layouts";
 import {
   useGamepadButtonPressEvent,
   useKeyboardEvent,
-} from "~/hooks/useGamepadEvent";
-import { useFocus } from "~/hooks/useFocus";
-import type { FocusElement } from "~/types/focusElement";
-import { readAppearance, readGeneral } from "~/server/settings.server";
-import { useFullscreen } from "~/hooks/useFullscreen";
-import { SettingsLink } from "~/components/SettingsLink";
+} from "../hooks/useGamepadEvent";
+import { useFocus } from "../hooks/useFocus";
+import type { FocusElement } from "../types/focusElement";
+import { readAppearance, readGeneral } from "../server/settings.server";
+import { useFullscreen } from "../hooks/useFullscreen";
+import { SettingsLink } from "../components/SettingsLink";
 import { BiError } from "react-icons/bi";
-import { Typography } from "~/components/Typography";
-import type { DataFunctionArgs } from "~/context";
-import { useEnableFocusAfterAction } from "~/hooks/useEnableFocusAfterAction";
-import { useGamepadConnected } from "~/hooks/useGamepadConnected";
-import { GamepadButtonIcon } from "~/components/GamepadButtonIcon";
-import type { SystemId } from "~/server/categoriesDB.server/types";
+import { Typography } from "../components/Typography";
+import type { DataFunctionArgs } from "../context";
+import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction";
+import { useGamepadConnected } from "../hooks/useGamepadConnected";
+import { GamepadButtonIcon } from "../components/GamepadButtonIcon";
 import fs from "fs";
 import nodepath from "path";
+import type { SystemId } from "../server/categoriesDB.server/systemId";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;

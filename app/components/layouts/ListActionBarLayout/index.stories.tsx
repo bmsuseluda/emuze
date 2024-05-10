@@ -1,7 +1,7 @@
 import { ListActionBarLayout } from ".";
-import { Button } from "~/components/Button";
-import { Label } from "~/components/Label";
-import { TextInput } from "~/components/TextInput";
+import { Button } from "../../Button";
+import { Label } from "../../Label";
+import { TextInput } from "../../TextInput";
 
 import type { Meta, StoryObj } from "@storybook/react";
 import { styled } from "../../../../styled-system/jsx";

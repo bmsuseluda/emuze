@@ -1,9 +1,9 @@
 import type { LoaderFunctionArgs } from "@remix-run/server-runtime";
 
-export type LoadContext = {
+export interface LoadContext {
   fullscreen: boolean;
-};
+}
 
-export type DataFunctionArgs = Omit<LoaderFunctionArgs, "context"> & {
+export interface DataFunctionArgs extends Omit<LoaderFunctionArgs, "context"> {
   context: LoadContext;
-};
+}

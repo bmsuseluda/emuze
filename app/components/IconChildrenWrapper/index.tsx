@@ -28,10 +28,10 @@ const Wrapper = styled("span", {
   },
 });
 
-type Props = {
+interface Props {
   children: ReactNode;
   rotate?: boolean;
-};
+}
 
 export const IconChildrenWrapper = ({
   children,

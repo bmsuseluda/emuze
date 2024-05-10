@@ -16,7 +16,7 @@ const iconVariant: Record<WindowChangeEvents, IconType> = {
   fullscreen: VscChromeMaximize,
 };
 
-interface Props {
+interface Props extends ComponentPropsWithoutRef<"button"> {
   variant: WindowChangeEvents;
 }
 
@@ -58,10 +58,7 @@ const CloseButton = styled(Button, {
   },
 });
 
-export const IconButton = ({
-  variant,
-  ...rest
-}: Props & ComponentPropsWithoutRef<"button">) => {
+export const IconButton = ({ variant, ...rest }: Props) => {
   const Icon = iconVariant[variant];
 
   const handleClick = () => {
