@@ -14,7 +14,7 @@ const SidebarWrapper = styled("aside", {
     display: "flex",
     flexFlow: "column",
     overflowX: "clip",
-    overflowY: "auto",
+    overflowY: "visible",
     width: "15rem",
     minWidth: "15rem",
     transition: "width 0.5s ease-in-out, min-width 0.5s ease-in-out",

@@ -14,11 +14,13 @@ export type OptionParamFunction = ({
   categoryData,
   settings,
   absoluteEntryPath,
+  hasAnalogStick,
 }: {
   entryData: Entry;
   categoryData: Category;
   settings: Settings;
   absoluteEntryPath: string;
+  hasAnalogStick: boolean;
 }) => string[];
 
 export type EnvironmentVariableFunction = (

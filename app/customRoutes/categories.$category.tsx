@@ -209,7 +209,9 @@ export default function Category() {
         headline={
           <IconChildrenWrapper>
             <SystemIcon id={id} />
-            <Typography {...getTestId("name")}>{name}</Typography>
+            <Typography ellipsis {...getTestId("name")}>
+              {name}
+            </Typography>
           </IconChildrenWrapper>
         }
       >

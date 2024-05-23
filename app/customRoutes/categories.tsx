@@ -68,7 +68,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 const Name = styled(Typography, {
   base: {
-    overflow: "clip",
+    overflow: "hidden",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
   },

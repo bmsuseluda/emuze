@@ -67,7 +67,6 @@ const getVirtualGamepadButton = (
 
     return [
       "--setting",
-      //   TODO: check if it is a problem if there are less then 3 ';'
       `${virtualGamepadString}=${physicalGamepadStrings.join(";")}`,
     ];
   }
@@ -166,7 +165,8 @@ const getIndexForDeviceId = (index: number) => {
 
 const getVirtualGamepad =
   (systemHasAnalogStick: boolean) =>
-  ({ vendor, product, mapping, id }: Sdl.Controller.Device) => {
+  ({ vendor, product, mapping, id }: Sdl.Controller.Device, index: number) => {
+    const virtualGamepadIndex = index;
     const deviceIdIndex = getIndexForDeviceId(id);
     const deviceId = `0x${deviceIdIndex}${vendor.toString(16).padStart(deviceIdIndex.length > 0 ? 4 : 3, "0")}${product.toString(16).padStart(4, "0")}`;
 
@@ -175,103 +175,139 @@ const getVirtualGamepad =
 
     return [
       ...getVirtualGamepadDpad(
-        id,
+        virtualGamepadIndex,
         mappingObject,
         physicalGamepad,
         systemHasAnalogStick,
       ),
 
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "Select" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "Select" },
         physicalGamepad.getBack(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "Start" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "Start" },
         physicalGamepad.getStart(),
       ),
 
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "A..South" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "A..South" },
         physicalGamepad.getA(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "B..East" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "B..East" },
         physicalGamepad.getB(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "X..West" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "X..West" },
         physicalGamepad.getX(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "Y..North" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "Y..North" },
         physicalGamepad.getY(),
       ),
 
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "L-Bumper" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "L-Bumper" },
         physicalGamepad.getLeftShoulder(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "R-Bumper" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Bumper" },
         physicalGamepad.getRightShoulder(),
       ),
 
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "L-Trigger" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "L-Trigger" },
         physicalGamepad.getLeftTrigger(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "R-Trigger" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Trigger" },
         physicalGamepad.getRightTrigger(),
       ),
 
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "L-Stick..Click" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "L-Stick..Click" },
         physicalGamepad.getLeftStickClick(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "R-Stick..Click" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Stick..Click" },
         physicalGamepad.getRightStickClick(),
       ),
 
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "L-Up" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "L-Up" },
         physicalGamepad.getLeftStickUp(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "L-Down" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "L-Down" },
         physicalGamepad.getLeftStickDown(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "L-Left" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "L-Left" },
         physicalGamepad.getLeftStickLeft(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "L-Right" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "L-Right" },
         physicalGamepad.getLeftStickRight(),
       ),
 
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "R-Up" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Up" },
         physicalGamepad.getRightStickUp(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "R-Down" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Down" },
         physicalGamepad.getRightStickDown(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "R-Left" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Left" },
         physicalGamepad.getRightStickLeft(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: id, buttonId: "R-Right" },
+        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Right" },
         physicalGamepad.getRightStickRight(),
       ),
     ];
   };
 
+/**
+ * This is the SDL definition of the internal gamepad of the Steam Deck
+ */
+export const steamDeck: Sdl.Controller.Device = {
+  id: 0,
+  name: "Microsoft X-Box 360 pad 0",
+  path: "/dev/input/event6",
+  guid: "030079f6de280000ff11000001000000",
+  vendor: 10462,
+  product: 4607,
+  version: 1,
+  player: 0,
+  mapping:
+    "030079f6de280000ff11000001000000,Steam Virtual Gamepad,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b8,leftshoulder:b4,leftstick:b9,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
+};
+
+/**
+ * If one of the gamepads is the Steam Deck, it should be positioned last.
+ */
+export const sortGamepads = (
+  gamepadA: Sdl.Controller.Device,
+  gamepadB: Sdl.Controller.Device,
+) => {
+  if (gamepadA.mapping === steamDeck.mapping) {
+    return 1;
+  }
+
+  if (gamepadB.mapping === steamDeck.mapping) {
+    return -1;
+  }
+
+  return gamepadA.id - gamepadB.id;
+};
+
 const getVirtualGamepads = (systemHasAnalogStick: boolean) => {
   const gamepads = sdl.controller.devices;
+
+  gamepads.sort(sortGamepads);
 
   log("debug", "gamepads", gamepads);
 
@@ -282,9 +318,9 @@ const getSharedAresOptionParams: OptionParamFunction = ({
   settings: {
     appearance: { fullscreen },
   },
-  categoryData: { id },
+  hasAnalogStick,
 }) => {
-  // keyboard f2
+  // fullsceen F2
   const hotkeyFullscreen = ["--setting", "Hotkey/ToggleFullscreen=0x1/0/2"];
   // save state F1
   const hotkeySave = ["--setting", "Hotkey/SaveState=0x1/0/1"];
@@ -297,8 +333,7 @@ const getSharedAresOptionParams: OptionParamFunction = ({
     ...hotkeySave,
     ...hotkeyLoad,
     ...inputSDL,
-    // ...getVirtualGamepads(categories[id].hasAnalogStick),
-    ...getVirtualGamepads(true),
+    ...getVirtualGamepads(hasAnalogStick),
   ];
   if (fullscreen) {
     optionParams.push("--fullscreen");

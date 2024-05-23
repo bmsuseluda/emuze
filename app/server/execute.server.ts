@@ -9,6 +9,7 @@ import { isWindows } from "./operationsystem.server";
 import { existsSync } from "fs";
 import { setErrorDialog } from "./errorDialog.server";
 import type { SystemId } from "./categoriesDB.server/systemId";
+import { categories } from "./categoriesDB.server";
 
 // TODO: separate os specific code
 const executeApplicationOnLinux = ({
@@ -103,6 +104,7 @@ export const executeApplication = (category: SystemId, entry: string) => {
               categoryData,
               settings,
               absoluteEntryPath,
+              hasAnalogStick: categories[categoryData.id].hasAnalogStick,
             })
           : [];
 

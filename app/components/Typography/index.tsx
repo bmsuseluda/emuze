@@ -13,4 +13,13 @@ export const Typography = styled("span", {
       display: "table",
     },
   },
+
+  variants: {
+    ellipsis: {
+      true: {
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+      },
+    },
+  },
 });
