@@ -18,6 +18,7 @@ import { setErrorDialog } from "./errorDialog.server";
 import type { ApplicationId } from "./applicationsDB.server/applicationId";
 import type { SystemId } from "./categoriesDB.server/systemId";
 import type { Application } from "../types/jsonFiles/applications";
+import { log } from "./debug.server";
 
 export const paths = {
   categories: "data/categories.json",
@@ -210,7 +211,10 @@ export const importEntries = async (category: SystemId) => {
           "Fetch MetaData from igdb failed",
           "Please try again later",
         );
-        console.log("igdb error", error, entries);
+
+        error().catch((error: { response: object }) => {
+          log("error", "igdb error", error.response);
+        });
 
         // Write data anyway to add or remove games
         writeCategory({
@@ -310,7 +314,12 @@ export const importCategories = async () => {
             return categorySettledResult.value;
           }
 
-          console.log("igdb error", categorySettledResult.reason);
+          categorySettledResult
+            .reason()
+            .catch((error: { response: object }) => {
+              log("error", "igdb error", error.response);
+            });
+
           return categories[index];
         },
       );

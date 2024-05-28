@@ -149,6 +149,12 @@ export const turtles2: Entry = {
   path: "Teenage Mutant Hero Turtles II - The Arcade Game.nes",
 };
 
+export const marioTetrisWorldCup: Entry = {
+  id: "mariotetrisworldcup",
+  name: "Super Mario Bros. - Tetris - Nintendo World Cup",
+  path: "Super Mario Bros. - Tetris - Nintendo World Cup.nes",
+};
+
 export const blazingstar: Entry = {
   id: "blazstar",
   name: "blazstar",

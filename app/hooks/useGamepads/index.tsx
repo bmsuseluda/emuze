@@ -53,8 +53,9 @@ export const identifyGamepadTypeUnmasked = (gamepad: Gamepad) => {
   }
 };
 
+// TODO: How to detect if the user does not hold the button but presses fast
 const isThrottled = (oldGamepad?: Gamepad | null) =>
-  !oldGamepad || new Date().getTime() - oldGamepad.timestamp > 250;
+  !oldGamepad || new Date().getTime() - oldGamepad.timestamp > 200;
 
 export const useGamepads = () => {
   const oldGamepads = useRef<Record<number, Gamepad>>({});
