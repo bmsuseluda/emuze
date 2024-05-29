@@ -24,20 +24,26 @@ export const url =
   process.env.EMUZE_IGDB_DEVELOPMENT_URL ||
   "https://emuze-api-d7jjhe73ba-uc.a.run.app/games";
 
-const igdbSubTitleChar = ":";
-const windowsSubTitleChar = " -";
+export const removeSubTitle = (a: string) => a.split(/ -|[:/]/g)[0];
 
-const replaceSubTitleChar = (a: string) =>
-  a.replaceAll(windowsSubTitleChar, igdbSubTitleChar);
-
+/**
+ * Should place the comma separated article as a prefix
+ */
 const setCommaSeparatedArticleAsPrefix = (a: string) => {
-  if (a.match(/, \w{1,3}$/)) {
-    const [gameName, article] = a.split(",");
+  const regex = /, \w{1,3}/;
+  const articleWithComma = a.match(regex);
+  const article = articleWithComma?.at(0)?.split(", ").at(1);
+
+  if (article) {
+    const gameName = a.replace(regex, "");
     return `${article.trim()} ${gameName}`;
   }
   return a;
 };
 
+/**
+ * Removes all brackets and their content
+ */
 const removeRegion = (a: string) => a.replace(/\(.*\)|\[.*]/gi, "").trim();
 
 const findGameLocalization = (
@@ -73,13 +79,11 @@ const createLocalizedFilter = (name: string) =>
   gameFilters.map((filter) => filterCaseInsensitive(filter, name));
 
 export const filterGame = ({ name }: Entry): string[] => {
-  const normalizedName = replaceSubTitleChar(
+  const normalizedName = removeSubTitle(
     setCommaSeparatedArticleAsPrefix(removeRegion(name)),
   );
 
-  const splittedBySubTitleChar = normalizedName.split(igdbSubTitleChar);
-
-  return createLocalizedFilter(splittedBySubTitleChar[0]);
+  return createLocalizedFilter(normalizedName);
 };
 
 const normalizeString = (a: string) =>
@@ -174,11 +178,12 @@ const fetchMetaDataForChunk = async (
 
   const expiresOn = getExpiresOn();
   return entries.map((entry) => {
-    const splittedBySubTitleChar = entry.name.split(/[-:/]/);
+    const nameWithoutSubTitle = removeSubTitle(entry.name);
     const gameData =
       findGameDataByName(entry.name, data) ||
-      (splittedBySubTitleChar.length > 1 &&
-        findGameDataByName(splittedBySubTitleChar[0], data));
+      (nameWithoutSubTitle !== entry.name &&
+        findGameDataByName(nameWithoutSubTitle, data));
+
     if (gameData) {
       const imageUrl = getCoverUrl(entry.name, gameData);
       if (imageUrl) {

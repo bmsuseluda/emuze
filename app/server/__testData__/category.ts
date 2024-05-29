@@ -131,6 +131,18 @@ export const bayoubilly: Entry = {
   path: "Adventures of Bayou Billy, The (E).nes",
 };
 
+export const lastBladeBeyondDestiny: Entry = {
+  id: "lastbladebeyonddestiny",
+  name: "Last Blade, The - Beyond the Destiny (Europe)",
+  path: "Last Blade, The - Beyond the Destiny (Europe).nes",
+};
+
+export const kingOfFightersR2: Entry = {
+  id: "kingoffightersr2",
+  name: "King of Fighters R-2 - Pocket Fighting Series (World) (En,Ja)",
+  path: "King of Fighters R-2 - Pocket Fighting Series (World) (En,Ja).nes",
+};
+
 export const boyandhisblob: Entry = {
   id: "boyandhisblob,a(e)",
   name: "Boy and his Blob, A (E)",

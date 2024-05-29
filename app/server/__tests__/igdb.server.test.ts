@@ -6,11 +6,18 @@ import {
   finalfantasy7,
   hugo,
   hugo2,
+  kingOfFightersR2,
+  lastBladeBeyondDestiny,
   marioTetrisWorldCup,
   turtles2,
 } from "../__testData__/category";
 import type { GamesResponse } from "../igdb.server";
-import { chunk, fetchMetaData, filterGame } from "../igdb.server";
+import {
+  chunk,
+  fetchMetaData,
+  filterGame,
+  removeSubTitle,
+} from "../igdb.server";
 import { categories as categoriesDB } from "../categoriesDB.server";
 import { getExpiresOn } from "../getExpiresOn.server";
 
@@ -55,6 +62,32 @@ vi.mock("../getExpiresOn.server.ts", () => {
 });
 
 describe("igdb.server", () => {
+  describe("removeSubTitle", () => {
+    it("Should split the string by ' -'", () => {
+      expect(removeSubTitle(turtles2.name)).toBe(
+        "Teenage Mutant Hero Turtles II",
+      );
+    });
+
+    it("Should not split the string by '-'", () => {
+      expect(removeSubTitle(kingOfFightersR2.name)).toBe(
+        "King of Fighters R-2",
+      );
+    });
+
+    it("Should split the string by ':'", () => {
+      expect(removeSubTitle(commanderkeen4.name)).toBe(
+        "Commander Keen in Goodbye, Galaxy!",
+      );
+    });
+
+    it("Should split the string by '/'", () => {
+      expect(
+        removeSubTitle("Super Mario Bros. - Tetris - Nintendo World Cup"),
+      ).toBe("Super Mario Bros.");
+    });
+  });
+
   describe("filterGame", () => {
     it("Should return filter array for game with simple game name", () => {
       const result = filterGame(hugo);
@@ -240,11 +273,20 @@ describe("igdb.server", () => {
               image_id: "turtles2img",
             },
           },
+          {
+            name: "King of Fighters R-2",
+            cover: {
+              image_id: "kingoffightersr2img",
+            },
+          },
         ],
       };
       igdbRequestMock.mockResolvedValue(igdbResponse);
 
-      const entriesWithImages = await fetchMetaData([18], [turtles2]);
+      const entriesWithImages = await fetchMetaData(
+        [18],
+        [turtles2, kingOfFightersR2],
+      );
 
       expect(entriesWithImages).toStrictEqual([
         {
@@ -253,6 +295,14 @@ describe("igdb.server", () => {
             expiresOn: getExpiresOn(),
             imageUrl:
               "https://images.igdb.com/igdb/image/upload/t_cover_big/turtles2img.webp",
+          },
+        },
+        {
+          ...kingOfFightersR2,
+          metaData: {
+            expiresOn: getExpiresOn(),
+            imageUrl:
+              "https://images.igdb.com/igdb/image/upload/t_cover_big/kingoffightersr2img.webp",
           },
         },
       ]);
@@ -373,13 +423,19 @@ describe("igdb.server", () => {
               image_id: "keen4img",
             },
           },
+          {
+            name: "The Last Blade: Beyond the Destiny",
+            cover: {
+              image_id: "lastbladebeyonddestinyimg",
+            },
+          },
         ],
       };
       igdbRequestMock.mockResolvedValue(igdbResponse);
 
       const entriesWithImages = await fetchMetaData(
         [18],
-        [bayoubilly, boyandhisblob, commanderkeen4],
+        [bayoubilly, boyandhisblob, commanderkeen4, lastBladeBeyondDestiny],
       );
 
       expect(entriesWithImages).toStrictEqual([
@@ -405,6 +461,14 @@ describe("igdb.server", () => {
             expiresOn: getExpiresOn(),
             imageUrl:
               "https://images.igdb.com/igdb/image/upload/t_cover_big/keen4img.webp",
+          },
+        },
+        {
+          ...lastBladeBeyondDestiny,
+          metaData: {
+            expiresOn: getExpiresOn(),
+            imageUrl:
+              "https://images.igdb.com/igdb/image/upload/t_cover_big/lastbladebeyonddestinyimg.webp",
           },
         },
       ]);
