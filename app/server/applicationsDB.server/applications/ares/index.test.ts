@@ -1,4 +1,4 @@
-import { sortGamepads, steamDeck } from "./index";
+import { resetUnusedVirtualGamepads, sortGamepads, steamDeck } from "./index";
 import type { Sdl } from "@kmamal/sdl";
 
 vi.mock("@kmamal/sdl", () => ({
@@ -10,6 +10,25 @@ vi.mock("@kmamal/sdl", () => ({
 }));
 
 describe("ares", () => {
+  describe("resetUnusedVirtualGamepads", () => {
+    it("Should reset virtual gamepad 2 to 5, if only 1 physical gamepad is connected", () => {
+      const resetedGamepads = resetUnusedVirtualGamepads(1);
+      expect(resetedGamepads.at(1)).toContain("VirtualPad2");
+      expect(resetedGamepads.at(-1)).toContain("VirtualPad5");
+    });
+
+    it("Should reset all virtual gamepads, if no physical gamepad is connected", () => {
+      const resetedGamepads = resetUnusedVirtualGamepads(0);
+      expect(resetedGamepads.at(1)).toContain("VirtualPad1");
+      expect(resetedGamepads.at(-1)).toContain("VirtualPad5");
+    });
+
+    it("Should reset no virtual gamepads, if all physical gamepads are connected", () => {
+      const resetedGamepads = resetUnusedVirtualGamepads(5);
+      expect(resetedGamepads.length).toBe(0);
+    });
+  });
+
   describe("sortGamepads", () => {
     it("should sort the steam deck last", () => {
       const gamepadPs4: Sdl.Controller.Device = {

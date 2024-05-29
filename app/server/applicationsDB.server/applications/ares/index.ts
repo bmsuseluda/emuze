@@ -3,13 +3,14 @@ import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
 import { log } from "../../../debug.server";
 import type {
-  AresButtonId,
   GamepadGroupId,
   PhysicalGamepadButton,
   SdlButtonId,
   SdlButtonMapping,
+  VirtualGamepad,
 } from "./types";
 import { PhysicalGamepad } from "./PhysicalGamepad";
+import { getVirtualGamepadReset } from "./VirtualGamepadReset";
 
 const gamepadGroupId: Record<GamepadGroupId, number> = {
   Axis: 0,
@@ -31,11 +32,6 @@ const createSdlMappingObject = (sdlMapping: string) =>
       }
       return accumulator;
     }, {});
-
-interface VirtualGamepad {
-  gamepadIndex: number;
-  buttonId: AresButtonId;
-}
 
 const getPhysicalGamepadString = (
   physicalGamepadButton: PhysicalGamepadButton | null,
@@ -304,6 +300,11 @@ export const sortGamepads = (
   return gamepadA.id - gamepadB.id;
 };
 
+export const resetUnusedVirtualGamepads = (usedVirtualGamepadsCount: number) =>
+  Array.from({ length: 5 - usedVirtualGamepadsCount }, (_, index) =>
+    getVirtualGamepadReset(index + usedVirtualGamepadsCount),
+  ).flat();
+
 const getVirtualGamepads = (systemHasAnalogStick: boolean) => {
   const gamepads = sdl.controller.devices;
 
@@ -311,7 +312,11 @@ const getVirtualGamepads = (systemHasAnalogStick: boolean) => {
 
   log("debug", "gamepads", gamepads);
 
-  return gamepads.flatMap(getVirtualGamepad(systemHasAnalogStick));
+  const virtualGamepads = gamepads.flatMap(
+    getVirtualGamepad(systemHasAnalogStick),
+  );
+
+  return [...virtualGamepads, ...resetUnusedVirtualGamepads(gamepads.length)];
 };
 
 const getSharedAresOptionParams: OptionParamFunction = ({

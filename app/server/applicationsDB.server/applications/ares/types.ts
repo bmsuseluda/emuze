@@ -51,9 +51,14 @@ export type AresButtonId =
 
 export type GamepadGroupId = "Axis" | "HAT" | "Button";
 
-export type PhysicalGamepadButton = {
+export interface PhysicalGamepadButton {
   deviceId: string;
   groupId: GamepadGroupId;
   inputId?: string;
   qualifier?: "Hi" | "Lo";
-};
+}
+
+export interface VirtualGamepad {
+  gamepadIndex: number;
+  buttonId: AresButtonId;
+}
