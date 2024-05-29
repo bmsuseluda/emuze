@@ -28,7 +28,9 @@ vi.mock("apicalypse", () => ({
     fields: () => ({
       where: () => ({
         limit: () => ({
-          request: igdbRequestMock,
+          offset: () => ({
+            request: igdbRequestMock,
+          }),
         }),
       }),
     }),

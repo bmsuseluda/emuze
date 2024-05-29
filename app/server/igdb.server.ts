@@ -120,12 +120,14 @@ const findGameDataByName = (nameToFind: string, games: Game[]) =>
       !!findGameLocalization(nameToFind, game_localizations),
   );
 
-const fetchMetaDataForChunk = async (
+const igdbResponseLimit = 500;
+
+const fetchMetaDataForChunkLimitless = async (
   client: Apicalypse,
   platformId: number[],
   entries: Entry[],
-) => {
-  // TODO: check on limit in response
+  offset: number = 0,
+): Promise<Game[]> => {
   const gamesResponse: GamesResponse = await retryPromise(
     () =>
       client
@@ -137,19 +139,46 @@ const fetchMetaDataForChunk = async (
           `platforms=(${platformId}) &
             (${entries.flatMap(filterGame).join(" | ")})`,
         )
-        .limit(500)
+        .limit(igdbResponseLimit)
+        .offset(offset)
         .request(url),
     3,
     1000,
+  );
+
+  if (gamesResponse.data.length === igdbResponseLimit) {
+    return [
+      ...gamesResponse.data,
+      ...(await fetchMetaDataForChunkLimitless(
+        client,
+        platformId,
+        entries,
+        offset + igdbResponseLimit,
+      )),
+    ];
+  }
+
+  return gamesResponse.data;
+};
+
+const fetchMetaDataForChunk = async (
+  client: Apicalypse,
+  platformId: number[],
+  entries: Entry[],
+) => {
+  const data = await fetchMetaDataForChunkLimitless(
+    client,
+    platformId,
+    entries,
   );
 
   const expiresOn = getExpiresOn();
   return entries.map((entry) => {
     const splittedBySubTitleChar = entry.name.split(/[-:/]/);
     const gameData =
-      findGameDataByName(entry.name, gamesResponse.data) ||
+      findGameDataByName(entry.name, data) ||
       (splittedBySubTitleChar.length > 1 &&
-        findGameDataByName(splittedBySubTitleChar[0], gamesResponse.data));
+        findGameDataByName(splittedBySubTitleChar[0], data));
     if (gameData) {
       const imageUrl = getCoverUrl(entry.name, gameData);
       if (imageUrl) {
