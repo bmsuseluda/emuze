@@ -137,7 +137,10 @@ const fetchMetaDataForChunkLimitless = async (
       client
         .fields([
           "name",
-          "cover.image_id,alternative_names.name,game_localizations.name,game_localizations.cover.image_id",
+          "cover.image_id",
+          "alternative_names.name",
+          "game_localizations.name",
+          "game_localizations.cover.image_id",
         ])
         .where(
           `platforms=(${platformId}) &
