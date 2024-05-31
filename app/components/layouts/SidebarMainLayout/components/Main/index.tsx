@@ -14,9 +14,9 @@ const StyledMain = styled("main", {
   },
 });
 
-type Props = {
+interface Props {
   children: ReactNode;
-};
+}
 
 export const Main = ({ children }: Props) => (
   <StyledMain>{children}</StyledMain>

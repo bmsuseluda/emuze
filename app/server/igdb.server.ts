@@ -1,8 +1,8 @@
-import type { Entry } from "~/types/jsonFiles/category";
+import type { Entry } from "../types/jsonFiles/category";
 import type { Apicalypse } from "apicalypse";
 import apicalypse from "apicalypse";
-import { getExpiresOn } from "~/server/getExpiresOn.server";
-import { retryPromise } from "~/promiseRetry";
+import { getExpiresOn } from "./getExpiresOn.server";
+import { retryPromise } from "../retryPromise";
 
 interface GameLocalization {
   name?: string;
@@ -24,20 +24,26 @@ export const url =
   process.env.EMUZE_IGDB_DEVELOPMENT_URL ||
   "https://emuze-api-d7jjhe73ba-uc.a.run.app/games";
 
-const igdbSubTitleChar = ":";
-const windowsSubTitleChar = " -";
+export const removeSubTitle = (a: string) => a.split(/ -|[:/]/g)[0];
 
-const replaceSubTitleChar = (a: string) =>
-  a.replace(windowsSubTitleChar, igdbSubTitleChar);
-
+/**
+ * Should place the comma separated article as a prefix
+ */
 const setCommaSeparatedArticleAsPrefix = (a: string) => {
-  if (a.match(/, \w{1,3}$/)) {
-    const [gameName, article] = a.split(",");
+  const regex = /, \w{1,3}/;
+  const articleWithComma = a.match(regex);
+  const article = articleWithComma?.at(0)?.split(", ").at(1);
+
+  if (article) {
+    const gameName = a.replace(regex, "");
     return `${article.trim()} ${gameName}`;
   }
   return a;
 };
 
+/**
+ * Removes all brackets and their content
+ */
 const removeRegion = (a: string) => a.replace(/\(.*\)|\[.*]/gi, "").trim();
 
 const findGameLocalization = (
@@ -61,26 +67,28 @@ export const getCoverUrl = (entryName: string, gameData: Game) => {
 };
 
 const filterCaseInsensitive = (field: string, value: string) =>
-  `${field}~"${value}"`;
+  `${field}~"${value}"*`;
 
 const gameFilters = [
   "name",
   "alternative_names.name",
   "game_localizations.name",
 ];
-// TODO: add tests
-const filterGame = ({ name }: Entry): string[] => {
-  const normalizedName = replaceSubTitleChar(
+
+const createLocalizedFilter = (name: string) =>
+  gameFilters.map((filter) => filterCaseInsensitive(filter, name));
+
+export const filterGame = ({ name }: Entry): string[] => {
+  const normalizedName = removeSubTitle(
     setCommaSeparatedArticleAsPrefix(removeRegion(name)),
   );
-  return gameFilters.map((filter) =>
-    filterCaseInsensitive(filter, normalizedName),
-  );
+
+  return createLocalizedFilter(normalizedName);
 };
 
 const normalizeString = (a: string) =>
-  replaceSubTitleChar(setCommaSeparatedArticleAsPrefix(removeRegion(a)))
-    .replace(/[`~!@#$%^&*()_|+\-=?;:'",.]/gi, "")
+  setCommaSeparatedArticleAsPrefix(removeRegion(a))
+    .replace(/[`~!@#$%^&*()_|+\-=?;:/'",. ]/gi, "")
     .toLowerCase()
     .trim();
 
@@ -105,37 +113,80 @@ export interface GamesResponse {
   };
 }
 
-const fetchMetaDataForChunk = async (
+const findGameDataByName = (nameToFind: string, games: Game[]) =>
+  games.find(({ name }) => matchName(name, nameToFind)) ||
+  games.find(
+    ({ alternative_names }) =>
+      !!alternative_names?.find(({ name }) => matchName(name, nameToFind)),
+  ) ||
+  games.find(
+    ({ game_localizations }) =>
+      !!findGameLocalization(nameToFind, game_localizations),
+  );
+
+const igdbResponseLimit = 500;
+
+const fetchMetaDataForChunkLimitless = async (
   client: Apicalypse,
   platformId: number[],
   entries: Entry[],
-) => {
-  // TODO: check on limit in response
+  offset: number = 0,
+): Promise<Game[]> => {
   const gamesResponse: GamesResponse = await retryPromise(
     () =>
       client
         .fields([
           "name",
-          "cover.image_id,alternative_names.name,game_localizations.name,game_localizations.cover.image_id",
+          "cover.image_id",
+          "alternative_names.name",
+          "game_localizations.name",
+          "game_localizations.cover.image_id",
         ])
         .where(
           `platforms=(${platformId}) &
             (${entries.flatMap(filterGame).join(" | ")})`,
         )
-        .limit(500)
+        .limit(igdbResponseLimit)
+        .offset(offset)
         .request(url),
     3,
     1000,
   );
 
+  if (gamesResponse.data.length === igdbResponseLimit) {
+    return [
+      ...gamesResponse.data,
+      ...(await fetchMetaDataForChunkLimitless(
+        client,
+        platformId,
+        entries,
+        offset + igdbResponseLimit,
+      )),
+    ];
+  }
+
+  return gamesResponse.data;
+};
+
+const fetchMetaDataForChunk = async (
+  client: Apicalypse,
+  platformId: number[],
+  entries: Entry[],
+) => {
+  const data = await fetchMetaDataForChunkLimitless(
+    client,
+    platformId,
+    entries,
+  );
+
   const expiresOn = getExpiresOn();
   return entries.map((entry) => {
-    const gameData = gamesResponse.data.find(
-      ({ name, alternative_names, game_localizations }) =>
-        matchName(name, entry.name) ||
-        !!alternative_names?.find(({ name }) => matchName(name, entry.name)) ||
-        !!findGameLocalization(entry.name, game_localizations),
-    );
+    const nameWithoutSubTitle = removeSubTitle(entry.name);
+    const gameData =
+      findGameDataByName(entry.name, data) ||
+      (nameWithoutSubTitle !== entry.name &&
+        findGameDataByName(nameWithoutSubTitle, data));
+
     if (gameData) {
       const imageUrl = getCoverUrl(entry.name, gameData);
       if (imageUrl) {

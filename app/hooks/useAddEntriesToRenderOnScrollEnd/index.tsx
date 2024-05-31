@@ -1,7 +1,7 @@
 import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDeepCompareEffect } from "react-use";
-import type { Entry } from "~/types/jsonFiles/category";
+import type { Entry } from "../../types/jsonFiles/category";
 
 const entriesCountForChunk = 20;
 

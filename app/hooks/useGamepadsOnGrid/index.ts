@@ -2,11 +2,11 @@ import {
   useGamepadButtonPressEvent,
   useGamepadStickDirectionEvent,
   useKeyboardEvent,
-} from "~/hooks/useGamepadEvent";
-import { layout } from "~/hooks/useGamepads/layouts";
+} from "../useGamepadEvent";
+import { layout } from "../useGamepads/layouts";
 import type { MutableRefObject, RefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
-import { useRefsGrid } from "~/hooks/useRefsGrid";
+import { useRefsGrid } from "../useRefsGrid";
 
 export interface Result<T> {
   selectedEntry: MutableRefObject<T | undefined>;

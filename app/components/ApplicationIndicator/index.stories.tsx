@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { ApplicationIndicator } from ".";
-import { pcsx2, play } from "~/server/__testData__/applications";
+import { pcsx2, play } from "../../server/__testData__/applications";
 
 const meta = {
   component: ApplicationIndicator,

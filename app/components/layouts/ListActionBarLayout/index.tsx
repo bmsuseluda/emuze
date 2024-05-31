@@ -1,8 +1,8 @@
-import { Headline } from "~/components/Headline";
+import { Headline } from "../../Headline";
 import type { ElementRef, ReactNode } from "react";
 import { forwardRef } from "react";
 import { styled } from "../../../../styled-system/jsx";
-import { useFullscreen } from "~/hooks/useFullscreen";
+import { useFullscreen } from "../../../hooks/useFullscreen";
 
 interface Props {
   headline?: ReactNode;

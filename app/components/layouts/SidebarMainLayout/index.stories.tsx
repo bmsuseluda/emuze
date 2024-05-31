@@ -1,7 +1,7 @@
 import { SidebarMainLayout } from ".";
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { SystemIcon } from "app/components/SystemIcon";
+import { SystemIcon } from "../../SystemIcon";
 import { styled } from "../../../../styled-system/jsx";
 
 const meta = {
@@ -20,11 +20,6 @@ const Wrapper = styled("div", {
 });
 
 export const Basic: Story = {
-  render: (args) => (
-    <Wrapper>
-      <SidebarMainLayout {...args} />
-    </Wrapper>
-  ),
   args: {
     children: (
       <>
@@ -37,6 +32,11 @@ export const Basic: Story = {
       </>
     ),
   },
+  render: (args) => (
+    <Wrapper>
+      <SidebarMainLayout {...args} />
+    </Wrapper>
+  ),
 };
 
 export const WithHeader: Story = {

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { FullscreenContext } from "~/provider/FullscreenProvider";
+import { FullscreenContext } from "../../provider/FullscreenProvider";
 
 export const useFullscreen = () => {
   const context = useContext(FullscreenContext);

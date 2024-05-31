@@ -1,37 +1,5 @@
-import type { Application } from "~/server/applicationsDB.server/types";
-
-export type SystemId =
-  | "sonyplaystation"
-  | "sonyplaystation2"
-  | "sonyplaystation3"
-  | "sonypsp"
-  | "nintendoentertainmentsystem"
-  | "supernintendo"
-  | "nintendogameboy"
-  | "nintendogameboycolor"
-  | "nintendogameboyadvance"
-  | "nintendods"
-  | "nintendo3ds"
-  | "nintendo64"
-  | "nintendogamecube"
-  | "nintendowii"
-  | "nintendowiiu"
-  | "nintendoswitch"
-  | "pcengine"
-  | "pcenginecd"
-  | "pcenginesupergrafx"
-  | "segamastersystem"
-  | "segagamegear"
-  | "segamegadrive"
-  | "sega32x"
-  | "segacd"
-  | "segasaturn"
-  | "segadreamcast"
-  | "arcade"
-  | "neogeo"
-  | "neogeocd"
-  | "scumm"
-  | "dos";
+import type { Application } from "../applicationsDB.server/types";
+import type { SystemId } from "./systemId";
 
 export interface Category {
   id: SystemId;
@@ -39,4 +7,5 @@ export interface Category {
   igdbPlatformIds: number[];
   applications: Application[];
   defaultApplication: Application;
+  hasAnalogStick: boolean;
 }

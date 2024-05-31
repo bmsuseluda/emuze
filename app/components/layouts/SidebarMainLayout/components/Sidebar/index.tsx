@@ -1,8 +1,8 @@
-import { Ul } from "~/components/Ul";
-import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
+import { Ul } from "../../../../Ul";
+import { ListActionBarLayout } from "../../../ListActionBarLayout";
 import type { ReactNode } from "react";
 import { styled } from "../../../../../../styled-system/jsx";
-import { Separator } from "~/components/Separator";
+import { Separator } from "../../../../Separator";
 
 const SidebarWrapper = styled("aside", {
   base: {
@@ -14,7 +14,7 @@ const SidebarWrapper = styled("aside", {
     display: "flex",
     flexFlow: "column",
     overflowX: "clip",
-    overflowY: "auto",
+    overflowY: "visible",
     width: "15rem",
     minWidth: "15rem",
     transition: "width 0.5s ease-in-out, min-width 0.5s ease-in-out",

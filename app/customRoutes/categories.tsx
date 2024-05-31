@@ -1,26 +1,26 @@
 import { json, redirect } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
-import { readCategories } from "~/server/categories.server";
-import { SidebarMainLayout } from "~/components/layouts/SidebarMainLayout";
-import { Link } from "~/containers/Link";
-import { Header } from "~/containers/Header";
-import { useTestId } from "~/hooks/useTestId";
-import { SystemIcon } from "app/components/SystemIcon";
-import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
-import { readAppearance } from "~/server/settings.server";
+import { readCategories } from "../server/categories.server";
+import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout";
+import { Link } from "../containers/Link";
+import { Header } from "../containers/Header";
+import { useTestId } from "../hooks/useTestId";
+import { SystemIcon } from "../components/SystemIcon";
+import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar";
+import { readAppearance } from "../server/settings.server";
 import { useCallback } from "react";
 import {
   useGamepadButtonPressEvent,
   useGamepadStickDirectionEvent,
   useKeyboardEvent,
-} from "~/hooks/useGamepadEvent";
-import { layout } from "~/hooks/useGamepads/layouts";
-import { useFocus } from "~/hooks/useFocus";
-import type { FocusElement } from "~/types/focusElement";
-import type { SystemId } from "~/server/categoriesDB.server/types";
-import { Typography } from "~/components/Typography";
+} from "../hooks/useGamepadEvent";
+import { layout } from "../hooks/useGamepads/layouts";
+import { useFocus } from "../hooks/useFocus";
+import type { FocusElement } from "../types/focusElement";
+import { Typography } from "../components/Typography";
 import { styled } from "../../styled-system/jsx";
-import type { DataFunctionArgs } from "~/context";
+import type { DataFunctionArgs } from "../context";
+import type { SystemId } from "../server/categoriesDB.server/systemId";
 
 type CategoryLinks = Array<{ id: SystemId; name: string; to: string }>;
 type LoaderData = {
@@ -68,7 +68,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 const Name = styled(Typography, {
   base: {
-    overflow: "clip",
+    overflow: "hidden",
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
   },

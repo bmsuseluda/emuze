@@ -44,10 +44,10 @@ const Link = styled(RemixLink, {
   },
 });
 
-type Props = {
+interface Props extends Omit<RemixLinkProps, "to"> {
   isFullscreen?: boolean;
   to?: string;
-} & Omit<RemixLinkProps, "to">;
+}
 
 export const SettingsLink = forwardRef<ElementRef<typeof Link>, Props>(
   ({ isFullscreen = false, to = "settings", ...rest }, ref) => (

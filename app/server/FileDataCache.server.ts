@@ -1,4 +1,4 @@
-import { readFileHome, writeFileHome } from "~/server/readWriteData.server";
+import { readFileHome, writeFileHome } from "./readWriteData.server";
 
 // TODO: create npm package
 export class FileDataCache<Content> {

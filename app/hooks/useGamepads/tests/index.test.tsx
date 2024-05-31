@@ -1,4 +1,4 @@
-import { excludeMaskedGamepads } from "~/hooks/useGamepads";
+import { excludeMaskedGamepads } from "..";
 
 describe("useGamepads", () => {
   describe("excludeMaskedGamepads", () => {

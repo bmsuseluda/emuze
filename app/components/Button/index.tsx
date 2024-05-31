@@ -27,11 +27,11 @@ export const StyledButton = styled("button", {
   },
 });
 
-export type Props = {
+export interface Props extends ComponentPropsWithoutRef<typeof StyledButton> {
   children?: ReactNode;
   loading?: boolean;
   icon?: ReactNode;
-} & ComponentPropsWithoutRef<typeof StyledButton>;
+}
 
 export const Button = forwardRef<ElementRef<typeof StyledButton>, Props>(
   ({ children, loading = false, icon, ...rest }, ref) => (

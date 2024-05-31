@@ -1,11 +1,11 @@
-import { layout } from "~/hooks/useGamepads/layouts";
+import { layout } from "../useGamepads/layouts";
 import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import {
   useGamepadButtonPressEvent,
   useGamepadStickDirectionEvent,
   useKeyboardEvent,
-} from "~/hooks/useGamepadEvent";
+} from "../useGamepadEvent";
 
 // TODO: write tests
 export const useGamepadsOnSidebar = (isInFocus: boolean) => {

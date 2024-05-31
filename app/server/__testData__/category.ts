@@ -1,6 +1,6 @@
-import type { Category, Entry } from "~/types/jsonFiles/category";
+import type { Category, Entry } from "../../types/jsonFiles/category";
 import nodepath from "path";
-import { general } from "~/server/__testData__/general";
+import { general } from "./general";
 
 export const addIndex = (entries: Entry[]) =>
   entries.map((entry, index) => ({ ...entry, id: `${entry.id}${index}` }));
@@ -131,6 +131,18 @@ export const bayoubilly: Entry = {
   path: "Adventures of Bayou Billy, The (E).nes",
 };
 
+export const lastBladeBeyondDestiny: Entry = {
+  id: "lastbladebeyonddestiny",
+  name: "Last Blade, The - Beyond the Destiny (Europe)",
+  path: "Last Blade, The - Beyond the Destiny (Europe).nes",
+};
+
+export const kingOfFightersR2: Entry = {
+  id: "kingoffightersr2",
+  name: "King of Fighters R-2 - Pocket Fighting Series (World) (En,Ja)",
+  path: "King of Fighters R-2 - Pocket Fighting Series (World) (En,Ja).nes",
+};
+
 export const boyandhisblob: Entry = {
   id: "boyandhisblob,a(e)",
   name: "Boy and his Blob, A (E)",
@@ -147,6 +159,12 @@ export const turtles2: Entry = {
   id: "teenagemutantheroturtlesii-thearcadegame",
   name: "Teenage Mutant Hero Turtles II - The Arcade Game",
   path: "Teenage Mutant Hero Turtles II - The Arcade Game.nes",
+};
+
+export const marioTetrisWorldCup: Entry = {
+  id: "mariotetrisworldcup",
+  name: "Super Mario Bros. - Tetris - Nintendo World Cup",
+  path: "Super Mario Bros. - Tetris - Nintendo World Cup.nes",
 };
 
 export const blazingstar: Entry = {

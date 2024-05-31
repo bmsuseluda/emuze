@@ -1,17 +1,19 @@
 {
-  "include": [
-    "main.ts",
-    "preload.ts",
-    "readSettings.ts",
-    "../electronApi.d.ts"
-  ],
+  "include": ["main.ts", "preload.ts", "../electronApi.d.ts"],
   "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ES2019"],
+    "isolatedModules": true,
     "esModuleInterop": true,
+    "jsx": "react-jsx",
     "module": "commonjs",
-    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "target": "ES2019",
     "strict": true,
     "baseUrl": ".",
     "skipLibCheck": true,
+    "allowJs": false,
+    "forceConsistentCasingInFileNames": true,
     "outDir": "../buildDesktop"
   }
 }

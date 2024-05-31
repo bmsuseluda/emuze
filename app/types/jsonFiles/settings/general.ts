@@ -1,9 +1,9 @@
 import type { Required } from "utility-types";
 
-export type General = {
+export interface General {
   applicationsPath?: string;
   categoriesPath?: string;
-};
+}
 
 export type GeneralConfigured = Required<General, "categoriesPath">;
 export type GeneralConfiguredWindows = Required<

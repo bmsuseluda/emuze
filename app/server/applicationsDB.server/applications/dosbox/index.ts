@@ -5,9 +5,9 @@ import type {
   ExcludeFilesFunction,
   FindEntryNameFunction,
   OptionParamFunction,
-} from "~/server/applicationsDB.server/types";
+} from "../../types";
 import nodepath from "path";
-import { readFilenames } from "~/server/readWriteData.server";
+import { readFilenames } from "../../../readWriteData.server";
 
 const findDosGameEntry = (filePath: string) =>
   Object.entries(dosGames).find(([key]) =>

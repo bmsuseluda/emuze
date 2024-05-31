@@ -1,9 +1,9 @@
 import nodepath from "path";
 import type childProcess from "child_process";
 
-import { readCategory } from "~/server/categories.server";
-import { readAppearance, readGeneral } from "~/server/settings.server";
-import type { Category } from "~/types/jsonFiles/category";
+import { readCategory } from "../categories.server";
+import { readAppearance, readGeneral } from "../settings.server";
+import type { Category } from "../../types/jsonFiles/category";
 import { applications as applicationsDB } from "../applicationsDB.server";
 
 import { executeApplication } from "../execute.server";
@@ -14,10 +14,10 @@ import {
   pcenginecd,
   pcenginecdLinux,
 } from "../__testData__/category";
-import type { General } from "~/types/jsonFiles/settings/general";
-import type { Appearance } from "~/types/jsonFiles/settings/appearance";
+import type { General } from "../../types/jsonFiles/settings/general";
+import type { Appearance } from "../../types/jsonFiles/settings/appearance";
 import type { Mock } from "vitest";
-import { general } from "~/server/__testData__/general";
+import { general } from "../__testData__/general";
 import { existsSync } from "fs";
 
 vi.mock("@kmamal/sdl", () => ({
@@ -46,10 +46,10 @@ vi.mock("fs", async () => {
   };
 });
 
-vi.mock("~/server/categories.server", () => ({
+vi.mock("../categories.server", () => ({
   readCategory: vi.fn(),
 }));
-vi.mock("~/server/settings.server", () => ({
+vi.mock("../settings.server", () => ({
   readGeneral: vi.fn(),
   readAppearance: vi.fn(),
 }));

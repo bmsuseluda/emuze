@@ -1,18 +1,20 @@
-import type { GamepadType } from "~/hooks/useGamepads/gamepadTypeMapping";
+import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping";
 import type { ReactNode, SVGProps } from "react";
-import Xboxa from "~/components/Icons/Xboxa";
-import type { SVGRProps } from "~/types/svgProps";
-import Xboxb from "~/components/Icons/Xboxb";
-import Xboxx from "~/components/Icons/Xboxx";
-import Xboxy from "~/components/Icons/Xboxy";
-import PlaystationCross from "~/components/Icons/PlaystationCross";
-import PlaystationCircle from "~/components/Icons/PlaystationCircle";
-import PlaystationSquare from "~/components/Icons/PlaystationSquare";
-import PlaystationTriangle from "~/components/Icons/PlaystationTriangle";
+import Xboxa from "../Icons/Xboxa";
+import type { SVGRProps } from "../../types/svgProps";
+import Xboxb from "../Icons/Xboxb";
+import Xboxx from "../Icons/Xboxx";
+import Xboxy from "../Icons/Xboxy";
+import PlaystationCross from "../Icons/PlaystationCross";
+import PlaystationCircle from "../Icons/PlaystationCircle";
+import PlaystationSquare from "../Icons/PlaystationSquare";
+import PlaystationTriangle from "../Icons/PlaystationTriangle";
+
+interface IconMappingProps extends SVGProps<SVGSVGElement>, SVGRProps {}
 
 const iconMapping: Record<
   GamepadType,
-  ((props: SVGProps<SVGSVGElement> & SVGRProps) => ReactNode)[]
+  ((props: IconMappingProps) => ReactNode)[]
 > = {
   PlayStation: [
     PlaystationCross,
@@ -24,10 +26,10 @@ const iconMapping: Record<
   XBox: [Xboxa, Xboxb, Xboxx, Xboxy],
 };
 
-type Props = {
+interface Props {
   buttonIndex: number;
   gamepadType?: GamepadType;
-};
+}
 
 export const GamepadButtonIcon = ({
   buttonIndex,

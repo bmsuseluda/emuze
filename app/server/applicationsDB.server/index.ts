@@ -13,7 +13,7 @@ import {
   aresSuperNintendo,
 } from "./applications/ares";
 import { punes } from "./applications/punes";
-import { isWindows } from "~/server/operationsystem.server";
+import { isWindows } from "../operationsystem.server";
 
 export const pcsx2: Application = {
   id: "pcsx2",

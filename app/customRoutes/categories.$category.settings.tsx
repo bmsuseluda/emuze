@@ -5,22 +5,22 @@ import {
   useLocation,
   useNavigate,
 } from "@remix-run/react";
-import { SidebarMainLayout } from "~/components/layouts/SidebarMainLayout";
-import { Link } from "~/containers/Link";
-import { categories, readAppearance } from "~/server/settings.server";
-import { useGamepadsOnSidebar } from "~/hooks/useGamepadsOnSidebar";
-import { SettingsIcon } from "~/components/SettingsIcon";
-import { useFocus } from "~/hooks/useFocus";
-import type { FocusElement } from "~/types/focusElement";
+import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout";
+import { Link } from "../containers/Link";
+import { categories, readAppearance } from "../server/settings.server";
+import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar";
+import { SettingsIcon } from "../components/SettingsIcon";
+import { useFocus } from "../hooks/useFocus";
+import type { FocusElement } from "../types/focusElement";
 import { useCallback, useMemo } from "react";
 import {
   useGamepadButtonPressEvent,
   useGamepadStickDirectionEvent,
   useKeyboardEvent,
-} from "~/hooks/useGamepadEvent";
-import { layout } from "~/hooks/useGamepads/layouts";
-import { Dialog } from "~/components/Dialog";
-import { readCategories } from "~/server/categories.server";
+} from "../hooks/useGamepadEvent";
+import { layout } from "../hooks/useGamepads/layouts";
+import { Dialog } from "../components/Dialog";
+import { readCategories } from "../server/categories.server";
 
 export const loader = () => {
   const { collapseSidebar } = readAppearance();

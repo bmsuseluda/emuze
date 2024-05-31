@@ -2,7 +2,7 @@ import type {
   Application,
   ExcludeFilesFunction,
   FindEntryNameFunction,
-} from "~/server/applicationsDB.server/types";
+} from "../../types";
 import nodepath from "path";
 import ps3Games from "./nameMapping/ps3.json";
 

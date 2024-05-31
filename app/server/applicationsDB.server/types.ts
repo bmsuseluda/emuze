@@ -1,22 +1,26 @@
-import type { Category, Entry } from "~/types/jsonFiles/category";
-import type { GeneralConfigured } from "~/types/jsonFiles/settings/general";
-import type { Appearance } from "~/types/jsonFiles/settings/appearance";
+import type { Category, Entry } from "../../types/jsonFiles/category";
+import type { GeneralConfigured } from "../../types/jsonFiles/settings/general";
+import type { Appearance } from "../../types/jsonFiles/settings/appearance";
+import type { Application as InstalledApplication } from "../../types/jsonFiles/applications";
+import type { ApplicationId } from "./applicationId";
 
-export type Settings = {
+export interface Settings {
   general: GeneralConfigured;
   appearance: Appearance;
-};
+}
 
 export type OptionParamFunction = ({
   entryData,
   categoryData,
   settings,
   absoluteEntryPath,
+  hasAnalogStick,
 }: {
   entryData: Entry;
   categoryData: Category;
   settings: Settings;
   absoluteEntryPath: string;
+  hasAnalogStick: boolean;
 }) => string[];
 
 export type EnvironmentVariableFunction = (
@@ -28,48 +32,15 @@ export type FindEntryNameFunction = ({
   entry,
   categoriesPath,
   categoryName,
+  installedApplication,
 }: {
   entry: Entry;
   categoriesPath: string;
   categoryName: string;
+  installedApplication?: InstalledApplication;
 }) => string;
 
 export type ExcludeFilesFunction = (filenames: string[]) => string[];
-
-export type ApplicationId =
-  | "duckstation"
-  | "pcsx2"
-  | "play"
-  | "rpcs3"
-  | "ppsspp"
-  | "blastem"
-  | "bsnes"
-  | "snes9x"
-  | "citra"
-  | "lime3ds"
-  | "melonds"
-  | "desmume"
-  | "dolphin"
-  | "yuzu"
-  | "ryujinx"
-  | "cemu"
-  | "nestopia"
-  | "punes"
-  | "mednafen"
-  | "mame"
-  | "mameNeoGeo"
-  | "mameNeoGeoCD"
-  | "ares"
-  | "aresSuperNintendo"
-  | "aresMegaDrive"
-  | "aresSegaCd"
-  | "aresSega32x"
-  | "mupen64plus"
-  | "rosaliesMupenGui"
-  | "mgba"
-  | "flycast"
-  | "dosboxstaging"
-  | "scummvm";
 
 export interface Application {
   id: ApplicationId;

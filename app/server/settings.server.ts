@@ -1,10 +1,14 @@
-import type { General } from "~/types/jsonFiles/settings/general";
-import type { Appearance } from "~/types/jsonFiles/settings/appearance";
-import { FileDataCache } from "~/server/FileDataCache.server";
+import type { General } from "../types/jsonFiles/settings/general";
+import type { Appearance } from "../types/jsonFiles/settings/appearance";
+import { FileDataCache } from "./FileDataCache.server";
 
 export type SettingsID = "general" | "appearance";
 
-export type Category = { id: SettingsID; name: string; to: SettingsID };
+export interface Category {
+  id: SettingsID;
+  name: string;
+  to: SettingsID;
+}
 
 export const categories = [
   {

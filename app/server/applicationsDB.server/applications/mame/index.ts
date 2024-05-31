@@ -2,8 +2,8 @@ import type {
   Application,
   FindEntryNameFunction,
   OptionParamFunction,
-} from "~/server/applicationsDB.server/types";
-import { findGameNameById } from "~/server/applicationsDB.server/nameMappings/findGameNameById";
+} from "../../types";
+import { findGameNameById } from "../../nameMappings/findGameNameById";
 import mameGames from "./nameMapping/mame.json";
 import nodepath from "path";
 

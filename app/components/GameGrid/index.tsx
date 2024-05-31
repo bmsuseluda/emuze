@@ -5,21 +5,21 @@ import type {
   RefObject,
 } from "react";
 import { useCallback } from "react";
-import { useTestId } from "~/hooks/useTestId";
-import type { Entry as GameType } from "~/types/jsonFiles/category";
+import { useTestId } from "../../hooks/useTestId";
+import type { Entry as GameType } from "../../types/jsonFiles/category";
 import { Ul } from "../Ul";
 import { Game } from "./components/Game";
-import type { Result } from "~/hooks/useGamepadsOnGrid";
-import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
+import type { Result } from "../../hooks/useGamepadsOnGrid";
+import { useGamepadsOnGrid } from "../../hooks/useGamepadsOnGrid";
 import {
   useGamepadButtonPressEvent,
   useKeyboardEvent,
-} from "~/hooks/useGamepadEvent";
-import { layout } from "~/hooks/useGamepads/layouts";
+} from "../../hooks/useGamepadEvent";
+import { layout } from "../../hooks/useGamepads/layouts";
 import { styled } from "../../../styled-system/jsx";
-import { useAddEntriesToRenderOnScrollEnd } from "~/hooks/useAddEntriesToRenderOnScrollEnd";
+import { useAddEntriesToRenderOnScrollEnd } from "../../hooks/useAddEntriesToRenderOnScrollEnd";
 
-type Props = {
+interface Props extends ComponentPropsWithoutRef<"ul"> {
   games: GameType[];
   alwaysGameNames?: boolean;
   isInFocus: boolean;
@@ -27,7 +27,7 @@ type Props = {
   onGameClick: () => void;
   onExecute: () => void;
   "data-testid"?: string;
-} & ComponentPropsWithoutRef<"ul">;
+}
 
 const List = styled(Ul, {
   base: {

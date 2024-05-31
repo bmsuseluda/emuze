@@ -1,11 +1,8 @@
-import {
-  FileDataCache,
-  MultipleFileDataCache,
-} from "~/server/FileDataCache.server";
+import { FileDataCache, MultipleFileDataCache } from "../FileDataCache.server";
 
 const readFileMock = vi.fn();
 const writeFileMock = vi.fn();
-vi.mock("~/server/readWriteData.server", () => ({
+vi.mock("../readWriteData.server", () => ({
   readFileHome: (path: string) => readFileMock(path),
   writeFileHome: (object: unknown, path: string) => writeFileMock(object, path),
 }));
@@ -93,26 +90,26 @@ describe("FileDataCache", () => {
 
       readFileMock.mockReturnValueOnce(files[0].initialContent);
       expect(dataCache.readFile(files[0].filePath)).toBe(
-        files[0].initialContent
+        files[0].initialContent,
       );
 
       readFileMock.mockReturnValueOnce(files[1].initialContent);
       expect(dataCache.readFile(files[1].filePath)).toBe(
-        files[1].initialContent
+        files[1].initialContent,
       );
 
       dataCache.writeFile(files[1].updatedContent, files[1].filePath);
 
       expect(dataCache.readFile(files[0].filePath)).toBe(
-        files[0].initialContent
+        files[0].initialContent,
       );
       expect(dataCache.readFile(files[1].filePath)).toBe(
-        files[1].updatedContent
+        files[1].updatedContent,
       );
 
       expect(writeFileMock).toBeCalledWith(
         files[1].updatedContent,
-        files[1].filePath
+        files[1].filePath,
       );
       expect(readFileMock).toBeCalledTimes(2);
       expect(writeFileMock).toBeCalledTimes(1);

@@ -1,16 +1,16 @@
-import { getErrorDialog, resetErrorDialog } from "~/server/errorDialog.server";
+import { getErrorDialog, resetErrorDialog } from "../server/errorDialog.server";
 import { json, redirect } from "@remix-run/node";
 import { useLoaderData, useSubmit } from "@remix-run/react";
-import { ErrorDialog } from "~/components/ErrorDialog";
-import { useFocus } from "~/hooks/useFocus";
-import type { FocusElement } from "~/types/focusElement";
+import { ErrorDialog } from "../components/ErrorDialog";
+import { useFocus } from "../hooks/useFocus";
+import type { FocusElement } from "../types/focusElement";
 import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import {
   useGamepadButtonPressEvent,
   useKeyboardEvent,
-} from "~/hooks/useGamepadEvent";
-import { layout } from "~/hooks/useGamepads/layouts";
+} from "../hooks/useGamepadEvent";
+import { layout } from "../hooks/useGamepads/layouts";
 
 export const loader = () => {
   const errorDialog = getErrorDialog();

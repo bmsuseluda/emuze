@@ -1,5 +1,5 @@
 import { useCallback, useContext, useMemo } from "react";
-import { FocusContext } from "~/provider/FocusProvider";
+import { FocusContext } from "../../provider/FocusProvider";
 
 export const useFocus = <FocusElement extends string>(
   focusElement: FocusElement,

@@ -63,19 +63,19 @@ const IconButton = styled("button", {
   },
 });
 
-export type DialogCloseEvent = {
+export interface DialogCloseEvent {
   preventDefault: () => void;
   stopPropagation: () => void;
-};
+}
 
-type Props = {
+interface Props {
   children: ReactNode;
   open: boolean;
   onClose: (event?: DialogCloseEvent) => void;
   closable?: boolean;
   smaller?: boolean;
   variant?: "default" | "accent";
-};
+}
 
 export const Dialog = ({
   children,

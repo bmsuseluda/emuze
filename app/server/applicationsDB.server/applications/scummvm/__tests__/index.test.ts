@@ -1,4 +1,4 @@
-import { parseScummDetectResult } from "~/server/applicationsDB.server/applications/scummvm";
+import { parseScummDetectResult } from "..";
 
 vi.mock("@kmamal/sdl", () => ({
   default: () => ({

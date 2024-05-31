@@ -20,7 +20,7 @@ import {
   ryujinx,
   snes9x,
   yuzu,
-} from "~/server/applicationsDB.server";
+} from "../applicationsDB.server";
 import { rpcs3 } from "../applicationsDB.server/applications/rpcs3";
 import {
   ares,
@@ -33,11 +33,12 @@ import {
   mame,
   mameNeoGeo,
   mameNeoGeoCD,
-} from "~/server/applicationsDB.server/applications/mame";
-import { punes } from "~/server/applicationsDB.server/applications/punes";
-import { dosboxstaging } from "~/server/applicationsDB.server/applications/dosbox";
-import { scummvm } from "~/server/applicationsDB.server/applications/scummvm";
-import type { Category } from "~/server/categoriesDB.server/types";
+} from "../applicationsDB.server/applications/mame";
+import { punes } from "../applicationsDB.server/applications/punes";
+import { dosboxstaging } from "../applicationsDB.server/applications/dosbox";
+import { scummvm } from "../applicationsDB.server/applications/scummvm";
+import type { Category } from "./types";
+import type { SystemId } from "./systemId";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",
@@ -45,6 +46,7 @@ export const sonyplaystation: Category = {
   igdbPlatformIds: [7],
   applications: [duckstation, mednafen],
   defaultApplication: duckstation,
+  hasAnalogStick: true,
 };
 
 export const sonyplaystation2: Category = {
@@ -53,6 +55,7 @@ export const sonyplaystation2: Category = {
   igdbPlatformIds: [8],
   applications: [pcsx2, play],
   defaultApplication: pcsx2,
+  hasAnalogStick: true,
 };
 
 export const sonyplaystation3: Category = {
@@ -61,6 +64,7 @@ export const sonyplaystation3: Category = {
   igdbPlatformIds: [9],
   applications: [rpcs3],
   defaultApplication: rpcs3,
+  hasAnalogStick: true,
 };
 
 export const sonypsp: Category = {
@@ -74,6 +78,7 @@ export const sonypsp: Category = {
   igdbPlatformIds: [38],
   applications: [ppsspp],
   defaultApplication: ppsspp,
+  hasAnalogStick: true,
 };
 
 export const segamastersystem: Category = {
@@ -82,6 +87,7 @@ export const segamastersystem: Category = {
   igdbPlatformIds: [64],
   applications: [ares, blastem, mednafen],
   defaultApplication: ares,
+  hasAnalogStick: false,
 };
 
 export const segagamegear: Category = {
@@ -90,6 +96,7 @@ export const segagamegear: Category = {
   igdbPlatformIds: [35],
   applications: [ares, blastem, mednafen],
   defaultApplication: ares,
+  hasAnalogStick: false,
 };
 
 export const segamegadrive: Category = {
@@ -104,6 +111,7 @@ export const segamegadrive: Category = {
   igdbPlatformIds: [29],
   applications: [blastem, aresMegaDrive],
   defaultApplication: aresMegaDrive,
+  hasAnalogStick: false,
 };
 
 export const sega32x: Category = {
@@ -119,6 +127,7 @@ export const sega32x: Category = {
   igdbPlatformIds: [30],
   applications: [aresSega32x],
   defaultApplication: aresSega32x,
+  hasAnalogStick: false,
 };
 
 export const segacd: Category = {
@@ -127,6 +136,7 @@ export const segacd: Category = {
   igdbPlatformIds: [78],
   applications: [aresSegaCd],
   defaultApplication: aresSegaCd,
+  hasAnalogStick: false,
 };
 
 export const segadreamcast: Category = {
@@ -135,6 +145,7 @@ export const segadreamcast: Category = {
   igdbPlatformIds: [23],
   applications: [flycast],
   defaultApplication: flycast,
+  hasAnalogStick: true,
 };
 
 export const supernintendo: Category = {
@@ -148,6 +159,7 @@ export const supernintendo: Category = {
   igdbPlatformIds: [19, 51, 58],
   applications: [bsnes, snes9x, aresSuperNintendo],
   defaultApplication: aresSuperNintendo,
+  hasAnalogStick: false,
 };
 
 export const nintendods: Category = {
@@ -156,6 +168,7 @@ export const nintendods: Category = {
   igdbPlatformIds: [20],
   applications: [melonds, desmume],
   defaultApplication: melonds,
+  hasAnalogStick: false,
 };
 
 export const nintendo3ds: Category = {
@@ -164,6 +177,7 @@ export const nintendo3ds: Category = {
   igdbPlatformIds: [37, 137],
   applications: [citra, lime3ds],
   defaultApplication: lime3ds,
+  hasAnalogStick: true,
 };
 
 export const nintendogamecube: Category = {
@@ -172,6 +186,7 @@ export const nintendogamecube: Category = {
   igdbPlatformIds: [21],
   applications: [dolphin],
   defaultApplication: dolphin,
+  hasAnalogStick: true,
 };
 
 export const arcade: Category = {
@@ -180,6 +195,7 @@ export const arcade: Category = {
   igdbPlatformIds: [52],
   applications: [mame],
   defaultApplication: mame,
+  hasAnalogStick: false,
 };
 
 export const nintendowii: Category = {
@@ -188,6 +204,7 @@ export const nintendowii: Category = {
   igdbPlatformIds: [5],
   applications: [dolphin],
   defaultApplication: dolphin,
+  hasAnalogStick: true,
 };
 
 export const nintendowiiu: Category = {
@@ -196,6 +213,7 @@ export const nintendowiiu: Category = {
   igdbPlatformIds: [41],
   applications: [cemu],
   defaultApplication: cemu,
+  hasAnalogStick: true,
 };
 
 export const nintendoswitch: Category = {
@@ -204,6 +222,7 @@ export const nintendoswitch: Category = {
   igdbPlatformIds: [130],
   applications: [ryujinx, yuzu],
   defaultApplication: ryujinx,
+  hasAnalogStick: true,
 };
 
 export const nintendoentertainmentsystem: Category = {
@@ -211,7 +230,8 @@ export const nintendoentertainmentsystem: Category = {
   names: ["Nintendo Entertainment System", "NES", "Famicom"],
   igdbPlatformIds: [18, 99],
   applications: [nestopia, punes, mednafen, ares],
-  defaultApplication: punes,
+  defaultApplication: ares,
+  hasAnalogStick: false,
 };
 
 export const nintendo64: Category = {
@@ -220,6 +240,7 @@ export const nintendo64: Category = {
   igdbPlatformIds: [4],
   applications: [ares, rosaliesMupenGui, mupen64plus],
   defaultApplication: ares,
+  hasAnalogStick: true,
 };
 
 export const nintendogameboy: Category = {
@@ -228,6 +249,7 @@ export const nintendogameboy: Category = {
   igdbPlatformIds: [33, 22, 24],
   applications: [mgba, ares],
   defaultApplication: mgba,
+  hasAnalogStick: false,
 };
 
 export const nintendogameboycolor: Category = {
@@ -236,6 +258,7 @@ export const nintendogameboycolor: Category = {
   igdbPlatformIds: [22],
   applications: [mgba],
   defaultApplication: mgba,
+  hasAnalogStick: false,
 };
 
 export const nintendogameboyadvance: Category = {
@@ -244,6 +267,7 @@ export const nintendogameboyadvance: Category = {
   igdbPlatformIds: [24],
   applications: [mgba, ares],
   defaultApplication: mgba,
+  hasAnalogStick: false,
 };
 
 export const segasaturn: Category = {
@@ -252,6 +276,7 @@ export const segasaturn: Category = {
   igdbPlatformIds: [32],
   applications: [mednafen],
   defaultApplication: mednafen,
+  hasAnalogStick: true,
 };
 
 export const pcengine: Category = {
@@ -268,6 +293,7 @@ export const pcengine: Category = {
   igdbPlatformIds: [86],
   applications: [mednafen, ares],
   defaultApplication: ares,
+  hasAnalogStick: false,
 };
 
 export const pcenginecd: Category = {
@@ -276,6 +302,7 @@ export const pcenginecd: Category = {
   igdbPlatformIds: [150],
   applications: [mednafen],
   defaultApplication: mednafen,
+  hasAnalogStick: false,
 };
 
 export const pcenginesupergrafx: Category = {
@@ -284,22 +311,43 @@ export const pcenginesupergrafx: Category = {
   igdbPlatformIds: [128],
   applications: [mednafen],
   defaultApplication: mednafen,
+  hasAnalogStick: false,
 };
 
 export const neogeo: Category = {
   id: "neogeo",
-  names: ["Neo Geo", "Neo Geo AES", "Neo Geo MVS"],
+  names: ["Neo Geo", "Neo Geo AES", "Neo Geo MVS", "NeoGeo"],
   igdbPlatformIds: [79, 80],
   applications: [mameNeoGeo],
   defaultApplication: mameNeoGeo,
+  hasAnalogStick: false,
 };
 
 export const neogeocd: Category = {
   id: "neogeocd",
-  names: ["Neo Geo CD"],
+  names: ["Neo Geo CD", "NeoGeo CD"],
   igdbPlatformIds: [136],
   applications: [mameNeoGeoCD],
   defaultApplication: mameNeoGeoCD,
+  hasAnalogStick: false,
+};
+
+export const neogeopocket: Category = {
+  id: "neogeopocket",
+  names: ["Neo Geo Pocket", "NeoGeo Pocket"],
+  igdbPlatformIds: [119, 120],
+  applications: [ares],
+  defaultApplication: ares,
+  hasAnalogStick: false,
+};
+
+export const neogeopocketcolor: Category = {
+  id: "neogeopocketcolor",
+  names: ["Neo Geo Pocket Color", "NeoGeo Pocket Color"],
+  igdbPlatformIds: [120],
+  applications: [ares],
+  defaultApplication: ares,
+  hasAnalogStick: false,
 };
 
 export const dos: Category = {
@@ -308,6 +356,7 @@ export const dos: Category = {
   igdbPlatformIds: [13],
   applications: [dosboxstaging],
   defaultApplication: dosboxstaging,
+  hasAnalogStick: false,
 };
 
 export const scumm: Category = {
@@ -316,6 +365,7 @@ export const scumm: Category = {
   igdbPlatformIds: [6, 13],
   applications: [scummvm],
   defaultApplication: scummvm,
+  hasAnalogStick: true,
 };
 
 export const categories = {
@@ -348,9 +398,11 @@ export const categories = {
   arcade,
   neogeo,
   neogeocd,
+  neogeopocket,
+  neogeopocketcolor,
   scumm,
   dos,
-} satisfies Record<string, Category>;
+} satisfies Record<SystemId, Category>;
 
 export const getCategoryDataByName = (name: string) =>
   Object.values(categories).find(

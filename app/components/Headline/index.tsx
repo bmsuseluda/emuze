@@ -8,7 +8,5 @@ export const Headline = styled("h2", {
     fontWeight: 400,
     fontSize: "2rem",
     whiteSpace: "nowrap",
-    overflow: "clip",
-    textOverflow: "ellipsis",
   },
 });

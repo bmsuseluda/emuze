@@ -11,32 +11,32 @@ import {
   useLoaderData,
   useNavigation,
 } from "@remix-run/react";
-import { Button } from "~/components/Button";
-import { FormBox } from "~/components/FormBox";
-import { FormRow } from "~/components/FormRow";
-import { Label } from "~/components/Label";
-import { ListActionBarLayout } from "~/components/layouts/ListActionBarLayout";
-import { importCategories, readCategories } from "~/server/categories.server";
-import { openFolderDialog } from "~/server/openDialog.server";
-import { readGeneral, writeGeneral } from "~/server/settings.server";
-import type { General } from "~/types/jsonFiles/settings/general";
-import { isWindows } from "~/server/operationsystem.server";
-import { IconChildrenWrapper } from "~/components/IconChildrenWrapper";
-import { SettingsIcon } from "~/components/SettingsIcon";
-import { useFocus } from "~/hooks/useFocus";
-import type { FocusElement } from "~/types/focusElement";
-import type { Result } from "~/hooks/useGamepadsOnGrid";
-import { useGamepadsOnGrid } from "~/hooks/useGamepadsOnGrid";
+import { Button } from "../components/Button";
+import { FormBox } from "../components/FormBox";
+import { FormRow } from "../components/FormRow";
+import { Label } from "../components/Label";
+import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
+import { importCategories, readCategories } from "../server/categories.server";
+import { openFolderDialog } from "../server/openDialog.server";
+import { readGeneral, writeGeneral } from "../server/settings.server";
+import type { General } from "../types/jsonFiles/settings/general";
+import { isWindows } from "../server/operationsystem.server";
+import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
+import { SettingsIcon } from "../components/SettingsIcon";
+import { useFocus } from "../hooks/useFocus";
+import type { FocusElement } from "../types/focusElement";
+import type { Result } from "../hooks/useGamepadsOnGrid";
+import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid";
 import {
   useGamepadButtonPressEvent,
   useKeyboardEvent,
-} from "~/hooks/useGamepadEvent";
-import { layout } from "~/hooks/useGamepads/layouts";
-import { TextInput } from "~/components/TextInput";
-import { installMissingApplicationsOnLinux } from "~/server/applications.server";
-import { useEnableFocusAfterAction } from "~/hooks/useEnableFocusAfterAction";
-import { useGamepadConnected } from "~/hooks/useGamepadConnected";
-import { GamepadButtonIcon } from "~/components/GamepadButtonIcon";
+} from "../hooks/useGamepadEvent";
+import { layout } from "../hooks/useGamepads/layouts";
+import { TextInput } from "../components/TextInput";
+import { installMissingApplicationsOnLinux } from "../server/installApplications.server";
+import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction";
+import { useGamepadConnected } from "../hooks/useGamepadConnected";
+import { GamepadButtonIcon } from "../components/GamepadButtonIcon";
 import fs from "fs";
 
 export const loader = () => {

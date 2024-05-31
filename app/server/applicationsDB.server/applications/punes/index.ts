@@ -1,5 +1,5 @@
 import sdl from "@kmamal/sdl";
-import type { Application } from "~/server/applicationsDB.server/types";
+import type { Application } from "../../types";
 
 export const punes: Application = {
   id: "punes",

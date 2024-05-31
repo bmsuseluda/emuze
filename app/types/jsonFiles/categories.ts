@@ -1,4 +1,4 @@
-import type { SystemId } from "~/server/categoriesDB.server/types";
+import type { SystemId } from "../../server/categoriesDB.server/systemId";
 
 export interface Category {
   id: SystemId;
