@@ -159,15 +159,33 @@ const getIndexForDeviceId = (index: number) => {
   return "";
 };
 
-const getVirtualGamepad =
-  (systemHasAnalogStick: boolean) =>
-  ({ vendor, product, mapping, id }: Sdl.Controller.Device, index: number) => {
-    const virtualGamepadIndex = index;
-    const deviceIdIndex = getIndexForDeviceId(id);
-    const deviceId = `0x${deviceIdIndex}${vendor.toString(16).padStart(deviceIdIndex.length > 0 ? 4 : 3, "0")}${product.toString(16).padStart(4, "0")}`;
+/**
+ * Creates the ares specific device id based on the SDL device input.
+ *
+ * result e.g. 0x128de11ff
+ * ? = 0x (is always the same)
+ * deviceIndex = 1 (optional, only set if id > 0)
+ * vendor = 28de (hex value, needs to be padded with "0" on start to 4 characters, to 3 characters if deviceIndex is set)
+ * product = 11ff (hex value, needs to be padded with "0" on start to 4 characters)
+ */
+export const createDeviceId = ({
+  vendor,
+  product,
+  id,
+}: Sdl.Controller.Device) => {
+  const deviceIdIndex = getIndexForDeviceId(id);
+  return `0x${deviceIdIndex}${vendor.toString(16).padStart(deviceIdIndex.length > 0 ? 4 : 3, "0")}${product.toString(16).padStart(4, "0")}`;
+};
 
-    const mappingObject = createSdlMappingObject(mapping);
+export const getVirtualGamepad =
+  (systemHasAnalogStick: boolean) =>
+  (sdlDevice: Sdl.Controller.Device, index: number) => {
+    const virtualGamepadIndex = index;
+    const mappingObject = createSdlMappingObject(sdlDevice.mapping);
+    const deviceId = createDeviceId(sdlDevice);
     const physicalGamepad = new PhysicalGamepad(deviceId, mappingObject);
+
+    log("debug", "gamepad", { index, sdlDevice, deviceId });
 
     return [
       ...getVirtualGamepadDpad(
@@ -300,17 +318,21 @@ export const sortGamepads = (
   return gamepadA.id - gamepadB.id;
 };
 
+/**
+ * Ares has 5 virtual gamepads, if there are less physical gamepads connected, the unused virtual gamepads should be reseted.
+ *
+ * @param usedVirtualGamepadsCount The number of physical gamepads connected
+ */
 export const resetUnusedVirtualGamepads = (usedVirtualGamepadsCount: number) =>
   Array.from({ length: 5 - usedVirtualGamepadsCount }, (_, index) =>
     getVirtualGamepadReset(index + usedVirtualGamepadsCount),
   ).flat();
 
-const getVirtualGamepads = (systemHasAnalogStick: boolean) => {
+export const getVirtualGamepads = (systemHasAnalogStick: boolean) => {
   const gamepads = sdl.controller.devices;
 
-  gamepads.sort(sortGamepads);
-
-  log("debug", "gamepads", gamepads);
+  // TODO: Check why it works without sorting
+  // gamepads.sort(sortGamepads);
 
   const virtualGamepads = gamepads.flatMap(
     getVirtualGamepad(systemHasAnalogStick),

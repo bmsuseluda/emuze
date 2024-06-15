@@ -29,12 +29,22 @@ interface Props extends ComponentPropsWithoutRef<"ul"> {
   "data-testid"?: string;
 }
 
+const Container = styled("div", {
+  base: {
+    containerType: "inline-size",
+  },
+});
+
 const List = styled(Ul, {
   base: {
     position: "relative",
     display: "grid",
     gap: "1",
     gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+
+    "@container (inline-size > 1440px)": {
+      gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+    },
   },
 });
 
@@ -127,33 +137,35 @@ export const GameGrid = ({
   useKeyboardEvent("Enter", handleExecute);
 
   return (
-    <List ref={entryListRef} {...getTestId()}>
-      {games.map(({ id, name, metaData }, index) => {
-        // TODO: think about if this should be a callback from useGamepadsOnGrid
-        const handleClick = () => {
-          onGameClick();
-          selectedEntry.current = entriesRefs.current[index];
-          updatePosition();
-        };
-        const handleDoubleClick = () => {
-          onExecute();
-        };
+    <Container>
+      <List ref={entryListRef} {...getTestId()}>
+        {games.map(({ id, name, metaData }, index) => {
+          // TODO: think about if this should be a callback from useGamepadsOnGrid
+          const handleClick = () => {
+            onGameClick();
+            selectedEntry.current = entriesRefs.current[index];
+            updatePosition();
+          };
+          const handleDoubleClick = () => {
+            onExecute();
+          };
 
-        return (
-          <Game
-            id={id}
-            name={name}
-            imageUrl={metaData?.imageUrl}
-            alwaysGameName={alwaysGameNames}
-            onClick={handleClick}
-            onDoubleClick={handleDoubleClick}
-            ref={entriesRefCallback(index)}
-            key={id}
-            {...getTestId("game")}
-          />
-        );
-      })}
-      <IntersectionIndicator ref={inViewRef} />
-    </List>
+          return (
+            <Game
+              id={id}
+              name={name}
+              imageUrl={metaData?.imageUrl}
+              alwaysGameName={alwaysGameNames}
+              onClick={handleClick}
+              onDoubleClick={handleDoubleClick}
+              ref={entriesRefCallback(index)}
+              key={id}
+              {...getTestId("game")}
+            />
+          );
+        })}
+        <IntersectionIndicator ref={inViewRef} />
+      </List>
+    </Container>
   );
 };
