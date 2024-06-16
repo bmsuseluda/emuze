@@ -281,6 +281,12 @@ export const getVirtualGamepad =
         { gamepadIndex: virtualGamepadIndex, buttonId: "R-Right" },
         physicalGamepad.getRightStickRight(),
       ),
+
+      //   To activate rumble, it can be any button
+      ...getVirtualGamepadButton(
+        { gamepadIndex: virtualGamepadIndex, buttonId: "Rumble" },
+        physicalGamepad.getStart(),
+      ),
     ];
   };
 
@@ -378,6 +384,8 @@ export const ares: Application = {
     ".gg",
     ".chd",
     ".nes",
+    ".fc",
+    ".unh",
     ".sgd",
     ".smd",
     ".gb",

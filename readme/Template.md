@@ -141,8 +141,8 @@ If you have multiple versions of a game you can specify them in brackets, e.g. t
 Every System and Emulator needs to be configured in the source code of emuze by the developer.
 Right now the following are supported:
 
-| System | Emulators | Default Emulator |
-|--------|-----------|------------------|
+| System | Emulator | pre configured |
+|--------|----------|----------------|
 ```mmd
 return scripts.createSystemsTable()
 ```

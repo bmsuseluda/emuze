@@ -1,12 +1,19 @@
 import { categories } from "../app/server/categoriesDB.server";
+import { ApplicationId } from "../app/server/applicationsDB.server/applicationId";
+
+const preConfigured: ApplicationId[] = [
+  "ares",
+  "aresMegaDrive",
+  "aresSega32x",
+  "aresSegaCd",
+  "aresSuperNintendo",
+];
 
 export const createSystemsTable = () =>
   Object.values(categories)
     .map(
       (category) =>
-        `| ${category.names[0]} | ${category.applications
-          .map((application) => application.name)
-          .join("<br>")} | ${category.defaultApplication.name} |`,
+        `| ${category.names[0]} | ${category.defaultApplication.name} | ${preConfigured.includes(category.defaultApplication.id) ? "Yes" : "No"} |`,
     )
     .join("\n");
 

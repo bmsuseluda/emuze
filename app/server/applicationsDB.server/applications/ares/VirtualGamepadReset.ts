@@ -40,4 +40,6 @@ export const getVirtualGamepadReset = (gamepadIndex: number) => [
   ...getVirtualGamepadButtonReset({ gamepadIndex, buttonId: "R-Down" }),
   ...getVirtualGamepadButtonReset({ gamepadIndex, buttonId: "R-Left" }),
   ...getVirtualGamepadButtonReset({ gamepadIndex, buttonId: "R-Right" }),
+
+  ...getVirtualGamepadButtonReset({ gamepadIndex, buttonId: "Rumble" }),
 ];
