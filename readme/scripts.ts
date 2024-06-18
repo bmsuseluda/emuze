@@ -7,6 +7,8 @@ const preConfigured: ApplicationId[] = [
   "aresSega32x",
   "aresSegaCd",
   "aresSuperNintendo",
+  "scummvm",
+  "duckstation",
 ];
 
 export const createSystemsTable = () =>

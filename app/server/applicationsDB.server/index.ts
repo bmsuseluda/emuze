@@ -14,6 +14,7 @@ import {
 } from "./applications/ares";
 import { punes } from "./applications/punes";
 import { isWindows } from "../operationsystem.server";
+import { duckstation } from "./applications/duckstation";
 
 export const pcsx2: Application = {
   id: "pcsx2",
@@ -67,26 +68,6 @@ export const bsnes: Application = {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("--fullscreen");
-    }
-    return optionParams;
-  },
-};
-
-export const duckstation: Application = {
-  id: "duckstation",
-  name: "DuckStation",
-  fileExtensions: [".chd", ".cue"],
-  flatpakId: "org.duckstation.DuckStation",
-  createOptionParams: ({
-    settings: {
-      appearance: { fullscreen },
-    },
-  }) => {
-    const optionParams = [];
-    if (fullscreen) {
-      optionParams.push("-fullscreen");
-      optionParams.push("-bigpicture");
-      optionParams.push("-batch");
     }
     return optionParams;
   },

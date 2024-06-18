@@ -5,7 +5,6 @@ import {
   citra,
   desmume,
   dolphin,
-  duckstation,
   flycast,
   lime3ds,
   mednafen,
@@ -39,6 +38,7 @@ import { dosboxstaging } from "../applicationsDB.server/applications/dosbox";
 import { scummvm } from "../applicationsDB.server/applications/scummvm";
 import type { Category } from "./types";
 import type { SystemId } from "./systemId";
+import { duckstation } from "../applicationsDB.server/applications/duckstation";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",

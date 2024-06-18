@@ -11,6 +11,7 @@ import type {
 } from "./types";
 import { PhysicalGamepad } from "./PhysicalGamepad";
 import { getVirtualGamepadReset } from "./VirtualGamepadReset";
+import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
 
 const gamepadGroupId: Record<GamepadGroupId, number> = {
   Axis: 0,
@@ -290,61 +291,17 @@ export const getVirtualGamepad =
     ];
   };
 
-/**
- * This is the SDL definition of the internal gamepad of the Steam Deck
- */
-export const steamDeck: Sdl.Controller.Device = {
-  id: 0,
-  name: "Microsoft X-Box 360 pad 0",
-  path: "/dev/input/event6",
-  guid: "030079f6de280000ff11000001000000",
-  vendor: 10462,
-  product: 4607,
-  version: 1,
-  player: 0,
-  mapping:
-    "030079f6de280000ff11000001000000,Steam Virtual Gamepad,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b8,leftshoulder:b4,leftstick:b9,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
-};
-
-/**
- * If one of the gamepads is the Steam Deck, it should be positioned last.
- */
-export const sortGamepads = (
-  gamepadA: Sdl.Controller.Device,
-  gamepadB: Sdl.Controller.Device,
-) => {
-  if (gamepadA.mapping === steamDeck.mapping) {
-    return 1;
-  }
-
-  if (gamepadB.mapping === steamDeck.mapping) {
-    return -1;
-  }
-
-  return gamepadA.id - gamepadB.id;
-};
-
-/**
- * Ares has 5 virtual gamepads, if there are less physical gamepads connected, the unused virtual gamepads should be reseted.
- *
- * @param usedVirtualGamepadsCount The number of physical gamepads connected
- */
-export const resetUnusedVirtualGamepads = (usedVirtualGamepadsCount: number) =>
-  Array.from({ length: 5 - usedVirtualGamepadsCount }, (_, index) =>
-    getVirtualGamepadReset(index + usedVirtualGamepadsCount),
-  ).flat();
-
 export const getVirtualGamepads = (systemHasAnalogStick: boolean) => {
   const gamepads = sdl.controller.devices;
-
-  // TODO: Check why it works without sorting
-  // gamepads.sort(sortGamepads);
 
   const virtualGamepads = gamepads.flatMap(
     getVirtualGamepad(systemHasAnalogStick),
   );
 
-  return [...virtualGamepads, ...resetUnusedVirtualGamepads(gamepads.length)];
+  return [
+    ...virtualGamepads,
+    ...resetUnusedVirtualGamepads(5, gamepads.length, getVirtualGamepadReset),
+  ];
 };
 
 const getSharedAresOptionParams: OptionParamFunction = ({
