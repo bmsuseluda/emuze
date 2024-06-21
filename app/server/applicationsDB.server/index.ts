@@ -15,27 +15,7 @@ import {
 import { punes } from "./applications/punes";
 import { isWindows } from "../operationsystem.server";
 import { duckstation } from "./applications/duckstation";
-
-export const pcsx2: Application = {
-  id: "pcsx2",
-  name: "PCSX2",
-  fileExtensions: [".chd", ".iso"],
-  flatpakId: "net.pcsx2.PCSX2",
-  flatpakOptionParams: ["--command=pcsx2-qt"],
-  createOptionParams: ({
-    settings: {
-      appearance: { fullscreen },
-    },
-  }) => {
-    const optionParams = [];
-    if (fullscreen) {
-      optionParams.push("-fullscreen");
-      optionParams.push("-bigpicture");
-      optionParams.push("-batch");
-    }
-    return optionParams;
-  },
-};
+import { pcsx2 } from "./applications/pcsx2";
 
 export const blastem: Application = {
   id: "blastem",

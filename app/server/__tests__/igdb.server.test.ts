@@ -21,13 +21,7 @@ import {
 import { categories as categoriesDB } from "../categoriesDB.server";
 import { getExpiresOn } from "../getExpiresOn.server";
 
-vi.mock("@kmamal/sdl", () => ({
-  default: () => ({
-    controller: {
-      devices: [],
-    },
-  }),
-}));
+vi.mock("@kmamal/sdl");
 
 const igdbRequestMock = vi.fn();
 vi.mock("apicalypse", () => ({

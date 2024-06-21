@@ -10,6 +10,7 @@ import { existsSync } from "fs";
 import { setErrorDialog } from "./errorDialog.server";
 import type { SystemId } from "./categoriesDB.server/systemId";
 import { categories } from "./categoriesDB.server";
+import { log } from "./debug.server";
 
 // TODO: separate os specific code
 const executeApplicationOnLinux = ({
@@ -129,7 +130,7 @@ export const executeApplication = (category: SystemId, entry: string) => {
             });
           }
         } catch (error) {
-          console.log("error", error);
+          log("error", "executeApplication", error);
           if (error instanceof Error) {
             setErrorDialog(`Launch of ${entryData.name} failed`, error.message);
           }
@@ -151,6 +152,7 @@ export const installFlatpak = (flatpakId: string) => {
     execFileSync("flatpak", ["install", "--noninteractive", flatpakId]);
     return true;
   } catch (error) {
+    log("error", "installFlatpak", error);
     return false;
   }
 };

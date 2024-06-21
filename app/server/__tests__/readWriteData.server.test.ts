@@ -20,13 +20,7 @@ import { mednafen } from "../applicationsDB.server";
 import type { Mock } from "vitest";
 import { duckstation } from "../applicationsDB.server/applications/duckstation";
 
-vi.mock("@kmamal/sdl", () => ({
-  default: () => ({
-    controller: {
-      devices: [],
-    },
-  }),
-}));
+vi.mock("@kmamal/sdl");
 
 vi.mock("fs", async () => {
   const actual = await vi.importActual<object>("fs");

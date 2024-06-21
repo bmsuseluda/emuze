@@ -1,12 +1,6 @@
 import { parseScummDetectResult } from "..";
 
-vi.mock("@kmamal/sdl", () => ({
-  default: () => ({
-    controller: {
-      devices: [],
-    },
-  }),
-}));
+vi.mock("@kmamal/sdl");
 
 describe("applicationsDB.scummvm", () => {
   describe("parseScummDetectResult", () => {

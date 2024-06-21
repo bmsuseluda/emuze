@@ -7,6 +7,7 @@ import {
   readFileSync,
   writeFileSync,
 } from "fs";
+import { log } from "./debug.server";
 
 export const homeDirectory = nodepath.join(
   process.env.EMUZE_CONFIG_PATH || homedir(),
@@ -70,6 +71,7 @@ export const readFileHome = <T>(path: string): T | null => {
     const data = readFileSync(pathInHome, "utf8");
     return JSON.parse(data);
   } catch (error) {
+    log("error", "readFileHome", path, error);
     return null;
   }
 };

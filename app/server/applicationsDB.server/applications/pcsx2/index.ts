@@ -1,11 +1,8 @@
 import type { Application } from "../../types";
-import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
-import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
-import { log } from "../../../debug.server";
 import fs from "fs";
 import { EOL, homedir } from "os";
 import { isWindows } from "../../../operationsystem.server";
+import nodepath from "path";
 import {
   chainSectionReplacements,
   findConfigFile,
@@ -13,8 +10,11 @@ import {
   replaceSection,
   splitConfigBySection,
 } from "../../configFile";
-import nodepath from "path";
+import { log } from "../../../debug.server";
 import { defaultSettings } from "./defaultSettings";
+import type { Sdl } from "@kmamal/sdl";
+import sdl from "@kmamal/sdl";
+import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
 
 export const getVirtualGamepad = (
   sdlDevice: Sdl.Controller.Device,
@@ -24,7 +24,15 @@ export const getVirtualGamepad = (
 
   return [
     `[Pad${index + 1}]`,
-    `Type = AnalogController`,
+    "Type = DualShock2",
+    "InvertL = 0",
+    "InvertR = 0",
+    "Deadzone = 0",
+    "AxisScale = 1.33",
+    "LargeMotorScale = 1",
+    "SmallMotorScale = 1",
+    "ButtonDeadzone = 0",
+    "PressureModifier = 0.5",
     `Up = SDL-${index}/DPadUp`,
     `Right = SDL-${index}/DPadRight`,
     `Down = SDL-${index}/DPadDown`,
@@ -49,9 +57,6 @@ export const getVirtualGamepad = (
     `RRight = SDL-${index}/+RightX`,
     `RDown = SDL-${index}/+RightY`,
     `RUp = SDL-${index}/-RightY`,
-    `Analog = SDL-${index}/Guide`,
-    `SmallMotor = SDL-${index}/SmallMotor`,
-    `LargeMotor = SDL-${index}/LargeMotor`,
     "",
     "",
     "",
@@ -77,7 +82,7 @@ export const replaceGamepadConfig = (sections: string[]) => {
     return sections.reduce<string[]>((accumulator, section) => {
       if (section.startsWith("[Pad1]")) {
         accumulator.push(...getVirtualGamepads());
-      } else if (!section.startsWith("[Pad")) {
+      } else if (section.startsWith("[Pad]") || !section.startsWith("[Pad")) {
         accumulator.push(section);
       }
 
@@ -92,8 +97,8 @@ export const replaceHotkeyConfig = (sections: string[]) =>
   replaceSection(sections, "[Hotkeys]", [
     "OpenPauseMenu = Keyboard/F2",
     "ToggleFullscreen = Keyboard/F11",
-    "SaveSelectedSaveState = Keyboard/F1",
-    "LoadSelectedSaveState = Keyboard/F3",
+    "SaveStateToSlot = Keyboard/F1",
+    "LoadStateFromSlot = Keyboard/F3",
   ]);
 
 export const replaceInputSourcesConfig = (sections: string[]) =>
@@ -106,11 +111,25 @@ export const replaceInputSourcesConfig = (sections: string[]) =>
  * TODO: set multitap only if more than 2 controller
  * @param sections
  */
-export const replaceControllerPortsConfig = (sections: string[]) =>
-  replaceSection(sections, "[ControllerPorts]", ["MultitapMode = Port1Only"]);
+export const replacePadConfig = (sections: string[]) =>
+  replaceSection(sections, "[Pad]", ["MultitapPort1 = true"]);
 
-const flatpakId = "org.duckstation.DuckStation";
-const configFileName = "settings.ini";
+const flatpakId = "net.pcsx2.PCSX2";
+const configFileName = "PCSX2.ini";
+
+const readConfigFile = (filePath: string) => {
+  try {
+    return fs.readFileSync(filePath, "utf8");
+  } catch (error) {
+    log(
+      "debug",
+      "PCSX2",
+      "config file can not be read. defaultSettings will be used.",
+      error,
+    );
+    return defaultSettings;
+  }
+};
 
 /**
  * look into application folder for config file, if not then home folder
@@ -120,7 +139,7 @@ export const getWindowsConfigFilePath = (
   applicationPath?: string,
 ) =>
   (applicationPath && findConfigFile(applicationPath, configFileName)) ||
-  nodepath.join(homedir(), "Documents", "DuckStation", configFileName);
+  nodepath.join(homedir(), "Documents", "PCSX2", configFileName);
 
 export const configFile = (
   flatpakId: string,
@@ -132,23 +151,10 @@ export const configFile = (
   } else {
     return nodepath.join(
       getFlatpakConfigPath(flatpakId),
-      "duckstation",
+      "PCSX2",
+      "inis",
       configFileName,
     );
-  }
-};
-
-const readConfigFile = (filePath: string) => {
-  try {
-    return fs.readFileSync(filePath, "utf8");
-  } catch (error) {
-    log(
-      "debug",
-      "duckstation",
-      "config file can not be read. defaultSettings will be used.",
-      error,
-    );
-    return defaultSettings;
   }
 };
 
@@ -161,7 +167,7 @@ export const replaceConfigSections = (applicationPath?: string) => {
   const fileContentNew = chainSectionReplacements(
     sections,
     replaceInputSourcesConfig,
-    replaceControllerPortsConfig,
+    replacePadConfig,
     replaceHotkeyConfig,
     replaceGamepadConfig,
   ).join(EOL);
@@ -169,11 +175,12 @@ export const replaceConfigSections = (applicationPath?: string) => {
   fs.writeFileSync(filePath, fileContentNew, "utf8");
 };
 
-export const duckstation: Application = {
-  id: "duckstation",
-  name: "DuckStation",
-  fileExtensions: [".chd", ".cue"],
+export const pcsx2: Application = {
+  id: "pcsx2",
+  name: "PCSX2",
+  fileExtensions: [".chd", ".iso"],
   flatpakId,
+  flatpakOptionParams: ["--command=pcsx2-qt"],
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },

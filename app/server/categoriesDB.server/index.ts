@@ -12,7 +12,6 @@ import {
   mgba,
   mupen64plus,
   nestopia,
-  pcsx2,
   play,
   ppsspp,
   rosaliesMupenGui,
@@ -39,6 +38,7 @@ import { scummvm } from "../applicationsDB.server/applications/scummvm";
 import type { Category } from "./types";
 import type { SystemId } from "./systemId";
 import { duckstation } from "../applicationsDB.server/applications/duckstation";
+import { pcsx2 } from "../applicationsDB.server/applications/pcsx2";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",

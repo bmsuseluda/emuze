@@ -37,11 +37,12 @@ import { GamepadButtonIcon } from "../components/GamepadButtonIcon";
 import fs from "fs";
 import nodepath from "path";
 import type { SystemId } from "../server/categoriesDB.server/systemId";
+import { log } from "../server/debug.server";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
   if (!category) {
-    console.log("category empty");
+    log("error", "category empty");
     throw Error("category empty");
   }
 
@@ -64,7 +65,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   try {
     const { category } = params;
     if (!category) {
-      console.log("category empty");
+      log("error", "category empty");
       throw Error("category empty");
     }
 
@@ -94,6 +95,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       await importEntries(category as SystemId);
     }
   } catch (e) {
+    log("error", "category action", e);
     return redirect("errorDialog");
   }
 

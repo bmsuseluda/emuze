@@ -1,3 +1,5 @@
+import { log } from "../../debug.server";
+
 export const findGameNameById = (
   id: string,
   mapping: Record<string, string>,
@@ -7,7 +9,7 @@ export const findGameNameById = (
   try {
     gameName = mapping[id];
   } catch (error) {
-    console.log("findGameNameById", applicationName, error);
+    log("error", "findGameNameById", applicationName, error);
     return id;
   }
 

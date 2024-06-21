@@ -3,7 +3,7 @@
 </p>
 
 
-💥 [Features](#-features) | 🚀 [Getting Started](#-getting-started) | 🪄 [Metadata](#-metadata) | 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) | 🌈 [Roadmap](#-roadmap) | 🚑️ [Support](#%EF%B8%8F-support)
+💥 [Features](#-features) | 🚀 [Getting Started](#-getting-started) | 🪄 [Metadata](#-metadata) | 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) | 🚑️ [Support](#%EF%B8%8F-support)
 
 My main goal for emuze is to have a emulation launcher that is as fast and simple as possible. With this you don't have to configure every emulator and fine tune metadata of your roms.
 If your roms are named correctly, a click on the import button should import your emulators and roms altogether and therefore no configuration is necessary.
@@ -151,18 +151,6 @@ return scripts.createSystemsTable()
 
 > [!TIP]
 > If you miss an emulator or find an error in the configuration, please create a pull request or issue.
-
-## 🌈 Roadmap
-
-There is a lot i would like to work on. The following features are the bigger ones in no specific order.
-
-- Bundle emulators
-- Preconfigure all emulators
-- Release emuze as a Flatpak on Flathub
-- Bundle open source bios implementations
-- Filter and sorting of roms
-- Integrate `How long to beat`
-- Add option to convert bin/cue and iso files to chd
 
 ## 🚑️ Support
 

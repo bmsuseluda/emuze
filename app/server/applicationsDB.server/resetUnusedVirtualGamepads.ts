@@ -5,12 +5,12 @@
  * @param usedVirtualGamepadsCount The number of physical gamepads connected
  * @param getReset The function that returns the reset string
  */
-export const resetUnusedVirtualGamepads = (
+export const resetUnusedVirtualGamepads = <Return>(
   maxVirtualGamepadsCount: number,
   usedVirtualGamepadsCount: number,
-  getReset: (gamepadIndex: number) => string[],
+  getReset: (gamepadIndex: number) => Return,
 ) =>
   Array.from(
     { length: maxVirtualGamepadsCount - usedVirtualGamepadsCount },
     (_, index) => getReset(index + usedVirtualGamepadsCount),
-  ).flat();
+  );

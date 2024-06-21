@@ -300,7 +300,11 @@ export const getVirtualGamepads = (systemHasAnalogStick: boolean) => {
 
   return [
     ...virtualGamepads,
-    ...resetUnusedVirtualGamepads(5, gamepads.length, getVirtualGamepadReset),
+    ...resetUnusedVirtualGamepads(
+      5,
+      gamepads.length,
+      getVirtualGamepadReset,
+    ).flat(),
   ];
 };
 

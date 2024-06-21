@@ -5,6 +5,7 @@ import { spawnSync } from "child_process";
 import { createAbsoluteEntryPath } from "../../../../types/jsonFiles/category";
 import { isApplicationWindows } from "../../../../types/jsonFiles/applications";
 import { checkFlatpakIsInstalled } from "../../checkFlatpakInstalled";
+import { log } from "../../../debug.server";
 
 const findScummVmGameNameViaMapping: FindEntryNameFunction = ({
   entry: { name },
@@ -38,7 +39,7 @@ const findScummVmGameNameViaDetectWindows = (
       },
     ).stdout.toString();
   } catch (e) {
-    console.log("scummvm could not started", e);
+    log("error", "scummvm could not started", e);
     return null;
   }
 };

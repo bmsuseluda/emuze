@@ -20,13 +20,7 @@ import type { Mock } from "vitest";
 import { general } from "../__testData__/general";
 import { existsSync } from "fs";
 
-vi.mock("@kmamal/sdl", () => ({
-  default: () => ({
-    controller: {
-      devices: [],
-    },
-  }),
-}));
+vi.mock("@kmamal/sdl");
 
 const execFileMock = vi.fn();
 vi.mock("child_process", async (importOriginal) => {

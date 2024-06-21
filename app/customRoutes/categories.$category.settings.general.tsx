@@ -38,6 +38,7 @@ import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction";
 import { useGamepadConnected } from "../hooks/useGamepadConnected";
 import { GamepadButtonIcon } from "../components/GamepadButtonIcon";
 import fs from "fs";
+import { log } from "../server/debug.server";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
@@ -200,6 +201,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       }
     }
   } catch (e) {
+    log("error", "general action", e);
     return redirect("errorDialog");
   }
 

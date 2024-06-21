@@ -5,6 +5,7 @@ import type {
 } from "../../types";
 import nodepath from "path";
 import ps3Games from "./nameMapping/ps3.json";
+import { log } from "../../../debug.server";
 
 /**
  * Find the 9digit serial number from path
@@ -38,7 +39,7 @@ const findPlaystation3GameName: FindEntryNameFunction = ({
     try {
       entryName = (ps3Games as Record<string, string>)[serial];
     } catch (error) {
-      console.log("findPs3GameName", error);
+      log("error", "findPlaystation3GameName", error);
       return name;
     }
   }
