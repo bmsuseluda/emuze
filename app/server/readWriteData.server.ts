@@ -1,5 +1,4 @@
 import nodepath from "path";
-import { homedir } from "os";
 import {
   existsSync,
   mkdirSync,
@@ -8,11 +7,7 @@ import {
   writeFileSync,
 } from "fs";
 import { log } from "./debug.server";
-
-export const homeDirectory = nodepath.join(
-  process.env.EMUZE_CONFIG_PATH || homedir(),
-  ".emuze",
-);
+import { homeDirectory } from "./homeDirectory.server";
 
 const readFiles = (path: string) =>
   readdirSync(path, { encoding: "utf8", withFileTypes: true });

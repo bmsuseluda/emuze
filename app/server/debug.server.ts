@@ -1,7 +1,7 @@
 import { app } from "electron";
-import { homeDirectory } from "./readWriteData.server";
 import nodepath from "path";
 import { appendFileSync, existsSync, mkdirSync, writeFileSync } from "fs";
+import { homeDirectory } from "./homeDirectory.server";
 
 export const isDebug = () =>
   app?.commandLine.hasSwitch("debugEmuze") ||
