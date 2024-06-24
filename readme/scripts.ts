@@ -1,5 +1,5 @@
 import { categories } from "../app/server/categoriesDB.server";
-import { ApplicationId } from "../app/server/applicationsDB.server/applicationId";
+import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId";
 
 const preConfigured: ApplicationId[] = [
   "ares",
@@ -9,6 +9,7 @@ const preConfigured: ApplicationId[] = [
   "aresSuperNintendo",
   "scummvm",
   "duckstation",
+  "pcsx2",
 ];
 
 export const createSystemsTable = () =>

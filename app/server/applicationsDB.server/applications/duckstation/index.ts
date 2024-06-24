@@ -12,6 +12,7 @@ import {
   getFlatpakConfigPath,
   replaceSection,
   splitConfigBySection,
+  writeConfig,
 } from "../../configFile";
 import nodepath from "path";
 import { defaultSettings } from "./defaultSettings";
@@ -103,6 +104,7 @@ export const replaceInputSourcesConfig = (sections: string[]) =>
   ]);
 
 /**
+ * TODO: Check which game is compatible with multitap
  * TODO: set multitap only if more than 2 controller
  * @param sections
  */
@@ -118,9 +120,24 @@ const configFileName = "settings.ini";
 export const getWindowsConfigFilePath = (
   configFileName: string,
   applicationPath?: string,
-) =>
-  (applicationPath && findConfigFile(applicationPath, configFileName)) ||
-  nodepath.join(homedir(), "Documents", "DuckStation", configFileName);
+) => {
+  if (applicationPath) {
+    const applicationDirectory = nodepath.dirname(applicationPath);
+    const configFilePath = findConfigFile(applicationDirectory, configFileName);
+    const portableExists = fs.existsSync(
+      nodepath.join(applicationDirectory, "portable.txt"),
+    );
+
+    if (portableExists) {
+      if (configFilePath) {
+        return configFilePath;
+      }
+      return nodepath.join(applicationDirectory, configFileName);
+    }
+  }
+
+  return nodepath.join(homedir(), "Documents", "DuckStation", configFileName);
+};
 
 export const configFile = (
   flatpakId: string,
@@ -161,12 +178,12 @@ export const replaceConfigSections = (applicationPath?: string) => {
   const fileContentNew = chainSectionReplacements(
     sections,
     replaceInputSourcesConfig,
-    replaceControllerPortsConfig,
+    // replaceControllerPortsConfig,
     replaceHotkeyConfig,
     replaceGamepadConfig,
   ).join(EOL);
 
-  fs.writeFileSync(filePath, fileContentNew, "utf8");
+  writeConfig(filePath, fileContentNew);
 };
 
 export const duckstation: Application = {

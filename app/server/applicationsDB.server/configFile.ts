@@ -1,5 +1,5 @@
 import { spawnSync } from "child_process";
-import { readdirSync } from "fs";
+import fs, { readdirSync } from "fs";
 import nodepath from "path";
 import { EOL } from "os";
 
@@ -95,3 +95,10 @@ export const getFlatpakDataPath = (flatpakId: string) =>
   ])
     .stdout.toString()
     .trim();
+
+export const writeConfig = (filePath: string, content: string) => {
+  if (!fs.existsSync(filePath)) {
+    fs.mkdirSync(filePath, { recursive: true });
+  }
+  fs.writeFileSync(filePath, content, "utf8");
+};

@@ -9,6 +9,7 @@ import {
   getFlatpakConfigPath,
   replaceSection,
   splitConfigBySection,
+  writeConfig,
 } from "../../configFile";
 import { log } from "../../../debug.server";
 import { defaultSettings } from "./defaultSettings";
@@ -108,6 +109,7 @@ export const replaceInputSourcesConfig = (sections: string[]) =>
   ]);
 
 /**
+ * TODO: Check which game is compatible with multitap
  * TODO: set multitap only if more than 2 controller
  * @param sections
  */
@@ -137,9 +139,24 @@ const readConfigFile = (filePath: string) => {
 export const getWindowsConfigFilePath = (
   configFileName: string,
   applicationPath?: string,
-) =>
-  (applicationPath && findConfigFile(applicationPath, configFileName)) ||
-  nodepath.join(homedir(), "Documents", "PCSX2", configFileName);
+) => {
+  if (applicationPath) {
+    const applicationDirectory = nodepath.dirname(applicationPath);
+    const configFilePath = findConfigFile(applicationDirectory, configFileName);
+    const portableExists = fs.existsSync(
+      nodepath.join(applicationDirectory, "portable.ini"),
+    );
+
+    if (portableExists) {
+      if (configFilePath) {
+        return configFilePath;
+      }
+      return nodepath.join(applicationDirectory, configFileName);
+    }
+  }
+
+  return nodepath.join(homedir(), "Documents", "PCSX2", "inis", configFileName);
+};
 
 export const configFile = (
   flatpakId: string,
@@ -167,12 +184,12 @@ export const replaceConfigSections = (applicationPath?: string) => {
   const fileContentNew = chainSectionReplacements(
     sections,
     replaceInputSourcesConfig,
-    replacePadConfig,
+    // replacePadConfig,
     replaceHotkeyConfig,
     replaceGamepadConfig,
   ).join(EOL);
 
-  fs.writeFileSync(filePath, fileContentNew, "utf8");
+  writeConfig(filePath, fileContentNew);
 };
 
 export const pcsx2: Application = {
