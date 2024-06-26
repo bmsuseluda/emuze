@@ -11,6 +11,7 @@ import type {
 } from "./types";
 import { PhysicalGamepad } from "./PhysicalGamepad";
 import { getVirtualGamepadReset } from "./VirtualGamepadReset";
+import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
 
 const gamepadGroupId: Record<GamepadGroupId, number> = {
   Axis: 0,
@@ -159,15 +160,33 @@ const getIndexForDeviceId = (index: number) => {
   return "";
 };
 
-const getVirtualGamepad =
-  (systemHasAnalogStick: boolean) =>
-  ({ vendor, product, mapping, id }: Sdl.Controller.Device, index: number) => {
-    const virtualGamepadIndex = index;
-    const deviceIdIndex = getIndexForDeviceId(id);
-    const deviceId = `0x${deviceIdIndex}${vendor.toString(16).padStart(deviceIdIndex.length > 0 ? 4 : 3, "0")}${product.toString(16).padStart(4, "0")}`;
+/**
+ * Creates the ares specific device id based on the SDL device input.
+ *
+ * result e.g. 0x128de11ff
+ * ? = 0x (is always the same)
+ * deviceIndex = 1 (optional, only set if id > 0)
+ * vendor = 28de (hex value, needs to be padded with "0" on start to 4 characters, to 3 characters if deviceIndex is set)
+ * product = 11ff (hex value, needs to be padded with "0" on start to 4 characters)
+ */
+export const createDeviceId = ({
+  vendor,
+  product,
+  id,
+}: Sdl.Controller.Device) => {
+  const deviceIdIndex = getIndexForDeviceId(id);
+  return `0x${deviceIdIndex}${vendor.toString(16).padStart(deviceIdIndex.length > 0 ? 4 : 3, "0")}${product.toString(16).padStart(4, "0")}`;
+};
 
-    const mappingObject = createSdlMappingObject(mapping);
+export const getVirtualGamepad =
+  (systemHasAnalogStick: boolean) =>
+  (sdlDevice: Sdl.Controller.Device, index: number) => {
+    const virtualGamepadIndex = index;
+    const mappingObject = createSdlMappingObject(sdlDevice.mapping);
+    const deviceId = createDeviceId(sdlDevice);
     const physicalGamepad = new PhysicalGamepad(deviceId, mappingObject);
+
+    log("debug", "gamepad", { index, sdlDevice, deviceId });
 
     return [
       ...getVirtualGamepadDpad(
@@ -263,60 +282,30 @@ const getVirtualGamepad =
         { gamepadIndex: virtualGamepadIndex, buttonId: "R-Right" },
         physicalGamepad.getRightStickRight(),
       ),
+
+      //   To activate rumble, it can be any button
+      ...getVirtualGamepadButton(
+        { gamepadIndex: virtualGamepadIndex, buttonId: "Rumble" },
+        physicalGamepad.getStart(),
+      ),
     ];
   };
 
-/**
- * This is the SDL definition of the internal gamepad of the Steam Deck
- */
-export const steamDeck: Sdl.Controller.Device = {
-  id: 0,
-  name: "Microsoft X-Box 360 pad 0",
-  path: "/dev/input/event6",
-  guid: "030079f6de280000ff11000001000000",
-  vendor: 10462,
-  product: 4607,
-  version: 1,
-  player: 0,
-  mapping:
-    "030079f6de280000ff11000001000000,Steam Virtual Gamepad,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b8,leftshoulder:b4,leftstick:b9,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
-};
-
-/**
- * If one of the gamepads is the Steam Deck, it should be positioned last.
- */
-export const sortGamepads = (
-  gamepadA: Sdl.Controller.Device,
-  gamepadB: Sdl.Controller.Device,
-) => {
-  if (gamepadA.mapping === steamDeck.mapping) {
-    return 1;
-  }
-
-  if (gamepadB.mapping === steamDeck.mapping) {
-    return -1;
-  }
-
-  return gamepadA.id - gamepadB.id;
-};
-
-export const resetUnusedVirtualGamepads = (usedVirtualGamepadsCount: number) =>
-  Array.from({ length: 5 - usedVirtualGamepadsCount }, (_, index) =>
-    getVirtualGamepadReset(index + usedVirtualGamepadsCount),
-  ).flat();
-
-const getVirtualGamepads = (systemHasAnalogStick: boolean) => {
+export const getVirtualGamepads = (systemHasAnalogStick: boolean) => {
   const gamepads = sdl.controller.devices;
-
-  gamepads.sort(sortGamepads);
-
-  log("debug", "gamepads", gamepads);
 
   const virtualGamepads = gamepads.flatMap(
     getVirtualGamepad(systemHasAnalogStick),
   );
 
-  return [...virtualGamepads, ...resetUnusedVirtualGamepads(gamepads.length)];
+  return [
+    ...virtualGamepads,
+    ...resetUnusedVirtualGamepads(
+      5,
+      gamepads.length,
+      getVirtualGamepadReset,
+    ).flat(),
+  ];
 };
 
 const getSharedAresOptionParams: OptionParamFunction = ({
@@ -356,6 +345,8 @@ export const ares: Application = {
     ".gg",
     ".chd",
     ".nes",
+    ".fc",
+    ".unh",
     ".sgd",
     ".smd",
     ".gb",

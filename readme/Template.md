@@ -3,7 +3,7 @@
 </p>
 
 
-💥 [Features](#-features) | 🚀 [Getting Started](#-getting-started) | 🪄 [Metadata](#-metadata) | 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) | 🌈 [Roadmap](#-roadmap) | 🚑️ [Support](#%EF%B8%8F-support)
+💥 [Features](#-features) | 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) | 🚀 [Getting Started](#-getting-started) | 🪄 [Metadata](#-metadata) | 🚑️ [Support](#%EF%B8%8F-support)
 
 My main goal for emuze is to have a emulation launcher that is as fast and simple as possible. With this you don't have to configure every emulator and fine tune metadata of your roms.
 If your roms are named correctly, a click on the import button should import your emulators and roms altogether and therefore no configuration is necessary.
@@ -25,6 +25,26 @@ If your roms are named correctly, a click on the import button should import you
 <p>
   <img src="https://github.com/bmsuseluda/emuze/blob/main/screenshots/library_collapsed.png?raw=true" alt="Library collapsed" />
 </p>
+
+## 🕹️ Supported Systems
+
+The following systems are supported:
+
+| System | Emulator | Pre Configured |
+|--------|----------|----------------|
+```mmd
+return scripts.createSystemsTable()
+```
+> [!IMPORTANT]  
+> ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
+
+### Pre Configured
+If a System is pre configured, all connected gamepads will be configured for the specific Emulator.
+
+The following Hotkeys are set:
+- Open Menu / Toggle Fullscreen: F2
+- Save State: F1
+- Load State: F3
 
 ## 🚀 Getting started
 
@@ -84,7 +104,7 @@ return scripts.getLinuxDownloadLink('2) ')
 
 #### Steam Input Profile
 
-There is a Steam Input Profile with the name `emuze`, which has some hotkeys preconfigured for some emulators on the back pedals of the Steam Deck.
+There is a Steam Input Profile with the name `emuze`, which has some Hotkeys pre configured on the back pedals of the Steam Deck.
 
 ### Roms Folder
 
@@ -135,34 +155,6 @@ If you have a game with multiple discs, like `Final Fantasy VII`, the file name 
 ### Games with multiple Versions (e.g. Regions)
 
 If you have multiple versions of a game you can specify them in brackets, e.g. the file name for the japanese version of `Castlevania` would be `Castlevania (J).nes`.
-
-## 🕹️ Supported Systems
-
-Every System and Emulator needs to be configured in the source code of emuze by the developer.
-Right now the following are supported:
-
-| System | Emulators | Default Emulator |
-|--------|-----------|------------------|
-```mmd
-return scripts.createSystemsTable()
-```
-> [!IMPORTANT]  
-> ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
-
-> [!TIP]
-> If you miss an emulator or find an error in the configuration, please create a pull request or issue.
-
-## 🌈 Roadmap
-
-There is a lot i would like to work on. The following features are the bigger ones in no specific order.
-
-- Bundle emulators
-- Preconfigure all emulators
-- Release emuze as a Flatpak on Flathub
-- Bundle open source bios implementations
-- Filter and sorting of roms
-- Integrate `How long to beat`
-- Add option to convert bin/cue and iso files to chd
 
 ## 🚑️ Support
 

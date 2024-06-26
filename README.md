@@ -3,7 +3,7 @@
 </p>
 
 
-💥 [Features](#-features) | 🚀 [Getting Started](#-getting-started) | 🪄 [Metadata](#-metadata) | 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) | 🌈 [Roadmap](#-roadmap) | 🚑️ [Support](#%EF%B8%8F-support)
+💥 [Features](#-features) | 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) | 🚀 [Getting Started](#-getting-started) | 🪄 [Metadata](#-metadata) | 🚑️ [Support](#%EF%B8%8F-support)
 
 My main goal for emuze is to have a emulation launcher that is as fast and simple as possible. With this you don't have to configure every emulator and fine tune metadata of your roms.
 If your roms are named correctly, a click on the import button should import your emulators and roms altogether and therefore no configuration is necessary.
@@ -25,6 +25,57 @@ If your roms are named correctly, a click on the import button should import you
 <p>
   <img src="https://github.com/bmsuseluda/emuze/blob/main/screenshots/library_collapsed.png?raw=true" alt="Library collapsed" />
 </p>
+
+## 🕹️ Supported Systems
+
+The following systems are supported:
+
+| System | Emulator | Pre Configured |
+|--------|----------|----------------|
+| Sony Playstation | DuckStation | Yes |
+| Sony Playstation 2 | PCSX2 | Yes |
+| Sony Playstation 3 | RPCS3 | No |
+| Sony Playstation Portable | PPSSPP | No |
+| Nintendo Entertainment System | Ares | Yes |
+| Super Nintendo Entertainment System | Ares | Yes |
+| Nintendo Game Boy | mgba | No |
+| Nintendo Game Boy Color | mgba | No |
+| Nintendo Game Boy Advance | mgba | No |
+| Nintendo DS | MelonDS | No |
+| Nintendo 3DS | Lime3DS | No |
+| Nintendo 64 | Ares | Yes |
+| Nintendo Gamecube | Dolphin | No |
+| Nintendo Wii | Dolphin | No |
+| Nintendo Wii U | Cemu | No |
+| Nintendo Switch | Ryujinx | No |
+| PC Engine | Ares | Yes |
+| PC Engine CD | Mednafen | No |
+| PC Engine SuperGrafx | Mednafen | No |
+| Sega Master System | Ares | Yes |
+| Sega Game Gear | Ares | Yes |
+| Sega Mega Drive | Ares | Yes |
+| Sega 32X | Ares | Yes |
+| Sega CD | Ares | Yes |
+| Sega Saturn | Mednafen | No |
+| Sega Dreamcast | Flycast | No |
+| Arcade | Mame | No |
+| Neo Geo | Mame | No |
+| Neo Geo CD | Mame | No |
+| Neo Geo Pocket | Ares | Yes |
+| Neo Geo Pocket Color | Ares | Yes |
+| Scumm | ScummVM | Yes |
+| Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json)) | DOSBox-Staging | No |
+
+> [!IMPORTANT]  
+> ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
+
+### Pre Configured
+If a System is pre configured, all connected gamepads will be configured for the specific Emulator.
+
+The following Hotkeys are set:
+- Open Menu / Toggle Fullscreen: F2
+- Save State: F1
+- Load State: F3
 
 ## 🚀 Getting started
 
@@ -80,7 +131,7 @@ For now emuze is only released as an AppImage.
 
 #### Steam Input Profile
 
-There is a Steam Input Profile with the name `emuze`, which has some hotkeys preconfigured for some emulators on the back pedals of the Steam Deck.
+There is a Steam Input Profile with the name `emuze`, which has some Hotkeys pre configured on the back pedals of the Steam Deck.
 
 ### Roms Folder
 
@@ -131,65 +182,6 @@ If you have a game with multiple discs, like `Final Fantasy VII`, the file name 
 ### Games with multiple Versions (e.g. Regions)
 
 If you have multiple versions of a game you can specify them in brackets, e.g. the file name for the japanese version of `Castlevania` would be `Castlevania (J).nes`.
-
-## 🕹️ Supported Systems
-
-Every System and Emulator needs to be configured in the source code of emuze by the developer.
-Right now the following are supported:
-
-| System | Emulators | Default Emulator |
-|--------|-----------|------------------|
-| Sony Playstation | DuckStation<br>Mednafen | DuckStation |
-| Sony Playstation 2 | PCSX2<br>Play! | PCSX2 |
-| Sony Playstation 3 | RPCS3 | RPCS3 |
-| Sony Playstation Portable | PPSSPP | PPSSPP |
-| Nintendo Entertainment System | Nestopia<br>puNES<br>Mednafen<br>Ares | Ares |
-| Super Nintendo Entertainment System | BSNES<br>Snes9x<br>Ares | Ares |
-| Nintendo Game Boy | mgba<br>Ares | mgba |
-| Nintendo Game Boy Color | mgba | mgba |
-| Nintendo Game Boy Advance | mgba<br>Ares | mgba |
-| Nintendo DS | MelonDS<br>DeSmuME | MelonDS |
-| Nintendo 3DS | Citra<br>Lime3DS | Lime3DS |
-| Nintendo 64 | Ares<br>Rosalie's Mupen GUI<br>Mupen64Plus | Ares |
-| Nintendo Gamecube | Dolphin | Dolphin |
-| Nintendo Wii | Dolphin | Dolphin |
-| Nintendo Wii U | Cemu | Cemu |
-| Nintendo Switch | Ryujinx<br>yuzu | Ryujinx |
-| PC Engine | Mednafen<br>Ares | Ares |
-| PC Engine CD | Mednafen | Mednafen |
-| PC Engine SuperGrafx | Mednafen | Mednafen |
-| Sega Master System | Ares<br>BlastEm<br>Mednafen | Ares |
-| Sega Game Gear | Ares<br>BlastEm<br>Mednafen | Ares |
-| Sega Mega Drive | BlastEm<br>Ares | Ares |
-| Sega 32X | Ares | Ares |
-| Sega CD | Ares | Ares |
-| Sega Saturn | Mednafen | Mednafen |
-| Sega Dreamcast | Flycast | Flycast |
-| Arcade | Mame | Mame |
-| Neo Geo | Mame | Mame |
-| Neo Geo CD | Mame | Mame |
-| Neo Geo Pocket | Ares | Ares |
-| Neo Geo Pocket Color | Ares | Ares |
-| Scumm | ScummVM | ScummVM |
-| DOS (Alpha) | DOSBox-Staging | DOSBox-Staging |
-
-> [!IMPORTANT]  
-> ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
-
-> [!TIP]
-> If you miss an emulator or find an error in the configuration, please create a pull request or issue.
-
-## 🌈 Roadmap
-
-There is a lot i would like to work on. The following features are the bigger ones in no specific order.
-
-- Bundle emulators
-- Preconfigure all emulators
-- Release emuze as a Flatpak on Flathub
-- Bundle open source bios implementations
-- Filter and sorting of roms
-- Integrate `How long to beat`
-- Add option to convert bin/cue and iso files to chd
 
 ## 🚑️ Support
 

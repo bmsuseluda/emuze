@@ -1,9 +1,11 @@
 import { app } from "electron";
-import { homeDirectory } from "./readWriteData.server";
 import nodepath from "path";
 import { appendFileSync, existsSync, mkdirSync, writeFileSync } from "fs";
+import { homeDirectory } from "./homeDirectory.server";
 
-export const isDebug = () => app?.commandLine.hasSwitch("debugEmuze");
+export const isDebug = () =>
+  app?.commandLine.hasSwitch("debugEmuze") ||
+  process.env.EMUZE_DEBUG === "true";
 
 const logFileName = "emuze.log";
 
@@ -30,7 +32,7 @@ export const createLogFile = () => {
   writeFileSync(path, "");
 };
 
-const appendLogFile = (type: LogType, text: string | number) => {
+const appendLogFile = (type: LogType, text: string | number | unknown) => {
   const timestamp = new Date().toLocaleString();
   appendFileHome(`${timestamp} - ${type} - ${text}\n`, logFileName);
 };
@@ -39,7 +41,10 @@ type LogType = "error" | "debug" | "warning" | "info";
 
 // TODO: use logger library?
 // TODO: Check when the log file should be reseted
-export const log = (type: LogType, ...texts: (object | string | number)[]) => {
+export const log = (
+  type: LogType,
+  ...texts: (object | string | number | unknown)[]
+) => {
   if (isDebug()) {
     //   TODO: Check which file type would be best
     texts.forEach((text) => {
@@ -49,7 +54,6 @@ export const log = (type: LogType, ...texts: (object | string | number)[]) => {
         appendLogFile(type, text);
       }
     });
-  } else {
-    console.log(texts);
+    console.log(type, texts);
   }
 };

@@ -5,7 +5,6 @@ import {
   citra,
   desmume,
   dolphin,
-  duckstation,
   flycast,
   lime3ds,
   mednafen,
@@ -13,7 +12,6 @@ import {
   mgba,
   mupen64plus,
   nestopia,
-  pcsx2,
   play,
   ppsspp,
   rosaliesMupenGui,
@@ -39,6 +37,8 @@ import { dosboxstaging } from "../applicationsDB.server/applications/dosbox";
 import { scummvm } from "../applicationsDB.server/applications/scummvm";
 import type { Category } from "./types";
 import type { SystemId } from "./systemId";
+import { duckstation } from "../applicationsDB.server/applications/duckstation";
+import { pcsx2 } from "../applicationsDB.server/applications/pcsx2";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",
@@ -352,7 +352,7 @@ export const neogeopocketcolor: Category = {
 
 export const dos: Category = {
   id: "dos",
-  names: ["DOS (Alpha)", "DOS", "MS DOS", "Microsoft DOS"],
+  names: ["DOS", "MS DOS", "Microsoft DOS"],
   igdbPlatformIds: [13],
   applications: [dosboxstaging],
   defaultApplication: dosboxstaging,

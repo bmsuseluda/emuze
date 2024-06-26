@@ -3,6 +3,7 @@ import type { Apicalypse } from "apicalypse";
 import apicalypse from "apicalypse";
 import { getExpiresOn } from "./getExpiresOn.server";
 import { retryPromise } from "../retryPromise";
+import { log } from "./debug.server";
 
 interface GameLocalization {
   name?: string;
@@ -27,10 +28,11 @@ export const url =
 export const removeSubTitle = (a: string) => a.split(/ -|[:/]/g)[0];
 
 /**
- * Should place the comma separated article as a prefix
+ * Should place the comma separated article as a prefix.
+ * A Prefix is identified by a comma followed by a white space and word with a minimum of 1 and maximum of 3 characters.
  */
 const setCommaSeparatedArticleAsPrefix = (a: string) => {
-  const regex = /, \w{1,3}/;
+  const regex = /, \b\w{1,3}\b/;
   const articleWithComma = a.match(regex);
   const article = articleWithComma?.at(0)?.split(", ").at(1);
 
@@ -132,6 +134,7 @@ const fetchMetaDataForChunkLimitless = async (
   entries: Entry[],
   offset: number = 0,
 ): Promise<Game[]> => {
+  const gamesFiltered = entries.flatMap(filterGame);
   const gamesResponse: GamesResponse = await retryPromise(
     () =>
       client
@@ -144,7 +147,7 @@ const fetchMetaDataForChunkLimitless = async (
         ])
         .where(
           `platforms=(${platformId}) &
-            (${entries.flatMap(filterGame).join(" | ")})`,
+            (${gamesFiltered.join(" | ")})`,
         )
         .limit(igdbResponseLimit)
         .offset(offset)
@@ -152,6 +155,9 @@ const fetchMetaDataForChunkLimitless = async (
     3,
     1000,
   );
+
+  log("debug", "igdb request games filtered", gamesFiltered);
+  log("debug", "igdb response", gamesResponse.data);
 
   if (gamesResponse.data.length === igdbResponseLimit) {
     return [

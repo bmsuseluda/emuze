@@ -29,14 +29,14 @@ const Label = styled("label", {
     justifyContent: "flex-end",
     borderWidth: "4px",
     borderStyle: "solid",
-    borderColor: "backgroundColor",
+    borderColor: "transparent",
     borderRadius: "1",
     overflow: "clip",
 
     margin: "4px",
     outlineWidth: "4px",
     outlineStyle: "solid",
-    outlineColor: "backgroundColor",
+    outlineColor: "transparent",
     transition: "outline-color 0.1s ease-in-out",
 
     "&:has(*:checked)": {

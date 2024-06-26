@@ -38,6 +38,7 @@ import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction";
 import { useGamepadConnected } from "../hooks/useGamepadConnected";
 import { GamepadButtonIcon } from "../components/GamepadButtonIcon";
 import fs from "fs";
+import { log } from "../server/debug.server";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
@@ -161,12 +162,23 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       };
 
       writeGeneral(fields);
-      await importCategories();
+      try {
+        await importCategories();
+        const categories = readCategories();
 
-      const categories = readCategories();
+        if (categories?.length > 0) {
+          return redirect(`/categories/${categories[0].id}/settings/general`);
+        }
+      } catch (error) {
+        const categories = readCategories();
 
-      if (categories?.length > 0) {
-        return redirect(`/categories/${categories[0].id}/settings/general`);
+        if (categories?.length > 0) {
+          return redirect(
+            `/categories/${categories[0].id}/settings/general/errorDialog`,
+          );
+        } else {
+          throw error;
+        }
       }
     }
 
@@ -200,6 +212,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       }
     }
   } catch (e) {
+    log("error", "general action", e);
     return redirect("errorDialog");
   }
 

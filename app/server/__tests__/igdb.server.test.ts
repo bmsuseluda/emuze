@@ -21,13 +21,7 @@ import {
 import { categories as categoriesDB } from "../categoriesDB.server";
 import { getExpiresOn } from "../getExpiresOn.server";
 
-vi.mock("@kmamal/sdl", () => ({
-  default: () => ({
-    controller: {
-      devices: [],
-    },
-  }),
-}));
+vi.mock("@kmamal/sdl");
 
 const igdbRequestMock = vi.fn();
 vi.mock("apicalypse", () => ({
@@ -140,6 +134,15 @@ describe("igdb.server", () => {
         'name~"The Adventures of Bayou Billy"*',
         'alternative_names.name~"The Adventures of Bayou Billy"*',
         'game_localizations.name~"The Adventures of Bayou Billy"*',
+      ]);
+    });
+
+    it("Should return filter array for game with comma that does not seperates an article", () => {
+      const result = filterGame(commanderkeen4);
+      expect(result).toStrictEqual([
+        'name~"Commander Keen in Goodbye, Galaxy!"*',
+        'alternative_names.name~"Commander Keen in Goodbye, Galaxy!"*',
+        'game_localizations.name~"Commander Keen in Goodbye, Galaxy!"*',
       ]);
     });
   });

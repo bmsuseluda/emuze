@@ -47,7 +47,8 @@ export type AresButtonId =
   | "R-Up"
   | "R-Down"
   | "R-Left"
-  | "R-Right";
+  | "R-Right"
+  | "Rumble";
 
 export type GamepadGroupId = "Axis" | "HAT" | "Button";
 
