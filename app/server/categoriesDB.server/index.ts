@@ -352,7 +352,7 @@ export const neogeopocketcolor: Category = {
 
 export const dos: Category = {
   id: "dos",
-  names: ["DOS (Alpha)", "DOS", "MS DOS", "Microsoft DOS"],
+  names: ["DOS", "MS DOS", "Microsoft DOS"],
   igdbPlatformIds: [13],
   applications: [dosboxstaging],
   defaultApplication: dosboxstaging,

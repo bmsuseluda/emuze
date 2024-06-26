@@ -1,5 +1,6 @@
 import { categories } from "../app/server/categoriesDB.server";
 import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId";
+import { SystemId } from "../app/server/categoriesDB.server/systemId";
 
 const preConfigured: ApplicationId[] = [
   "ares",
@@ -12,11 +13,15 @@ const preConfigured: ApplicationId[] = [
   "pcsx2",
 ];
 
+const nameOverwrites: Partial<Record<SystemId, string>> = {
+  dos: "Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json))",
+};
+
 export const createSystemsTable = () =>
   Object.values(categories)
     .map(
       (category) =>
-        `| ${category.names[0]} | ${category.defaultApplication.name} | ${preConfigured.includes(category.defaultApplication.id) ? "Yes" : "No"} |`,
+        `| ${nameOverwrites[category.id] || category.names[0]} | ${category.defaultApplication.name} | ${preConfigured.includes(category.defaultApplication.id) ? "Yes" : "No"} |`,
     )
     .join("\n");
 
