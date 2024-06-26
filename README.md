@@ -81,7 +81,7 @@ The following Hotkeys are set:
 
 ### Windows
 
-[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.48.0/emuze-Setup-0.48.0.exe) the latest Version of emuze and install it.
+[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.49.0/emuze-Setup-0.49.0.exe) the latest Version of emuze and install it.
 
 If you start emuze for the first time, it asks for the following folders to work:
 
@@ -97,7 +97,7 @@ On Linux all emulators need to be installed via flatpak but emuze can do this fo
 
 ```
 emulators
-|-> ares-v135
+|-> ares-v139
 |---> ...
 |---> ares.exe
 |---> ...
@@ -111,7 +111,7 @@ emulators
 
 For now emuze is only released as an AppImage. Your distribution needs to support Flatpaks.
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.48.0/emuze-0.48.0.AppImage) the latest Version of emuze
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.49.0/emuze-0.49.0.AppImage) the latest Version of emuze
 
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
@@ -121,7 +121,7 @@ For now emuze is only released as an AppImage. Your distribution needs to suppor
 For now emuze is only released as an AppImage.
 
 1) Switch to Desktop
-2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.48.0/emuze-0.48.0.AppImage) the latest Version of emuze
+2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.49.0/emuze-0.49.0.AppImage) the latest Version of emuze
 
 3) Mark the AppImage as executable and start emuze
 4) Choose the [folder where your Roms are located](#roms-folder)
