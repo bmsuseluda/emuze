@@ -1,7 +1,6 @@
 {
   "id": "nintendogameboy",
   "name": "Game Boy",
-  "application": { "id": "mgba" },
   "entries": [
     {
       "id": "supermarioland0",

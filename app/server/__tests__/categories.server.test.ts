@@ -34,11 +34,13 @@ import type { Category, Entry, MetaData } from "../../types/jsonFiles/category";
 import { general } from "../__testData__/general";
 import { fetchMetaData } from "../igdb.server";
 import { categories as categoriesDB } from "../categoriesDB.server";
-import { citra, mednafen } from "../applicationsDB.server";
+import { lime3ds, mednafen } from "../applicationsDB.server";
 import { getInstalledApplicationForCategory } from "../applications.server";
-import type { Application } from "../../types/jsonFiles/applications";
 import { getExpiresOn } from "../getExpiresOn.server";
 import type { Mock } from "vitest";
+import { mameNeoGeo } from "../applicationsDB.server/applications/mame";
+import { duckstation } from "../applicationsDB.server/applications/duckstation";
+import type { InstalledApplication } from "../applicationsDB.server/types";
 
 vi.mock("@kmamal/sdl");
 
@@ -99,7 +101,7 @@ describe("categories.server", () => {
 
       const result = readEntries({
         categoryName: neogeo.name,
-        applicationId: neogeo.application.id,
+        applicationId: mameNeoGeo.id,
       });
 
       expect(result).toStrictEqual(expectedResult);
@@ -131,7 +133,7 @@ describe("categories.server", () => {
 
       const result = readEntries({
         categoryName: playstation.name,
-        applicationId: playstation.application.id,
+        applicationId: duckstation.id,
         oldEntries,
       });
 
@@ -227,7 +229,7 @@ describe("categories.server", () => {
       when(readFilenames as Mock<any, string[]>)
         .calledWith({
           path: createCategoryPath(nintendo3ds.name),
-          fileExtensions: citra.fileExtensions,
+          fileExtensions: lime3ds.fileExtensions,
         })
         .mockReturnValueOnce([
           createAbsoluteEntryPath(nintendo3ds.name, metroidsamusreturns.path),
@@ -250,10 +252,10 @@ describe("categories.server", () => {
         pcenginecd.entries,
       );
       (
-        getInstalledApplicationForCategory as Mock<any, Application>
-      ).mockReturnValueOnce(applicationsTestData.citra);
+        getInstalledApplicationForCategory as Mock<any, InstalledApplication>
+      ).mockReturnValueOnce(applicationsTestData.lime3ds);
       (
-        getInstalledApplicationForCategory as Mock<any, Application>
+        getInstalledApplicationForCategory as Mock<any, InstalledApplication>
       ).mockReturnValueOnce(applicationsTestData.mednafen);
 
       // execute
@@ -301,7 +303,7 @@ describe("categories.server", () => {
         playstation.entries,
       );
       (
-        getInstalledApplicationForCategory as Mock<any, Application>
+        getInstalledApplicationForCategory as Mock<any, InstalledApplication>
       ).mockReturnValueOnce(applicationsTestData.duckstation);
 
       // execute

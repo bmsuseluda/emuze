@@ -1,7 +1,6 @@
 {
   "id": "nintendods",
   "name": "Nintendo DS",
-  "application": { "id": "melonds" },
   "entries": [
     {
       "id": "scribblenauts0",

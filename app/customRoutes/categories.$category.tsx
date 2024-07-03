@@ -15,7 +15,6 @@ import { executeApplication } from "../server/execute.server";
 import { importEntries, readCategory } from "../server/categories.server";
 import { GameGridDynamic } from "../components/GameGrid";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
-import { useTestId } from "../hooks/useTestId";
 import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
 import { SystemIcon } from "../components/SystemIcon";
 import { layout } from "../hooks/useGamepads/layouts";
@@ -38,6 +37,8 @@ import fs from "fs";
 import nodepath from "path";
 import type { SystemId } from "../server/categoriesDB.server/systemId";
 import { log } from "../server/debug.server";
+import { categories } from "../server/categoriesDB.server";
+import { getInstalledApplicationForCategory } from "../server/applications.server";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -49,11 +50,24 @@ export const loader = ({ params }: DataFunctionArgs) => {
   const categoryData = readCategory(category as SystemId);
 
   if (!categoryData?.name) {
-    return redirect("settings");
+    return redirect("/settings");
   }
 
-  const { alwaysGameNames } = readAppearance();
-  return json({ categoryData, alwaysGameNames });
+  const categoryDB = categories[category as SystemId];
+  const applicationsPath = readGeneral()?.applicationsPath;
+
+  try {
+    const isApplicationInstalled = !!getInstalledApplicationForCategory({
+      categoryDB,
+      applicationsPath,
+    });
+
+    const { alwaysGameNames } = readAppearance();
+    return json({ categoryData, alwaysGameNames, isApplicationInstalled });
+  } catch (error) {
+    log("debug", "category", "redirect to settings");
+    return redirect("/settings");
+  }
 };
 
 const actionIds = {
@@ -126,7 +140,8 @@ export const shouldRevalidate = ({
 };
 
 export default function Category() {
-  const { categoryData, alwaysGameNames } = useLoaderData<typeof loader>();
+  const { categoryData, alwaysGameNames, isApplicationInstalled } =
+    useLoaderData<typeof loader>();
 
   const isFullscreen = useFullscreen();
   const launchButtonRef = useRef<ElementRef<"button">>(null);
@@ -134,7 +149,6 @@ export default function Category() {
   const settingsButtonRef = useRef<ElementRef<"a">>(null);
   const listRef = useRef<ElementRef<"div">>(null);
 
-  const { getTestId } = useTestId("category");
   const { isInFocus, switchFocus, switchFocusBack } =
     useFocus<FocusElement>("main");
 
@@ -202,7 +216,7 @@ export default function Category() {
     return null;
   }
 
-  const { id, name, entries, application } = categoryData;
+  const { id, name, entries } = categoryData;
 
   return (
     <>
@@ -211,9 +225,7 @@ export default function Category() {
         headline={
           <IconChildrenWrapper>
             <SystemIcon id={id} />
-            <Typography ellipsis {...getTestId("name")}>
-              {name}
-            </Typography>
+            <Typography ellipsis>{name}</Typography>
           </IconChildrenWrapper>
         }
       >
@@ -231,7 +243,6 @@ export default function Category() {
                   onBack={onBack}
                   isInFocus={isInFocus}
                   onGameClick={onEntryClick}
-                  {...getTestId("entries")}
                 />
               )
             }
@@ -240,12 +251,13 @@ export default function Category() {
                 <Button
                   type="submit"
                   name="_actionId"
-                  disabled={!entries || entries.length === 0 || !application}
+                  disabled={
+                    !entries || entries.length === 0 || !isApplicationInstalled
+                  }
                   value={actionIds.launch}
                   ref={launchButtonRef}
-                  {...getTestId(["button", "launch"])}
                   icon={
-                    !application ? (
+                    !isApplicationInstalled ? (
                       <BiError />
                     ) : gamepadType ? (
                       <GamepadButtonIcon
@@ -257,7 +269,9 @@ export default function Category() {
                     )
                   }
                 >
-                  {!application ? "No installed Emulators" : "Launch Game"}
+                  {!isApplicationInstalled
+                    ? "Emulator not installed"
+                    : "Launch Game"}
                 </Button>
                 <Button
                   type="submit"
@@ -268,7 +282,6 @@ export default function Category() {
                     state === "submitting" &&
                     formData?.get("_actionId") === actionIds.import
                   }
-                  {...getTestId(["button", "import"])}
                   icon={
                     gamepadType ? (
                       <GamepadButtonIcon

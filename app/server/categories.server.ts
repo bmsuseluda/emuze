@@ -8,7 +8,10 @@ import { convertToId } from "./convertToId.server";
 import { sortCaseInsensitive } from "./sortCaseInsensitive.server";
 import { fetchMetaData } from "./igdb.server";
 import { readGeneral } from "./settings.server";
-import type { ExcludeFilesFunction } from "./applicationsDB.server/types";
+import type {
+  ExcludeFilesFunction,
+  InstalledApplication,
+} from "./applicationsDB.server/types";
 import { applications } from "./applicationsDB.server";
 import type { Category as CategoryDB } from "./categoriesDB.server/types";
 import { categories, getCategoryDataByName } from "./categoriesDB.server";
@@ -17,7 +20,6 @@ import { FileDataCache, MultipleFileDataCache } from "./FileDataCache.server";
 import { setErrorDialog } from "./errorDialog.server";
 import type { ApplicationId } from "./applicationsDB.server/applicationId";
 import type { SystemId } from "./categoriesDB.server/systemId";
-import type { Application } from "../types/jsonFiles/applications";
 import { log } from "./debug.server";
 
 export const paths = {
@@ -54,15 +56,7 @@ export const readCategory = (categoryId: SystemId) =>
 
 export const writeCategory = (category: Category) =>
   categoryDataCache.writeFile(
-    {
-      ...category,
-      application: category.application?.id
-        ? {
-            id: category.application.id,
-            path: category.application.path,
-          }
-        : undefined,
-    },
+    category,
     nodepath.join(paths.entries, `${category.id}.json`),
   );
 
@@ -93,7 +87,7 @@ export const readEntries = ({
 }: {
   categoryName: string;
   applicationId: ApplicationId;
-  installedApplication?: Application;
+  installedApplication?: InstalledApplication;
   oldEntries?: Entry[];
 }) => {
   const applicationDbData = applications[applicationId];
@@ -183,17 +177,16 @@ export const importEntries = async (category: SystemId) => {
 
   if (oldCategoryData && categoryDbData && generalData) {
     const { applicationsPath } = generalData;
-    const { igdbPlatformIds, defaultApplication } = categoryDbData;
+    const { igdbPlatformIds } = categoryDbData;
 
     const application = getInstalledApplicationForCategory({
       applicationsPath,
       categoryDB: categoryDbData,
-      oldApplication: oldCategoryData?.application,
     });
 
     const entries = readEntries({
       categoryName: oldCategoryData.name,
-      applicationId: application?.id || defaultApplication.id,
+      applicationId: application?.id || categoryDbData.application.id,
       installedApplication: application,
       oldEntries: oldCategoryData.entries,
     });
@@ -202,7 +195,6 @@ export const importEntries = async (category: SystemId) => {
       .then((entries) => {
         writeCategory({
           ...oldCategoryData,
-          application,
           entries,
         });
       })
@@ -219,7 +211,6 @@ export const importEntries = async (category: SystemId) => {
         // Write data anyway to add or remove games
         writeCategory({
           ...oldCategoryData,
-          application,
           entries,
         });
         throw new Error();
@@ -247,18 +238,17 @@ const createCategoryData = (
   categoryFolderBaseName: string,
   applicationsPath?: string,
 ): Category => {
-  const { id, defaultApplication } = categoryDbData;
+  const { id } = categoryDbData;
   const oldCategoryData = readCategory(id);
 
   const application = getInstalledApplicationForCategory({
     applicationsPath,
     categoryDB: categoryDbData,
-    oldApplication: oldCategoryData?.application,
   });
 
   const entries = readEntries({
     categoryName: categoryFolderBaseName,
-    applicationId: application?.id || defaultApplication.id,
+    applicationId: categoryDbData.application.id,
     installedApplication: application,
     oldEntries: oldCategoryData?.entries,
   });
@@ -267,7 +257,6 @@ const createCategoryData = (
     ...oldCategoryData,
     id,
     name: categoryFolderBaseName,
-    application,
     entries,
   };
 };

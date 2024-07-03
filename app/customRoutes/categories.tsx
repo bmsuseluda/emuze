@@ -4,7 +4,6 @@ import { readCategories } from "../server/categories.server";
 import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout";
 import { Link } from "../containers/Link";
 import { Header } from "../containers/Header";
-import { useTestId } from "../hooks/useTestId";
 import { SystemIcon } from "../components/SystemIcon";
 import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar";
 import { readAppearance } from "../server/settings.server";
@@ -76,7 +75,6 @@ const Name = styled(Typography, {
 
 export default function Categories() {
   const { categoryLinks, collapseSidebar } = useLoaderData<LoaderData>();
-  const { getTestId } = useTestId("categories");
 
   const { isInFocus, switchFocus, enableFocus } =
     useFocus<FocusElement>("sidebar");
@@ -125,7 +123,6 @@ export default function Categories() {
               aria-label={name}
               ref={categoryLinksRefCallback(index)}
               onClick={onLinkClick}
-              {...getTestId(["link", to])}
             >
               {collapseSidebar ? undefined : <Name>{name}</Name>}
             </Link>

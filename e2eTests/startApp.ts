@@ -2,6 +2,7 @@ import { _electron as electron } from "@playwright/test";
 
 export const startApp = async (configPath: string) => {
   process.env.EMUZE_IGDB_DEVELOPMENT_URL = "http://localhost:8080/games";
+  process.env.EMUZE_DEBUG = "true";
   process.env.EMUZE_CONFIG_PATH = configPath;
 
   const app = await electron.launch({ args: ["."] });
@@ -10,7 +11,9 @@ export const startApp = async (configPath: string) => {
   page.on("pageerror", (error) => {
     console.error(error);
   });
-  page.on("console", console.log);
+  page.on("console", (message) => {
+    console.log(message);
+  });
 
   return { app, page };
 };

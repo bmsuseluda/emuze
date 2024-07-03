@@ -1,4 +1,3 @@
-import type { Application } from "./applications";
 import nodepath from "path";
 import type { SystemId } from "../../server/categoriesDB.server/systemId";
 
@@ -17,7 +16,6 @@ export interface Entry {
 export interface Category {
   id: SystemId;
   name: string;
-  application?: Application;
   entries?: Entry[];
 }
 

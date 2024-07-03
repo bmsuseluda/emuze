@@ -5,7 +5,6 @@ import type {
   RefObject,
 } from "react";
 import { useCallback } from "react";
-import { useTestId } from "../../hooks/useTestId";
 import type { Entry as GameType } from "../../types/jsonFiles/category";
 import { Ul } from "../Ul";
 import { Game } from "./components/Game";
@@ -26,7 +25,6 @@ interface Props extends ComponentPropsWithoutRef<"ul"> {
   onBack: () => void;
   onGameClick: () => void;
   onExecute: () => void;
-  "data-testid"?: string;
 }
 
 const Container = styled("div", {
@@ -73,11 +71,8 @@ export const GameGrid = ({
   onBack,
   onExecute,
   onGameClick,
-  "data-testid": dataTestid,
   inViewRef,
 }: Props & { inViewRef?: RefObject<ElementRef<"div">> }) => {
-  const { getTestId } = useTestId(dataTestid);
-
   const selectEntry = (game: ElementRef<"input">) => {
     game.checked = true;
     game.focus();
@@ -138,7 +133,7 @@ export const GameGrid = ({
 
   return (
     <Container>
-      <List ref={entryListRef} {...getTestId()}>
+      <List ref={entryListRef}>
         {games.map(({ id, name, metaData }, index) => {
           // TODO: think about if this should be a callback from useGamepadsOnGrid
           const handleClick = () => {
@@ -160,7 +155,6 @@ export const GameGrid = ({
               onDoubleClick={handleDoubleClick}
               ref={entriesRefCallback(index)}
               key={id}
-              {...getTestId("game")}
             />
           );
         })}

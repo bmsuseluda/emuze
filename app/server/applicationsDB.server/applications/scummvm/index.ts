@@ -3,9 +3,9 @@ import { findGameNameById } from "../../nameMappings/findGameNameById";
 import scummVmGames from "./nameMapping/scummvm.json";
 import { spawnSync } from "child_process";
 import { createAbsoluteEntryPath } from "../../../../types/jsonFiles/category";
-import { isApplicationWindows } from "../../../../types/jsonFiles/applications";
 import { checkFlatpakIsInstalled } from "../../checkFlatpakInstalled";
 import { log } from "../../../debug.server";
+import { isWindows } from "../../../operationsystem.server";
 
 const findScummVmGameNameViaMapping: FindEntryNameFunction = ({
   entry: { name },
@@ -68,12 +68,13 @@ const findScummVmGameNameViaDetect: FindEntryNameFunction = ({
   );
 
   if (installedApplication) {
-    const data = isApplicationWindows(installedApplication)
-      ? findScummVmGameNameViaDetectWindows(
-          absoluteEntryPath,
-          installedApplication.path,
-        )
-      : findScummVmGameNameViaDetectLinux(absoluteEntryPath);
+    const data =
+      isWindows() && installedApplication.path
+        ? findScummVmGameNameViaDetectWindows(
+            absoluteEntryPath,
+            installedApplication.path,
+          )
+        : findScummVmGameNameViaDetectLinux(absoluteEntryPath);
 
     if (data) {
       const detectedName = parseScummDetectResult(data);

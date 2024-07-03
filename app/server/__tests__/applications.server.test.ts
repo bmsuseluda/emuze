@@ -3,12 +3,7 @@ import {
   getInstalledApplicationForCategoryOnLinux,
   getInstalledApplicationForCategoryOnWindows,
 } from "../applications.server";
-import {
-  applications as applicationsTestData,
-  applicationsPath,
-  pcsx2,
-  play,
-} from "../__testData__/applications";
+import { applicationsPath, pcsx2 } from "../__testData__/applications";
 import * as categoriesFromDB from "../categoriesDB.server";
 import { readFilenames } from "../readWriteData.server";
 import type { Mock } from "vitest";
@@ -55,45 +50,45 @@ describe("applications.server", () => {
     it("Should return the executable from path", () => {
       // evaluate
       (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
-        "F:/games/Emulation/emulators/Blastem win32-0.6.2/test.config",
-        "F:/games/Emulation/emulators/Blastem win32-0.6.2/no.ini",
-        "F:/games/Emulation/emulators/Blastem win32-0.6.2/view.exe",
-        "F:/games/Emulation/emulators/Blastem win32-0.6.2/NewBlastemV2.exe",
+        "F:/games/Emulation/emulators/Ares win64-139/test.config",
+        "F:/games/Emulation/emulators/Ares win64-139/no.ini",
+        "F:/games/Emulation/emulators/Ares win64-139/view.exe",
+        "F:/games/Emulation/emulators/Ares win64-139/NewAres139.exe",
       ]);
 
       // execute
-      const executable = findExecutable("", "blastem");
+      const executable = findExecutable("", "ares");
 
       // expect
       expect(executable).toBe(
-        "F:/games/Emulation/emulators/Blastem win32-0.6.2/NewBlastemV2.exe",
+        "F:/games/Emulation/emulators/Ares win64-139/NewAres139.exe",
       );
     });
 
     it("Should return the executable from subpath", () => {
       // evaluate
       (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
-        "F:/games/Emulation/emulators/Blastem win32-0.6.2/view.exe",
-        "F:/games/Emulation/emulators/Blastem win32-0.6.2/system/NewBlastemV2.exe",
+        "F:/games/Emulation/emulators/Ares win64-139/view.exe",
+        "F:/games/Emulation/emulators/Ares win64-139/system/NewAres139.exe",
       ]);
 
       // execute
-      const executable = findExecutable("", "blastem");
+      const executable = findExecutable("", "ares");
 
       // expect
       expect(executable).toBe(
-        "F:/games/Emulation/emulators/Blastem win32-0.6.2/system/NewBlastemV2.exe",
+        "F:/games/Emulation/emulators/Ares win64-139/system/NewAres139.exe",
       );
     });
 
     it("Should return null because there is no executable in the main and subfolder", () => {
       // evaluate
       (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
-        "F:/games/Emulation/emulators/Blastem win32-0.6.2/view.exe",
+        "F:/games/Emulation/emulators/Ares win64-139/view.exe",
       ]);
 
       // execute
-      const executable = findExecutable("", "blastem");
+      const executable = findExecutable("", "ares");
 
       // expect
       expect(executable).toBeNull();
@@ -112,103 +107,42 @@ describe("applications.server", () => {
   });
 
   describe("getInstalledApplicationForCategoryOnLinux", () => {
-    const defaultApplication =
-      categoriesFromDB.sonyplaystation2.defaultApplication;
+    const application = categoriesFromDB.sonyplaystation2.application;
 
-    it("Should return old application if old application is installed", () => {
-      const oldApplication = applicationsTestData.play;
+    it("Should return application if installed", () => {
       (checkFlatpakIsInstalled as Mock<any, boolean>).mockReturnValueOnce(true);
 
-      const result = getInstalledApplicationForCategoryOnLinux(
-        categoriesFromDB.sonyplaystation2.applications,
-        oldApplication,
-      );
+      const result = getInstalledApplicationForCategoryOnLinux(application);
 
-      expect(result).toBe(oldApplication);
+      expect(result).toBe(application);
     });
 
-    it("Should return default application if old application is not set and default application is installed", () => {
-      (checkFlatpakIsInstalled as Mock<any, boolean>).mockReturnValueOnce(true);
-
-      const result = getInstalledApplicationForCategoryOnLinux([
-        defaultApplication,
-      ]);
-
-      expect(result).toBe(defaultApplication);
-    });
-
-    it("Should return installed application if old application and default application are not set", () => {
-      (checkFlatpakIsInstalled as Mock<any, boolean>).mockReturnValueOnce(
-        false,
-      );
-      (checkFlatpakIsInstalled as Mock<any, boolean>).mockReturnValueOnce(true);
-
-      const result = getInstalledApplicationForCategoryOnLinux(
-        categoriesFromDB.sonyplaystation2.applications,
-      );
-
-      expect(result).toBe(categoriesFromDB.sonyplaystation2.applications[1]);
-    });
-
-    it("Should return undefined if no compatible application is installed", () => {
-      const result = getInstalledApplicationForCategoryOnLinux([
-        defaultApplication,
-      ]);
+    it("Should return undefined if application is not installed", () => {
+      const result = getInstalledApplicationForCategoryOnLinux(application);
 
       expect(result).toBeUndefined();
     });
   });
 
   describe("getInstalledApplicationForCategoryOnWindows", () => {
-    const defaultApplication =
-      categoriesFromDB.sonyplaystation2.defaultApplication;
+    const application = categoriesFromDB.sonyplaystation2.application;
 
-    it("Should return old application if old application is installed", () => {
-      const oldApplication = applicationsTestData.play;
-      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
-        oldApplication.path,
-      ]);
-
-      const result = getInstalledApplicationForCategoryOnWindows(
-        [defaultApplication],
-        applicationsPath,
-        oldApplication,
-      );
-
-      expect(result).toBe(oldApplication);
-    });
-
-    it("Should return default application if old application is not set and default application is installed", () => {
+    it("Should return application if installed", () => {
       (readFilenames as Mock<any, string[]>).mockReturnValueOnce([pcsx2.path]);
 
       const result = getInstalledApplicationForCategoryOnWindows(
-        [defaultApplication],
+        application,
         applicationsPath,
       );
 
-      expect(result).toStrictEqual({ ...defaultApplication, path: pcsx2.path });
+      expect(result).toStrictEqual({ ...application, path: pcsx2.path });
     });
 
-    it("Should return installed application if old application and default application are not set", () => {
-      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([]);
-      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([play.path]);
-
-      const result = getInstalledApplicationForCategoryOnWindows(
-        categoriesFromDB.sonyplaystation2.applications,
-        applicationsPath,
-      );
-
-      expect(result).toStrictEqual({
-        ...categoriesFromDB.sonyplaystation2.applications[1],
-        path: play.path,
-      });
-    });
-
-    it("Should return undefined if no compatible application is installed", () => {
+    it("Should return undefined if application is not installed", () => {
       (readFilenames as Mock<any, string[]>).mockReturnValueOnce([]);
 
       const result = getInstalledApplicationForCategoryOnWindows(
-        [defaultApplication],
+        application,
         applicationsPath,
       );
 

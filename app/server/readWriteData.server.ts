@@ -9,8 +9,14 @@ import {
 import { log } from "./debug.server";
 import { homeDirectory } from "./homeDirectory.server";
 
-const readFiles = (path: string) =>
-  readdirSync(path, { encoding: "utf8", withFileTypes: true });
+const readFiles = (path: string) => {
+  try {
+    return readdirSync(path, { encoding: "utf8", withFileTypes: true });
+  } catch (error) {
+    log("error", "readFiles", path, error);
+    throw new Error("readFiles error");
+  }
+};
 
 export const readDirectorynames = (path: string) =>
   readdirSync(path, { encoding: "utf8", withFileTypes: true })

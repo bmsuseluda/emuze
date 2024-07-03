@@ -1,11 +1,9 @@
 import nodepath from "path";
 
 import type {
-  Application,
-  ApplicationWindows,
-} from "../types/jsonFiles/applications";
-import { isApplicationWindows } from "../types/jsonFiles/applications";
-import type { Application as ApplicationDB } from "./applicationsDB.server/types";
+  Application as ApplicationDB,
+  InstalledApplicationWindows,
+} from "./applicationsDB.server/types";
 import { applications as applicationsDB } from "./applicationsDB.server";
 import type { Category as CategoryDB } from "./categoriesDB.server/types";
 import { readFilenames } from "./readWriteData.server";
@@ -40,74 +38,40 @@ export const findExecutable = (
 };
 
 export const getInstalledApplicationForCategoryOnLinux = (
-  applicationsDbPrioritized: ApplicationDB[],
-  oldApplication?: Application,
+  applicationFromDB: ApplicationDB,
 ) => {
-  if (
-    oldApplication &&
-    checkFlatpakIsInstalled(applicationsDB[oldApplication.id].flatpakId)
-  ) {
-    return oldApplication;
+  if (checkFlatpakIsInstalled(applicationFromDB.flatpakId)) {
+    return applicationFromDB;
   }
 
-  return applicationsDbPrioritized.find((application) =>
-    checkFlatpakIsInstalled(application.flatpakId),
-  );
+  return undefined;
 };
 
 export const getInstalledApplicationForCategoryOnWindows = (
-  applicationsDbPrioritized: ApplicationDB[],
+  applicationFromDB: ApplicationDB,
   applicationsPath: string,
-  oldApplication?: Application,
-): ApplicationWindows | undefined => {
-  if (
-    oldApplication &&
-    isApplicationWindows(oldApplication) &&
-    findExecutable(applicationsPath, oldApplication.id)
-  ) {
-    return oldApplication;
+): InstalledApplicationWindows | undefined => {
+  const path = findExecutable(applicationsPath, applicationFromDB.id);
+  if (path) {
+    return { ...applicationFromDB, path };
   }
 
-  let executableApplication = undefined;
-
-  applicationsDbPrioritized.find((application) => {
-    const path = findExecutable(applicationsPath, application.id);
-    if (path) {
-      executableApplication = { ...application, path };
-    }
-    return !!path;
-  });
-
-  return executableApplication;
+  return undefined;
 };
 
 export const getInstalledApplicationForCategory = ({
   applicationsPath,
   categoryDB,
-  oldApplication,
 }: {
   applicationsPath?: string;
   categoryDB: CategoryDB;
-  oldApplication?: Application;
 }) => {
-  const applicationsFromDbPrioritized = [
-    categoryDB.defaultApplication,
-    ...categoryDB.applications.filter(
-      ({ id }) =>
-        id !== categoryDB.defaultApplication.id && id !== oldApplication?.id,
-    ),
-  ];
-
   if (isWindows() && applicationsPath) {
     return getInstalledApplicationForCategoryOnWindows(
-      applicationsFromDbPrioritized,
+      categoryDB.application,
       applicationsPath,
-      oldApplication,
     );
   }
 
-  return getInstalledApplicationForCategoryOnLinux(
-    applicationsFromDbPrioritized,
-    oldApplication,
-  );
+  return getInstalledApplicationForCategoryOnLinux(categoryDB.application);
 };
