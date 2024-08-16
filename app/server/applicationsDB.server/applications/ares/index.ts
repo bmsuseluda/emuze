@@ -373,7 +373,7 @@ export const aresSuperNintendo: Application = {
 export const aresMegaDrive: Application = {
   ...ares,
   id: "aresMegaDrive",
-  fileExtensions: [".sfc", ".smc", ".68K", ".bin"],
+  fileExtensions: [".sfc", ".smc", ".68K", ".bin", ".md"],
   createOptionParams: (...props) => [
     ...getSharedAresOptionParams(...props),
     ...["--system", "Mega Drive"],
