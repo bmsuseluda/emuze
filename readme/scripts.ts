@@ -19,10 +19,15 @@ const nameOverwrites: Partial<Record<SystemId, string>> = {
 
 export const createSystemsTable = () =>
   Object.values(categories)
-    .map(
-      (category) =>
-        `| ${nameOverwrites[category.id] || category.names[0]} | ${category.defaultApplication.name} | ${preConfigured.includes(category.defaultApplication.id) ? "Yes" : "No"} |`,
-    )
+    .map((category) => {
+      const systemName = nameOverwrites[category.id] || category.names[0];
+      const emulatorName = category.application.name;
+      const isPreConfigured = preConfigured.includes(category.application.id)
+        ? "Yes"
+        : "No";
+
+      return `| ${systemName} | ${emulatorName} | ${isPreConfigured} |`;
+    })
     .join("\n");
 
 const windowsDownloadFileName = `emuze-Setup-${process.env.npm_package_version}.exe`;

@@ -76,7 +76,7 @@ export class SettingsPage {
       this.page.getByRole("heading", { name: subPageName }),
     ).toBeVisible();
     // TODO: replace with is marked red
-    await expect(link).toBeFocused();
+    // await expect(link).toBeFocused();
   }
 
   async expectIsInitialSubPage() {

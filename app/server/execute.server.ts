@@ -1,16 +1,15 @@
 import { execFileSync } from "child_process";
 import { readCategory } from "./categories.server";
-import { applications } from "./applicationsDB.server";
 import { readAppearance, readGeneral } from "./settings.server";
 import { createAbsoluteEntryPath } from "../types/jsonFiles/category";
 import { isGeneralConfigured } from "../types/jsonFiles/settings/general";
-import { isApplicationWindows } from "../types/jsonFiles/applications";
 import { isWindows } from "./operationsystem.server";
 import { existsSync } from "fs";
 import { setErrorDialog } from "./errorDialog.server";
 import type { SystemId } from "./categoriesDB.server/systemId";
 import { categories } from "./categoriesDB.server";
 import { log } from "./debug.server";
+import { getInstalledApplicationForCategoryOnWindows } from "./applications.server";
 
 // TODO: separate os specific code
 const executeApplicationOnLinux = ({
@@ -66,14 +65,14 @@ const executeApplicationOnWindows = ({
 export const executeApplication = (category: SystemId, entry: string) => {
   const generalData = readGeneral();
   const categoryData = readCategory(category);
-  if (categoryData?.application && isGeneralConfigured(generalData)) {
+  if (isGeneralConfigured(generalData) && categoryData) {
     const settings = {
       general: generalData,
       appearance: readAppearance(),
     };
-    const { application, entries } = categoryData;
-    const applicationData = applications[application.id];
-    const entryData = entries?.find((value) => value.id === entry);
+    const categoryDB = categories[categoryData.id];
+    const applicationData = categoryDB.application;
+    const entryData = categoryData.entries?.find((value) => value.id === entry);
 
     if (applicationData && entryData) {
       const absoluteEntryPath = createAbsoluteEntryPath(
@@ -84,20 +83,31 @@ export const executeApplication = (category: SystemId, entry: string) => {
 
       if (existsSync(absoluteEntryPath)) {
         const {
-          environmentVariables,
+          setEnvironmentVariables,
           createOptionParams,
           flatpakId,
           flatpakOptionParams,
         } = applicationData;
 
-        if (environmentVariables) {
-          Object.entries(environmentVariables(categoryData, settings)).forEach(
-            ([key, value]) => {
-              if (value) {
-                process.env[key] = value;
-              }
-            },
-          );
+        if (setEnvironmentVariables) {
+          const applicationPath =
+            isWindows() && generalData.applicationsPath
+              ? getInstalledApplicationForCategoryOnWindows(
+                  applicationData,
+                  generalData.applicationsPath,
+                )?.path
+              : undefined;
+          Object.entries(
+            setEnvironmentVariables({
+              categoryData,
+              settings,
+              applicationPath,
+            }),
+          ).forEach(([key, value]) => {
+            if (value) {
+              process.env[key] = value;
+            }
+          });
         }
         const optionParams = createOptionParams
           ? createOptionParams({
@@ -110,14 +120,20 @@ export const executeApplication = (category: SystemId, entry: string) => {
           : [];
 
         try {
-          if (isWindows() && isApplicationWindows(application)) {
-            executeApplicationOnWindows({
-              applicationPath: application.path,
-              absoluteEntryPath,
-              optionParams,
-              omitAbsoluteEntryPathAsLastParam:
-                applicationData.omitAbsoluteEntryPathAsLastParam,
-            });
+          if (isWindows() && generalData.applicationsPath) {
+            const applicationPath = getInstalledApplicationForCategoryOnWindows(
+              applicationData,
+              generalData.applicationsPath,
+            )?.path;
+            if (applicationPath) {
+              executeApplicationOnWindows({
+                applicationPath,
+                absoluteEntryPath,
+                optionParams,
+                omitAbsoluteEntryPathAsLastParam:
+                  applicationData.omitAbsoluteEntryPathAsLastParam,
+              });
+            }
           } else {
             executeApplicationOnLinux({
               applicationFlatpakOptionParams: flatpakOptionParams,

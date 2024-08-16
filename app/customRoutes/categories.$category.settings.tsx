@@ -20,26 +20,24 @@ import {
 } from "../hooks/useGamepadEvent";
 import { layout } from "../hooks/useGamepads/layouts";
 import { Dialog } from "../components/Dialog";
-import { readCategories } from "../server/categories.server";
 
 export const loader = () => {
   const { collapseSidebar } = readAppearance();
-  const systems = readCategories();
 
-  return json({ categories, collapseSidebar, systems });
+  return json({ categories, collapseSidebar });
 };
 
 export default function Index() {
-  const { categories, collapseSidebar, systems } =
-    useLoaderData<typeof loader>();
+  const { categories, collapseSidebar } = useLoaderData<typeof loader>();
 
-  const closable = useMemo(() => systems.length > 0, [systems]);
+  const { pathname } = useLocation();
+
+  const closable = useMemo(() => !pathname.startsWith("/settings"), [pathname]);
 
   const { isInFocus, switchFocus, switchFocusBackMultiple, enableFocus } =
     useFocus<FocusElement>("settingsSidebar");
 
   const { categoryLinksRefCallback } = useGamepadsOnSidebar(isInFocus);
-  const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const handleClose = useCallback(() => {

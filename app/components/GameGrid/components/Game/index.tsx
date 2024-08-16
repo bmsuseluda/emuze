@@ -1,4 +1,3 @@
-import { useTestId } from "../../../../hooks/useTestId";
 import type { ElementRef, SyntheticEvent } from "react";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import { styled } from "../../../../../styled-system/jsx";
@@ -10,7 +9,6 @@ interface Props {
   imageUrl?: string;
   onClick: () => void;
   onDoubleClick: () => void;
-  "data-testid"?: string;
 }
 
 const Wrapper = styled("li", {
@@ -123,19 +121,10 @@ const getImageSrc = ({ imageUrl }: { imageUrl?: string }) => {
 
 export const Game = forwardRef<ElementRef<typeof Input>, Props>(
   (
-    {
-      id,
-      name,
-      alwaysGameName = false,
-      imageUrl,
-      onClick,
-      onDoubleClick,
-      "data-testid": dataTestId,
-    },
+    { id, name, alwaysGameName = false, imageUrl, onClick, onDoubleClick },
     ref,
   ) => {
     const [error, setError] = useState(false);
-    const { getTestId } = useTestId(dataTestId);
 
     // TODO: remove ref and useEffect if bug is resolved https://github.com/facebook/react/issues/15446
     const imageRef = useRef<ElementRef<"img">>(null);
@@ -166,15 +155,9 @@ export const Game = forwardRef<ElementRef<typeof Input>, Props>(
     };
 
     return (
-      <Wrapper {...getTestId()}>
+      <Wrapper>
         <Label onClick={onClick} onDoubleClick={onDoubleClick}>
-          <Input
-            type="radio"
-            name="game"
-            value={id}
-            ref={ref}
-            {...getTestId("link")}
-          />
+          <Input type="radio" name="game" value={id} ref={ref} />
           <ImageWrapper>
             <Image
               src={getImageSrc({ imageUrl })}

@@ -10,7 +10,6 @@ import { executeApplication } from "../execute.server";
 import {
   createAbsoluteEntryPath,
   neogeo,
-  neogeoLinux,
   pcenginecd,
   pcenginecdLinux,
 } from "../__testData__/category";
@@ -19,6 +18,8 @@ import type { Appearance } from "../../types/jsonFiles/settings/appearance";
 import type { Mock } from "vitest";
 import { general } from "../__testData__/general";
 import { existsSync } from "fs";
+import { mameNeoGeo, mednafen } from "../__testData__/applications";
+import { readFilenames } from "../readWriteData.server";
 
 vi.mock("@kmamal/sdl");
 
@@ -39,6 +40,10 @@ vi.mock("fs", async () => {
     existsSync: vi.fn(),
   };
 });
+
+vi.mock("../readWriteData.server", () => ({
+  readFilenames: vi.fn(),
+}));
 
 vi.mock("../categories.server", () => ({
   readCategory: vi.fn(),
@@ -76,11 +81,12 @@ describe("execute.server", () => {
 
       it("Should execute the entry with the defined application of the category", () => {
         (readCategory as Mock<any, Category>).mockReturnValueOnce(pcenginecd);
+        (readFilenames as Mock<any, string[]>).mockReturnValue([mednafen.path]);
         const entry = getFirstEntry(pcenginecd);
 
         executeApplication(pcenginecd.id, entry.id);
 
-        expect(execFileMock).toHaveBeenCalledWith(pcenginecd.application.path, [
+        expect(execFileMock).toHaveBeenCalledWith(mednafen.path, [
           createAbsoluteEntryPath(pcenginecd.name, entry.path),
         ]);
       });
@@ -96,11 +102,14 @@ describe("execute.server", () => {
       it("Should add optional params", () => {
         (readCategory as Mock<any, Category>).mockReturnValueOnce(neogeo);
         const entryDirname = "F:/games/Emulation/roms/Neo Geo";
+        (readFilenames as Mock<any, string[]>).mockReturnValue([
+          mameNeoGeo.path,
+        ]);
         const entry = getFirstEntry(neogeo);
 
         executeApplication(neogeo.id, entry.id);
 
-        expect(execFileMock).toHaveBeenCalledWith(neogeo.application.path, [
+        expect(execFileMock).toHaveBeenCalledWith(mameNeoGeo.path, [
           "-w",
           "-rompath",
           entryDirname,
@@ -114,21 +123,21 @@ describe("execute.server", () => {
 
       it("Should add environment varables", () => {
         (readCategory as Mock<any, Category>).mockReturnValueOnce(pcenginecd);
+        (readFilenames as Mock<any, string[]>).mockReturnValue([mednafen.path]);
         const entry = getFirstEntry(pcenginecd);
 
         executeApplication(pcenginecd.id, entry.id);
 
-        expect(execFileMock).toHaveBeenCalledWith(pcenginecd.application.path, [
+        expect(execFileMock).toHaveBeenCalledWith(mednafen.path, [
           createAbsoluteEntryPath(pcenginecd.name, entry.path),
         ]);
-        expect(process.env.MEDNAFEN_HOME).toBe(
-          nodepath.dirname(pcenginecd.application.path),
-        );
+        expect(process.env.MEDNAFEN_HOME).toBe(nodepath.dirname(mednafen.path));
       });
     });
 
     describe("executeApplicationOnLinux", () => {
       beforeEach(() => {
+        vi.stubEnv("EMUZE_IS_WINDOWS", "false");
         (readGeneral as Mock<any, General>).mockReturnValue({
           ...general,
         });
@@ -166,7 +175,7 @@ describe("execute.server", () => {
       });
 
       it("Should add optional params", () => {
-        (readCategory as Mock<any, Category>).mockReturnValueOnce(neogeoLinux);
+        (readCategory as Mock<any, Category>).mockReturnValueOnce(neogeo);
         const entryDirname = "F:/games/Emulation/roms/Neo Geo";
         const entry = getFirstEntry(neogeo);
 

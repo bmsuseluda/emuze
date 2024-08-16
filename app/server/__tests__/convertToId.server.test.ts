@@ -2,6 +2,6 @@ import { convertToId } from "../convertToId.server";
 
 describe("convertToId.server.ts", () => {
   it("Should trim white spaces and convert to lower case", () => {
-    expect(convertToId("Blastem win32-0.6.2", 1)).toBe("blastemwin32-0.6.21");
+    expect(convertToId("Ares win64-139", 1)).toBe("areswin64-1391");
   });
 });

@@ -202,9 +202,8 @@ export const pcsx2: Application = {
     settings: {
       appearance: { fullscreen },
     },
-    categoryData: { application },
+    applicationPath,
   }) => {
-    const applicationPath = application?.path;
     replaceConfigSections(applicationPath);
 
     const optionParams = [];

@@ -1,7 +1,6 @@
 {
   "id": "nintendo3ds",
   "name": "Nintendo 3DS",
-  "application": { "id": "citra" },
   "entries": [
     {
       "id": "kidicarus-uprising0",
