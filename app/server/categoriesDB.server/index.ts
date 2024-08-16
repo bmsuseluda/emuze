@@ -7,6 +7,7 @@ import {
   melonds,
   mgba,
   ppsspp,
+  rosaliesMupenGui,
   ryujinx,
 } from "../applicationsDB.server";
 import { rpcs3 } from "../applicationsDB.server/applications/rpcs3";
@@ -208,7 +209,7 @@ export const nintendo64: Category = {
   id: "nintendo64",
   names: ["Nintendo 64", "N64"],
   igdbPlatformIds: [4],
-  application: ares,
+  application: rosaliesMupenGui,
   hasAnalogStick: true,
 };
 

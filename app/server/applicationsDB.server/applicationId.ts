@@ -17,6 +17,7 @@ export type ApplicationId =
   | "aresMegaDrive"
   | "aresSegaCd"
   | "aresSega32x"
+  | "rosaliesMupenGui"
   | "mgba"
   | "flycast"
   | "dosboxstaging"
