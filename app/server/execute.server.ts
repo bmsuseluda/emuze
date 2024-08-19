@@ -1,6 +1,7 @@
 import { execFileSync } from "child_process";
 import { readCategory } from "./categories.server";
 import { readAppearance, readGeneral } from "./settings.server";
+import type { Entry } from "../types/jsonFiles/category";
 import { createAbsoluteEntryPath } from "../types/jsonFiles/category";
 import { isGeneralConfigured } from "../types/jsonFiles/settings/general";
 import { isWindows } from "./operationsystem.server";
@@ -10,6 +11,7 @@ import type { SystemId } from "./categoriesDB.server/systemId";
 import { categories } from "./categoriesDB.server";
 import { log } from "./debug.server";
 import { getInstalledApplicationForCategoryOnWindows } from "./applications.server";
+import { addToLastPlayed } from "./lastPlayed.server";
 
 // TODO: separate os specific code
 const executeApplicationOnLinux = ({
@@ -62,7 +64,7 @@ const executeApplicationOnWindows = ({
   execFileSync(applicationPath, params);
 };
 
-export const executeApplication = (category: SystemId, entry: string) => {
+export const executeApplication = (category: SystemId, entryData: Entry) => {
   const generalData = readGeneral();
   const categoryData = readCategory(category);
   if (isGeneralConfigured(generalData) && categoryData) {
@@ -72,7 +74,6 @@ export const executeApplication = (category: SystemId, entry: string) => {
     };
     const categoryDB = categories[categoryData.id];
     const applicationData = categoryDB.application;
-    const entryData = categoryData.entries?.find((value) => value.id === entry);
 
     if (applicationData && entryData) {
       const absoluteEntryPath = createAbsoluteEntryPath(
@@ -145,6 +146,7 @@ export const executeApplication = (category: SystemId, entry: string) => {
               categoriesPath: generalData.categoriesPath,
             });
           }
+          addToLastPlayed(entryData, category);
         } catch (error) {
           log("error", "executeApplication", error);
           if (error instanceof Error) {

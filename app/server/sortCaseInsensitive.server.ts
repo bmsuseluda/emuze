@@ -16,3 +16,5 @@ export const sortCaseInsensitive = (a: string, b: string) => {
   }
   return 0;
 };
+
+export const sortDateTime = (a: number, b: number) => b - a;

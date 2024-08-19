@@ -25,8 +25,7 @@ import {
 import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
 import { readAppearance, readGeneral } from "../server/settings.server";
-import { useFullscreen } from "../hooks/useFullscreen";
-import { SettingsLink } from "../components/SettingsLink";
+import { SettingsLink } from "../containers/SettingsLink";
 import { BiError } from "react-icons/bi";
 import { Typography } from "../components/Typography";
 import type { DataFunctionArgs } from "../context";
@@ -100,7 +99,11 @@ export const action: ActionFunction = async ({ request, params }) => {
     if (_actionId === actionIds.launch) {
       const game = form.get("game");
       if (typeof game === "string") {
-        executeApplication(category as SystemId, game);
+        const entryData = categoryData.entries?.find(
+          (value) => value.id === game,
+        );
+
+        entryData && executeApplication(category as SystemId, entryData);
         return { ok: true };
       }
     }
@@ -143,10 +146,8 @@ export default function Category() {
   const { categoryData, alwaysGameNames, isApplicationInstalled } =
     useLoaderData<typeof loader>();
 
-  const isFullscreen = useFullscreen();
   const launchButtonRef = useRef<ElementRef<"button">>(null);
   const importButtonRef = useRef<ElementRef<"button">>(null);
-  const settingsButtonRef = useRef<ElementRef<"a">>(null);
   const listRef = useRef<ElementRef<"div">>(null);
 
   const { isInFocus, switchFocus, switchFocusBack } =
@@ -179,17 +180,8 @@ export default function Category() {
     }
   }, [isInFocus]);
 
-  const onSettings = useCallback(() => {
-    if (isInFocus) {
-      settingsButtonRef.current?.click();
-    }
-  }, [isInFocus]);
-
   useGamepadButtonPressEvent(layout.buttons.X, onImport);
-  useGamepadButtonPressEvent(layout.buttons.Start, onSettings);
-
   useKeyboardEvent("i", onImport);
-  useKeyboardEvent("Escape", onSettings);
 
   const onEntryClick = useCallback(() => {
     if (listRef?.current) {
@@ -300,13 +292,7 @@ export default function Category() {
           />
         </Form>
       </ListActionBarLayout>
-      <SettingsLink
-        isFullscreen={isFullscreen}
-        onClick={() => {
-          switchFocus("settingsSidebar");
-        }}
-        ref={settingsButtonRef}
-      />
+      <SettingsLink isInFocus={isInFocus} switchFocus={switchFocus} />
       <Outlet />
     </>
   );

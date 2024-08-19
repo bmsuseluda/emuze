@@ -1,5 +1,5 @@
-import { json, redirect } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
+import { json } from "@remix-run/node";
+import { Outlet, redirect, useLoaderData } from "@remix-run/react";
 import { readCategories } from "../server/categories.server";
 import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout";
 import { Link } from "../containers/Link";
@@ -20,6 +20,7 @@ import { Typography } from "../components/Typography";
 import { styled } from "../../styled-system/jsx";
 import type { DataFunctionArgs } from "../context";
 import type { SystemId } from "../server/categoriesDB.server/systemId";
+import { readLastPlayed } from "../server/lastPlayed.server";
 
 type CategoryLinks = Array<{ id: SystemId; name: string; to: string }>;
 type LoaderData = {
@@ -27,13 +28,25 @@ type LoaderData = {
   collapseSidebar?: boolean;
 };
 
-export const loader = ({ params }: DataFunctionArgs) => {
+export const loader = ({ params, request }: DataFunctionArgs) => {
   const { category } = params;
   const { collapseSidebar } = readAppearance();
   const categories = readCategories();
 
   if (categories && categories.length > 0) {
-    if (!category) {
+    const lastPlayed = readLastPlayed();
+    if (
+      lastPlayed &&
+      lastPlayed.length > 0 &&
+      categories[0].id !== "lastPlayed"
+    ) {
+      categories.unshift({ id: "lastPlayed", name: "Last Played" });
+    }
+    if (!request.url.includes("lastPlayed") && !category) {
+      if (lastPlayed && lastPlayed.length > 0) {
+        throw redirect("lastPlayed");
+      }
+
       throw redirect(categories[0].id);
     }
 
