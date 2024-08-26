@@ -9,7 +9,6 @@ import { executeApplication } from "../server/execute.server";
 import { GameGridDynamic } from "../components/GameGrid";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
 import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
-import { AiFillClockCircle } from "react-icons/ai";
 import { layout } from "../hooks/useGamepads/layouts";
 import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
@@ -21,6 +20,7 @@ import { useGamepadConnected } from "../hooks/useGamepadConnected";
 import { GamepadButtonIcon } from "../components/GamepadButtonIcon";
 import { log } from "../server/debug.server";
 import { readLastPlayed } from "../server/lastPlayed.server";
+import { SystemIcon } from "../components/SystemIcon";
 
 export const loader = () => {
   const lastPlayed = readLastPlayed();
@@ -121,7 +121,7 @@ export default function LastPlayed() {
       <ListActionBarLayout
         headline={
           <IconChildrenWrapper>
-            <AiFillClockCircle />
+            <SystemIcon id="lastPlayed" />
             <Typography ellipsis>Last Played</Typography>
           </IconChildrenWrapper>
         }

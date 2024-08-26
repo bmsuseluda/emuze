@@ -52,6 +52,9 @@ vi.mock("../settings.server", () => ({
   readGeneral: vi.fn(),
   readAppearance: vi.fn(),
 }));
+vi.mock("../lastPlayed.server", () => ({
+  addToLastPlayedCached: vi.fn(),
+}));
 
 const getFirstEntry = (
   category: Category & Required<Pick<Category, "entries">>,
@@ -84,19 +87,11 @@ describe("execute.server", () => {
         (readFilenames as Mock<any, string[]>).mockReturnValue([mednafen.path]);
         const entry = getFirstEntry(pcenginecd);
 
-        executeApplication(pcenginecd.id, entry.id);
+        executeApplication(pcenginecd.id, entry);
 
         expect(execFileMock).toHaveBeenCalledWith(mednafen.path, [
           createAbsoluteEntryPath(pcenginecd.name, entry.path),
         ]);
-      });
-
-      it("Should not execute the entry if the entry id is not known", () => {
-        (readCategory as Mock<any, Category>).mockReturnValueOnce(pcenginecd);
-
-        executeApplication(pcenginecd.id, "unknownEntryId");
-
-        expect(execFileMock).toHaveBeenCalledTimes(0);
       });
 
       it("Should add optional params", () => {
@@ -107,7 +102,7 @@ describe("execute.server", () => {
         ]);
         const entry = getFirstEntry(neogeo);
 
-        executeApplication(neogeo.id, entry.id);
+        executeApplication(neogeo.id, entry);
 
         expect(execFileMock).toHaveBeenCalledWith(mameNeoGeo.path, [
           "-w",
@@ -126,7 +121,7 @@ describe("execute.server", () => {
         (readFilenames as Mock<any, string[]>).mockReturnValue([mednafen.path]);
         const entry = getFirstEntry(pcenginecd);
 
-        executeApplication(pcenginecd.id, entry.id);
+        executeApplication(pcenginecd.id, entry);
 
         expect(execFileMock).toHaveBeenCalledWith(mednafen.path, [
           createAbsoluteEntryPath(pcenginecd.name, entry.path),
@@ -153,7 +148,7 @@ describe("execute.server", () => {
         );
         const entry = getFirstEntry(pcenginecdLinux);
 
-        executeApplication(pcenginecdLinux.id, entry.id);
+        executeApplication(pcenginecdLinux.id, entry);
 
         expect(execFileMock).toHaveBeenCalledWith("flatpak", [
           "run",
@@ -164,22 +159,12 @@ describe("execute.server", () => {
         ]);
       });
 
-      it("Should not execute the entry if the entry id is not known", () => {
-        (readCategory as Mock<any, Category>).mockReturnValueOnce(
-          pcenginecdLinux,
-        );
-
-        executeApplication(pcenginecdLinux.id, "unknownEntryId");
-
-        expect(execFileMock).toHaveBeenCalledTimes(0);
-      });
-
       it("Should add optional params", () => {
         (readCategory as Mock<any, Category>).mockReturnValueOnce(neogeo);
         const entryDirname = "F:/games/Emulation/roms/Neo Geo";
         const entry = getFirstEntry(neogeo);
 
-        executeApplication(neogeo.id, entry.id);
+        executeApplication(neogeo.id, entry);
 
         expect(execFileMock).toHaveBeenCalledWith("flatpak", [
           "run",

@@ -11,7 +11,7 @@ import type { SystemId } from "./categoriesDB.server/systemId";
 import { categories } from "./categoriesDB.server";
 import { log } from "./debug.server";
 import { getInstalledApplicationForCategoryOnWindows } from "./applications.server";
-import { addToLastPlayed } from "./lastPlayed.server";
+import { addToLastPlayedCached } from "./lastPlayed.server";
 
 // TODO: separate os specific code
 const executeApplicationOnLinux = ({
@@ -67,6 +67,7 @@ const executeApplicationOnWindows = ({
 export const executeApplication = (category: SystemId, entryData: Entry) => {
   const generalData = readGeneral();
   const categoryData = readCategory(category);
+
   if (isGeneralConfigured(generalData) && categoryData) {
     const settings = {
       general: generalData,
@@ -75,7 +76,7 @@ export const executeApplication = (category: SystemId, entryData: Entry) => {
     const categoryDB = categories[categoryData.id];
     const applicationData = categoryDB.application;
 
-    if (applicationData && entryData) {
+    if (applicationData) {
       const absoluteEntryPath = createAbsoluteEntryPath(
         generalData.categoriesPath,
         categoryData.name,
@@ -146,7 +147,7 @@ export const executeApplication = (category: SystemId, entryData: Entry) => {
               categoriesPath: generalData.categoriesPath,
             });
           }
-          addToLastPlayed(entryData, category);
+          addToLastPlayedCached(entryData, category);
         } catch (error) {
           log("error", "executeApplication", error);
           if (error instanceof Error) {

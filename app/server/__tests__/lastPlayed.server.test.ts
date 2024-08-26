@@ -1,24 +1,12 @@
-import { readFileHome } from "../readWriteData.server";
-import type { Mock } from "vitest";
 import type { EntryWithSystem } from "../../types/jsonFiles/lastPlayed";
-import { addToLastPlayed, paths } from "../lastPlayed.server";
+import { addToLastPlayed } from "../lastPlayed.server";
 import { finalfantasy7, hugo, monkeyIsland } from "../__testData__/category";
 import { scumm, sonyplaystation } from "../categoriesDB.server";
 
 vi.mock("@kmamal/sdl");
 
-const writeFileMock = vi.fn();
-vi.mock("../readWriteData.server", () => ({
-  readFileHome: vi.fn(),
-  readDirectorynames: vi.fn(),
-  readFilenames: vi.fn(),
-  writeFileHome: (object: unknown, path: string) => writeFileMock(object, path),
-}));
-
-// TODO: check how to mock the FileDataCache
 describe("lastPlayed.server", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
     vi.useFakeTimers();
   });
 
@@ -43,11 +31,11 @@ describe("lastPlayed.server", () => {
       const now = new Date();
       vi.setSystemTime(now);
 
-      (readFileHome as Mock<any, EntryWithSystem[]>).mockReturnValueOnce(
+      const result = addToLastPlayed(
         oldLastPlayed,
+        finalfantasy7,
+        sonyplaystation.id,
       );
-
-      addToLastPlayed(finalfantasy7, sonyplaystation.id);
 
       const expected: EntryWithSystem[] = [
         {
@@ -57,7 +45,7 @@ describe("lastPlayed.server", () => {
         },
       ];
 
-      expect(writeFileMock).toHaveBeenCalledWith(expected, paths.lastPlayed);
+      expect(result).toStrictEqual(expected);
     });
 
     it("Should add a game that is not in the list", () => {
@@ -68,11 +56,11 @@ describe("lastPlayed.server", () => {
       const now = new Date();
       vi.setSystemTime(now);
 
-      (readFileHome as Mock<any, EntryWithSystem[]>).mockReturnValueOnce(
+      const result = addToLastPlayed(
         oldLastPlayed,
+        finalfantasy7,
+        sonyplaystation.id,
       );
-
-      addToLastPlayed(finalfantasy7, sonyplaystation.id);
 
       const expected: EntryWithSystem[] = [
         {
@@ -83,7 +71,7 @@ describe("lastPlayed.server", () => {
         ...oldLastPlayed,
       ];
 
-      expect(writeFileMock).toHaveBeenCalledWith(expected, paths.lastPlayed);
+      expect(result).toStrictEqual(expected);
     });
 
     it("Should update a game that is in the list and set at first position", () => {
@@ -99,11 +87,11 @@ describe("lastPlayed.server", () => {
       const now = new Date();
       vi.setSystemTime(now);
 
-      (readFileHome as Mock<any, EntryWithSystem[]>).mockReturnValueOnce(
+      const result = addToLastPlayed(
         oldLastPlayed,
+        finalfantasy7,
+        sonyplaystation.id,
       );
-
-      addToLastPlayed(finalfantasy7, sonyplaystation.id);
 
       const expected: EntryWithSystem[] = [
         {
@@ -115,7 +103,7 @@ describe("lastPlayed.server", () => {
         monkeyIsland2024528,
       ];
 
-      expect(writeFileMock).toHaveBeenCalledWith(expected, paths.lastPlayed);
+      expect(result).toStrictEqual(expected);
     });
   });
 });

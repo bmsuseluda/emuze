@@ -27,26 +27,39 @@ export const writeLastPlayed = (entries: EntryWithSystem[]) => {
 const sortLastPlayed = (a: EntryWithSystem, b: EntryWithSystem) =>
   sortDateTime(a.lastPlayed, b.lastPlayed);
 
-export const addToLastPlayed = (entry: Entry, systemId: SystemId) => {
-  const lastPlayed = [...readLastPlayed()];
-  const index = lastPlayed.findIndex(
+export const addToLastPlayedCached = (entry: Entry, systemId: SystemId) => {
+  const lastPlayed = readLastPlayed();
+
+  const updatedList = addToLastPlayed(lastPlayed, entry, systemId);
+
+  writeLastPlayed(updatedList);
+};
+
+export const addToLastPlayed = (
+  lastPlayed: EntryWithSystem[],
+  entryToAdd: Entry,
+  systemId: SystemId,
+) => {
+  const lastPlayedUpdated = [...lastPlayed];
+  const index = lastPlayedUpdated.findIndex(
     (lastPlayedGame) =>
-      lastPlayedGame.id === entry.id && lastPlayedGame.systemId === systemId,
+      lastPlayedGame.id === entryToAdd.id &&
+      lastPlayedGame.systemId === systemId,
   );
 
   const newEntry: EntryWithSystem = {
-    ...entry,
+    ...entryToAdd,
     systemId,
     lastPlayed: new Date().getTime(),
   };
 
   if (index >= 0) {
-    lastPlayed[index] = newEntry;
+    lastPlayedUpdated[index] = newEntry;
   } else {
-    lastPlayed.push(newEntry);
+    lastPlayedUpdated.push(newEntry);
   }
 
-  lastPlayed.sort(sortLastPlayed);
+  lastPlayedUpdated.sort(sortLastPlayed);
 
-  writeLastPlayed(lastPlayed.slice(0, 50));
+  return lastPlayedUpdated.slice(0, 50);
 };
