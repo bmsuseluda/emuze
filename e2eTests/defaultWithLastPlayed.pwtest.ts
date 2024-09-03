@@ -12,7 +12,10 @@ import { SettingsPage } from "./pages/settingsPage";
 
 test.describe.configure({ mode: "serial" });
 
-const configFolderPath = nodepath.join(__dirname, "defaultConfig");
+const configFolderPath = nodepath.join(
+  __dirname,
+  "defaultWithLastPlayedConfig",
+);
 
 let app: ElectronApplication;
 let page: Page;
@@ -22,6 +25,10 @@ let settingsPage: SettingsPage;
 test.beforeAll(async () => {
   fs.rmSync(configFolderPath, { recursive: true, force: true });
   fs.copySync(nodepath.join(__dirname, "config"), configFolderPath);
+  fs.copySync(
+    nodepath.join(__dirname, "lastPlayed.json"),
+    nodepath.join(configFolderPath, ".emuze", "data", "lastPlayed.json"),
+  );
   process.env.EMUZE_TEST_ROMS_PATH = nodepath.join(__dirname, "testRoms");
   const response = await startApp(configFolderPath);
   app = response.app;
@@ -37,22 +44,13 @@ test.afterAll(async () => {
   }
 });
 
-test("Should show initial system", async () => {
+test("Should show last played", async () => {
   await expect(page.getByRole("heading", { name: "emuze" })).toBeVisible();
   const title = await page.title();
   expect(title).toBe("emuze");
-  await libraryPage.expectIsInitialSystem();
+  await libraryPage.expectIsLastPlayed();
 
   await expect(page).toHaveScreenshot();
-
-  await page.keyboard.press("ArrowRight");
-  await libraryPage.expectGameFocused("Battletoads");
-  await page.keyboard.press("ArrowRight");
-  await libraryPage.expectGameFocused("Beast Busters");
-
-  await expect(page).toHaveScreenshot();
-
-  await page.keyboard.press("Backspace");
 });
 
 test("Should switch to another system via click", async () => {
@@ -61,31 +59,19 @@ test("Should switch to another system via click", async () => {
     "Sonic the Hedgehog",
   );
 
-  await libraryPage.gotToInitialSystem();
+  await libraryPage.goToLastPlayed();
 });
 
 test("Should switch to another system via key down", async () => {
-  await libraryPage.expectIsInitialSystem();
-
+  await libraryPage.expectIsLastPlayed();
   await page.keyboard.press("ArrowDown");
 
-  await libraryPage.expectIsSystem("Game Boy", "Super Mario Land");
+  await libraryPage.expectIsInitialSystem();
 
-  await libraryPage.gotToInitialSystem();
+  await libraryPage.goToLastPlayed();
 });
 
-test("Should open settings via mouse", async () => {
-  await settingsPage.openSettingsViaClick();
-  await expect(settingsPage.generalPage.installEmulatorsButton).toBeVisible();
-
-  await expect(page).toHaveScreenshot();
-
-  await settingsPage.goToSubPageViaClick(settingsPage.appearancePage.name);
-
-  await settingsPage.closeSettingsViaClick();
-});
-
-test("Should open settings via keyboard and activate appearance options", async () => {
+test("Should open settings via keyboard", async () => {
   await settingsPage.openSettingsViaKeyboard();
 
   await page.keyboard.press("ArrowDown");
@@ -94,39 +80,19 @@ test("Should open settings via keyboard and activate appearance options", async 
 
   await page.keyboard.press("ArrowRight");
   await expect(settingsPage.appearancePage.fullscreen).toBeFocused();
-  await page.keyboard.press("Enter");
 
-  await page.keyboard.press("ArrowDown");
-  await expect(settingsPage.appearancePage.allwaysShowGameNames).toBeFocused();
-  await page.keyboard.press("Enter");
-
-  await page.keyboard.press("ArrowDown");
-  await expect(settingsPage.appearancePage.collapseSidebar).toBeFocused();
-  await page.keyboard.press("Enter");
-
-  await expect(page).toHaveScreenshot();
-
-  await page.keyboard.press("s");
-
-  await expect(page).toHaveScreenshot();
-
-  await page.keyboard.press("Backspace");
-  await settingsPage.closeSettingsViaKeyboard(true);
-
-  await expect(page).toHaveScreenshot();
+  await settingsPage.closeSettingsViaKeyboard();
 });
 
 test("Should check if focus history is valid after settings closed", async () => {
-  await libraryPage.expectIsInitialSystem();
+  await libraryPage.expectIsLastPlayed();
 
   await page.keyboard.press("ArrowDown");
 
-  await libraryPage.expectIsSystem("Game Boy", "Super Mario Land");
+  await libraryPage.expectIsInitialSystem();
 });
 
 test("import all", async () => {
-  await libraryPage.expectIsSystem("Game Boy", "Super Mario Land");
-
   const playstationSystemName = "Playstation";
   const playstationLink = page.getByRole("link", {
     name: playstationSystemName,
@@ -134,14 +100,14 @@ test("import all", async () => {
 
   await expect(playstationLink).not.toBeVisible();
 
-  await settingsPage.openSettingsViaClick(true);
-  await settingsPage.generalPage.importAllButton.click();
-  await settingsPage.closeSettingsViaClick(true);
+  await libraryPage.goToLastPlayed();
 
-  await libraryPage.expectIsSystem("Game Boy", "Super Mario Land");
+  await settingsPage.openSettingsViaClick();
+  await settingsPage.generalPage.importAllButton.click();
+  await settingsPage.closeSettingsViaClick();
+
+  await libraryPage.expectIsLastPlayed();
+  await expect(playstationLink).toBeVisible();
 
   await libraryPage.goToSystemViaClick(playstationSystemName, "Gex");
 });
-
-// TODO: add offline test
-// TODO: test against the remix app and only against electron for specific electron features

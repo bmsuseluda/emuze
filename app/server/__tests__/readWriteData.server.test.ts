@@ -111,8 +111,8 @@ describe("readWriteData.server", () => {
     it("Should return directory paths only, if entryAsDirectory is true", () => {
       (readdirSync as unknown as ReadDirMock).mockReturnValueOnce([
         new SimpleDirent("Monkey Island.pak", false),
-        new SimpleDirent(monkeyIsland.id, true),
-        new SimpleDirent(bladerunner.id, true),
+        new SimpleDirent(monkeyIsland.path, true),
+        new SimpleDirent(bladerunner.path, true),
         new SimpleDirent("favorite games.txt", false),
       ]);
 

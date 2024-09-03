@@ -21,6 +21,8 @@ import { styled } from "../../styled-system/jsx";
 import type { DataFunctionArgs } from "../context";
 import type { SystemId } from "../server/categoriesDB.server/systemId";
 import { readLastPlayed } from "../server/lastPlayed.server";
+import { useOpenSettings } from "../containers/SettingsLink/useOpenSettings";
+import { useImportButton } from "../containers/ImportButton/useImportButton";
 
 type CategoryLinks = Array<{ id: SystemId; name: string; to: string }>;
 type LoaderData = {
@@ -33,17 +35,15 @@ export const loader = ({ params, request }: DataFunctionArgs) => {
   const { collapseSidebar } = readAppearance();
   const categories = readCategories();
 
-  if (categories && categories.length > 0) {
-    const lastPlayed = readLastPlayed();
-    if (
-      lastPlayed &&
-      lastPlayed.length > 0 &&
-      categories[0].id !== "lastPlayed"
-    ) {
+  if (categories?.length > 0) {
+    const isLastPlayedAvailable = readLastPlayed().length > 0;
+
+    if (isLastPlayedAvailable && categories[0].id !== "lastPlayed") {
       categories.unshift({ id: "lastPlayed", name: "Last Played" });
     }
+
     if (!request.url.includes("lastPlayed") && !category) {
-      if (lastPlayed && lastPlayed.length > 0) {
+      if (isLastPlayedAvailable) {
         throw redirect("lastPlayed");
       }
 
@@ -62,10 +62,7 @@ export const loader = ({ params, request }: DataFunctionArgs) => {
     });
   }
 
-  return json({
-    categoryLinks: [],
-    collapseSidebar,
-  });
+  return redirect("/settings/general");
 };
 
 export const ErrorBoundary = ({ error }: { error: Error }) => {
@@ -100,12 +97,6 @@ export default function Categories() {
     }
   }, [isInFocus, switchFocus]);
 
-  const onSettings = useCallback(() => {
-    if (isInFocus) {
-      document.getElementById("settings")?.click();
-    }
-  }, [isInFocus]);
-
   // TODO: add tests
   useGamepadButtonPressEvent(layout.buttons.DPadRight, switchToMain);
   useGamepadStickDirectionEvent("leftStickRight", switchToMain);
@@ -113,8 +104,8 @@ export default function Categories() {
   useKeyboardEvent("ArrowRight", switchToMain);
   useGamepadButtonPressEvent(layout.buttons.A, switchToMain);
   useKeyboardEvent("Enter", switchToMain);
-  useGamepadButtonPressEvent(layout.buttons.Start, onSettings);
-  useKeyboardEvent("Escape", onSettings);
+  useOpenSettings(isInFocus);
+  useImportButton(isInFocus, "importGames");
 
   const onLinkClick = useCallback(() => {
     if (!isInFocus) {

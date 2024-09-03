@@ -67,7 +67,7 @@ export interface Application {
   fileExtensions?: `${string}.${string}`[];
   entryAsDirectory?: boolean;
   omitAbsoluteEntryPathAsLastParam?: boolean;
-  setEnvironmentVariables?: EnvironmentVariableFunction;
+  defineEnvironmentVariables?: EnvironmentVariableFunction;
   createOptionParams?: OptionParamFunction;
   flatpakId: string;
   flatpakOptionParams?: string[];

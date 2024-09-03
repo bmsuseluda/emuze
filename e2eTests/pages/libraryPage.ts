@@ -2,6 +2,7 @@ import { expect, type Locator, type Page } from "@playwright/test";
 
 export class LibraryPage {
   readonly page: Page;
+  readonly lastPlayed = "Last Played";
   readonly initialSystem = "Arcade";
   readonly launchGameButton: Locator;
   readonly noInstalledEmulatorsButton: Locator;
@@ -56,11 +57,24 @@ export class LibraryPage {
       ).toBeVisible());
   }
 
+  async expectGameFocused(gameName: string) {
+    await expect(
+      this.page.getByRole("radio", { name: gameName }),
+    ).toBeFocused();
+  }
+
   async gotToInitialSystem() {
     await this.goToSystemViaClick(this.initialSystem);
+  }
+  async goToLastPlayed() {
+    await this.goToSystemViaClick(this.lastPlayed);
   }
 
   async expectIsInitialSystem() {
     await this.expectIsSystem(this.initialSystem);
+  }
+
+  async expectIsLastPlayed() {
+    await this.expectIsSystem(this.lastPlayed);
   }
 }

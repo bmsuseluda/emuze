@@ -123,7 +123,7 @@ export const mednafen: Application = {
   fileExtensions: [".cue", ".pce", ".nes", ".sms", ".gg"],
   flatpakId: "com.github.AmatCoder.mednaffe",
   flatpakOptionParams: ["--command=mednafen"],
-  setEnvironmentVariables: ({ applicationPath }) => {
+  defineEnvironmentVariables: ({ applicationPath }) => {
     const environmentVariables = {};
     if (isWindows() && applicationPath) {
       return {

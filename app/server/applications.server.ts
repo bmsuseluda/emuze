@@ -9,7 +9,7 @@ import type { Category as CategoryDB } from "./categoriesDB.server/types";
 import { readFilenames } from "./readWriteData.server";
 import { isWindows } from "./operationsystem.server";
 import type { ApplicationId } from "./applicationsDB.server/applicationId";
-import { checkFlatpakIsInstalled } from "./applicationsDB.server/checkFlatpakInstalled";
+import { checkFlatpakIsInstalled } from "./applicationsDB.server/checkEmulatorIsInstalled";
 
 export const paths = {
   applications: "data/applications.json",

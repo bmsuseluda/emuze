@@ -23,32 +23,38 @@ export class SettingsPage {
     this.initialSubPage = this.generalPage.name;
   }
 
-  async openSettingsViaClick() {
+  async openSettingsViaClick(collapse?: boolean) {
     await expect(this.settingsHeadline).not.toBeVisible();
-
     await this.page.getByRole("link", { name: "settings" }).click();
-    await expect(this.settingsHeadline).toBeVisible();
+    if (!collapse) {
+      await expect(this.settingsHeadline).toBeVisible();
+    }
 
-    await this.expectIsInitialSubPage();
+    await this.expectIsInitialSubPage(collapse);
   }
 
-  async openSettingsViaKeyboard() {
+  async openSettingsViaKeyboard(collapse?: boolean) {
     await expect(this.settingsHeadline).not.toBeVisible();
-
     await this.page.keyboard.press("Escape");
-    await expect(this.settingsHeadline).toBeVisible();
+    if (!collapse) {
+      await expect(this.settingsHeadline).toBeVisible();
+    }
 
-    await this.expectIsInitialSubPage();
+    await this.expectIsInitialSubPage(collapse);
   }
 
-  async closeSettingsViaClick() {
-    await expect(this.settingsHeadline).toBeVisible();
+  async closeSettingsViaClick(collapse?: boolean) {
+    if (!collapse) {
+      await expect(this.settingsHeadline).toBeVisible();
+    }
     await this.closeButton.click();
     await expect(this.settingsHeadline).not.toBeVisible();
   }
 
-  async closeSettingsViaKeyboard() {
-    await expect(this.settingsHeadline).toBeVisible();
+  async closeSettingsViaKeyboard(collapse?: boolean) {
+    if (!collapse) {
+      await expect(this.settingsHeadline).toBeVisible();
+    }
     await this.page.keyboard.press("Escape");
     await expect(this.settingsHeadline).not.toBeVisible();
   }
@@ -79,8 +85,10 @@ export class SettingsPage {
     // await expect(link).toBeFocused();
   }
 
-  async expectIsInitialSubPage() {
-    await expect(this.settingsHeadline).toBeVisible();
+  async expectIsInitialSubPage(collapse?: boolean) {
+    if (!collapse) {
+      await expect(this.settingsHeadline).toBeVisible();
+    }
     await this.expectIsSubPage(this.initialSubPage);
   }
 }

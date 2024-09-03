@@ -3,7 +3,7 @@ import { findGameNameById } from "../../nameMappings/findGameNameById";
 import scummVmGames from "./nameMapping/scummvm.json";
 import { spawnSync } from "child_process";
 import { createAbsoluteEntryPath } from "../../../../types/jsonFiles/category";
-import { checkFlatpakIsInstalled } from "../../checkFlatpakInstalled";
+import { checkFlatpakIsInstalled } from "../../checkEmulatorIsInstalled";
 import { log } from "../../../debug.server";
 import { isWindows } from "../../../operationsystem.server";
 

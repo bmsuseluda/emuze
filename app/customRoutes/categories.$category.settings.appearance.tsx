@@ -1,6 +1,5 @@
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { IoMdSave } from "react-icons/io";
 import { Form, useLoaderData } from "@remix-run/react";
 import { Button } from "../components/Button";
 import { FormBox } from "../components/FormBox";
@@ -23,8 +22,6 @@ import {
   useKeyboardEvent,
 } from "../hooks/useGamepadEvent";
 import { layout } from "../hooks/useGamepads/layouts";
-import { useGamepadConnected } from "../hooks/useGamepadConnected";
-import { GamepadButtonIcon } from "../components/GamepadButtonIcon";
 
 export const loader = () => {
   const appearance = readAppearance();
@@ -67,8 +64,6 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 export default function Index() {
   const { alwaysGameNames, collapseSidebar } = useLoaderData<typeof loader>();
   const fullscreen = useFullscreen();
-
-  const { gamepadType } = useGamepadConnected();
 
   const saveButtonRef = useRef<ElementRef<"button">>(null);
   const { isInFocus, switchFocusBack } = useFocus<FocusElement>("settingsMain");
@@ -121,8 +116,6 @@ export default function Index() {
   useKeyboardEvent("Backspace", onBack);
   useGamepadButtonPressEvent(layout.buttons.A, onToggle);
   useKeyboardEvent("Enter", onToggle);
-  useGamepadButtonPressEvent(layout.buttons.X, onSave);
-  useKeyboardEvent("s", onSave);
 
   return (
     <ListActionBarLayout
@@ -146,11 +139,12 @@ export default function Index() {
                     id="fullscreen"
                     name="fullscreen"
                     checked={fullscreen}
-                    onClick={() =>
-                      window.electronAPI &&
-                      window.electronAPI.changeWindow("fullscreen")
-                    }
                     ref={entriesRefCallback(0)}
+                    onCheckedChange={() => {
+                      window.electronAPI &&
+                        window.electronAPI.changeWindow("fullscreen");
+                      onSave();
+                    }}
                   />
                   Fullscreen
                 </CheckboxLabel>
@@ -162,6 +156,7 @@ export default function Index() {
                     name="alwaysGameNames"
                     defaultChecked={alwaysGameNames}
                     ref={entriesRefCallback(1)}
+                    onCheckedChange={onSave}
                   />
                   Always show game names
                 </CheckboxLabel>
@@ -173,33 +168,23 @@ export default function Index() {
                     name="collapseSidebar"
                     defaultChecked={collapseSidebar}
                     ref={entriesRefCallback(2)}
+                    onCheckedChange={onSave}
                   />
                   Collapse sidebar
                 </CheckboxLabel>
               </li>
             </FormBox>
           }
-          actions={
-            <Button
-              type="submit"
-              name="_actionId"
-              value={actionIds.save}
-              ref={saveButtonRef}
-              icon={
-                gamepadType ? (
-                  <GamepadButtonIcon
-                    buttonIndex={layout.buttons.X}
-                    gamepadType={gamepadType}
-                  />
-                ) : (
-                  <IoMdSave />
-                )
-              }
-            >
-              Save settings
-            </Button>
-          }
         />
+        <Button
+          type="submit"
+          name="_actionId"
+          value={actionIds.save}
+          ref={saveButtonRef}
+          style={{ display: "none" }}
+        >
+          Save Settings
+        </Button>
       </Form>
     </ListActionBarLayout>
   );
