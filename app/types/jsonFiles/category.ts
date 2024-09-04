@@ -19,6 +19,8 @@ export interface Category {
   entries?: Entry[];
 }
 
+export type CategoryComplete = Required<Category>;
+
 export const createAbsoluteEntryPath = (
   categoriesPath: string,
   categoryName: string,

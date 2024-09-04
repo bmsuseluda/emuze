@@ -28,7 +28,8 @@ import type { SystemId } from "../server/categoriesDB.server/systemId";
 import { log } from "../server/debug.server";
 import { categories } from "../server/categoriesDB.server";
 import { getInstalledApplicationForCategory } from "../server/applications.server";
-import { importActionId, ImportButton } from "../containers/ImportButton";
+import { ImportButton } from "../containers/ImportButton";
+import type { ImportButtonId } from "../containers/ImportButton/importButtonId";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -60,9 +61,11 @@ export const loader = ({ params }: DataFunctionArgs) => {
   }
 };
 
+const importButtonId: ImportButtonId = "importGames";
+
 const actionIds = {
   launch: "launch",
-  import: importActionId,
+  import: importButtonId,
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
@@ -248,7 +251,7 @@ export default function Category() {
                 <ImportButton
                   gamepadType={gamepadType}
                   isInFocus={isInFocus}
-                  id="importGames"
+                  id={actionIds.import}
                 >
                   Import Games
                 </ImportButton>

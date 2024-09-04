@@ -94,6 +94,9 @@ test("Should open settings via keyboard and activate appearance options", async 
 
   await page.keyboard.press("ArrowRight");
   await expect(settingsPage.appearancePage.fullscreen).toBeFocused();
+
+  await expect(page).toHaveScreenshot();
+
   await page.keyboard.press("Enter");
 
   await page.keyboard.press("ArrowDown");
@@ -103,10 +106,6 @@ test("Should open settings via keyboard and activate appearance options", async 
   await page.keyboard.press("ArrowDown");
   await expect(settingsPage.appearancePage.collapseSidebar).toBeFocused();
   await page.keyboard.press("Enter");
-
-  await expect(page).toHaveScreenshot();
-
-  await page.keyboard.press("s");
 
   await expect(page).toHaveScreenshot();
 
@@ -135,7 +134,7 @@ test("import all", async () => {
   await expect(playstationLink).not.toBeVisible();
 
   await settingsPage.openSettingsViaClick(true);
-  await settingsPage.generalPage.importAllButton.click();
+  await page.keyboard.press("i");
   await settingsPage.closeSettingsViaClick(true);
 
   await libraryPage.expectIsSystem("Game Boy", "Super Mario Land");

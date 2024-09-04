@@ -90,6 +90,9 @@ test("Should open settings via keyboard and activate appearance options", async 
 
   await page.keyboard.press("ArrowRight");
   await expect(settingsPage.appearancePage.fullscreen).toBeFocused();
+
+  await expect(page).toHaveScreenshot();
+
   await page.keyboard.press("Enter");
 
   await page.keyboard.press("ArrowDown");
@@ -102,8 +105,7 @@ test("Should open settings via keyboard and activate appearance options", async 
 
   await expect(page).toHaveScreenshot();
 
-  await page.keyboard.press("s");
-
+  await page.keyboard.press("Backspace");
   await settingsPage.closeSettingsViaKeyboard(true);
 
   await expect(page).toHaveScreenshot();

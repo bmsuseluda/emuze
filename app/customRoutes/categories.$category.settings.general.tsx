@@ -1,17 +1,9 @@
 import type { ElementRef } from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { IoMdDownload } from "react-icons/io";
 import { FaFolderOpen } from "react-icons/fa";
-import {
-  Form,
-  Outlet,
-  useActionData,
-  useLoaderData,
-  useNavigation,
-} from "@remix-run/react";
-import { Button } from "../components/Button";
+import { Form, Outlet, useActionData, useLoaderData } from "@remix-run/react";
 import { FormBox } from "../components/FormBox";
 import { FormRow } from "../components/FormRow";
 import { Label } from "../components/Label";
@@ -36,13 +28,17 @@ import { TextInput } from "../components/TextInput";
 import { installMissingApplicationsOnLinux } from "../server/installApplications.server";
 import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction";
 import { useGamepadConnected } from "../hooks/useGamepadConnected";
-import { GamepadButtonIcon } from "../components/GamepadButtonIcon";
 import fs from "fs";
 import { log } from "../server/debug.server";
 import type { Category } from "../types/jsonFiles/category";
 import { readLastPlayed } from "../server/lastPlayed.server";
 import type { SystemId } from "../server/categoriesDB.server/systemId";
-import { importActionId, ImportButton } from "../containers/ImportButton";
+import { ImportButton } from "../containers/ImportButton";
+import {
+  InstallEmulatorsButton,
+  installMissingApplicationsActionId,
+} from "../containers/InstallEmulatorsButton";
+import type { ImportButtonId } from "../containers/ImportButton/importButtonId";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
@@ -76,11 +72,13 @@ export const loader = () => {
   return json({ ...general, isWindows: isWindows(), categories, errors });
 };
 
+const importButtonId: ImportButtonId = "importAll";
+
 const actionIds = {
   chooseApplicationsPath: "chooseApplicationsPath",
   chooseCategoriesPath: "chooseCategoriesPath",
-  import: importActionId,
-  installMissingApplications: "installMissingApplications",
+  import: importButtonId,
+  installMissingApplications: installMissingApplicationsActionId,
 };
 
 type Errors = {
@@ -262,7 +260,6 @@ export default function Index() {
     useGamepadConnected();
 
   // TODO: Maybe create specific files for gamepad controls
-  const installEmulatorsButtonRef = useRef<ElementRef<"button">>(null);
   const { isInFocus, switchFocusBack } = useFocus<FocusElement>("settingsMain");
 
   const selectEntry = useCallback((entry: HTMLButtonElement) => {
@@ -304,17 +301,10 @@ export default function Index() {
     }
   }, [isInFocus, selectedEntry]);
 
-  const onInstallEmulators = useCallback(() => {
-    if (isInFocus) {
-      installEmulatorsButtonRef.current?.click();
-    }
-  }, [isInFocus]);
-
   useGamepadButtonPressEvent(layout.buttons.B, onBack);
   useKeyboardEvent("Backspace", onBack);
   useGamepadButtonPressEvent(layout.buttons.A, onToggle);
   useKeyboardEvent("Enter", onToggle);
-  useGamepadButtonPressEvent(layout.buttons.Y, onInstallEmulators);
 
   const [applicationPath, setApplicationPath] = useState(
     defaultData.applicationsPath || "",
@@ -335,8 +325,6 @@ export default function Index() {
       setCategoriesPath(newData?.categoriesPath);
     }
   }, [newData?.categoriesPath]);
-
-  const { state, formData } = useNavigation();
 
   /* Set focus again after open file explorer */
   useEnableFocusAfterAction(enableGamepads, [
@@ -441,36 +429,17 @@ export default function Index() {
                 <ImportButton
                   gamepadType={gamepadType}
                   isInFocus={isInFocus}
-                  id="importAll"
+                  id={actionIds.import}
                 >
                   Import all
                 </ImportButton>
 
                 {!defaultData.isWindows &&
                   defaultData.categories.length > 0 && (
-                    <Button
-                      type="submit"
-                      name="_actionId"
-                      value={actionIds.installMissingApplications}
-                      loading={
-                        state === "submitting" &&
-                        formData?.get("_actionId") ===
-                          actionIds.installMissingApplications
-                      }
-                      ref={installEmulatorsButtonRef}
-                      icon={
-                        gamepadType ? (
-                          <GamepadButtonIcon
-                            buttonIndex={layout.buttons.Y}
-                            gamepadType={gamepadType}
-                          />
-                        ) : (
-                          <IoMdDownload />
-                        )
-                      }
-                    >
-                      Install Emulators
-                    </Button>
+                    <InstallEmulatorsButton
+                      gamepadType={gamepadType}
+                      isInFocus={isInFocus}
+                    />
                   )}
               </>
             }

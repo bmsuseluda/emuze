@@ -8,8 +8,6 @@ import { useImportButton } from "./useImportButton";
 import type { ImportButtonId } from "./importButtonId";
 import { importButtonGamepadButtonIndex } from "./importButtonId";
 
-export const importActionId = "import";
-
 interface Props {
   gamepadType?: GamepadType;
   children: ReactNode;
@@ -31,10 +29,8 @@ export const ImportButton = ({
       type="submit"
       id={id}
       name="_actionId"
-      value={importActionId}
-      loading={
-        state === "submitting" && formData?.get("_actionId") === importActionId
-      }
+      value={id}
+      loading={state === "submitting" && formData?.get("_actionId") === id}
       icon={
         gamepadType ? (
           <GamepadButtonIcon
