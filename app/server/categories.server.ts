@@ -1,7 +1,7 @@
 import fs from "fs";
 import nodepath from "path";
 
-import type { Category as CategorySlim } from "../types/jsonFiles/categories";
+import type { CategorySlim } from "../types/jsonFiles/categories";
 import type { Category, Entry } from "../types/jsonFiles/category";
 import { readDirectorynames, readFilenames } from "./readWriteData.server";
 import { convertToId } from "./convertToId.server";
@@ -21,6 +21,7 @@ import { setErrorDialog } from "./errorDialog.server";
 import type { ApplicationId } from "./applicationsDB.server/applicationId";
 import type { SystemId } from "./categoriesDB.server/systemId";
 import { log } from "./debug.server";
+import { syncLastPlayedWithCategoryCached } from "./lastPlayed.server";
 
 export const paths = {
   categories: "data/categories.json",
@@ -54,11 +55,13 @@ export const readCategory = (categoryId: SystemId) =>
     nodepath.join(paths.entries, `${categoryId}.json`),
   );
 
-export const writeCategory = (category: Category) =>
+export const writeCategory = (category: Category) => {
   categoryDataCache.writeFile(
     category,
     nodepath.join(paths.entries, `${category.id}.json`),
   );
+  syncLastPlayedWithCategoryCached(category);
+};
 
 const sortEntries = (a: Entry, b: Entry) => sortCaseInsensitive(a.name, b.name);
 

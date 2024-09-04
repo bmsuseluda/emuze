@@ -21,8 +21,10 @@ import SvgPsp from "../Icons/Psp";
 import Gamegear from "../Icons/Gamegear";
 import Neogeopocket from "../Icons/Neogeopocket";
 import type { SystemId } from "../../server/categoriesDB.server/systemId";
+import { AiFillClockCircle } from "react-icons/ai";
 
 export const icons: Record<SystemId, IconType> = {
+  lastPlayed: AiFillClockCircle,
   // TODO: use https://thenounproject.com/icon/game-controller-193591/
   nintendoentertainmentsystem: MdVideogameAsset,
   supernintendo: FaGamepad,

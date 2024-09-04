@@ -54,7 +54,6 @@ export const SettingsLink = forwardRef<ElementRef<typeof Link>, Props>(
     <Link
       {...rest}
       to={to}
-      id="settings"
       aria-label="Settings"
       title="Settings"
       prefetch="intent"

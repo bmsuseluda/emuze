@@ -20,6 +20,8 @@ import {
 } from "../hooks/useGamepadEvent";
 import { layout } from "../hooks/useGamepads/layouts";
 import { Dialog } from "../components/Dialog";
+import { useImportButton } from "../containers/ImportButton/useImportButton";
+import { useInstallEmulatorsButton } from "../containers/InstallEmulatorsButton/useInstallEmulatorsButton";
 
 export const loader = () => {
   const { collapseSidebar } = readAppearance();
@@ -71,6 +73,8 @@ export default function Index() {
   useGamepadButtonPressEvent(layout.buttons.Start, handleClose);
   useGamepadButtonPressEvent(layout.buttons.B, handleCloseOnFocus);
   useKeyboardEvent("Backspace", handleCloseOnFocus);
+  useImportButton(isInFocus, "importAll");
+  useInstallEmulatorsButton(isInFocus);
 
   // TODO: think about if this should be a callback from useGamepadsOnSidebar
   const onLinkClick = useCallback(() => {
@@ -81,7 +85,7 @@ export default function Index() {
 
   return (
     <Dialog
-      open
+      open={true}
       onClose={handleClose}
       closable={closable}
       smaller={collapseSidebar}

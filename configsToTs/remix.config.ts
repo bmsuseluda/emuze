@@ -12,7 +12,7 @@ const createSettingsRoutes = (route: DefineRouteFunction, id: string) => {
     "settings",
     "customRoutes/categories.$category.settings.tsx",
     {
-      id,
+      id: `${id}Settings`,
     },
     () => {
       route("", "customRoutes/categories.$category.settings._index.tsx", {
@@ -42,6 +42,10 @@ const createSettingsRoutes = (route: DefineRouteFunction, id: string) => {
 
 const createCategoriesRoutes = (route: DefineRouteFunction) => {
   route("categories", "customRoutes/categories.tsx", {}, () => {
+    route("lastPlayed", "customRoutes/categories.lastPlayed.tsx", () => {
+      createSettingsRoutes(route, "lastPlayed");
+      createErrorDialog(route, "lastPlayed");
+    });
     route(":category", "customRoutes/categories.$category.tsx", () => {
       createSettingsRoutes(route, "category");
       createErrorDialog(route, "category");

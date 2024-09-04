@@ -325,6 +325,17 @@ export const scumm: Category = {
   hasAnalogStick: true,
 };
 
+/**
+ * This is not a real Category, it is just for convenience part of the categories.
+ */
+export const lastPlayed: Category = {
+  id: "lastPlayed",
+  names: ["Last Played"],
+  igdbPlatformIds: [],
+  application: ares,
+  hasAnalogStick: true,
+};
+
 export const categories = {
   sonyplaystation,
   sonyplaystation2,
@@ -359,6 +370,7 @@ export const categories = {
   neogeopocketcolor,
   scumm,
   dos,
+  lastPlayed,
 } satisfies Record<SystemId, Category>;
 
 export const getCategoryDataByName = (name: string) =>

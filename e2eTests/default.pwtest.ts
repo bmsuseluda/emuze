@@ -44,6 +44,15 @@ test("Should show initial system", async () => {
   await libraryPage.expectIsInitialSystem();
 
   await expect(page).toHaveScreenshot();
+
+  await page.keyboard.press("ArrowRight");
+  await libraryPage.expectGameFocused("Battletoads");
+  await page.keyboard.press("ArrowRight");
+  await libraryPage.expectGameFocused("Beast Busters");
+
+  await expect(page).toHaveScreenshot();
+
+  await page.keyboard.press("Backspace");
 });
 
 test("Should switch to another system via click", async () => {
@@ -76,7 +85,7 @@ test("Should open settings via mouse", async () => {
   await settingsPage.closeSettingsViaClick();
 });
 
-test("Should open settings via keyboard", async () => {
+test("Should open settings via keyboard and activate appearance options", async () => {
   await settingsPage.openSettingsViaKeyboard();
 
   await page.keyboard.press("ArrowDown");
@@ -86,7 +95,24 @@ test("Should open settings via keyboard", async () => {
   await page.keyboard.press("ArrowRight");
   await expect(settingsPage.appearancePage.fullscreen).toBeFocused();
 
-  await settingsPage.closeSettingsViaKeyboard();
+  await expect(page).toHaveScreenshot();
+
+  await page.keyboard.press("Enter");
+
+  await page.keyboard.press("ArrowDown");
+  await expect(settingsPage.appearancePage.allwaysShowGameNames).toBeFocused();
+  await page.keyboard.press("Enter");
+
+  await page.keyboard.press("ArrowDown");
+  await expect(settingsPage.appearancePage.collapseSidebar).toBeFocused();
+  await page.keyboard.press("Enter");
+
+  await expect(page).toHaveScreenshot();
+
+  await page.keyboard.press("Backspace");
+  await settingsPage.closeSettingsViaKeyboard(true);
+
+  await expect(page).toHaveScreenshot();
 });
 
 test("Should check if focus history is valid after settings closed", async () => {
@@ -98,6 +124,8 @@ test("Should check if focus history is valid after settings closed", async () =>
 });
 
 test("import all", async () => {
+  await libraryPage.expectIsSystem("Game Boy", "Super Mario Land");
+
   const playstationSystemName = "Playstation";
   const playstationLink = page.getByRole("link", {
     name: playstationSystemName,
@@ -105,21 +133,14 @@ test("import all", async () => {
 
   await expect(playstationLink).not.toBeVisible();
 
-  await settingsPage.openSettingsViaClick();
-  await settingsPage.generalPage.importAllButton.click();
-  await settingsPage.closeSettingsViaClick();
+  await settingsPage.openSettingsViaClick(true);
+  await page.keyboard.press("i");
+  await settingsPage.closeSettingsViaClick(true);
+
+  await libraryPage.expectIsSystem("Game Boy", "Super Mario Land");
 
   await libraryPage.goToSystemViaClick(playstationSystemName, "Gex");
 });
 
-// TODO: use keyboard to go to grid and return
-// TODO: no emulator for system is installed
-// TODO: import for a system with mocked api
-// TODO: load more games
-// TODO: test fullscreen setting
-// TODO: test always show game name setting
-// TODO: test collapse sidebar setting
 // TODO: add offline test
-// TODO: add steps
 // TODO: test against the remix app and only against electron for specific electron features
-// TODO: keyboard navigation in settings pages

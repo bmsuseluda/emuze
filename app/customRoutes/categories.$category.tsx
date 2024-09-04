@@ -2,14 +2,8 @@ import type { ElementRef } from "react";
 import { useCallback, useRef } from "react";
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import {
-  Form,
-  Outlet,
-  redirect,
-  useLoaderData,
-  useNavigation,
-} from "@remix-run/react";
-import { IoMdPlay, IoMdRefresh } from "react-icons/io";
+import { Form, Outlet, redirect, useLoaderData } from "@remix-run/react";
+import { IoMdPlay } from "react-icons/io";
 import { Button } from "../components/Button";
 import { executeApplication } from "../server/execute.server";
 import { importEntries, readCategory } from "../server/categories.server";
@@ -18,15 +12,10 @@ import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
 import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
 import { SystemIcon } from "../components/SystemIcon";
 import { layout } from "../hooks/useGamepads/layouts";
-import {
-  useGamepadButtonPressEvent,
-  useKeyboardEvent,
-} from "../hooks/useGamepadEvent";
 import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
 import { readAppearance, readGeneral } from "../server/settings.server";
-import { useFullscreen } from "../hooks/useFullscreen";
-import { SettingsLink } from "../components/SettingsLink";
+import { SettingsLink } from "../containers/SettingsLink";
 import { BiError } from "react-icons/bi";
 import { Typography } from "../components/Typography";
 import type { DataFunctionArgs } from "../context";
@@ -39,6 +28,8 @@ import type { SystemId } from "../server/categoriesDB.server/systemId";
 import { log } from "../server/debug.server";
 import { categories } from "../server/categoriesDB.server";
 import { getInstalledApplicationForCategory } from "../server/applications.server";
+import { ImportButton } from "../containers/ImportButton";
+import type { ImportButtonId } from "../containers/ImportButton/importButtonId";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -70,9 +61,11 @@ export const loader = ({ params }: DataFunctionArgs) => {
   }
 };
 
+const importButtonId: ImportButtonId = "importGames";
+
 const actionIds = {
   launch: "launch",
-  import: "import",
+  import: importButtonId,
 };
 
 export const action: ActionFunction = async ({ request, params }) => {
@@ -100,7 +93,11 @@ export const action: ActionFunction = async ({ request, params }) => {
     if (_actionId === actionIds.launch) {
       const game = form.get("game");
       if (typeof game === "string") {
-        executeApplication(category as SystemId, game);
+        const entryData = categoryData.entries?.find(
+          (value) => value.id === game,
+        );
+
+        entryData && executeApplication(category as SystemId, entryData);
         return { ok: true };
       }
     }
@@ -143,16 +140,11 @@ export default function Category() {
   const { categoryData, alwaysGameNames, isApplicationInstalled } =
     useLoaderData<typeof loader>();
 
-  const isFullscreen = useFullscreen();
   const launchButtonRef = useRef<ElementRef<"button">>(null);
-  const importButtonRef = useRef<ElementRef<"button">>(null);
-  const settingsButtonRef = useRef<ElementRef<"a">>(null);
   const listRef = useRef<ElementRef<"div">>(null);
 
   const { isInFocus, switchFocus, switchFocusBack } =
     useFocus<FocusElement>("main");
-
-  const { state, formData } = useNavigation();
 
   const { gamepadType, enableGamepads, disableGamepads } =
     useGamepadConnected();
@@ -172,24 +164,6 @@ export default function Category() {
       launchButtonRef.current.click();
     }
   }, [disableGamepads]);
-
-  const onImport = useCallback(() => {
-    if (isInFocus) {
-      importButtonRef.current?.click();
-    }
-  }, [isInFocus]);
-
-  const onSettings = useCallback(() => {
-    if (isInFocus) {
-      settingsButtonRef.current?.click();
-    }
-  }, [isInFocus]);
-
-  useGamepadButtonPressEvent(layout.buttons.X, onImport);
-  useGamepadButtonPressEvent(layout.buttons.Start, onSettings);
-
-  useKeyboardEvent("i", onImport);
-  useKeyboardEvent("Escape", onSettings);
 
   const onEntryClick = useCallback(() => {
     if (listRef?.current) {
@@ -273,40 +247,20 @@ export default function Category() {
                     ? "Emulator not installed"
                     : "Launch Game"}
                 </Button>
-                <Button
-                  type="submit"
-                  name="_actionId"
-                  value={actionIds.import}
-                  ref={importButtonRef}
-                  loading={
-                    state === "submitting" &&
-                    formData?.get("_actionId") === actionIds.import
-                  }
-                  icon={
-                    gamepadType ? (
-                      <GamepadButtonIcon
-                        buttonIndex={layout.buttons.X}
-                        gamepadType={gamepadType}
-                      />
-                    ) : (
-                      <IoMdRefresh />
-                    )
-                  }
+
+                <ImportButton
+                  gamepadType={gamepadType}
+                  isInFocus={isInFocus}
+                  id={actionIds.import}
                 >
                   Import Games
-                </Button>
+                </ImportButton>
               </>
             }
           />
         </Form>
       </ListActionBarLayout>
-      <SettingsLink
-        isFullscreen={isFullscreen}
-        onClick={() => {
-          switchFocus("settingsSidebar");
-        }}
-        ref={settingsButtonRef}
-      />
+      <SettingsLink isInFocus={isInFocus} switchFocus={switchFocus} />
       <Outlet />
     </>
   );

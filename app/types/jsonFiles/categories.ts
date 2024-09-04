@@ -1,6 +1,6 @@
 import type { SystemId } from "../../server/categoriesDB.server/systemId";
 
-export interface Category {
+export interface CategorySlim {
   id: SystemId;
   name: string;
 }

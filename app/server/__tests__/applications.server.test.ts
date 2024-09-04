@@ -7,7 +7,7 @@ import { applicationsPath, pcsx2 } from "../__testData__/applications";
 import * as categoriesFromDB from "../categoriesDB.server";
 import { readFilenames } from "../readWriteData.server";
 import type { Mock } from "vitest";
-import { checkFlatpakIsInstalled } from "../applicationsDB.server/checkFlatpakInstalled";
+import { checkFlatpakIsInstalled } from "../applicationsDB.server/checkEmulatorIsInstalled";
 
 vi.mock("@kmamal/sdl");
 
@@ -16,7 +16,7 @@ vi.mock("../readWriteData.server", () => ({
   readFilenames: vi.fn(),
 }));
 
-vi.mock("../applicationsDB.server/checkFlatpakInstalled", () => ({
+vi.mock("../applicationsDB.server/checkEmulatorIsInstalled", () => ({
   checkFlatpakIsInstalled: vi.fn(),
 }));
 

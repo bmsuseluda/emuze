@@ -2,7 +2,7 @@ import type { Category, Entry } from "../../types/jsonFiles/category";
 import nodepath from "path";
 import { general } from "./general";
 
-export const addIndex = (entries: Entry[]) =>
+export const addIndex = <P extends Entry>(entries: P[]): P[] =>
   entries.map((entry, index) => ({ ...entry, id: `${entry.id}${index}` }));
 
 export const createCategoryPath = (categoryName: string) =>
@@ -50,7 +50,7 @@ export const pcenginecdLinux = {
 } satisfies Category;
 
 export const monkeyIsland: Entry = {
-  id: "monkey1",
+  id: "thesecretofmonkeyisland",
   name: "The Secret of Monkey Island",
   path: "monkey1",
 };

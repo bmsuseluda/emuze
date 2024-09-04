@@ -8,6 +8,7 @@ import {
   readEntries,
   readEntriesWithMetaData,
 } from "../categories.server";
+import { paths as lastPlayedPaths } from "../lastPlayed.server";
 import {
   readDirectorynames,
   readFileHome,
@@ -118,18 +119,17 @@ describe("categories.server", () => {
         expiresOn: getExpiresOn(),
       };
 
-      const oldEntries: Entry[] = [
+      const oldEntries: Entry[] = addIndex([
         {
           ...hugo,
-          id: `${hugo.id}0`,
           metaData: hugoMetaData,
         },
-      ];
+      ]);
 
-      const expectedResult: Entry[] = [
-        { ...hugo, metaData: hugoMetaData, id: `${hugo.id}0` },
-        { ...hugo2, id: `${hugo2.id}1` },
-      ];
+      const expectedResult: Entry[] = addIndex([
+        { ...hugo, metaData: hugoMetaData },
+        { ...hugo2 },
+      ]);
 
       const result = readEntries({
         categoryName: playstation.name,
@@ -262,7 +262,7 @@ describe("categories.server", () => {
       await importCategories();
 
       // expect
-      expect(writeFileMock).toBeCalledTimes(4);
+      expect(writeFileMock).toBeCalledTimes(6);
       expect(writeFileMock).toHaveBeenNthCalledWith(1, [], paths.categories);
       expect(writeFileMock).toHaveBeenNthCalledWith(
         2,
@@ -271,11 +271,21 @@ describe("categories.server", () => {
       );
       expect(writeFileMock).toHaveBeenNthCalledWith(
         3,
+        [],
+        lastPlayedPaths.lastPlayed,
+      );
+      expect(writeFileMock).toHaveBeenNthCalledWith(
+        4,
         pcenginecd,
         nodepath.join(paths.entries, `${pcenginecd.id}.json`),
       );
       expect(writeFileMock).toHaveBeenNthCalledWith(
-        4,
+        5,
+        [],
+        lastPlayedPaths.lastPlayed,
+      );
+      expect(writeFileMock).toHaveBeenNthCalledWith(
+        6,
         [
           {
             id: nintendo3ds.id,
