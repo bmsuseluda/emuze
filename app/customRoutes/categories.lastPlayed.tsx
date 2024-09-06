@@ -71,7 +71,6 @@ export default function LastPlayed() {
   const { lastPlayed, alwaysGameNames } = useLoaderData<typeof loader>();
 
   const launchButtonRef = useRef<ElementRef<"button">>(null);
-  const listRef = useRef<ElementRef<"div">>(null);
 
   const { isInFocus, switchFocus, switchFocusBack } =
     useFocus<FocusElement>("main");
@@ -96,24 +95,10 @@ export default function LastPlayed() {
   }, [disableGamepads]);
 
   const onEntryClick = useCallback(() => {
-    if (listRef?.current) {
-      // Remove scrollPadding if entry is clicked by mouse to prevent centering the element, otherwise it would be difficult to double click a entry.
-      listRef.current.style.scrollPadding = "inherit";
-    }
-
     if (!isInFocus) {
       switchFocus("main");
       enableGamepads();
     }
-
-    setTimeout(() => {
-      if (listRef?.current) {
-        // Add scrollPadding if entry was selected by gamepad to center the element.
-        // Needs to be in a timeout to reactivate the feature afterwards
-        // If you change this value, change it in panda config as well
-        listRef.current.style.scrollPadding = "50% 0";
-      }
-    }, 10);
   }, [isInFocus, enableGamepads, switchFocus]);
 
   return (
@@ -129,10 +114,10 @@ export default function LastPlayed() {
         <Form method="POST">
           <ListActionBarLayout.ListActionBarContainer
             scrollSmooth
-            ref={listRef}
             list={
               lastPlayed && (
                 <GameGridDynamic
+                  key={`${lastPlayed[0]?.systemId}${lastPlayed[0]?.name}`}
                   games={lastPlayed}
                   alwaysGameNames={alwaysGameNames}
                   onExecute={onExecute}

@@ -141,7 +141,6 @@ export default function Category() {
     useLoaderData<typeof loader>();
 
   const launchButtonRef = useRef<ElementRef<"button">>(null);
-  const listRef = useRef<ElementRef<"div">>(null);
 
   const { isInFocus, switchFocus, switchFocusBack } =
     useFocus<FocusElement>("main");
@@ -166,24 +165,10 @@ export default function Category() {
   }, [disableGamepads]);
 
   const onEntryClick = useCallback(() => {
-    if (listRef?.current) {
-      // Remove scrollPadding if entry is clicked by mouse to prevent centering the element, otherwise it would be difficult to double click a entry.
-      listRef.current.style.scrollPadding = "inherit";
-    }
-
     if (!isInFocus) {
       switchFocus("main");
       enableGamepads();
     }
-
-    setTimeout(() => {
-      if (listRef?.current) {
-        // Add scrollPadding if entry was selected by gamepad to center the element.
-        // Needs to be in a timeout to reactivate the feature afterwards
-        // If you change this value, change it in panda config as well
-        listRef.current.style.scrollPadding = "50% 0";
-      }
-    }, 10);
   }, [isInFocus, enableGamepads, switchFocus]);
 
   if (!categoryData) {
@@ -206,7 +191,6 @@ export default function Category() {
         <Form method="POST">
           <ListActionBarLayout.ListActionBarContainer
             scrollSmooth
-            ref={listRef}
             list={
               entries && (
                 <GameGridDynamic

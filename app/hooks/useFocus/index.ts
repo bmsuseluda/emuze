@@ -19,8 +19,11 @@ export const useFocus = <FocusElement extends string>(
   const switchFocus = useCallback(
     (nextFocusElement: FocusElement) => {
       const actualFocus = elementInFocus || focusElement;
-      if (!focusHistory.current.includes(actualFocus)) {
+      if (focusHistory.current.at(-1) !== actualFocus) {
         focusHistory.current.push(actualFocus);
+      }
+      if (focusHistory.current.length > 10) {
+        focusHistory.current.shift();
       }
       setElementInFocus(nextFocusElement);
     },

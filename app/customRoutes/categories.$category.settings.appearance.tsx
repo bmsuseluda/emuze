@@ -143,7 +143,6 @@ export default function Index() {
                     onCheckedChange={() => {
                       window.electronAPI &&
                         window.electronAPI.changeWindow("fullscreen");
-                      onSave();
                     }}
                   />
                   Fullscreen

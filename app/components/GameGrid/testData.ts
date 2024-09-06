@@ -1,5 +1,6 @@
 import type { Entry } from "../../types/jsonFiles/category";
 import { getExpiresOn } from "../../server/getExpiresOn.server";
+import type { EntryWithSystem } from "../../types/jsonFiles/lastPlayed";
 
 export const games: Entry[] = [
   {
@@ -80,5 +81,56 @@ export const games: Entry[] = [
       imageUrl: "brokenpicture.webp",
       expiresOn: getExpiresOn(),
     },
+  },
+];
+
+export const gamesLastPlayed: EntryWithSystem[] = [
+  {
+    id: "digdogs:streetbusters0",
+    name: "Dig Dogs: Streetbusters",
+    path: "Dig Dogs - Streetbusters/DIGDOGS.EXE",
+    metaData: {
+      imageUrl:
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co6t12.webp",
+      expiresOn: 1725799928695,
+    },
+    systemId: "dos",
+    lastPlayed: 1725614938868,
+  },
+  {
+    id: "supermarioland1",
+    name: "Super Mario Land",
+    path: "Super Mario Land.gb",
+    metaData: {
+      imageUrl:
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co7o14.webp",
+      expiresOn: 1725799928347,
+    },
+    systemId: "nintendogameboy",
+    lastPlayed: 1725614928605,
+  },
+  {
+    id: "californiagames2",
+    name: "California Games",
+    path: "California Games/CALGAMES.EXE",
+    metaData: {
+      imageUrl:
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co7033.webp",
+      expiresOn: 1725799928695,
+    },
+    systemId: "dos",
+    lastPlayed: 1725614919436,
+  },
+  {
+    id: "commanderkeeningoodbye,galaxy!:thearmageddonmachine3",
+    name: "Commander Keen in Goodbye, Galaxy!: The Armageddon Machine",
+    path: "Commander Keen in Goodbye, Galaxy! - The Armageddon Machine/Keen5e.exe",
+    metaData: {
+      imageUrl:
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co25s4.webp",
+      expiresOn: 1725799928695,
+    },
+    systemId: "dos",
+    lastPlayed: 1725614906938,
   },
 ];

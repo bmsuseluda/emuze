@@ -1,10 +1,11 @@
-import type { ElementRef, SyntheticEvent } from "react";
+import type { ElementRef, ReactNode, SyntheticEvent } from "react";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import { styled } from "../../../../../styled-system/jsx";
 
 interface Props {
   id: string;
   name: string;
+  icon?: ReactNode;
   alwaysGameName?: boolean;
   imageUrl?: string;
   onClick: () => void;
@@ -69,6 +70,26 @@ const Image = styled("img", {
   },
 });
 
+const IconWrapper = styled("div", {
+  base: {
+    color: "color",
+    position: "absolute",
+    top: 0,
+    right: 0,
+    userSelect: "none",
+    padding: "0.4em",
+    margin: "0.3em",
+    backgroundColor: "transparentBackgroundColor",
+    borderRadius: "50%",
+
+    "& > svg": {
+      width: "1em",
+      height: "1em",
+      verticalAlign: "middle",
+    },
+  },
+});
+
 const Name = styled("div", {
   base: {
     color: "color",
@@ -121,7 +142,15 @@ const getImageSrc = ({ imageUrl }: { imageUrl?: string }) => {
 
 export const Game = forwardRef<ElementRef<typeof Input>, Props>(
   (
-    { id, name, alwaysGameName = false, imageUrl, onClick, onDoubleClick },
+    {
+      id,
+      name,
+      alwaysGameName = false,
+      imageUrl,
+      onClick,
+      onDoubleClick,
+      icon,
+    },
     ref,
   ) => {
     const [error, setError] = useState(false);
@@ -159,6 +188,7 @@ export const Game = forwardRef<ElementRef<typeof Input>, Props>(
         <Label onClick={onClick} onDoubleClick={onDoubleClick}>
           <Input type="radio" name="game" value={id} ref={ref} />
           <ImageWrapper>
+            {icon && <IconWrapper>{icon}</IconWrapper>}
             <Image
               src={getImageSrc({ imageUrl })}
               alt={`${name} cover`}

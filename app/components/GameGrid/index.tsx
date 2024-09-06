@@ -6,6 +6,8 @@ import type {
 } from "react";
 import { useCallback } from "react";
 import type { Entry as GameType } from "../../types/jsonFiles/category";
+import type { EntryWithSystem as GameTypeLastPlayed } from "../../types/jsonFiles/lastPlayed";
+import { isEntryWithSystem } from "../../types/jsonFiles/lastPlayed";
 import { Ul } from "../Ul";
 import { Game } from "./components/Game";
 import type { Result } from "../../hooks/useGamepadsOnGrid";
@@ -17,9 +19,10 @@ import {
 import { layout } from "../../hooks/useGamepads/layouts";
 import { styled } from "../../../styled-system/jsx";
 import { useAddEntriesToRenderOnScrollEnd } from "../../hooks/useAddEntriesToRenderOnScrollEnd";
+import { SystemIcon } from "../SystemIcon";
 
 interface Props extends ComponentPropsWithoutRef<"ul"> {
-  games: GameType[];
+  games: GameType[] | GameTypeLastPlayed[];
   alwaysGameNames?: boolean;
   isInFocus: boolean;
   onBack: () => void;
@@ -79,13 +82,9 @@ export const GameGrid = ({
   };
 
   const goBack = useCallback(
-    (
-      selectedGame: MutableRefObject<ElementRef<"input"> | undefined>,
-      resetSelected: () => void,
-    ) => {
+    (selectedGame: MutableRefObject<ElementRef<"input"> | undefined>) => {
       if (selectedGame.current) {
         selectedGame.current.checked = false;
-        resetSelected();
       }
       onBack();
     },
@@ -93,8 +92,8 @@ export const GameGrid = ({
   );
 
   const onLeftOverTheEdge = useCallback(
-    ({ selectedEntry, resetSelected }: Result<ElementRef<"input">>) => {
-      goBack(selectedEntry, resetSelected);
+    ({ selectedEntry }: Result<ElementRef<"input">>) => {
+      goBack(selectedEntry);
     },
     [goBack],
   );
@@ -104,7 +103,6 @@ export const GameGrid = ({
     entriesRefs,
     entriesRefCallback,
     selectedEntry,
-    resetSelected,
     updatePosition,
   } = useGamepadsOnGrid({
     onSelectEntry: selectEntry,
@@ -114,9 +112,9 @@ export const GameGrid = ({
 
   const handleBack = useCallback(() => {
     if (isInFocus) {
-      goBack(selectedEntry, resetSelected);
+      goBack(selectedEntry);
     }
-  }, [isInFocus, resetSelected, selectedEntry, goBack]);
+  }, [isInFocus, selectedEntry, goBack]);
 
   const handleExecute = useCallback(() => {
     if (isInFocus) {
@@ -134,7 +132,8 @@ export const GameGrid = ({
   return (
     <Container>
       <List ref={entryListRef}>
-        {games.map(({ id, name, metaData }, index) => {
+        {games.map((game, index) => {
+          const { id, name, metaData } = game;
           // TODO: think about if this should be a callback from useGamepadsOnGrid
           const handleClick = () => {
             onGameClick();
@@ -149,6 +148,11 @@ export const GameGrid = ({
             <Game
               id={id}
               name={name}
+              icon={
+                isEntryWithSystem(game) ? (
+                  <SystemIcon id={game.systemId} />
+                ) : null
+              }
               imageUrl={metaData?.imageUrl}
               alwaysGameName={alwaysGameNames}
               onClick={handleClick}

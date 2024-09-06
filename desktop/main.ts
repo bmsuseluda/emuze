@@ -4,7 +4,7 @@ import { app, BrowserWindow, ipcMain, session } from "electron";
 import nodepath from "path";
 import * as dotenv from "dotenv";
 import { autoUpdater } from "electron-updater";
-import { readAppearance } from "../app/server/settings.server";
+import { readAppearance, writeAppearance } from "../app/server/settings.server";
 import { createLogFile, isDebug } from "../app/server/debug.server";
 
 dotenv.config();
@@ -12,6 +12,8 @@ dotenv.config();
 const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
   window.setFullScreen(fullscreen);
   window.webContents.send("fullscreen", fullscreen);
+  const appearance = readAppearance();
+  writeAppearance({ ...appearance, fullscreen });
 };
 
 app.on("ready", async () => {
