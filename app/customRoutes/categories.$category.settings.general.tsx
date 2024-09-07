@@ -19,10 +19,7 @@ import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
 import type { Result } from "../hooks/useGamepadsOnGrid";
 import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid";
-import {
-  useGamepadButtonPressEvent,
-  useKeyboardEvent,
-} from "../hooks/useGamepadEvent";
+import { useGamepadButtonPressEvent } from "../hooks/useGamepadEvent";
 import { layout } from "../hooks/useGamepads/layouts";
 import { TextInput } from "../components/TextInput";
 import { installMissingApplicationsOnLinux } from "../server/installApplications.server";
@@ -39,6 +36,7 @@ import {
   installMissingApplicationsActionId,
 } from "../containers/InstallEmulatorsButton";
 import type { ImportButtonId } from "../containers/ImportButton/importButtonId";
+import { useKeyboardEvent } from "../hooks/useKeyboardEvent";
 
 export const loader = () => {
   const general: General = readGeneral() || {};

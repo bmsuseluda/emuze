@@ -11,7 +11,6 @@ import { useCallback } from "react";
 import {
   useGamepadButtonPressEvent,
   useGamepadStickDirectionEvent,
-  useKeyboardEvent,
 } from "../hooks/useGamepadEvent";
 import { layout } from "../hooks/useGamepads/layouts";
 import { useFocus } from "../hooks/useFocus";
@@ -23,6 +22,7 @@ import type { SystemId } from "../server/categoriesDB.server/systemId";
 import { readLastPlayed } from "../server/lastPlayed.server";
 import { useOpenSettings } from "../containers/SettingsLink/useOpenSettings";
 import { useImportButton } from "../containers/ImportButton/useImportButton";
+import { useKeyboardEvent } from "../hooks/useKeyboardEvent";
 
 type CategoryLinks = Array<{ id: SystemId; name: string; to: string }>;
 type LoaderData = {

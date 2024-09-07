@@ -6,11 +6,9 @@ import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
 import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef } from "react";
-import {
-  useGamepadButtonPressEvent,
-  useKeyboardEvent,
-} from "../hooks/useGamepadEvent";
+import { useGamepadButtonPressEvent } from "../hooks/useGamepadEvent";
 import { layout } from "../hooks/useGamepads/layouts";
+import { useKeyboardEvent } from "../hooks/useKeyboardEvent";
 
 export const loader = () => {
   const errorDialog = getErrorDialog();

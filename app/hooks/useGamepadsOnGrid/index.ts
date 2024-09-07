@@ -1,12 +1,12 @@
 import {
   useGamepadButtonPressEvent,
   useGamepadStickDirectionEvent,
-  useKeyboardEvent,
 } from "../useGamepadEvent";
 import { layout } from "../useGamepads/layouts";
 import type { MutableRefObject, RefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import { useRefsGrid } from "../useRefsGrid";
+import { useKeyboardEvent } from "../useKeyboardEvent";
 
 export interface Result<T> {
   selectedEntry: MutableRefObject<T | undefined>;

@@ -1,9 +1,7 @@
-import {
-  useGamepadButtonPressEvent,
-  useKeyboardEvent,
-} from "../../hooks/useGamepadEvent";
+import { useGamepadButtonPressEvent } from "../../hooks/useGamepadEvent";
 import { layout } from "../../hooks/useGamepads/layouts";
 import { useCallback } from "react";
+import { useKeyboardEvent } from "../../hooks/useKeyboardEvent";
 
 export const openSettingsId = "openSettings";
 

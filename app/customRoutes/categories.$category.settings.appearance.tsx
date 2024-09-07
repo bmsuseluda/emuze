@@ -17,11 +17,9 @@ import type { Result } from "../hooks/useGamepadsOnGrid";
 import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid";
 import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
-import {
-  useGamepadButtonPressEvent,
-  useKeyboardEvent,
-} from "../hooks/useGamepadEvent";
+import { useGamepadButtonPressEvent } from "../hooks/useGamepadEvent";
 import { layout } from "../hooks/useGamepads/layouts";
+import { useKeyboardEvent } from "../hooks/useKeyboardEvent";
 
 export const loader = () => {
   const appearance = readAppearance();

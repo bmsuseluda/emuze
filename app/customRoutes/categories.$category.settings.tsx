@@ -16,12 +16,12 @@ import { useCallback, useMemo } from "react";
 import {
   useGamepadButtonPressEvent,
   useGamepadStickDirectionEvent,
-  useKeyboardEvent,
 } from "../hooks/useGamepadEvent";
 import { layout } from "../hooks/useGamepads/layouts";
 import { Dialog } from "../components/Dialog";
 import { useImportButton } from "../containers/ImportButton/useImportButton";
 import { useInstallEmulatorsButton } from "../containers/InstallEmulatorsButton/useInstallEmulatorsButton";
+import { useKeyboardEvent } from "../hooks/useKeyboardEvent";
 
 export const loader = () => {
   const { collapseSidebar } = readAppearance();

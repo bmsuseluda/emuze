@@ -4,8 +4,8 @@ import { useCallback, useEffect, useRef } from "react";
 import {
   useGamepadButtonPressEvent,
   useGamepadStickDirectionEvent,
-  useKeyboardEvent,
 } from "../useGamepadEvent";
+import { useKeyboardEvent } from "../useKeyboardEvent"; // TODO: write tests
 
 // TODO: write tests
 export const useGamepadsOnSidebar = (isInFocus: boolean) => {
