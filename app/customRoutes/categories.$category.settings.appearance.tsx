@@ -11,7 +11,7 @@ import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
 import { SettingsIcon } from "../components/SettingsIcon";
 import { useFullscreen } from "../hooks/useFullscreen";
 import { CheckboxLabel } from "../components/CheckboxLabel";
-import type { ElementRef } from "react";
+import type { ElementRef, MouseEvent } from "react";
 import { useCallback, useRef } from "react";
 import type { Result } from "../hooks/useGamepadsOnGrid";
 import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid";
@@ -59,12 +59,15 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
   );
 };
 
-export default function Index() {
+const focus: FocusElement = "settingsMain";
+
+export default function Appearance() {
   const { alwaysGameNames, collapseSidebar } = useLoaderData<typeof loader>();
   const fullscreen = useFullscreen();
 
   const saveButtonRef = useRef<ElementRef<"button">>(null);
-  const { isInFocus, switchFocusBack } = useFocus<FocusElement>("settingsMain");
+  const { isInFocus, switchFocusBack, switchFocus } =
+    useFocus<FocusElement>(focus);
 
   const selectEntry = useCallback((entry: ElementRef<"button">) => {
     entry.focus();
@@ -85,12 +88,17 @@ export default function Index() {
     [goBack],
   );
 
-  const { entryListRef, entriesRefCallback, selectedEntry, resetSelected } =
-    useGamepadsOnGrid({
-      onSelectEntry: selectEntry,
-      isInFocus,
-      onLeftOverTheEdge,
-    });
+  const {
+    entryListRef,
+    entriesRefCallback,
+    selectedEntry,
+    resetSelected,
+    updatePosition,
+  } = useGamepadsOnGrid({
+    onSelectEntry: selectEntry,
+    isInFocus,
+    onLeftOverTheEdge,
+  });
 
   const onBack = useCallback(() => {
     if (isInFocus) {
@@ -109,6 +117,17 @@ export default function Index() {
       saveButtonRef.current?.click();
     }
   }, [isInFocus]);
+
+  const onClick = useCallback(
+    (event: MouseEvent<ElementRef<"button">>) => {
+      if (!isInFocus) {
+        switchFocus(focus);
+        selectedEntry.current = event.currentTarget;
+        updatePosition();
+      }
+    },
+    [isInFocus, switchFocus, selectedEntry, updatePosition],
+  );
 
   useGamepadButtonPressEvent(layout.buttons.B, onBack);
   useKeyboardEvent("Backspace", onBack);
@@ -142,6 +161,7 @@ export default function Index() {
                       window.electronAPI &&
                         window.electronAPI.changeWindow("fullscreen");
                     }}
+                    onClick={onClick}
                   />
                   Fullscreen
                 </CheckboxLabel>
@@ -154,6 +174,7 @@ export default function Index() {
                     defaultChecked={alwaysGameNames}
                     ref={entriesRefCallback(1)}
                     onCheckedChange={onSave}
+                    onClick={onClick}
                   />
                   Always show game names
                 </CheckboxLabel>
@@ -166,6 +187,7 @@ export default function Index() {
                     defaultChecked={collapseSidebar}
                     ref={entriesRefCallback(2)}
                     onCheckedChange={onSave}
+                    onClick={onClick}
                   />
                   Collapse sidebar
                 </CheckboxLabel>

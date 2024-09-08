@@ -1,4 +1,4 @@
-import type { ElementRef } from "react";
+import type { ElementRef, MouseEvent } from "react";
 import { useCallback, useEffect, useState } from "react";
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
@@ -250,7 +250,9 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
   );
 };
 
-export default function Index() {
+const focus: FocusElement = "settingsMain";
+
+export default function General() {
   const defaultData = useLoaderData<typeof loader>();
   const newData = useActionData<ActionReturn>();
 
@@ -258,7 +260,8 @@ export default function Index() {
     useGamepadConnected();
 
   // TODO: Maybe create specific files for gamepad controls
-  const { isInFocus, switchFocusBack } = useFocus<FocusElement>("settingsMain");
+  const { isInFocus, switchFocusBack, switchFocus } =
+    useFocus<FocusElement>(focus);
 
   const selectEntry = useCallback((entry: HTMLButtonElement) => {
     entry.focus();
@@ -280,12 +283,17 @@ export default function Index() {
   );
 
   // TODO: check how to align gamepadsGrid navigation with native input usage (use navigation keys in text input)
-  const { entryListRef, entriesRefCallback, selectedEntry, resetSelected } =
-    useGamepadsOnGrid({
-      onSelectEntry: selectEntry,
-      isInFocus,
-      onLeftOverTheEdge,
-    });
+  const {
+    entryListRef,
+    entriesRefCallback,
+    selectedEntry,
+    resetSelected,
+    updatePosition,
+  } = useGamepadsOnGrid({
+    onSelectEntry: selectEntry,
+    isInFocus,
+    onLeftOverTheEdge,
+  });
 
   const onBack = useCallback(() => {
     if (isInFocus) {
@@ -330,9 +338,17 @@ export default function Index() {
     actionIds.chooseCategoriesPath,
   ]);
 
-  const onOpenFileDialog = useCallback(() => {
-    disableGamepads();
-  }, [disableGamepads]);
+  const onOpenFileDialog = useCallback(
+    (event: MouseEvent<ElementRef<"button">>) => {
+      if (!isInFocus) {
+        switchFocus(focus);
+        selectedEntry.current = event.currentTarget;
+        updatePosition();
+      }
+      disableGamepads();
+    },
+    [disableGamepads, isInFocus, selectedEntry, switchFocus, updatePosition],
+  );
 
   return (
     <>

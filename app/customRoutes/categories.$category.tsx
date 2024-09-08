@@ -136,6 +136,8 @@ export const shouldRevalidate = ({
   return defaultShouldRevalidate;
 };
 
+const focus: FocusElement = "main";
+
 export default function Category() {
   const { categoryData, alwaysGameNames, isApplicationInstalled } =
     useLoaderData<typeof loader>();
@@ -143,7 +145,7 @@ export default function Category() {
   const launchButtonRef = useRef<ElementRef<"button">>(null);
 
   const { isInFocus, switchFocus, switchFocusBack } =
-    useFocus<FocusElement>("main");
+    useFocus<FocusElement>(focus);
 
   const { gamepadType, enableGamepads, disableGamepads } =
     useGamepadConnected();
@@ -166,7 +168,7 @@ export default function Category() {
 
   const onEntryClick = useCallback(() => {
     if (!isInFocus) {
-      switchFocus("main");
+      switchFocus(focus);
       enableGamepads();
     }
   }, [isInFocus, enableGamepads, switchFocus]);
