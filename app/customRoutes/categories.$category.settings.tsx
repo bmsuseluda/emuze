@@ -13,15 +13,15 @@ import { SettingsIcon } from "../components/SettingsIcon";
 import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
 import { useCallback, useMemo } from "react";
-import {
-  useGamepadButtonPressEvent,
-  useGamepadStickDirectionEvent,
-} from "../hooks/useGamepadEvent";
-import { layout } from "../hooks/useGamepads/layouts";
 import { Dialog } from "../components/Dialog";
 import { useImportButton } from "../containers/ImportButton/useImportButton";
 import { useInstallEmulatorsButton } from "../containers/InstallEmulatorsButton/useInstallEmulatorsButton";
-import { useKeyboardEvent } from "../hooks/useKeyboardEvent";
+import {
+  useDirectionalInputRight,
+  useInputBack,
+  useInputConfirmation,
+  useInputSettings,
+} from "../hooks/useDirectionalInput";
 
 export const loader = () => {
   const { collapseSidebar } = readAppearance();
@@ -62,17 +62,10 @@ export default function Index() {
     }
   }, [isInFocus, switchFocus]);
 
-  // TODO: add tests
-  useGamepadButtonPressEvent(layout.buttons.DPadRight, switchToMain);
-  useGamepadStickDirectionEvent("leftStickRight", switchToMain);
-  useGamepadStickDirectionEvent("extraStickRight", switchToMain);
-  useKeyboardEvent("ArrowRight", switchToMain);
-  useGamepadButtonPressEvent(layout.buttons.A, switchToMain);
-  useKeyboardEvent("Enter", switchToMain);
-  useKeyboardEvent("Escape", handleClose);
-  useGamepadButtonPressEvent(layout.buttons.Start, handleClose);
-  useGamepadButtonPressEvent(layout.buttons.B, handleCloseOnFocus);
-  useKeyboardEvent("Backspace", handleCloseOnFocus);
+  useDirectionalInputRight(switchToMain);
+  useInputConfirmation(switchToMain);
+  useInputBack(handleCloseOnFocus);
+  useInputSettings(handleClose);
   useImportButton(isInFocus, "importAll");
   useInstallEmulatorsButton(isInFocus);
 

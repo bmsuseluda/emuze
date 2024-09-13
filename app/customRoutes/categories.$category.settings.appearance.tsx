@@ -17,9 +17,10 @@ import type { Result } from "../hooks/useGamepadsOnGrid";
 import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid";
 import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
-import { useGamepadButtonPressEvent } from "../hooks/useGamepadEvent";
-import { layout } from "../hooks/useGamepads/layouts";
-import { useKeyboardEvent } from "../hooks/useKeyboardEvent";
+import {
+  useInputBack,
+  useInputConfirmation,
+} from "../hooks/useDirectionalInput";
 
 export const loader = () => {
   const appearance = readAppearance();
@@ -129,10 +130,8 @@ export default function Appearance() {
     [isInFocus, switchFocus, selectedEntry, updatePosition],
   );
 
-  useGamepadButtonPressEvent(layout.buttons.B, onBack);
-  useKeyboardEvent("Backspace", onBack);
-  useGamepadButtonPressEvent(layout.buttons.A, onToggle);
-  useKeyboardEvent("Enter", onToggle);
+  useInputConfirmation(onToggle);
+  useInputBack(onBack);
 
   return (
     <ListActionBarLayout

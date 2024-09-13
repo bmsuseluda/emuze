@@ -1,11 +1,9 @@
-import { layout } from "../useGamepads/layouts";
 import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import {
-  useGamepadButtonPressEvent,
-  useGamepadStickDirectionEvent,
-} from "../useGamepadEvent";
-import { useKeyboardEvent } from "../useKeyboardEvent"; // TODO: write tests
+  useDirectionalInputDown,
+  useDirectionalInputUp,
+} from "../useDirectionalInput";
 
 // TODO: write tests
 export const useGamepadsOnSidebar = (isInFocus: boolean) => {
@@ -13,7 +11,7 @@ export const useGamepadsOnSidebar = (isInFocus: boolean) => {
 
   const selectLink = useCallback((index: number) => {
     const currentLink = categoryLinksRefs.current.at(index);
-    if (currentLink) {
+    if (currentLink && document.activeElement !== currentLink) {
       currentLink.focus();
       currentLink.click();
     }
@@ -54,14 +52,8 @@ export const useGamepadsOnSidebar = (isInFocus: boolean) => {
     }
   }, [isInFocus, selectLink, getCurrentIndex]);
 
-  useGamepadButtonPressEvent(layout.buttons.DPadDown, onDown);
-  useGamepadButtonPressEvent(layout.buttons.DPadUp, onUp);
-  useGamepadStickDirectionEvent("leftStickDown", onDown);
-  useGamepadStickDirectionEvent("leftStickUp", onUp);
-  useGamepadStickDirectionEvent("extraStickDown", onDown);
-  useGamepadStickDirectionEvent("extraStickUp", onUp);
-  useKeyboardEvent("ArrowDown", onDown);
-  useKeyboardEvent("ArrowUp", onUp);
+  useDirectionalInputUp(onUp);
+  useDirectionalInputDown(onDown);
 
   const categoryLinksRefCallback = useCallback(
     (index: number) => (ref: ElementRef<"a">) => {

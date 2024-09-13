@@ -1,4 +1,5 @@
 import { execFileSync } from "child_process";
+import { log } from "../debug.server";
 
 export class EmulatorNotInstalledError extends Error {
   constructor(emulatorName: string) {
@@ -6,11 +7,21 @@ export class EmulatorNotInstalledError extends Error {
   }
 }
 
-export const checkFlatpakIsInstalled = (flatpakId: string) => {
+let flatpakAppList: string | null = null;
+
+export const updateFlatpakAppList = () => {
+  log("info", "Update flatpak app list");
+  flatpakAppList = execFileSync("flatpak", ["list", "--app"]).toString();
+};
+
+export const checkFlatpakIsInstalled = (flatpakId: string): boolean => {
   try {
-    execFileSync("flatpak", ["info", flatpakId]);
-    return true;
+    if (!flatpakAppList) {
+      updateFlatpakAppList();
+    }
+    return !!flatpakAppList && flatpakAppList.includes(flatpakId);
   } catch (error) {
+    console.error("Error checking Flatpak installation:", error);
     return false;
   }
 };

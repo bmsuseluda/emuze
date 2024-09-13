@@ -12,12 +12,13 @@ import { Ul } from "../Ul";
 import { Game } from "./components/Game";
 import type { Result } from "../../hooks/useGamepadsOnGrid";
 import { useGamepadsOnGrid } from "../../hooks/useGamepadsOnGrid";
-import { useGamepadButtonPressEvent } from "../../hooks/useGamepadEvent";
-import { layout } from "../../hooks/useGamepads/layouts";
 import { styled } from "../../../styled-system/jsx";
 import { useAddEntriesToRenderOnScrollEnd } from "../../hooks/useAddEntriesToRenderOnScrollEnd";
 import { SystemIcon } from "../SystemIcon";
-import { useKeyboardEvent } from "../../hooks/useKeyboardEvent";
+import {
+  useInputBack,
+  useInputConfirmation,
+} from "../../hooks/useDirectionalInput";
 
 interface Props extends ComponentPropsWithoutRef<"ul"> {
   games: GameType[] | GameTypeLastPlayed[];
@@ -75,8 +76,12 @@ export const GameGrid = ({
   inViewRef,
 }: Props & { inViewRef?: RefObject<ElementRef<"div">> }) => {
   const selectEntry = (game: ElementRef<"input">) => {
-    game.checked = true;
-    game.focus();
+    if (!game.checked) {
+      game.checked = true;
+    }
+    if (document.activeElement !== game) {
+      game.focus();
+    }
   };
 
   const goBack = useCallback(
@@ -122,10 +127,8 @@ export const GameGrid = ({
     }
   }, [isInFocus, selectedEntry, onExecute]);
 
-  useGamepadButtonPressEvent(layout.buttons.B, handleBack);
-  useGamepadButtonPressEvent(layout.buttons.A, handleExecute);
-  useKeyboardEvent("Backspace", handleBack);
-  useKeyboardEvent("Enter", handleExecute);
+  useInputConfirmation(handleExecute);
+  useInputBack(handleBack);
 
   return (
     <Container>

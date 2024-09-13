@@ -67,6 +67,7 @@ export const getInstalledApplicationForCategory = ({
   categoryDB: CategoryDB;
 }) => {
   if (isWindows() && applicationsPath) {
+    // TODO: find a way to cache which windows applications are installed
     return getInstalledApplicationForCategoryOnWindows(
       categoryDB.application,
       applicationsPath,

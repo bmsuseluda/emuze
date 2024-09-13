@@ -214,7 +214,9 @@ export const executeApplication = (category: SystemId, entryData: Entry) => {
 
 export const installFlatpak = (flatpakId: string) => {
   try {
+    log("info", `Start Install ${flatpakId}`);
     execFileSync("flatpak", ["install", "--noninteractive", flatpakId]);
+    log("info", `End Install ${flatpakId}`);
     return true;
   } catch (error) {
     log("error", "installFlatpak", error);

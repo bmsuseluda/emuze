@@ -159,7 +159,7 @@ export const readEntriesWithMetaData = async (
   const entriesWithoutMetaData: Entry[] = [];
 
   entries.forEach((entry) => {
-    const now = new Date().getTime();
+    const now = Date.now();
     if (entry.metaData && entry.metaData?.expiresOn > now) {
       entriesWithMetaData.push(entry);
     } else {

@@ -57,7 +57,7 @@ export const addToLastPlayed = (
   const newEntry: EntryWithSystem = {
     ...entryToAdd,
     systemId,
-    lastPlayed: new Date().getTime(),
+    lastPlayed: Date.now(),
   };
 
   if (index >= 0) {

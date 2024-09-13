@@ -1,7 +1,5 @@
-import { useGamepadButtonPressEvent } from "../../hooks/useGamepadEvent";
-import { layout } from "../../hooks/useGamepads/layouts";
 import { useCallback } from "react";
-import { useKeyboardEvent } from "../../hooks/useKeyboardEvent";
+import { useInputSettings } from "../../hooks/useDirectionalInput";
 
 export const openSettingsId = "openSettings";
 
@@ -12,6 +10,5 @@ export const useOpenSettings = (isInFocus: boolean) => {
     }
   }, [isInFocus]);
 
-  useGamepadButtonPressEvent(layout.buttons.Start, onOpenSettings);
-  useKeyboardEvent("Escape", onOpenSettings);
+  useInputSettings(onOpenSettings);
 };

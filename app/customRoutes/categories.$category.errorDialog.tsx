@@ -6,9 +6,13 @@ import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
 import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef } from "react";
-import { useGamepadButtonPressEvent } from "../hooks/useGamepadEvent";
-import { layout } from "../hooks/useGamepads/layouts";
-import { useKeyboardEvent } from "../hooks/useKeyboardEvent";
+import {
+  useDirectionalInputDown,
+  useDirectionalInputUp,
+  useInputBack,
+  useInputConfirmation,
+  useInputSettings,
+} from "../hooks/useDirectionalInput";
 
 export const loader = () => {
   const errorDialog = getErrorDialog();
@@ -77,17 +81,11 @@ export default function RenderComponent() {
     }
   }, [isInFocus]);
 
-  useGamepadButtonPressEvent(layout.buttons.A, handleClose);
-  useGamepadButtonPressEvent(layout.buttons.DPadUp, handleScrollUp);
-  useGamepadButtonPressEvent(layout.buttons.DPadDown, handleScrollDown);
-  useGamepadButtonPressEvent(layout.buttons.B, handleClose);
-  useGamepadButtonPressEvent(layout.buttons.Start, handleClose);
-
-  useKeyboardEvent("Enter", handleClose);
-  useKeyboardEvent("Escape", handleClose);
-  useKeyboardEvent("Backspace", handleClose);
-  useKeyboardEvent("ArrowDown", handleScrollDown);
-  useKeyboardEvent("ArrowUp", handleScrollUp);
+  useDirectionalInputUp(handleScrollUp);
+  useDirectionalInputDown(handleScrollDown);
+  useInputConfirmation(handleClose);
+  useInputBack(handleClose);
+  useInputSettings(handleClose);
 
   return (
     <ErrorDialog {...errorDialog} onClose={handleClose} listRef={listRef} />

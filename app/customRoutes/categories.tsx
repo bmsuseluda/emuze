@@ -8,11 +8,6 @@ import { SystemIcon } from "../components/SystemIcon";
 import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar";
 import { readAppearance } from "../server/settings.server";
 import { useCallback } from "react";
-import {
-  useGamepadButtonPressEvent,
-  useGamepadStickDirectionEvent,
-} from "../hooks/useGamepadEvent";
-import { layout } from "../hooks/useGamepads/layouts";
 import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
 import { Typography } from "../components/Typography";
@@ -22,7 +17,10 @@ import type { SystemId } from "../server/categoriesDB.server/systemId";
 import { readLastPlayed } from "../server/lastPlayed.server";
 import { useOpenSettings } from "../containers/SettingsLink/useOpenSettings";
 import { useImportButton } from "../containers/ImportButton/useImportButton";
-import { useKeyboardEvent } from "../hooks/useKeyboardEvent";
+import {
+  useDirectionalInputRight,
+  useInputConfirmation,
+} from "../hooks/useDirectionalInput";
 
 type CategoryLinks = Array<{ id: SystemId; name: string; to: string }>;
 type LoaderData = {
@@ -97,13 +95,8 @@ export default function Categories() {
     }
   }, [isInFocus, switchFocus]);
 
-  // TODO: add tests
-  useGamepadButtonPressEvent(layout.buttons.DPadRight, switchToMain);
-  useGamepadStickDirectionEvent("leftStickRight", switchToMain);
-  useGamepadStickDirectionEvent("extraStickRight", switchToMain);
-  useKeyboardEvent("ArrowRight", switchToMain);
-  useGamepadButtonPressEvent(layout.buttons.A, switchToMain);
-  useKeyboardEvent("Enter", switchToMain);
+  useDirectionalInputRight(switchToMain);
+  useInputConfirmation(switchToMain);
   useOpenSettings(isInFocus);
   useImportButton(isInFocus, "importGames");
 

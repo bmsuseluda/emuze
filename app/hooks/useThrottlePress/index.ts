@@ -8,7 +8,7 @@ import { useCallback, useRef } from "react";
  * @param oldTimestamp Needs to be set only after an event should be fired.
  */
 const isThrottled = (oldTimestamp?: number | null) => {
-  const now = new Date().getTime();
+  const now = Date.now();
   return !oldTimestamp || now - oldTimestamp > 200;
 };
 
@@ -19,18 +19,15 @@ const isThrottled = (oldTimestamp?: number | null) => {
  * @param tempTimestamp Needs to be set on every button press.
  */
 const isSingleButtonPress = (tempTimestamp?: number | null) => {
-  const now = new Date().getTime();
-  return !tempTimestamp || now - tempTimestamp > 50;
+  const now = Date.now();
+  return !tempTimestamp || now - tempTimestamp > 100;
 };
 
 const addTimestamp = (
   timestampsRef: MutableRefObject<Record<number, number>>,
   index: number,
 ) => {
-  timestampsRef.current = {
-    ...timestampsRef.current,
-    [index]: new Date().getTime(),
-  };
+  timestampsRef.current[index] = Date.now();
 };
 
 export const useThrottlePress = () => {
@@ -41,6 +38,7 @@ export const useThrottlePress = () => {
     (functionToThrottle: () => void, index: number) => {
       const oldPressTimestamp = oldPressTimestamps.current[index];
       const tempPressTimestamp = tempPressTimestamps.current[index];
+
       if (
         isThrottled(oldPressTimestamp) ||
         isSingleButtonPress(tempPressTimestamp)

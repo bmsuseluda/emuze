@@ -5,22 +5,23 @@ import {
   readCategory,
   writeCategory,
 } from "./categories.server";
-import { execFile } from "child_process";
+import {
+  checkFlatpakIsInstalled,
+  updateFlatpakAppList,
+} from "./applicationsDB.server/checkEmulatorIsInstalled";
 
-// TODO: Check if error message from flatpak info could be removed or maybe flatpak info is not the best way
 export const checkFlatpakIsInstalledParallel = (flatpakId: string) =>
   new Promise<boolean>((resolve, reject) => {
-    execFile("flatpak", ["info", flatpakId], (error, stdout) => {
-      if (error) {
-        reject(true);
-      }
-      if (stdout) {
-        resolve(true);
-      }
-    });
+    const isInstalled = checkFlatpakIsInstalled(flatpakId);
+    if (isInstalled) {
+      resolve(true);
+    } else {
+      reject(true);
+    }
   });
 
 // TODO: add tests
+// TODO: check if installation can be paralleled
 export const installMissingApplicationsOnLinux = async () => {
   const functions = readCategories().map(({ id }) => {
     const application = categoriesDB[id].application;
@@ -34,4 +35,5 @@ export const installMissingApplicationsOnLinux = async () => {
     });
   });
   await Promise.all(functions);
+  updateFlatpakAppList();
 };

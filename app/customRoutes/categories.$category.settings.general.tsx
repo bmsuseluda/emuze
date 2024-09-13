@@ -1,12 +1,9 @@
 import type { ElementRef, MouseEvent } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { FaFolderOpen } from "react-icons/fa";
 import { Form, Outlet, useActionData, useLoaderData } from "@remix-run/react";
 import { FormBox } from "../components/FormBox";
-import { FormRow } from "../components/FormRow";
-import { Label } from "../components/Label";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
 import { importCategories, readCategories } from "../server/categories.server";
 import { openFolderDialog } from "../server/openDialog.server";
@@ -19,9 +16,6 @@ import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
 import type { Result } from "../hooks/useGamepadsOnGrid";
 import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid";
-import { useGamepadButtonPressEvent } from "../hooks/useGamepadEvent";
-import { layout } from "../hooks/useGamepads/layouts";
-import { TextInput } from "../components/TextInput";
 import { installMissingApplicationsOnLinux } from "../server/installApplications.server";
 import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction";
 import { useGamepadConnected } from "../hooks/useGamepadConnected";
@@ -36,7 +30,11 @@ import {
   installMissingApplicationsActionId,
 } from "../containers/InstallEmulatorsButton";
 import type { ImportButtonId } from "../containers/ImportButton/importButtonId";
-import { useKeyboardEvent } from "../hooks/useKeyboardEvent";
+import {
+  useInputBack,
+  useInputConfirmation,
+} from "../hooks/useDirectionalInput";
+import { FileDialogInputField } from "../containers/FileDialogTextInput";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
@@ -307,30 +305,8 @@ export default function General() {
     }
   }, [isInFocus, selectedEntry]);
 
-  useGamepadButtonPressEvent(layout.buttons.B, onBack);
-  useKeyboardEvent("Backspace", onBack);
-  useGamepadButtonPressEvent(layout.buttons.A, onToggle);
-  useKeyboardEvent("Enter", onToggle);
-
-  const [applicationPath, setApplicationPath] = useState(
-    defaultData.applicationsPath || "",
-  );
-
-  useEffect(() => {
-    if (newData?.applicationsPath) {
-      setApplicationPath(newData?.applicationsPath);
-    }
-  }, [newData?.applicationsPath]);
-
-  const [categoriesPath, setCategoriesPath] = useState(
-    defaultData.categoriesPath || "",
-  );
-
-  useEffect(() => {
-    if (newData?.categoriesPath) {
-      setCategoriesPath(newData?.categoriesPath);
-    }
-  }, [newData?.categoriesPath]);
+  useInputConfirmation(onToggle);
+  useInputBack(onBack);
 
   /* Set focus again after open file explorer */
   useEnableFocusAfterAction(enableGamepads, [
@@ -368,73 +344,33 @@ export default function General() {
               <FormBox ref={entryListRef}>
                 {defaultData.isWindows && (
                   <li>
-                    <FormRow>
-                      <Label htmlFor="applicationsPath">
-                        {applicationsPathLabel}
-                      </Label>
-                      <TextInput
-                        label={applicationsPathLabel}
-                        error={
-                          defaultData.errors.applicationsPath ||
-                          newData?.errors?.applicationsPath
-                        }
-                      >
-                        <TextInput.Input
-                          type="text"
-                          name="applicationsPath"
-                          id="applicationsPath"
-                          value={applicationPath}
-                          onChange={(event) =>
-                            setApplicationPath(event.target.value)
-                          }
-                          iconButton
-                        />
-                        <TextInput.IconButton
-                          type="submit"
-                          name="_actionId"
-                          value={actionIds.chooseApplicationsPath}
-                          ref={entriesRefCallback(0)}
-                          onClick={onOpenFileDialog}
-                        >
-                          <FaFolderOpen />
-                        </TextInput.IconButton>
-                      </TextInput>
-                    </FormRow>
+                    <FileDialogInputField
+                      id="applicationsPath"
+                      label={applicationsPathLabel}
+                      defaultValue={defaultData?.applicationsPath}
+                      newValue={newData?.applicationsPath}
+                      defaultError={defaultData.errors.applicationsPath}
+                      newError={newData?.errors?.applicationsPath}
+                      actionId={actionIds.chooseApplicationsPath}
+                      openDialogButtonRef={entriesRefCallback(0)}
+                      onOpenFileDialog={onOpenFileDialog}
+                    />
                   </li>
                 )}
                 <li>
-                  <FormRow>
-                    <Label htmlFor="categoriesPath">
-                      {categoriesPathLabel}
-                    </Label>
-                    <TextInput
-                      label={categoriesPathLabel}
-                      error={
-                        defaultData.errors.categoriesPath ||
-                        newData?.errors?.categoriesPath
-                      }
-                    >
-                      <TextInput.Input
-                        type="text"
-                        name="categoriesPath"
-                        id="categoriesPath"
-                        value={categoriesPath}
-                        onChange={(event) =>
-                          setCategoriesPath(event.target.value)
-                        }
-                        iconButton
-                      />
-                      <TextInput.IconButton
-                        type="submit"
-                        name="_actionId"
-                        value={actionIds.chooseCategoriesPath}
-                        ref={entriesRefCallback(defaultData.isWindows ? 1 : 0)}
-                        onClick={onOpenFileDialog}
-                      >
-                        <FaFolderOpen />
-                      </TextInput.IconButton>
-                    </TextInput>
-                  </FormRow>
+                  <FileDialogInputField
+                    id="categoriesPath"
+                    label={categoriesPathLabel}
+                    defaultValue={defaultData?.categoriesPath}
+                    newValue={newData?.categoriesPath}
+                    defaultError={defaultData.errors.categoriesPath}
+                    newError={newData?.errors?.categoriesPath}
+                    actionId={actionIds.chooseCategoriesPath}
+                    openDialogButtonRef={entriesRefCallback(
+                      defaultData.isWindows ? 1 : 0,
+                    )}
+                    onOpenFileDialog={onOpenFileDialog}
+                  />
                 </li>
               </FormBox>
             }
