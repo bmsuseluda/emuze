@@ -17,34 +17,50 @@ import {
   scumm,
 } from "../__testData__/category";
 import { mednafen } from "../applicationsDB.server";
-import type { Mock } from "vitest";
 import { duckstation } from "../applicationsDB.server/applications/duckstation";
 
 vi.mock("@kmamal/sdl");
-
-vi.mock("fs", async () => {
-  const actual = await vi.importActual<object>("fs");
-  return {
-    ...actual,
-    readdirSync: vi.fn(),
-  };
-});
+vi.mock("fs");
 
 class SimpleDirent {
   name: string;
   directory: boolean;
+  path: string;
 
   constructor(name: string, directory: boolean) {
     this.name = name;
     this.directory = directory;
+    this.path = name;
   }
 
   isDirectory(): boolean {
     return this.directory;
   }
-}
 
-type ReadDirMock = Mock<any, SimpleDirent[]>;
+  isFile(): boolean {
+    return !this.directory;
+  }
+
+  isBlockDevice(): boolean {
+    return false;
+  }
+
+  isCharacterDevice(): boolean {
+    return false;
+  }
+
+  isSymbolicLink(): boolean {
+    return false;
+  }
+
+  isFIFO(): boolean {
+    return false;
+  }
+
+  isSocket(): boolean {
+    return false;
+  }
+}
 
 describe("readWriteData.server", () => {
   beforeEach(() => {
@@ -53,7 +69,7 @@ describe("readWriteData.server", () => {
 
   describe("readFilenames", () => {
     it("Should return filenames with supported filenames only", () => {
-      (readdirSync as unknown as ReadDirMock).mockReturnValueOnce([
+      vi.mocked(readdirSync).mockReturnValue([
         new SimpleDirent("Cotton.cue", false),
         new SimpleDirent("Gate of Thunder.CUE", false),
         new SimpleDirent("game without file extension", false),
@@ -72,7 +88,7 @@ describe("readWriteData.server", () => {
     });
 
     it("Should return filenames with supported filenames from subfolders", () => {
-      when(readdirSync as unknown as ReadDirMock, { times: 1 })
+      when(readdirSync, { times: 1 })
         .calledWith(createCategoryPath(playstation.name), {
           encoding: "utf8",
           withFileTypes: true,
@@ -83,7 +99,7 @@ describe("readWriteData.server", () => {
           new SimpleDirent("game with unsupported file extension.wasd", false),
         ]);
 
-      when(readdirSync as unknown as ReadDirMock, { times: 1 })
+      when(readdirSync, { times: 1 })
         .calledWith(
           nodepath.join(createCategoryPath(playstation.name), "Hugo"),
           {
@@ -109,7 +125,7 @@ describe("readWriteData.server", () => {
     });
 
     it("Should return directory paths only, if entryAsDirectory is true", () => {
-      (readdirSync as unknown as ReadDirMock).mockReturnValueOnce([
+      vi.mocked(readdirSync).mockReturnValueOnce([
         new SimpleDirent("Monkey Island.pak", false),
         new SimpleDirent(monkeyIsland.path, true),
         new SimpleDirent(bladerunner.path, true),
@@ -130,7 +146,7 @@ describe("readWriteData.server", () => {
 
   describe("readDirectories", () => {
     it("Should return directory names", () => {
-      (readdirSync as unknown as ReadDirMock).mockReturnValueOnce([
+      vi.mocked(readdirSync).mockReturnValueOnce([
         new SimpleDirent("Hugo", true),
         new SimpleDirent("Hugo 2.chd", false),
         new SimpleDirent("game with unsupported file extension.wasd", false),

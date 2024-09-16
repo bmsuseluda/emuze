@@ -6,23 +6,12 @@ import {
 import { applicationsPath, pcsx2 } from "../__testData__/applications";
 import * as categoriesFromDB from "../categoriesDB.server";
 import { readFilenames } from "../readWriteData.server";
-import type { Mock } from "vitest";
 import { checkFlatpakIsInstalled } from "../applicationsDB.server/checkEmulatorIsInstalled";
 
 vi.mock("@kmamal/sdl");
-
-vi.mock("../readWriteData.server", () => ({
-  readDirectorynames: vi.fn(),
-  readFilenames: vi.fn(),
-}));
-
-vi.mock("../applicationsDB.server/checkEmulatorIsInstalled", () => ({
-  checkFlatpakIsInstalled: vi.fn(),
-}));
-
-vi.mock("../categories.server", () => ({
-  readCategories: vi.fn(),
-}));
+vi.mock("../readWriteData.server");
+vi.mock("../applicationsDB.server/checkEmulatorIsInstalled");
+vi.mock("../categories.server");
 
 describe("applications.server", () => {
   beforeEach(() => {
@@ -32,7 +21,7 @@ describe("applications.server", () => {
   describe("findExecutable", () => {
     it("Should return the configured executable from path", () => {
       // evaluate
-      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
+      vi.mocked(readFilenames).mockReturnValueOnce([
         "F:/games/Emulation/emulators/dosbox-staging-v0.81.0/test.config",
         "F:/games/Emulation/emulators/dosbox-staging-v0.81.0/no.ini",
         "F:/games/Emulation/emulators/dosbox-staging-v0.81.0/dosbox.exe",
@@ -49,7 +38,7 @@ describe("applications.server", () => {
 
     it("Should return the executable from path", () => {
       // evaluate
-      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
+      vi.mocked(readFilenames).mockReturnValueOnce([
         "F:/games/Emulation/emulators/Ares win64-139/test.config",
         "F:/games/Emulation/emulators/Ares win64-139/no.ini",
         "F:/games/Emulation/emulators/Ares win64-139/view.exe",
@@ -67,7 +56,7 @@ describe("applications.server", () => {
 
     it("Should return the executable from subpath", () => {
       // evaluate
-      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
+      vi.mocked(readFilenames).mockReturnValueOnce([
         "F:/games/Emulation/emulators/Ares win64-139/view.exe",
         "F:/games/Emulation/emulators/Ares win64-139/system/NewAres139.exe",
       ]);
@@ -83,7 +72,7 @@ describe("applications.server", () => {
 
     it("Should return null because there is no executable in the main and subfolder", () => {
       // evaluate
-      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
+      vi.mocked(readFilenames).mockReturnValueOnce([
         "F:/games/Emulation/emulators/Ares win64-139/view.exe",
       ]);
 
@@ -96,7 +85,7 @@ describe("applications.server", () => {
 
     it("Should return null because there is no executable in the main folder", () => {
       // evaluate
-      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([]);
+      vi.mocked(readFilenames).mockReturnValueOnce([]);
 
       // execute
       const executable = findExecutable("", "pcsx2");
@@ -110,7 +99,7 @@ describe("applications.server", () => {
     const application = categoriesFromDB.sonyplaystation2.application;
 
     it("Should return application if installed", () => {
-      (checkFlatpakIsInstalled as Mock<any, boolean>).mockReturnValueOnce(true);
+      vi.mocked(checkFlatpakIsInstalled).mockReturnValueOnce(true);
 
       const result = getInstalledApplicationForCategoryOnLinux(application);
 
@@ -127,7 +116,7 @@ describe("applications.server", () => {
   describe("getInstalledApplicationForCategoryOnWindows", () => {
     it("Should return application if installed", () => {
       const application = categoriesFromDB.sonyplaystation2.application;
-      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([pcsx2.path]);
+      vi.mocked(readFilenames).mockReturnValueOnce([pcsx2.path]);
 
       const result = getInstalledApplicationForCategoryOnWindows(
         application,
@@ -139,7 +128,7 @@ describe("applications.server", () => {
 
     it("Should return undefined if application is not installed", () => {
       const application = categoriesFromDB.sonyplaystation3.application;
-      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([]);
+      vi.mocked(readFilenames).mockReturnValueOnce([]);
 
       const result = getInstalledApplicationForCategoryOnWindows(
         application,
