@@ -8281,25 +8281,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest-when@npm:^3.5.5":
-  version: 3.5.5
-  resolution: "@types/jest-when@npm:3.5.5"
-  dependencies:
-    "@types/jest": "npm:*"
-  checksum: 10/816c1ed5554182c43261d23c2902506c316bc0368f2ea1e632a0a93d05d8f6f2918afa6a406c2f5fdd4d277e042b8d2ba797993dc3c2fd2d5f53cda946696772
-  languageName: node
-  linkType: hard
-
-"@types/jest@npm:*":
-  version: 27.4.1
-  resolution: "@types/jest@npm:27.4.1"
-  dependencies:
-    jest-matcher-utils: "npm:^27.0.0"
-    pretty-format: "npm:^27.0.0"
-  checksum: 10/aad204b936c67368f0c5e7a03906ec34b6d41bacf3a03f0fe816c1879369eb6a753dfd2947367cb3d17a7b0d4691b381d987798a824f6f77e811a2ca4d992113
-  languageName: node
-  linkType: hard
-
 "@types/js-cookie@npm:^2.2.6":
   version: 2.2.7
   resolution: "@types/js-cookie@npm:2.2.7"
@@ -12262,13 +12243,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"diff-sequences@npm:^27.5.1":
-  version: 27.5.1
-  resolution: "diff-sequences@npm:27.5.1"
-  checksum: 10/34d852a13eb82735c39944a050613f952038614ce324256e1c3544948fa090f1ca7f329a4f1f57c31fe7ac982c17068d8915b633e300f040b97708c81ceb26cd
-  languageName: node
-  linkType: hard
-
 "diff-sequences@npm:^29.4.3, diff-sequences@npm:^29.6.3":
   version: 29.6.3
   resolution: "diff-sequences@npm:29.6.3"
@@ -12666,7 +12640,6 @@ __metadata:
     "@types/babel__core": "npm:^7.20.5"
     "@types/babel__preset-env": "npm:^7.9.6"
     "@types/fs-extra": "npm:^11.0.4"
-    "@types/jest-when": "npm:^3.5.5"
     "@types/json-server": "npm:^0.14.7"
     "@types/lodash.debounce": "npm:^4.0.9"
     "@types/node": "npm:^20.11.30"
@@ -12690,7 +12663,6 @@ __metadata:
     happy-dom: "npm:^13.10.1"
     husky: "npm:^9.0.11"
     isbot: "npm:^5.1.2"
-    jest-when: "npm:^3.6.0"
     json-server: "npm:^0.17.4"
     lint-staged: "npm:^15.2.2"
     lodash.debounce: "npm:^4.0.8"
@@ -12712,6 +12684,7 @@ __metadata:
     utility-types: "npm:^3.11.0"
     vite: "npm:^5.2.6"
     vitest: "npm:0.33.0"
+    vitest-when: "npm:^0.4.1"
     wait-on: "npm:^7.2.0"
   languageName: unknown
   linkType: soft
@@ -16869,46 +16842,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-diff@npm:^27.5.1":
-  version: 27.5.1
-  resolution: "jest-diff@npm:27.5.1"
-  dependencies:
-    chalk: "npm:^4.0.0"
-    diff-sequences: "npm:^27.5.1"
-    jest-get-type: "npm:^27.5.1"
-    pretty-format: "npm:^27.5.1"
-  checksum: 10/af454f30f33af625832bdb02614e188a41e33ce79086b43f95dbcc515274dd36bf8443b8d0299e22c2416e7591da4321e6bc7f2b0aef56471d1133c6b6833221
-  languageName: node
-  linkType: hard
-
-"jest-get-type@npm:^27.5.1":
-  version: 27.5.1
-  resolution: "jest-get-type@npm:27.5.1"
-  checksum: 10/63064ab70195c21007d897c1157bf88ff94a790824a10f8c890392e7d17eda9c3900513cb291ca1c8d5722cad79169764e9a1279f7c8a9c4cd6e9109ff04bbc0
-  languageName: node
-  linkType: hard
-
-"jest-matcher-utils@npm:^27.0.0":
-  version: 27.5.1
-  resolution: "jest-matcher-utils@npm:27.5.1"
-  dependencies:
-    chalk: "npm:^4.0.0"
-    jest-diff: "npm:^27.5.1"
-    jest-get-type: "npm:^27.5.1"
-    pretty-format: "npm:^27.5.1"
-  checksum: 10/037f99878a0515581d7728ed3aed03707810f4da5a1c7ffb9d68a2c6c3180851a6ec40b559af37fbe891dde3ba12552b19e47b8188a27b6c5a53376be6907f32
-  languageName: node
-  linkType: hard
-
-"jest-when@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "jest-when@npm:3.6.0"
-  peerDependencies:
-    jest: ">= 25"
-  checksum: 10/0cb92738ccfa5711a685107f4437f18aefbe3cda120c912a9d49b612eeef03a910481ab40fe753fd42c4e617ffbb3d84c6bd66a76d963dac7f1ad9e9e5059359
-  languageName: node
-  linkType: hard
-
 "jiti@npm:^1.19.1":
   version: 1.19.1
   resolution: "jiti@npm:1.19.1"
@@ -20596,7 +20529,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-format@npm:^27.0.0, pretty-format@npm:^27.0.2, pretty-format@npm:^27.5.1":
+"pretty-format@npm:^27.0.2":
   version: 27.5.1
   resolution: "pretty-format@npm:27.5.1"
   dependencies:
@@ -24765,6 +24698,21 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 10/0409acd4bbad1bca42b2015ac5d0f710bbc84b86f6b518add9a9c13adf1aab02fd40fcca854dc08ff2a2226c1df77d5d5b4a958c6c4c04ca27a6bfb0b4f60615
+  languageName: node
+  linkType: hard
+
+"vitest-when@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "vitest-when@npm:0.4.1"
+  dependencies:
+    pretty-format: "npm:^29.7.0"
+  peerDependencies:
+    "@vitest/expect": ">=0.31.0 <3.0.0"
+    vitest: ">=0.31.0 <3.0.0"
+  peerDependenciesMeta:
+    "@vitest/expect":
+      optional: true
+  checksum: 10/760a4f8ec1b37841ad5405b02148f6dc0b8a4c5a5802373793fb8d238c1b3e4cffc8c420bde351e54bb7ac8b133423d65a28f21fc6a72bd14a9f6ea92e59afdf
   languageName: node
   linkType: hard
 

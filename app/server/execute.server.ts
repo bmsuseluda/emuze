@@ -30,7 +30,7 @@ const executeApplicationOnLinux = ({
   optionParams,
   omitAbsoluteEntryPathAsLastParam,
   categoriesPath,
-  categoryName,
+  applicationName,
 }: {
   applicationFlatpakOptionParams?: string[];
   applicationFlatpakId: string;
@@ -38,7 +38,7 @@ const executeApplicationOnLinux = ({
   optionParams: string[];
   omitAbsoluteEntryPathAsLastParam?: boolean;
   categoriesPath: string;
-  categoryName: string;
+  applicationName: string;
 }) => {
   if (checkFlatpakIsInstalled(applicationFlatpakId)) {
     const params = ["run", `--filesystem=${categoriesPath}`];
@@ -54,7 +54,7 @@ const executeApplicationOnLinux = ({
 
     execFileSync("flatpak", params);
   } else {
-    throw new EmulatorNotInstalledError(categoryName);
+    throw new EmulatorNotInstalledError(applicationName);
   }
 };
 
@@ -64,14 +64,12 @@ const executeApplicationOnWindows = ({
   absoluteEntryPath,
   optionParams,
   omitAbsoluteEntryPathAsLastParam,
-  categoryName,
 }: {
   applicationData: Application;
   applicationsPath: string;
   absoluteEntryPath: string;
   optionParams: string[];
   omitAbsoluteEntryPathAsLastParam?: boolean;
-  categoryName: string;
 }) => {
   const applicationPath = getInstalledApplicationForCategoryOnWindows(
     applicationData,
@@ -88,7 +86,7 @@ const executeApplicationOnWindows = ({
 
     execFileSync(applicationPath, params);
   } else {
-    throw new EmulatorNotInstalledError(categoryName);
+    throw new EmulatorNotInstalledError(applicationData.name);
   }
 };
 
@@ -179,7 +177,6 @@ export const executeApplication = (category: SystemId, entryData: Entry) => {
             optionParams,
             omitAbsoluteEntryPathAsLastParam:
               applicationData.omitAbsoluteEntryPathAsLastParam,
-            categoryName: categoryData.name,
           });
         } else {
           executeApplicationOnLinux({
@@ -190,7 +187,7 @@ export const executeApplication = (category: SystemId, entryData: Entry) => {
             omitAbsoluteEntryPathAsLastParam:
               applicationData.omitAbsoluteEntryPathAsLastParam,
             categoriesPath: generalData.categoriesPath,
-            categoryName: categoryData.name,
+            applicationName: applicationData.name,
           });
         }
 
@@ -198,13 +195,13 @@ export const executeApplication = (category: SystemId, entryData: Entry) => {
       } catch (error) {
         log("error", "executeApplication", error);
         if (error instanceof Error) {
-          setErrorDialog(`Launch of ${entryData.name} failed`, error.message);
+          setErrorDialog(`Launch failed`, error.message);
         }
         throw new Error();
       }
     } else {
       setErrorDialog(
-        `Launch of ${entryData.name} failed`,
+        `Launch failed`,
         `${entryData.path} does not exist anymore`,
       );
       throw new Error();
@@ -214,9 +211,9 @@ export const executeApplication = (category: SystemId, entryData: Entry) => {
 
 export const installFlatpak = (flatpakId: string) => {
   try {
-    log("info", `Start Install ${flatpakId}`);
+    log("debug", `Start Install ${flatpakId}`);
     execFileSync("flatpak", ["install", "--noninteractive", flatpakId]);
-    log("info", `End Install ${flatpakId}`);
+    log("debug", `End Install ${flatpakId}`);
     return true;
   } catch (error) {
     log("error", "installFlatpak", error);

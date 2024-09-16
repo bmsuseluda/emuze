@@ -85,7 +85,6 @@
     "@types/babel__core": "^7.20.5",
     "@types/babel__preset-env": "^7.9.6",
     "@types/fs-extra": "^11.0.4",
-    "@types/jest-when": "^3.5.5",
     "@types/json-server": "^0.14.7",
     "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^20.11.30",
@@ -103,7 +102,6 @@
     "fs-extra": "^11.2.0",
     "happy-dom": "^13.10.1",
     "husky": "^9.0.11",
-    "jest-when": "^3.6.0",
     "json-server": "^0.17.4",
     "lint-staged": "^15.2.2",
     "madge": "^7.0.0",
@@ -119,6 +117,7 @@
     "utility-types": "^3.11.0",
     "vite": "^5.2.6",
     "vitest": "0.33.0",
+    "vitest-when": "^0.4.1",
     "wait-on": "^7.2.0"
   },
   "engines": {

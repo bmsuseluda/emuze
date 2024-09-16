@@ -1,5 +1,5 @@
 import { readdirSync } from "fs";
-import { when } from "jest-when";
+import { when } from "vitest-when";
 import nodepath from "path";
 
 import { readDirectorynames, readFilenames } from "../readWriteData.server";
@@ -72,18 +72,18 @@ describe("readWriteData.server", () => {
     });
 
     it("Should return filenames with supported filenames from subfolders", () => {
-      when(readdirSync as unknown as ReadDirMock)
+      when(readdirSync as unknown as ReadDirMock, { times: 1 })
         .calledWith(createCategoryPath(playstation.name), {
           encoding: "utf8",
           withFileTypes: true,
         })
-        .mockReturnValueOnce([
+        .thenReturn([
           new SimpleDirent("Hugo", true),
           new SimpleDirent("Hugo 2.chd", false),
           new SimpleDirent("game with unsupported file extension.wasd", false),
         ]);
 
-      when(readdirSync as unknown as ReadDirMock)
+      when(readdirSync as unknown as ReadDirMock, { times: 1 })
         .calledWith(
           nodepath.join(createCategoryPath(playstation.name), "Hugo"),
           {
@@ -91,7 +91,7 @@ describe("readWriteData.server", () => {
             withFileTypes: true,
           },
         )
-        .mockReturnValueOnce([
+        .thenReturn([
           new SimpleDirent("Hugo.chd", false),
           new SimpleDirent("game without file extension", false),
           new SimpleDirent("game with unsupported file extension.wasd", false),

@@ -16,7 +16,6 @@ import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
 import { readAppearance, readGeneral } from "../server/settings.server";
 import { SettingsLink } from "../containers/SettingsLink";
-import { BiError } from "react-icons/bi";
 import { Typography } from "../components/Typography";
 import type { DataFunctionArgs } from "../context";
 import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction";
@@ -26,8 +25,6 @@ import fs from "fs";
 import nodepath from "path";
 import type { SystemId } from "../server/categoriesDB.server/systemId";
 import { log } from "../server/debug.server";
-import { categories } from "../server/categoriesDB.server";
-import { getInstalledApplicationForCategory } from "../server/applications.server";
 import { ImportButton } from "../containers/ImportButton";
 import type { ImportButtonId } from "../containers/ImportButton/importButtonId";
 
@@ -44,21 +41,8 @@ export const loader = ({ params }: DataFunctionArgs) => {
     return redirect("/settings");
   }
 
-  const categoryDB = categories[category as SystemId];
-  const applicationsPath = readGeneral()?.applicationsPath;
-
-  try {
-    const isApplicationInstalled = !!getInstalledApplicationForCategory({
-      categoryDB,
-      applicationsPath,
-    });
-
-    const { alwaysGameNames } = readAppearance();
-    return json({ categoryData, alwaysGameNames, isApplicationInstalled });
-  } catch (error) {
-    log("debug", "category", "redirect to settings");
-    return redirect("/settings");
-  }
+  const { alwaysGameNames } = readAppearance();
+  return json({ categoryData, alwaysGameNames });
 };
 
 const importButtonId: ImportButtonId = "importGames";
@@ -139,8 +123,7 @@ export const shouldRevalidate = ({
 const focus: FocusElement = "main";
 
 export default function Category() {
-  const { categoryData, alwaysGameNames, isApplicationInstalled } =
-    useLoaderData<typeof loader>();
+  const { categoryData, alwaysGameNames } = useLoaderData<typeof loader>();
 
   const launchButtonRef = useRef<ElementRef<"button">>(null);
 
@@ -211,15 +194,11 @@ export default function Category() {
                 <Button
                   type="submit"
                   name="_actionId"
-                  disabled={
-                    !entries || entries.length === 0 || !isApplicationInstalled
-                  }
+                  disabled={!entries || entries.length === 0}
                   value={actionIds.launch}
                   ref={launchButtonRef}
                   icon={
-                    !isApplicationInstalled ? (
-                      <BiError />
-                    ) : gamepadType ? (
+                    gamepadType ? (
                       <GamepadButtonIcon
                         buttonIndex={layout.buttons.A}
                         gamepadType={gamepadType}
@@ -229,9 +208,7 @@ export default function Category() {
                     )
                   }
                 >
-                  {!isApplicationInstalled
-                    ? "Emulator not installed"
-                    : "Launch Game"}
+                  Launch Game
                 </Button>
 
                 <ImportButton

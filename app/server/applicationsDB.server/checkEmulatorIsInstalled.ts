@@ -3,14 +3,14 @@ import { log } from "../debug.server";
 
 export class EmulatorNotInstalledError extends Error {
   constructor(emulatorName: string) {
-    super(`The Emulator for ${emulatorName} is not installed`);
+    super(`The Emulator ${emulatorName} is not installed.`);
   }
 }
 
 let flatpakAppList: string | null = null;
 
 export const updateFlatpakAppList = () => {
-  log("info", "Update flatpak app list");
+  log("debug", "Update flatpak app list");
   flatpakAppList = execFileSync("flatpak", ["list", "--app"]).toString();
 };
 

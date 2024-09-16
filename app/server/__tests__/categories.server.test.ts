@@ -1,4 +1,4 @@
-import { when } from "jest-when";
+import { when } from "vitest-when";
 import nodepath from "path";
 
 import {
@@ -226,20 +226,20 @@ describe("categories.server", () => {
         "unknown category",
         createCategoryPath(pcenginecd.name),
       ]);
-      when(readFilenames as Mock<any, string[]>)
+      when(readFilenames as Mock<any, string[]>, { times: 1 })
         .calledWith({
           path: createCategoryPath(nintendo3ds.name),
           fileExtensions: lime3ds.fileExtensions,
         })
-        .mockReturnValueOnce([
+        .thenReturn([
           createAbsoluteEntryPath(nintendo3ds.name, metroidsamusreturns.path),
         ]);
-      when(readFilenames as Mock<any, string[]>)
+      when(readFilenames as Mock<any, string[]>, { times: 1 })
         .calledWith({
           path: createCategoryPath(pcenginecd.name),
           fileExtensions: mednafen.fileExtensions,
         })
-        .mockReturnValueOnce([
+        .thenReturn([
           createAbsoluteEntryPath(pcenginecd.name, cotton.path),
           createAbsoluteEntryPath(pcenginecd.name, gateofthunder.path),
         ]);

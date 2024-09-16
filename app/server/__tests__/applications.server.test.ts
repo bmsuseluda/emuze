@@ -125,9 +125,8 @@ describe("applications.server", () => {
   });
 
   describe("getInstalledApplicationForCategoryOnWindows", () => {
-    const application = categoriesFromDB.sonyplaystation2.application;
-
     it("Should return application if installed", () => {
+      const application = categoriesFromDB.sonyplaystation2.application;
       (readFilenames as Mock<any, string[]>).mockReturnValueOnce([pcsx2.path]);
 
       const result = getInstalledApplicationForCategoryOnWindows(
@@ -139,6 +138,7 @@ describe("applications.server", () => {
     });
 
     it("Should return undefined if application is not installed", () => {
+      const application = categoriesFromDB.sonyplaystation3.application;
       (readFilenames as Mock<any, string[]>).mockReturnValueOnce([]);
 
       const result = getInstalledApplicationForCategoryOnWindows(

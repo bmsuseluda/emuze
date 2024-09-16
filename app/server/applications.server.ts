@@ -47,11 +47,32 @@ export const getInstalledApplicationForCategoryOnLinux = (
   return undefined;
 };
 
+let applicationPathsWindows: Partial<Record<ApplicationId, string>> = {};
+
+const getApplicationPathWindows = (
+  applicationsPath: string,
+  applicationId: ApplicationId,
+): string | undefined => {
+  if (applicationPathsWindows[applicationId]) {
+    return applicationPathsWindows[applicationId];
+  }
+
+  const path = findExecutable(applicationsPath, applicationId);
+  if (path) {
+    applicationPathsWindows[applicationId] = path;
+  }
+
+  return applicationPathsWindows[applicationId];
+};
+
 export const getInstalledApplicationForCategoryOnWindows = (
   applicationFromDB: ApplicationDB,
   applicationsPath: string,
 ): InstalledApplicationWindows | undefined => {
-  const path = findExecutable(applicationsPath, applicationFromDB.id);
+  const path = getApplicationPathWindows(
+    applicationsPath,
+    applicationFromDB.id,
+  );
   if (path) {
     return { ...applicationFromDB, path };
   }

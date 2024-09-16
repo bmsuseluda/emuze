@@ -20,6 +20,8 @@ import { general } from "../__testData__/general";
 import { existsSync } from "fs";
 import { mameNeoGeo, mednafen } from "../__testData__/applications";
 import { readFilenames } from "../readWriteData.server";
+import { when } from "vitest-when";
+import { updateFlatpakAppList } from "../applicationsDB.server/checkEmulatorIsInstalled";
 
 vi.mock("@kmamal/sdl");
 
@@ -60,6 +62,10 @@ const getFirstEntry = (
   category: Category & Required<Pick<Category, "entries">>,
 ) => category.entries[0];
 
+const flatpakAppList = Object.values(applicationsDB)
+  .map(({ flatpakId }) => flatpakId)
+  .join(" ");
+
 describe("execute.server", () => {
   const env = process.env;
 
@@ -79,10 +85,10 @@ describe("execute.server", () => {
         (readAppearance as Mock<any, Appearance>).mockReturnValue({
           fullscreen: false,
         });
-        (existsSync as unknown as Mock<any, boolean>).mockReturnValueOnce(true);
       });
 
       it("Should execute the entry with the defined application of the category", () => {
+        (existsSync as unknown as Mock<any, boolean>).mockReturnValueOnce(true);
         (readCategory as Mock<any, Category>).mockReturnValueOnce(pcenginecd);
         (readFilenames as Mock<any, string[]>).mockReturnValue([mednafen.path]);
         const entry = getFirstEntry(pcenginecd);
@@ -95,6 +101,7 @@ describe("execute.server", () => {
       });
 
       it("Should add optional params", () => {
+        (existsSync as unknown as Mock<any, boolean>).mockReturnValueOnce(true);
         (readCategory as Mock<any, Category>).mockReturnValueOnce(neogeo);
         const entryDirname = "F:/games/Emulation/roms/Neo Geo";
         (readFilenames as Mock<any, string[]>).mockReturnValue([
@@ -117,6 +124,7 @@ describe("execute.server", () => {
       });
 
       it("Should add environment varables", () => {
+        (existsSync as unknown as Mock<any, boolean>).mockReturnValueOnce(true);
         (readCategory as Mock<any, Category>).mockReturnValueOnce(pcenginecd);
         (readFilenames as Mock<any, string[]>).mockReturnValue([mednafen.path]);
         const entry = getFirstEntry(pcenginecd);
@@ -127,6 +135,19 @@ describe("execute.server", () => {
           createAbsoluteEntryPath(pcenginecd.name, entry.path),
         ]);
         expect(process.env.MEDNAFEN_HOME).toBe(nodepath.dirname(mednafen.path));
+      });
+
+      it("Should not execute if emulator is not installed", () => {
+        (existsSync as unknown as Mock<any, boolean>).mockReturnValueOnce(
+          false,
+        );
+        (readCategory as Mock<any, Category>).mockReturnValueOnce(pcenginecd);
+        (readFilenames as Mock<any, string[]>).mockReturnValue([mednafen.path]);
+        const entry = getFirstEntry(pcenginecd);
+
+        expect(() => executeApplication(pcenginecd.id, entry)).toThrowError();
+
+        expect(execFileMock).not.toHaveBeenCalled();
       });
     });
 
@@ -143,6 +164,9 @@ describe("execute.server", () => {
       });
 
       it("Should execute the entry with the defined application of the category", () => {
+        when(execFileMock)
+          .calledWith("flatpak", ["list", "--app"])
+          .thenReturn(flatpakAppList);
         (readCategory as Mock<any, Category>).mockReturnValueOnce(
           pcenginecdLinux,
         );
@@ -160,6 +184,9 @@ describe("execute.server", () => {
       });
 
       it("Should add optional params", () => {
+        when(execFileMock)
+          .calledWith("flatpak", ["list", "--app"])
+          .thenReturn(flatpakAppList);
         (readCategory as Mock<any, Category>).mockReturnValueOnce(neogeo);
         const entryDirname = "F:/games/Emulation/roms/Neo Geo";
         const entry = getFirstEntry(neogeo);
@@ -178,6 +205,31 @@ describe("execute.server", () => {
           "-nvram_directory",
           nodepath.join(entryDirname, "nvram"),
           createAbsoluteEntryPath(neogeo.name, entry.path),
+        ]);
+      });
+
+      it("Should not execute if emulator is not installed", () => {
+        when(execFileMock)
+          .calledWith("flatpak", ["list", "--app"])
+          .thenReturn("");
+        updateFlatpakAppList();
+        (readCategory as Mock<any, Category>).mockReturnValueOnce(
+          pcenginecdLinux,
+        );
+        const entry = getFirstEntry(pcenginecdLinux);
+
+        expect(() =>
+          executeApplication(pcenginecdLinux.id, entry),
+        ).toThrowError();
+
+        expect(execFileMock).toBeCalledTimes(2);
+
+        expect(execFileMock).not.toHaveBeenCalledWith("flatpak", [
+          "run",
+          "--filesystem=F:/games/Emulation/roms",
+          "--command=mednafen",
+          applicationsDB.mednafen.flatpakId,
+          createAbsoluteEntryPath(pcenginecdLinux.name, entry.path),
         ]);
       });
     });
