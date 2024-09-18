@@ -1,41 +1,23 @@
-import {
-  type ElectronApplication,
-  expect,
-  type Page,
-  test,
-} from "@playwright/test";
-import { startApp } from "./startApp";
+import { expect, test } from "../../pages/fixture";
 import nodepath from "path";
-import fs from "fs";
-import { LibraryPage } from "./pages/libraryPage";
-import { SettingsPage } from "./pages/settingsPage";
+import fs from "fs-extra";
+import { configFolderPath, port } from "./config";
 
 test.describe.configure({ mode: "serial" });
 
-const configFolderPath = nodepath.join(__dirname, "emptyConfig");
-const testRomsPath = nodepath.join(__dirname, "testRoms");
+const e2ePath = nodepath.join(__dirname, "..", "..");
 
-let app: ElectronApplication;
-let page: Page;
-let libraryPage: LibraryPage;
-let settingsPage: SettingsPage;
+const testRomsPath = nodepath.join(e2ePath, "testRoms");
 
 test.beforeAll(async () => {
   fs.rmSync(configFolderPath, { recursive: true, force: true });
-  const response = await startApp(configFolderPath);
-  app = response.app;
-  page = response.page;
-  libraryPage = new LibraryPage(response.page);
-  settingsPage = new SettingsPage(response.page);
 });
 
-test.afterAll(async () => {
-  if (app) {
-    await app.close();
-  }
+test.beforeEach(async ({ libraryPage }) => {
+  await libraryPage.goto(port);
 });
 
-test("Should show initial config page", async () => {
+test("Should show initial config page", async ({ page, settingsPage }) => {
   await settingsPage.expectIsInitialSubPage();
   await expect(settingsPage.closeButton).not.toBeVisible();
   await expect(settingsPage.generalPage.romsPath).toBeVisible();
@@ -61,7 +43,7 @@ test("Should show initial config page", async () => {
   });
 });
 
-test("Should import all", async () => {
+test("Should import all", async ({ page, libraryPage, settingsPage }) => {
   await settingsPage.generalPage.romsPath.fill(testRomsPath);
   await settingsPage.generalPage.importAllButton.click();
 

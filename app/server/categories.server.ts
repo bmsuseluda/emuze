@@ -29,9 +29,7 @@ export const paths = {
 };
 
 const categoriesDataCache = new FileDataCache<CategorySlim[]>(paths.categories);
-
 export const readCategories = () => categoriesDataCache.readFile() || [];
-
 const writeCategories = (categories: Category[]) => {
   const categoriesSlim = categories.map<CategorySlim>(({ id, name }) => ({
     id,
@@ -49,12 +47,10 @@ const deleteCategories = () => {
 };
 
 const categoryDataCache = new MultipleFileDataCache<Category>();
-
 export const readCategory = (categoryId: SystemId) =>
   categoryDataCache.readFile(
     nodepath.join(paths.entries, `${categoryId}.json`),
   );
-
 export const writeCategory = (category: Category) => {
   categoryDataCache.writeFile(
     category,

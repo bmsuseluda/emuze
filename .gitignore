@@ -13,5 +13,6 @@ coverage
 /playwright-report/
 /playwright/.cache/
 /e2eTests/*Config/
+/e2eTests/tests/**/*Config/
 /readme/build/
 /buildConfig

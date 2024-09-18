@@ -21,6 +21,15 @@ export class LibraryPage {
     });
   }
 
+  async goto(port: string) {
+    await this.page.goto(`http://127.0.0.1:${port}/`);
+  }
+
+  async press(key: string) {
+    await this.page.keyboard.press(key);
+    await this.page.waitForTimeout(200);
+  }
+
   async goToSystemViaClick(systemName: string, gameName?: string) {
     const link = this.page.getByRole("link", {
       name: systemName,

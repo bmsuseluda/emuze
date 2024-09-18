@@ -1,13 +1,13 @@
-import { defineConfig } from "@playwright/test";
+import { defineConfig, devices } from "@playwright/test";
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: "./e2eTests",
+  testDir: "./e2eTests/tests",
   testMatch: "*/*.pwtest.ts",
   snapshotPathTemplate:
-    "{testDir}/{testFileDir}/__screenshots__/{testFileName}/{projectName}/{arg}{ext}",
+    "{testDir}/{testFileDir}/__screenshots__/{testFileName}/{arg}{ext}",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -23,4 +23,10 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
   },
+  projects: [
+    {
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
+    },
+  ],
 });

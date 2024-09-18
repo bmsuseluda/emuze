@@ -23,6 +23,11 @@ export class SettingsPage {
     this.initialSubPage = this.generalPage.name;
   }
 
+  async press(key: string) {
+    await this.page.keyboard.press(key);
+    await this.page.waitForTimeout(200);
+  }
+
   async openSettingsViaClick(collapse?: boolean) {
     await expect(this.settingsHeadline).not.toBeVisible();
     await this.page.getByRole("link", { name: "settings" }).click();
@@ -90,5 +95,35 @@ export class SettingsPage {
       await expect(this.settingsHeadline).toBeVisible();
     }
     await this.expectIsSubPage(this.initialSubPage);
+  }
+
+  async openSettingsAndActivateAppearanceSettings() {
+    await this.openSettingsViaKeyboard();
+
+    await this.press("ArrowDown");
+
+    await this.expectIsSubPage(this.appearancePage.name);
+
+    await this.press("ArrowRight");
+    await expect(this.appearancePage.fullscreen).toBeFocused();
+
+    await expect(this.page).toHaveScreenshot();
+
+    await this.press("ArrowDown");
+    await expect(this.appearancePage.allwaysShowGameNames).toBeFocused();
+    await this.press("Enter");
+    await expect(this.appearancePage.allwaysShowGameNames).toBeChecked();
+
+    await this.press("ArrowDown");
+    await expect(this.appearancePage.collapseSidebar).toBeFocused();
+    await this.appearancePage.collapseSidebar.press("Enter");
+    await expect(this.appearancePage.collapseSidebar).toBeChecked();
+
+    await expect(this.page).toHaveScreenshot();
+
+    await this.press("Backspace");
+    await this.closeSettingsViaKeyboard(true);
+
+    await expect(this.page).toHaveScreenshot();
   }
 }
