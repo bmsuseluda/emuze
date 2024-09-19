@@ -22,6 +22,9 @@ export const readLastPlayed = () => lastPlayedDataCache.readFile() || [];
 export const writeLastPlayed = (entries: EntryWithSystem[]) => {
   lastPlayedDataCache.writeFile(entries);
 };
+export const invalidateLastPlayedDataCache = () => {
+  lastPlayedDataCache.invalidateCache();
+};
 
 const sortLastPlayed = (a: EntryWithSystem, b: EntryWithSystem) =>
   sortDateTime(a.lastPlayed, b.lastPlayed);

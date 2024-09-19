@@ -1,50 +1,24 @@
-import {
-  type ElectronApplication,
-  expect,
-  type Page,
-  test,
-} from "@playwright/test";
-import { startApp } from "./startApp";
+import { expect, test } from "../../pages/fixture";
 import nodepath from "path";
 import fs from "fs-extra";
-import { LibraryPage } from "./pages/libraryPage";
-import { SettingsPage } from "./pages/settingsPage";
+import { configFolderPath, e2ePath, port } from "./config";
 
 test.describe.configure({ mode: "serial" });
 
-const configFolderPath = nodepath.join(
-  __dirname,
-  "defaultWithLastPlayedConfig",
-);
-
-let app: ElectronApplication;
-let page: Page;
-let libraryPage: LibraryPage;
-let settingsPage: SettingsPage;
-
 test.beforeAll(async () => {
   fs.rmSync(configFolderPath, { recursive: true, force: true });
-  fs.copySync(nodepath.join(__dirname, "config"), configFolderPath);
+  fs.copySync(nodepath.join(e2ePath, "config"), configFolderPath);
   fs.copySync(
-    nodepath.join(__dirname, "lastPlayed.json"),
+    nodepath.join(e2ePath, "lastPlayed.json"),
     nodepath.join(configFolderPath, ".emuze", "data", "lastPlayed.json"),
   );
-  process.env.EMUZE_TEST_ROMS_PATH = nodepath.join(__dirname, "testRoms");
-  const response = await startApp(configFolderPath);
-  app = response.app;
-  page = response.page;
-
-  libraryPage = new LibraryPage(response.page);
-  settingsPage = new SettingsPage(response.page);
 });
 
-test.afterAll(async () => {
-  if (app) {
-    await app.close();
-  }
+test.beforeEach(async ({ libraryPage }) => {
+  await libraryPage.goto(port);
 });
 
-test("Should show last played", async () => {
+test("Should show last played", async ({ page, libraryPage }) => {
   await expect(page.getByRole("heading", { name: "emuze" })).toBeVisible();
   const title = await page.title();
   expect(title).toBe("emuze");
@@ -53,7 +27,7 @@ test("Should show last played", async () => {
   await expect(page).toHaveScreenshot();
 });
 
-test("Should switch to another system via click", async () => {
+test("Should switch to another system via click", async ({ libraryPage }) => {
   await libraryPage.goToSystemViaClick(
     "Sega Master System",
     "Sonic the Hedgehog",
@@ -62,7 +36,10 @@ test("Should switch to another system via click", async () => {
   await libraryPage.goToLastPlayed();
 });
 
-test("Should switch to another system via key down", async () => {
+test("Should switch to another system via key down", async ({
+  page,
+  libraryPage,
+}) => {
   await libraryPage.expectIsLastPlayed();
   await page.keyboard.press("ArrowDown");
 
@@ -71,7 +48,7 @@ test("Should switch to another system via key down", async () => {
   await libraryPage.goToLastPlayed();
 });
 
-test("Should open settings via keyboard", async () => {
+test("Should open settings via keyboard", async ({ page, settingsPage }) => {
   await settingsPage.openSettingsViaKeyboard();
 
   await page.keyboard.press("ArrowDown");
@@ -84,7 +61,10 @@ test("Should open settings via keyboard", async () => {
   await settingsPage.closeSettingsViaKeyboard();
 });
 
-test("Should check if focus history is valid after settings closed", async () => {
+test("Should check if focus history is valid after settings closed", async ({
+  page,
+  libraryPage,
+}) => {
   await libraryPage.expectIsLastPlayed();
 
   await page.keyboard.press("ArrowDown");
@@ -92,7 +72,7 @@ test("Should check if focus history is valid after settings closed", async () =>
   await libraryPage.expectIsInitialSystem();
 });
 
-test("import all", async () => {
+test("import all", async ({ page, libraryPage, settingsPage }) => {
   const playstationSystemName = "Playstation";
   const playstationLink = page.getByRole("link", {
     name: playstationSystemName,
@@ -100,7 +80,7 @@ test("import all", async () => {
 
   await expect(playstationLink).not.toBeVisible();
 
-  await libraryPage.goToLastPlayed();
+  await libraryPage.expectIsLastPlayed();
 
   await settingsPage.openSettingsViaClick();
   await settingsPage.generalPage.importAllButton.click();

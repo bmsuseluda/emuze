@@ -37,6 +37,9 @@ const writeCategories = (categories: Category[]) => {
   }));
   categoriesDataCache.writeFile(categoriesSlim);
 };
+export const invalidateCategoriesDataCache = () => {
+  categoriesDataCache.invalidateCache();
+};
 
 const deleteCategories = () => {
   if (fs.existsSync(paths.entries)) {
@@ -57,6 +60,9 @@ export const writeCategory = (category: Category) => {
     nodepath.join(paths.entries, `${category.id}.json`),
   );
   syncLastPlayedWithCategoryCached(category);
+};
+export const invalidateCategoryDataCache = () => {
+  categoryDataCache.invalidateCache();
 };
 
 const sortEntries = (a: Entry, b: Entry) => sortCaseInsensitive(a.name, b.name);

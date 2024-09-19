@@ -16,6 +16,10 @@ export class FileDataCache<Content> {
   writeFile(content: Content) {
     this.cache.writeFile(content, this.filePath);
   }
+
+  invalidateCache() {
+    this.cache.invalidateCache();
+  }
 }
 
 export class MultipleFileDataCache<Content> {
@@ -31,5 +35,9 @@ export class MultipleFileDataCache<Content> {
   writeFile(content: Content, filePath: string) {
     writeFileHome(content, filePath);
     this.content[filePath] = content;
+  }
+
+  invalidateCache() {
+    this.content = {};
   }
 }

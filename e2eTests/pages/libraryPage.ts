@@ -22,7 +22,7 @@ export class LibraryPage {
   }
 
   async goto(port: string) {
-    await this.page.goto(`http://127.0.0.1:${port}/`);
+    await this.page.goto(`http://127.0.0.1:${port}/invalidateCaches`);
   }
 
   async press(key: string) {

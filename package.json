@@ -37,6 +37,7 @@
     "e2e:serveRemix:default": "ts-node e2eTests/tests/default/start.ts",
     "e2e:serveRemix:initial": "ts-node e2eTests/tests/initial/start.ts",
     "e2e:serveRemix:defaultWindows": "ts-node e2eTests/tests/defaultWindows/start.ts",
+    "e2e:serveRemix:defaultWithLastPlayed": "ts-node e2eTests/tests/defaultWithLastPlayed/start.ts",
     "e2e:playwright": "playwright test --ui"
   },
   "dependencies": {

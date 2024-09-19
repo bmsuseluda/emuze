@@ -46,8 +46,14 @@ export const readGeneral = () => {
 };
 export const writeGeneral = (general: General) =>
   generalDataCache.writeFile(general);
+export const invalidateGeneralDataCache = () => {
+  generalDataCache.invalidateCache();
+};
 
 const appearanceDataCache = new FileDataCache<Appearance>(paths.appearance);
 export const readAppearance = () => appearanceDataCache.readFile() || {};
 export const writeAppearance = (appearance: Appearance) =>
   appearanceDataCache.writeFile(appearance);
+export const invalidateAppearanceDataCache = () => {
+  appearanceDataCache.invalidateCache();
+};

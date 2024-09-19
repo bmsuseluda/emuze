@@ -61,6 +61,7 @@ const appConfig: AppConfig = {
       route("/", "customRoutes/_index.tsx", { index: true });
       createCategoriesRoutes(route);
       createSettingsRoutes(route, "initial");
+      route("/invalidateCaches", "customRoutes/invalidateCaches.tsx");
     });
   },
   postcss: true,
