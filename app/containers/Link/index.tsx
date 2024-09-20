@@ -6,7 +6,7 @@ import type { RemixNavLinkProps } from "@remix-run/react/dist/components";
 import { styled } from "../../../styled-system/jsx";
 
 interface Props extends RemixNavLinkProps {
-  highlightIfActive?: boolean;
+  isFocused?: boolean;
   icon?: ReactNode;
   children?: ReactNode;
 }
@@ -30,14 +30,19 @@ const LinkSpan = styled(IconChildrenWrapper, {
     width: "100%",
     boxSizing: "border-box",
     padding: "0.5em",
+    borderStyle: "solid",
+    borderWidth: "1px",
+    borderColor: "transparent",
   },
 
   variants: {
     active: {
       true: {
-        backgroundColor: "accent",
-        color: "colorOnAccent",
+        borderColor: "color",
       },
+    },
+    focused: {
+      true: {},
     },
     circle: {
       true: {
@@ -46,10 +51,22 @@ const LinkSpan = styled(IconChildrenWrapper, {
       },
     },
   },
+
+  compoundVariants: [
+    {
+      focused: true,
+      active: true,
+      css: {
+        backgroundColor: "accent",
+        color: "colorOnAccent",
+        borderColor: "accent",
+      },
+    },
+  ],
 });
 
 export const Link = forwardRef<ElementRef<typeof StyledNavLink>, Props>(
-  ({ to, children, icon, highlightIfActive = true, ...rest }, ref) => (
+  ({ to, children, icon, isFocused, ...rest }, ref) => (
     <StyledNavLink
       to={to}
       prefetch="intent"
@@ -59,7 +76,8 @@ export const Link = forwardRef<ElementRef<typeof StyledNavLink>, Props>(
     >
       {({ isActive }) => (
         <LinkSpan
-          active={isActive && highlightIfActive}
+          active={isActive}
+          focused={isFocused}
           circle={!!icon && !children}
         >
           {icon}

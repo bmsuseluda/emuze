@@ -95,6 +95,7 @@ export default function Index() {
                 ref={categoryLinksRefCallback(index)}
                 icon={<SettingsIcon id={id} />}
                 onClick={onLinkClick}
+                isFocused={isInFocus}
               >
                 {collapseSidebar ? undefined : name}
               </Link>

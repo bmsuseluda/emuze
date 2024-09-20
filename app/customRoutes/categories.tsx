@@ -120,6 +120,7 @@ export default function Categories() {
               aria-label={name}
               ref={categoryLinksRefCallback(index)}
               onClick={onLinkClick}
+              isFocused={isInFocus}
             >
               {collapseSidebar ? undefined : <Name>{name}</Name>}
             </Link>

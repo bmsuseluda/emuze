@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef } from "react";
 import {
   useDirectionalInputDown,
   useDirectionalInputUp,
+  useInputBack,
 } from "../useDirectionalInput";
 
 // TODO: write tests
@@ -57,8 +58,15 @@ export const useGamepadsOnSidebar = (isInFocus: boolean) => {
     }
   }, [isInFocus, selectLink]);
 
+  const onBack = useCallback(() => {
+    if (isInFocus) {
+      selectLink(0);
+    }
+  }, [isInFocus, selectLink]);
+
   useDirectionalInputUp(onUp);
   useDirectionalInputDown(onDown);
+  useInputBack(onBack);
 
   const categoryLinksRefCallback = useCallback(
     (index: number) => (ref: ElementRef<"a">) => {
