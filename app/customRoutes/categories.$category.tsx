@@ -127,7 +127,7 @@ export default function Category() {
 
   const launchButtonRef = useRef<ElementRef<"button">>(null);
 
-  const { isInFocus, switchFocus, switchFocusBack } =
+  const { isInFocus, switchFocus, switchFocusBack, enableFocus } =
     useFocus<FocusElement>(focus);
 
   const { gamepadType, enableGamepads, disableGamepads } =
@@ -151,10 +151,10 @@ export default function Category() {
 
   const onEntryClick = useCallback(() => {
     if (!isInFocus) {
-      switchFocus(focus);
+      enableFocus();
       enableGamepads();
     }
-  }, [isInFocus, enableGamepads, switchFocus]);
+  }, [isInFocus, enableGamepads, enableFocus]);
 
   if (!categoryData) {
     return null;

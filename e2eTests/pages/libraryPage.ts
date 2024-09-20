@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page } from "@playwright/test";
+import { ports, TestName } from "../tests/ports";
 
 export class LibraryPage {
   readonly page: Page;
@@ -21,7 +22,8 @@ export class LibraryPage {
     });
   }
 
-  async goto(port: string) {
+  async goto(testName: TestName) {
+    const port = ports[testName].toString();
     await this.page.goto(`http://127.0.0.1:${port}/invalidateCaches`);
   }
 

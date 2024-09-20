@@ -1,7 +1,7 @@
 import { expect, test } from "../../pages/fixture";
 import nodepath from "path";
 import fs from "fs-extra";
-import { configFolderPath, e2ePath, port } from "./config";
+import { configFolderPath, e2ePath, testName } from "./config";
 
 test.describe.configure({ mode: "serial" });
 
@@ -9,13 +9,13 @@ test.beforeAll(async () => {
   fs.rmSync(configFolderPath, { recursive: true, force: true });
   fs.copySync(nodepath.join(e2ePath, "config"), configFolderPath);
   fs.copySync(
-    nodepath.join(e2ePath, "lastPlayed.json"),
+    nodepath.join(__dirname, "lastPlayed.json"),
     nodepath.join(configFolderPath, ".emuze", "data", "lastPlayed.json"),
   );
 });
 
 test.beforeEach(async ({ libraryPage }) => {
-  await libraryPage.goto(port);
+  await libraryPage.goto(testName);
 });
 
 test("Should show last played", async ({ page, libraryPage }) => {
@@ -37,37 +37,38 @@ test("Should switch to another system via click", async ({ libraryPage }) => {
 });
 
 test("Should switch to another system via key down", async ({
-  page,
   libraryPage,
 }) => {
   await libraryPage.expectIsLastPlayed();
-  await page.keyboard.press("ArrowDown");
+  await libraryPage.press("ArrowDown");
 
   await libraryPage.expectIsInitialSystem();
 
   await libraryPage.goToLastPlayed();
 });
 
-test("Should open settings via keyboard", async ({ page, settingsPage }) => {
+test("Should open settings via keyboard", async ({
+  libraryPage,
+  settingsPage,
+}) => {
   await settingsPage.openSettingsViaKeyboard();
 
-  await page.keyboard.press("ArrowDown");
+  await libraryPage.press("ArrowDown");
 
   await settingsPage.expectIsSubPage(settingsPage.appearancePage.name);
 
-  await page.keyboard.press("ArrowRight");
+  await libraryPage.press("ArrowRight");
   await expect(settingsPage.appearancePage.fullscreen).toBeFocused();
 
   await settingsPage.closeSettingsViaKeyboard();
 });
 
 test("Should check if focus history is valid after settings closed", async ({
-  page,
   libraryPage,
 }) => {
   await libraryPage.expectIsLastPlayed();
 
-  await page.keyboard.press("ArrowDown");
+  await libraryPage.press("ArrowDown");
 
   await libraryPage.expectIsInitialSystem();
 });

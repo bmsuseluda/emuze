@@ -1,7 +1,7 @@
 import { expect, test } from "../../pages/fixture";
 import nodepath from "path";
 import fs from "fs-extra";
-import { configFolderPath, e2ePath, port } from "./config";
+import { configFolderPath, e2ePath, testName } from "./config";
 
 test.describe.configure({ mode: "serial" });
 
@@ -11,7 +11,7 @@ test.beforeAll(async () => {
 });
 
 test.beforeEach(async ({ libraryPage }) => {
-  await libraryPage.goto(port);
+  await libraryPage.goto(testName);
 });
 
 test("Should show initial system", async ({ page, libraryPage }) => {
@@ -42,7 +42,6 @@ test("Should switch to another system via click", async ({ libraryPage }) => {
 });
 
 test("Should switch to another system via key down", async ({
-  page,
   libraryPage,
 }) => {
   await libraryPage.expectIsInitialSystem();

@@ -1,0 +1,25 @@
+import { spawn } from "child_process";
+import { ports, TestName } from "./ports";
+
+export const startRemix = (testName: TestName) => {
+  process.env.EMUZE_IGDB_DEVELOPMENT_URL = "http://localhost:8080/games";
+  process.env.EMUZE_DEBUG = "true";
+  process.env.PORT = ports[testName].toString();
+
+  try {
+    const child = spawn("yarn serve:remix", {
+      shell: true,
+    });
+    child.stdout.setEncoding("utf8");
+    child.stdout.on("data", function (data) {
+      console.log("stdout: " + data);
+    });
+
+    child.stderr.setEncoding("utf8");
+    child.stderr.on("data", function (data) {
+      console.log("stderr: " + data);
+    });
+  } catch (e) {
+    console.log("error: " + e);
+  }
+};

@@ -17,18 +17,23 @@ export const useGamepadsOnSidebar = (isInFocus: boolean) => {
     }
   }, []);
 
-  const getCurrentIndex = useCallback(
-    () => categoryLinksRefs.current.findIndex((element) => element.ariaCurrent),
-    [],
-  );
+  const getCurrentIndex = () =>
+    categoryLinksRefs.current.findIndex((element) => element?.ariaCurrent);
 
   /* Set element focus on the selected link again if focus is set on sidebar again */
   useEffect(() => {
-    const selectedLink = categoryLinksRefs.current[getCurrentIndex()];
-    if (isInFocus && selectedLink) {
-      selectedLink.focus();
-    }
-  }, [isInFocus, getCurrentIndex]);
+    // The timeout is necessary to wait for page change on mouse click on a sidebar link
+    setTimeout(() => {
+      const selectedLink = categoryLinksRefs.current[getCurrentIndex()];
+      if (
+        isInFocus &&
+        selectedLink &&
+        document.activeElement !== selectedLink
+      ) {
+        selectedLink.focus();
+      }
+    }, 100);
+  }, [isInFocus]);
 
   const onDown = useCallback(() => {
     if (isInFocus) {
@@ -39,7 +44,7 @@ export const useGamepadsOnSidebar = (isInFocus: boolean) => {
         selectLink(0);
       }
     }
-  }, [isInFocus, selectLink, getCurrentIndex]);
+  }, [isInFocus, selectLink]);
 
   const onUp = useCallback(() => {
     if (isInFocus) {
@@ -50,7 +55,7 @@ export const useGamepadsOnSidebar = (isInFocus: boolean) => {
         selectLink(-1);
       }
     }
-  }, [isInFocus, selectLink, getCurrentIndex]);
+  }, [isInFocus, selectLink]);
 
   useDirectionalInputUp(onUp);
   useDirectionalInputDown(onDown);
