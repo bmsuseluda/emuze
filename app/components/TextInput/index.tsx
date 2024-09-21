@@ -93,6 +93,13 @@ const ChildrenWrapper = styled("div", {
           borderColor: "error",
           borderStyle: "dashed",
         },
+
+        "&:focus-within": {
+          "& > input": {
+            borderColor: "accent",
+            borderStyle: "solid",
+          },
+        },
       },
     },
   },

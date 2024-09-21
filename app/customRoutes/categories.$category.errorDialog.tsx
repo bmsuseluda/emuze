@@ -39,12 +39,12 @@ export default function RenderComponent() {
   const { errorDialog } = useLoaderData<typeof loader>();
   const listRef = useRef<ElementRef<"div">>(null);
   const submit = useSubmit();
-  const { switchFocusBack, switchFocus, isInFocus } =
+  const { switchFocusBack, isInFocus, enableFocus } =
     useFocus<FocusElement>("errorDialog");
 
   useEffect(() => {
     if (!isInFocus) {
-      switchFocus("errorDialog");
+      enableFocus();
     }
     // Should be executed only once, therefore isInFocus can not be part of the dependency array
     // eslint-disable-next-line react-hooks/exhaustive-deps

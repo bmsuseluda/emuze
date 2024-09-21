@@ -12,7 +12,7 @@ import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar";
 import { SettingsIcon } from "../components/SettingsIcon";
 import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { Dialog } from "../components/Dialog";
 import { useImportButton } from "../containers/ImportButton/useImportButton";
 import { useInstallEmulatorsButton } from "../containers/InstallEmulatorsButton/useInstallEmulatorsButton";
@@ -38,6 +38,14 @@ export default function Index() {
 
   const { isInFocus, switchFocus, switchFocusBackMultiple, enableFocus } =
     useFocus<FocusElement>("settingsSidebar");
+
+  useEffect(() => {
+    if (!isInFocus) {
+      enableFocus();
+    }
+    // Should be executed only once, therefore isInFocus can not be part of the dependency array
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { categoryLinksRefCallback } = useGamepadsOnSidebar(isInFocus);
   const navigate = useNavigate();

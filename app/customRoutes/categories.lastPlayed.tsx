@@ -12,7 +12,7 @@ import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
 import { layout } from "../hooks/useGamepads/layouts";
 import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
-import { readAppearance } from "../server/settings.server";
+import { readAppearance, readGeneral } from "../server/settings.server";
 import { SettingsLink } from "../containers/SettingsLink";
 import { Typography } from "../components/Typography";
 import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction";
@@ -21,6 +21,7 @@ import { GamepadButtonIcon } from "../components/GamepadButtonIcon";
 import { log } from "../server/debug.server";
 import { readLastPlayed } from "../server/lastPlayed.server";
 import { SystemIcon } from "../components/SystemIcon";
+import fs from "fs";
 
 export const loader = () => {
   const lastPlayed = readLastPlayed();
@@ -39,6 +40,12 @@ export const action: ActionFunction = async ({ request }) => {
 
     const form = await request.formData();
     const _actionId = form.get("_actionId");
+
+    const general = readGeneral();
+
+    if (!general?.categoriesPath || !fs.existsSync(general.categoriesPath)) {
+      return redirect("settings");
+    }
 
     if (_actionId === actionIds.launch) {
       const game = form.get("game");
