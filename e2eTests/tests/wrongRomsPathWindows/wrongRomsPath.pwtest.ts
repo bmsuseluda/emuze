@@ -28,6 +28,9 @@ test("Should show settings on launch game", async ({
   await expect(settingsPage.generalPage.headline).toBeVisible();
   await expect(settingsPage.generalPage.romsPathNotExistError).toBeVisible();
 
+  await libraryPage.press("ArrowDown");
+  await expect(settingsPage.appearancePage.headline).toBeVisible();
+
   await settingsPage.closeSettingsViaClick();
 });
 

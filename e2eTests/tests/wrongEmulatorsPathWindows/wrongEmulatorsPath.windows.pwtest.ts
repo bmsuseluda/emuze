@@ -31,6 +31,9 @@ test("Should show settings on launch game", async ({
     settingsPage.generalPage.emulatorsPathNotExistError,
   ).toBeVisible();
 
+  await libraryPage.press("ArrowDown");
+  await expect(settingsPage.appearancePage.headline).toBeVisible();
+
   await settingsPage.closeSettingsViaClick();
 });
 
