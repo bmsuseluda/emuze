@@ -68,13 +68,12 @@ export const readFilenames = ({
 
 export const readFileHome = <T>(path: string): T | null => {
   const pathInHome = nodepath.join(homeDirectory, path);
-  try {
+
+  if (existsSync(pathInHome)) {
     const data = readFileSync(pathInHome, "utf8");
     return JSON.parse(data);
-  } catch (error) {
-    log("error", "readFileHome", path, error);
-    return null;
   }
+  return null;
 };
 
 export const writeFile = (object: unknown, path: string) => {

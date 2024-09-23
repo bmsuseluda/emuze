@@ -36,11 +36,16 @@ export default function Index() {
 
   const closable = useMemo(() => !pathname.startsWith("/settings"), [pathname]);
 
-  const { isInFocus, switchFocus, switchFocusBackMultiple, enableFocus } =
-    useFocus<FocusElement>("settingsSidebar");
+  const {
+    isInFocus,
+    switchFocus,
+    switchFocusBackMultiple,
+    enableFocus,
+    focusHistory,
+  } = useFocus<FocusElement>("settingsSidebar");
 
   useEffect(() => {
-    if (!isInFocus) {
+    if (!isInFocus && !focusHistory.current.at(-1)?.includes("settings")) {
       enableFocus();
     }
     // Should be executed only once, therefore isInFocus can not be part of the dependency array

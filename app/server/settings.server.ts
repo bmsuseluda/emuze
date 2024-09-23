@@ -28,7 +28,7 @@ export const paths = {
   appearance: "data/settings/appearance.json",
 } satisfies Record<SettingsID, string>;
 
-const generalDataCache = new FileDataCache<General>(paths.general);
+const generalDataCache = new FileDataCache<General>(paths.general, {});
 export const readGeneral = () => {
   const testRomsPath = process.env.EMUZE_TEST_ROMS_PATH;
   const testEmulatorsPath = process.env.EMUZE_TEST_EMULATORS_PATH;
@@ -50,7 +50,7 @@ export const invalidateGeneralDataCache = () => {
   generalDataCache.invalidateCache();
 };
 
-const appearanceDataCache = new FileDataCache<Appearance>(paths.appearance);
+const appearanceDataCache = new FileDataCache<Appearance>(paths.appearance, {});
 export const readAppearance = () => appearanceDataCache.readFile() || {};
 export const writeAppearance = (appearance: Appearance) =>
   appearanceDataCache.writeFile(appearance);

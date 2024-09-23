@@ -11,6 +11,7 @@ export const paths = {
 
 const lastPlayedDataCache = new FileDataCache<EntryWithSystem[]>(
   paths.lastPlayed,
+  [],
 );
 export const readLastPlayed = () => lastPlayedDataCache.readFile() || [];
 /**

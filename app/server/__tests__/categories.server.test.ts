@@ -236,7 +236,7 @@ describe("categories.server", () => {
       await importCategories();
 
       // expect
-      expect(writeFileHome).toBeCalledTimes(6);
+      expect(writeFileHome).toBeCalledTimes(7);
       expect(writeFileHome).toHaveBeenNthCalledWith(1, [], paths.categories);
       expect(writeFileHome).toHaveBeenNthCalledWith(
         2,

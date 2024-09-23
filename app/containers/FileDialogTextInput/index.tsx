@@ -47,6 +47,7 @@ export const FileDialogInputField = ({
           value={value}
           onChange={(event) => setValue(event.target.value)}
           iconButton
+          autoComplete="off"
         />
         <TextInput.IconButton
           type="submit"

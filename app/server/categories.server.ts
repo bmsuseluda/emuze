@@ -28,7 +28,10 @@ export const paths = {
   entries: "data/categories/",
 };
 
-const categoriesDataCache = new FileDataCache<CategorySlim[]>(paths.categories);
+const categoriesDataCache = new FileDataCache<CategorySlim[]>(
+  paths.categories,
+  [],
+);
 export const readCategories = () => categoriesDataCache.readFile() || [];
 const writeCategories = (categories: Category[]) => {
   const categoriesSlim = categories.map<CategorySlim>(({ id, name }) => ({
@@ -311,7 +314,7 @@ export const importCategories = async () => {
           categorySettledResult
             .reason()
             .catch((error: { response: object }) => {
-              log("error", "igdb error", error.response);
+              log("error", "igdb error all settled", error.response);
             });
 
           return categories[index];

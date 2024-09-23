@@ -2,9 +2,9 @@ import { readFileHome, writeFileHome } from "./readWriteData.server";
 
 // TODO: create npm package
 export class FileDataCache<Content> {
-  constructor(filePath: string) {
+  constructor(filePath: string, defaultContent?: Content) {
     this.filePath = filePath;
-    this.cache = new MultipleFileDataCache<Content>();
+    this.cache = new MultipleFileDataCache<Content>(defaultContent);
   }
   filePath: string;
   cache: MultipleFileDataCache<Content>;
@@ -23,11 +23,20 @@ export class FileDataCache<Content> {
 }
 
 export class MultipleFileDataCache<Content> {
+  constructor(defaultContent?: Content) {
+    this.defaultContent = defaultContent;
+  }
   content: Record<string, Content | null> = {};
+  defaultContent?: Content;
 
   readFile(filePath: string) {
     if (!this.content[filePath]) {
-      this.content[filePath] = readFileHome<Content>(filePath);
+      const result = readFileHome<Content>(filePath);
+      if (result) {
+        this.content[filePath] = result;
+      } else if (this.defaultContent) {
+        this.writeFile(this.defaultContent, filePath);
+      }
     }
     return this.content[filePath];
   }

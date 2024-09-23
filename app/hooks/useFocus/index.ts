@@ -74,5 +74,6 @@ export const useFocus = <FocusElement extends string>(
     switchFocusBackMultiple,
     disableFocus,
     enableFocus,
+    focusHistory,
   };
 };
