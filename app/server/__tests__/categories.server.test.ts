@@ -243,6 +243,7 @@ describe("categories.server", () => {
         nintendo3ds,
         nodepath.join(paths.entries, `${nintendo3ds.id}.json`),
       );
+      // last played cache warmup
       expect(writeFileHome).toHaveBeenNthCalledWith(
         3,
         [],
@@ -250,16 +251,21 @@ describe("categories.server", () => {
       );
       expect(writeFileHome).toHaveBeenNthCalledWith(
         4,
-        pcenginecd,
-        nodepath.join(paths.entries, `${pcenginecd.id}.json`),
-      );
-      expect(writeFileHome).toHaveBeenNthCalledWith(
-        5,
         [],
         lastPlayedPaths.lastPlayed,
       );
       expect(writeFileHome).toHaveBeenNthCalledWith(
+        5,
+        pcenginecd,
+        nodepath.join(paths.entries, `${pcenginecd.id}.json`),
+      );
+      expect(writeFileHome).toHaveBeenNthCalledWith(
         6,
+        [],
+        lastPlayedPaths.lastPlayed,
+      );
+      expect(writeFileHome).toHaveBeenNthCalledWith(
+        7,
         [
           {
             id: nintendo3ds.id,

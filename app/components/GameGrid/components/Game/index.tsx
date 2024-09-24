@@ -92,17 +92,33 @@ const IconWrapper = styled("div", {
 
 const Name = styled("div", {
   base: {
+    _before: {
+      content: '""',
+      position: "absolute",
+      minHeight: "1rem",
+      left: 0,
+      right: 0,
+      top: "-1rem",
+      backgroundColor: "transparentBackgroundColor",
+      maskPosition: "bottom",
+      maskImage:
+        "linear-gradient(" +
+        "to top, " +
+        "{colors.backgroundColor} 10%, " +
+        "transparent)",
+    },
+
     color: "color",
     position: "absolute",
     bottom: "-1px",
     left: 0,
     right: 0,
     userSelect: "none",
-    padding: "0.4rem 0.8rem",
+    padding: "0 0.8rem 0.4rem",
     backgroundColor: "transparentBackgroundColor",
-    backdropFilter: "blur(2px)",
     fontWeight: 400,
     fontSize: "80%",
+    lineHeight: "1.3rem",
   },
 });
 

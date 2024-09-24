@@ -52,7 +52,7 @@ export const addToLastPlayed = (
   const lastPlayedUpdated = [...lastPlayed];
   const index = lastPlayedUpdated.findIndex(
     (lastPlayedGame) =>
-      lastPlayedGame.id === entryToAdd.id &&
+      lastPlayedGame.path === entryToAdd.path &&
       lastPlayedGame.systemId === systemId,
   );
 
