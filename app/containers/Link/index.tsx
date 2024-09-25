@@ -30,15 +30,14 @@ const LinkSpan = styled(IconChildrenWrapper, {
     width: "100%",
     boxSizing: "border-box",
     padding: "0.5em",
-    borderStyle: "solid",
-    borderWidth: "1px",
-    borderColor: "transparent",
   },
 
   variants: {
     active: {
       true: {
-        borderColor: "color",
+        backgroundColor: "accent",
+        color: "colorOnAccent",
+        filter: "grayscale(50%)",
       },
     },
     focused: {
@@ -59,7 +58,7 @@ const LinkSpan = styled(IconChildrenWrapper, {
       css: {
         backgroundColor: "accent",
         color: "colorOnAccent",
-        borderColor: "accent",
+        filter: "none",
       },
     },
   ],
