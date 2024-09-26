@@ -96,7 +96,6 @@ You can change the folders in the settings.
 #### Emulators Folder (Windows only)
 
 This is the folder where your emulators are installed. It is only necessary on Windows.
-On Linux all emulators need to be installed via flatpak but emuze can do this for you.
 
 ```
 emulators
@@ -112,7 +111,8 @@ emulators
 
 ### Linux
 
-For now emuze is only released as an AppImage. Your distribution needs to support Flatpaks.
+For now emuze is only released as an AppImage. Your Linux distribution needs to support Flatpaks.
+All emulators need to be installed via flatpak but emuze can do this for you.
 
 1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.50.0/emuze-0.50.0.AppImage) the latest Version of emuze
 
