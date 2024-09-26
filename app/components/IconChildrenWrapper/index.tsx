@@ -11,8 +11,8 @@ const Wrapper = styled("span", {
     color: "color",
 
     "& > svg": {
-      minHeight: "max(24px, 1.2em)",
-      minWidth: "max(24px, 1.2em)",
+      minHeight: "max(20px, 1.2em)",
+      minWidth: "max(20px, 1.2em)",
       verticalAlign: "middle",
     },
   },

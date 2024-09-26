@@ -1,26 +1,26 @@
-import { json, redirect } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
+import { json } from "@remix-run/node";
+import { Outlet, redirect, useLoaderData } from "@remix-run/react";
 import { readCategories } from "../server/categories.server";
 import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout";
 import { Link } from "../containers/Link";
 import { Header } from "../containers/Header";
-import { useTestId } from "../hooks/useTestId";
 import { SystemIcon } from "../components/SystemIcon";
 import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar";
 import { readAppearance } from "../server/settings.server";
 import { useCallback } from "react";
-import {
-  useGamepadButtonPressEvent,
-  useGamepadStickDirectionEvent,
-  useKeyboardEvent,
-} from "../hooks/useGamepadEvent";
-import { layout } from "../hooks/useGamepads/layouts";
 import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
 import { Typography } from "../components/Typography";
 import { styled } from "../../styled-system/jsx";
 import type { DataFunctionArgs } from "../context";
 import type { SystemId } from "../server/categoriesDB.server/systemId";
+import { readLastPlayed } from "../server/lastPlayed.server";
+import { useOpenSettings } from "../containers/SettingsLink/useOpenSettings";
+import { useImportButton } from "../containers/ImportButton/useImportButton";
+import {
+  useDirectionalInputRight,
+  useInputConfirmation,
+} from "../hooks/useDirectionalInput";
 
 type CategoryLinks = Array<{ id: SystemId; name: string; to: string }>;
 type LoaderData = {
@@ -28,13 +28,23 @@ type LoaderData = {
   collapseSidebar?: boolean;
 };
 
-export const loader = ({ params }: DataFunctionArgs) => {
+export const loader = ({ params, request }: DataFunctionArgs) => {
   const { category } = params;
   const { collapseSidebar } = readAppearance();
   const categories = readCategories();
 
-  if (categories && categories.length > 0) {
-    if (!category) {
+  if (categories?.length > 0) {
+    const isLastPlayedAvailable = readLastPlayed().length > 0;
+
+    if (isLastPlayedAvailable && categories[0].id !== "lastPlayed") {
+      categories.unshift({ id: "lastPlayed", name: "Last Played" });
+    }
+
+    if (!request.url.includes("lastPlayed") && !category) {
+      if (isLastPlayedAvailable) {
+        throw redirect("lastPlayed");
+      }
+
       throw redirect(categories[0].id);
     }
 
@@ -50,10 +60,7 @@ export const loader = ({ params }: DataFunctionArgs) => {
     });
   }
 
-  return json({
-    categoryLinks: [],
-    collapseSidebar,
-  });
+  return redirect("/settings/general");
 };
 
 export const ErrorBoundary = ({ error }: { error: Error }) => {
@@ -76,7 +83,6 @@ const Name = styled(Typography, {
 
 export default function Categories() {
   const { categoryLinks, collapseSidebar } = useLoaderData<LoaderData>();
-  const { getTestId } = useTestId("categories");
 
   const { isInFocus, switchFocus, enableFocus } =
     useFocus<FocusElement>("sidebar");
@@ -89,21 +95,10 @@ export default function Categories() {
     }
   }, [isInFocus, switchFocus]);
 
-  const onSettings = useCallback(() => {
-    if (isInFocus) {
-      document.getElementById("settings")?.click();
-    }
-  }, [isInFocus]);
-
-  // TODO: add tests
-  useGamepadButtonPressEvent(layout.buttons.DPadRight, switchToMain);
-  useGamepadStickDirectionEvent("leftStickRight", switchToMain);
-  useGamepadStickDirectionEvent("extraStickRight", switchToMain);
-  useKeyboardEvent("ArrowRight", switchToMain);
-  useGamepadButtonPressEvent(layout.buttons.A, switchToMain);
-  useKeyboardEvent("Enter", switchToMain);
-  useGamepadButtonPressEvent(layout.buttons.Start, onSettings);
-  useKeyboardEvent("Escape", onSettings);
+  useDirectionalInputRight(switchToMain);
+  useInputConfirmation(switchToMain);
+  useOpenSettings(isInFocus);
+  useImportButton(isInFocus, "importGames");
 
   const onLinkClick = useCallback(() => {
     if (!isInFocus) {
@@ -125,7 +120,7 @@ export default function Categories() {
               aria-label={name}
               ref={categoryLinksRefCallback(index)}
               onClick={onLinkClick}
-              {...getTestId(["link", to])}
+              isFocused={isInFocus}
             >
               {collapseSidebar ? undefined : <Name>{name}</Name>}
             </Link>

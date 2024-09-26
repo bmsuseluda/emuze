@@ -22,6 +22,7 @@ import { categories as categoriesDB } from "../categoriesDB.server";
 import { getExpiresOn } from "../getExpiresOn.server";
 
 vi.mock("@kmamal/sdl");
+vi.mock("../openDialog.server.ts");
 
 const igdbRequestMock = vi.fn();
 vi.mock("apicalypse", () => ({
@@ -36,10 +37,6 @@ vi.mock("apicalypse", () => ({
       }),
     }),
   }),
-}));
-
-vi.mock("../openDialog.server.ts", () => ({
-  openErrorDialog: vi.fn(),
 }));
 
 vi.mock("../getExpiresOn.server.ts", () => {

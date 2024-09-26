@@ -1,7 +1,6 @@
 {
   "id": "supernintendo",
   "name": "Super Nintendo Entertainment System",
-  "application": { "id": "bsnes" },
   "entries": [
     { "id": "animaniacs0", "name": "Animaniacs", "path": "Animaniacs.sfc" },
     {

@@ -1,4 +1,4 @@
-import { when } from "jest-when";
+import { when } from "vitest-when";
 import nodepath from "path";
 
 import {
@@ -8,10 +8,12 @@ import {
   readEntries,
   readEntriesWithMetaData,
 } from "../categories.server";
+import { paths as lastPlayedPaths } from "../lastPlayed.server";
 import {
   readDirectorynames,
   readFileHome,
   readFilenames,
+  writeFileHome,
 } from "../readWriteData.server";
 import {
   addIndex,
@@ -30,44 +32,25 @@ import {
   playstation,
 } from "../__testData__/category";
 import { applications as applicationsTestData } from "../__testData__/applications";
-import type { Category, Entry, MetaData } from "../../types/jsonFiles/category";
+import type { Entry, MetaData } from "../../types/jsonFiles/category";
 import { general } from "../__testData__/general";
 import { fetchMetaData } from "../igdb.server";
 import { categories as categoriesDB } from "../categoriesDB.server";
-import { citra, mednafen } from "../applicationsDB.server";
+import { lime3ds, mednafen } from "../applicationsDB.server";
 import { getInstalledApplicationForCategory } from "../applications.server";
-import type { Application } from "../../types/jsonFiles/applications";
 import { getExpiresOn } from "../getExpiresOn.server";
-import type { Mock } from "vitest";
+import { mameNeoGeo } from "../applicationsDB.server/applications/mame";
+import { duckstation } from "../applicationsDB.server/applications/duckstation";
 
 vi.mock("@kmamal/sdl");
-
-const writeFileMock = vi.fn();
-vi.mock("../readWriteData.server", () => ({
-  readFileHome: vi.fn(),
-  readDirectorynames: vi.fn(),
-  readFilenames: vi.fn(),
-  writeFileHome: (object: unknown, path: string) => writeFileMock(object, path),
-}));
-
-vi.mock("../applications.server", () => ({
-  getInstalledApplicationForCategory: vi.fn(),
-}));
-
+vi.mock("../readWriteData.server");
+vi.mock("../applications.server");
+vi.mock("../openDialog.server.ts");
+vi.mock("fs");
+vi.mock("../igdb.server.ts");
 vi.mock("../settings.server.ts", () => ({
   readGeneral: () => general,
 }));
-
-vi.mock("../openDialog.server.ts", () => ({
-  openErrorDialog: vi.fn(),
-}));
-
-vi.mock("fs");
-
-vi.mock("../igdb.server.ts", () => ({
-  fetchMetaData: vi.fn(),
-}));
-
 vi.mock("../getExpiresOn.server.ts", () => {
   const getFutureDate = () => {
     const now = new Date();
@@ -88,7 +71,7 @@ describe("categories.server", () => {
 
   describe("readEntries", () => {
     it("Should filter excluded filenames (neogeo.zip) and find entryName from json file", () => {
-      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
+      vi.mocked(readFilenames).mockReturnValueOnce([
         createAbsoluteEntryPath(neogeo.name, blazingstar.path),
         createAbsoluteEntryPath(neogeo.name, "neogeo.zip"),
       ]);
@@ -99,14 +82,14 @@ describe("categories.server", () => {
 
       const result = readEntries({
         categoryName: neogeo.name,
-        applicationId: neogeo.application.id,
+        applicationId: mameNeoGeo.id,
       });
 
       expect(result).toStrictEqual(expectedResult);
     });
 
     it("Should return oldData if exist", () => {
-      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
+      vi.mocked(readFilenames).mockReturnValueOnce([
         createAbsoluteEntryPath(playstation.name, hugo.path),
         createAbsoluteEntryPath(playstation.name, hugo2.path),
       ]);
@@ -116,22 +99,21 @@ describe("categories.server", () => {
         expiresOn: getExpiresOn(),
       };
 
-      const oldEntries: Entry[] = [
+      const oldEntries: Entry[] = addIndex([
         {
           ...hugo,
-          id: `${hugo.id}0`,
           metaData: hugoMetaData,
         },
-      ];
+      ]);
 
-      const expectedResult: Entry[] = [
-        { ...hugo, metaData: hugoMetaData, id: `${hugo.id}0` },
-        { ...hugo2, id: `${hugo2.id}1` },
-      ];
+      const expectedResult: Entry[] = addIndex([
+        { ...hugo, metaData: hugoMetaData },
+        { ...hugo2 },
+      ]);
 
       const result = readEntries({
         categoryName: playstation.name,
-        applicationId: playstation.application.id,
+        applicationId: duckstation.id,
         oldEntries,
       });
 
@@ -159,9 +141,7 @@ describe("categories.server", () => {
           },
         ]),
       );
-      (fetchMetaData as Mock<any, Promise<Entry[]>>).mockImplementation(
-        fetchMetaDataMock,
-      );
+      vi.mocked(fetchMetaData).mockImplementation(fetchMetaDataMock);
 
       const result = await readEntriesWithMetaData(
         categoriesDB.sonyplaystation.igdbPlatformIds,
@@ -219,61 +199,73 @@ describe("categories.server", () => {
   describe("importCategories", () => {
     it("Should import 3ds and pcengine data", async () => {
       // evaluate
-      (readDirectorynames as Mock<any, string[]>).mockReturnValueOnce([
+      vi.mocked(readDirectorynames).mockReturnValueOnce([
         nodepath.join(general.categoriesPath, nintendo3ds.name),
         "unknown category",
         createCategoryPath(pcenginecd.name),
       ]);
-      when(readFilenames as Mock<any, string[]>)
+      when(readFilenames, { times: 1 })
         .calledWith({
           path: createCategoryPath(nintendo3ds.name),
-          fileExtensions: citra.fileExtensions,
+          fileExtensions: lime3ds.fileExtensions,
         })
-        .mockReturnValueOnce([
+        .thenReturn([
           createAbsoluteEntryPath(nintendo3ds.name, metroidsamusreturns.path),
         ]);
-      when(readFilenames as Mock<any, string[]>)
+      when(readFilenames, { times: 1 })
         .calledWith({
           path: createCategoryPath(pcenginecd.name),
           fileExtensions: mednafen.fileExtensions,
         })
-        .mockReturnValueOnce([
+        .thenReturn([
           createAbsoluteEntryPath(pcenginecd.name, cotton.path),
           createAbsoluteEntryPath(pcenginecd.name, gateofthunder.path),
         ]);
-      (readFileHome as Mock<any, Category>).mockReturnValueOnce(nintendo3ds);
-      (readFileHome as Mock<any, Category>).mockReturnValueOnce(pcenginecd);
-      (fetchMetaData as Mock<any, Promise<Entry[]>>).mockResolvedValueOnce(
-        nintendo3ds.entries,
+      vi.mocked(readFileHome).mockReturnValueOnce(nintendo3ds);
+      vi.mocked(readFileHome).mockReturnValueOnce(pcenginecd);
+      vi.mocked(fetchMetaData).mockResolvedValueOnce(nintendo3ds.entries);
+      vi.mocked(fetchMetaData).mockResolvedValueOnce(pcenginecd.entries);
+      vi.mocked(getInstalledApplicationForCategory).mockReturnValueOnce(
+        applicationsTestData.lime3ds,
       );
-      (fetchMetaData as Mock<any, Promise<Entry[]>>).mockResolvedValueOnce(
-        pcenginecd.entries,
+      vi.mocked(getInstalledApplicationForCategory).mockReturnValueOnce(
+        applicationsTestData.mednafen,
       );
-      (
-        getInstalledApplicationForCategory as Mock<any, Application>
-      ).mockReturnValueOnce(applicationsTestData.citra);
-      (
-        getInstalledApplicationForCategory as Mock<any, Application>
-      ).mockReturnValueOnce(applicationsTestData.mednafen);
 
       // execute
       await importCategories();
 
       // expect
-      expect(writeFileMock).toBeCalledTimes(4);
-      expect(writeFileMock).toHaveBeenNthCalledWith(1, [], paths.categories);
-      expect(writeFileMock).toHaveBeenNthCalledWith(
+      expect(writeFileHome).toBeCalledTimes(7);
+      expect(writeFileHome).toHaveBeenNthCalledWith(1, [], paths.categories);
+      expect(writeFileHome).toHaveBeenNthCalledWith(
         2,
         nintendo3ds,
         nodepath.join(paths.entries, `${nintendo3ds.id}.json`),
       );
-      expect(writeFileMock).toHaveBeenNthCalledWith(
+      // last played cache warmup
+      expect(writeFileHome).toHaveBeenNthCalledWith(
         3,
+        [],
+        lastPlayedPaths.lastPlayed,
+      );
+      expect(writeFileHome).toHaveBeenNthCalledWith(
+        4,
+        [],
+        lastPlayedPaths.lastPlayed,
+      );
+      expect(writeFileHome).toHaveBeenNthCalledWith(
+        5,
         pcenginecd,
         nodepath.join(paths.entries, `${pcenginecd.id}.json`),
       );
-      expect(writeFileMock).toHaveBeenNthCalledWith(
-        4,
+      expect(writeFileHome).toHaveBeenNthCalledWith(
+        6,
+        [],
+        lastPlayedPaths.lastPlayed,
+      );
+      expect(writeFileHome).toHaveBeenNthCalledWith(
+        7,
         [
           {
             id: nintendo3ds.id,
@@ -292,23 +284,21 @@ describe("categories.server", () => {
   describe("importEntries", () => {
     it("Should update entries and keep general category data", async () => {
       // evaluate
-      (readFileHome as Mock<any, Category>).mockReturnValueOnce(playstation);
-      (readFilenames as Mock<any, string[]>).mockReturnValueOnce([
+      vi.mocked(readFileHome).mockReturnValueOnce(playstation);
+      vi.mocked(readFilenames).mockReturnValueOnce([
         createAbsoluteEntryPath(playstation.name, hugo.path),
         createAbsoluteEntryPath(playstation.name, hugo2.path),
       ]);
-      (fetchMetaData as Mock<any, Promise<Entry[]>>).mockResolvedValueOnce(
-        playstation.entries,
+      vi.mocked(fetchMetaData).mockResolvedValueOnce(playstation.entries);
+      vi.mocked(getInstalledApplicationForCategory).mockReturnValueOnce(
+        applicationsTestData.duckstation,
       );
-      (
-        getInstalledApplicationForCategory as Mock<any, Application>
-      ).mockReturnValueOnce(applicationsTestData.duckstation);
 
       // execute
       await importEntries(playstation.id);
 
       // expect
-      expect(writeFileMock).toHaveBeenCalledWith(
+      expect(writeFileHome).toHaveBeenCalledWith(
         playstation,
         nodepath.join(paths.entries, `${playstation.id}.json`),
       );

@@ -1,11 +1,10 @@
-import { layout } from "../useGamepads/layouts";
 import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import {
-  useGamepadButtonPressEvent,
-  useGamepadStickDirectionEvent,
-  useKeyboardEvent,
-} from "../useGamepadEvent";
+  useDirectionalInputDown,
+  useDirectionalInputUp,
+  useInputBack,
+} from "../useDirectionalInput";
 
 // TODO: write tests
 export const useGamepadsOnSidebar = (isInFocus: boolean) => {
@@ -13,24 +12,29 @@ export const useGamepadsOnSidebar = (isInFocus: boolean) => {
 
   const selectLink = useCallback((index: number) => {
     const currentLink = categoryLinksRefs.current.at(index);
-    if (currentLink) {
+    if (currentLink && document.activeElement !== currentLink) {
       currentLink.focus();
       currentLink.click();
     }
   }, []);
 
-  const getCurrentIndex = useCallback(
-    () => categoryLinksRefs.current.findIndex((element) => element.ariaCurrent),
-    [],
-  );
+  const getCurrentIndex = () =>
+    categoryLinksRefs.current.findIndex((element) => element?.ariaCurrent);
 
   /* Set element focus on the selected link again if focus is set on sidebar again */
   useEffect(() => {
-    const selectedLink = categoryLinksRefs.current[getCurrentIndex()];
-    if (isInFocus && selectedLink) {
-      selectedLink.focus();
-    }
-  }, [isInFocus, getCurrentIndex]);
+    // The timeout is necessary to wait for page change on mouse click on a sidebar link
+    setTimeout(() => {
+      const selectedLink = categoryLinksRefs.current[getCurrentIndex()];
+      if (
+        isInFocus &&
+        selectedLink &&
+        document.activeElement !== selectedLink
+      ) {
+        selectedLink.focus();
+      }
+    }, 100);
+  }, [isInFocus]);
 
   const onDown = useCallback(() => {
     if (isInFocus) {
@@ -41,7 +45,7 @@ export const useGamepadsOnSidebar = (isInFocus: boolean) => {
         selectLink(0);
       }
     }
-  }, [isInFocus, selectLink, getCurrentIndex]);
+  }, [isInFocus, selectLink]);
 
   const onUp = useCallback(() => {
     if (isInFocus) {
@@ -52,16 +56,17 @@ export const useGamepadsOnSidebar = (isInFocus: boolean) => {
         selectLink(-1);
       }
     }
-  }, [isInFocus, selectLink, getCurrentIndex]);
+  }, [isInFocus, selectLink]);
 
-  useGamepadButtonPressEvent(layout.buttons.DPadDown, onDown);
-  useGamepadButtonPressEvent(layout.buttons.DPadUp, onUp);
-  useGamepadStickDirectionEvent("leftStickDown", onDown);
-  useGamepadStickDirectionEvent("leftStickUp", onUp);
-  useGamepadStickDirectionEvent("extraStickDown", onDown);
-  useGamepadStickDirectionEvent("extraStickUp", onUp);
-  useKeyboardEvent("ArrowDown", onDown);
-  useKeyboardEvent("ArrowUp", onUp);
+  const onBack = useCallback(() => {
+    if (isInFocus) {
+      selectLink(0);
+    }
+  }, [isInFocus, selectLink]);
+
+  useDirectionalInputUp(onUp);
+  useDirectionalInputDown(onDown);
+  useInputBack(onBack);
 
   const categoryLinksRefCallback = useCallback(
     (index: number) => (ref: ElementRef<"a">) => {

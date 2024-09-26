@@ -1,11 +1,7 @@
 import { FileDataCache, MultipleFileDataCache } from "../FileDataCache.server";
+import { readFileHome, writeFileHome } from "../readWriteData.server";
 
-const readFileMock = vi.fn();
-const writeFileMock = vi.fn();
-vi.mock("../readWriteData.server", () => ({
-  readFileHome: (path: string) => readFileMock(path),
-  writeFileHome: (object: unknown, path: string) => writeFileMock(object, path),
-}));
+vi.mock("../readWriteData.server");
 
 describe("FileDataCache", () => {
   beforeEach(() => {
@@ -18,13 +14,13 @@ describe("FileDataCache", () => {
       const result = "this is the result";
       const dataCache = new FileDataCache<string>(filePath);
 
-      readFileMock.mockReturnValue(result);
+      vi.mocked(readFileHome).mockReturnValue(result);
 
       dataCache.readFile();
       dataCache.readFile();
       expect(dataCache.readFile()).toBe(result);
 
-      expect(readFileMock).toBeCalledTimes(1);
+      expect(readFileHome).toBeCalledTimes(1);
     });
 
     it("Should return updated data from cache", () => {
@@ -32,7 +28,7 @@ describe("FileDataCache", () => {
       const initialResult = "this is the result";
       const dataCache = new FileDataCache<string>(filePath);
 
-      readFileMock.mockReturnValueOnce(initialResult);
+      vi.mocked(readFileHome).mockReturnValueOnce(initialResult);
       expect(dataCache.readFile()).toBe(initialResult);
 
       const newResult = "This is the new result";
@@ -40,9 +36,9 @@ describe("FileDataCache", () => {
 
       expect(dataCache.readFile()).toBe(newResult);
 
-      expect(writeFileMock).toBeCalledWith(newResult, filePath);
-      expect(readFileMock).toBeCalledTimes(1);
-      expect(writeFileMock).toBeCalledTimes(1);
+      expect(writeFileHome).toBeCalledWith(newResult, filePath);
+      expect(readFileHome).toBeCalledTimes(1);
+      expect(writeFileHome).toBeCalledTimes(1);
     });
   });
 
@@ -60,17 +56,17 @@ describe("FileDataCache", () => {
         },
       ];
 
-      readFileMock.mockReturnValueOnce(files[0].content);
+      vi.mocked(readFileHome).mockReturnValueOnce(files[0].content);
       dataCache.readFile(files[0].filePath);
       dataCache.readFile(files[0].filePath);
       expect(dataCache.readFile(files[0].filePath)).toBe(files[0].content);
 
-      readFileMock.mockReturnValueOnce(files[1].content);
+      vi.mocked(readFileHome).mockReturnValueOnce(files[1].content);
       dataCache.readFile(files[1].filePath);
       dataCache.readFile(files[1].filePath);
       expect(dataCache.readFile(files[1].filePath)).toBe(files[1].content);
 
-      expect(readFileMock).toBeCalledTimes(2);
+      expect(readFileHome).toBeCalledTimes(2);
     });
 
     it("Should return specific updated data for filePath from cache and not overwrite data for other filePath", () => {
@@ -88,12 +84,12 @@ describe("FileDataCache", () => {
         },
       ];
 
-      readFileMock.mockReturnValueOnce(files[0].initialContent);
+      vi.mocked(readFileHome).mockReturnValueOnce(files[0].initialContent);
       expect(dataCache.readFile(files[0].filePath)).toBe(
         files[0].initialContent,
       );
 
-      readFileMock.mockReturnValueOnce(files[1].initialContent);
+      vi.mocked(readFileHome).mockReturnValueOnce(files[1].initialContent);
       expect(dataCache.readFile(files[1].filePath)).toBe(
         files[1].initialContent,
       );
@@ -107,12 +103,12 @@ describe("FileDataCache", () => {
         files[1].updatedContent,
       );
 
-      expect(writeFileMock).toBeCalledWith(
+      expect(writeFileHome).toBeCalledWith(
         files[1].updatedContent,
         files[1].filePath,
       );
-      expect(readFileMock).toBeCalledTimes(2);
-      expect(writeFileMock).toBeCalledTimes(1);
+      expect(readFileHome).toBeCalledTimes(2);
+      expect(writeFileHome).toBeCalledTimes(1);
     });
   });
 });

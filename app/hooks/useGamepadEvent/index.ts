@@ -26,23 +26,3 @@ export const useGamepadStickDirectionEvent = (
     };
   }, [stickDirection, onGamepadEvent]);
 };
-
-export const useKeyboardEvent = (
-  keyboardKey: string,
-  onKeyboardEvent: (e: KeyboardEvent) => void,
-) => {
-  useEffect(() => {
-    const handleKeyboardEvent = (e: KeyboardEvent) => {
-      if (e.key === keyboardKey) {
-        e.preventDefault();
-        onKeyboardEvent(e);
-      }
-    };
-
-    addEventListener("keydown", handleKeyboardEvent);
-
-    return () => {
-      removeEventListener("keydown", handleKeyboardEvent);
-    };
-  }, [keyboardKey, onKeyboardEvent]);
-};

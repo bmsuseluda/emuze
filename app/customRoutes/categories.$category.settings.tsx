@@ -12,34 +12,47 @@ import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar";
 import { SettingsIcon } from "../components/SettingsIcon";
 import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
-import { useCallback, useMemo } from "react";
-import {
-  useGamepadButtonPressEvent,
-  useGamepadStickDirectionEvent,
-  useKeyboardEvent,
-} from "../hooks/useGamepadEvent";
-import { layout } from "../hooks/useGamepads/layouts";
+import { useCallback, useEffect, useMemo } from "react";
 import { Dialog } from "../components/Dialog";
-import { readCategories } from "../server/categories.server";
+import { useImportButton } from "../containers/ImportButton/useImportButton";
+import { useInstallEmulatorsButton } from "../containers/InstallEmulatorsButton/useInstallEmulatorsButton";
+import {
+  useDirectionalInputRight,
+  useInputBack,
+  useInputConfirmation,
+  useInputSettings,
+} from "../hooks/useDirectionalInput";
 
 export const loader = () => {
   const { collapseSidebar } = readAppearance();
-  const systems = readCategories();
 
-  return json({ categories, collapseSidebar, systems });
+  return json({ categories, collapseSidebar });
 };
 
 export default function Index() {
-  const { categories, collapseSidebar, systems } =
-    useLoaderData<typeof loader>();
+  const { categories, collapseSidebar } = useLoaderData<typeof loader>();
 
-  const closable = useMemo(() => systems.length > 0, [systems]);
+  const { pathname } = useLocation();
 
-  const { isInFocus, switchFocus, switchFocusBackMultiple, enableFocus } =
-    useFocus<FocusElement>("settingsSidebar");
+  const closable = useMemo(() => !pathname.startsWith("/settings"), [pathname]);
+
+  const {
+    isInFocus,
+    switchFocus,
+    switchFocusBackMultiple,
+    enableFocus,
+    focusHistory,
+  } = useFocus<FocusElement>("settingsSidebar");
+
+  useEffect(() => {
+    if (!isInFocus && !focusHistory.current.at(-1)?.includes("settings")) {
+      enableFocus();
+    }
+    // Should be executed only once, therefore isInFocus can not be part of the dependency array
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { categoryLinksRefCallback } = useGamepadsOnSidebar(isInFocus);
-  const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const handleClose = useCallback(() => {
@@ -62,17 +75,12 @@ export default function Index() {
     }
   }, [isInFocus, switchFocus]);
 
-  // TODO: add tests
-  useGamepadButtonPressEvent(layout.buttons.DPadRight, switchToMain);
-  useGamepadStickDirectionEvent("leftStickRight", switchToMain);
-  useGamepadStickDirectionEvent("extraStickRight", switchToMain);
-  useKeyboardEvent("ArrowRight", switchToMain);
-  useGamepadButtonPressEvent(layout.buttons.A, switchToMain);
-  useKeyboardEvent("Enter", switchToMain);
-  useKeyboardEvent("Escape", handleClose);
-  useGamepadButtonPressEvent(layout.buttons.Start, handleClose);
-  useGamepadButtonPressEvent(layout.buttons.B, handleCloseOnFocus);
-  useKeyboardEvent("Backspace", handleCloseOnFocus);
+  useDirectionalInputRight(switchToMain);
+  useInputConfirmation(switchToMain);
+  useInputBack(handleCloseOnFocus);
+  useInputSettings(handleClose);
+  useImportButton(isInFocus, "importAll");
+  useInstallEmulatorsButton(isInFocus);
 
   // TODO: think about if this should be a callback from useGamepadsOnSidebar
   const onLinkClick = useCallback(() => {
@@ -83,7 +91,7 @@ export default function Index() {
 
   return (
     <Dialog
-      open
+      open={true}
       onClose={handleClose}
       closable={closable}
       smaller={collapseSidebar}
@@ -100,6 +108,7 @@ export default function Index() {
                 ref={categoryLinksRefCallback(index)}
                 icon={<SettingsIcon id={id} />}
                 onClick={onLinkClick}
+                isFocused={isInFocus}
               >
                 {collapseSidebar ? undefined : name}
               </Link>

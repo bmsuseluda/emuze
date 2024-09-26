@@ -13,16 +13,71 @@ const preConfigured: ApplicationId[] = [
   "pcsx2",
 ];
 
+const biosNeeded: SystemId[] = [
+  "sonyplaystation",
+  "sonyplaystation2",
+  "sonyplaystation3",
+  "segacd",
+  "segasaturn",
+  "segadreamcast",
+  "pcenginecd",
+  "pcenginesupergrafx",
+  "neogeo",
+  "neogeopocket",
+  "neogeopocketcolor",
+  "nintendowiiu",
+  "nintendoswitch",
+  "nintendods",
+  "nintendo3ds",
+  "arcade",
+];
+
+const homepages: Record<ApplicationId, string> = {
+  ares: "https://github.com/ares-emulator/ares",
+  aresMegaDrive: "https://github.com/ares-emulator/ares",
+  aresSega32x: "https://github.com/ares-emulator/ares",
+  aresSegaCd: "https://github.com/ares-emulator/ares",
+  aresSuperNintendo: "https://github.com/ares-emulator/ares",
+  cemu: "https://github.com/cemu-project/Cemu",
+  dolphin: "https://github.com/dolphin-emu/dolphin",
+  dosboxstaging: "https://github.com/dosbox-staging/dosbox-staging",
+  duckstation: "https://github.com/stenzek/duckstation",
+  flycast: "https://github.com/flyinghead/flycast",
+  lime3ds: "https://github.com/Lime3DS/Lime3DS",
+  mame: "https://github.com/mamedev/mame",
+  mameNeoGeo: "https://github.com/mamedev/mame",
+  mameNeoGeoCD: "https://github.com/mamedev/mame",
+  mednafen: "https://mednafen.github.io/",
+  melonds: "https://github.com/melonDS-emu/melonDS",
+  mgba: "https://github.com/mgba-emu/mgba",
+  pcsx2: "https://github.com/PCSX2/pcsx2",
+  ppsspp: "https://github.com/hrydgard/ppsspp",
+  rosaliesMupenGui: "https://github.com/Rosalie241/RMG",
+  rpcs3: "https://github.com/RPCS3/rpcs3",
+  ryujinx: "https://github.com/Ryujinx/Ryujinx",
+  scummvm: "https://github.com/scummvm/scummvm",
+};
+
 const nameOverwrites: Partial<Record<SystemId, string>> = {
   dos: "Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json))",
 };
 
 export const createSystemsTable = () =>
   Object.values(categories)
-    .map(
-      (category) =>
-        `| ${nameOverwrites[category.id] || category.names[0]} | ${category.defaultApplication.name} | ${preConfigured.includes(category.defaultApplication.id) ? "Yes" : "No"} |`,
-    )
+    .map((category) => {
+      if (category.id === "lastPlayed") {
+        return null;
+      }
+      const systemName = nameOverwrites[category.id] || category.names[0];
+      const emulatorName = `[${category.application.name}](${homepages[category.application.id]})`;
+      const isPreConfigured = preConfigured.includes(category.application.id)
+        ? "Yes"
+        : "No";
+      const isBiosNeeded = biosNeeded.includes(category.id) ? "Yes" : "No";
+
+      return `| ${systemName} | ${emulatorName} | ${isPreConfigured} | ${isBiosNeeded} | `;
+    })
+    .filter(Boolean)
     .join("\n");
 
 const windowsDownloadFileName = `emuze-Setup-${process.env.npm_package_version}.exe`;

@@ -1,5 +1,5 @@
 import { GameGrid } from ".";
-import { games } from "./testData";
+import { games, gamesLastPlayed } from "./testData";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
@@ -29,6 +29,22 @@ export const WithAlwaysGameName: Story = {
   args: {
     games,
     alwaysGameNames: true,
+    onExecute: () => {
+      alert("launch");
+    },
+    isInFocus: true,
+    onBack: () => {
+      alert("back");
+    },
+    onGameClick: () => {
+      alert("game click");
+    },
+  },
+};
+
+export const LastPlayed: Story = {
+  args: {
+    games: gamesLastPlayed,
     onExecute: () => {
       alert("launch");
     },

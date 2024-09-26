@@ -1,20 +1,9 @@
-import type { ElementRef } from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import type { ElementRef, MouseEvent } from "react";
+import { useCallback } from "react";
 import type { ActionFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { IoMdDownload, IoMdRefresh } from "react-icons/io";
-import { FaFolderOpen } from "react-icons/fa";
-import {
-  Form,
-  Outlet,
-  useActionData,
-  useLoaderData,
-  useNavigation,
-} from "@remix-run/react";
-import { Button } from "../components/Button";
+import { Form, Outlet, useActionData, useLoaderData } from "@remix-run/react";
 import { FormBox } from "../components/FormBox";
-import { FormRow } from "../components/FormRow";
-import { Label } from "../components/Label";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
 import { importCategories, readCategories } from "../server/categories.server";
 import { openFolderDialog } from "../server/openDialog.server";
@@ -27,18 +16,25 @@ import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
 import type { Result } from "../hooks/useGamepadsOnGrid";
 import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid";
-import {
-  useGamepadButtonPressEvent,
-  useKeyboardEvent,
-} from "../hooks/useGamepadEvent";
-import { layout } from "../hooks/useGamepads/layouts";
-import { TextInput } from "../components/TextInput";
 import { installMissingApplicationsOnLinux } from "../server/installApplications.server";
 import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction";
 import { useGamepadConnected } from "../hooks/useGamepadConnected";
-import { GamepadButtonIcon } from "../components/GamepadButtonIcon";
 import fs from "fs";
 import { log } from "../server/debug.server";
+import type { Category } from "../types/jsonFiles/category";
+import { readLastPlayed } from "../server/lastPlayed.server";
+import type { SystemId } from "../server/categoriesDB.server/systemId";
+import { ImportButton } from "../containers/ImportButton";
+import {
+  InstallEmulatorsButton,
+  installMissingApplicationsActionId,
+} from "../containers/InstallEmulatorsButton";
+import type { ImportButtonId } from "../containers/ImportButton/importButtonId";
+import {
+  useInputBack,
+  useInputConfirmation,
+} from "../hooks/useDirectionalInput";
+import { FileDialogInputField } from "../containers/FileDialogTextInput";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
@@ -72,11 +68,13 @@ export const loader = () => {
   return json({ ...general, isWindows: isWindows(), categories, errors });
 };
 
+const importButtonId: ImportButtonId = "importAll";
+
 const actionIds = {
   chooseApplicationsPath: "chooseApplicationsPath",
   chooseCategoriesPath: "chooseCategoriesPath",
-  importAll: "importAll",
-  installMissingApplications: "installMissingApplications",
+  import: importButtonId,
+  installMissingApplications: installMissingApplicationsActionId,
 };
 
 type Errors = {
@@ -122,14 +120,33 @@ type ActionReturn = {
   errors?: Errors;
 };
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+const findCategoryToRedirect = (
+  categories: Category[],
+  systemId?: SystemId,
+): SystemId => {
+  const isSystemAvailable =
+    systemId && categories.find((category) => category.id === systemId);
+  const isLastPlayedAvailable = readLastPlayed().length > 0;
+
+  if (isSystemAvailable) {
+    return systemId;
+  } else if (isLastPlayedAvailable) {
+    return "lastPlayed";
+  }
+
+  return categories[0].id;
+};
+
+export const action = async ({ params, request }: ActionFunctionArgs) => {
+  const { category: systemId } = params as { category: SystemId };
+
   try {
     const form = await request.formData();
     const _actionId = form.get("_actionId");
     const applicationsPath = form.get("applicationsPath")?.toString();
     const categoriesPath = form.get("categoriesPath")?.toString();
 
-    if (_actionId === actionIds.importAll) {
+    if (_actionId === actionIds.import) {
       const errors: Errors = {};
 
       if (isWindows()) {
@@ -167,14 +184,16 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         const categories = readCategories();
 
         if (categories?.length > 0) {
-          return redirect(`/categories/${categories[0].id}/settings/general`);
+          return redirect(
+            `/categories/${findCategoryToRedirect(categories, systemId)}/settings/general`,
+          );
         }
       } catch (error) {
         const categories = readCategories();
 
         if (categories?.length > 0) {
           return redirect(
-            `/categories/${categories[0].id}/settings/general/errorDialog`,
+            `/categories/${findCategoryToRedirect(categories, systemId)}/settings/general/errorDialog`,
           );
         } else {
           throw error;
@@ -229,7 +248,9 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
   );
 };
 
-export default function Index() {
+const focus: FocusElement = "settingsMain";
+
+export default function General() {
   const defaultData = useLoaderData<typeof loader>();
   const newData = useActionData<ActionReturn>();
 
@@ -237,9 +258,8 @@ export default function Index() {
     useGamepadConnected();
 
   // TODO: Maybe create specific files for gamepad controls
-  const importAllButtonRef = useRef<ElementRef<"button">>(null);
-  const installEmulatorsButtonRef = useRef<ElementRef<"button">>(null);
-  const { isInFocus, switchFocusBack } = useFocus<FocusElement>("settingsMain");
+  const { isInFocus, switchFocusBack, switchFocus } =
+    useFocus<FocusElement>(focus);
 
   const selectEntry = useCallback((entry: HTMLButtonElement) => {
     entry.focus();
@@ -261,12 +281,17 @@ export default function Index() {
   );
 
   // TODO: check how to align gamepadsGrid navigation with native input usage (use navigation keys in text input)
-  const { entryListRef, entriesRefCallback, selectedEntry, resetSelected } =
-    useGamepadsOnGrid({
-      onSelectEntry: selectEntry,
-      isInFocus,
-      onLeftOverTheEdge,
-    });
+  const {
+    entryListRef,
+    entriesRefCallback,
+    selectedEntry,
+    resetSelected,
+    updatePosition,
+  } = useGamepadsOnGrid({
+    onSelectEntry: selectEntry,
+    isInFocus,
+    onLeftOverTheEdge,
+  });
 
   const onBack = useCallback(() => {
     if (isInFocus) {
@@ -280,47 +305,8 @@ export default function Index() {
     }
   }, [isInFocus, selectedEntry]);
 
-  const onImportAll = useCallback(() => {
-    if (isInFocus) {
-      importAllButtonRef.current?.click();
-    }
-  }, [isInFocus]);
-
-  const onInstallEmulators = useCallback(() => {
-    if (isInFocus) {
-      installEmulatorsButtonRef.current?.click();
-    }
-  }, [isInFocus]);
-
-  useGamepadButtonPressEvent(layout.buttons.B, onBack);
-  useKeyboardEvent("Backspace", onBack);
-  useGamepadButtonPressEvent(layout.buttons.A, onToggle);
-  useKeyboardEvent("Enter", onToggle);
-  useGamepadButtonPressEvent(layout.buttons.X, onImportAll);
-  useKeyboardEvent("i", onImportAll);
-  useGamepadButtonPressEvent(layout.buttons.Y, onInstallEmulators);
-
-  const [applicationPath, setApplicationPath] = useState(
-    defaultData.applicationsPath || "",
-  );
-
-  useEffect(() => {
-    if (newData?.applicationsPath) {
-      setApplicationPath(newData?.applicationsPath);
-    }
-  }, [newData?.applicationsPath]);
-
-  const [categoriesPath, setCategoriesPath] = useState(
-    defaultData.categoriesPath || "",
-  );
-
-  useEffect(() => {
-    if (newData?.categoriesPath) {
-      setCategoriesPath(newData?.categoriesPath);
-    }
-  }, [newData?.categoriesPath]);
-
-  const { state, formData } = useNavigation();
+  useInputConfirmation(onToggle);
+  useInputBack(onBack);
 
   /* Set focus again after open file explorer */
   useEnableFocusAfterAction(enableGamepads, [
@@ -328,9 +314,17 @@ export default function Index() {
     actionIds.chooseCategoriesPath,
   ]);
 
-  const onOpenFileDialog = useCallback(() => {
-    disableGamepads();
-  }, [disableGamepads]);
+  const onOpenFileDialog = useCallback(
+    (event: MouseEvent<ElementRef<"button">>) => {
+      if (!isInFocus) {
+        switchFocus(focus);
+        selectedEntry.current = event.currentTarget;
+        updatePosition();
+      }
+      disableGamepads();
+    },
+    [disableGamepads, isInFocus, selectedEntry, switchFocus, updatePosition],
+  );
 
   return (
     <>
@@ -350,125 +344,52 @@ export default function Index() {
               <FormBox ref={entryListRef}>
                 {defaultData.isWindows && (
                   <li>
-                    <FormRow>
-                      <Label htmlFor="applicationsPath">
-                        {applicationsPathLabel}
-                      </Label>
-                      <TextInput
-                        label={applicationsPathLabel}
-                        error={
-                          defaultData.errors.applicationsPath ||
-                          newData?.errors?.applicationsPath
-                        }
-                      >
-                        <TextInput.Input
-                          type="text"
-                          name="applicationsPath"
-                          id="applicationsPath"
-                          value={applicationPath}
-                          onChange={(event) =>
-                            setApplicationPath(event.target.value)
-                          }
-                          iconButton
-                        />
-                        <TextInput.IconButton
-                          type="submit"
-                          name="_actionId"
-                          value={actionIds.chooseApplicationsPath}
-                          ref={entriesRefCallback(0)}
-                          onClick={onOpenFileDialog}
-                        >
-                          <FaFolderOpen />
-                        </TextInput.IconButton>
-                      </TextInput>
-                    </FormRow>
+                    <FileDialogInputField
+                      id="applicationsPath"
+                      label={applicationsPathLabel}
+                      defaultValue={defaultData?.applicationsPath}
+                      newValue={newData?.applicationsPath}
+                      defaultError={defaultData.errors.applicationsPath}
+                      newError={newData?.errors?.applicationsPath}
+                      actionId={actionIds.chooseApplicationsPath}
+                      openDialogButtonRef={entriesRefCallback(0)}
+                      onOpenFileDialog={onOpenFileDialog}
+                    />
                   </li>
                 )}
                 <li>
-                  <FormRow>
-                    <Label htmlFor="categoriesPath">
-                      {categoriesPathLabel}
-                    </Label>
-                    <TextInput
-                      label={categoriesPathLabel}
-                      error={
-                        defaultData.errors.categoriesPath ||
-                        newData?.errors?.categoriesPath
-                      }
-                    >
-                      <TextInput.Input
-                        type="text"
-                        name="categoriesPath"
-                        id="categoriesPath"
-                        value={categoriesPath}
-                        onChange={(event) =>
-                          setCategoriesPath(event.target.value)
-                        }
-                        iconButton
-                      />
-                      <TextInput.IconButton
-                        type="submit"
-                        name="_actionId"
-                        value={actionIds.chooseCategoriesPath}
-                        ref={entriesRefCallback(defaultData.isWindows ? 1 : 0)}
-                        onClick={onOpenFileDialog}
-                      >
-                        <FaFolderOpen />
-                      </TextInput.IconButton>
-                    </TextInput>
-                  </FormRow>
+                  <FileDialogInputField
+                    id="categoriesPath"
+                    label={categoriesPathLabel}
+                    defaultValue={defaultData?.categoriesPath}
+                    newValue={newData?.categoriesPath}
+                    defaultError={defaultData.errors.categoriesPath}
+                    newError={newData?.errors?.categoriesPath}
+                    actionId={actionIds.chooseCategoriesPath}
+                    openDialogButtonRef={entriesRefCallback(
+                      defaultData.isWindows ? 1 : 0,
+                    )}
+                    onOpenFileDialog={onOpenFileDialog}
+                  />
                 </li>
               </FormBox>
             }
             actions={
               <>
-                <Button
-                  type="submit"
-                  name="_actionId"
-                  value={actionIds.importAll}
-                  loading={
-                    state === "submitting" &&
-                    formData?.get("_actionId") === actionIds.importAll
-                  }
-                  ref={importAllButtonRef}
-                  icon={
-                    gamepadType ? (
-                      <GamepadButtonIcon
-                        buttonIndex={layout.buttons.X}
-                        gamepadType={gamepadType}
-                      />
-                    ) : (
-                      <IoMdRefresh />
-                    )
-                  }
+                <ImportButton
+                  gamepadType={gamepadType}
+                  isInFocus={isInFocus}
+                  id={actionIds.import}
                 >
                   Import all
-                </Button>
+                </ImportButton>
+
                 {!defaultData.isWindows &&
                   defaultData.categories.length > 0 && (
-                    <Button
-                      type="submit"
-                      name="_actionId"
-                      value={actionIds.installMissingApplications}
-                      loading={
-                        state === "submitting" &&
-                        formData?.get("_actionId") ===
-                          actionIds.installMissingApplications
-                      }
-                      ref={installEmulatorsButtonRef}
-                      icon={
-                        gamepadType ? (
-                          <GamepadButtonIcon
-                            buttonIndex={layout.buttons.Y}
-                            gamepadType={gamepadType}
-                          />
-                        ) : (
-                          <IoMdDownload />
-                        )
-                      }
-                    >
-                      Install Emulators
-                    </Button>
+                    <InstallEmulatorsButton
+                      gamepadType={gamepadType}
+                      isInFocus={isInFocus}
+                    />
                   )}
               </>
             }

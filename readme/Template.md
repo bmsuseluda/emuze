@@ -30,8 +30,8 @@ If your roms are named correctly, a click on the import button should import you
 
 The following systems are supported:
 
-| System | Emulator | Pre Configured |
-|--------|----------|----------------|
+| System | Emulator | Pre Configured | BIOS needed |
+|--------|----------|----------------|-------------|
 ```mmd
 return scripts.createSystemsTable()
 ```
@@ -45,6 +45,9 @@ The following Hotkeys are set:
 - Open Menu / Toggle Fullscreen: F2
 - Save State: F1
 - Load State: F3
+
+### BIOS needed
+Some emulators need a BIOS or firmware to run. Please check the documentation of an emulator for more information. 
 
 ## 🚀 Getting started
 

@@ -1,10 +1,10 @@
 import type { IconType } from "react-icons";
 import { FaPaintBrush } from "react-icons/fa";
-import { VscSettings } from "react-icons/vsc";
+import { GiSettingsKnobs } from "react-icons/gi";
 import type { SettingsID } from "../../server/settings.server";
 
 export const icons = {
-  general: VscSettings,
+  general: GiSettingsKnobs,
   appearance: FaPaintBrush,
 } satisfies Record<SettingsID, IconType>;
 

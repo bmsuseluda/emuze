@@ -1,6 +1,5 @@
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { IoMdSave } from "react-icons/io";
 import { Form, useLoaderData } from "@remix-run/react";
 import { Button } from "../components/Button";
 import { FormBox } from "../components/FormBox";
@@ -12,19 +11,16 @@ import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
 import { SettingsIcon } from "../components/SettingsIcon";
 import { useFullscreen } from "../hooks/useFullscreen";
 import { CheckboxLabel } from "../components/CheckboxLabel";
-import type { ElementRef } from "react";
+import type { ElementRef, MouseEvent } from "react";
 import { useCallback, useRef } from "react";
 import type { Result } from "../hooks/useGamepadsOnGrid";
 import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid";
 import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
 import {
-  useGamepadButtonPressEvent,
-  useKeyboardEvent,
-} from "../hooks/useGamepadEvent";
-import { layout } from "../hooks/useGamepads/layouts";
-import { useGamepadConnected } from "../hooks/useGamepadConnected";
-import { GamepadButtonIcon } from "../components/GamepadButtonIcon";
+  useInputBack,
+  useInputConfirmation,
+} from "../hooks/useDirectionalInput";
 
 export const loader = () => {
   const appearance = readAppearance();
@@ -64,14 +60,15 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
   );
 };
 
-export default function Index() {
+const focus: FocusElement = "settingsMain";
+
+export default function Appearance() {
   const { alwaysGameNames, collapseSidebar } = useLoaderData<typeof loader>();
   const fullscreen = useFullscreen();
 
-  const { gamepadType } = useGamepadConnected();
-
   const saveButtonRef = useRef<ElementRef<"button">>(null);
-  const { isInFocus, switchFocusBack } = useFocus<FocusElement>("settingsMain");
+  const { isInFocus, switchFocusBack, switchFocus } =
+    useFocus<FocusElement>(focus);
 
   const selectEntry = useCallback((entry: ElementRef<"button">) => {
     entry.focus();
@@ -92,12 +89,17 @@ export default function Index() {
     [goBack],
   );
 
-  const { entryListRef, entriesRefCallback, selectedEntry, resetSelected } =
-    useGamepadsOnGrid({
-      onSelectEntry: selectEntry,
-      isInFocus,
-      onLeftOverTheEdge,
-    });
+  const {
+    entryListRef,
+    entriesRefCallback,
+    selectedEntry,
+    resetSelected,
+    updatePosition,
+  } = useGamepadsOnGrid({
+    onSelectEntry: selectEntry,
+    isInFocus,
+    onLeftOverTheEdge,
+  });
 
   const onBack = useCallback(() => {
     if (isInFocus) {
@@ -117,12 +119,19 @@ export default function Index() {
     }
   }, [isInFocus]);
 
-  useGamepadButtonPressEvent(layout.buttons.B, onBack);
-  useKeyboardEvent("Backspace", onBack);
-  useGamepadButtonPressEvent(layout.buttons.A, onToggle);
-  useKeyboardEvent("Enter", onToggle);
-  useGamepadButtonPressEvent(layout.buttons.X, onSave);
-  useKeyboardEvent("s", onSave);
+  const onClick = useCallback(
+    (event: MouseEvent<ElementRef<"button">>) => {
+      if (!isInFocus) {
+        switchFocus(focus);
+        selectedEntry.current = event.currentTarget;
+        updatePosition();
+      }
+    },
+    [isInFocus, switchFocus, selectedEntry, updatePosition],
+  );
+
+  useInputConfirmation(onToggle);
+  useInputBack(onBack);
 
   return (
     <ListActionBarLayout
@@ -146,11 +155,12 @@ export default function Index() {
                     id="fullscreen"
                     name="fullscreen"
                     checked={fullscreen}
-                    onClick={() =>
-                      window.electronAPI &&
-                      window.electronAPI.changeWindow("fullscreen")
-                    }
                     ref={entriesRefCallback(0)}
+                    onCheckedChange={() => {
+                      window.electronAPI &&
+                        window.electronAPI.changeWindow("fullscreen");
+                    }}
+                    onClick={onClick}
                   />
                   Fullscreen
                 </CheckboxLabel>
@@ -162,6 +172,8 @@ export default function Index() {
                     name="alwaysGameNames"
                     defaultChecked={alwaysGameNames}
                     ref={entriesRefCallback(1)}
+                    onCheckedChange={onSave}
+                    onClick={onClick}
                   />
                   Always show game names
                 </CheckboxLabel>
@@ -173,33 +185,24 @@ export default function Index() {
                     name="collapseSidebar"
                     defaultChecked={collapseSidebar}
                     ref={entriesRefCallback(2)}
+                    onCheckedChange={onSave}
+                    onClick={onClick}
                   />
                   Collapse sidebar
                 </CheckboxLabel>
               </li>
             </FormBox>
           }
-          actions={
-            <Button
-              type="submit"
-              name="_actionId"
-              value={actionIds.save}
-              ref={saveButtonRef}
-              icon={
-                gamepadType ? (
-                  <GamepadButtonIcon
-                    buttonIndex={layout.buttons.X}
-                    gamepadType={gamepadType}
-                  />
-                ) : (
-                  <IoMdSave />
-                )
-              }
-            >
-              Save settings
-            </Button>
-          }
         />
+        <Button
+          type="submit"
+          name="_actionId"
+          value={actionIds.save}
+          ref={saveButtonRef}
+          style={{ display: "none" }}
+        >
+          Save Settings
+        </Button>
       </Form>
     </ListActionBarLayout>
   );

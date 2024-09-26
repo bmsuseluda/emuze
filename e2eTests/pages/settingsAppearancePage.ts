@@ -22,7 +22,7 @@ export class SettingsAppearancePage {
       name: "Always show game names",
     });
     this.saveButton = this.page.getByRole("button", {
-      name: "Save settings",
+      name: "Save Settings",
     });
   }
 }

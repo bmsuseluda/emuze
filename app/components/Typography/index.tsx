@@ -4,7 +4,7 @@ export const Typography = styled("span", {
   base: {
     _before: {
       content: '""',
-      marginBottom: "-0.05em",
+      marginBottom: "-0.18em",
       display: "table",
     },
     _after: {

@@ -30,41 +30,41 @@ If your roms are named correctly, a click on the import button should import you
 
 The following systems are supported:
 
-| System | Emulator | Pre Configured |
-|--------|----------|----------------|
-| Sony Playstation | DuckStation | Yes |
-| Sony Playstation 2 | PCSX2 | Yes |
-| Sony Playstation 3 | RPCS3 | No |
-| Sony Playstation Portable | PPSSPP | No |
-| Nintendo Entertainment System | Ares | Yes |
-| Super Nintendo Entertainment System | Ares | Yes |
-| Nintendo Game Boy | mgba | No |
-| Nintendo Game Boy Color | mgba | No |
-| Nintendo Game Boy Advance | mgba | No |
-| Nintendo DS | MelonDS | No |
-| Nintendo 3DS | Lime3DS | No |
-| Nintendo 64 | Ares | Yes |
-| Nintendo Gamecube | Dolphin | No |
-| Nintendo Wii | Dolphin | No |
-| Nintendo Wii U | Cemu | No |
-| Nintendo Switch | Ryujinx | No |
-| PC Engine | Ares | Yes |
-| PC Engine CD | Mednafen | No |
-| PC Engine SuperGrafx | Mednafen | No |
-| Sega Master System | Ares | Yes |
-| Sega Game Gear | Ares | Yes |
-| Sega Mega Drive | Ares | Yes |
-| Sega 32X | Ares | Yes |
-| Sega CD | Ares | Yes |
-| Sega Saturn | Mednafen | No |
-| Sega Dreamcast | Flycast | No |
-| Arcade | Mame | No |
-| Neo Geo | Mame | No |
-| Neo Geo CD | Mame | No |
-| Neo Geo Pocket | Ares | Yes |
-| Neo Geo Pocket Color | Ares | Yes |
-| Scumm | ScummVM | Yes |
-| Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json)) | DOSBox-Staging | No |
+| System | Emulator | Pre Configured | BIOS needed |
+|--------|----------|----------------|-------------|
+| Sony Playstation | [DuckStation](https://github.com/stenzek/duckstation) | Yes | Yes | 
+| Sony Playstation 2 | [PCSX2](https://github.com/PCSX2/pcsx2) | Yes | Yes | 
+| Sony Playstation 3 | [RPCS3](https://github.com/RPCS3/rpcs3) | No | Yes | 
+| Sony Playstation Portable | [PPSSPP](https://github.com/hrydgard/ppsspp) | No | No | 
+| Nintendo Entertainment System | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
+| Super Nintendo Entertainment System | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
+| Nintendo Game Boy | [mgba](https://github.com/mgba-emu/mgba) | No | No | 
+| Nintendo Game Boy Color | [mgba](https://github.com/mgba-emu/mgba) | No | No | 
+| Nintendo Game Boy Advance | [mgba](https://github.com/mgba-emu/mgba) | No | No | 
+| Nintendo DS | [MelonDS](https://github.com/melonDS-emu/melonDS) | No | Yes | 
+| Nintendo 3DS | [Lime3DS](https://github.com/Lime3DS/Lime3DS) | No | Yes | 
+| Nintendo 64 | [Rosalie's Mupen GUI](https://github.com/Rosalie241/RMG) | No | No | 
+| Nintendo Gamecube | [Dolphin](https://github.com/dolphin-emu/dolphin) | No | No | 
+| Nintendo Wii | [Dolphin](https://github.com/dolphin-emu/dolphin) | No | No | 
+| Nintendo Wii U | [Cemu](https://github.com/cemu-project/Cemu) | No | Yes | 
+| Nintendo Switch | [Ryujinx](https://github.com/Ryujinx/Ryujinx) | No | Yes | 
+| PC Engine | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
+| PC Engine CD | [Mednafen](https://mednafen.github.io/) | No | Yes | 
+| PC Engine SuperGrafx | [Mednafen](https://mednafen.github.io/) | No | Yes | 
+| Sega Master System | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
+| Sega Game Gear | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
+| Sega Mega Drive | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
+| Sega 32X | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
+| Sega CD | [Ares](https://github.com/ares-emulator/ares) | Yes | Yes | 
+| Sega Saturn | [Mednafen](https://mednafen.github.io/) | No | Yes | 
+| Sega Dreamcast | [Flycast](https://github.com/flyinghead/flycast) | No | Yes | 
+| Arcade | [Mame](https://github.com/mamedev/mame) | No | Yes | 
+| Neo Geo | [Mame](https://github.com/mamedev/mame) | No | Yes | 
+| Neo Geo CD | [Mame](https://github.com/mamedev/mame) | No | No | 
+| Neo Geo Pocket | [Ares](https://github.com/ares-emulator/ares) | Yes | Yes | 
+| Neo Geo Pocket Color | [Ares](https://github.com/ares-emulator/ares) | Yes | Yes | 
+| Scumm | [ScummVM](https://github.com/scummvm/scummvm) | Yes | No | 
+| Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json)) | [DOSBox-Staging](https://github.com/dosbox-staging/dosbox-staging) | No | No | 
 
 > [!IMPORTANT]  
 > ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
@@ -76,6 +76,9 @@ The following Hotkeys are set:
 - Open Menu / Toggle Fullscreen: F2
 - Save State: F1
 - Load State: F3
+
+### BIOS needed
+Some emulators need a BIOS or firmware to run. Please check the documentation of an emulator for more information. 
 
 ## 🚀 Getting started
 
@@ -97,7 +100,7 @@ On Linux all emulators need to be installed via flatpak but emuze can do this fo
 
 ```
 emulators
-|-> ares-v139
+|-> ares-v135
 |---> ...
 |---> ares.exe
 |---> ...

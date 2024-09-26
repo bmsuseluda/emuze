@@ -1,7 +1,6 @@
 {
   "id": "nintendo64",
   "name": "Nintendo 64",
-  "application": { "id": "ares" },
   "entries": [
     {
       "id": "mariokart640",

@@ -46,14 +46,18 @@ export const log = (
   ...texts: (object | string | number | unknown)[]
 ) => {
   if (isDebug()) {
-    //   TODO: Check which file type would be best
-    texts.forEach((text) => {
-      if (typeof text === "object") {
-        appendLogFile(type, JSON.stringify(text));
-      } else {
-        appendLogFile(type, text);
-      }
-    });
-    console.log(type, texts);
+    try {
+      //   TODO: Check which file type would be best
+      texts.forEach((text) => {
+        if (typeof text === "object" && type !== "error") {
+          appendLogFile(type, JSON.stringify(text));
+        } else {
+          appendLogFile(type, text);
+        }
+      });
+      console.log(type, texts);
+    } catch (e) {
+      appendLogFile("error", "There was an unexpected error while logging");
+    }
   }
 };

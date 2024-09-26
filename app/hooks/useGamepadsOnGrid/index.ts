@@ -1,12 +1,12 @@
-import {
-  useGamepadButtonPressEvent,
-  useGamepadStickDirectionEvent,
-  useKeyboardEvent,
-} from "../useGamepadEvent";
-import { layout } from "../useGamepads/layouts";
 import type { MutableRefObject, RefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import { useRefsGrid } from "../useRefsGrid";
+import {
+  useDirectionalInputDown,
+  useDirectionalInputLeft,
+  useDirectionalInputRight,
+  useDirectionalInputUp,
+} from "../useDirectionalInput";
 
 export interface Result<T> {
   selectedEntry: MutableRefObject<T | undefined>;
@@ -280,25 +280,10 @@ export const useGamepadsOnGrid = <T extends HTMLElement>({
     createResult,
   ]);
 
-  useGamepadButtonPressEvent(layout.buttons.DPadRight, onRight);
-  useGamepadButtonPressEvent(layout.buttons.DPadLeft, onLeft);
-  useGamepadButtonPressEvent(layout.buttons.DPadDown, onDown);
-  useGamepadButtonPressEvent(layout.buttons.DPadUp, onUp);
-
-  useGamepadStickDirectionEvent("leftStickRight", onRight);
-  useGamepadStickDirectionEvent("leftStickLeft", onLeft);
-  useGamepadStickDirectionEvent("leftStickDown", onDown);
-  useGamepadStickDirectionEvent("leftStickUp", onUp);
-
-  useGamepadStickDirectionEvent("extraStickRight", onRight);
-  useGamepadStickDirectionEvent("extraStickLeft", onLeft);
-  useGamepadStickDirectionEvent("extraStickDown", onDown);
-  useGamepadStickDirectionEvent("extraStickUp", onUp);
-
-  useKeyboardEvent("ArrowRight", onRight);
-  useKeyboardEvent("ArrowLeft", onLeft);
-  useKeyboardEvent("ArrowDown", onDown);
-  useKeyboardEvent("ArrowUp", onUp);
+  useDirectionalInputUp(onUp);
+  useDirectionalInputDown(onDown);
+  useDirectionalInputLeft(onLeft);
+  useDirectionalInputRight(onRight);
 
   return createResult();
 };

@@ -7,7 +7,7 @@ var createErrorDialog = function (route, id) {
 };
 var createSettingsRoutes = function (route, id) {
     route("settings", "customRoutes/categories.$category.settings.tsx", {
-        id: id,
+        id: "".concat(id, "Settings"),
     }, function () {
         route("", "customRoutes/categories.$category.settings._index.tsx", {
             index: true,
@@ -25,6 +25,10 @@ var createSettingsRoutes = function (route, id) {
 };
 var createCategoriesRoutes = function (route) {
     route("categories", "customRoutes/categories.tsx", {}, function () {
+        route("lastPlayed", "customRoutes/categories.lastPlayed.tsx", function () {
+            createSettingsRoutes(route, "lastPlayed");
+            createErrorDialog(route, "lastPlayed");
+        });
         route(":category", "customRoutes/categories.$category.tsx", function () {
             createSettingsRoutes(route, "category");
             createErrorDialog(route, "category");
@@ -39,6 +43,7 @@ var appConfig = {
             route("/", "customRoutes/_index.tsx", { index: true });
             createCategoriesRoutes(route);
             createSettingsRoutes(route, "initial");
+            route("/invalidateCaches", "customRoutes/invalidateCaches.tsx");
         });
     },
     postcss: true,

@@ -1,4 +1,5 @@
 export type SystemId =
+  | "lastPlayed"
   | "sonyplaystation"
   | "sonyplaystation2"
   | "sonyplaystation3"

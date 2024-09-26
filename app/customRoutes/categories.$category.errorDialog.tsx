@@ -7,10 +7,12 @@ import type { FocusElement } from "../types/focusElement";
 import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import {
-  useGamepadButtonPressEvent,
-  useKeyboardEvent,
-} from "../hooks/useGamepadEvent";
-import { layout } from "../hooks/useGamepads/layouts";
+  useDirectionalInputDown,
+  useDirectionalInputUp,
+  useInputBack,
+  useInputConfirmation,
+  useInputSettings,
+} from "../hooks/useDirectionalInput";
 
 export const loader = () => {
   const errorDialog = getErrorDialog();
@@ -37,12 +39,12 @@ export default function RenderComponent() {
   const { errorDialog } = useLoaderData<typeof loader>();
   const listRef = useRef<ElementRef<"div">>(null);
   const submit = useSubmit();
-  const { switchFocusBack, switchFocus, isInFocus } =
+  const { switchFocusBack, isInFocus, enableFocus } =
     useFocus<FocusElement>("errorDialog");
 
   useEffect(() => {
     if (!isInFocus) {
-      switchFocus("errorDialog");
+      enableFocus();
     }
     // Should be executed only once, therefore isInFocus can not be part of the dependency array
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,17 +81,11 @@ export default function RenderComponent() {
     }
   }, [isInFocus]);
 
-  useGamepadButtonPressEvent(layout.buttons.A, handleClose);
-  useGamepadButtonPressEvent(layout.buttons.DPadUp, handleScrollUp);
-  useGamepadButtonPressEvent(layout.buttons.DPadDown, handleScrollDown);
-  useGamepadButtonPressEvent(layout.buttons.B, handleClose);
-  useGamepadButtonPressEvent(layout.buttons.Start, handleClose);
-
-  useKeyboardEvent("Enter", handleClose);
-  useKeyboardEvent("Escape", handleClose);
-  useKeyboardEvent("Backspace", handleClose);
-  useKeyboardEvent("ArrowDown", handleScrollDown);
-  useKeyboardEvent("ArrowUp", handleScrollUp);
+  useDirectionalInputUp(handleScrollUp);
+  useDirectionalInputDown(handleScrollDown);
+  useInputConfirmation(handleClose);
+  useInputBack(handleClose);
+  useInputSettings(handleClose);
 
   return (
     <ErrorDialog {...errorDialog} onClose={handleClose} listRef={listRef} />

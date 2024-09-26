@@ -1,7 +1,6 @@
 {
   "id": "arcade",
   "name": "Arcade",
-  "application": { "id": "mame" },
   "entries": [
     {
       "id": "btoads2",

@@ -1,7 +1,8 @@
+import type { Required } from "utility-types";
+
 import type { Category, Entry } from "../../types/jsonFiles/category";
 import type { GeneralConfigured } from "../../types/jsonFiles/settings/general";
 import type { Appearance } from "../../types/jsonFiles/settings/appearance";
-import type { Application as InstalledApplication } from "../../types/jsonFiles/applications";
 import type { ApplicationId } from "./applicationId";
 
 export interface Settings {
@@ -12,21 +13,38 @@ export interface Settings {
 export type OptionParamFunction = ({
   entryData,
   categoryData,
+  applicationPath,
   settings,
   absoluteEntryPath,
   hasAnalogStick,
 }: {
   entryData: Entry;
   categoryData: Category;
+  applicationPath?: string;
   settings: Settings;
   absoluteEntryPath: string;
   hasAnalogStick: boolean;
 }) => string[];
 
-export type EnvironmentVariableFunction = (
-  category: Category,
-  settings: Settings,
-) => Record<string, string | null>;
+export type EnvironmentVariableFunction = ({
+  categoryData,
+  applicationPath,
+  settings,
+}: {
+  categoryData: Category;
+  applicationPath?: string;
+  settings: Settings;
+}) => Record<string, string | null>;
+
+export interface InstalledApplication {
+  id: ApplicationId;
+  path?: string;
+}
+
+export type InstalledApplicationWindows = Required<
+  InstalledApplication,
+  "path"
+>;
 
 export type FindEntryNameFunction = ({
   entry,
@@ -49,7 +67,7 @@ export interface Application {
   fileExtensions?: `${string}.${string}`[];
   entryAsDirectory?: boolean;
   omitAbsoluteEntryPathAsLastParam?: boolean;
-  environmentVariables?: EnvironmentVariableFunction;
+  defineEnvironmentVariables?: EnvironmentVariableFunction;
   createOptionParams?: OptionParamFunction;
   flatpakId: string;
   flatpakOptionParams?: string[];

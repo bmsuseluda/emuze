@@ -1,6 +1,6 @@
 import { Headline } from "../../Headline";
-import type { ElementRef, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { ElementRef, ForwardedRef, ReactNode } from "react";
+import { useCallback, useRef } from "react";
 import { styled } from "../../../../styled-system/jsx";
 import { useFullscreen } from "../../../hooks/useFullscreen";
 
@@ -121,27 +121,56 @@ interface ContainerProps {
   actions?: ReactNode;
   scrollSmooth?: boolean;
   collapse?: boolean;
+  listRef?: ForwardedRef<HTMLDivElement>;
 }
 
-const ListActionBarContainer = forwardRef<
-  ElementRef<typeof List>,
-  ContainerProps
->(({ list: listEntries, actions, scrollSmooth, collapse = false }, ref) => {
+const ListActionBarContainer = ({
+  list: listEntries,
+  actions,
+  scrollSmooth,
+  collapse = false,
+  listRef: listRefDefault,
+}: ContainerProps) => {
   const fullscreen = useFullscreen();
+  const listRef = useRef<ElementRef<"div">>();
+
+  const onClick = useCallback(() => {
+    const list = listRef.current;
+    if (list) {
+      // Remove scrollPadding if entry is clicked by mouse to prevent centering the element, otherwise it would be difficult to double click a entry.
+      list.style.scrollPadding = "inherit";
+
+      setTimeout(() => {
+        // Add scrollPadding if entry was selected by gamepad to center the element.
+        // Needs to be in a timeout to reactivate the feature afterwards
+        // If you change this value, change it in panda config as well
+        list.style.scrollPadding = "50% 0";
+      }, 10);
+    }
+  }, []);
+
   return (
     <Absolute>
       <List
-        ref={ref}
+        ref={(element: HTMLInputElement) => {
+          if (typeof listRefDefault === "function") {
+            listRefDefault(element);
+          } else if (listRefDefault) {
+            listRefDefault.current = element;
+          }
+          listRef.current = element;
+        }}
         scrollSmooth={scrollSmooth}
         collapse={collapse}
         fullscreen={fullscreen}
+        onClick={onClick}
       >
         {listEntries}
       </List>
       {actions && <ActionBar collapse={collapse}>{actions}</ActionBar>}
     </Absolute>
   );
-});
+};
 ListActionBarContainer.displayName = "ListActionBarContainer";
 
 export const ListActionBarLayout = ({ headline, children }: Props) => (
