@@ -29,7 +29,7 @@ export class LibraryPage {
 
   async press(key: string) {
     await this.page.keyboard.press(key);
-    await this.page.waitForTimeout(200);
+    await this.page.waitForTimeout(250);
   }
 
   async goToSystemViaClick(systemName: string, gameName?: string) {

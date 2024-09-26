@@ -26,6 +26,7 @@ class SimpleDirent {
   name: string;
   directory: boolean;
   path: string;
+  parentPath = "";
 
   constructor(name: string, directory: boolean) {
     this.name = name;
