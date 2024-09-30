@@ -18,7 +18,7 @@ export const readLastPlayed = () => lastPlayedDataCache.readFile() || [];
  * lastPlayed list needs to be
  * - sorted by last played
  * - unique, so no duplicate entries in it
- * - limited on 50 items
+ * - limited to 50 items
  */
 export const writeLastPlayed = (entries: EntryWithSystem[]) => {
   lastPlayedDataCache.writeFile(entries);

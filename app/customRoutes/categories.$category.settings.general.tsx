@@ -35,6 +35,7 @@ import {
   useInputConfirmation,
 } from "../hooks/useDirectionalInput";
 import { FileDialogInputField } from "../containers/FileDialogTextInput";
+import { Typography } from "../components/Typography";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
@@ -332,9 +333,7 @@ export default function General() {
         headline={
           <IconChildrenWrapper>
             <SettingsIcon id="general" />
-            <span>
-              <span>General</span>
-            </span>
+            <Typography ellipsis>General</Typography>
           </IconChildrenWrapper>
         }
       >

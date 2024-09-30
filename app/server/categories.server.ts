@@ -10,6 +10,7 @@ import { fetchMetaData } from "./igdb.server";
 import { readGeneral } from "./settings.server";
 import type {
   ExcludeFilesFunction,
+  FindEntryNameFunction,
   InstalledApplication,
 } from "./applicationsDB.server/types";
 import { applications } from "./applicationsDB.server";
@@ -87,6 +88,68 @@ const filterFiles = (
   return filenames;
 };
 
+const createEntry = ({
+  filename,
+  categoryPath,
+  categoriesPath,
+  categoryName,
+  index,
+  oldEntries,
+  installedApplication,
+  findEntryName,
+}: {
+  filename: string;
+  categoryPath: string;
+  categoriesPath: string;
+  categoryName: string;
+  index: number;
+  oldEntries?: Entry[];
+  installedApplication?: InstalledApplication;
+  findEntryName?: FindEntryNameFunction;
+}): Entry => {
+  const name = filterGameNameFromFileName(filename);
+
+  const oldEntryData = oldEntries?.find(
+    ({ path }) => path === nodepath.relative(categoryPath, filename),
+  );
+  if (oldEntryData) {
+    oldEntryData.subEntries = undefined;
+    return oldEntryData;
+  } else {
+    const entry = {
+      id: convertToId(name, index),
+      name,
+      path: nodepath.relative(categoryPath, filename),
+    };
+
+    if (findEntryName) {
+      return {
+        ...entry,
+        name: findEntryName({
+          entry,
+          categoriesPath,
+          categoryName,
+          installedApplication,
+        }),
+      };
+    } else {
+      return entry;
+    }
+  }
+};
+
+const filterGameNameFromFileName = (fileName: string) => {
+  const extension = nodepath.extname(fileName);
+  return extension.length > 0
+    ? nodepath.basename(fileName).split(extension)[0]
+    : nodepath.basename(fileName);
+};
+
+const isSameBaseGame = (fileName: string, lastFileName?: string) =>
+  lastFileName &&
+  filterGameNameFromFileName(fileName).toLowerCase().trim() ===
+    filterGameNameFromFileName(lastFileName).toLowerCase().trim();
+
 export const readEntries = ({
   categoryName,
   applicationId,
@@ -115,42 +178,39 @@ export const readEntries = ({
 
     const filenamesFiltered = filterFiles(filenames, excludeFiles);
 
-    return filenamesFiltered
-      .map<Entry>((filename, index) => {
-        const extension = nodepath.extname(filename);
-        const name =
-          extension.length > 0
-            ? nodepath.basename(filename).split(extension)[0]
-            : nodepath.basename(filename);
+    let lastFilename: string | undefined;
+    const entries: Entry[] = [];
 
-        const oldEntryData = oldEntries?.find(
-          ({ path }) => path === nodepath.relative(categoryPath, filename),
-        );
-        if (oldEntryData) {
-          return oldEntryData;
-        } else {
-          const entry = {
-            id: convertToId(name, index),
-            name,
-            path: nodepath.relative(categoryPath, filename),
-          };
+    filenamesFiltered.forEach((filename, index) => {
+      const entry = createEntry({
+        oldEntries,
+        categoriesPath,
+        categoryName,
+        index,
+        categoryPath,
+        filename,
+        findEntryName,
+        installedApplication,
+      });
 
-          if (findEntryName) {
-            return {
-              ...entry,
-              name: findEntryName({
-                entry,
-                categoriesPath,
-                categoryName,
-                installedApplication,
-              }),
-            };
+      if (isSameBaseGame(filename, lastFilename)) {
+        const lastEntry = entries.at(-1);
+        if (lastEntry) {
+          if (lastEntry.subEntries) {
+            lastEntry.subEntries.push(entry);
           } else {
-            return entry;
+            lastEntry.subEntries = [{ ...lastEntry }, entry];
           }
+          lastEntry.name = filterGameNameFromFileName(filename);
         }
-      })
-      .sort(sortEntries);
+      } else {
+        entries?.push(entry);
+      }
+
+      lastFilename = filename;
+    });
+
+    return entries.sort(sortEntries);
   }
 
   return oldEntries || [];

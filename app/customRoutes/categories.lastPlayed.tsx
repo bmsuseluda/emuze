@@ -3,13 +3,10 @@ import { useCallback, useRef } from "react";
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, Outlet, redirect, useLoaderData } from "@remix-run/react";
-import { IoMdPlay } from "react-icons/io";
-import { Button } from "../components/Button";
 import { executeApplication } from "../server/execute.server";
 import { GameGridDynamic } from "../components/GameGrid";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
 import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
-import { layout } from "../hooks/useGamepads/layouts";
 import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
 import { readAppearance, readGeneral } from "../server/settings.server";
@@ -17,11 +14,11 @@ import { SettingsLink } from "../containers/SettingsLink";
 import { Typography } from "../components/Typography";
 import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction";
 import { useGamepadConnected } from "../hooks/useGamepadConnected";
-import { GamepadButtonIcon } from "../components/GamepadButtonIcon";
 import { log } from "../server/debug.server";
 import { readLastPlayed } from "../server/lastPlayed.server";
 import { SystemIcon } from "../components/SystemIcon";
 import fs from "fs";
+import { LaunchButton } from "../containers/LaunchButton";
 
 export const loader = () => {
   const lastPlayed = readLastPlayed();
@@ -52,7 +49,14 @@ export const action: ActionFunction = async ({ request }) => {
       if (typeof game === "string") {
         const entryData = lastPlayed.find((value) => value.id === game);
 
-        entryData && executeApplication(entryData.systemId, entryData);
+        if (entryData) {
+          if (entryData.subEntries?.[0]) {
+            return redirect(`lastPlayed/${entryData.id}`);
+          } else {
+            executeApplication(entryData.systemId, entryData);
+          }
+        }
+
         return null;
       }
     }
@@ -79,7 +83,7 @@ export default function LastPlayed() {
 
   const launchButtonRef = useRef<ElementRef<"button">>(null);
 
-  const { isInFocus, switchFocus, switchFocusBack } =
+  const { isInFocus, switchFocus, switchFocusBack, enableFocus } =
     useFocus<FocusElement>("main");
 
   const { gamepadType, enableGamepads, disableGamepads } =
@@ -103,10 +107,10 @@ export default function LastPlayed() {
 
   const onEntryClick = useCallback(() => {
     if (!isInFocus) {
-      switchFocus("main");
+      enableFocus();
       enableGamepads();
     }
-  }, [isInFocus, enableGamepads, switchFocus]);
+  }, [isInFocus, enableGamepads, enableFocus]);
 
   return (
     <>
@@ -136,25 +140,11 @@ export default function LastPlayed() {
             }
             actions={
               <>
-                <Button
-                  type="submit"
-                  name="_actionId"
+                <LaunchButton
+                  gamepadType={gamepadType}
+                  launchButtonRef={launchButtonRef}
                   disabled={!lastPlayed || lastPlayed.length === 0}
-                  value={actionIds.launch}
-                  ref={launchButtonRef}
-                  icon={
-                    gamepadType ? (
-                      <GamepadButtonIcon
-                        buttonIndex={layout.buttons.A}
-                        gamepadType={gamepadType}
-                      />
-                    ) : (
-                      <IoMdPlay />
-                    )
-                  }
-                >
-                  Launch Game
-                </Button>
+                />
               </>
             }
           />

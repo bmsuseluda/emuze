@@ -7,6 +7,19 @@ const createErrorDialog = (route: DefineRouteFunction, id: string) => {
   });
 };
 
+const createGameDialog = (route: DefineRouteFunction, id: string) => {
+  route(
+    ":gameId",
+    "customRoutes/categories.$category.$gameId.tsx",
+    {
+      id: `${id}GameDialog`,
+    },
+    () => {
+      createErrorDialog(route, `${id}GameDialog`);
+    },
+  );
+};
+
 const createSettingsRoutes = (route: DefineRouteFunction, id: string) => {
   route(
     "settings",
@@ -43,10 +56,22 @@ const createSettingsRoutes = (route: DefineRouteFunction, id: string) => {
 const createCategoriesRoutes = (route: DefineRouteFunction) => {
   route("categories", "customRoutes/categories.tsx", {}, () => {
     route("lastPlayed", "customRoutes/categories.lastPlayed.tsx", () => {
-      createSettingsRoutes(route, "lastPlayed");
-      createErrorDialog(route, "lastPlayed");
+      const id = "lastPlayed";
+      route(
+        ":category/:gameId",
+        "customRoutes/categories.$category.$gameId.tsx",
+        {
+          id: `${id}GameDialog`,
+        },
+        () => {
+          createErrorDialog(route, `${id}GameDialog`);
+        },
+      );
+      createSettingsRoutes(route, id);
+      createErrorDialog(route, id);
     });
     route(":category", "customRoutes/categories.$category.tsx", () => {
+      createGameDialog(route, "category");
       createSettingsRoutes(route, "category");
       createErrorDialog(route, "category");
     });
