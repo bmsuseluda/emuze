@@ -85,10 +85,34 @@ export const hugo2: Entry = {
   path: "Hugo 2.chd",
 };
 
-export const finalfantasy7: Entry = {
+export const finalfantasy7disc1: Entry = {
   id: "finalfantasyvii(j)(disc1)",
   name: "Final Fantasy VII (J) (Disc 1)",
   path: "Final Fantasy VII (J) (Disc 1).chd",
+};
+
+export const finalfantasy7disc2: Entry = {
+  id: "finalfantasyvii(j)(disc2)",
+  name: "Final Fantasy VII (J) (Disc 2)",
+  path: "Final Fantasy VII (J) (Disc 2).chd",
+};
+
+export const finalfantasy7disc3: Entry = {
+  id: "finalfantasyvii(j)(disc3)",
+  name: "Final Fantasy VII (J) (Disc 3)",
+  path: "Final Fantasy VII (J) (Disc 3).chd",
+};
+
+export const ehrgeiz: Entry = {
+  id: "ehrgeiz",
+  name: "Ehrgeiz",
+  path: "Ehrgeiz.chd",
+};
+
+export const ehrgeizJapan: Entry = {
+  id: "ehrgeiz(j)",
+  name: "Ehrgeiz (J)",
+  path: "Ehrgeiz (J).chd",
 };
 
 export const playstation = {
@@ -139,11 +163,23 @@ export const turtles2: Entry = {
   path: "Teenage Mutant Hero Turtles II - The Arcade Game.nes",
 };
 
+export const turtles2Japan: Entry = {
+  id: "teenagemutantheroturtlesii-thearcadegame(J)",
+  name: "Teenage Mutant Hero Turtles II - The Arcade Game (J)",
+  path: "Teenage Mutant Hero Turtles II - The Arcade Game (J).nes",
+};
+
 export const marioTetrisWorldCup: Entry = {
   id: "mariotetrisworldcup",
   name: "Super Mario Bros. - Tetris - Nintendo World Cup",
   path: "Super Mario Bros. - Tetris - Nintendo World Cup.nes",
 };
+
+export const nes = {
+  id: "nintendoentertainmentsystem",
+  name: "NES",
+  entries: addIndex([turtles2, turtles2Japan]),
+} satisfies Category;
 
 export const blazingstar: Entry = {
   id: "blazstar",

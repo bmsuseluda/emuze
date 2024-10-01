@@ -1,4 +1,4 @@
-import { styled } from "styled-system/jsx";
+import { styled } from "../../../styled-system/jsx";
 import type { Entry } from "../../types/jsonFiles/category";
 import { useGamepadsOnGrid } from "../../hooks/useGamepadsOnGrid";
 import type { ElementRef, MutableRefObject } from "react";
@@ -26,6 +26,7 @@ const Wrapper = styled("li", {
 const Label = styled("label", {
   base: {
     padding: "1",
+    color: "color",
 
     outlineWidth: "2px",
     outlineStyle: "solid",

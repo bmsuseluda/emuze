@@ -21,7 +21,11 @@ import {
   cotton,
   createAbsoluteEntryPath,
   createCategoryPath,
-  finalfantasy7,
+  ehrgeiz,
+  ehrgeizJapan,
+  finalfantasy7disc1,
+  finalfantasy7disc2,
+  finalfantasy7disc3,
   gateofthunder,
   hugo,
   hugo2,
@@ -119,6 +123,50 @@ describe("categories.server", () => {
 
       expect(result).toStrictEqual(expectedResult);
     });
+
+    it("Should return game with game versions", () => {
+      vi.mocked(readFilenames).mockReturnValueOnce([
+        createAbsoluteEntryPath(playstation.name, finalfantasy7disc1.path),
+        createAbsoluteEntryPath(playstation.name, finalfantasy7disc2.path),
+        createAbsoluteEntryPath(playstation.name, finalfantasy7disc3.path),
+        createAbsoluteEntryPath(playstation.name, ehrgeiz.path),
+        createAbsoluteEntryPath(playstation.name, ehrgeizJapan.path),
+        //     TODO: add dos game versions
+      ]);
+
+      // TODO: use index only on game versions?
+      // TODO: import cache process does not remove games that are game versions
+      const oldEntries: Entry[] = addIndex([
+        {
+          ...finalfantasy7disc1,
+        },
+      ]);
+
+      const expectedResult: Entry[] = addIndex([
+        {
+          ...ehrgeiz,
+          name: "Ehrgeiz",
+          subEntries: addIndex([ehrgeiz, ehrgeizJapan]),
+        },
+        {
+          ...finalfantasy7disc1,
+          name: "Final Fantasy VII",
+          subEntries: addIndex([
+            finalfantasy7disc1,
+            finalfantasy7disc2,
+            finalfantasy7disc3,
+          ]),
+        },
+      ]);
+
+      const result = readEntries({
+        categoryName: playstation.name,
+        applicationId: duckstation.id,
+        oldEntries,
+      });
+
+      expect(result).toStrictEqual(expectedResult);
+    });
   });
 
   describe("readEntriesWithMetaData", () => {
@@ -126,7 +174,7 @@ describe("categories.server", () => {
       const fetchMetaDataMock = vi.fn().mockResolvedValue(
         addIndex([
           {
-            ...finalfantasy7,
+            ...finalfantasy7disc1,
             metaData: {
               imageUrl: "https://www.allImagesComeFromHere.com/ff7.webp",
               expiresOn: getExpiresOn(),
@@ -147,7 +195,7 @@ describe("categories.server", () => {
         categoriesDB.sonyplaystation.igdbPlatformIds,
         addIndex([
           {
-            ...finalfantasy7,
+            ...finalfantasy7disc1,
             metaData: {
               imageUrl: "https://www.allImagesComeFromHere.com/ff7.webp",
               expiresOn: new Date(2022).getTime(),
@@ -167,7 +215,7 @@ describe("categories.server", () => {
       expect(result).toStrictEqual(
         addIndex([
           {
-            ...finalfantasy7,
+            ...finalfantasy7disc1,
             metaData: {
               imageUrl: "https://www.allImagesComeFromHere.com/ff7.webp",
               expiresOn: getExpiresOn(),
@@ -191,7 +239,7 @@ describe("categories.server", () => {
       );
       expect(fetchMetaDataMock).toHaveBeenCalledWith(
         categoriesDB.sonyplaystation.igdbPlatformIds,
-        addIndex([finalfantasy7, hugo]),
+        addIndex([finalfantasy7disc1, hugo]),
       );
     });
   });

@@ -113,7 +113,7 @@ const createEntry = ({
     ({ path }) => path === nodepath.relative(categoryPath, filename),
   );
   if (oldEntryData) {
-    oldEntryData.subEntries = undefined;
+    delete oldEntryData.subEntries;
     return oldEntryData;
   } else {
     const entry = {
@@ -145,10 +145,24 @@ const filterGameNameFromFileName = (fileName: string) => {
     : nodepath.basename(fileName);
 };
 
-const isSameBaseGame = (fileName: string, lastFileName?: string) =>
-  lastFileName &&
-  filterGameNameFromFileName(fileName).toLowerCase().trim() ===
-    filterGameNameFromFileName(lastFileName).toLowerCase().trim();
+const removeAdditionalInfo = (gameName: string) => gameName.split(" (")[0];
+
+const isSameBaseGame = (gameName: string, lastGameName?: string) =>
+  lastGameName &&
+  removeAdditionalInfo(gameName).toLowerCase().trim() ===
+    removeAdditionalInfo(lastGameName).toLowerCase().trim();
+
+const addAsGameVersion = (entries: Entry[], entry: Entry) => {
+  const lastEntry = entries.at(-1);
+  if (lastEntry) {
+    if (lastEntry.subEntries) {
+      lastEntry.subEntries.push(entry);
+    } else {
+      lastEntry.subEntries = [{ ...lastEntry }, entry];
+    }
+    lastEntry.name = removeAdditionalInfo(lastEntry.name);
+  }
+};
 
 export const readEntries = ({
   categoryName,
@@ -178,7 +192,7 @@ export const readEntries = ({
 
     const filenamesFiltered = filterFiles(filenames, excludeFiles);
 
-    let lastFilename: string | undefined;
+    let lastGameName: string | undefined;
     const entries: Entry[] = [];
 
     filenamesFiltered.forEach((filename, index) => {
@@ -193,21 +207,13 @@ export const readEntries = ({
         installedApplication,
       });
 
-      if (isSameBaseGame(filename, lastFilename)) {
-        const lastEntry = entries.at(-1);
-        if (lastEntry) {
-          if (lastEntry.subEntries) {
-            lastEntry.subEntries.push(entry);
-          } else {
-            lastEntry.subEntries = [{ ...lastEntry }, entry];
-          }
-          lastEntry.name = filterGameNameFromFileName(filename);
-        }
+      if (isSameBaseGame(entry.name, lastGameName)) {
+        addAsGameVersion(entries, entry);
       } else {
         entries?.push(entry);
       }
 
-      lastFilename = filename;
+      lastGameName = entry.name;
     });
 
     return entries.sort(sortEntries);
