@@ -5,7 +5,9 @@ import {
 } from "../lastPlayed.server";
 import {
   addIndex,
+  finalfantasy7,
   finalfantasy7disc1,
+  finalfantasy7disc2,
   hugo,
   monkeyIsland,
   playstation,
@@ -145,6 +147,22 @@ describe("lastPlayed.server", () => {
         hugo202461,
         monkeyIsland2024528,
       ]);
+
+      expect(result).toStrictEqual(expected);
+    });
+
+    it("Should replace game version with full game", () => {
+      const oldLastPlayed: EntryWithSystem[] = [
+        { ...finalfantasy72024529, ...finalfantasy7disc2 },
+      ];
+      const result = syncLastPlayedWithCategory(oldLastPlayed, {
+        ...playstation,
+        entries: [finalfantasy7],
+      });
+
+      const expected: EntryWithSystem[] = [
+        { ...finalfantasy72024529, ...finalfantasy7 },
+      ];
 
       expect(result).toStrictEqual(expected);
     });

@@ -2,8 +2,34 @@ import type { Category, Entry } from "../../types/jsonFiles/category";
 import nodepath from "path";
 import { general } from "./general";
 
-export const addIndex = <P extends Entry>(entries: P[]): P[] =>
-  entries.map((entry, index) => ({ ...entry, id: `${entry.id}${index}` }));
+export const addIndex = <P extends Entry>(entries: P[]): P[] => {
+  let index = 0;
+
+  return entries.map((entry) => {
+    const newEntry: P = {
+      ...entry,
+      id: `${entry.id}${index}`,
+    };
+
+    if (entry.subEntries) {
+      const newSubEntries = entry.subEntries.map((subEntry) => {
+        const newSubEntry: Entry = {
+          ...subEntry,
+          id: `${subEntry.id}${index}`,
+        };
+        index++;
+        return newSubEntry;
+      });
+      return {
+        ...newEntry,
+        subEntries: newSubEntries,
+      };
+    } else {
+      index++;
+      return newEntry;
+    }
+  });
+};
 
 export const createCategoryPath = (categoryName: string) =>
   nodepath.join(general.categoriesPath, categoryName);
@@ -85,6 +111,39 @@ export const hugo2: Entry = {
   path: "Hugo 2.chd",
 };
 
+export const finalfantasy7: Entry = {
+  id: "finalfantasyvii(j)(disc1)0",
+  name: "Final Fantasy VII (J) (Disc 1)",
+  path: "Final Fantasy VII (J) (Disc 1).chd",
+  metaData: {
+    imageUrl:
+      "https://images.igdb.com/igdb/image/upload/t_cover_big/co2kx2.webp",
+    expiresOn: 1728906938376,
+  },
+  subEntries: [
+    {
+      id: "finalfantasyvii(j)(disc1)0",
+      name: "Final Fantasy VII (J) (Disc 1)",
+      path: "Final Fantasy VII (J) (Disc 1).chd",
+      metaData: {
+        imageUrl:
+          "https://images.igdb.com/igdb/image/upload/t_cover_big/co2kx2.webp",
+        expiresOn: 1728906938376,
+      },
+    },
+    {
+      id: "finalfantasyvii(j)(disc2)1",
+      name: "Final Fantasy VII (J) (Disc 2)",
+      path: "Final Fantasy VII (J) (Disc 2).chd",
+    },
+    {
+      id: "finalfantasyvii(j)(disc3)2",
+      name: "Final Fantasy VII (J) (Disc 3)",
+      path: "Final Fantasy VII (J) (Disc 3).chd",
+    },
+  ],
+};
+
 export const finalfantasy7disc1: Entry = {
   id: "finalfantasyvii(j)(disc1)",
   name: "Final Fantasy VII (J) (Disc 1)",
@@ -127,6 +186,57 @@ export const playstation2 = {
   entries: addIndex([fahrenheit]),
 } satisfies Category;
 
+export const psallstarsDisc: Entry = {
+  id: "eboot",
+  name: "PlayStation All-Stars Battle Royale",
+  path: "dev_hdd0/GAMES/XCUS00003-[PlayStation AllStars Battle Royale]/PS3_GAME/USRDIR/EBOOT.BIN",
+  metaData: {
+    imageUrl:
+      "https://images.igdb.com/igdb/image/upload/t_cover_big/co2ssv.webp",
+    expiresOn: 1728917362970,
+  },
+};
+
+export const psallstarsDigital: Entry = {
+  id: "eboot",
+  name: "PlayStation All-Stars Battle Royale",
+  path: "dev_hdd0/game/BCUS98472/USRDIR/EBOOT.BIN",
+  metaData: {
+    imageUrl:
+      "https://images.igdb.com/igdb/image/upload/t_cover_big/co2ssv.webp",
+    expiresOn: 1728917362970,
+  },
+};
+
+export const psallstars: Entry = {
+  id: "eboot0",
+  name: "PlayStation All-Stars Battle Royale",
+  path: "dev_hdd0/GAMES/XCUS00003-[PlayStation AllStars Battle Royale]/PS3_GAME/USRDIR/EBOOT.BIN",
+  subEntries: [
+    {
+      id: "eboot0",
+      name: "PlayStation All-Stars Battle Royale",
+      path: "dev_hdd0/GAMES/XCUS00003-[PlayStation AllStars Battle Royale]/PS3_GAME/USRDIR/EBOOT.BIN",
+    },
+    {
+      id: "eboot1",
+      name: "PlayStation All-Stars Battle Royale",
+      path: "dev_hdd0/game/BCUS98472/USRDIR/EBOOT.BIN",
+    },
+  ],
+  metaData: {
+    imageUrl:
+      "https://images.igdb.com/igdb/image/upload/t_cover_big/co2ssv.webp",
+    expiresOn: 1728917362970,
+  },
+};
+
+export const playstation3 = {
+  id: "sonyplaystation3",
+  name: "Sony Playstation 3",
+  entries: addIndex([fahrenheit]),
+} satisfies Category;
+
 export const bayoubilly: Entry = {
   id: "adventuresofbayoubilly,the(e)",
   name: "Adventures of Bayou Billy, The (E)",
@@ -156,6 +266,24 @@ export const commanderkeen4: Entry = {
   name: "Commander Keen in Goodbye, Galaxy!: Secret of the Oracle",
   path: "keen4e.exe",
 };
+
+export const doomPlutonium: Entry = {
+  id: "doom2",
+  name: "Final Doom (The Plutonia Experiment)",
+  path: "Final DOOM/Plutonia/DOOM2.EXE",
+};
+
+export const doomEvilution: Entry = {
+  id: "doom2",
+  name: "Final Doom (TNT: Evilution)",
+  path: "Final DOOM/TNT/DOOM2.EXE",
+};
+
+export const dos = {
+  id: "dos",
+  name: "DOS",
+  entries: addIndex([commanderkeen4]),
+} satisfies Category;
 
 export const turtles2: Entry = {
   id: "teenagemutantheroturtlesii-thearcadegame",

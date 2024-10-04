@@ -109,33 +109,32 @@ const createEntry = ({
 }): Entry => {
   const name = filterGameNameFromFileName(filename);
 
-  const oldEntryData = oldEntries?.find(
+  const oldMetaData = oldEntries?.find(
     ({ path }) => path === nodepath.relative(categoryPath, filename),
-  );
-  if (oldEntryData) {
-    delete oldEntryData.subEntries;
-    return oldEntryData;
-  } else {
-    const entry = {
-      id: convertToId(name, index),
-      name,
-      path: nodepath.relative(categoryPath, filename),
-    };
+  )?.metaData;
 
-    if (findEntryName) {
-      return {
-        ...entry,
-        name: findEntryName({
-          entry,
-          categoriesPath,
-          categoryName,
-          installedApplication,
-        }),
-      };
-    } else {
-      return entry;
-    }
+  const path = nodepath.relative(categoryPath, filename);
+  const entry: Entry = {
+    id: convertToId(name, index),
+    name,
+    path,
+    ...(oldMetaData && { metaData: oldMetaData }),
+  };
+
+  if (findEntryName) {
+    const optimizedName = findEntryName({
+      entry,
+      categoriesPath,
+      categoryName,
+      installedApplication,
+    });
+    return {
+      ...entry,
+      name: optimizedName,
+    };
   }
+
+  return entry;
 };
 
 const filterGameNameFromFileName = (fileName: string) => {
@@ -152,15 +151,12 @@ const isSameBaseGame = (gameName: string, lastGameName?: string) =>
   removeAdditionalInfo(gameName).toLowerCase().trim() ===
     removeAdditionalInfo(lastGameName).toLowerCase().trim();
 
-const addAsGameVersion = (entries: Entry[], entry: Entry) => {
-  const lastEntry = entries.at(-1);
-  if (lastEntry) {
-    if (lastEntry.subEntries) {
-      lastEntry.subEntries.push(entry);
-    } else {
-      lastEntry.subEntries = [{ ...lastEntry }, entry];
-    }
-    lastEntry.name = removeAdditionalInfo(lastEntry.name);
+const addAsGameVersion = (lastEntry: Entry, { metaData, ...entry }: Entry) => {
+  const { metaData: metaDataFromLast, ...lastEntryWithoutMetaData } = lastEntry;
+  if (lastEntry.subEntries?.[0]) {
+    lastEntry.subEntries.push(entry);
+  } else {
+    lastEntry.subEntries = [{ ...lastEntryWithoutMetaData }, entry];
   }
 };
 
@@ -192,31 +188,31 @@ export const readEntries = ({
 
     const filenamesFiltered = filterFiles(filenames, excludeFiles);
 
-    let lastGameName: string | undefined;
-    const entries: Entry[] = [];
+    return filenamesFiltered
+      .map((filename, index) =>
+        createEntry({
+          oldEntries,
+          categoriesPath,
+          categoryName,
+          index,
+          categoryPath,
+          filename,
+          findEntryName,
+          installedApplication,
+        }),
+      )
+      .sort(sortEntries)
+      .reduce<Entry[]>((entries, entry) => {
+        const lastEntry = entries.at(-1);
 
-    filenamesFiltered.forEach((filename, index) => {
-      const entry = createEntry({
-        oldEntries,
-        categoriesPath,
-        categoryName,
-        index,
-        categoryPath,
-        filename,
-        findEntryName,
-        installedApplication,
-      });
+        if (lastEntry && isSameBaseGame(entry.name, lastEntry?.name)) {
+          addAsGameVersion(lastEntry, entry);
+        } else {
+          entries.push(entry);
+        }
 
-      if (isSameBaseGame(entry.name, lastGameName)) {
-        addAsGameVersion(entries, entry);
-      } else {
-        entries?.push(entry);
-      }
-
-      lastGameName = entry.name;
-    });
-
-    return entries.sort(sortEntries);
+        return entries;
+      }, []);
   }
 
   return oldEntries || [];

@@ -21,6 +21,9 @@ import {
   cotton,
   createAbsoluteEntryPath,
   createCategoryPath,
+  doomEvilution,
+  doomPlutonium,
+  dos,
   ehrgeiz,
   ehrgeizJapan,
   finalfantasy7disc1,
@@ -34,6 +37,10 @@ import {
   nintendo3ds,
   pcenginecd,
   playstation,
+  playstation3,
+  psallstars,
+  psallstarsDigital,
+  psallstarsDisc,
 } from "../__testData__/category";
 import { applications as applicationsTestData } from "../__testData__/applications";
 import type { Entry, MetaData } from "../../types/jsonFiles/category";
@@ -45,6 +52,8 @@ import { getInstalledApplicationForCategory } from "../applications.server";
 import { getExpiresOn } from "../getExpiresOn.server";
 import { mameNeoGeo } from "../applicationsDB.server/applications/mame";
 import { duckstation } from "../applicationsDB.server/applications/duckstation";
+import { dosboxstaging } from "../applicationsDB.server/applications/dosbox";
+import { rpcs3 } from "../applicationsDB.server/applications/rpcs3";
 
 vi.mock("@kmamal/sdl");
 vi.mock("../readWriteData.server");
@@ -92,7 +101,7 @@ describe("categories.server", () => {
       expect(result).toStrictEqual(expectedResult);
     });
 
-    it("Should return oldData if exist", () => {
+    it("Should return old meta data if exist", () => {
       vi.mocked(readFilenames).mockReturnValueOnce([
         createAbsoluteEntryPath(playstation.name, hugo.path),
         createAbsoluteEntryPath(playstation.name, hugo2.path),
@@ -106,6 +115,14 @@ describe("categories.server", () => {
       const oldEntries: Entry[] = addIndex([
         {
           ...hugo,
+          id: "This should be overwritten",
+          subEntries: [
+            {
+              id: "This should be removed",
+              name: "This should be removed",
+              path: "This should be removed",
+            },
+          ],
           metaData: hugoMetaData,
         },
       ]);
@@ -126,16 +143,13 @@ describe("categories.server", () => {
 
     it("Should return game with game versions", () => {
       vi.mocked(readFilenames).mockReturnValueOnce([
+        createAbsoluteEntryPath(playstation.name, ehrgeiz.path),
+        createAbsoluteEntryPath(playstation.name, ehrgeizJapan.path),
         createAbsoluteEntryPath(playstation.name, finalfantasy7disc1.path),
         createAbsoluteEntryPath(playstation.name, finalfantasy7disc2.path),
         createAbsoluteEntryPath(playstation.name, finalfantasy7disc3.path),
-        createAbsoluteEntryPath(playstation.name, ehrgeiz.path),
-        createAbsoluteEntryPath(playstation.name, ehrgeizJapan.path),
-        //     TODO: add dos game versions
       ]);
 
-      // TODO: use index only on game versions?
-      // TODO: import cache process does not remove games that are game versions
       const oldEntries: Entry[] = addIndex([
         {
           ...finalfantasy7disc1,
@@ -145,23 +159,78 @@ describe("categories.server", () => {
       const expectedResult: Entry[] = addIndex([
         {
           ...ehrgeiz,
-          name: "Ehrgeiz",
-          subEntries: addIndex([ehrgeiz, ehrgeizJapan]),
+          subEntries: [ehrgeiz, ehrgeizJapan],
         },
         {
           ...finalfantasy7disc1,
-          name: "Final Fantasy VII",
-          subEntries: addIndex([
+          subEntries: [
             finalfantasy7disc1,
             finalfantasy7disc2,
             finalfantasy7disc3,
-          ]),
+          ],
         },
       ]);
 
       const result = readEntries({
         categoryName: playstation.name,
         applicationId: duckstation.id,
+        oldEntries,
+      });
+
+      expect(result).toStrictEqual(expectedResult);
+    });
+
+    it("Should return ps3 game with game versions in different folders", () => {
+      vi.mocked(readFilenames).mockReturnValueOnce([
+        createAbsoluteEntryPath(playstation3.name, psallstarsDisc.path),
+        createAbsoluteEntryPath(playstation3.name, psallstarsDigital.path),
+      ]);
+
+      const oldEntries: Entry[] = addIndex([
+        {
+          ...psallstarsDisc,
+        },
+        {
+          ...psallstarsDigital,
+        },
+      ]);
+
+      const expectedResult: Entry[] = [psallstars];
+
+      const result = readEntries({
+        categoryName: playstation3.name,
+        applicationId: rpcs3.id,
+        oldEntries,
+      });
+
+      expect(result).toStrictEqual(expectedResult);
+    });
+
+    it("Should return dos game with game versions", () => {
+      vi.mocked(readFilenames).mockReturnValueOnce([
+        createAbsoluteEntryPath(dos.name, doomPlutonium.path),
+        createAbsoluteEntryPath(dos.name, doomEvilution.path),
+      ]);
+
+      const oldEntries: Entry[] = addIndex([
+        {
+          ...doomPlutonium,
+        },
+        {
+          ...doomEvilution,
+        },
+      ]);
+
+      const expectedResult: Entry[] = addIndex([
+        {
+          ...doomPlutonium,
+          subEntries: [doomPlutonium, doomEvilution],
+        },
+      ]);
+
+      const result = readEntries({
+        categoryName: dos.name,
+        applicationId: dosboxstaging.id,
         oldEntries,
       });
 
