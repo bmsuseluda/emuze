@@ -27,4 +27,30 @@ describe("sortCaseInsensitive", () => {
       "Donkey Kong Country 2",
     ]);
   });
+
+  it("Should sort roman numbers", () => {
+    const data = [
+      "Final Fantasy III",
+      "Final Fantasy I",
+      "Final Fantasy VI",
+      "Final Fantasy V",
+      "Final Fantasy IV",
+      "Final Fantasy IX",
+      "Final Fantasy XI",
+      "Final Fantasy XV",
+      "Final Fantasy X",
+    ];
+    data.sort(sortCaseInsensitive);
+    expect(data).toStrictEqual([
+      "Final Fantasy I",
+      "Final Fantasy III",
+      "Final Fantasy IV",
+      "Final Fantasy V",
+      "Final Fantasy VI",
+      "Final Fantasy IX",
+      "Final Fantasy X",
+      "Final Fantasy XI",
+      "Final Fantasy XV",
+    ]);
+  });
 });
