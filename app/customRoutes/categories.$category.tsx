@@ -3,15 +3,12 @@ import { useCallback, useRef } from "react";
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, Outlet, redirect, useLoaderData } from "@remix-run/react";
-import { IoMdPlay } from "react-icons/io";
-import { Button } from "../components/Button";
 import { executeApplication } from "../server/execute.server";
 import { importEntries, readCategory } from "../server/categories.server";
 import { GameGridDynamic } from "../components/GameGrid";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
 import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
 import { SystemIcon } from "../components/SystemIcon";
-import { layout } from "../hooks/useGamepads/layouts";
 import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
 import { readAppearance, readGeneral } from "../server/settings.server";
@@ -20,13 +17,13 @@ import { Typography } from "../components/Typography";
 import type { DataFunctionArgs } from "../context";
 import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction";
 import { useGamepadConnected } from "../hooks/useGamepadConnected";
-import { GamepadButtonIcon } from "../components/GamepadButtonIcon";
 import fs from "fs";
 import nodepath from "path";
 import type { SystemId } from "../server/categoriesDB.server/systemId";
 import { log } from "../server/debug.server";
 import { ImportButton } from "../containers/ImportButton";
 import type { ImportButtonId } from "../containers/ImportButton/importButtonId";
+import { LaunchButton, launchId } from "../containers/LaunchButton";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -48,7 +45,7 @@ export const loader = ({ params }: DataFunctionArgs) => {
 const importButtonId: ImportButtonId = "importGames";
 
 const actionIds = {
-  launch: "launch",
+  launch: launchId,
   import: importButtonId,
 };
 
@@ -81,7 +78,13 @@ export const action: ActionFunction = async ({ request, params }) => {
           (value) => value.id === game,
         );
 
-        entryData && executeApplication(category as SystemId, entryData);
+        if (entryData) {
+          if (entryData.subEntries?.[0]) {
+            return redirect(entryData.id);
+          } else {
+            executeApplication(category as SystemId, entryData);
+          }
+        }
         return { ok: true };
       }
     }
@@ -191,25 +194,11 @@ export default function Category() {
             }
             actions={
               <>
-                <Button
-                  type="submit"
-                  name="_actionId"
+                <LaunchButton
+                  gamepadType={gamepadType}
+                  launchButtonRef={launchButtonRef}
                   disabled={!entries || entries.length === 0}
-                  value={actionIds.launch}
-                  ref={launchButtonRef}
-                  icon={
-                    gamepadType ? (
-                      <GamepadButtonIcon
-                        buttonIndex={layout.buttons.A}
-                        gamepadType={gamepadType}
-                      />
-                    ) : (
-                      <IoMdPlay />
-                    )
-                  }
-                >
-                  Launch Game
-                </Button>
+                />
 
                 <ImportButton
                   gamepadType={gamepadType}

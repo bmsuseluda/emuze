@@ -11,6 +11,7 @@ export interface Entry {
   name: string;
   path: string;
   metaData?: MetaData;
+  subEntries?: Entry[];
 }
 
 export interface Category {

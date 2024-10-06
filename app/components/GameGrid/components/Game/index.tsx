@@ -122,9 +122,6 @@ const Name = styled("div", {
   },
 });
 
-const getAdditionalInfo = (name: string) =>
-  name.substring(name.indexOf("(") + 1, name.indexOf(")"));
-
 const fallbackImageUrl = "/fallback.png";
 
 export const getDisplayedName = (
@@ -133,20 +130,16 @@ export const getDisplayedName = (
   isImage: boolean,
   error: boolean,
 ) => {
+  const nameWithoutAdditionalInfo = name.split(" (")[0];
   if (error) {
-    return name;
+    return nameWithoutAdditionalInfo;
   }
 
   if (!alwaysGameName && isImage) {
-    const additionalInfo = getAdditionalInfo(name);
-    if (additionalInfo) {
-      return additionalInfo;
-    } else {
-      return undefined;
-    }
+    return undefined;
   }
 
-  return name;
+  return nameWithoutAdditionalInfo;
 };
 
 const getImageSrc = ({ imageUrl }: { imageUrl?: string }) => {

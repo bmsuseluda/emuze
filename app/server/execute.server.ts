@@ -123,10 +123,14 @@ const setEnvironmentVariables = ({
   });
 };
 
-export const executeApplication = (category: SystemId, entryData: Entry) => {
+export const executeApplication = (
+  systemId: SystemId,
+  entryData: Entry,
+  parentEntryData?: Entry,
+) => {
   const generalData = readGeneral();
-  const categoryData = readCategory(category);
-  const categoryDB = categories[category];
+  const categoryData = readCategory(systemId);
+  const categoryDB = categories[systemId];
   const applicationData = categoryDB.application;
 
   if (isGeneralConfigured(generalData) && categoryData && applicationData) {
@@ -191,7 +195,7 @@ export const executeApplication = (category: SystemId, entryData: Entry) => {
           });
         }
 
-        addToLastPlayedCached(entryData, category);
+        addToLastPlayedCached(parentEntryData || entryData, systemId);
       } catch (error) {
         log("error", "executeApplication", error);
         if (error instanceof Error) {
