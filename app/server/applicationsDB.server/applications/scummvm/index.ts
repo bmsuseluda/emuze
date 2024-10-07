@@ -15,7 +15,13 @@ const findScummVmGameNameViaDetectLinux = (absoluteEntryPath: string) => {
   if (checkFlatpakIsInstalled(scummvm.flatpakId)) {
     return spawnSync(
       "flatpak",
-      ["run", scummvm.flatpakId, `--path=${absoluteEntryPath}`, "--detect"],
+      [
+        "run",
+        `--filesystem=${absoluteEntryPath}`,
+        scummvm.flatpakId,
+        `--path=${absoluteEntryPath}`,
+        "--detect",
+      ],
       {
         encoding: "utf-8",
         maxBuffer: 1000000000,
@@ -78,6 +84,13 @@ const findScummVmGameNameViaDetect: FindEntryNameFunction = ({
 
     if (data) {
       const detectedName = parseScummDetectResult(data);
+      log(
+        "debug",
+        "find scumm vm game name",
+        absoluteEntryPath,
+        data,
+        detectedName,
+      );
       if (detectedName) {
         return detectedName;
       }
