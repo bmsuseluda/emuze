@@ -338,10 +338,19 @@ describe("categories.server", () => {
           createAbsoluteEntryPath(pcenginecd.name, cotton.path),
           createAbsoluteEntryPath(pcenginecd.name, gateofthunder.path),
         ]);
-      vi.mocked(readFileHome).mockReturnValueOnce(nintendo3ds);
       vi.mocked(readFileHome).mockReturnValueOnce(pcenginecd);
-      vi.mocked(fetchMetaData).mockResolvedValueOnce(nintendo3ds.entries);
-      vi.mocked(fetchMetaData).mockResolvedValueOnce(pcenginecd.entries);
+      vi.mocked(readFileHome).mockReturnValueOnce(nintendo3ds);
+
+      when(fetchMetaData)
+        .calledWith(categoriesDB.pcenginecd.igdbPlatformIds, pcenginecd.entries)
+        .thenResolve(pcenginecd.entries);
+      when(fetchMetaData)
+        .calledWith(
+          categoriesDB.nintendo3ds.igdbPlatformIds,
+          nintendo3ds.entries,
+        )
+        .thenResolve(nintendo3ds.entries);
+
       vi.mocked(getInstalledApplicationForCategory).mockReturnValueOnce(
         applicationsTestData.lime3ds,
       );

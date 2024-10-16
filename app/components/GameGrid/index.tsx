@@ -160,6 +160,7 @@ export const GameGrid = ({
               onDoubleClick={handleDoubleClick}
               ref={entriesRefCallback(index)}
               key={id}
+              isInFocus={isInFocus}
             />
           );
         })}

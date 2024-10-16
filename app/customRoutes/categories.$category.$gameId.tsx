@@ -12,9 +12,7 @@ import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
 import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef } from "react";
-import { Dialog } from "../components/Dialog";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
-import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
 import { LaunchButton, launchId } from "../containers/LaunchButton";
 import { useGamepadConnected } from "../hooks/useGamepadConnected";
 import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction";
@@ -23,13 +21,12 @@ import { log } from "../server/debug.server";
 import { readCategory } from "../server/categories.server";
 import type { SystemId } from "../server/categoriesDB.server/systemId";
 import { executeApplication } from "../server/execute.server";
-import { SystemIcon } from "../components/SystemIcon";
-import { Typography } from "../components/Typography";
 import { SidebarMainLayout } from "app/components/layouts/SidebarMainLayout";
 import { readLastPlayed } from "../server/lastPlayed.server";
 import type { Entry } from "../types/jsonFiles/category";
 import { useInputSettings } from "../hooks/useDirectionalInput";
 import { GameVersions } from "../components/GameVersions";
+import { GameDialog } from "../components/GameDialog";
 
 const getGameData = (category: SystemId, gameId: string) => {
   let systemId: SystemId | undefined;
@@ -145,7 +142,7 @@ export const shouldRevalidate = ({
 const focus: FocusElement = "gameDialog";
 
 export default function Index() {
-  const { systemId, gameData } = useLoaderData<typeof loader>();
+  const { gameData } = useLoaderData<typeof loader>();
 
   const { pathname } = useLocation();
 
@@ -199,20 +196,13 @@ export default function Index() {
 
   useInputSettings(onBack);
 
-  const { id, name, subEntries } = gameData;
+  const { id, subEntries } = gameData;
 
   return (
-    <Dialog open={true} onClose={handleClose}>
+    <GameDialog onClose={handleClose}>
       <SidebarMainLayout>
         <SidebarMainLayout.Main>
-          <ListActionBarLayout
-            headline={
-              <IconChildrenWrapper>
-                <SystemIcon id={systemId} />
-                <Typography ellipsis>{name}</Typography>
-              </IconChildrenWrapper>
-            }
-          >
+          <ListActionBarLayout>
             <Form method="POST">
               <ListActionBarLayout.ListActionBarContainer
                 scrollSmooth
@@ -242,6 +232,6 @@ export default function Index() {
           </ListActionBarLayout>
         </SidebarMainLayout.Main>
       </SidebarMainLayout>
-    </Dialog>
+    </GameDialog>
   );
 }

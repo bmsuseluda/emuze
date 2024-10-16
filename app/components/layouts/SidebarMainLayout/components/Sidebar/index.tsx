@@ -8,9 +8,9 @@ const SidebarWrapper = styled("aside", {
   base: {
     bgGradient: "default",
     paddingTop: "1",
-    paddingRight: "0.5rem",
+    paddingRight: "0",
     paddingBottom: "1",
-    paddingLeft: "1",
+    paddingLeft: "0",
     display: "flex",
     flexFlow: "column",
     overflowX: "clip",
@@ -23,9 +23,8 @@ const SidebarWrapper = styled("aside", {
   variants: {
     collapse: {
       true: {
-        width: "4rem",
-        minWidth: "4rem",
-        paddingLeft: "0.5rem",
+        width: "5rem",
+        minWidth: "5rem",
       },
     },
   },
@@ -36,6 +35,8 @@ const HeaderWrapper = styled("div", {
     display: "flex",
     flexDirection: "column",
     gap: "{sizes.scrollMask}",
+    paddingLeft: "0.5rem",
+    paddingRight: "0.5rem",
   },
 });
 
@@ -43,7 +44,7 @@ const StyledUl = styled(Ul, {
   base: {
     display: "flex",
     flexDirection: "column",
-    gap: "1",
+    gap: "0.5rem",
     overflowX: "clip",
   },
 
@@ -88,6 +89,7 @@ export const Sidebar = ({
         actions={actions}
         collapse={collapse}
         scrollSmooth
+        paddingSide={false}
       />
     </ListActionBarLayout>
   </SidebarWrapper>
