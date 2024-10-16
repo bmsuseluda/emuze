@@ -106,9 +106,9 @@ export default defineConfig({
           value: {
             _redTheme: {
               _dark:
-                "linear-gradient(45deg, {colors.backgroundColor}, {colors.sidebarBackgroundColor})",
+                "linear-gradient(45deg, {colors.backgroundColor} 10%, {colors.sidebarBackgroundColor})",
               _light:
-                "linear-gradient(45deg, {colors.backgroundColor}, {colors.sidebarBackgroundColor})",
+                "linear-gradient(45deg, {colors.backgroundColor} 10%, {colors.sidebarBackgroundColor})",
             },
           },
         },
@@ -116,6 +116,7 @@ export default defineConfig({
     },
     tokens: {
       spacing: {
+        outlinePadding: { value: "2rem" },
         1: { value: "0.8rem" },
         2: { value: "2rem" },
         3: { value: "3rem" },
@@ -129,7 +130,6 @@ export default defineConfig({
         3: { value: "3rem" },
         4: { value: "4rem" },
         5: { value: "5rem" },
-        scrollbarWidth: { value: "0.5rem" },
         scrollMask: { value: "1.5rem" },
       },
       borders: {
@@ -172,6 +172,13 @@ export default defineConfig({
         makeOpaque: {
           "0%": { opacity: 0 },
           "100%": { opacity: 1 },
+        },
+        focused: {
+          "0%": { outlineColor: "accent" },
+          "33%": { outlineColor: "accent" },
+          "66%": { outlineColor: "white" },
+          "75%": { outlineColor: "white" },
+          "100%": { outlineColor: "accent" },
         },
       },
     },

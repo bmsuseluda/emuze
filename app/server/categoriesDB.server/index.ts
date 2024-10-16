@@ -32,7 +32,7 @@ import { pcsx2 } from "../applicationsDB.server/applications/pcsx2";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",
-  names: ["Sony Playstation", "playstation", "psx", "ps1", "psone"],
+  names: ["Sony PlayStation", "playstation", "psx", "ps1", "psone"],
   igdbPlatformIds: [7],
   application: duckstation,
   hasAnalogStick: true,
@@ -40,7 +40,7 @@ export const sonyplaystation: Category = {
 
 export const sonyplaystation2: Category = {
   id: "sonyplaystation2",
-  names: ["Sony Playstation 2", "playstation 2", "ps2"],
+  names: ["Sony PlayStation 2", "playstation 2", "ps2"],
   igdbPlatformIds: [8],
   application: pcsx2,
   hasAnalogStick: true,
@@ -48,7 +48,7 @@ export const sonyplaystation2: Category = {
 
 export const sonyplaystation3: Category = {
   id: "sonyplaystation3",
-  names: ["Sony Playstation 3", "playstation 3", "ps3"],
+  names: ["Sony PlayStation 3", "playstation 3", "ps3"],
   igdbPlatformIds: [9],
   application: rpcs3,
   hasAnalogStick: true,
@@ -57,8 +57,8 @@ export const sonyplaystation3: Category = {
 export const sonypsp: Category = {
   id: "sonypsp",
   names: [
-    "Sony Playstation Portable",
-    "Playstation Portable",
+    "Sony PlayStation Portable",
+    "PlayStation Portable",
     "Sony PSP",
     "PSP",
   ],

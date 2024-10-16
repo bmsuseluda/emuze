@@ -5,6 +5,13 @@ var createErrorDialog = function (route, id) {
         id: "".concat(id, "ErrorDialog"),
     });
 };
+var createGameDialog = function (route, id) {
+    route(":gameId", "customRoutes/categories.$category.$gameId.tsx", {
+        id: "".concat(id, "GameDialog"),
+    }, function () {
+        createErrorDialog(route, "".concat(id, "GameDialog"));
+    });
+};
 var createSettingsRoutes = function (route, id) {
     route("settings", "customRoutes/categories.$category.settings.tsx", {
         id: "".concat(id, "Settings"),
@@ -26,10 +33,17 @@ var createSettingsRoutes = function (route, id) {
 var createCategoriesRoutes = function (route) {
     route("categories", "customRoutes/categories.tsx", {}, function () {
         route("lastPlayed", "customRoutes/categories.lastPlayed.tsx", function () {
-            createSettingsRoutes(route, "lastPlayed");
-            createErrorDialog(route, "lastPlayed");
+            var id = "lastPlayed";
+            route(":category/:gameId", "customRoutes/categories.$category.$gameId.tsx", {
+                id: "".concat(id, "GameDialog"),
+            }, function () {
+                createErrorDialog(route, "".concat(id, "GameDialog"));
+            });
+            createSettingsRoutes(route, id);
+            createErrorDialog(route, id);
         });
         route(":category", "customRoutes/categories.$category.tsx", function () {
+            createGameDialog(route, "category");
             createSettingsRoutes(route, "category");
             createErrorDialog(route, "category");
         });

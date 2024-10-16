@@ -26,10 +26,14 @@ const StyledNavLink = styled(NavLink, {
 
 const LinkSpan = styled(IconChildrenWrapper, {
   base: {
-    borderRadius: "1",
     width: "100%",
     boxSizing: "border-box",
-    padding: "0.5em",
+    padding: "1rem",
+
+    "& > svg": {
+      minHeight: "max(25px, 1.2em)",
+      minWidth: "max(25px, 1.2em)",
+    },
   },
 
   variants: {
@@ -47,6 +51,7 @@ const LinkSpan = styled(IconChildrenWrapper, {
       true: {
         borderRadius: "50%",
         width: "max-content",
+        padding: "1",
       },
     },
   },

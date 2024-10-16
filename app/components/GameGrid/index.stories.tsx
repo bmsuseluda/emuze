@@ -46,14 +46,14 @@ export const LastPlayed: Story = {
   args: {
     games: gamesLastPlayed,
     onExecute: () => {
-      alert("launch");
+      console.log("launch");
     },
     isInFocus: true,
     onBack: () => {
-      alert("back");
+      console.log("back");
     },
     onGameClick: () => {
-      alert("game click");
+      console.log("game click");
     },
   },
 };
