@@ -32,6 +32,7 @@ interface Props extends ComponentPropsWithoutRef<"ul"> {
 const Container = styled("div", {
   base: {
     containerType: "inline-size",
+    containerName: "gameGrid",
   },
 });
 
@@ -42,7 +43,7 @@ const List = styled(Ul, {
     gap: "1",
     gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
 
-    "@container (inline-size > 1440px)": {
+    "@container gameGrid (inline-size > 1440px)": {
       gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
     },
   },

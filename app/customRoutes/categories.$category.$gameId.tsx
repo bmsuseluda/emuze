@@ -201,11 +201,13 @@ export default function Index() {
   return (
     <GameDialog onClose={handleClose}>
       <SidebarMainLayout>
-        <SidebarMainLayout.Main>
+        <SidebarMainLayout.Main dynamicWidth>
           <ListActionBarLayout>
             <Form method="POST">
               <ListActionBarLayout.ListActionBarContainer
                 scrollSmooth
+                dynamicHeight
+                paddingSide={false}
                 list={
                   subEntries && (
                     <GameVersions

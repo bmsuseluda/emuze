@@ -10,6 +10,8 @@ const globalCss = defineGlobalStyles({
     fontSize: "130%",
 
     userSelect: "none",
+
+    interpolateSize: "allow-keywords",
   },
 });
 

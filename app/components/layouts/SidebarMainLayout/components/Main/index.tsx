@@ -12,12 +12,23 @@ const StyledMain = styled("main", {
     backgroundColor: "backgroundColor",
     minWidth: "25rem",
   },
+
+  variants: {
+    dynamicWidth: {
+      true: {
+        minWidth: "unset",
+        paddingLeft: "1",
+        paddingRight: "1",
+      },
+    },
+  },
 });
 
 interface Props {
   children: ReactNode;
+  dynamicWidth?: boolean;
 }
 
-export const Main = ({ children }: Props) => (
-  <StyledMain>{children}</StyledMain>
+export const Main = ({ children, dynamicWidth }: Props) => (
+  <StyledMain dynamicWidth={dynamicWidth}>{children}</StyledMain>
 );

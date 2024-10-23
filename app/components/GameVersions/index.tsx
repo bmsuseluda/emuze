@@ -13,7 +13,7 @@ const List = styled("ul", {
     display: "flex",
     flexDirection: "column",
     margin: "4px",
-    gap: 2,
+    gap: 1,
   },
 });
 
@@ -25,9 +25,11 @@ const Wrapper = styled("li", {
 
 const Label = styled("label", {
   base: {
+    display: "block",
     padding: "1",
     color: "color",
 
+    borderRadius: "1",
     outlineWidth: "2px",
     outlineStyle: "solid",
     outlineColor: "transparent",

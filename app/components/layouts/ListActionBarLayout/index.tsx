@@ -18,12 +18,22 @@ const Layout = styled("div", {
 });
 
 const Wrapper = styled("div", { base: { position: "relative", flex: 6 } });
-const Absolute = styled("div", {
+const ListWrapper = styled("div", {
   base: {
     position: "absolute",
     inset: 0,
     display: "flex",
     flexDirection: "column",
+  },
+
+  variants: {
+    dynamicHeight: {
+      true: {
+        position: "relative",
+        // TODO: how to do it without a fixed value
+        maxHeight: "70vh",
+      },
+    },
   },
 });
 
@@ -90,6 +100,7 @@ interface ContainerProps {
   collapse?: boolean;
   listRef?: ForwardedRef<HTMLDivElement>;
   paddingSide?: boolean;
+  dynamicHeight?: boolean;
 }
 
 const ListActionBarContainer = ({
@@ -99,6 +110,7 @@ const ListActionBarContainer = ({
   collapse = false,
   listRef: listRefDefault,
   paddingSide = true,
+  dynamicHeight = false,
 }: ContainerProps) => {
   const listRef = useRef<ElementRef<"div">>();
 
@@ -118,7 +130,7 @@ const ListActionBarContainer = ({
   }, []);
 
   return (
-    <Absolute>
+    <ListWrapper dynamicHeight={dynamicHeight}>
       <List
         ref={(element: HTMLInputElement) => {
           if (typeof listRefDefault === "function") {
@@ -135,7 +147,7 @@ const ListActionBarContainer = ({
         {listEntries}
       </List>
       {actions && <ActionBar collapse={collapse}>{actions}</ActionBar>}
-    </Absolute>
+    </ListWrapper>
   );
 };
 ListActionBarContainer.displayName = "ListActionBarContainer";

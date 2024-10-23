@@ -22,9 +22,7 @@ const DialogContent = styled("div", {
     borderRounded: true,
     borderWidth: "0.2rem",
 
-    minWidth: "60vw",
     maxWidth: "80vw",
-    height: "40vh",
     maxHeight: "85vh",
 
     transition: "max-width 0.5s ease-in-out",
