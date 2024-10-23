@@ -2,7 +2,6 @@ import { Headline } from "../../Headline";
 import type { ElementRef, ForwardedRef, ReactNode } from "react";
 import { useCallback, useRef } from "react";
 import { styled } from "../../../../styled-system/jsx";
-import { useFullscreen } from "../../../hooks/useFullscreen";
 
 interface Props {
   headline?: ReactNode;
@@ -19,12 +18,22 @@ const Layout = styled("div", {
 });
 
 const Wrapper = styled("div", { base: { position: "relative", flex: 6 } });
-const Absolute = styled("div", {
+const ListWrapper = styled("div", {
   base: {
     position: "absolute",
     inset: 0,
     display: "flex",
     flexDirection: "column",
+  },
+
+  variants: {
+    dynamicHeight: {
+      true: {
+        position: "relative",
+        // TODO: how to do it without a fixed value
+        maxHeight: "70vh",
+      },
+    },
   },
 });
 
@@ -38,18 +47,15 @@ const List = styled("div", {
       "to bottom, " +
       "transparent, " +
       "{colors.backgroundColor} {sizes.scrollMask} calc(100% - {sizes.scrollMask}), " +
-      "transparent)," +
-      "linear-gradient({colors.backgroundColor}, {colors.backgroundColor})",
-    maskSize:
-      "calc(100% - {sizes.scrollbarWidth}) 100%, {sizes.scrollbarWidth} 100%",
-    maskPosition: "0 0, 100% 0",
-    maskRepeat: "no-repeat, no-repeat",
+      "transparent)",
 
     padding: "{sizes.scrollMask} 0",
 
     "&::-webkit-scrollbar": {
       display: "none",
     },
+
+    scrollbarWidth: "none",
   },
 
   variants: {
@@ -59,42 +65,13 @@ const List = styled("div", {
         scrollPadding: "scrollPadding",
       },
     },
-    // TODO: remove if not necessary anymore. Right now all props you want to use in compoundVariants need to be in variants as well.
-    fullscreen: {
-      true: {},
-    },
-    collapse: {
-      true: {},
-    },
-  },
-
-  compoundVariants: [
-    {
-      collapse: false,
-      fullscreen: false,
-      css: {
-        paddingRight: "{sizes.scrollbarWidth}",
-
-        scrollbarColor: "sidebarBackgroundColor transparent",
-
-        "&::-webkit-scrollbar": {
-          display: "initial",
-          width: "scrollbarWidth",
-        },
-
-        "&::-webkit-scrollbar-thumb": {
-          backgroundColor: "transparent",
-          borderRadius: "1",
-        },
-
-        "&:hover": {
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "sidebarBackgroundColor",
-          },
-        },
+    paddingSide: {
+      true: {
+        paddingLeft: "0.5rem",
+        paddingRight: "0.5rem",
       },
     },
-  ],
+  },
 });
 
 const ActionBar = styled("div", {
@@ -122,6 +99,8 @@ interface ContainerProps {
   scrollSmooth?: boolean;
   collapse?: boolean;
   listRef?: ForwardedRef<HTMLDivElement>;
+  paddingSide?: boolean;
+  dynamicHeight?: boolean;
 }
 
 const ListActionBarContainer = ({
@@ -130,8 +109,9 @@ const ListActionBarContainer = ({
   scrollSmooth,
   collapse = false,
   listRef: listRefDefault,
+  paddingSide = true,
+  dynamicHeight = false,
 }: ContainerProps) => {
-  const fullscreen = useFullscreen();
   const listRef = useRef<ElementRef<"div">>();
 
   const onClick = useCallback(() => {
@@ -150,7 +130,7 @@ const ListActionBarContainer = ({
   }, []);
 
   return (
-    <Absolute>
+    <ListWrapper dynamicHeight={dynamicHeight}>
       <List
         ref={(element: HTMLInputElement) => {
           if (typeof listRefDefault === "function") {
@@ -161,14 +141,13 @@ const ListActionBarContainer = ({
           listRef.current = element;
         }}
         scrollSmooth={scrollSmooth}
-        collapse={collapse}
-        fullscreen={fullscreen}
         onClick={onClick}
+        paddingSide={paddingSide}
       >
         {listEntries}
       </List>
       {actions && <ActionBar collapse={collapse}>{actions}</ActionBar>}
-    </Absolute>
+    </ListWrapper>
   );
 };
 ListActionBarContainer.displayName = "ListActionBarContainer";

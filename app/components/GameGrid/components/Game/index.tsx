@@ -10,6 +10,7 @@ interface Props {
   imageUrl?: string;
   onClick: () => void;
   onDoubleClick: () => void;
+  isInFocus: boolean;
 }
 
 const Wrapper = styled("li", {
@@ -26,9 +27,6 @@ const Label = styled("label", {
     backgroundColor: "backgroundColor",
     display: "flex",
     justifyContent: "flex-end",
-    borderWidth: "4px",
-    borderStyle: "solid",
-    borderColor: "transparent",
     borderRadius: "1",
     overflow: "clip",
 
@@ -36,10 +34,20 @@ const Label = styled("label", {
     outlineWidth: "4px",
     outlineStyle: "solid",
     outlineColor: "transparent",
+    outlineOffset: "4px",
     transition: "outline-color 0.1s ease-in-out",
 
     "&:has(*:checked)": {
       outlineColor: "accent",
+    },
+  },
+  variants: {
+    isInFocus: {
+      true: {
+        "&:has(*:checked)": {
+          animation: "focused 3s linear infinite",
+        },
+      },
     },
   },
 });
@@ -122,9 +130,6 @@ const Name = styled("div", {
   },
 });
 
-const getAdditionalInfo = (name: string) =>
-  name.substring(name.indexOf("(") + 1, name.indexOf(")"));
-
 const fallbackImageUrl = "/fallback.png";
 
 export const getDisplayedName = (
@@ -133,20 +138,16 @@ export const getDisplayedName = (
   isImage: boolean,
   error: boolean,
 ) => {
+  const nameWithoutAdditionalInfo = name.split(" (")[0];
   if (error) {
-    return name;
+    return nameWithoutAdditionalInfo;
   }
 
   if (!alwaysGameName && isImage) {
-    const additionalInfo = getAdditionalInfo(name);
-    if (additionalInfo) {
-      return additionalInfo;
-    } else {
-      return undefined;
-    }
+    return undefined;
   }
 
-  return name;
+  return nameWithoutAdditionalInfo;
 };
 
 const getImageSrc = ({ imageUrl }: { imageUrl?: string }) => {
@@ -167,6 +168,7 @@ export const Game = forwardRef<ElementRef<typeof Input>, Props>(
       onClick,
       onDoubleClick,
       icon,
+      isInFocus,
     },
     ref,
   ) => {
@@ -202,7 +204,11 @@ export const Game = forwardRef<ElementRef<typeof Input>, Props>(
 
     return (
       <Wrapper>
-        <Label onClick={onClick} onDoubleClick={onDoubleClick}>
+        <Label
+          onClick={onClick}
+          onDoubleClick={onDoubleClick}
+          isInFocus={isInFocus}
+        >
           <Input type="radio" name="game" value={id} ref={ref} />
           <ImageWrapper>
             {icon && <IconWrapper>{icon}</IconWrapper>}

@@ -3,7 +3,7 @@ import {
   boyandhisblob,
   commanderkeen4,
   fahrenheit,
-  finalfantasy7,
+  finalfantasy7disc1,
   hugo,
   hugo2,
   kingOfFightersR2,
@@ -90,7 +90,7 @@ describe("igdb.server", () => {
     });
 
     it("Should return filter array for game with multiple discs and region", () => {
-      const result = filterGame(finalfantasy7);
+      const result = filterGame(finalfantasy7disc1);
       expect(result).toStrictEqual([
         'name~"Final Fantasy VII"*',
         'alternative_names.name~"Final Fantasy VII"*',
@@ -244,12 +244,12 @@ describe("igdb.server", () => {
 
       const entriesWithImages = await fetchMetaData(
         categoriesDB.sonyplaystation.igdbPlatformIds,
-        [finalfantasy7],
+        [finalfantasy7disc1],
       );
 
       expect(entriesWithImages).toStrictEqual([
         {
-          ...finalfantasy7,
+          ...finalfantasy7disc1,
           metaData: {
             expiresOn: getExpiresOn(),
             imageUrl:

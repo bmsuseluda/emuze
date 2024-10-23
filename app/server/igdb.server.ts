@@ -113,6 +113,9 @@ export interface GamesResponse {
   config?: {
     data?: unknown;
   };
+  status?: unknown;
+  headers?: unknown;
+  request?: unknown;
 }
 
 const findGameDataByName = (nameToFind: string, games: Game[]) =>
@@ -153,11 +156,17 @@ const fetchMetaDataForChunkLimitless = async (
         .offset(offset)
         .request(url),
     3,
-    1000,
+    250,
   );
 
   log("debug", "igdb request games filtered", gamesFiltered);
-  log("debug", "igdb response", gamesResponse.data);
+  log(
+    "debug",
+    "igdb response",
+    gamesResponse.status,
+    gamesResponse.headers,
+    gamesResponse.data,
+  );
 
   if (gamesResponse.data.length === igdbResponseLimit) {
     return [
@@ -212,7 +221,12 @@ const fetchMetaDataForChunk = async (
 export const fetchMetaData = async (platformId: number[], entries: Entry[]) => {
   if (entries.length > 0) {
     const entryChunks = chunk(entries, 200);
-    const client = apicalypse({ method: "POST" });
+    const client = apicalypse({
+      method: "POST",
+      headers: {
+        "Accept-Encoding": "gzip",
+      },
+    });
 
     const entriesWithMetaData = await Promise.all(
       entryChunks.map((entryChunk) =>

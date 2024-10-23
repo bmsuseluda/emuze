@@ -21,6 +21,7 @@ import {
   useInputBack,
   useInputConfirmation,
 } from "../hooks/useDirectionalInput";
+import { Typography } from "app/components/Typography";
 
 export const loader = () => {
   const appearance = readAppearance();
@@ -138,9 +139,7 @@ export default function Appearance() {
       headline={
         <IconChildrenWrapper>
           <SettingsIcon id="appearance" />
-          <span>
-            <span>Appearance</span>
-          </span>
+          <Typography ellipsis>Appearance</Typography>
         </IconChildrenWrapper>
       }
     >

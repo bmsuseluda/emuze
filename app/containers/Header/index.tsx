@@ -7,27 +7,18 @@ const Wrapper = styled("div", {
     flexDirection: "column",
     gap: "1",
   },
-  variants: {
-    collapse: {
-      true: {
-        paddingTop: "0.3em",
-      },
-    },
-  },
 });
 
 const StyledHeader = styled("header", {
   base: {
     display: "flex",
     alignItems: "center",
+    justifyContent: "center",
     gap: "0.5rem",
-    paddingLeft: "0.2rem",
 
     "& > img": {
-      maxHeight: "3em",
-      maxWidth: "3em",
-      minHeight: "2.2em",
-      minWidth: "2.2em",
+      aspectRatio: "auto",
+      width: "2.5em",
     },
   },
 });
@@ -61,7 +52,7 @@ interface Props {
 }
 
 export const Header = ({ collapse }: Props) => (
-  <Wrapper collapse={collapse}>
+  <Wrapper>
     <StyledHeader>
       <img src={icon} alt="icon" />
       {!collapse && <Headline>emuze</Headline>}
