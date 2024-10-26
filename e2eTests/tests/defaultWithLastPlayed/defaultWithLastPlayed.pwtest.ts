@@ -90,5 +90,16 @@ test("import all", async ({ page, libraryPage, settingsPage }) => {
   await libraryPage.expectIsLastPlayed();
   await expect(playstationLink).toBeVisible();
 
-  await libraryPage.goToSystemViaClick(playstationSystemName, "Gex");
+  await libraryPage.goToSystemViaClick(playstationSystemName);
+});
+
+test("game versions", async ({ libraryPage }) => {
+  await libraryPage.expectIsLastPlayed();
+  await libraryPage.press("ArrowRight");
+  await libraryPage.press("ArrowRight");
+  await libraryPage.expectGameFocused("Gex");
+  await libraryPage.press("Enter");
+
+  await libraryPage.gameVersionsPage.testGameVersionsPage();
+  await libraryPage.expectIsLastPlayed();
 });

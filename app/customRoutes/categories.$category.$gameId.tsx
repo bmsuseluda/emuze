@@ -203,7 +203,7 @@ export default function Index() {
       <SidebarMainLayout>
         <SidebarMainLayout.Main dynamicWidth>
           <ListActionBarLayout>
-            <Form method="POST">
+            <Form method="POST" aria-label="gameVersions">
               <ListActionBarLayout.ListActionBarContainer
                 scrollSmooth
                 dynamicHeight

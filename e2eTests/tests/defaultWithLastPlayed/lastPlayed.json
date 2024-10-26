@@ -9,5 +9,25 @@
     },
     "systemId": "nintendogameboy",
     "lastPlayed": 1724935954414
+  },
+  {
+    "id": "gex(modded)1",
+    "name": "Gex (Modded)",
+    "path": "Gex (Modded).chd",
+    "subEntries": [
+      {
+        "id": "gex(modded)1",
+        "name": "Gex (Modded)",
+        "path": "Gex (Modded).chd"
+      },
+      { "id": "gex(usa)2", "name": "Gex (USA)", "path": "Gex (USA).chd" },
+      { "id": "gex3", "name": "Gex", "path": "Gex.chd" }
+    ],
+    "metaData": {
+      "imageUrl": "https://images.igdb.com/igdb/image/upload/t_cover_big/co1p57.webp",
+      "expiresOn": 1730710895184
+    },
+    "systemId": "sonyplaystation",
+    "lastPlayed": 1724936954414
   }
 ]
