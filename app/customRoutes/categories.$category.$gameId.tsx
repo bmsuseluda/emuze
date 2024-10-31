@@ -2,6 +2,7 @@ import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Form,
+  Outlet,
   redirect,
   useLoaderData,
   useLocation,
@@ -234,6 +235,7 @@ export default function Index() {
           </ListActionBarLayout>
         </SidebarMainLayout.Main>
       </SidebarMainLayout>
+      <Outlet />
     </GameDialog>
   );
 }

@@ -47,6 +47,10 @@ const findPlaystation3GameName: FindEntryNameFunction = ({
   return entryName || serial || name;
 };
 
+const physicalDigitalMapping: Record<string, string> = {
+  XCUS00003: "BCUS98472",
+};
+
 /**
  * Exclude files without serial and files that are just update files for physical games
  */
@@ -57,11 +61,16 @@ export const excludePlaystationFiles: ExcludeFilesFunction = (filepaths) => {
 
     const foundExclude =
       !serial ||
-      filepathsTemp.find(
-        (otherFilepath) =>
-          otherFilepath !== filepath &&
-          serial === findPlaystation3Serial(otherFilepath),
-      );
+      !!filepathsTemp.find((otherFilepath) => {
+        const otherSerial = findPlaystation3Serial(otherFilepath);
+
+        const isNotTheSame = otherFilepath !== filepath;
+        const isUpdateOnly =
+          serial === otherSerial ||
+          physicalDigitalMapping[serial] === otherSerial;
+
+        return isNotTheSame && isUpdateOnly;
+      });
 
     if (foundExclude) {
       filepathsTemp.splice(

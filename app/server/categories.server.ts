@@ -88,6 +88,10 @@ const filterFiles = (
   return filenames;
 };
 
+interface EntryWithoutSubEntries extends Entry {
+  subEntries?: never;
+}
+
 const createEntry = ({
   filename,
   categoryPath,
@@ -106,15 +110,20 @@ const createEntry = ({
   oldEntries?: Entry[];
   installedApplication?: InstalledApplication;
   findEntryName?: FindEntryNameFunction;
-}): Entry => {
-  const name = filterGameNameFromFileName(filename);
-
-  const oldMetaData = oldEntries?.find(
+}): EntryWithoutSubEntries => {
+  const now = Date.now();
+  const oldData = oldEntries?.find(
     ({ path }) => path === nodepath.relative(categoryPath, filename),
-  )?.metaData;
+  );
+  const oldMetaData = oldData?.metaData;
 
+  if (oldMetaData && oldMetaData.expiresOn > now) {
+    return { ...oldData, subEntries: undefined };
+  }
+
+  const name = filterGameNameFromFileName(filename);
   const path = nodepath.relative(categoryPath, filename);
-  const entry: Entry = {
+  const entry: EntryWithoutSubEntries = {
     id: convertToId(name, index),
     name,
     path,
@@ -227,7 +236,7 @@ export const readEntriesWithMetaData = async (
 
   entries.forEach((entry) => {
     const now = Date.now();
-    if (entry.metaData && entry.metaData?.expiresOn > now) {
+    if (entry.metaData && entry.metaData.expiresOn > now) {
       entriesWithMetaData.push(entry);
     } else {
       entriesWithoutMetaData.push({ ...entry, metaData: undefined });

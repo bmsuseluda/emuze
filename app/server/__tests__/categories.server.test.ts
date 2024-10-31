@@ -115,6 +115,38 @@ describe("categories.server", () => {
       const oldEntries: Entry[] = addIndex([
         {
           ...hugo,
+          metaData: hugoMetaData,
+        },
+      ]);
+
+      const expectedResult: Entry[] = addIndex([
+        { ...hugo, metaData: hugoMetaData },
+        { ...hugo2 },
+      ]);
+
+      const result = readEntries({
+        categoryName: playstation.name,
+        applicationId: duckstation.id,
+        oldEntries,
+      });
+
+      expect(result).toStrictEqual(expectedResult);
+    });
+
+    it("Should replace old meta data if expired", () => {
+      vi.mocked(readFilenames).mockReturnValueOnce([
+        createAbsoluteEntryPath(playstation.name, hugo.path),
+        createAbsoluteEntryPath(playstation.name, hugo2.path),
+      ]);
+
+      const hugoMetaData: MetaData = {
+        imageUrl: "https://www.allImagesComeFromHere.com/hugo.webp",
+        expiresOn: 12121,
+      };
+
+      const oldEntries: Entry[] = addIndex([
+        {
+          ...hugo,
           id: "This should be overwritten",
           subEntries: [
             {

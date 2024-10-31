@@ -1,6 +1,9 @@
 import type { ReactNode } from "react";
 import { styled } from "../../../styled-system/jsx";
 
+import { MdErrorOutline } from "react-icons/md";
+import { Typography } from "../Typography";
+
 const Input = styled("input", {
   base: {
     borderStyle: "solid",
@@ -53,11 +56,10 @@ const IconButton = styled("button", {
     },
 
     "& > svg": {
-      minWidth: "1.3rem",
-      minHeight: "1.3rem",
-      maxWidth: "1.3rem",
-      maxHeight: "1.3rem",
+      width: "1.3rem",
+      aspectRatio: "1",
       verticalAlign: "middle",
+      flexShrink: "0",
     },
   },
 });
@@ -65,8 +67,30 @@ const IconButton = styled("button", {
 const Error = styled("p", {
   base: {
     color: "error",
+    display: "flex",
+    gap: "0.5rem",
+    alignItems: "center",
+    flexWrap: "nowrap",
+
+    "& > svg": {
+      width: "1.3rem",
+      aspectRatio: "1",
+      verticalAlign: "middle",
+      flexShrink: "0",
+    },
   },
 });
+
+interface ErrorMessageProps {
+  children: string;
+}
+
+const ErrorMessage = ({ children }: ErrorMessageProps) => (
+  <Error>
+    <MdErrorOutline />
+    <Typography>{children}</Typography>
+  </Error>
+);
 
 const Wrapper = styled("div", {
   base: {
@@ -86,23 +110,6 @@ const ChildrenWrapper = styled("div", {
       },
     },
   },
-  variants: {
-    error: {
-      true: {
-        "& > input": {
-          borderColor: "error",
-          borderStyle: "dashed",
-        },
-
-        "&:focus-within": {
-          "& > input": {
-            borderColor: "accent",
-            borderStyle: "solid",
-          },
-        },
-      },
-    },
-  },
 });
 
 interface Props {
@@ -113,8 +120,8 @@ interface Props {
 
 export const TextInput = ({ children, error, label }: Props) => (
   <Wrapper role="group" aria-label={label}>
-    <ChildrenWrapper error={!!error}>{children}</ChildrenWrapper>
-    {error && <Error>{error}</Error>}
+    <ChildrenWrapper>{children}</ChildrenWrapper>
+    {error && <ErrorMessage>{error}</ErrorMessage>}
   </Wrapper>
 );
 
