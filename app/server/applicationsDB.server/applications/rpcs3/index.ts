@@ -47,8 +47,8 @@ const findPlaystation3GameName: FindEntryNameFunction = ({
   return entryName || serial || name;
 };
 
-const physicalDigitalMapping: Record<string, string> = {
-  XCUS00003: "BCUS98472",
+const digitalPhysicalMapping: Record<string, string> = {
+  BCUS98472: "XCUS00003",
 };
 
 /**
@@ -67,7 +67,8 @@ export const excludePlaystationFiles: ExcludeFilesFunction = (filepaths) => {
         const isNotTheSame = otherFilepath !== filepath;
         const isUpdateOnly =
           serial === otherSerial ||
-          physicalDigitalMapping[serial] === otherSerial;
+          (digitalPhysicalMapping[serial] &&
+            digitalPhysicalMapping[serial] === otherSerial);
 
         return isNotTheSame && isUpdateOnly;
       });

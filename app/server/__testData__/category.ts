@@ -197,6 +197,17 @@ export const psallstarsDisc: Entry = {
   },
 };
 
+export const psallstarsManual: Entry = {
+  id: "eboot",
+  name: "PlayStation All-Stars Battle Royale (Manual)",
+  path: "dev_hdd0/game/NPUO70233/USRDIR/EBOOT.BIN",
+  metaData: {
+    imageUrl:
+      "https://images.igdb.com/igdb/image/upload/t_cover_big/co2ssv.webp",
+    expiresOn: 1728917362970,
+  },
+};
+
 export const psallstarsDigital: Entry = {
   id: "eboot",
   name: "PlayStation All-Stars Battle Royale",
@@ -220,8 +231,8 @@ export const psallstars: Entry = {
     },
     {
       id: "eboot1",
-      name: "PlayStation All-Stars Battle Royale",
-      path: "dev_hdd0/game/BCUS98472/USRDIR/EBOOT.BIN",
+      name: "PlayStation All-Stars Battle Royale (Manual)",
+      path: "dev_hdd0/game/NPUO70233/USRDIR/EBOOT.BIN",
     },
   ],
   metaData: {

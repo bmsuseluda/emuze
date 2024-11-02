@@ -41,6 +41,7 @@ import {
   psallstars,
   psallstarsDigital,
   psallstarsDisc,
+  psallstarsManual,
 } from "../__testData__/category";
 import { applications as applicationsTestData } from "../__testData__/applications";
 import type { Entry, MetaData } from "../../types/jsonFiles/category";
@@ -120,7 +121,7 @@ describe("categories.server", () => {
       ]);
 
       const expectedResult: Entry[] = addIndex([
-        { ...hugo, metaData: hugoMetaData },
+        { ...hugo, metaData: hugoMetaData, subEntries: undefined },
         { ...hugo2 },
       ]);
 
@@ -216,6 +217,7 @@ describe("categories.server", () => {
       vi.mocked(readFilenames).mockReturnValueOnce([
         createAbsoluteEntryPath(playstation3.name, psallstarsDisc.path),
         createAbsoluteEntryPath(playstation3.name, psallstarsDigital.path),
+        createAbsoluteEntryPath(playstation3.name, psallstarsManual.path),
       ]);
 
       const oldEntries: Entry[] = addIndex([
@@ -223,7 +225,7 @@ describe("categories.server", () => {
           ...psallstarsDisc,
         },
         {
-          ...psallstarsDigital,
+          ...psallstarsManual,
         },
       ]);
 
