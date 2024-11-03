@@ -19,6 +19,11 @@ const Wrapper = styled("li", {
     minWidth: "200px",
     maxWidth: "300px",
     transition: "0.1s ease-in-out",
+    opacity: "1",
+
+    "@starting-style": {
+      opacity: "0",
+    },
   },
 });
 
