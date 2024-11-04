@@ -6,6 +6,8 @@ import {
 import {
   addIndex,
   finalfantasy7,
+  finalfantasy7disc1,
+  finalfantasy7disc2,
   hugo,
   monkeyIsland,
   playstation,
@@ -34,7 +36,7 @@ describe("lastPlayed.server", () => {
     lastPlayed: new Date(2024, 5, 28).getTime(),
   };
   const finalfantasy72024529: EntryWithSystem = {
-    ...finalfantasy7,
+    ...finalfantasy7disc1,
     systemId: sonyplaystation.id,
     lastPlayed: new Date(2024, 5, 29).getTime(),
   };
@@ -47,13 +49,13 @@ describe("lastPlayed.server", () => {
 
       const result = addToLastPlayed(
         oldLastPlayed,
-        finalfantasy7,
+        finalfantasy7disc1,
         sonyplaystation.id,
       );
 
       const expected: EntryWithSystem[] = addIndex([
         {
-          ...finalfantasy7,
+          ...finalfantasy7disc1,
           systemId: sonyplaystation.id,
           lastPlayed: now.getTime(),
         },
@@ -72,13 +74,13 @@ describe("lastPlayed.server", () => {
 
       const result = addToLastPlayed(
         oldLastPlayed,
-        finalfantasy7,
+        finalfantasy7disc1,
         sonyplaystation.id,
       );
 
       const expected: EntryWithSystem[] = addIndex([
         {
-          ...finalfantasy7,
+          ...finalfantasy7disc1,
           systemId: sonyplaystation.id,
           lastPlayed: now.getTime(),
         },
@@ -99,13 +101,13 @@ describe("lastPlayed.server", () => {
 
       const result = addToLastPlayed(
         oldLastPlayed,
-        finalfantasy7,
+        finalfantasy7disc1,
         sonyplaystation.id,
       );
 
       const expected: EntryWithSystem[] = addIndex([
         {
-          ...finalfantasy7,
+          ...finalfantasy7disc1,
           systemId: sonyplaystation.id,
           lastPlayed: now.getTime(),
         },
@@ -145,6 +147,22 @@ describe("lastPlayed.server", () => {
         hugo202461,
         monkeyIsland2024528,
       ]);
+
+      expect(result).toStrictEqual(expected);
+    });
+
+    it("Should replace game version with full game", () => {
+      const oldLastPlayed: EntryWithSystem[] = [
+        { ...finalfantasy72024529, ...finalfantasy7disc2 },
+      ];
+      const result = syncLastPlayedWithCategory(oldLastPlayed, {
+        ...playstation,
+        entries: [finalfantasy7],
+      });
+
+      const expected: EntryWithSystem[] = [
+        { ...finalfantasy72024529, ...finalfantasy7 },
+      ];
 
       expect(result).toStrictEqual(expected);
     });

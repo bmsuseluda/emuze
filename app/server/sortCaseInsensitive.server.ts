@@ -1,6 +1,7 @@
 const normalizeString = (a: string) =>
   a
     .toLowerCase()
+    .replace(" ix", " viiii")
     .replace(/\(.*\)/gi, "")
     .replace(/[`~!@#$%^&*()_|+\-=?;:'",.]/gi, "")
     .trim();

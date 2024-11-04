@@ -18,18 +18,14 @@ const biosNeeded: SystemId[] = [
   "sonyplaystation2",
   "sonyplaystation3",
   "segacd",
+  "sega32x",
   "segasaturn",
-  "segadreamcast",
   "pcenginecd",
   "pcenginesupergrafx",
-  "neogeo",
   "neogeopocket",
   "neogeopocketcolor",
   "nintendowiiu",
   "nintendoswitch",
-  "nintendods",
-  "nintendo3ds",
-  "arcade",
 ];
 
 const homepages: Record<ApplicationId, string> = {

@@ -133,4 +133,38 @@ export const gamesLastPlayed: EntryWithSystem[] = [
     systemId: "dos",
     lastPlayed: 1725614906938,
   },
+  {
+    id: "driver1",
+    name: "Driver",
+    path: "Driver.chd",
+    metaData: {
+      imageUrl:
+        "https://images.igdb.com/igdb/image/upload/t_cover_big/co6he0.webp",
+      expiresOn: 1728043561028,
+    },
+    systemId: "sonyplaystation",
+    lastPlayed: 1725614906930,
+    subEntries: [
+      {
+        id: "driver(disc1)1",
+        name: "Driver (Disc 1)",
+        path: "Driver (Disc 1).chd",
+        metaData: {
+          imageUrl:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/co6he0.webp",
+          expiresOn: 1728043561028,
+        },
+      },
+      {
+        id: "driver(disc2)2",
+        name: "Driver (Disc 2)",
+        path: "Driver (Disc 2).chd",
+        metaData: {
+          imageUrl:
+            "https://images.igdb.com/igdb/image/upload/t_cover_big/co6he0.webp",
+          expiresOn: 1728043561028,
+        },
+      },
+    ],
+  },
 ];

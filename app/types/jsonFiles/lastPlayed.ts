@@ -7,6 +7,7 @@ export interface EntryWithSystem extends Entry {
    * Timestamp when the game was played last
    */
   lastPlayed: number;
+  subEntries?: Entry[];
 }
 
 export const isEntryWithSystem = (

@@ -5,19 +5,30 @@ const StyledMain = styled("main", {
   base: {
     flex: 6,
     paddingTop: "1",
-    paddingRight: "0.5em",
     paddingBottom: "1",
-    paddingLeft: "2",
+    paddingLeft: "outlinePadding",
+    paddingRight: "outlinePadding",
     display: "flex",
     backgroundColor: "backgroundColor",
     minWidth: "25rem",
+  },
+
+  variants: {
+    dynamicWidth: {
+      true: {
+        minWidth: "unset",
+        paddingLeft: "1",
+        paddingRight: "1",
+      },
+    },
   },
 });
 
 interface Props {
   children: ReactNode;
+  dynamicWidth?: boolean;
 }
 
-export const Main = ({ children }: Props) => (
-  <StyledMain>{children}</StyledMain>
+export const Main = ({ children, dynamicWidth }: Props) => (
+  <StyledMain dynamicWidth={dynamicWidth}>{children}</StyledMain>
 );

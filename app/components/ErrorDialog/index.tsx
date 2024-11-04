@@ -33,7 +33,7 @@ export const ErrorDialog = ({
           headline={
             <IconChildrenWrapper>
               <MdErrorOutline />
-              <Typography>{title}</Typography>
+              <Typography ellipsis>{title}</Typography>
             </IconChildrenWrapper>
           }
         >

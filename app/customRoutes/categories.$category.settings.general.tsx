@@ -35,6 +35,7 @@ import {
   useInputConfirmation,
 } from "../hooks/useDirectionalInput";
 import { FileDialogInputField } from "../containers/FileDialogTextInput";
+import { Typography } from "../components/Typography";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
@@ -42,27 +43,11 @@ export const loader = () => {
 
   const errors: Errors = {};
 
-  if (
-    isWindows() &&
-    general.applicationsPath &&
-    general.applicationsPath.length > 0
-  ) {
-    const errorApplicationsPath = validatePathExist(
-      applicationsPathLabel,
-      general.applicationsPath,
-    );
-    if (errorApplicationsPath) {
-      errors.applicationsPath = errorApplicationsPath;
-    }
+  if (general.applicationsPath?.length) {
+    validateApplicationsPath(errors, general.applicationsPath);
   }
-  if (general.categoriesPath && general.categoriesPath.length > 0) {
-    const errorCategoriesPath = validatePathExist(
-      categoriesPathLabel,
-      general.categoriesPath,
-    );
-    if (errorCategoriesPath) {
-      errors.categoriesPath = errorCategoriesPath;
-    }
+  if (general.categoriesPath?.length) {
+    validateCategoriesPath(errors, general.categoriesPath);
   }
 
   return json({ ...general, isWindows: isWindows(), categories, errors });
@@ -80,6 +65,28 @@ const actionIds = {
 type Errors = {
   applicationsPath?: string;
   categoriesPath?: string;
+};
+
+const validateApplicationsPath = (
+  errors: Errors,
+  applicationsPath?: string,
+) => {
+  if (isWindows()) {
+    const errorApplicationsPath = validatePath(
+      applicationsPathLabel,
+      applicationsPath,
+    );
+    if (errorApplicationsPath) {
+      errors.applicationsPath = errorApplicationsPath;
+    }
+  }
+};
+
+const validateCategoriesPath = (errors: Errors, categoriesPath?: string) => {
+  const errorCategoriesPath = validatePath(categoriesPathLabel, categoriesPath);
+  if (errorCategoriesPath) {
+    errors.categoriesPath = errorCategoriesPath;
+  }
 };
 
 const validatePathRequired = (label: string, path?: string) => {
@@ -149,22 +156,8 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     if (_actionId === actionIds.import) {
       const errors: Errors = {};
 
-      if (isWindows()) {
-        const errorApplicationsPath = validatePath(
-          applicationsPathLabel,
-          applicationsPath,
-        );
-        if (errorApplicationsPath) {
-          errors.applicationsPath = errorApplicationsPath;
-        }
-      }
-      const errorCategoriesPath = validatePath(
-        categoriesPathLabel,
-        categoriesPath,
-      );
-      if (errorCategoriesPath) {
-        errors.categoriesPath = errorCategoriesPath;
-      }
+      validateApplicationsPath(errors, applicationsPath);
+      validateCategoriesPath(errors, categoriesPath);
 
       if (Object.keys(errors).length > 0) {
         return json({ errors });
@@ -199,6 +192,11 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
           throw error;
         }
       }
+
+      return json({
+        applicationsPath,
+        categoriesPath,
+      });
     }
 
     if (_actionId === actionIds.installMissingApplications) {
@@ -332,9 +330,7 @@ export default function General() {
         headline={
           <IconChildrenWrapper>
             <SettingsIcon id="general" />
-            <span>
-              <span>General</span>
-            </span>
+            <Typography ellipsis>General</Typography>
           </IconChildrenWrapper>
         }
       >

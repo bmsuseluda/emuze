@@ -10,6 +10,7 @@ import { fetchMetaData } from "./igdb.server";
 import { readGeneral } from "./settings.server";
 import type {
   ExcludeFilesFunction,
+  FindEntryNameFunction,
   InstalledApplication,
 } from "./applicationsDB.server/types";
 import { applications } from "./applicationsDB.server";
@@ -87,6 +88,87 @@ const filterFiles = (
   return filenames;
 };
 
+interface EntryWithoutSubEntries extends Entry {
+  subEntries?: never;
+}
+
+const createEntry = ({
+  filename,
+  categoryPath,
+  categoriesPath,
+  categoryName,
+  index,
+  oldEntries,
+  installedApplication,
+  findEntryName,
+}: {
+  filename: string;
+  categoryPath: string;
+  categoriesPath: string;
+  categoryName: string;
+  index: number;
+  oldEntries?: Entry[];
+  installedApplication?: InstalledApplication;
+  findEntryName?: FindEntryNameFunction;
+}): EntryWithoutSubEntries => {
+  const now = Date.now();
+  const oldData = oldEntries?.find(
+    ({ path }) => path === nodepath.relative(categoryPath, filename),
+  );
+  const oldMetaData = oldData?.metaData;
+
+  if (oldMetaData && oldMetaData.expiresOn > now) {
+    return { ...oldData, subEntries: undefined };
+  }
+
+  const name = filterGameNameFromFileName(filename);
+  const path = nodepath.relative(categoryPath, filename);
+  const entry: EntryWithoutSubEntries = {
+    id: convertToId(name, index),
+    name,
+    path,
+    ...(oldMetaData && { metaData: oldMetaData }),
+  };
+
+  if (findEntryName) {
+    const optimizedName = findEntryName({
+      entry,
+      categoriesPath,
+      categoryName,
+      installedApplication,
+    });
+    return {
+      ...entry,
+      name: optimizedName,
+    };
+  }
+
+  return entry;
+};
+
+const filterGameNameFromFileName = (fileName: string) => {
+  const extension = nodepath.extname(fileName);
+  return extension.length > 0
+    ? nodepath.basename(fileName).split(extension)[0]
+    : nodepath.basename(fileName);
+};
+
+const removeAdditionalInfo = (gameName: string) => gameName.split(" (")[0];
+
+const isSameBaseGame = (gameName: string, lastGameName?: string) =>
+  lastGameName &&
+  removeAdditionalInfo(gameName).toLowerCase().trim() ===
+    removeAdditionalInfo(lastGameName).toLowerCase().trim();
+
+const addAsGameVersion = (lastEntry: Entry, { metaData, ...entry }: Entry) => {
+  const { metaData: metaDataFromLast, ...lastEntryWithoutMetaData } = lastEntry;
+  if (lastEntry.subEntries?.[0]) {
+    lastEntry.subEntries.push(entry);
+  } else {
+    lastEntry.subEntries = [{ ...lastEntryWithoutMetaData }, entry];
+  }
+};
+
 export const readEntries = ({
   categoryName,
   applicationId,
@@ -116,41 +198,30 @@ export const readEntries = ({
     const filenamesFiltered = filterFiles(filenames, excludeFiles);
 
     return filenamesFiltered
-      .map<Entry>((filename, index) => {
-        const extension = nodepath.extname(filename);
-        const name =
-          extension.length > 0
-            ? nodepath.basename(filename).split(extension)[0]
-            : nodepath.basename(filename);
+      .map((filename, index) =>
+        createEntry({
+          oldEntries,
+          categoriesPath,
+          categoryName,
+          index,
+          categoryPath,
+          filename,
+          findEntryName,
+          installedApplication,
+        }),
+      )
+      .sort(sortEntries)
+      .reduce<Entry[]>((entries, entry) => {
+        const lastEntry = entries.at(-1);
 
-        const oldEntryData = oldEntries?.find(
-          ({ path }) => path === nodepath.relative(categoryPath, filename),
-        );
-        if (oldEntryData) {
-          return oldEntryData;
+        if (lastEntry && isSameBaseGame(entry.name, lastEntry?.name)) {
+          addAsGameVersion(lastEntry, entry);
         } else {
-          const entry = {
-            id: convertToId(name, index),
-            name,
-            path: nodepath.relative(categoryPath, filename),
-          };
-
-          if (findEntryName) {
-            return {
-              ...entry,
-              name: findEntryName({
-                entry,
-                categoriesPath,
-                categoryName,
-                installedApplication,
-              }),
-            };
-          } else {
-            return entry;
-          }
+          entries.push(entry);
         }
-      })
-      .sort(sortEntries);
+
+        return entries;
+      }, []);
   }
 
   return oldEntries || [];
@@ -165,7 +236,7 @@ export const readEntriesWithMetaData = async (
 
   entries.forEach((entry) => {
     const now = Date.now();
-    if (entry.metaData && entry.metaData?.expiresOn > now) {
+    if (entry.metaData && entry.metaData.expiresOn > now) {
       entriesWithMetaData.push(entry);
     } else {
       entriesWithoutMetaData.push({ ...entry, metaData: undefined });

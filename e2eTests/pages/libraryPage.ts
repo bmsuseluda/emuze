@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page } from "@playwright/test";
 import { ports, TestName } from "../tests/ports";
+import { GameVersionsPage } from "./gameVersionsPage";
 
 export class LibraryPage {
   readonly page: Page;
@@ -8,6 +9,7 @@ export class LibraryPage {
   readonly launchGameButton: Locator;
   readonly noInstalledEmulatorsButton: Locator;
   readonly importGamesButton: Locator;
+  readonly gameVersionsPage: GameVersionsPage;
 
   constructor(page: Page) {
     this.page = page;
@@ -20,6 +22,7 @@ export class LibraryPage {
     this.importGamesButton = page.getByRole("button", {
       name: "Import Games",
     });
+    this.gameVersionsPage = new GameVersionsPage(page);
   }
 
   async goto(testName: TestName) {

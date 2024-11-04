@@ -32,17 +32,17 @@ The following systems are supported:
 
 | System | Emulator | Pre Configured | BIOS needed |
 |--------|----------|----------------|-------------|
-| Sony Playstation | [DuckStation](https://github.com/stenzek/duckstation) | Yes | Yes | 
-| Sony Playstation 2 | [PCSX2](https://github.com/PCSX2/pcsx2) | Yes | Yes | 
-| Sony Playstation 3 | [RPCS3](https://github.com/RPCS3/rpcs3) | No | Yes | 
-| Sony Playstation Portable | [PPSSPP](https://github.com/hrydgard/ppsspp) | No | No | 
+| Sony PlayStation | [DuckStation](https://github.com/stenzek/duckstation) | Yes | Yes | 
+| Sony PlayStation 2 | [PCSX2](https://github.com/PCSX2/pcsx2) | Yes | Yes | 
+| Sony PlayStation 3 | [RPCS3](https://github.com/RPCS3/rpcs3) | No | Yes | 
+| Sony PlayStation Portable | [PPSSPP](https://github.com/hrydgard/ppsspp) | No | No | 
 | Nintendo Entertainment System | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
 | Super Nintendo Entertainment System | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
 | Nintendo Game Boy | [mgba](https://github.com/mgba-emu/mgba) | No | No | 
 | Nintendo Game Boy Color | [mgba](https://github.com/mgba-emu/mgba) | No | No | 
 | Nintendo Game Boy Advance | [mgba](https://github.com/mgba-emu/mgba) | No | No | 
-| Nintendo DS | [MelonDS](https://github.com/melonDS-emu/melonDS) | No | Yes | 
-| Nintendo 3DS | [Lime3DS](https://github.com/Lime3DS/Lime3DS) | No | Yes | 
+| Nintendo DS | [MelonDS](https://github.com/melonDS-emu/melonDS) | No | No | 
+| Nintendo 3DS | [Lime3DS](https://github.com/Lime3DS/Lime3DS) | No | No | 
 | Nintendo 64 | [Rosalie's Mupen GUI](https://github.com/Rosalie241/RMG) | No | No | 
 | Nintendo Gamecube | [Dolphin](https://github.com/dolphin-emu/dolphin) | No | No | 
 | Nintendo Wii | [Dolphin](https://github.com/dolphin-emu/dolphin) | No | No | 
@@ -54,12 +54,12 @@ The following systems are supported:
 | Sega Master System | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
 | Sega Game Gear | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
 | Sega Mega Drive | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
-| Sega 32X | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
+| Sega 32X | [Ares](https://github.com/ares-emulator/ares) | Yes | Yes | 
 | Sega CD | [Ares](https://github.com/ares-emulator/ares) | Yes | Yes | 
 | Sega Saturn | [Mednafen](https://mednafen.github.io/) | No | Yes | 
-| Sega Dreamcast | [Flycast](https://github.com/flyinghead/flycast) | No | Yes | 
-| Arcade | [Mame](https://github.com/mamedev/mame) | No | Yes | 
-| Neo Geo | [Mame](https://github.com/mamedev/mame) | No | Yes | 
+| Sega Dreamcast | [Flycast](https://github.com/flyinghead/flycast) | No | No | 
+| Arcade | [Mame](https://github.com/mamedev/mame) | No | No | 
+| Neo Geo | [Mame](https://github.com/mamedev/mame) | No | No | 
 | Neo Geo CD | [Mame](https://github.com/mamedev/mame) | No | No | 
 | Neo Geo Pocket | [Ares](https://github.com/ares-emulator/ares) | Yes | Yes | 
 | Neo Geo Pocket Color | [Ares](https://github.com/ares-emulator/ares) | Yes | Yes | 

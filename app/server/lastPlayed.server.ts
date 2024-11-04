@@ -18,7 +18,7 @@ export const readLastPlayed = () => lastPlayedDataCache.readFile() || [];
  * lastPlayed list needs to be
  * - sorted by last played
  * - unique, so no duplicate entries in it
- * - limited on 50 items
+ * - limited to 50 items
  */
 export const writeLastPlayed = (entries: EntryWithSystem[]) => {
   lastPlayedDataCache.writeFile(entries);
@@ -74,15 +74,6 @@ export const addToLastPlayed = (
   return unifyIds(lastPlayedShortend);
 };
 
-const isEntryAvailable = (
-  lastPlayedGame: EntryWithSystem,
-  category: Category,
-) =>
-  lastPlayedGame.systemId === category.id &&
-  !!category.entries?.find(
-    (entryFromCategory) => entryFromCategory.path === lastPlayedGame.path,
-  );
-
 export const syncLastPlayedWithCategoryCached = (category: Category) => {
   const lastPlayed = readLastPlayed();
 
@@ -98,11 +89,24 @@ export const syncLastPlayedWithCategory = (
   const lastPlayedUpdated: EntryWithSystem[] = [];
 
   lastPlayed.forEach((lastPlayedGame) => {
-    if (
-      lastPlayedGame.systemId !== category.id ||
-      isEntryAvailable(lastPlayedGame, category)
-    ) {
+    if (lastPlayedGame.systemId !== category.id) {
       lastPlayedUpdated.push(lastPlayedGame);
+    } else {
+      const newEntry = category.entries?.find(
+        (entryFromCategory) =>
+          entryFromCategory.path === lastPlayedGame.path ||
+          !!entryFromCategory.subEntries?.find(
+            (entryFromCategory) =>
+              entryFromCategory.path === lastPlayedGame.path,
+          ),
+      );
+
+      if (newEntry) {
+        lastPlayedUpdated.push({
+          ...lastPlayedGame,
+          ...newEntry,
+        });
+      }
     }
   });
 

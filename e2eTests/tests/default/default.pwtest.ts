@@ -100,4 +100,14 @@ test("import all", async ({ page, libraryPage, settingsPage }) => {
   await libraryPage.goToSystemViaClick(playstationSystemName, "Gex");
 });
 
+test("game versions", async ({ libraryPage }) => {
+  await libraryPage.goToSystemViaClick("Playstation", "Gex");
+  await libraryPage.press("ArrowRight");
+  await libraryPage.expectGameFocused("Gex");
+  await libraryPage.press("Enter");
+
+  await libraryPage.gameVersionsPage.testGameVersionsPage();
+  await libraryPage.expectIsSystem("Playstation", "Gex");
+});
+
 // TODO: add offline test

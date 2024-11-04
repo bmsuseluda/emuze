@@ -29,17 +29,25 @@ export const FileDialogInputField = ({
   onOpenFileDialog,
 }: Props) => {
   const [value, setValue] = useState(defaultValue || "");
+  const [error, setError] = useState(defaultError);
 
   useEffect(() => {
     if (newValue) {
       setValue(newValue);
+      setError(undefined);
     }
   }, [newValue]);
+
+  useEffect(() => {
+    if (newError) {
+      setError(newError);
+    }
+  }, [newError]);
 
   return (
     <FormRow>
       <Label htmlFor={id}>{label}</Label>
-      <TextInput label={label} error={defaultError || newError}>
+      <TextInput label={label} error={error}>
         <TextInput.Input
           type="text"
           name={id}

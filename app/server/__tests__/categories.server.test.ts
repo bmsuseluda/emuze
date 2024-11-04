@@ -21,7 +21,14 @@ import {
   cotton,
   createAbsoluteEntryPath,
   createCategoryPath,
-  finalfantasy7,
+  doomEvilution,
+  doomPlutonium,
+  dos,
+  ehrgeiz,
+  ehrgeizJapan,
+  finalfantasy7disc1,
+  finalfantasy7disc2,
+  finalfantasy7disc3,
   gateofthunder,
   hugo,
   hugo2,
@@ -30,6 +37,11 @@ import {
   nintendo3ds,
   pcenginecd,
   playstation,
+  playstation3,
+  psallstars,
+  psallstarsDigital,
+  psallstarsDisc,
+  psallstarsManual,
 } from "../__testData__/category";
 import { applications as applicationsTestData } from "../__testData__/applications";
 import type { Entry, MetaData } from "../../types/jsonFiles/category";
@@ -41,6 +53,8 @@ import { getInstalledApplicationForCategory } from "../applications.server";
 import { getExpiresOn } from "../getExpiresOn.server";
 import { mameNeoGeo } from "../applicationsDB.server/applications/mame";
 import { duckstation } from "../applicationsDB.server/applications/duckstation";
+import { dosboxstaging } from "../applicationsDB.server/applications/dosbox";
+import { rpcs3 } from "../applicationsDB.server/applications/rpcs3";
 
 vi.mock("@kmamal/sdl");
 vi.mock("../readWriteData.server");
@@ -88,7 +102,7 @@ describe("categories.server", () => {
       expect(result).toStrictEqual(expectedResult);
     });
 
-    it("Should return oldData if exist", () => {
+    it("Should return old meta data if exist", () => {
       vi.mocked(readFilenames).mockReturnValueOnce([
         createAbsoluteEntryPath(playstation.name, hugo.path),
         createAbsoluteEntryPath(playstation.name, hugo2.path),
@@ -107,6 +121,46 @@ describe("categories.server", () => {
       ]);
 
       const expectedResult: Entry[] = addIndex([
+        { ...hugo, metaData: hugoMetaData, subEntries: undefined },
+        { ...hugo2 },
+      ]);
+
+      const result = readEntries({
+        categoryName: playstation.name,
+        applicationId: duckstation.id,
+        oldEntries,
+      });
+
+      expect(result).toStrictEqual(expectedResult);
+    });
+
+    it("Should replace old meta data if expired", () => {
+      vi.mocked(readFilenames).mockReturnValueOnce([
+        createAbsoluteEntryPath(playstation.name, hugo.path),
+        createAbsoluteEntryPath(playstation.name, hugo2.path),
+      ]);
+
+      const hugoMetaData: MetaData = {
+        imageUrl: "https://www.allImagesComeFromHere.com/hugo.webp",
+        expiresOn: 12121,
+      };
+
+      const oldEntries: Entry[] = addIndex([
+        {
+          ...hugo,
+          id: "This should be overwritten",
+          subEntries: [
+            {
+              id: "This should be removed",
+              name: "This should be removed",
+              path: "This should be removed",
+            },
+          ],
+          metaData: hugoMetaData,
+        },
+      ]);
+
+      const expectedResult: Entry[] = addIndex([
         { ...hugo, metaData: hugoMetaData },
         { ...hugo2 },
       ]);
@@ -119,6 +173,103 @@ describe("categories.server", () => {
 
       expect(result).toStrictEqual(expectedResult);
     });
+
+    it("Should return game with game versions", () => {
+      vi.mocked(readFilenames).mockReturnValueOnce([
+        createAbsoluteEntryPath(playstation.name, ehrgeiz.path),
+        createAbsoluteEntryPath(playstation.name, ehrgeizJapan.path),
+        createAbsoluteEntryPath(playstation.name, finalfantasy7disc1.path),
+        createAbsoluteEntryPath(playstation.name, finalfantasy7disc2.path),
+        createAbsoluteEntryPath(playstation.name, finalfantasy7disc3.path),
+      ]);
+
+      const oldEntries: Entry[] = addIndex([
+        {
+          ...finalfantasy7disc1,
+        },
+      ]);
+
+      const expectedResult: Entry[] = addIndex([
+        {
+          ...ehrgeiz,
+          subEntries: [ehrgeiz, ehrgeizJapan],
+        },
+        {
+          ...finalfantasy7disc1,
+          subEntries: [
+            finalfantasy7disc1,
+            finalfantasy7disc2,
+            finalfantasy7disc3,
+          ],
+        },
+      ]);
+
+      const result = readEntries({
+        categoryName: playstation.name,
+        applicationId: duckstation.id,
+        oldEntries,
+      });
+
+      expect(result).toStrictEqual(expectedResult);
+    });
+
+    it("Should return ps3 game with game versions in different folders", () => {
+      vi.mocked(readFilenames).mockReturnValueOnce([
+        createAbsoluteEntryPath(playstation3.name, psallstarsDisc.path),
+        createAbsoluteEntryPath(playstation3.name, psallstarsDigital.path),
+        createAbsoluteEntryPath(playstation3.name, psallstarsManual.path),
+      ]);
+
+      const oldEntries: Entry[] = addIndex([
+        {
+          ...psallstarsDisc,
+        },
+        {
+          ...psallstarsManual,
+        },
+      ]);
+
+      const expectedResult: Entry[] = [psallstars];
+
+      const result = readEntries({
+        categoryName: playstation3.name,
+        applicationId: rpcs3.id,
+        oldEntries,
+      });
+
+      expect(result).toStrictEqual(expectedResult);
+    });
+
+    it("Should return dos game with game versions", () => {
+      vi.mocked(readFilenames).mockReturnValueOnce([
+        createAbsoluteEntryPath(dos.name, doomPlutonium.path),
+        createAbsoluteEntryPath(dos.name, doomEvilution.path),
+      ]);
+
+      const oldEntries: Entry[] = addIndex([
+        {
+          ...doomPlutonium,
+        },
+        {
+          ...doomEvilution,
+        },
+      ]);
+
+      const expectedResult: Entry[] = addIndex([
+        {
+          ...doomPlutonium,
+          subEntries: [doomPlutonium, doomEvilution],
+        },
+      ]);
+
+      const result = readEntries({
+        categoryName: dos.name,
+        applicationId: dosboxstaging.id,
+        oldEntries,
+      });
+
+      expect(result).toStrictEqual(expectedResult);
+    });
   });
 
   describe("readEntriesWithMetaData", () => {
@@ -126,7 +277,7 @@ describe("categories.server", () => {
       const fetchMetaDataMock = vi.fn().mockResolvedValue(
         addIndex([
           {
-            ...finalfantasy7,
+            ...finalfantasy7disc1,
             metaData: {
               imageUrl: "https://www.allImagesComeFromHere.com/ff7.webp",
               expiresOn: getExpiresOn(),
@@ -147,7 +298,7 @@ describe("categories.server", () => {
         categoriesDB.sonyplaystation.igdbPlatformIds,
         addIndex([
           {
-            ...finalfantasy7,
+            ...finalfantasy7disc1,
             metaData: {
               imageUrl: "https://www.allImagesComeFromHere.com/ff7.webp",
               expiresOn: new Date(2022).getTime(),
@@ -167,7 +318,7 @@ describe("categories.server", () => {
       expect(result).toStrictEqual(
         addIndex([
           {
-            ...finalfantasy7,
+            ...finalfantasy7disc1,
             metaData: {
               imageUrl: "https://www.allImagesComeFromHere.com/ff7.webp",
               expiresOn: getExpiresOn(),
@@ -191,7 +342,7 @@ describe("categories.server", () => {
       );
       expect(fetchMetaDataMock).toHaveBeenCalledWith(
         categoriesDB.sonyplaystation.igdbPlatformIds,
-        addIndex([finalfantasy7, hugo]),
+        addIndex([finalfantasy7disc1, hugo]),
       );
     });
   });
@@ -221,10 +372,19 @@ describe("categories.server", () => {
           createAbsoluteEntryPath(pcenginecd.name, cotton.path),
           createAbsoluteEntryPath(pcenginecd.name, gateofthunder.path),
         ]);
-      vi.mocked(readFileHome).mockReturnValueOnce(nintendo3ds);
       vi.mocked(readFileHome).mockReturnValueOnce(pcenginecd);
-      vi.mocked(fetchMetaData).mockResolvedValueOnce(nintendo3ds.entries);
-      vi.mocked(fetchMetaData).mockResolvedValueOnce(pcenginecd.entries);
+      vi.mocked(readFileHome).mockReturnValueOnce(nintendo3ds);
+
+      when(fetchMetaData)
+        .calledWith(categoriesDB.pcenginecd.igdbPlatformIds, pcenginecd.entries)
+        .thenResolve(pcenginecd.entries);
+      when(fetchMetaData)
+        .calledWith(
+          categoriesDB.nintendo3ds.igdbPlatformIds,
+          nintendo3ds.entries,
+        )
+        .thenResolve(nintendo3ds.entries);
+
       vi.mocked(getInstalledApplicationForCategory).mockReturnValueOnce(
         applicationsTestData.lime3ds,
       );
