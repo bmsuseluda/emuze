@@ -84,7 +84,7 @@ Some emulators need a BIOS or firmware to run. Please check the documentation of
 
 ### Windows
 
-[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.50.0/emuze-Setup-0.50.0.exe) the latest Version of emuze and install it.
+[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.51.0/emuze-Setup-0.51.0.exe) the latest Version of emuze and install it.
 
 If you start emuze for the first time, it asks for the following folders to work:
 
@@ -114,7 +114,7 @@ emulators
 For now emuze is only released as an AppImage. Your Linux distribution needs to support Flatpaks.
 All emulators need to be installed via flatpak but emuze can do this for you.
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.50.0/emuze-0.50.0.AppImage) the latest Version of emuze
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.51.0/emuze-0.51.0.AppImage) the latest Version of emuze
 
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
@@ -124,7 +124,7 @@ All emulators need to be installed via flatpak but emuze can do this for you.
 For now emuze is only released as an AppImage.
 
 1) Switch to Desktop
-2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.50.0/emuze-0.50.0.AppImage) the latest Version of emuze
+2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.51.0/emuze-0.51.0.AppImage) the latest Version of emuze
 
 3) Mark the AppImage as executable and start emuze
 4) Choose the [folder where your Roms are located](#roms-folder)
