@@ -139,7 +139,7 @@ export const getWindowsConfigFilePath = (
   return nodepath.join(homedir(), "Documents", "DuckStation", configFileName);
 };
 
-export const configFile = (
+export const getConfigFilePath = (
   flatpakId: string,
   configFileName: string,
   applicationPath?: string,
@@ -170,7 +170,11 @@ const readConfigFile = (filePath: string) => {
 };
 
 export const replaceConfigSections = (applicationPath?: string) => {
-  const filePath = configFile(flatpakId, configFileName, applicationPath);
+  const filePath = getConfigFilePath(
+    flatpakId,
+    configFileName,
+    applicationPath,
+  );
   const fileContent = readConfigFile(filePath);
 
   const sections = splitConfigBySection(fileContent);

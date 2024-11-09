@@ -15,6 +15,7 @@ import {
 import { isWindows } from "../operationsystem.server";
 import { duckstation } from "./applications/duckstation";
 import { pcsx2 } from "./applications/pcsx2";
+import { ryujinx } from "./applications/ryujinx";
 
 export const ppsspp: Application = {
   id: "ppsspp",
@@ -76,24 +77,6 @@ export const dolphin: Application = {
       optionParams.push("Dolphin.Display.Fullscreen=True");
     }
     optionParams.push("--batch");
-    return optionParams;
-  },
-};
-
-export const ryujinx: Application = {
-  id: "ryujinx",
-  name: "Ryujinx",
-  fileExtensions: [".xci", ".nsp"],
-  flatpakId: "org.ryujinx.Ryujinx",
-  createOptionParams: ({
-    settings: {
-      appearance: { fullscreen },
-    },
-  }) => {
-    const optionParams = [];
-    if (fullscreen) {
-      optionParams.push("--fullscreen");
-    }
     return optionParams;
   },
 };

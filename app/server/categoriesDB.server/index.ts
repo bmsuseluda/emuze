@@ -8,7 +8,6 @@ import {
   mgba,
   ppsspp,
   rosaliesMupenGui,
-  ryujinx,
 } from "../applicationsDB.server";
 import { rpcs3 } from "../applicationsDB.server/applications/rpcs3";
 import {
@@ -29,6 +28,7 @@ import type { Category } from "./types";
 import type { SystemId } from "./systemId";
 import { duckstation } from "../applicationsDB.server/applications/duckstation";
 import { pcsx2 } from "../applicationsDB.server/applications/pcsx2";
+import { ryujinx } from "../applicationsDB.server/applications/ryujinx";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",

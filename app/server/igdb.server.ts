@@ -138,6 +138,7 @@ const fetchMetaDataForChunkLimitless = async (
   offset: number = 0,
 ): Promise<Game[]> => {
   const gamesFiltered = entries.flatMap(filterGame);
+  // TODO: replace apicalypse and use shorthands
   const gamesResponse: GamesResponse = await retryPromise(
     () =>
       client
