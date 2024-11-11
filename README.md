@@ -47,7 +47,7 @@ The following systems are supported:
 | Nintendo Gamecube | [Dolphin](https://github.com/dolphin-emu/dolphin) | No | No | 
 | Nintendo Wii | [Dolphin](https://github.com/dolphin-emu/dolphin) | No | No | 
 | Nintendo Wii U | [Cemu](https://github.com/cemu-project/Cemu) | No | Yes | 
-| Nintendo Switch | [Ryujinx](https://github.com/Ryujinx/Ryujinx) | No | Yes | 
+| Nintendo Switch | [Ryujinx](https://github.com/GreemDev/Ryujinx) | No | Yes | 
 | PC Engine | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
 | PC Engine CD | [Mednafen](https://mednafen.github.io/) | No | Yes | 
 | PC Engine SuperGrafx | [Mednafen](https://mednafen.github.io/) | No | Yes | 
