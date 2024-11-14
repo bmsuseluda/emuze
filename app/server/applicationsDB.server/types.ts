@@ -73,4 +73,6 @@ export interface Application {
   flatpakOptionParams?: string[];
   findEntryName?: FindEntryNameFunction;
   excludeFiles?: ExcludeFilesFunction;
+  bundledPathLinux?: string;
+  bundledPathWindows?: string;
 }

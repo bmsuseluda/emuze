@@ -3,70 +3,24 @@ import type {
   ExcludeFilesFunction,
   FindEntryNameFunction,
 } from "../../types";
-import { isWindows } from "../../../operationsystem.server";
 import nodepath from "path";
-import {
-  findConfigFile,
-  getFlatpakConfigPath,
-  writeConfig,
-} from "../../configFile";
+import { writeConfig } from "../../configFile";
 import fs from "fs";
-import { homedir } from "os";
 import { log } from "../../../debug.server";
 import type { Config, InputConfig } from "./config";
 import { defaultConfig, defaultInputConfig } from "./config";
 import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
+import { emulatorsDirectory } from "../../../homeDirectory.server";
+import { keyboardConfig } from "./keyboardConfig";
 
 const flatpakId = "org.ryujinx.Ryujinx";
+const bundledDirectory = "Ryujinx";
+const bundledPathLinux = nodepath.join(bundledDirectory, "Ryujinx.sh");
+const bundledPathWindows = nodepath.join(bundledDirectory, "Ryujinx.exe");
+const configFolderPath = nodepath.join(emulatorsDirectory, bundledDirectory);
 const configFileName = "Config.json";
-
-/**
- * look into application folder for config file, if not then home folder
- */
-export const getWindowsConfigFilePath = (
-  configFileName: string,
-  applicationPath?: string,
-) => {
-  if (applicationPath) {
-    const applicationDirectory = nodepath.dirname(applicationPath);
-    const configFilePath = findConfigFile(applicationDirectory, configFileName);
-    const portableExists = fs.existsSync(
-      nodepath.join(applicationDirectory, "portable"),
-    );
-
-    if (portableExists) {
-      if (configFilePath) {
-        return configFilePath;
-      }
-      return nodepath.join(applicationDirectory, configFileName);
-    }
-  }
-
-  return nodepath.join(
-    homedir(),
-    "AppData",
-    "Roaming",
-    "Ryujinx",
-    configFileName,
-  );
-};
-
-export const getConfigFilePath = (
-  flatpakId: string,
-  configFileName: string,
-  applicationPath?: string,
-) => {
-  if (isWindows()) {
-    return getWindowsConfigFilePath(configFileName, applicationPath);
-  } else {
-    return nodepath.join(
-      getFlatpakConfigPath(flatpakId),
-      "Ryujinx",
-      configFileName,
-    );
-  }
-};
+const configFilePath = nodepath.join(configFolderPath, configFileName);
 
 /**
  * Excludes
@@ -88,7 +42,7 @@ export const excludeFiles: ExcludeFilesFunction = (filePaths) =>
         )),
   );
 
-const versionNumberRegExp = /\d{1,3}(.\d{1,3}){1,2}/;
+const versionNumberRegExp = /\d{1,3}(\.\d{1,10}){1,2}/;
 
 const stringsToReplace: {
   stringToReplace: string | RegExp;
@@ -162,17 +116,12 @@ const createInputConfig = (
   player_index: `Player${index + 1}`,
 });
 
-const replaceConfig = (applicationPath?: string) => {
-  // TODO: set game dirs ?
-
+const replaceConfig = (switchRomsPath: string) => {
   const gamepads = sdl.controller.devices;
-  const inputConfig = gamepads.map(createInputConfig);
+  const inputConfig =
+    gamepads.length > 0 ? gamepads.map(createInputConfig) : [keyboardConfig];
 
-  const filePath = getConfigFilePath(
-    flatpakId,
-    configFileName,
-    applicationPath,
-  );
+  const filePath = configFilePath;
   const fileContent = readConfigFile(filePath);
 
   const fileContentNew: Config = {
@@ -183,6 +132,8 @@ const replaceConfig = (applicationPath?: string) => {
       show_ui: "F2",
       toggle_mute: "F6",
     },
+    game_dirs: [switchRomsPath],
+    autoload_dirs: [switchRomsPath],
     input_config: inputConfig,
   };
   writeConfig(filePath, JSON.stringify(fileContentNew));
@@ -196,12 +147,14 @@ export const ryujinx: Application = {
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
+      general: { categoriesPath },
     },
-    applicationPath,
+    categoryData,
   }) => {
-    replaceConfig(applicationPath);
+    const switchRomsPath = nodepath.join(categoriesPath, categoryData.name);
+    replaceConfig(switchRomsPath);
 
-    const optionParams = [];
+    const optionParams = ["-r", configFolderPath];
     if (fullscreen) {
       optionParams.push("--fullscreen");
     }
@@ -210,4 +163,6 @@ export const ryujinx: Application = {
   },
   excludeFiles,
   findEntryName,
+  bundledPathLinux,
+  bundledPathWindows,
 };

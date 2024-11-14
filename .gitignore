@@ -16,3 +16,4 @@ coverage
 /e2eTests/tests/**/*Config/
 /readme/build/
 /buildConfig
+/emulators/

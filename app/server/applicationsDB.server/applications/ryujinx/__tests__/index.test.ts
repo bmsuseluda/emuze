@@ -23,9 +23,14 @@ describe("ryujinx", () => {
       });
     });
   });
+
   describe("findEntryName", () => {
     [
       { name: smashUltimateName, optimizedName: "Super Smash Bros. Ultimate" },
+      {
+        name: "1993 Shenandoah [010075601150A000][v0][BASE].nsp",
+        optimizedName: "1993 Shenandoah",
+      },
       {
         name: "SUPER BOMBERMAN R 2.2 [01007AD00013E800][v720896][NT]",
         optimizedName: "SUPER BOMBERMAN R",

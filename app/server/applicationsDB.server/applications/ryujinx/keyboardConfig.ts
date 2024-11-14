@@ -1,0 +1,45 @@
+import type { InputConfig } from "./config";
+
+export const keyboardConfig: InputConfig = {
+  left_joycon_stick: {
+    stick_up: "W",
+    stick_down: "S",
+    stick_left: "A",
+    stick_right: "D",
+    stick_button: "F",
+  },
+  right_joycon_stick: {
+    stick_up: "I",
+    stick_down: "K",
+    stick_left: "J",
+    stick_right: "L",
+    stick_button: "H",
+  },
+  left_joycon: {
+    button_minus: "Minus",
+    button_l: "E",
+    button_zl: "Q",
+    button_sl: "Unbound",
+    button_sr: "Unbound",
+    dpad_up: "Up",
+    dpad_down: "Down",
+    dpad_left: "Left",
+    dpad_right: "Right",
+  },
+  right_joycon: {
+    button_plus: "Plus",
+    button_r: "U",
+    button_zr: "O",
+    button_sl: "Unbound",
+    button_sr: "Unbound",
+    button_x: "C",
+    button_b: "X",
+    button_y: "V",
+    button_a: "Z",
+  },
+  version: 1,
+  backend: "WindowKeyboard",
+  id: "0",
+  controller_type: "ProController",
+  player_index: "Player1",
+};

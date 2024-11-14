@@ -29,6 +29,8 @@
     "import:mame": "ts-node generateNameMappings/mame/index.ts && prettier ./app/server/applicationsDB.server/applications/mame/nameMapping/mame.json --write",
     "import:scummvm": "ts-node generateNameMappings/scummvm/index.ts && prettier ./app/server/applicationsDB.server/applications/scummvm/nameMapping/scummvm.json --write",
     "convertSvgs": "svgr --svgo-config svgo.config.js --config-file .svgrrc.js ./svgs",
+    "downloadEmulators:windows": "",
+    "downloadEmulators:linux": "",
     "app:distLinux": "yarn build && electron-builder --linux",
     "app:distWindows": "yarn build && electron-builder --win",
     "storybook": "yarn clean && cross-env NODE_ENV=development yarn panda:codegen && storybook dev -p 6006 --no-open",
@@ -138,6 +140,9 @@
       "buildDesktop",
       "build",
       "public"
+    ],
+    "extraFiles": [
+      "emulators/**"
     ],
     "win": {
       "target": [
