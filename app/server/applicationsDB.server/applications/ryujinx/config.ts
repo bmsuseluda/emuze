@@ -75,6 +75,7 @@ export interface InputConfig {
 }
 
 export interface Config {
+  check_updates_on_start?: boolean;
   show_confirm_exit?: boolean;
   hotkeys?: {
     show_ui?: string;

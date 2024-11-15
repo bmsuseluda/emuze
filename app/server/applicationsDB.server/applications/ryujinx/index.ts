@@ -13,12 +13,14 @@ import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
 import { emulatorsDirectory } from "../../../homeDirectory.server";
 import { keyboardConfig } from "./keyboardConfig";
+import type { ApplicationId } from "../../applicationId";
 
+const applicationId: ApplicationId = "ryujinx";
 const flatpakId = "org.ryujinx.Ryujinx";
-const bundledDirectory = "Ryujinx";
+const bundledDirectory = nodepath.join(applicationId, "publish");
 const bundledPathLinux = nodepath.join(bundledDirectory, "Ryujinx.sh");
 const bundledPathWindows = nodepath.join(bundledDirectory, "Ryujinx.exe");
-const configFolderPath = nodepath.join(emulatorsDirectory, bundledDirectory);
+const configFolderPath = nodepath.join(emulatorsDirectory, applicationId);
 const configFileName = "Config.json";
 const configFilePath = nodepath.join(configFolderPath, configFileName);
 
@@ -121,14 +123,14 @@ const replaceConfig = (switchRomsPath: string) => {
   const inputConfig =
     gamepads.length > 0 ? gamepads.map(createInputConfig) : [keyboardConfig];
 
-  const filePath = configFilePath;
-  const fileContent = readConfigFile(filePath);
+  const oldConfig = readConfigFile(configFilePath);
 
-  const fileContentNew: Config = {
-    ...fileContent,
+  const newConfig: Config = {
+    ...oldConfig,
     show_confirm_exit: false,
+    check_updates_on_start: false,
     hotkeys: {
-      ...fileContent.hotkeys,
+      ...oldConfig.hotkeys,
       show_ui: "F2",
       toggle_mute: "F6",
     },
@@ -136,11 +138,11 @@ const replaceConfig = (switchRomsPath: string) => {
     autoload_dirs: [switchRomsPath],
     input_config: inputConfig,
   };
-  writeConfig(filePath, JSON.stringify(fileContentNew));
+  writeConfig(configFilePath, JSON.stringify(newConfig));
 };
 
 export const ryujinx: Application = {
-  id: "ryujinx",
+  id: applicationId,
   name: "Ryujinx",
   fileExtensions: [".xci", ".nsp"],
   flatpakId,
