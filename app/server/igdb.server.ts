@@ -25,7 +25,7 @@ export const url =
   process.env.EMUZE_IGDB_DEVELOPMENT_URL ||
   "https://emuze-api-d7jjhe73ba-uc.a.run.app/games";
 
-export const removeSubTitle = (a: string) => a.split(/ -|[:/]/g)[0];
+export const removeSubTitle = (a: string) => a.split(/ -|[:/]|_/g)[0];
 
 /**
  * Should place the comma separated article as a prefix.
@@ -46,7 +46,7 @@ const setCommaSeparatedArticleAsPrefix = (a: string) => {
 /**
  * Removes all brackets and their content
  */
-const removeRegion = (a: string) => a.replace(/\(.*\)|\[.*]/gi, "").trim();
+const removeBrackets = (a: string) => a.replace(/\(.*\)|\[.*]/gi, "").trim();
 
 const findGameLocalization = (
   entryName: string,
@@ -82,14 +82,14 @@ const createLocalizedFilter = (name: string) =>
 
 export const filterGame = ({ name }: Entry): string[] => {
   const normalizedName = removeSubTitle(
-    setCommaSeparatedArticleAsPrefix(removeRegion(name)),
+    setCommaSeparatedArticleAsPrefix(removeBrackets(name)),
   );
 
   return createLocalizedFilter(normalizedName);
 };
 
 const normalizeString = (a: string) =>
-  setCommaSeparatedArticleAsPrefix(removeRegion(a))
+  setCommaSeparatedArticleAsPrefix(removeBrackets(a))
     .replace(/[`~!@#$%^&*()_|+\-=?;:/'",. ]/gi, "")
     .toLowerCase()
     .trim();
@@ -119,15 +119,28 @@ export interface GamesResponse {
 }
 
 const findGameDataByName = (nameToFind: string, games: Game[]) =>
-  games.find(({ name }) => matchName(name, nameToFind)) ||
   games.find(
-    ({ alternative_names }) =>
-      !!alternative_names?.find(({ name }) => matchName(name, nameToFind)),
-  ) ||
-  games.find(
-    ({ game_localizations }) =>
+    ({ name, alternative_names, game_localizations }) =>
+      matchName(name, nameToFind) ||
+      !!alternative_names?.find(({ name }) => matchName(name, nameToFind)) ||
       !!findGameLocalization(nameToFind, game_localizations),
   );
+
+const findGameDataByNameLoose = (nameToFind: string, games: Game[]) => {
+  const foundGames = games.filter(
+    ({ name, alternative_names, game_localizations }) =>
+      name.startsWith(nameToFind) ||
+      !!alternative_names?.find(({ name }) => name.startsWith(nameToFind)) ||
+      !!game_localizations?.find(
+        ({ name }) => name && name.startsWith(nameToFind),
+      ),
+  );
+
+  if (foundGames.length === 1) {
+    return foundGames[0];
+  }
+  return undefined;
+};
 
 const igdbResponseLimit = 500;
 
@@ -201,7 +214,8 @@ const fetchMetaDataForChunk = async (
     const gameData =
       findGameDataByName(entry.name, data) ||
       (nameWithoutSubTitle !== entry.name &&
-        findGameDataByName(nameWithoutSubTitle, data));
+        findGameDataByName(nameWithoutSubTitle, data)) ||
+      findGameDataByNameLoose(entry.name, data);
 
     if (gameData) {
       const imageUrl = getCoverUrl(entry.name, gameData);

@@ -56,13 +56,19 @@ const stringsToReplace: {
     stringToReplace: "Johnny Turbo's Arcade",
     replaceWith: "Johnny Turbo's Arcade -",
   },
-  { stringToReplace: "_", replaceWith: "" },
+  {
+    stringToReplace: "SEGA AGES",
+    replaceWith: "SEGA AGES -",
+  },
+  {
+    stringToReplace: "Superbeat",
+    replaceWith: "Superbeat -",
+  },
   { stringToReplace: versionNumberRegExp, replaceWith: "" },
 ];
 
 /**
  * Normalize the name from filename.
- * - Removes underscore
  * - Removes Brackets []
  * - Removes Version numbers
  */

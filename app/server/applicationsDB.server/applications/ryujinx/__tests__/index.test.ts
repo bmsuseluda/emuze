@@ -35,10 +35,6 @@ describe("ryujinx", () => {
         name: "SUPER BOMBERMAN R 2.2 [01007AD00013E800][v720896][NT]",
         optimizedName: "SUPER BOMBERMAN R",
       },
-      {
-        name: "ULTRA STREET FIGHTER_ II The Final Challengers 1.1.1 [0100BBF0027EC800][v131072][BASE]",
-        optimizedName: "ULTRA STREET FIGHTER II The Final Challengers",
-      },
     ].forEach(({ name, optimizedName }) => {
       it(`Should optimize the name to ${optimizedName}`, () => {
         const result = findEntryName({
