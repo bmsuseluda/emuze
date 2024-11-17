@@ -57,6 +57,10 @@ const stringsToReplace: {
     replaceWith: "Johnny Turbo's Arcade -",
   },
   {
+    stringToReplace: "Bad Dudes",
+    replaceWith: "Johnny Turbo's Arcade - Bad Dudes",
+  },
+  {
     stringToReplace: "SEGA AGES",
     replaceWith: "SEGA AGES -",
   },

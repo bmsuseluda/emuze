@@ -162,7 +162,7 @@ export const executeApplication = (
   if (isGeneralConfigured(generalData) && categoryData && applicationData) {
     const settings: Settings = {
       general: generalData,
-      appearance: readAppearance(),
+      appearance: readAppearance(true),
     };
 
     const absoluteEntryPath = createAbsoluteEntryPath(
