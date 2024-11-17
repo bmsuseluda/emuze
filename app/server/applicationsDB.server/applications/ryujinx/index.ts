@@ -61,8 +61,12 @@ const stringsToReplace: {
     replaceWith: "SEGA AGES -",
   },
   {
-    stringToReplace: "Superbeat",
-    replaceWith: "Superbeat -",
+    stringToReplace: "SUPERBEAT XONiC EX",
+    replaceWith: "SUPERBEAT - XONiC EX",
+  },
+  {
+    stringToReplace: "Picross S MEGA DRIVE",
+    replaceWith: "Picross S: Mega Drive",
   },
   { stringToReplace: versionNumberRegExp, replaceWith: "" },
 ];
