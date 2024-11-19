@@ -129,11 +129,8 @@ export const replaceHotkeysSection: SectionReplacement = (sections) =>
   replaceSection(sections, "[Hotkeys]", [
     "General/Toggle Pause = F2",
     "General/Toggle Fullscreen = F11",
-    "Stepping/Step Into = F11",
     "Save State/Save State Slot 1 = F1",
     "Load State/Load State Slot 1 = F3",
-    "Load State/Load State Slot 2 = @(Alt+F2)",
-    "Load State/Load State Slot 3 = @(Alt+F3)",
   ]);
 
 export const replaceHotkeysFile = () =>

@@ -3,6 +3,7 @@ import fs from "fs";
 import { EOL, homedir } from "os";
 import { isWindows } from "../../../operationsystem.server";
 import nodepath from "path";
+import type { SectionReplacement } from "../../configFile";
 import {
   chainSectionReplacements,
   findConfigFile,
@@ -78,7 +79,7 @@ export const getVirtualGamepads = () => {
   ];
 };
 
-export const replaceGamepadConfig = (sections: string[]) => {
+export const replaceGamepadConfig: SectionReplacement = (sections) => {
   if (sections.find((section) => section.startsWith("[Pad1]"))) {
     return sections.reduce<string[]>((accumulator, section) => {
       if (section.startsWith("[Pad1]")) {
@@ -94,7 +95,7 @@ export const replaceGamepadConfig = (sections: string[]) => {
   }
 };
 
-export const replaceHotkeyConfig = (sections: string[]) =>
+export const replaceHotkeyConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Hotkeys]", [
     "OpenPauseMenu = Keyboard/F2",
     "ToggleFullscreen = Keyboard/F11",
@@ -102,13 +103,13 @@ export const replaceHotkeyConfig = (sections: string[]) =>
     "LoadStateFromSlot = Keyboard/F3",
   ]);
 
-export const replaceInputSourcesConfig = (sections: string[]) =>
+export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[InputSources]", [
     "SDL = true",
     "SDLControllerEnhancedMode = true",
   ]);
 
-export const replaceUiConfig = (sections: string[]) =>
+export const replaceUiConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[UI]", ["ConfirmShutdown = false"]);
 
 /**
@@ -116,7 +117,7 @@ export const replaceUiConfig = (sections: string[]) =>
  * TODO: set multitap only if more than 2 controller
  * @param sections
  */
-export const replacePadConfig = (sections: string[]) =>
+export const replacePadConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Pad]", ["MultitapPort1 = true"]);
 
 const flatpakId = "net.pcsx2.PCSX2";
