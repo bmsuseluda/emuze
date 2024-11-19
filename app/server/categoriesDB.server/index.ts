@@ -1,6 +1,5 @@
 import {
   cemu,
-  dolphin,
   flycast,
   lime3ds,
   mednafen,
@@ -29,6 +28,7 @@ import type { SystemId } from "./systemId";
 import { duckstation } from "../applicationsDB.server/applications/duckstation";
 import { pcsx2 } from "../applicationsDB.server/applications/pcsx2";
 import { ryujinx } from "../applicationsDB.server/applications/ryujinx";
+import { dolphin } from "../applicationsDB.server/applications/dolphin";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",

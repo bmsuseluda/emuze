@@ -108,6 +108,9 @@ export const replaceInputSourcesConfig = (sections: string[]) =>
     "SDLControllerEnhancedMode = true",
   ]);
 
+export const replaceUiConfig = (sections: string[]) =>
+  replaceSection(sections, "[UI]", ["ConfirmShutdown = false"]);
+
 /**
  * TODO: Check which game is compatible with multitap
  * TODO: set multitap only if more than 2 controller
@@ -183,6 +186,7 @@ export const replaceConfigSections = (applicationPath?: string) => {
 
   const fileContentNew = chainSectionReplacements(
     sections,
+    replaceUiConfig,
     replaceInputSourcesConfig,
     // replacePadConfig,
     replaceHotkeyConfig,

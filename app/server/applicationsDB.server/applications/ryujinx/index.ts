@@ -170,10 +170,11 @@ export const ryujinx: Application = {
     const switchRomsPath = nodepath.join(categoriesPath, categoryData.name);
     replaceConfig(switchRomsPath);
 
-    const optionParams = ["-r", configFolderPath];
+    const optionParams = ["--root-data-dir", configFolderPath];
     if (fullscreen) {
       optionParams.push("--fullscreen");
     }
+    optionParams.push("--hide-updates");
 
     return optionParams;
   },

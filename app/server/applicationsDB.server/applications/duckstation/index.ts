@@ -6,6 +6,7 @@ import { log } from "../../../debug.server";
 import fs from "fs";
 import { EOL, homedir } from "os";
 import { isWindows } from "../../../operationsystem.server";
+import type { SectionReplacement } from "../../configFile";
 import {
   chainSectionReplacements,
   findConfigFile,
@@ -73,7 +74,7 @@ export const getVirtualGamepads = () => {
   ];
 };
 
-export const replaceGamepadConfig = (sections: string[]) => {
+export const replaceGamepadConfig: SectionReplacement = (sections) => {
   if (sections.find((section) => section.startsWith("[Pad1]"))) {
     return sections.reduce<string[]>((accumulator, section) => {
       if (section.startsWith("[Pad1]")) {
@@ -89,7 +90,7 @@ export const replaceGamepadConfig = (sections: string[]) => {
   }
 };
 
-export const replaceHotkeyConfig = (sections: string[]) =>
+export const replaceHotkeyConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Hotkeys]", [
     "OpenPauseMenu = Keyboard/F2",
     "ToggleFullscreen = Keyboard/F11",
@@ -97,7 +98,10 @@ export const replaceHotkeyConfig = (sections: string[]) =>
     "LoadSelectedSaveState = Keyboard/F3",
   ]);
 
-export const replaceInputSourcesConfig = (sections: string[]) =>
+export const replaceMainConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[Main]", ["ConfirmPowerOff = false"]);
+
+export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[InputSources]", [
     "SDL = true",
     "SDLControllerEnhancedMode = true",
@@ -108,7 +112,7 @@ export const replaceInputSourcesConfig = (sections: string[]) =>
  * TODO: set multitap only if more than 2 controller
  * @param sections
  */
-export const replaceControllerPortsConfig = (sections: string[]) =>
+export const replaceControllerPortsConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[ControllerPorts]", ["MultitapMode = Port1Only"]);
 
 const flatpakId = "org.duckstation.DuckStation";
@@ -183,6 +187,7 @@ export const replaceConfigSections = (applicationPath?: string) => {
     sections,
     replaceInputSourcesConfig,
     // replaceControllerPortsConfig,
+    replaceMainConfig,
     replaceHotkeyConfig,
     replaceGamepadConfig,
   ).join(EOL);

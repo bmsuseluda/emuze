@@ -16,6 +16,7 @@ import { isWindows } from "../operationsystem.server";
 import { duckstation } from "./applications/duckstation";
 import { pcsx2 } from "./applications/pcsx2";
 import { ryujinx } from "./applications/ryujinx";
+import { dolphin } from "./applications/dolphin";
 
 export const ppsspp: Application = {
   id: "ppsspp",
@@ -57,26 +58,6 @@ export const melonds: Application = {
     if (fullscreen) {
       optionParams.push("--fullscreen");
     }
-    return optionParams;
-  },
-};
-
-export const dolphin: Application = {
-  id: "dolphin",
-  name: "Dolphin",
-  fileExtensions: [".iso", ".rvz"],
-  flatpakId: "org.DolphinEmu.dolphin-emu",
-  createOptionParams: ({
-    settings: {
-      appearance: { fullscreen },
-    },
-  }) => {
-    const optionParams = [];
-    if (fullscreen) {
-      optionParams.push("--config");
-      optionParams.push("Dolphin.Display.Fullscreen=True");
-    }
-    optionParams.push("--batch");
     return optionParams;
   },
 };

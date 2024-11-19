@@ -51,7 +51,7 @@ export const replaceSection = (
   return [...sections, [sectionName, ...paramsToSet].join(EOL)];
 };
 
-type SectionReplacement = (sections: string[]) => string[];
+export type SectionReplacement = (sections: string[]) => string[];
 
 export const chainSectionReplacements = (
   sections: string[],
