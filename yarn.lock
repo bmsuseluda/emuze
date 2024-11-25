@@ -5,10 +5,26 @@ __metadata:
   version: 8
   cacheKey: 10
 
+"7zip-bin@npm:5.1.1":
+  version: 5.1.1
+  resolution: "7zip-bin@npm:5.1.1"
+  checksum: 10/853e636745131719b85650df93d1a3a9af0b0db1c0e2a0884451ec87e14c8b0f4fb911c04805984ece1211ff1235f7869547b780e06939469410f2da9b5e0da6
+  languageName: node
+  linkType: hard
+
 "7zip-bin@npm:~5.2.0":
   version: 5.2.0
   resolution: "7zip-bin@npm:5.2.0"
   checksum: 10/5339c7a56f57f8d7d16ac8d15f588d155e5705cd4822e0d161ea45e6fbfe4a5226b464a331ec555a1ec9376ad04e5f61c125656cf3a1507900c1968ccbcfe80b
+  languageName: node
+  linkType: hard
+
+"7zip-min@npm:^1.4.5":
+  version: 1.4.5
+  resolution: "7zip-min@npm:1.4.5"
+  dependencies:
+    7zip-bin: "npm:5.1.1"
+  checksum: 10/963a45c8a72d4e0f0980ebe2792dc22982b0af88c3c35271a2a6dc6ea7ad517adc5e21abea476019c6607580cf77c17ab01492505fd911476570736536de8ece
   languageName: node
   linkType: hard
 
@@ -6462,6 +6478,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/7zip-min@npm:^1":
+  version: 1.3.3
+  resolution: "@types/7zip-min@npm:1.3.3"
+  checksum: 10/f484b8ef49e594cf9dc2930488f23872ee84a25998f8f4003e5106a0fb4b841db0b365e799c58159d260ddbefe2d2a8269b45a02f0677842a0149b878a579f0c
+  languageName: node
+  linkType: hard
+
 "@types/acorn@npm:^4.0.0":
   version: 4.0.6
   resolution: "@types/acorn@npm:4.0.6"
@@ -10955,6 +10978,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "emuze@workspace:."
   dependencies:
+    7zip-min: "npm:^1.4.5"
     "@babel/core": "npm:^7.25.2"
     "@babel/preset-env": "npm:^7.25.4"
     "@babel/preset-react": "npm:^7.24.7"
@@ -10985,6 +11009,7 @@ __metadata:
     "@testing-library/dom": "npm:^10.4.0"
     "@testing-library/react": "npm:^16.0.1"
     "@testing-library/user-event": "npm:^14.5.2"
+    "@types/7zip-min": "npm:^1"
     "@types/apicalypse": "npm:^0.1.5"
     "@types/babel__core": "npm:^7.20.5"
     "@types/babel__preset-env": "npm:^7.9.7"

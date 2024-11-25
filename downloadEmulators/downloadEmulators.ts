@@ -4,6 +4,8 @@ import { https } from "follow-redirects";
 import decompress from "decompress";
 import { applications } from "../app/server/applicationsDB.server";
 import { chmodSync, createWriteStream, existsSync, mkdirSync } from "node:fs";
+import _7z from "7zip-min";
+import nodepath from "path";
 
 const emulatorsFolderPath = join(__dirname, "..", "emulators");
 
@@ -34,8 +36,14 @@ const downloadEmulator = (
       mkdirSync(emulatorFolderPath, { recursive: true });
     }
 
-    if (downloadLink.toLowerCase().endsWith("appimage")) {
-      downloadExecutable(downloadLink, bundledPath);
+    if (downloadLink.toLowerCase().endsWith(".appimage")) {
+      downloadFile(downloadLink, bundledPath);
+    } else if (downloadLink.toLowerCase().endsWith(".7z")) {
+      downloadAndExtract7z(
+        downloadLink,
+        join(emulatorsFolderPath, emulatorId),
+        bundledPath,
+      );
     } else {
       downloadAndExtract(
         downloadLink,
@@ -56,7 +64,38 @@ export const downloadEmulators = (
   });
 };
 
-const downloadExecutable = (url: string, fileToCheck: string) => {
+const downloadAndExtract7z = (
+  url: string,
+  outputFolder: string,
+  fileToCheck: string,
+) => {
+  const zipFilePath = nodepath.join(outputFolder, url.split("/").at(-1) || "");
+  const zipFile = createWriteStream(zipFilePath);
+
+  https
+    .get(url, (response) => {
+      response.pipe(zipFile);
+
+      zipFile.on("finish", () => {
+        zipFile.close();
+
+        _7z.unpack(zipFilePath, outputFolder, (err) => {
+          if (existsSync(fileToCheck)) {
+            console.log(`Download of ${url} complete`);
+          } else {
+            console.error(`${fileToCheck} does not exist`);
+            process.exit(1);
+          }
+        });
+      });
+    })
+    .on("error", (err) => {
+      console.error(`Error downloading the file: ${err.message}`);
+      process.exit(1);
+    });
+};
+
+const downloadFile = (url: string, fileToCheck: string) => {
   const file = createWriteStream(fileToCheck);
 
   https
