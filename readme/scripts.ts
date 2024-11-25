@@ -11,6 +11,8 @@ const preConfigured: ApplicationId[] = [
   "scummvm",
   "duckstation",
   "pcsx2",
+  "ryujinx",
+  "dolphin",
 ];
 
 const biosNeeded: SystemId[] = [

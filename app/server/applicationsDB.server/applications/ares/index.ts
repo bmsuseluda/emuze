@@ -337,7 +337,7 @@ const getSharedAresOptionParams: OptionParamFunction = ({
 
 export const ares: Application = {
   id: "ares",
-  name: "Ares",
+  name: "ares",
   executable: "ares.exe",
   fileExtensions: [
     ".z64",

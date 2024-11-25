@@ -98,7 +98,7 @@ export const getFlatpakDataPath = (flatpakId: string) =>
 
 export const writeConfig = (filePath: string, content: string) => {
   if (!fs.existsSync(filePath)) {
-    fs.mkdirSync(filePath, { recursive: true });
+    fs.mkdirSync(nodepath.dirname(filePath), { recursive: true });
   }
   fs.writeFileSync(filePath, content, "utf8");
 };

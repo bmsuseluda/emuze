@@ -1,14 +1,24 @@
 import { ApplicationId } from "../app/server/applicationsDB.server/applicationId";
-import nodepath from "path";
+import { join } from "node:path";
 import { https } from "follow-redirects";
 import decompress from "decompress";
-import { existsSync, mkdirSync } from "fs";
 import { applications } from "../app/server/applicationsDB.server";
+import { chmodSync, createWriteStream, existsSync, mkdirSync } from "node:fs";
 
-const emulatorsFolderPath = nodepath.join(__dirname, "..", "emulators");
+const emulatorsFolderPath = join(__dirname, "..", "emulators");
 
 export type EmulatorDownloads = Record<ApplicationId, string>;
 type OperatingSystem = "Windows" | "Linux";
+
+const makeFileExecutableLinux = (filePath: string) => {
+  try {
+    chmodSync(filePath, "755");
+    console.log(`${filePath} is now executable`);
+  } catch (error) {
+    console.error(`Error making ${filePath} executable: ${error}`);
+    process.exit(1);
+  }
+};
 
 const downloadEmulator = (
   emulatorId: ApplicationId,
@@ -16,19 +26,23 @@ const downloadEmulator = (
   os: OperatingSystem,
 ) => {
   const bundledPathRelative = applications[emulatorId][`bundledPath${os}`]!;
-  const bundledPath = nodepath.join(emulatorsFolderPath, bundledPathRelative);
+  const bundledPath = join(emulatorsFolderPath, bundledPathRelative);
   const bundledPathExists = existsSync(bundledPath);
   if (!bundledPathExists) {
-    const emulatorFolderPath = nodepath.join(emulatorsFolderPath, emulatorId);
+    const emulatorFolderPath = join(emulatorsFolderPath, emulatorId);
     if (!existsSync(emulatorFolderPath)) {
       mkdirSync(emulatorFolderPath, { recursive: true });
     }
 
-    downloadAndExtract(
-      downloadLink,
-      nodepath.join(emulatorsFolderPath, emulatorId),
-      bundledPath,
-    );
+    if (downloadLink.toLowerCase().endsWith("appimage")) {
+      downloadExecutable(downloadLink, bundledPath);
+    } else {
+      downloadAndExtract(
+        downloadLink,
+        join(emulatorsFolderPath, emulatorId),
+        bundledPath,
+      );
+    }
   }
 };
 
@@ -40,6 +54,25 @@ export const downloadEmulators = (
   Object.entries(emulatorDownloads).forEach(([emulatorId, downloadLink]) => {
     downloadEmulator(emulatorId as ApplicationId, downloadLink, os);
   });
+};
+
+const downloadExecutable = (url: string, fileToCheck: string) => {
+  const file = createWriteStream(fileToCheck);
+
+  https
+    .get(url, (response) => {
+      response.pipe(file);
+
+      file.on("finish", () => {
+        file.close();
+        console.log(`Download of ${url} complete`);
+        makeFileExecutableLinux(fileToCheck);
+      });
+    })
+    .on("error", (err) => {
+      console.error(`Error downloading the file: ${err.message}`);
+      process.exit(1);
+    });
 };
 
 const downloadAndExtract = (
@@ -60,7 +93,7 @@ const downloadAndExtract = (
         try {
           await decompress(buffer, outputFolder);
           if (existsSync(fileToCheck)) {
-            console.log("Extraction complete");
+            console.log(`Download of ${url} complete`);
           } else {
             console.error(`${fileToCheck} does not exist`);
             process.exit(1);

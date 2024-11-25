@@ -2,25 +2,44 @@ import type { Application } from "../../types";
 import type { SectionReplacement } from "../../configFile";
 import {
   chainSectionReplacements,
-  getFlatpakConfigPath,
   replaceSection,
   splitConfigBySection,
   writeConfig,
 } from "../../configFile";
-import { EOL, homedir } from "os";
+import { EOL } from "os";
 import fs from "fs";
 import { log } from "../../../debug.server";
-import { isWindows } from "../../../operationsystem.server";
 import nodepath from "path";
 import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
 import { defaultGamepadSettings } from "./defaultGamepadSettings";
 import { defaultHotkeys } from "./defaultHotkeys";
+import type { ApplicationId } from "../../applicationId";
+import { emulatorsDirectory } from "../../../homeDirectory.server";
 
 const flatpakId = "org.DolphinEmu.dolphin-emu";
-const gamepadConfigFileName = "GCPadNew.ini";
-const hotkeysConfigFileName = "Hotkeys.ini";
+const applicationId: ApplicationId = "dolphin";
+const bundledPathLinux = nodepath.join(
+  applicationId,
+  "Dolphin_Emulator-git-x86_64.AppImage",
+);
+const bundledPathWindows = nodepath.join(
+  applicationId,
+  "Dolphin-x64",
+  "Dolphin.exe",
+);
+const configFolderPath = nodepath.join(emulatorsDirectory, applicationId);
+const gamepadConfigFileName = nodepath.join(
+  configFolderPath,
+  "Config",
+  "GCPadNew.ini",
+);
+const hotkeysConfigFileName = nodepath.join(
+  configFolderPath,
+  "Config",
+  "Hotkeys.ini",
+);
 
 export const getVirtualGamepad = (
   sdlDevice: Sdl.Controller.Device,
@@ -83,27 +102,6 @@ export const replaceGamepadConfigSections: SectionReplacement = (sections) => [
   getVirtualGamepads().join(EOL),
 ];
 
-/**
- * returns home folder
- */
-export const getWindowsConfigFilePath = (configFileName: string) =>
-  nodepath.join(homedir(), "Documents", "dolphin-emu", configFileName);
-
-export const getConfigFilePath = (
-  flatpakId: string,
-  configFileName: string,
-) => {
-  if (isWindows()) {
-    return getWindowsConfigFilePath(configFileName);
-  } else {
-    return nodepath.join(
-      getFlatpakConfigPath(flatpakId),
-      "dolphin-emu",
-      configFileName,
-    );
-  }
-};
-
 const readConfigFile = (filePath: string, fallback: string) => {
   try {
     return fs.readFileSync(filePath, "utf8");
@@ -141,11 +139,10 @@ export const replaceHotkeysFile = () =>
   );
 
 export const replaceConfigSections = (
-  configFileName: string,
+  filePath: string,
   fallback: string,
   ...replaceSectionFunctions: SectionReplacement[]
 ) => {
-  const filePath = getConfigFilePath(flatpakId, configFileName);
   const fileContent = readConfigFile(filePath, fallback);
 
   const sections = splitConfigBySection(fileContent);
@@ -159,7 +156,7 @@ export const replaceConfigSections = (
 };
 
 export const dolphin: Application = {
-  id: "dolphin",
+  id: applicationId,
   name: "Dolphin",
   fileExtensions: [".iso", ".rvz"],
   flatpakId,
@@ -171,14 +168,22 @@ export const dolphin: Application = {
     replaceGamepadConfigFile();
     replaceHotkeysFile();
 
-    const optionParams = [];
+    const optionParams = [
+      "--config",
+      "Dolphin.Interface.ConfirmStop=False",
+      "--batch",
+      `--user=${configFolderPath}`,
+      "--config",
+      "Dolphin.Analytics.PermissionAsked=True",
+    ];
+
     if (fullscreen) {
       optionParams.push("--config");
       optionParams.push("Dolphin.Display.Fullscreen=True");
     }
-    optionParams.push("--config");
-    optionParams.push("Dolphin.Interface.ConfirmStop=False");
-    // optionParams.push("--batch");
+
     return optionParams;
   },
+  bundledPathLinux,
+  bundledPathWindows,
 };
