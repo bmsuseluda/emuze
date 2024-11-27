@@ -20,19 +20,20 @@ export const checkFlatpakIsInstalledParallel = (flatpakId: string) =>
     }
   });
 
-// TODO: add tests
-// TODO: check if installation can be paralleled
 export const installMissingApplicationsOnLinux = async () => {
   const functions = readCategories().map(({ id }) => {
     const application = categoriesDB[id].application;
     const flatpakId = application.flatpakId;
-    return checkFlatpakIsInstalledParallel(flatpakId).catch(() => {
-      const isInstalled = installFlatpak(flatpakId);
-      if (isInstalled) {
-        const category = readCategory(id);
-        category && writeCategory(category);
-      }
-    });
+    if (!application.bundledPathLinux) {
+      return checkFlatpakIsInstalledParallel(flatpakId).catch(() => {
+        const isInstalled = installFlatpak(flatpakId);
+        if (isInstalled) {
+          const category = readCategory(id);
+          category && writeCategory(category);
+        }
+      });
+    }
+    return Promise.resolve(true);
   });
   await Promise.all(functions);
   updateFlatpakAppList();

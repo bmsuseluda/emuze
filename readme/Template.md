@@ -30,8 +30,8 @@ If your roms are named correctly, a click on the import button should import you
 
 The following systems are supported:
 
-| System | Emulator | Pre Configured | BIOS needed |
-|--------|----------|----------------|-------------|
+| System | Emulator | Pre Configured | Bundled | BIOS needed |
+|--------|----------|----------------|---------|-------------|
 ```mmd
 return scripts.createSystemsTable()
 ```
@@ -42,9 +42,12 @@ return scripts.createSystemsTable()
 If a System is pre configured, all connected gamepads will be configured for the specific Emulator.
 
 The following Hotkeys are set:
-- Open Menu / Toggle Fullscreen: F2
+- Open Emulator Menu (if supported from emulator): F2
 - Save State: F1
 - Load State: F3
+
+### Bundled
+If a system is bundled, the respective emulator is provided with emuze in a specific version. Therefore you do not need to provide the emulator on your own. 
 
 ### BIOS needed
 Some emulators need a BIOS or firmware to run. Please check the documentation of an emulator for more information. 
