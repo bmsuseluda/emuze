@@ -6,7 +6,7 @@ import { readAppearance, readGeneral } from "../settings.server";
 import type { Category } from "../../types/jsonFiles/category";
 import { applications as applicationsDB } from "../applicationsDB.server";
 
-import { executeApplication } from "../execute.server";
+import { startGame } from "../execute.server";
 import {
   createAbsoluteEntryPath,
   neogeo,
@@ -63,7 +63,7 @@ describe("execute.server", () => {
         vi.mocked(readFilenames).mockReturnValue([mednafen.path]);
         const entry = getFirstEntry(pcenginecd);
 
-        executeApplication(pcenginecd.id, entry);
+        startGame(pcenginecd.id, entry);
 
         expect(execFileSync).toHaveBeenCalledWith(mednafen.path, [
           createAbsoluteEntryPath(pcenginecd.name, entry.path),
@@ -77,7 +77,7 @@ describe("execute.server", () => {
         vi.mocked(readFilenames).mockReturnValue([mameNeoGeo.path]);
         const entry = getFirstEntry(neogeo);
 
-        executeApplication(neogeo.id, entry);
+        startGame(neogeo.id, entry);
 
         expect(execFileSync).toHaveBeenCalledWith(mameNeoGeo.path, [
           "-w",
@@ -97,7 +97,7 @@ describe("execute.server", () => {
         vi.mocked(readFilenames).mockReturnValue([mednafen.path]);
         const entry = getFirstEntry(pcenginecd);
 
-        executeApplication(pcenginecd.id, entry);
+        startGame(pcenginecd.id, entry);
 
         expect(execFileSync).toHaveBeenCalledWith(mednafen.path, [
           createAbsoluteEntryPath(pcenginecd.name, entry.path),
@@ -111,7 +111,7 @@ describe("execute.server", () => {
         vi.mocked(readFilenames).mockReturnValue([mednafen.path]);
         const entry = getFirstEntry(pcenginecd);
 
-        expect(() => executeApplication(pcenginecd.id, entry)).toThrowError();
+        expect(() => startGame(pcenginecd.id, entry)).toThrowError();
 
         expect(execFileSync).not.toHaveBeenCalled();
       });
@@ -136,7 +136,7 @@ describe("execute.server", () => {
         vi.mocked(readCategory).mockReturnValueOnce(pcenginecdLinux);
         const entry = getFirstEntry(pcenginecdLinux);
 
-        executeApplication(pcenginecdLinux.id, entry);
+        startGame(pcenginecdLinux.id, entry);
 
         expect(execFileSync).toHaveBeenCalledWith("flatpak", [
           "run",
@@ -155,7 +155,7 @@ describe("execute.server", () => {
         const entryDirname = "F:/games/Emulation/roms/Neo Geo";
         const entry = getFirstEntry(neogeo);
 
-        executeApplication(neogeo.id, entry);
+        startGame(neogeo.id, entry);
 
         expect(execFileSync).toHaveBeenCalledWith("flatpak", [
           "run",
@@ -180,9 +180,7 @@ describe("execute.server", () => {
         vi.mocked(readCategory).mockReturnValueOnce(pcenginecdLinux);
         const entry = getFirstEntry(pcenginecdLinux);
 
-        expect(() =>
-          executeApplication(pcenginecdLinux.id, entry),
-        ).toThrowError();
+        expect(() => startGame(pcenginecdLinux.id, entry)).toThrowError();
 
         expect(execFileSync).toBeCalledTimes(2);
 

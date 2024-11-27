@@ -149,7 +149,7 @@ const setEnvironmentVariables = ({
   });
 };
 
-export const executeApplication = (
+export const startGame = (
   systemId: SystemId,
   entryData: Entry,
   parentEntryData?: Entry,

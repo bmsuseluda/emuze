@@ -3,7 +3,7 @@ import { useCallback, useRef } from "react";
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, Outlet, redirect, useLoaderData } from "@remix-run/react";
-import { executeApplication } from "../server/execute.server";
+import { startGame } from "../server/execute.server";
 import { importEntries, readCategory } from "../server/categories.server";
 import { GameGridDynamic } from "../components/GameGrid";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
@@ -82,7 +82,7 @@ export const action: ActionFunction = async ({ request, params }) => {
           if (entryData.subEntries?.[0]) {
             return redirect(entryData.id);
           } else {
-            executeApplication(category as SystemId, entryData);
+            startGame(category as SystemId, entryData);
           }
         }
         return { ok: true };
