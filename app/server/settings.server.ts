@@ -51,7 +51,8 @@ export const invalidateGeneralDataCache = () => {
 };
 
 const appearanceDataCache = new FileDataCache<Appearance>(paths.appearance, {});
-export const readAppearance = () => appearanceDataCache.readFile() || {};
+export const readAppearance = (updateCache?: boolean) =>
+  appearanceDataCache.readFile(updateCache) || {};
 export const writeAppearance = (appearance: Appearance) =>
   appearanceDataCache.writeFile(appearance);
 export const invalidateAppearanceDataCache = () => {

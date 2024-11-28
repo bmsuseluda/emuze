@@ -1,7 +1,7 @@
 export const defaultSettings = `[UI]
 SettingsVersion = 1
 InhibitScreensaver = true
-ConfirmShutdown = true
+ConfirmShutdown = false
 StartPaused = false
 PauseOnFocusLoss = false
 StartFullscreen = false

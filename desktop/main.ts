@@ -12,7 +12,7 @@ dotenv.config();
 const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
   window.setFullScreen(fullscreen);
   window.webContents.send("fullscreen", fullscreen);
-  const appearance = readAppearance();
+  const appearance = readAppearance(true);
   writeAppearance({ ...appearance, fullscreen });
 };
 

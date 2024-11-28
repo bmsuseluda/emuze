@@ -58,7 +58,7 @@ export type FindEntryNameFunction = ({
   installedApplication?: InstalledApplication;
 }) => string;
 
-export type ExcludeFilesFunction = (filenames: string[]) => string[];
+export type ExcludeFilesFunction = (filePaths: string[]) => string[];
 
 export interface Application {
   id: ApplicationId;
@@ -73,4 +73,6 @@ export interface Application {
   flatpakOptionParams?: string[];
   findEntryName?: FindEntryNameFunction;
   excludeFiles?: ExcludeFilesFunction;
+  bundledPathLinux?: string;
+  bundledPathWindows?: string;
 }

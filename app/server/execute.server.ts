@@ -21,6 +21,32 @@ import type {
   EnvironmentVariableFunction,
 } from "./applicationsDB.server/types";
 import type { Settings } from "../types/jsonFiles/settings";
+import nodepath from "path";
+
+const executeBundledApplication = ({
+  absoluteEntryPath,
+  optionParams,
+  omitAbsoluteEntryPathAsLastParam,
+  bundledPath,
+}: {
+  absoluteEntryPath: string;
+  optionParams: string[];
+  omitAbsoluteEntryPathAsLastParam?: boolean;
+  bundledPath: string;
+}) => {
+  const params = [];
+
+  params.push(...optionParams);
+
+  if (!omitAbsoluteEntryPathAsLastParam) {
+    params.push(absoluteEntryPath);
+  }
+
+  execFileSync(
+    nodepath.join(process.env.APPDIR || "", "emulators", bundledPath),
+    params,
+  );
+};
 
 // TODO: separate os specific code
 const executeApplicationOnLinux = ({
@@ -123,7 +149,7 @@ const setEnvironmentVariables = ({
   });
 };
 
-export const executeApplication = (
+export const startGame = (
   systemId: SystemId,
   entryData: Entry,
   parentEntryData?: Entry,
@@ -136,7 +162,7 @@ export const executeApplication = (
   if (isGeneralConfigured(generalData) && categoryData && applicationData) {
     const settings: Settings = {
       general: generalData,
-      appearance: readAppearance(),
+      appearance: readAppearance(true),
     };
 
     const absoluteEntryPath = createAbsoluteEntryPath(
@@ -174,25 +200,45 @@ export const executeApplication = (
 
       try {
         if (isWindows() && generalData.applicationsPath) {
-          executeApplicationOnWindows({
-            applicationData,
-            applicationsPath: generalData.applicationsPath,
-            absoluteEntryPath,
-            optionParams,
-            omitAbsoluteEntryPathAsLastParam:
-              applicationData.omitAbsoluteEntryPathAsLastParam,
-          });
+          if (applicationData.bundledPathWindows) {
+            executeBundledApplication({
+              bundledPath: applicationData.bundledPathWindows,
+              absoluteEntryPath,
+              optionParams,
+              omitAbsoluteEntryPathAsLastParam:
+                applicationData.omitAbsoluteEntryPathAsLastParam,
+            });
+          } else {
+            executeApplicationOnWindows({
+              applicationData,
+              applicationsPath: generalData.applicationsPath,
+              absoluteEntryPath,
+              optionParams,
+              omitAbsoluteEntryPathAsLastParam:
+                applicationData.omitAbsoluteEntryPathAsLastParam,
+            });
+          }
         } else {
-          executeApplicationOnLinux({
-            applicationFlatpakOptionParams: flatpakOptionParams,
-            applicationFlatpakId: flatpakId,
-            absoluteEntryPath,
-            optionParams,
-            omitAbsoluteEntryPathAsLastParam:
-              applicationData.omitAbsoluteEntryPathAsLastParam,
-            categoriesPath: generalData.categoriesPath,
-            applicationName: applicationData.name,
-          });
+          if (applicationData.bundledPathLinux) {
+            executeBundledApplication({
+              bundledPath: applicationData.bundledPathLinux,
+              absoluteEntryPath,
+              optionParams,
+              omitAbsoluteEntryPathAsLastParam:
+                applicationData.omitAbsoluteEntryPathAsLastParam,
+            });
+          } else {
+            executeApplicationOnLinux({
+              applicationFlatpakOptionParams: flatpakOptionParams,
+              applicationFlatpakId: flatpakId,
+              absoluteEntryPath,
+              optionParams,
+              omitAbsoluteEntryPathAsLastParam:
+                applicationData.omitAbsoluteEntryPathAsLastParam,
+              categoriesPath: generalData.categoriesPath,
+              applicationName: applicationData.name,
+            });
+          }
         }
 
         addToLastPlayedCached(parentEntryData || entryData, systemId);

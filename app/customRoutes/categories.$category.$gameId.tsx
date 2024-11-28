@@ -21,7 +21,7 @@ import type { DataFunctionArgs } from "../context";
 import { log } from "../server/debug.server";
 import { readCategory } from "../server/categories.server";
 import type { SystemId } from "../server/categoriesDB.server/systemId";
-import { executeApplication } from "../server/execute.server";
+import { startGame } from "../server/execute.server";
 import { SidebarMainLayout } from "app/components/layouts/SidebarMainLayout";
 import { readLastPlayed } from "../server/lastPlayed.server";
 import type { Entry } from "../types/jsonFiles/category";
@@ -105,7 +105,7 @@ export const action: ActionFunction = async ({ request, params }) => {
           (value) => value.id === game,
         );
 
-        subEntryData && executeApplication(systemId, subEntryData, gameData);
+        subEntryData && startGame(systemId, subEntryData, gameData);
         return { ok: true };
       }
     }

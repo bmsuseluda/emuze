@@ -3,7 +3,7 @@ import { useCallback, useRef } from "react";
 import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, Outlet, redirect, useLoaderData } from "@remix-run/react";
-import { executeApplication } from "../server/execute.server";
+import { startGame } from "../server/execute.server";
 import { GameGridDynamic } from "../components/GameGrid";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
 import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
@@ -53,7 +53,7 @@ export const action: ActionFunction = async ({ request }) => {
           if (entryData.subEntries?.[0]) {
             return redirect(`lastPlayed/${entryData.id}`);
           } else {
-            executeApplication(entryData.systemId, entryData);
+            startGame(entryData.systemId, entryData);
           }
         }
 

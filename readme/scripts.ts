@@ -11,7 +11,11 @@ const preConfigured: ApplicationId[] = [
   "scummvm",
   "duckstation",
   "pcsx2",
+  "ryujinx",
+  "dolphin",
 ];
+
+const bundled: ApplicationId[] = ["ryujinx", "dolphin"];
 
 const biosNeeded: SystemId[] = [
   "sonyplaystation",
@@ -69,9 +73,12 @@ export const createSystemsTable = () =>
       const isPreConfigured = preConfigured.includes(category.application.id)
         ? "Yes"
         : "No";
+      const isBundled = bundled.includes(category.application.id)
+        ? "Yes"
+        : "No";
       const isBiosNeeded = biosNeeded.includes(category.id) ? "Yes" : "No";
 
-      return `| ${systemName} | ${emulatorName} | ${isPreConfigured} | ${isBiosNeeded} | `;
+      return `| ${systemName} | ${emulatorName} | ${isPreConfigured} | ${isBundled} | ${isBiosNeeded} | `;
     })
     .filter(Boolean)
     .join("\n");

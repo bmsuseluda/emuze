@@ -20,6 +20,7 @@ import {
 } from "../igdb.server";
 import { categories as categoriesDB } from "../categoriesDB.server";
 import { getExpiresOn } from "../getExpiresOn.server";
+import type { Entry } from "../../types/jsonFiles/category";
 
 vi.mock("@kmamal/sdl");
 vi.mock("../openDialog.server.ts");
@@ -57,6 +58,12 @@ describe("igdb.server", () => {
     it("Should split the string by ' -'", () => {
       expect(removeSubTitle(turtles2.name)).toBe(
         "Teenage Mutant Hero Turtles II",
+      );
+    });
+
+    it("Should split the string by '_'", () => {
+      expect(removeSubTitle("The Legend of Zelda_ Tears of the Kingdom")).toBe(
+        "The Legend of Zelda",
       );
     });
 
@@ -335,6 +342,39 @@ describe("igdb.server", () => {
             expiresOn: getExpiresOn(),
             imageUrl:
               "https://images.igdb.com/igdb/image/upload/t_cover_big/turtles2img.webp",
+          },
+        },
+      ]);
+    });
+
+    it("Should return games that starts with name, if no exact match", async () => {
+      const igdbResponse: GamesResponse = {
+        data: [
+          {
+            name: "Max Payne 2: The Fall of Max Payne",
+            cover: {
+              image_id: "maxpayne2img",
+            },
+          },
+        ],
+      };
+      igdbRequestMock.mockResolvedValue(igdbResponse);
+
+      const maxPayne2: Entry = {
+        id: "maxpayne2",
+        name: "Max Payne 2",
+        path: "Max Payne 2.chd",
+      };
+
+      const entriesWithImages = await fetchMetaData([18], [maxPayne2]);
+
+      expect(entriesWithImages).toStrictEqual([
+        {
+          ...maxPayne2,
+          metaData: {
+            expiresOn: getExpiresOn(),
+            imageUrl:
+              "https://images.igdb.com/igdb/image/upload/t_cover_big/maxpayne2img.webp",
           },
         },
       ]);

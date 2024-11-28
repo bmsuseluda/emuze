@@ -9,8 +9,8 @@ export class FileDataCache<Content> {
   filePath: string;
   cache: MultipleFileDataCache<Content>;
 
-  readFile() {
-    return this.cache.readFile(this.filePath);
+  readFile(updateCache?: boolean) {
+    return this.cache.readFile(this.filePath, updateCache);
   }
 
   writeFile(content: Content) {
@@ -29,8 +29,8 @@ export class MultipleFileDataCache<Content> {
   content: Record<string, Content | null> = {};
   defaultContent?: Content;
 
-  readFile(filePath: string) {
-    if (!this.content[filePath]) {
+  readFile(filePath: string, updateCache?: boolean) {
+    if (!this.content[filePath] || updateCache) {
       const result = readFileHome<Content>(filePath);
       if (result) {
         this.content[filePath] = result;
