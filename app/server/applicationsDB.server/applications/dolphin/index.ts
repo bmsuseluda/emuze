@@ -171,7 +171,6 @@ export const dolphin: Application = {
     const optionParams = [
       "--config",
       "Dolphin.Interface.ConfirmStop=False",
-      "--batch",
       `--user=${configFolderPath}`,
       "--config",
       "Dolphin.Analytics.PermissionAsked=True",
@@ -180,6 +179,7 @@ export const dolphin: Application = {
     if (fullscreen) {
       optionParams.push("--config");
       optionParams.push("Dolphin.Display.Fullscreen=True");
+      optionParams.push("--batch");
     }
 
     return optionParams;
