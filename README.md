@@ -30,41 +30,41 @@ If your roms are named correctly, a click on the import button should import you
 
 The following systems are supported:
 
-| System | Emulator | Pre Configured | BIOS needed |
-|--------|----------|----------------|-------------|
-| Sony PlayStation | [DuckStation](https://github.com/stenzek/duckstation) | Yes | Yes | 
-| Sony PlayStation 2 | [PCSX2](https://github.com/PCSX2/pcsx2) | Yes | Yes | 
-| Sony PlayStation 3 | [RPCS3](https://github.com/RPCS3/rpcs3) | No | Yes | 
-| Sony PlayStation Portable | [PPSSPP](https://github.com/hrydgard/ppsspp) | No | No | 
-| Nintendo Entertainment System | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
-| Super Nintendo Entertainment System | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
-| Nintendo Game Boy | [mgba](https://github.com/mgba-emu/mgba) | No | No | 
-| Nintendo Game Boy Color | [mgba](https://github.com/mgba-emu/mgba) | No | No | 
-| Nintendo Game Boy Advance | [mgba](https://github.com/mgba-emu/mgba) | No | No | 
-| Nintendo DS | [MelonDS](https://github.com/melonDS-emu/melonDS) | No | No | 
-| Nintendo 3DS | [Lime3DS](https://github.com/Lime3DS/Lime3DS) | No | No | 
-| Nintendo 64 | [Rosalie's Mupen GUI](https://github.com/Rosalie241/RMG) | No | No | 
-| Nintendo Gamecube | [Dolphin](https://github.com/dolphin-emu/dolphin) | No | No | 
-| Nintendo Wii | [Dolphin](https://github.com/dolphin-emu/dolphin) | No | No | 
-| Nintendo Wii U | [Cemu](https://github.com/cemu-project/Cemu) | No | Yes | 
-| Nintendo Switch | [Ryujinx](https://github.com/GreemDev/Ryujinx) | No | Yes | 
-| PC Engine | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
-| PC Engine CD | [Mednafen](https://mednafen.github.io/) | No | Yes | 
-| PC Engine SuperGrafx | [Mednafen](https://mednafen.github.io/) | No | Yes | 
-| Sega Master System | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
-| Sega Game Gear | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
-| Sega Mega Drive | [Ares](https://github.com/ares-emulator/ares) | Yes | No | 
-| Sega 32X | [Ares](https://github.com/ares-emulator/ares) | Yes | Yes | 
-| Sega CD | [Ares](https://github.com/ares-emulator/ares) | Yes | Yes | 
-| Sega Saturn | [Mednafen](https://mednafen.github.io/) | No | Yes | 
-| Sega Dreamcast | [Flycast](https://github.com/flyinghead/flycast) | No | No | 
-| Arcade | [Mame](https://github.com/mamedev/mame) | No | No | 
-| Neo Geo | [Mame](https://github.com/mamedev/mame) | No | No | 
-| Neo Geo CD | [Mame](https://github.com/mamedev/mame) | No | No | 
-| Neo Geo Pocket | [Ares](https://github.com/ares-emulator/ares) | Yes | Yes | 
-| Neo Geo Pocket Color | [Ares](https://github.com/ares-emulator/ares) | Yes | Yes | 
-| Scumm | [ScummVM](https://github.com/scummvm/scummvm) | Yes | No | 
-| Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json)) | [DOSBox-Staging](https://github.com/dosbox-staging/dosbox-staging) | No | No | 
+| System | Emulator | Pre Configured | Bundled | BIOS needed |
+|--------|----------|----------------|---------|-------------|
+| Sony PlayStation | [DuckStation](https://github.com/stenzek/duckstation) | Yes | No | Yes | 
+| Sony PlayStation 2 | [PCSX2](https://github.com/PCSX2/pcsx2) | Yes | No | Yes | 
+| Sony PlayStation 3 | [RPCS3](https://github.com/RPCS3/rpcs3) | No | No | Yes | 
+| Sony PlayStation Portable | [PPSSPP](https://github.com/hrydgard/ppsspp) | No | No | No | 
+| Nintendo Entertainment System | [ares](https://github.com/ares-emulator/ares) | Yes | No | No | 
+| Super Nintendo Entertainment System | [ares](https://github.com/ares-emulator/ares) | Yes | No | No | 
+| Nintendo Game Boy | [mgba](https://github.com/mgba-emu/mgba) | No | No | No | 
+| Nintendo Game Boy Color | [mgba](https://github.com/mgba-emu/mgba) | No | No | No | 
+| Nintendo Game Boy Advance | [mgba](https://github.com/mgba-emu/mgba) | No | No | No | 
+| Nintendo DS | [MelonDS](https://github.com/melonDS-emu/melonDS) | No | No | No | 
+| Nintendo 3DS | [Lime3DS](https://github.com/Lime3DS/Lime3DS) | No | No | No | 
+| Nintendo 64 | [Rosalie's Mupen GUI](https://github.com/Rosalie241/RMG) | No | No | No | 
+| Nintendo Gamecube | [Dolphin](https://github.com/dolphin-emu/dolphin) | Yes | Yes | No | 
+| Nintendo Wii | [Dolphin](https://github.com/dolphin-emu/dolphin) | Yes | Yes | No | 
+| Nintendo Wii U | [Cemu](https://github.com/cemu-project/Cemu) | No | No | Yes | 
+| Nintendo Switch | [Ryujinx](https://github.com/GreemDev/Ryujinx) | Yes | Yes | Yes | 
+| PC Engine | [ares](https://github.com/ares-emulator/ares) | Yes | No | No | 
+| PC Engine CD | [Mednafen](https://mednafen.github.io/) | No | No | Yes | 
+| PC Engine SuperGrafx | [Mednafen](https://mednafen.github.io/) | No | No | Yes | 
+| Sega Master System | [ares](https://github.com/ares-emulator/ares) | Yes | No | No | 
+| Sega Game Gear | [ares](https://github.com/ares-emulator/ares) | Yes | No | No | 
+| Sega Mega Drive | [ares](https://github.com/ares-emulator/ares) | Yes | No | No | 
+| Sega 32X | [ares](https://github.com/ares-emulator/ares) | Yes | No | Yes | 
+| Sega CD | [ares](https://github.com/ares-emulator/ares) | Yes | No | Yes | 
+| Sega Saturn | [Mednafen](https://mednafen.github.io/) | No | No | Yes | 
+| Sega Dreamcast | [Flycast](https://github.com/flyinghead/flycast) | No | No | No | 
+| Arcade | [Mame](https://github.com/mamedev/mame) | No | No | No | 
+| Neo Geo | [Mame](https://github.com/mamedev/mame) | No | No | No | 
+| Neo Geo CD | [Mame](https://github.com/mamedev/mame) | No | No | No | 
+| Neo Geo Pocket | [ares](https://github.com/ares-emulator/ares) | Yes | No | Yes | 
+| Neo Geo Pocket Color | [ares](https://github.com/ares-emulator/ares) | Yes | No | Yes | 
+| Scumm | [ScummVM](https://github.com/scummvm/scummvm) | Yes | No | No | 
+| Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json)) | [DOSBox-Staging](https://github.com/dosbox-staging/dosbox-staging) | No | No | No | 
 
 > [!IMPORTANT]  
 > ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
@@ -73,9 +73,12 @@ The following systems are supported:
 If a System is pre configured, all connected gamepads will be configured for the specific Emulator.
 
 The following Hotkeys are set:
-- Open Menu / Toggle Fullscreen: F2
+- Open Emulator Menu (if supported from emulator): F2
 - Save State: F1
 - Load State: F3
+
+### Bundled
+If a system is bundled, the respective emulator is provided with emuze in a specific version. Therefore you do not need to provide the emulator on your own. 
 
 ### BIOS needed
 Some emulators need a BIOS or firmware to run. Please check the documentation of an emulator for more information. 
@@ -84,7 +87,7 @@ Some emulators need a BIOS or firmware to run. Please check the documentation of
 
 ### Windows
 
-[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.51.0/emuze-Setup-0.51.0.exe) the latest Version of emuze and install it.
+[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.52.1/emuze-Setup-0.52.1.exe) the latest Version of emuze and install it.
 
 If you start emuze for the first time, it asks for the following folders to work:
 
@@ -114,7 +117,7 @@ emulators
 For now emuze is only released as an AppImage. Your Linux distribution needs to support Flatpaks.
 All emulators need to be installed via flatpak but emuze can do this for you.
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.51.0/emuze-0.51.0.AppImage) the latest Version of emuze
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.52.1/emuze-0.52.1.AppImage) the latest Version of emuze
 
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
@@ -124,7 +127,7 @@ All emulators need to be installed via flatpak but emuze can do this for you.
 For now emuze is only released as an AppImage.
 
 1) Switch to Desktop
-2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.51.0/emuze-0.51.0.AppImage) the latest Version of emuze
+2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.52.1/emuze-0.52.1.AppImage) the latest Version of emuze
 
 3) Mark the AppImage as executable and start emuze
 4) Choose the [folder where your Roms are located](#roms-folder)
