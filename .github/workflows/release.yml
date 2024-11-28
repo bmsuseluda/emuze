@@ -19,8 +19,8 @@ jobs:
       - name: Build
         run: yarn app:distLinux --publish=always
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release_windows:
     runs-on: windows-latest
@@ -35,5 +35,5 @@ jobs:
       - name: Build
         run: yarn app:distWindows --publish=always
         env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
