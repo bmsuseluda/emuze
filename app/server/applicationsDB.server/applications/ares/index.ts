@@ -12,6 +12,19 @@ import type {
 import { PhysicalGamepad } from "./PhysicalGamepad";
 import { getVirtualGamepadReset } from "./VirtualGamepadReset";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
+import type { ApplicationId } from "../../applicationId";
+import nodepath from "path";
+
+const applicationId: ApplicationId = "ares";
+const bundledPathLinux = nodepath.join(
+  applicationId,
+  "ares-v141-x86_64.AppImage",
+);
+const bundledPathWindows = nodepath.join(
+  applicationId,
+  "ares-v141",
+  "ares.exe",
+);
 
 const gamepadGroupId: Record<GamepadGroupId, number> = {
   Axis: 0,
@@ -338,7 +351,6 @@ const getSharedAresOptionParams: OptionParamFunction = ({
 export const ares: Application = {
   id: "ares",
   name: "ares",
-  executable: "ares.exe",
   fileExtensions: [
     ".z64",
     ".sms",
@@ -358,14 +370,16 @@ export const ares: Application = {
   ],
   flatpakId: "dev.ares.ares",
   createOptionParams: getSharedAresOptionParams,
+  bundledPathLinux,
+  bundledPathWindows,
 };
 
 export const aresSuperNintendo: Application = {
   ...ares,
   id: "aresSuperNintendo",
   fileExtensions: [".sfc"],
-  createOptionParams: (...props) => [
-    ...getSharedAresOptionParams(...props),
+  createOptionParams: (props) => [
+    ...getSharedAresOptionParams(props),
     ...["--system", "Super Famicom"],
   ],
 };
@@ -374,8 +388,8 @@ export const aresMegaDrive: Application = {
   ...ares,
   id: "aresMegaDrive",
   fileExtensions: [".sfc", ".smc", ".68K", ".bin", ".md"],
-  createOptionParams: (...props) => [
-    ...getSharedAresOptionParams(...props),
+  createOptionParams: (props) => [
+    ...getSharedAresOptionParams(props),
     ...["--system", "Mega Drive"],
   ],
 };
@@ -384,8 +398,8 @@ export const aresSegaCd: Application = {
   ...ares,
   id: "aresSegaCd",
   fileExtensions: [".chd", ".cue"],
-  createOptionParams: (...props) => [
-    ...getSharedAresOptionParams(...props),
+  createOptionParams: (props) => [
+    ...getSharedAresOptionParams(props),
     ...["--system", "Mega CD"],
   ],
 };
@@ -394,8 +408,8 @@ export const aresSega32x: Application = {
   ...ares,
   id: "aresSega32x",
   fileExtensions: [".32x"],
-  createOptionParams: (...props) => [
-    ...getSharedAresOptionParams(...props),
+  createOptionParams: (props) => [
+    ...getSharedAresOptionParams(props),
     ...["--system", "Mega 32X"],
   ],
 };

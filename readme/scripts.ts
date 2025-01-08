@@ -15,7 +15,15 @@ const preConfigured: ApplicationId[] = [
   "dolphin",
 ];
 
-const bundled: ApplicationId[] = ["ryujinx", "dolphin"];
+const bundled: ApplicationId[] = [
+  "ares",
+  "aresMegaDrive",
+  "aresSega32x",
+  "aresSegaCd",
+  "aresSuperNintendo",
+  "ryujinx",
+  "dolphin",
+];
 
 const biosNeeded: SystemId[] = [
   "sonyplaystation",
