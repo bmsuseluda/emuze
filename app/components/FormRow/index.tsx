@@ -4,7 +4,7 @@ export const FormRow = styled("fieldset", {
   base: {
     display: "flex",
     flexDirection: "column",
-    gap: "1",
+    gap: "0.3rem",
     paddingTop: "1",
     paddingRight: "1",
     paddingBottom: "1",

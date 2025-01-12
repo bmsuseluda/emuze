@@ -182,6 +182,11 @@ export default defineConfig({
           "75%": { outlineColor: "white" },
           "100%": { outlineColor: "accent" },
         },
+        pulse: {
+          "0%": { width: "10em", filter: "brightness(80%)" },
+          "50%": { width: "12em", filter: "brightness(100%)" },
+          "100%": { width: "10em", filter: "brightness(80%)" },
+        },
       },
     },
   },

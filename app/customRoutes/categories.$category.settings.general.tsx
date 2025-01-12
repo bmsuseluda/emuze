@@ -181,6 +181,14 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
             `/categories/${findCategoryToRedirect(categories, systemId)}/settings/general`,
           );
         }
+        if (!categories || categories?.length === 0) {
+          return json({
+            errors: {
+              categoriesPath:
+                "No supported Systems were found. The Roms need to be grouped by their System. E.g. 'Final Fantasy VII.chd' needs to be stored in a folder 'Playstation'.",
+            },
+          });
+        }
       } catch (error) {
         const categories = readCategories();
 

@@ -19,6 +19,7 @@ import {
   useInputBack,
   useInputConfirmation,
 } from "../../hooks/useDirectionalInput";
+import { useGamepadConnected } from "../../hooks/useGamepadConnected";
 
 interface Props extends ComponentPropsWithoutRef<"ul"> {
   games: GameType[] | GameTypeLastPlayed[];
@@ -76,6 +77,8 @@ export const GameGrid = ({
   onGameClick,
   inViewRef,
 }: Props & { inViewRef?: RefObject<ElementRef<"div">> }) => {
+  const { isEnabled } = useGamepadConnected();
+
   const selectEntry = (game: ElementRef<"input">) => {
     if (!game.checked) {
       game.checked = true;
@@ -161,7 +164,7 @@ export const GameGrid = ({
               onDoubleClick={handleDoubleClick}
               ref={entriesRefCallback(index)}
               key={id}
-              isInFocus={isInFocus}
+              isInFocus={isEnabled.current && isInFocus}
             />
           );
         })}

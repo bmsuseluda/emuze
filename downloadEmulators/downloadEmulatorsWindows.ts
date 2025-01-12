@@ -4,7 +4,7 @@ const emulatorDownloadsWindows: Partial<EmulatorDownloads> = {
   ares: "https://github.com/ares-emulator/ares/releases/download/v141/ares-windows.zip",
   dolphin: "https://dl.dolphin-emu.org/releases/2407/dolphin-2407-x64.7z",
   ryujinx:
-    "https://github.com/GreemDev/Ryujinx/releases/download/1.2.76/ryujinx-1.2.76-win_x64.zip",
+    "https://github.com/GreemDev/Ryujinx/releases/download/1.2.78/ryujinx-1.2.78-win_x64.zip",
 };
 
 export const downloadEmulatorsWindows = () =>

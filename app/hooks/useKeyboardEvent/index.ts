@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { useThrottlePress } from "../useThrottlePress";
+import { useGamepadConnected } from "../useGamepadConnected";
 
 export const useKeyboardEvent = (
   keyboardKey: string,
   onKeyboardEvent: (e: KeyboardEvent) => void,
 ) => {
   const { throttleFunction } = useThrottlePress();
+  const { isEnabled } = useGamepadConnected();
 
   useEffect(() => {
     const handleKeyboardEvent = (e: KeyboardEvent) => {
@@ -13,7 +15,9 @@ export const useKeyboardEvent = (
         e.preventDefault();
 
         const functionToThrottle = () => {
-          onKeyboardEvent(e);
+          if (isEnabled.current) {
+            onKeyboardEvent(e);
+          }
         };
         throttleFunction(functionToThrottle, 0);
       }
@@ -23,5 +27,5 @@ export const useKeyboardEvent = (
     return () => {
       removeEventListener("keydown", handleKeyboardEvent);
     };
-  }, [keyboardKey, onKeyboardEvent, throttleFunction]);
+  }, [keyboardKey, onKeyboardEvent, throttleFunction, isEnabled]);
 };
