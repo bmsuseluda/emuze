@@ -71,6 +71,7 @@ const downloadAndExtract7z = (
 ) => {
   const zipFilePath = nodepath.join(outputFolder, url.split("/").at(-1) || "");
   const zipFile = createWriteStream(zipFilePath);
+  console.log(`Download of ${url} started`);
 
   https
     .get(url, (response) => {
@@ -97,6 +98,7 @@ const downloadAndExtract7z = (
 
 const downloadFile = (url: string, fileToCheck: string) => {
   const file = createWriteStream(fileToCheck);
+  console.log(`Download of ${url} started`);
 
   https
     .get(url, (response) => {
@@ -119,6 +121,7 @@ const downloadAndExtract = (
   outputFolder: string,
   fileToCheck: string,
 ) => {
+  console.log(`Download of ${url} started`);
   https
     .get(url, (response) => {
       const chunks: Buffer[] = [];

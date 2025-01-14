@@ -20,7 +20,7 @@ import { readFilenames } from "../readWriteData.server";
 import { when } from "vitest-when";
 import { updateFlatpakAppList } from "../applicationsDB.server/checkEmulatorIsInstalled";
 
-vi.mock("@kmamal/sdl");
+vi.mock("@bmsuseluda/node-sdl");
 vi.mock("child_process");
 vi.mock("fs");
 vi.mock("../readWriteData.server");

@@ -45,7 +45,7 @@ export const InstallEmulatorsButton = ({ gamepadType, isInFocus }: Props) => {
       >
         Install Emulators
       </Button>
-      {isInstalling && <LogoPulseModal />}
+      <LogoPulseModal active={isInstalling} />
     </>
   );
 };

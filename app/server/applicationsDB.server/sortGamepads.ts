@@ -1,4 +1,4 @@
-import type { Sdl } from "@kmamal/sdl";
+import type { Sdl } from "@bmsuseluda/node-sdl";
 import { steamDeck } from "./gamepads";
 
 /**

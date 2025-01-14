@@ -1,4 +1,4 @@
-import type { Sdl } from "@kmamal/sdl";
+import type { Sdl } from "@bmsuseluda/node-sdl";
 
 export const eightBitDoPro2 = {
   id: 0,

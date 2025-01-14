@@ -2844,6 +2844,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@bmsuseluda/node-sdl@https://github.com/bmsuseluda/node-sdl":
+  version: 0.11.0
+  resolution: "@bmsuseluda/node-sdl@https://github.com/bmsuseluda/node-sdl.git#commit=ce280e27ae089ec53fd7b991be9699f09ede9eaf"
+  dependencies:
+    tar: "npm:^7.4.3"
+  checksum: 10/81cbbf3e059dc33df9e6253cf953fd6b787faa3f08d5e7b8d0d942e3a591887785f29ce9ed567d7ee304aa5103485eec5bec7eb2e86f6a38112be7448bda4405
+  languageName: node
+  linkType: hard
+
 "@clack/core@npm:^0.3.3":
   version: 0.3.4
   resolution: "@clack/core@npm:0.3.4"
@@ -4319,15 +4328,6 @@ __metadata:
   version: 2.0.1
   resolution: "@jspm/core@npm:2.0.1"
   checksum: 10/663abbcedfd20eab4574095b37ade1aeff820dde45a8d67026a5f1215ba675d303042008a79fc296c0b56bb3ce15647367cea136a152ede450ac626e82be6b8f
-  languageName: node
-  linkType: hard
-
-"@kmamal/sdl@npm:^0.10.7":
-  version: 0.10.7
-  resolution: "@kmamal/sdl@npm:0.10.7"
-  dependencies:
-    tar: "npm:^7.1.0"
-  checksum: 10/a2f291449c7b802082b431af25ffe5ff447ea1910409b2231270e2f5dee374cc1fa412c30b1a5497549a4a1343b5d5f35df6b3f6e1247437e574ece19517cf33
   languageName: node
   linkType: hard
 
@@ -10975,9 +10975,9 @@ __metadata:
     "@babel/preset-env": "npm:^7.25.4"
     "@babel/preset-react": "npm:^7.24.7"
     "@babel/preset-typescript": "npm:^7.24.7"
+    "@bmsuseluda/node-sdl": "https://github.com/bmsuseluda/node-sdl"
     "@commitlint/cli": "npm:^19.5.0"
     "@commitlint/config-conventional": "npm:^19.5.0"
-    "@kmamal/sdl": "npm:^0.10.7"
     "@pandacss/dev": "npm:^0.46.1"
     "@playwright/test": "npm:^1.47.2"
     "@radix-ui/react-checkbox": "npm:^1.1.1"
@@ -21546,7 +21546,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar@npm:^7.1.0":
+"tar@npm:^7.4.3":
   version: 7.4.3
   resolution: "tar@npm:7.4.3"
   dependencies:

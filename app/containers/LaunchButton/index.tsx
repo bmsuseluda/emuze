@@ -46,7 +46,7 @@ export const LaunchButton = ({
       >
         Launch Game
       </Button>
-      {isGameLaunching && <LogoPulseModal />}
+      <LogoPulseModal active={isGameLaunching} />
     </>
   );
 };

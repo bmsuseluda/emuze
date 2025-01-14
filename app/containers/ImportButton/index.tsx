@@ -47,7 +47,7 @@ export const ImportButton = ({
       >
         {children}
       </Button>
-      {isImporting && <LogoPulseModal />}
+      <LogoPulseModal active={isImporting} />
     </>
   );
 };

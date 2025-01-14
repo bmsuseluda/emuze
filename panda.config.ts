@@ -183,9 +183,9 @@ export default defineConfig({
           "100%": { outlineColor: "accent" },
         },
         pulse: {
-          "0%": { width: "10em", filter: "brightness(80%)" },
-          "50%": { width: "12em", filter: "brightness(100%)" },
-          "100%": { width: "10em", filter: "brightness(80%)" },
+          "0%": { filter: "brightness(80%)" },
+          "50%": { transform: "scale(1.2)", filter: "brightness(100%)" },
+          "100%": { filter: "brightness(80%)" },
         },
       },
     },

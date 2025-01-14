@@ -2,7 +2,7 @@ import {
   gamepadPs4,
   steamDeck,
 } from "../../app/server/applicationsDB.server/gamepads";
-import { Sdl } from "@kmamal/sdl";
+import type { Sdl } from "@bmsuseluda/node-sdl";
 
 const devices: Sdl.Controller.Device[] = [steamDeck, gamepadPs4];
 

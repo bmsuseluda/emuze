@@ -14,8 +14,8 @@ import {
 } from "../../configFile";
 import { log } from "../../../debug.server";
 import { defaultSettings } from "./defaultSettings";
-import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
+import type { Sdl } from "@bmsuseluda/node-sdl";
+import sdl from "@bmsuseluda/node-sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
 
 export const getVirtualGamepad = (

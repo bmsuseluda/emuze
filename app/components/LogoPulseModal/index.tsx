@@ -1,5 +1,5 @@
 import { styled } from "../../../styled-system/jsx";
-import logo from "../../../artwork/logo.svg";
+import logo from "../../../artwork/logoPlain.svg";
 
 const Overlay = styled("div", {
   base: {
@@ -12,18 +12,29 @@ const Overlay = styled("div", {
     alignItems: "center",
     zIndex: 10,
   },
+  variants: {
+    active: {
+      false: {
+        display: "none",
+      },
+    },
+  },
 });
 
 const Logo = styled("img", {
   base: {
     aspectRatio: "auto",
-    width: "10em",
+    width: "12em",
     animation: "pulse 2s cubic-bezier(.45,.05,.55,.95) infinite",
   },
 });
 
-export const LogoPulseModal = () => (
-  <Overlay>
+interface Props {
+  active: boolean;
+}
+
+export const LogoPulseModal = ({ active }: Props) => (
+  <Overlay active={active}>
     <Logo src={logo} alt="Logo pulse animation" />
   </Overlay>
 );
