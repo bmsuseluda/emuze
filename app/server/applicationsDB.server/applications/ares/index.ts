@@ -353,6 +353,8 @@ export const ares: Application = {
   name: "ares",
   fileExtensions: [
     ".z64",
+    ".n64",
+    ".v64",
     ".sms",
     ".gg",
     ".chd",

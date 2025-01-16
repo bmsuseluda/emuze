@@ -2845,11 +2845,11 @@ __metadata:
   linkType: hard
 
 "@bmsuseluda/node-sdl@https://github.com/bmsuseluda/node-sdl":
-  version: 0.11.0
-  resolution: "@bmsuseluda/node-sdl@https://github.com/bmsuseluda/node-sdl.git#commit=ce280e27ae089ec53fd7b991be9699f09ede9eaf"
+  version: 0.11.2
+  resolution: "@bmsuseluda/node-sdl@https://github.com/bmsuseluda/node-sdl.git#commit=acb0e5060b96f06652d3f427e12843560c5df1b8"
   dependencies:
     tar: "npm:^7.4.3"
-  checksum: 10/81cbbf3e059dc33df9e6253cf953fd6b787faa3f08d5e7b8d0d942e3a591887785f29ce9ed567d7ee304aa5103485eec5bec7eb2e86f6a38112be7448bda4405
+  checksum: 10/d67f85b14158e7836e26c552910555e52c0202521632a4dfbddc23d0bd0cb4bcf6ded917b42af777f13804afd7ad8d9a3b927201896c705d58c44f1b592e4499
   languageName: node
   linkType: hard
 

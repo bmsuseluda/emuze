@@ -22,7 +22,7 @@ const flatpakId = "org.DolphinEmu.dolphin-emu";
 const applicationId: ApplicationId = "dolphin";
 const bundledPathLinux = nodepath.join(
   applicationId,
-  "Dolphin_Emulator-git-x86_64.AppImage",
+  "Dolphin_Emulator-1.2412-4-x86_64.AppImage",
 );
 const bundledPathWindows = nodepath.join(
   applicationId,
@@ -45,11 +45,12 @@ export const getVirtualGamepad = (
   sdlDevice: Sdl.Controller.Device,
   index: number,
 ) => {
-  log("debug", "gamepad", { index, sdlDevice });
+  const openedDevice = sdl.controller.openDevice(sdlDevice);
+  log("debug", "gamepad", { index, sdlDevice, openedDevice });
 
   return [
     `[GCPad${index + 1}]`,
-    `Device = SDL/${index}/${sdlDevice.mapping.split(",")[1]}`,
+    `Device = SDL/${index}/${openedDevice.controllerName}`,
     `Buttons/A = \`Button E\``,
     `Buttons/B = \`Button S\``,
     `Buttons/X = \`Button N\``,

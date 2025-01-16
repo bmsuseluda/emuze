@@ -209,7 +209,7 @@ export const nintendo64: Category = {
   id: "nintendo64",
   names: ["Nintendo 64", "N64"],
   igdbPlatformIds: [4],
-  application: rosaliesMupenGui,
+  application: process.env.EMUZE_ARES_N64 ? ares : rosaliesMupenGui,
   hasAnalogStick: true,
 };
 
