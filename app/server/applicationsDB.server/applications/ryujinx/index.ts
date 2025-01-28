@@ -123,14 +123,42 @@ export const createControllerId = (sdlGuiId: string) => {
   return `0-${mapping[3]}${mapping[2]}${mapping[1]}${mapping[0]}-${mapping[5]}${mapping[4]}-${mapping[6]}-${mapping[7]}-${mapping[8]}`;
 };
 
+/**
+ * TODO: Check joycons
+ */
+const createControllerType = () => {
+  return "ProController";
+};
+
+const createDeviceSpecificInputConfig = (controllerName: string) => {
+  if (controllerName.toLowerCase().includes("gamecube")) {
+    return {
+      ...defaultInputConfig,
+      right_joycon: {
+        ...defaultInputConfig.right_joycon,
+        button_x: "A",
+        button_b: "Y",
+        button_y: "X",
+        button_a: "B",
+      },
+    };
+  }
+
+  return defaultInputConfig;
+};
+
 const createInputConfig = (
   sdlDevice: Sdl.Controller.Device,
   index: number,
-): InputConfig => ({
-  ...defaultInputConfig,
-  id: createControllerId(sdlDevice.guid),
-  player_index: `Player${index + 1}`,
-});
+): InputConfig => {
+  const openedController = sdl.controller.openDevice(sdlDevice);
+  return {
+    ...createDeviceSpecificInputConfig(openedController.controllerName),
+    id: createControllerId(sdlDevice.guid),
+    controller_type: createControllerType(),
+    player_index: `Player${index + 1}`,
+  };
+};
 
 const replaceConfig = (switchRomsPath: string) => {
   const gamepads = sdl.controller.devices;

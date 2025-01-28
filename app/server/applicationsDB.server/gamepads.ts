@@ -2,15 +2,15 @@ import type { Sdl } from "@bmsuseluda/node-sdl";
 
 export const eightBitDoPro2 = {
   id: 0,
-  name: "Xbox One S Controller",
+  name: "Xbox One Wireless Controller",
   path: "/dev/input/event19",
-  guid: "050082795e040000e002000003090000",
+  guid: "050095ac5e040000e002000003090000",
   vendor: 1118,
   product: 736,
   version: 2307,
   player: 0,
   mapping:
-    "050082795e040000e002000003090000,Xbox One Wireless Controller,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b10,leftshoulder:b4,leftstick:b8,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b9,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,",
+    "050095ac5e040000e002000003090000,Xbox One Wireless Controller,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b10,leftshoulder:b4,leftstick:b8,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b9,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,",
 } satisfies Sdl.Controller.Device;
 
 /**

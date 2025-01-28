@@ -47,37 +47,40 @@ export const getVirtualGamepad = (
 ) => {
   const openedDevice = sdl.controller.openDevice(sdlDevice);
   log("debug", "gamepad", { index, sdlDevice, openedDevice });
+  const isGamecubeController = openedDevice.controllerName
+    .toLowerCase()
+    .includes("gamecube");
 
   return [
     `[GCPad${index + 1}]`,
     `Device = SDL/${index}/${openedDevice.controllerName}`,
-    `Buttons/A = \`Button E\``,
-    `Buttons/B = \`Button S\``,
-    `Buttons/X = \`Button N\``,
-    `Buttons/Y = \`Button W\``,
-    `Buttons/Z = Back`,
+    `Buttons/A = ${isGamecubeController ? "`Button S`" : "`Button E`"}`,
+    `Buttons/B = ${isGamecubeController ? "`Button W`" : "`Button S`"}`,
+    `Buttons/X = ${isGamecubeController ? "`Button E`" : "`Button N`"}`,
+    `Buttons/Y = ${isGamecubeController ? "`Button N`" : "`Button W` | `Shoulder L`"}`,
+    `Buttons/Z = \`Shoulder R\``,
     `Buttons/Start = Start`,
     `Main Stick/Up = \`Left Y+\``,
     `Main Stick/Down = \`Left Y-\``,
     `Main Stick/Left = \`Left X-\``,
     `Main Stick/Right = \`Left X+\``,
-    `Main Stick/Modifier = \`Shift\``,
+    `Main Stick/Modifier = \`Thumb L\``,
     `Main Stick/Calibration = 100.00 141.42 100.00 141.42 100.00 141.42 100.00 141.42`,
     `C-Stick/Up = \`Right Y+\``,
     `C-Stick/Down = \`Right Y-\``,
     `C-Stick/Left = \`Right X-\``,
     `C-Stick/Right = \`Right X+\``,
-    `C-Stick/Modifier = \`Ctrl\``,
+    `C-Stick/Modifier = \`Thumb R\``,
     `C-Stick/Calibration = 100.00 141.42 100.00 141.42 100.00 141.42 100.00 141.42`,
-    `Triggers/L = \`Shoulder L\``,
-    `Triggers/R = \`Shoulder R\``,
+    `Triggers/L = \`Trigger L\``,
+    `Triggers/R = \`Trigger R\``,
     `D-Pad/Up = \`Pad N\``,
     `D-Pad/Down = \`Pad S\``,
     `D-Pad/Left = \`Pad W\``,
     `D-Pad/Right = \`Pad E\``,
     `Triggers/L-Analog = \`Trigger L\``,
     `Triggers/R-Analog = \`Trigger R\``,
-    `Rumble/Motor = Weak`,
+    `Rumble/Motor = \`Motor L\` | \`Motor R\``,
   ].join(EOL);
 };
 

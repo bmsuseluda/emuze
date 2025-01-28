@@ -1,6 +1,6 @@
 import { categories } from "../app/server/categoriesDB.server";
 import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId";
-import { SystemId } from "../app/server/categoriesDB.server/systemId";
+import type { SystemId } from "../app/server/categoriesDB.server/systemId";
 
 const preConfigured: ApplicationId[] = [
   "ares",
@@ -56,6 +56,9 @@ const homepages: Record<ApplicationId, string> = {
   mameNeoGeo: "https://github.com/mamedev/mame",
   mameNeoGeoCD: "https://github.com/mamedev/mame",
   mednafen: "https://mednafen.github.io/",
+  mednafenSaturn: "https://mednafen.github.io/",
+  mednafenPcEngineCD: "https://mednafen.github.io/",
+  mednafenPcEngineSuperGrafx: "https://mednafen.github.io/",
   melonds: "https://github.com/melonDS-emu/melonDS",
   mgba: "https://github.com/mgba-emu/mgba",
   pcsx2: "https://github.com/PCSX2/pcsx2",

@@ -16,9 +16,9 @@ export const keyboardConfig: InputConfig = {
     stick_button: "ShiftRight",
   },
   left_joycon: {
-    button_minus: "Minus",
-    button_l: "Semicolon", // Ö
-    button_zl: "P",
+    button_minus: "BackSpace",
+    button_l: "L",
+    button_zl: "Number8",
     button_sl: "Unbound",
     button_sr: "Unbound",
     dpad_up: "T",
@@ -27,15 +27,15 @@ export const keyboardConfig: InputConfig = {
     dpad_right: "H",
   },
   right_joycon: {
-    button_plus: "Plus",
-    button_r: "Quote", // Ä
-    button_zr: "BracketLeft", // Ü
+    button_plus: "Enter",
+    button_r: "O",
+    button_zr: "Number9",
     button_sl: "Unbound",
     button_sr: "Unbound",
-    button_x: "O",
-    button_b: "K",
-    button_y: "I",
-    button_a: "L",
+    button_x: "I",
+    button_b: "J",
+    button_y: "U",
+    button_a: "K",
   },
   version: 1,
   backend: "WindowKeyboard",

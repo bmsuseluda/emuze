@@ -6,7 +6,7 @@ const emulatorDownloadsLinux: Partial<EmulatorDownloads> = {
   dolphin:
     "https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/1.2412-4/Dolphin_Emulator-1.2412-4-x86_64.AppImage",
   ryujinx:
-    "https://github.com/GreemDev/Ryujinx/releases/download/1.2.78/ryujinx-1.2.78-linux_x64.tar.gz",
+    "https://github.com/GreemDev/Ryujinx/releases/download/1.2.81/ryujinx-1.2.81-linux_x64.tar.gz",
 };
 
 export const downloadEmulatorsLinux = () =>

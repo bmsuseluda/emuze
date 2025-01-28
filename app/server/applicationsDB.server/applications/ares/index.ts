@@ -14,6 +14,8 @@ import { getVirtualGamepadReset } from "./VirtualGamepadReset";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
 import type { ApplicationId } from "../../applicationId";
 import nodepath from "path";
+import { app } from "electron";
+import { getKeyboard, getKeyboardKey } from "./keyboardConfig";
 
 const applicationId: ApplicationId = "ares";
 const bundledPathLinux = nodepath.join(
@@ -306,16 +308,17 @@ export const getVirtualGamepad =
 
 export const getVirtualGamepads = (systemHasAnalogStick: boolean) => {
   const gamepads = sdl.controller.devices;
-
-  const virtualGamepads = gamepads.flatMap(
-    getVirtualGamepad(systemHasAnalogStick),
-  );
+  const virtualGamepads =
+    gamepads.length > 0
+      ? gamepads.flatMap(getVirtualGamepad(systemHasAnalogStick))
+      : getKeyboard();
+  log("debug", "gamepads", gamepads.length, getKeyboard());
 
   return [
     ...virtualGamepads,
     ...resetUnusedVirtualGamepads(
       5,
-      gamepads.length,
+      virtualGamepads.length,
       getVirtualGamepadReset,
     ).flat(),
   ];
@@ -327,12 +330,12 @@ const getSharedAresOptionParams: OptionParamFunction = ({
   },
   hasAnalogStick,
 }) => {
-  // fullsceen F2
-  const hotkeyFullscreen = ["--setting", "Hotkey/ToggleFullscreen=0x1/0/2"];
-  // save state F1
-  const hotkeySave = ["--setting", "Hotkey/SaveState=0x1/0/1"];
-  // load state F3
-  const hotkeyLoad = ["--setting", "Hotkey/LoadState=0x1/0/3"];
+  const hotkeyFullscreen = [
+    "--setting",
+    `Hotkey/ToggleFullscreen=${getKeyboardKey("F2")}`,
+  ];
+  const hotkeySave = ["--setting", `Hotkey/SaveState=${getKeyboardKey("F1")}`];
+  const hotkeyLoad = ["--setting", `Hotkey/LoadState=${getKeyboardKey("F3")}`];
   const inputSDL = ["--setting", "Input/Driver=SDL"];
 
   const optionParams = [
@@ -415,3 +418,7 @@ export const aresSega32x: Application = {
     ...["--system", "Mega 32X"],
   ],
 };
+
+export const isAresForN64 = () =>
+  app?.commandLine.hasSwitch("aresN64") ||
+  process.env.EMUZE_ARES_N64 === "true";

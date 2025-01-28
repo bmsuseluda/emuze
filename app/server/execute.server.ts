@@ -45,6 +45,9 @@ const executeBundledApplication = ({
   execFileSync(
     nodepath.join(process.env.APPDIR || "", "emulators", bundledPath),
     params,
+    {
+      encoding: "utf8",
+    },
   );
 };
 
@@ -78,7 +81,9 @@ const executeApplicationOnLinux = ({
       params.push(absoluteEntryPath);
     }
 
-    execFileSync("flatpak", params);
+    execFileSync("flatpak", params, {
+      encoding: "utf8",
+    });
   } else {
     throw new EmulatorNotInstalledError(applicationName);
   }
@@ -110,7 +115,9 @@ const executeApplicationOnWindows = ({
       params.push(absoluteEntryPath);
     }
 
-    execFileSync(applicationPath, params);
+    execFileSync(applicationPath, params, {
+      encoding: "utf8",
+    });
   } else {
     throw new EmulatorNotInstalledError(applicationData.name);
   }
@@ -262,7 +269,9 @@ export const startGame = (
 export const installFlatpak = (flatpakId: string) => {
   try {
     log("debug", `Start Install ${flatpakId}`);
-    execFileSync("flatpak", ["install", "--noninteractive", flatpakId]);
+    execFileSync("flatpak", ["install", "--noninteractive", flatpakId], {
+      encoding: "utf8",
+    });
     log("debug", `End Install ${flatpakId}`);
     return true;
   } catch (error) {
