@@ -151,9 +151,11 @@ const createInputConfig = (
   sdlDevice: Sdl.Controller.Device,
   index: number,
 ): InputConfig => {
-  const openedController = sdl.controller.openDevice(sdlDevice);
+  const openedDevice = sdl.controller.openDevice(sdlDevice);
+  log("debug", "gamepad", { index, sdlDevice, openedController: openedDevice });
+
   return {
-    ...createDeviceSpecificInputConfig(openedController.controllerName),
+    ...createDeviceSpecificInputConfig(openedDevice.controllerName),
     id: createControllerId(sdlDevice.guid),
     controller_type: createControllerType(),
     player_index: `Player${index + 1}`,

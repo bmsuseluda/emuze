@@ -11,7 +11,9 @@ let flatpakAppList: string | null = null;
 
 export const updateFlatpakAppList = () => {
   log("debug", "Update flatpak app list");
-  flatpakAppList = execFileSync("flatpak", ["list", "--app"]).toString();
+  flatpakAppList = execFileSync("flatpak", ["list", "--app"], {
+    encoding: "utf8",
+  }).toString();
 };
 
 export const checkFlatpakIsInstalled = (flatpakId: string): boolean => {

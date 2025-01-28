@@ -3,6 +3,7 @@ import { isWindows } from "../../../operationsystem.server";
 import nodepath from "path";
 import { log } from "../../../debug.server";
 import { execFileSync } from "child_process";
+import sdl from "@bmsuseluda/node-sdl";
 
 const getSharedMednafenOptionParams: OptionParamFunction = () => {
   // save state F1
@@ -16,6 +17,20 @@ const getSharedMednafenOptionParams: OptionParamFunction = () => {
     ...hotkeySave,
     ...hotkeyLoad,
   ];
+};
+
+const findSdlGamepad = (gamepadId: GamepadID) => {
+  const gamepads = sdl.controller.devices;
+
+  const sdlGamepad = gamepads.find((gamepad) => {
+    const openedDevice = sdl.controller.openDevice(gamepad);
+    return (
+      gamepad.name.toLowerCase() === gamepadId.name.toLowerCase() ||
+      openedDevice.controllerName.toLowerCase() === gamepadId.name.toLowerCase()
+    );
+  });
+
+  return sdlGamepad;
 };
 
 /**
@@ -59,51 +74,119 @@ const getSharedMednafenOptionParams: OptionParamFunction = () => {
  * ;ss, Virtual Port 1, Digital Gamepad: Z
  * ss.input.port1.gamepad.z joystick 0x0005045e02e009030008000a00000000 abs_5-
  */
-export const getVirtualGamepad = (gamepadID: string, index: number) => {
-  log("debug", "gamepad", gamepadID);
+export const getVirtualGamepadSaturn = (
+  gamepadID: GamepadID,
+  index: number,
+) => {
+  const sdlGamepad = findSdlGamepad(gamepadID);
+  log("debug", "gamepad", gamepadID, sdlGamepad);
+
+  // TODO: lookup sdl mapping to know which button should be used and how, as axes or button
 
   return [
-    ...["-ss.input.port1", "gamepad"],
-    ...["-ss.input.port1.gamepad.a", `joystick ${gamepadID} button_0`],
-    ...["-ss.input.port1.gamepad.b", `joystick ${gamepadID} button_1`],
-    ...["-ss.input.port1.gamepad.c", `joystick ${gamepadID} abs_2-`],
-    ...["-ss.input.port1.gamepad.x", `joystick ${gamepadID} button_2`],
-    ...["-ss.input.port1.gamepad.y", `joystick ${gamepadID} button_3`],
-    ...["-ss.input.port1.gamepad.z", `joystick ${gamepadID} abs_5+`],
-    ...["-ss.input.port1.gamepad.start", `joystick ${gamepadID} button_7`],
-    ...["-ss.input.port1.gamepad.up", `joystick ${gamepadID} abs_7-`],
-    ...["-ss.input.port1.gamepad.down", `joystick ${gamepadID} abs_7+`],
-    ...["-ss.input.port1.gamepad.left", `joystick ${gamepadID} abs_6-`],
-    ...["-ss.input.port1.gamepad.right", `joystick ${gamepadID} abs_6+`],
-    ...["-ss.input.port1.gamepad.ls", `joystick ${gamepadID} button_4`],
-    ...["-ss.input.port1.gamepad.rs", `joystick ${gamepadID} button_5`],
-    // ...["-ss.input.port1.gamepad.a", `joystick ${gamepadID} button_0`],
-    // ...["-ss.input.port1.gamepad.b", `joystick ${gamepadID} button_1`],
-    // ...["-ss.input.port1.gamepad.c", `joystick ${gamepadID} button_5`],
-    // ...["-ss.input.port1.gamepad.x", `joystick ${gamepadID} button_2`],
-    // ...["-ss.input.port1.gamepad.y", `joystick ${gamepadID} button_3`],
-    // ...["-ss.input.port1.gamepad.z", `joystick ${gamepadID} button_7`],
-    // ...["-ss.input.port1.gamepad.start", `joystick ${gamepadID} button_9`],
-    // ...["-ss.input.port1.gamepad.up", `joystick ${gamepadID} button_13`],
-    // ...["-ss.input.port1.gamepad.down", `joystick ${gamepadID} button_14`],
-    // ...["-ss.input.port1.gamepad.left", `joystick ${gamepadID} button_15`],
-    // ...["-ss.input.port1.gamepad.right", `joystick ${gamepadID} button_16`],
-    // ...["-ss.input.port1.gamepad.ls", `joystick ${gamepadID} button_4`],
-    // ...["-ss.input.port1.gamepad.rs", `joystick ${gamepadID} button_6`],
+    ...[`-ss.input.port${index + 1}`, "gamepad"],
+    ...[
+      `-ss.input.port${index + 1}.gamepad.a`,
+      `joystick ${gamepadID.id} button_0`,
+    ],
+    ...[
+      `-ss.input.port${index + 1}.gamepad.b`,
+      `joystick ${gamepadID.id} button_1`,
+    ],
+    ...[
+      `-ss.input.port${index + 1}.gamepad.c`,
+      `joystick ${gamepadID.id} abs_2-`,
+    ],
+    ...[
+      `-ss.input.port${index + 1}.gamepad.x`,
+      `joystick ${gamepadID.id} button_2`,
+    ],
+    ...[
+      `-ss.input.port${index + 1}.gamepad.y`,
+      `joystick ${gamepadID.id} button_3`,
+    ],
+    ...[
+      `-ss.input.port${index + 1}.gamepad.z`,
+      `joystick ${gamepadID.id} abs_5+`,
+    ],
+    ...[
+      `-ss.input.port${index + 1}.gamepad.start`,
+      `joystick ${gamepadID.id} button_7`,
+    ],
+    ...[
+      `-ss.input.port${index + 1}.gamepad.up`,
+      `joystick ${gamepadID.id} abs_7-`,
+    ],
+    ...[
+      `-ss.input.port${index + 1}.gamepad.down`,
+      `joystick ${gamepadID.id} abs_7+`,
+    ],
+    ...[
+      `-ss.input.port${index + 1}.gamepad.left`,
+      `joystick ${gamepadID.id} abs_6-`,
+    ],
+    ...[
+      `-ss.input.port${index + 1}.gamepad.right`,
+      `joystick ${gamepadID.id} abs_6+`,
+    ],
+    ...[
+      `-ss.input.port${index + 1}.gamepad.ls`,
+      `joystick ${gamepadID.id} button_4`,
+    ],
+    ...[
+      `-ss.input.port${index + 1}.gamepad.rs`,
+      `joystick ${gamepadID.id} button_5`,
+    ],
   ];
 };
 
-/**
- * TODO: refactor and rename to get controller ids
- */
-const startMednafen = () => {
-  execFileSync(
-    "flatpak",
-    ["run", "--command=mednafen", "com.github.AmatCoder.mednaffe", "wrong"],
-    {
-      encoding: "utf8",
-    },
-  );
+interface MednafenError {
+  stdout: string;
+}
+
+const isMednafenError = (e: any): e is MednafenError =>
+  typeof e.stdout === "string";
+
+const extractGamepadIDs = (error: MednafenError): GamepadID[] =>
+  error.stdout
+    .split("\n")
+    .filter((line) => line.trim().startsWith("ID: "))
+    .map((line) => {
+      const [id, name] = line.trim().split("ID: ")[1].split(" - ");
+      return {
+        id,
+        name,
+      };
+    });
+
+interface GamepadID {
+  id: string;
+  name: string;
+}
+
+const getGamepads = (applicationPath?: string) => {
+  try {
+    if (isWindows() && applicationPath) {
+      execFileSync(applicationPath, ["wrong"], {
+        encoding: "utf8",
+      });
+    } else {
+      execFileSync(
+        "flatpak",
+        ["run", "--command=mednafen", "com.github.AmatCoder.mednaffe", "wrong"],
+        {
+          encoding: "utf8",
+        },
+      );
+    }
+  } catch (e) {
+    if (isMednafenError(e)) {
+      const gamepadsIDs = extractGamepadIDs(e);
+      log("debug", "mednafen gamepad IDs", gamepadsIDs);
+      return gamepadsIDs;
+    }
+  }
+  return [];
 };
 
 export const mednafen: Application = {
@@ -125,41 +208,12 @@ export const mednafen: Application = {
   createOptionParams: getSharedMednafenOptionParams,
 };
 
-interface MednafenError {
-  stdout: string;
-}
-
-const isMednafenError = (e: any): e is MednafenError =>
-  typeof e.stdout === "string";
-
-const extractGamepadIDs = (error: MednafenError) =>
-  error.stdout
-    .split("\n")
-    .filter((line) => line.trim().startsWith("ID: "))
-    .map((line) => line.trim().split("ID: ")[1].split(" - ")[0]);
-
 export const mednafenSaturn: Application = {
   ...mednafen,
   id: "mednafenSaturn",
   createOptionParams: (props) => {
-    /**
-     * TODO: run mednafen with wrong gamepath to get stdout
-     * parse gamepad id lines by 'ID:' e.g.: 'ID: 0x0003054c026881110006001100000000 - Sony PLAYSTATION(R)3 Controller\n'
-     */
-    try {
-      startMednafen();
-    } catch (e) {
-      if (isMednafenError(e)) {
-        const gamepadsIDs = extractGamepadIDs(e);
-        log("debug", "mednafen gamepad IDs", gamepadsIDs);
-        const virtualGamepads = gamepadsIDs.flatMap(getVirtualGamepad);
-        return [...getSharedMednafenOptionParams(props), ...virtualGamepads];
-      }
-
-      return [...getSharedMednafenOptionParams(props)];
-    }
-
-    return [...getSharedMednafenOptionParams(props)];
+    const virtualGamepads = getGamepads().flatMap(getVirtualGamepadSaturn);
+    return [...getSharedMednafenOptionParams(props), ...virtualGamepads];
   },
 };
 

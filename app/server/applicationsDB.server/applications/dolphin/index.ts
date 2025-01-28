@@ -47,6 +47,7 @@ export const getVirtualGamepad = (
 ) => {
   const openedDevice = sdl.controller.openDevice(sdlDevice);
   log("debug", "gamepad", { index, sdlDevice, openedDevice });
+
   const isGamecubeController = openedDevice.controllerName
     .toLowerCase()
     .includes("gamecube");

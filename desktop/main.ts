@@ -16,7 +16,26 @@ const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
   writeAppearance({ ...appearance, fullscreen });
 };
 
+const showHelp = () => {
+  console.log(`
+Usage: emuze [options]
+
+Options:
+  --help            Show help
+  --fullscreen      Start the app in fullscreen mode
+  --debugEmuze      Activates verbose logging to .emuze/emuze.log
+  --aresN64         Use ares emulator to play Nintendo 64 games
+  --no-sandbox      Necessary if emuze is used as a non steam game (Steam Deck Game Mode)
+  `);
+  app.quit();
+};
+
 app.on("ready", async () => {
+  if (app.commandLine.hasSwitch("help")) {
+    showHelp();
+    return;
+  }
+
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
       responseHeaders: {

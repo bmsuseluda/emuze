@@ -48,13 +48,14 @@ import type { Entry, MetaData } from "../../types/jsonFiles/category";
 import { general } from "../__testData__/general";
 import { fetchMetaData } from "../igdb.server";
 import { categories as categoriesDB } from "../categoriesDB.server";
-import { lime3ds, mednafen } from "../applicationsDB.server";
+import { lime3ds } from "../applicationsDB.server";
 import { getInstalledApplicationForCategory } from "../applications.server";
 import { getExpiresOn } from "../getExpiresOn.server";
 import { mameNeoGeo } from "../applicationsDB.server/applications/mame";
 import { duckstation } from "../applicationsDB.server/applications/duckstation";
 import { dosboxstaging } from "../applicationsDB.server/applications/dosbox";
 import { rpcs3 } from "../applicationsDB.server/applications/rpcs3";
+import { mednafen } from "../applicationsDB.server/applications/mednafen";
 
 vi.mock("@bmsuseluda/node-sdl");
 vi.mock("../readWriteData.server");
