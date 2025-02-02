@@ -1,28 +1,3 @@
-export type SdlButtonId =
-  | "a"
-  | "b"
-  | "x"
-  | "y"
-  | "back"
-  | "start"
-  | "guide"
-  | "dpdown"
-  | "dpleft"
-  | "dpright"
-  | "dpup"
-  | "leftshoulder"
-  | "rightshoulder"
-  | "lefttrigger"
-  | "righttrigger"
-  | "leftstick"
-  | "rightstick"
-  | "leftx"
-  | "lefty"
-  | "rightx"
-  | "righty";
-
-export type SdlButtonMapping = Partial<Record<SdlButtonId, string>>;
-
 export type AresButtonId =
   | "Pad.Up"
   | "Pad.Down"

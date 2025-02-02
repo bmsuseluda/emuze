@@ -1,15 +1,6 @@
-import type {
-  PhysicalGamepadButton,
-  SdlButtonId,
-  SdlButtonMapping,
-} from "./types";
-
-// TODO: Should this function work for HAT as well?
-const getButtonIndex = (
-  mappingObject: SdlButtonMapping,
-  buttonId: SdlButtonId,
-): string | undefined =>
-  mappingObject[buttonId]?.replace("b", "").replace("a", "");
+import type { PhysicalGamepadButton } from "./types";
+import type { SdlButtonMapping } from "../../gamepads";
+import { getButtonIndex } from "../../gamepads";
 
 export class PhysicalGamepad {
   deviceId;

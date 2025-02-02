@@ -1,5 +1,55 @@
 import type { Sdl } from "@bmsuseluda/node-sdl";
 
+export const isGamecubeController = (controllerName: string) =>
+  controllerName.toLowerCase().includes("gamecube");
+
+export type SdlButtonId =
+  | "a"
+  | "b"
+  | "x"
+  | "y"
+  | "back"
+  | "start"
+  | "guide"
+  | "dpdown"
+  | "dpleft"
+  | "dpright"
+  | "dpup"
+  | "leftshoulder"
+  | "rightshoulder"
+  | "lefttrigger"
+  | "righttrigger"
+  | "leftstick"
+  | "rightstick"
+  | "leftx"
+  | "lefty"
+  | "rightx"
+  | "righty";
+
+export type SdlButtonMapping = Partial<Record<SdlButtonId, string>>;
+
+// TODO: Should this function work for HAT as well?
+export const getButtonIndex = (
+  mappingObject: SdlButtonMapping,
+  buttonId: SdlButtonId,
+): string | undefined =>
+  mappingObject[buttonId]?.replace("b", "").replace("a", "");
+
+/**
+ *
+ * @param sdlMapping "030000004c050000c405000000010000,PS4 Controller,platform:Windows,a:b1,b:b2,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b4,leftstick:b10,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b11,righttrigger:a4,rightx:a2,righty:a5,start:b9,x:b0,y:b3,"
+ */
+export const createSdlMappingObject = (sdlMapping: string) =>
+  sdlMapping
+    .split(",")
+    .reduce<SdlButtonMapping>((accumulator, currentValue) => {
+      if (currentValue.includes(":")) {
+        const [key, value] = currentValue.split(":");
+        accumulator[key as SdlButtonId] = value;
+      }
+      return accumulator;
+    }, {});
+
 export const eightBitDoPro2 = {
   id: 0,
   name: "Xbox One Wireless Controller",

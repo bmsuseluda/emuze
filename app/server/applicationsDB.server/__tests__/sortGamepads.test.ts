@@ -1,6 +1,6 @@
 import type { Sdl } from "@bmsuseluda/node-sdl";
 import { gamepadPs3, gamepadPs4, steamDeck } from "../gamepads";
-import { sortGamepads } from "../sortGamepads";
+import { sortSteamDeckLast } from "../sortGamepads";
 
 describe("sortGamepads", () => {
   it("should sort the steam deck last", () => {
@@ -12,6 +12,6 @@ describe("sortGamepads", () => {
 
     const sortedGamepads = [gamepadPs4, gamepadPs3, steamDeck];
 
-    expect(gamepads.sort(sortGamepads)).toStrictEqual(sortedGamepads);
+    expect(gamepads.sort(sortSteamDeckLast)).toStrictEqual(sortedGamepads);
   });
 });

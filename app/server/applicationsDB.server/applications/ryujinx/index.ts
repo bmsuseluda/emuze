@@ -14,6 +14,8 @@ import sdl from "@bmsuseluda/node-sdl";
 import { emulatorsDirectory } from "../../../homeDirectory.server";
 import { keyboardConfig } from "./keyboardConfig";
 import type { ApplicationId } from "../../applicationId";
+import { isGamecubeController } from "../../gamepads";
+import { sortGamecubeLast } from "../../sortGamepads";
 
 const applicationId: ApplicationId = "ryujinx";
 const flatpakId = "org.ryujinx.Ryujinx";
@@ -131,15 +133,15 @@ const createControllerType = () => {
 };
 
 const createDeviceSpecificInputConfig = (controllerName: string) => {
-  if (controllerName.toLowerCase().includes("gamecube")) {
+  if (isGamecubeController(controllerName)) {
     return {
       ...defaultInputConfig,
       right_joycon: {
         ...defaultInputConfig.right_joycon,
-        button_x: "A",
-        button_b: "Y",
-        button_y: "X",
-        button_a: "B",
+        button_x: "X",
+        button_b: "B",
+        button_y: "Y",
+        button_a: "A",
       },
     };
   }
@@ -164,8 +166,11 @@ const createInputConfig = (
 
 const replaceConfig = (switchRomsPath: string) => {
   const gamepads = sdl.controller.devices;
+  const gamepadsSorted = gamepads.toSorted(sortGamecubeLast);
   const inputConfig =
-    gamepads.length > 0 ? gamepads.map(createInputConfig) : [keyboardConfig];
+    gamepadsSorted.length > 0
+      ? gamepadsSorted.map(createInputConfig)
+      : [keyboardConfig];
 
   const oldConfig = readConfigFile(configFilePath);
 
