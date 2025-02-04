@@ -28,7 +28,6 @@ export type SdlButtonId =
 
 export type SdlButtonMapping = Partial<Record<SdlButtonId, string>>;
 
-// TODO: Should this function work for HAT as well?
 export const getButtonIndex = (
   mappingObject: SdlButtonMapping,
   buttonId: SdlButtonId,

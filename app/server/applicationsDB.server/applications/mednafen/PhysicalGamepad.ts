@@ -1,0 +1,68 @@
+import type { SdlButtonId } from "../../gamepads";
+import { createSdlMappingObject, getButtonIndex } from "../../gamepads";
+
+export class PhysicalGamepad {
+  deviceId;
+  mappingObject;
+
+  constructor(deviceId: string, mapping: string) {
+    this.deviceId = deviceId;
+    this.mappingObject = createSdlMappingObject(mapping);
+  }
+
+  private createAbsString = (
+    sdlButtonId: SdlButtonId,
+    axisPositive: boolean,
+  ) => {
+    const buttonIndex = getButtonIndex(this.mappingObject, sdlButtonId);
+
+    if (buttonIndex) {
+      return `joystick ${this.deviceId} abs_${buttonIndex}${axisPositive ? "+" : "-"}`;
+    }
+
+    return null;
+  };
+
+  private createDpadString = (
+    sdlButtonId: SdlButtonId,
+    dpadId: number,
+    axisPositive: boolean,
+  ) => {
+    const buttonIndex = getButtonIndex(this.mappingObject, sdlButtonId);
+
+    if (buttonIndex) {
+      return `joystick ${this.deviceId} abs_${dpadId}${axisPositive ? "+" : "-"}`;
+    }
+
+    return null;
+  };
+
+  private createButtonString = (sdlButtonId: SdlButtonId) => {
+    const buttonIndex = getButtonIndex(this.mappingObject, sdlButtonId);
+
+    if (buttonIndex) {
+      return `joystick ${this.deviceId} button_${buttonIndex}`;
+    }
+
+    return null;
+  };
+
+  getDpadUp = () => this.createDpadString("dpup", 7, false);
+  getDpadDown = () => this.createDpadString("dpdown", 7, true);
+  getDpadLeft = () => this.createDpadString("dpleft", 6, false);
+  getDpadRight = () => this.createDpadString("dpright", 6, true);
+  getA = () => this.createButtonString("a");
+  getB = () => this.createButtonString("b");
+  getX = () => this.createButtonString("x");
+  getY = () => this.createButtonString("y");
+  getStart = () => this.createButtonString("start");
+  getBack = () => this.createButtonString("back");
+  getLeftTrigger = () => this.createAbsString("lefttrigger", false);
+  getRightTrigger = () => this.createAbsString("righttrigger", true);
+  getLeftShoulder = () => this.createButtonString("leftshoulder");
+  getRightShoulder = () => this.createButtonString("rightshoulder");
+  getLeftStickUp = () => this.createAbsString("lefty", false);
+  getLeftStickDown = () => this.createAbsString("lefty", true);
+  getLeftStickLeft = () => this.createAbsString("leftx", false);
+  getLeftStickRight = () => this.createAbsString("leftx", true);
+}

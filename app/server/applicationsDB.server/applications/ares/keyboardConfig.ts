@@ -54,34 +54,6 @@ const getVirtualKeyboardKey = (
   return [];
 };
 
-/**
- *   VirtualPad1
- *   Pad.Up: 0x1/0/54;;
- *   Pad.Down: 0x1/0/41;;
- *   Pad.Left: 0x1/0/40;;
- *   Pad.Right: 0x1/0/42;;
- *   Select: 0x1/0/28;;
- *   Start: 0x1/0/89;;
- *   A..South: 0x1/0/44;;
- *   B..East: 0x1/0/45;;
- *   X..West: 0x1/0/55;;
- *   Y..North: 0x1/0/43;;
- *   L-Bumper: 0x1/0/46;;
- *   R-Bumper: 0x1/0/49;;
- *   L-Trigger: 0x1/0/24;;
- *   R-Trigger: 0x1/0/25;;
- *   L-Stick..Click: 0x1/0/58;;
- *   R-Stick..Click: 0x1/0/96;;
- *   L-Up: 0x1/0/57;;
- *   L-Down: 0x1/0/53;;
- *   L-Left: 0x1/0/35;;
- *   L-Right: 0x1/0/38;;
- *   R-Up: 0x1/0/84;;
- *   R-Down: 0x1/0/85;;
- *   R-Left: 0x1/0/86;;
- *   R-Right: 0x1/0/87;;
- *   Rumble: ;;
- */
 export const getKeyboard = () => [
   ...getVirtualKeyboardKey("Pad.Up", "T"),
   ...getVirtualKeyboardKey("Pad.Down", "G"),
