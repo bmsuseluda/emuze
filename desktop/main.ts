@@ -6,6 +6,10 @@ import * as dotenv from "dotenv";
 import { autoUpdater } from "electron-updater";
 import { readAppearance, writeAppearance } from "../app/server/settings.server";
 import { createLogFile, isDebug } from "../app/server/debug.server";
+import {
+  commandLineOptions,
+  commandLineOptionsString,
+} from "../app/server/commandLine.server";
 
 dotenv.config();
 
@@ -17,21 +21,12 @@ const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
 };
 
 const showHelp = () => {
-  console.log(`
-Usage: emuze [options]
-
-Options:
-  --help            Show help
-  --fullscreen      Start the app in fullscreen mode
-  --debugEmuze      Activates verbose logging to .emuze/emuze.log
-  --aresN64         Use ares emulator to play Nintendo 64 games
-  --no-sandbox      Necessary if emuze is used as a non steam game (Steam Deck Game Mode)
-  `);
+  console.log(commandLineOptionsString);
   app.quit();
 };
 
 app.on("ready", async () => {
-  if (app.commandLine.hasSwitch("help")) {
+  if (app.commandLine.hasSwitch(commandLineOptions.help.id)) {
     showHelp();
     return;
   }
@@ -59,7 +54,8 @@ app.on("ready", async () => {
 
   const appearance = readAppearance();
   const fullscreen =
-    app.commandLine.hasSwitch("fullscreen") || appearance?.fullscreen;
+    app.commandLine.hasSwitch(commandLineOptions.fullscreen.id) ||
+    appearance?.fullscreen;
 
   const url = await initRemix({
     serverBuild: nodepath.join(__dirname, "../../build/index.js"),

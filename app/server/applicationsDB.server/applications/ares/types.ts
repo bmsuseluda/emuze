@@ -26,12 +26,13 @@ export type AresButtonId =
   | "Rumble";
 
 export type GamepadGroupId = "Axis" | "HAT" | "Button";
+export type GamepadQualifier = "Hi" | "Lo";
 
 export interface PhysicalGamepadButton {
   deviceId: string;
   groupId: GamepadGroupId;
   inputId?: string;
-  qualifier?: "Hi" | "Lo";
+  qualifier?: GamepadQualifier;
 }
 
 export interface VirtualGamepad {

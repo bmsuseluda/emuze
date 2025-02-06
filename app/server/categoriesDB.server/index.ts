@@ -14,7 +14,7 @@ import {
   aresSega32x,
   aresSegaCd,
   aresSuperNintendo,
-  isAresForN64,
+  isRmgForN64,
 } from "../applicationsDB.server/applications/ares";
 import {
   mame,
@@ -214,7 +214,7 @@ export const nintendo64: Category = {
   id: "nintendo64",
   names: ["Nintendo 64", "N64"],
   igdbPlatformIds: [4],
-  application: isAresForN64() ? ares : rosaliesMupenGui,
+  application: isRmgForN64() ? rosaliesMupenGui : ares,
   hasAnalogStick: true,
 };
 

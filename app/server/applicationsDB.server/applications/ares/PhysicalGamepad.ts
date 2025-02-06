@@ -1,6 +1,5 @@
 import type { PhysicalGamepadButton } from "./types";
-import type { SdlButtonMapping } from "../../gamepads";
-import { getButtonIndex } from "../../gamepads";
+import { getButtonIndex, isAnalog, SdlButtonMapping } from "../../gamepads";
 
 export class PhysicalGamepad {
   deviceId;
@@ -179,17 +178,23 @@ export class PhysicalGamepad {
     inputId: getButtonIndex(this.mappingObject, "rightshoulder"),
   });
 
-  getLeftTrigger = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "lefttrigger"),
-    qualifier: "Hi",
-  });
+  getLeftTrigger = (): PhysicalGamepadButton => {
+    const analog = isAnalog(this.mappingObject, "lefttrigger");
+    return {
+      deviceId: this.deviceId,
+      groupId: analog ? "Axis" : "Button",
+      inputId: getButtonIndex(this.mappingObject, "lefttrigger"),
+      qualifier: analog ? "Hi" : undefined,
+    };
+  };
 
-  getRightTrigger = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "righttrigger"),
-    qualifier: "Hi",
-  });
+  getRightTrigger = (): PhysicalGamepadButton => {
+    const analog = isAnalog(this.mappingObject, "righttrigger");
+    return {
+      deviceId: this.deviceId,
+      groupId: analog ? "Axis" : "Button",
+      inputId: getButtonIndex(this.mappingObject, "righttrigger"),
+      qualifier: analog ? "Hi" : undefined,
+    };
+  };
 }

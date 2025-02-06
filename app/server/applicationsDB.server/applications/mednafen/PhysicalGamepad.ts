@@ -1,5 +1,9 @@
-import type { SdlButtonId } from "../../gamepads";
-import { createSdlMappingObject, getButtonIndex } from "../../gamepads";
+import {
+  createSdlMappingObject,
+  getButtonIndex,
+  isAnalog,
+  SdlButtonId,
+} from "../../gamepads";
 
 export class PhysicalGamepad {
   deviceId;
@@ -57,8 +61,14 @@ export class PhysicalGamepad {
   getY = () => this.createButtonString("y");
   getStart = () => this.createButtonString("start");
   getBack = () => this.createButtonString("back");
-  getLeftTrigger = () => this.createAbsString("lefttrigger", false);
-  getRightTrigger = () => this.createAbsString("righttrigger", true);
+  getLeftTrigger = () =>
+    isAnalog(this.mappingObject, "lefttrigger")
+      ? this.createAbsString("lefttrigger", false)
+      : this.createButtonString("lefttrigger");
+  getRightTrigger = () =>
+    isAnalog(this.mappingObject, "righttrigger")
+      ? this.createAbsString("righttrigger", true)
+      : this.createButtonString("righttrigger");
   getLeftShoulder = () => this.createButtonString("leftshoulder");
   getRightShoulder = () => this.createButtonString("rightshoulder");
   getLeftStickUp = () => this.createAbsString("lefty", false);

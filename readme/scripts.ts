@@ -1,6 +1,7 @@
 import { categories } from "../app/server/categoriesDB.server";
 import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId";
 import type { SystemId } from "../app/server/categoriesDB.server/systemId";
+import { commandLineOptionsString } from "../app/server/commandLine.server";
 
 const preConfigured: ApplicationId[] = [
   "ares",
@@ -8,11 +9,12 @@ const preConfigured: ApplicationId[] = [
   "aresSega32x",
   "aresSegaCd",
   "aresSuperNintendo",
-  "scummvm",
-  "duckstation",
-  "pcsx2",
-  "ryujinx",
   "dolphin",
+  "duckstation",
+  "mednafen",
+  "pcsx2",
+  "scummvm",
+  "ryujinx",
 ];
 
 const bundled: ApplicationId[] = [
@@ -21,8 +23,9 @@ const bundled: ApplicationId[] = [
   "aresSega32x",
   "aresSegaCd",
   "aresSuperNintendo",
-  "ryujinx",
   "dolphin",
+  "duckstation",
+  "ryujinx",
 ];
 
 const biosNeeded: SystemId[] = [
@@ -109,3 +112,7 @@ export const getLinuxDownloadLink = (prefix?: string) =>
   `${prefix}[Download](${getDownloadLink(
     linuxDownloadFileName,
   )}) the latest Version of emuze`;
+
+export const getCommandLineOptions = () => `\`\`\`
+${commandLineOptionsString}
+\`\`\``;

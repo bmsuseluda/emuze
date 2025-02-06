@@ -1,4 +1,5 @@
-import { findSdlGamepad, GamepadID, getGamepads } from "./initGamepadIDs";
+import type { GamepadID} from "./initGamepadIDs";
+import { findSdlGamepad, getGamepads } from "./initGamepadIDs";
 import { log } from "../../../debug.server";
 import { VirtualGamepad } from "./VirtualGamepad";
 import { PhysicalGamepad } from "./PhysicalGamepad";

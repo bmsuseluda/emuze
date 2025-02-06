@@ -1,7 +1,7 @@
 import type { AresButtonId } from "./types";
 
 type Scancode = keyof typeof scancodes;
-const scancodes = {
+export const scancodes = {
   F1: 1,
   F2: 2,
   F3: 3,

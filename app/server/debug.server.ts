@@ -2,9 +2,10 @@ import { app } from "electron";
 import nodepath from "path";
 import { appendFileSync, existsSync, mkdirSync, writeFileSync } from "fs";
 import { homeDirectory } from "./homeDirectory.server";
+import { commandLineOptions } from "./commandLine.server";
 
 export const isDebug = () =>
-  app?.commandLine.hasSwitch("debugEmuze") ||
+  app?.commandLine.hasSwitch(commandLineOptions.debugEmuze.id) ||
   process.env.EMUZE_DEBUG === "true";
 
 const logFileName = "emuze.log";

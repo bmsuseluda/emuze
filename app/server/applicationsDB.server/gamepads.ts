@@ -34,6 +34,11 @@ export const getButtonIndex = (
 ): string | undefined =>
   mappingObject[buttonId]?.replace("b", "").replace("a", "");
 
+export const isAnalog = (
+  mappingObject: SdlButtonMapping,
+  sdlButtonId: SdlButtonId,
+) => mappingObject[sdlButtonId]?.startsWith("a");
+
 /**
  *
  * @param sdlMapping "030000004c050000c405000000010000,PS4 Controller,platform:Windows,a:b1,b:b2,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b4,leftstick:b10,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b11,righttrigger:a4,rightx:a2,righty:a5,start:b9,x:b0,y:b3,"
