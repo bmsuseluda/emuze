@@ -7,10 +7,15 @@ import type { Category } from "../../types/jsonFiles/category";
 import { applications as applicationsDB } from "../applicationsDB.server";
 
 import { startGame } from "../execute.server";
-import { createAbsoluteEntryPath, neogeo } from "../__testData__/category";
+import {
+  createAbsoluteEntryPath,
+  neogeo,
+  pcenginecd,
+  pcenginecdLinux,
+} from "../__testData__/category";
 import { general } from "../__testData__/general";
 import { existsSync } from "fs";
-import { mameNeoGeo } from "../__testData__/applications";
+import { mameNeoGeo, mednafen } from "../__testData__/applications";
 import { readFilenames } from "../readWriteData.server";
 import { when } from "vitest-when";
 import { updateFlatpakAppList } from "../applicationsDB.server/checkEmulatorIsInstalled";
@@ -54,15 +59,15 @@ describe("execute.server", () => {
 
       it("Should execute the entry with the defined application of the category", () => {
         vi.mocked(existsSync).mockReturnValueOnce(true);
-        vi.mocked(readCategory).mockReturnValueOnce(neogeo);
-        vi.mocked(readFilenames).mockReturnValue([mameNeoGeo.path]);
-        const entry = getFirstEntry(neogeo);
+        vi.mocked(readCategory).mockReturnValueOnce(pcenginecd);
+        vi.mocked(readFilenames).mockReturnValue([mednafen.path]);
+        const entry = getFirstEntry(pcenginecd);
 
-        startGame(neogeo.id, entry);
+        startGame(pcenginecd.id, entry);
 
         expect(execFileSync).toHaveBeenCalledWith(
-          mameNeoGeo.path,
-          [createAbsoluteEntryPath(neogeo.name, entry.path)],
+          mednafen.path,
+          [createAbsoluteEntryPath(pcenginecd.name, entry.path)],
           {
             encoding: "utf8",
           },
@@ -98,31 +103,29 @@ describe("execute.server", () => {
 
       it("Should add environment varables", () => {
         vi.mocked(existsSync).mockReturnValueOnce(true);
-        vi.mocked(readCategory).mockReturnValueOnce(neogeo);
-        vi.mocked(readFilenames).mockReturnValue([mameNeoGeo.path]);
-        const entry = getFirstEntry(neogeo);
+        vi.mocked(readCategory).mockReturnValueOnce(pcenginecd);
+        vi.mocked(readFilenames).mockReturnValue([mednafen.path]);
+        const entry = getFirstEntry(pcenginecd);
 
-        startGame(neogeo.id, entry);
+        startGame(pcenginecd.id, entry);
 
         expect(execFileSync).toHaveBeenCalledWith(
-          mameNeoGeo.path,
-          [createAbsoluteEntryPath(neogeo.name, entry.path)],
+          mednafen.path,
+          [createAbsoluteEntryPath(pcenginecd.name, entry.path)],
           {
             encoding: "utf8",
           },
         );
-        expect(process.env.MEDNAFEN_HOME).toBe(
-          nodepath.dirname(mameNeoGeo.path),
-        );
+        expect(process.env.MEDNAFEN_HOME).toBe(nodepath.dirname(mednafen.path));
       });
 
       it("Should not execute if emulator is not installed", () => {
         vi.mocked(existsSync).mockReturnValueOnce(false);
-        vi.mocked(readCategory).mockReturnValueOnce(neogeo);
-        vi.mocked(readFilenames).mockReturnValue([mameNeoGeo.path]);
-        const entry = getFirstEntry(neogeo);
+        vi.mocked(readCategory).mockReturnValueOnce(pcenginecd);
+        vi.mocked(readFilenames).mockReturnValue([mednafen.path]);
+        const entry = getFirstEntry(pcenginecd);
 
-        expect(() => startGame(neogeo.id, entry)).toThrowError();
+        expect(() => startGame(pcenginecd.id, entry)).toThrowError();
 
         expect(execFileSync).not.toHaveBeenCalled();
       });
@@ -146,18 +149,19 @@ describe("execute.server", () => {
             encoding: "utf8",
           })
           .thenReturn(flatpakAppList);
-        vi.mocked(readCategory).mockReturnValueOnce(neogeo);
-        const entry = getFirstEntry(neogeo);
+        vi.mocked(readCategory).mockReturnValueOnce(pcenginecdLinux);
+        const entry = getFirstEntry(pcenginecdLinux);
 
-        startGame(neogeo.id, entry);
+        startGame(pcenginecdLinux.id, entry);
 
         expect(execFileSync).toHaveBeenCalledWith(
           "flatpak",
           [
             "run",
             "--filesystem=F:/games/Emulation/roms",
-            applicationsDB.mameNeoGeo.flatpakId,
-            createAbsoluteEntryPath(neogeo.name, entry.path),
+            "--command=mednafen",
+            applicationsDB.mednafen.flatpakId,
+            createAbsoluteEntryPath(pcenginecdLinux.name, entry.path),
           ],
           {
             encoding: "utf8",
@@ -205,10 +209,10 @@ describe("execute.server", () => {
           })
           .thenReturn("");
         updateFlatpakAppList();
-        vi.mocked(readCategory).mockReturnValueOnce(neogeo);
-        const entry = getFirstEntry(neogeo);
+        vi.mocked(readCategory).mockReturnValueOnce(pcenginecdLinux);
+        const entry = getFirstEntry(pcenginecdLinux);
 
-        expect(() => startGame(neogeo.id, entry)).toThrowError();
+        expect(() => startGame(pcenginecdLinux.id, entry)).toThrowError();
 
         expect(execFileSync).toBeCalledTimes(2);
 
@@ -217,8 +221,9 @@ describe("execute.server", () => {
           [
             "run",
             "--filesystem=F:/games/Emulation/roms",
-            applicationsDB.mameNeoGeo.flatpakId,
-            createAbsoluteEntryPath(neogeo.name, entry.path),
+            "--command=mednafen",
+            applicationsDB.mednafen.flatpakId,
+            createAbsoluteEntryPath(pcenginecdLinux.name, entry.path),
           ],
           {
             encoding: "utf8",

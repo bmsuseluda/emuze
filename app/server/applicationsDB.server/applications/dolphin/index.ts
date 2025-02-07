@@ -17,6 +17,8 @@ import { defaultGamepadSettings } from "./defaultGamepadSettings";
 import { defaultHotkeys } from "./defaultHotkeys";
 import type { ApplicationId } from "../../applicationId";
 import { emulatorsDirectory } from "../../../homeDirectory.server";
+import { isGamecubeController } from "../../gamepads";
+import { defaultDolphinSettings } from "./defaultDolphinSettings";
 
 const flatpakId = "org.DolphinEmu.dolphin-emu";
 const applicationId: ApplicationId = "dolphin";
@@ -30,6 +32,11 @@ const bundledPathWindows = nodepath.join(
   "Dolphin.exe",
 );
 const configFolderPath = nodepath.join(emulatorsDirectory, applicationId);
+const dolphinConfigFileName = nodepath.join(
+  configFolderPath,
+  "Config",
+  "Dolphin.ini",
+);
 const gamepadConfigFileName = nodepath.join(
   configFolderPath,
   "Config",
@@ -48,17 +55,15 @@ export const getVirtualGamepad = (
   const openedDevice = sdl.controller.openDevice(sdlDevice);
   log("debug", "gamepad", { index, sdlDevice, openedDevice });
 
-  const isGamecubeController = openedDevice.controllerName
-    .toLowerCase()
-    .includes("gamecube");
+  const gamecubeController = isGamecubeController(openedDevice.controllerName);
 
   return [
     `[GCPad${index + 1}]`,
-    `Device = SDL/${index}/${openedDevice.controllerName}`,
-    `Buttons/A = ${isGamecubeController ? "`Button S`" : "`Button E`"}`,
-    `Buttons/B = ${isGamecubeController ? "`Button W`" : "`Button S`"}`,
-    `Buttons/X = ${isGamecubeController ? "`Button E`" : "`Button N`"}`,
-    `Buttons/Y = ${isGamecubeController ? "`Button N`" : "`Button W` | `Shoulder L`"}`,
+    `Device = SDL/0/${openedDevice.controllerName}`,
+    `Buttons/A = ${gamecubeController ? "`Button S`" : "`Button E`"}`,
+    `Buttons/B = ${gamecubeController ? "`Button W`" : "`Button S`"}`,
+    `Buttons/X = ${gamecubeController ? "`Button E`" : "`Button N`"}`,
+    `Buttons/Y = ${gamecubeController ? "`Button N`" : "`Button W` | `Shoulder L`"}`,
     `Buttons/Z = \`Shoulder R\``,
     `Buttons/Start = Start`,
     `Main Stick/Up = \`Left Y+\``,
@@ -143,6 +148,27 @@ export const replaceHotkeysFile = () =>
     replaceHotkeysSection,
   );
 
+export const replaceDolphinCoreSection: SectionReplacement = (sections) => {
+  const gamepads = sdl.controller.devices;
+  const siDevices = [
+    ...gamepads.map((_, index) => `SIDevice${index} = 6`),
+    ...resetUnusedVirtualGamepads(
+      4,
+      gamepads.length,
+      (index: number) => `SIDevice${index} = 0`,
+    ),
+  ];
+
+  return replaceSection(sections, "[Core]", siDevices);
+};
+
+export const replaceDolphinFile = () =>
+  replaceConfigSections(
+    dolphinConfigFileName,
+    defaultDolphinSettings,
+    replaceDolphinCoreSection,
+  );
+
 export const replaceConfigSections = (
   filePath: string,
   fallback: string,
@@ -170,6 +196,7 @@ export const dolphin: Application = {
       appearance: { fullscreen },
     },
   }) => {
+    replaceDolphinFile();
     replaceGamepadConfigFile();
     replaceHotkeysFile();
 
