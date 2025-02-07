@@ -130,8 +130,8 @@ export const getVirtualGamepadSaturn = (
   return [];
 };
 
-export const getVirtualGamepadsSaturn = () => {
-  const gamepads = getGamepads();
+export const getVirtualGamepadsSaturn = (applicationPath?: string) => {
+  const gamepads = getGamepads(applicationPath);
   const virtualGamepads =
     gamepads.length > 0
       ? gamepads.flatMap(getVirtualGamepadSaturn)

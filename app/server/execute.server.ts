@@ -51,7 +51,6 @@ const executeBundledApplication = ({
   );
 };
 
-// TODO: separate os specific code
 const executeApplicationOnLinux = ({
   applicationFlatpakOptionParams,
   applicationFlatpakId,
@@ -94,12 +93,14 @@ const executeApplicationOnWindows = ({
   applicationsPath,
   absoluteEntryPath,
   optionParams,
+  environmentVariables,
   omitAbsoluteEntryPathAsLastParam,
 }: {
   applicationData: Application;
   applicationsPath: string;
   absoluteEntryPath: string;
-  optionParams: string[];
+  optionParams: (applicationsPath?: string) => string[];
+  environmentVariables: (applicationsPath?: string) => void;
   omitAbsoluteEntryPathAsLastParam?: boolean;
 }) => {
   const applicationPath = getInstalledApplicationForCategoryOnWindows(
@@ -108,8 +109,9 @@ const executeApplicationOnWindows = ({
   )?.path;
 
   if (applicationPath) {
+    environmentVariables(applicationPath);
     const params = [];
-    params.push(...optionParams);
+    params.push(...optionParams(applicationPath));
 
     if (!omitAbsoluteEntryPathAsLastParam) {
       params.push(absoluteEntryPath);
@@ -124,25 +126,16 @@ const executeApplicationOnWindows = ({
 };
 
 const setEnvironmentVariables = ({
-  applicationData,
   defineEnvironmentVariables,
   categoryData,
   settings,
+  applicationPath,
 }: {
-  applicationData: Application;
   defineEnvironmentVariables: EnvironmentVariableFunction;
   categoryData: Category;
   settings: Settings;
+  applicationPath?: string;
 }) => {
-  const { applicationsPath } = settings.general;
-  const applicationPath =
-    isWindows() && applicationsPath
-      ? getInstalledApplicationForCategoryOnWindows(
-          applicationData,
-          applicationsPath,
-        )?.path
-      : undefined;
-
   Object.entries(
     defineEnvironmentVariables({
       categoryData,
@@ -186,32 +179,37 @@ export const startGame = (
         flatpakOptionParams,
       } = applicationData;
 
-      if (defineEnvironmentVariables) {
-        setEnvironmentVariables({
-          defineEnvironmentVariables,
-          categoryData,
-          settings,
-          applicationData,
-        });
-      }
-
-      const optionParams = createOptionParams
-        ? createOptionParams({
-            entryData,
+      const environmentVariables = (applicationPath?: string) => {
+        if (defineEnvironmentVariables) {
+          setEnvironmentVariables({
+            defineEnvironmentVariables,
             categoryData,
             settings,
-            absoluteEntryPath,
-            hasAnalogStick: categoryDB.hasAnalogStick,
-          })
-        : [];
+            applicationPath,
+          });
+        }
+      };
+
+      const optionParams = (applicationPath?: string) =>
+        createOptionParams
+          ? createOptionParams({
+              entryData,
+              categoryData,
+              settings,
+              absoluteEntryPath,
+              hasAnalogStick: categoryDB.hasAnalogStick,
+              applicationPath,
+            })
+          : [];
 
       try {
         if (isWindows() && generalData.applicationsPath) {
           if (applicationData.bundledPathWindows) {
+            environmentVariables();
             executeBundledApplication({
               bundledPath: applicationData.bundledPathWindows,
               absoluteEntryPath,
-              optionParams,
+              optionParams: optionParams(),
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
             });
@@ -221,16 +219,18 @@ export const startGame = (
               applicationsPath: generalData.applicationsPath,
               absoluteEntryPath,
               optionParams,
+              environmentVariables,
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
             });
           }
         } else {
+          environmentVariables();
           if (applicationData.bundledPathLinux) {
             executeBundledApplication({
               bundledPath: applicationData.bundledPathLinux,
               absoluteEntryPath,
-              optionParams,
+              optionParams: optionParams(),
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
             });
@@ -239,7 +239,7 @@ export const startGame = (
               applicationFlatpakOptionParams: flatpakOptionParams,
               applicationFlatpakId: flatpakId,
               absoluteEntryPath,
-              optionParams,
+              optionParams: optionParams(),
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
               categoriesPath: generalData.categoriesPath,

@@ -1,4 +1,4 @@
-import type { GamepadID} from "./initGamepadIDs";
+import type { GamepadID } from "./initGamepadIDs";
 import { findSdlGamepad, getGamepads } from "./initGamepadIDs";
 import { log } from "../../../debug.server";
 import { VirtualGamepad } from "./VirtualGamepad";
@@ -126,8 +126,8 @@ export const getVirtualGamepadPcEngine = (
   return [];
 };
 
-export const getVirtualGamepadsPcEngine = () => {
-  const gamepads = getGamepads();
+export const getVirtualGamepadsPcEngine = (applicationPath?: string) => {
+  const gamepads = getGamepads(applicationPath);
   const virtualGamepads =
     gamepads.length > 0
       ? gamepads.flatMap(getVirtualGamepadPcEngine)

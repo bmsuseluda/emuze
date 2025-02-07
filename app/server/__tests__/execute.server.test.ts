@@ -65,9 +65,14 @@ describe("execute.server", () => {
 
         startGame(pcenginecd.id, entry);
 
+        expect(execFileSync).toHaveBeenCalledWith(mednafen.path, ["wrong"], {
+          encoding: "utf8",
+        });
         expect(execFileSync).toHaveBeenCalledWith(
           mednafen.path,
-          [createAbsoluteEntryPath(pcenginecd.name, entry.path)],
+          expect.arrayContaining([
+            createAbsoluteEntryPath(pcenginecd.name, entry.path),
+          ]),
           {
             encoding: "utf8",
           },
@@ -109,9 +114,14 @@ describe("execute.server", () => {
 
         startGame(pcenginecd.id, entry);
 
+        expect(execFileSync).toHaveBeenCalledWith(mednafen.path, ["wrong"], {
+          encoding: "utf8",
+        });
         expect(execFileSync).toHaveBeenCalledWith(
           mednafen.path,
-          [createAbsoluteEntryPath(pcenginecd.name, entry.path)],
+          expect.arrayContaining([
+            createAbsoluteEntryPath(pcenginecd.name, entry.path),
+          ]),
           {
             encoding: "utf8",
           },
@@ -158,11 +168,23 @@ describe("execute.server", () => {
           "flatpak",
           [
             "run",
+            "--command=mednafen",
+            applicationsDB.mednafen.flatpakId,
+            "wrong",
+          ],
+          {
+            encoding: "utf8",
+          },
+        );
+        expect(execFileSync).toHaveBeenCalledWith(
+          "flatpak",
+          expect.arrayContaining([
+            "run",
             "--filesystem=F:/games/Emulation/roms",
             "--command=mednafen",
             applicationsDB.mednafen.flatpakId,
             createAbsoluteEntryPath(pcenginecdLinux.name, entry.path),
-          ],
+          ]),
           {
             encoding: "utf8",
           },
@@ -214,17 +236,17 @@ describe("execute.server", () => {
 
         expect(() => startGame(pcenginecdLinux.id, entry)).toThrowError();
 
-        expect(execFileSync).toBeCalledTimes(2);
+        expect(execFileSync).toBeCalledTimes(3);
 
         expect(execFileSync).not.toHaveBeenCalledWith(
           "flatpak",
-          [
+          expect.arrayContaining([
             "run",
             "--filesystem=F:/games/Emulation/roms",
             "--command=mednafen",
             applicationsDB.mednafen.flatpakId,
             createAbsoluteEntryPath(pcenginecdLinux.name, entry.path),
-          ],
+          ]),
           {
             encoding: "utf8",
           },

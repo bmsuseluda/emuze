@@ -4,6 +4,7 @@ import nodepath from "path";
 import { getVirtualGamepadsSaturn } from "./VirtualGamepadSaturn";
 import { getVirtualGamepadsPcEngine } from "./VirtualGamepadPcEngine";
 import { getKeyboardKey } from "./keyboardConfig";
+import { flatpakId, flatpakOptionParams } from "./definitions";
 
 const getSharedMednafenOptionParams: OptionParamFunction = () => {
   const hotkeySave = ["-command.save_state", getKeyboardKey("F1")];
@@ -27,8 +28,9 @@ export const mednafen: Application = {
   id: "mednafen",
   name: "Mednafen",
   fileExtensions: [".cue", ".pce", ".nes", ".sms", ".gg"],
-  flatpakId: "com.github.AmatCoder.mednaffe",
-  flatpakOptionParams: ["--command=mednafen"],
+  flatpakId,
+  flatpakOptionParams,
+  executable: "mednafen.exe",
   defineEnvironmentVariables: ({ applicationPath }) => {
     const environmentVariables = {};
     if (isWindows() && applicationPath) {
@@ -47,8 +49,8 @@ export const mednafenSaturn: Application = {
   id: "mednafenSaturn",
   createOptionParams: (props) => {
     return [
-      ...getSharedMednafenOptionParams(props),
-      ...getVirtualGamepadsSaturn(),
+      ...mednafen.createOptionParams!(props),
+      ...getVirtualGamepadsSaturn(props.applicationPath),
     ];
   },
 };
@@ -58,8 +60,8 @@ export const mednafenPcEngineCD: Application = {
   id: "mednafenPcEngineCD",
   createOptionParams: (props) => {
     return [
-      ...getSharedMednafenOptionParams(props),
-      ...getVirtualGamepadsPcEngine(),
+      ...mednafen.createOptionParams!(props),
+      ...getVirtualGamepadsPcEngine(props.applicationPath),
     ];
   },
 };

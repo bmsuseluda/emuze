@@ -2,6 +2,8 @@ import { isWindows } from "../../../operationsystem.server";
 import { execFileSync } from "child_process";
 import { log } from "../../../debug.server";
 import sdl from "@bmsuseluda/node-sdl";
+import { checkFlatpakIsInstalled } from "../../checkEmulatorIsInstalled";
+import { flatpakId, flatpakOptionParams } from "./definitions";
 
 interface MednafenError {
   stdout: string;
@@ -34,13 +36,15 @@ export const getGamepads = (applicationPath?: string) => {
         encoding: "utf8",
       });
     } else {
-      execFileSync(
-        "flatpak",
-        ["run", "--command=mednafen", "com.github.AmatCoder.mednaffe", "wrong"],
-        {
-          encoding: "utf8",
-        },
-      );
+      if (checkFlatpakIsInstalled(flatpakId)) {
+        execFileSync(
+          "flatpak",
+          ["run", ...flatpakOptionParams, flatpakId, "wrong"],
+          {
+            encoding: "utf8",
+          },
+        );
+      }
     }
   } catch (e) {
     if (isMednafenError(e)) {
