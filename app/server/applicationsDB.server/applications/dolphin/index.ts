@@ -162,11 +162,15 @@ export const replaceDolphinCoreSection: SectionReplacement = (sections) => {
   return replaceSection(sections, "[Core]", siDevices);
 };
 
+export const replaceDolphinAutoUpdateSection: SectionReplacement = (sections) =>
+  replaceSection(sections, "[AutoUpdate]", ["UpdateTrack = "]);
+
 export const replaceDolphinFile = () =>
   replaceConfigSections(
     dolphinConfigFileName,
     defaultDolphinSettings,
     replaceDolphinCoreSection,
+    replaceDolphinAutoUpdateSection,
   );
 
 export const replaceConfigSections = (

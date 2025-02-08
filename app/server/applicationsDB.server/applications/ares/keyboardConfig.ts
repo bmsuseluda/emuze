@@ -1,4 +1,5 @@
 import type { AresButtonId } from "./types";
+import { isWindows } from "../../../operationsystem.server";
 
 type Scancode = keyof typeof scancodes;
 export const scancodes = {
@@ -10,7 +11,7 @@ export const scancodes = {
   F: 40,
   H: 42,
   BACKSPACE: 28,
-  RETURN: 89,
+  RETURN: isWindows() ? 91 : 89,
   J: 44,
   K: 45,
   U: 55,

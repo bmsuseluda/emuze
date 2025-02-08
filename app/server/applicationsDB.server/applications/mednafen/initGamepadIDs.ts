@@ -30,27 +30,29 @@ const extractGamepadIDs = (error: MednafenError): GamepadID[] =>
     });
 
 export const getGamepads = (applicationPath?: string) => {
-  try {
-    if (isWindows() && applicationPath) {
-      execFileSync(applicationPath, ["wrong"], {
-        encoding: "utf8",
-      });
-    } else {
-      if (checkFlatpakIsInstalled(flatpakId)) {
-        execFileSync(
-          "flatpak",
-          ["run", ...flatpakOptionParams, flatpakId, "wrong"],
-          {
-            encoding: "utf8",
-          },
-        );
+  if (sdl.controller.devices.length > 0) {
+    try {
+      if (isWindows() && applicationPath) {
+        execFileSync(applicationPath, ["wrong"], {
+          encoding: "utf8",
+        });
+      } else {
+        if (checkFlatpakIsInstalled(flatpakId)) {
+          execFileSync(
+            "flatpak",
+            ["run", ...flatpakOptionParams, flatpakId, "wrong"],
+            {
+              encoding: "utf8",
+            },
+          );
+        }
       }
-    }
-  } catch (e) {
-    if (isMednafenError(e)) {
-      const gamepadsIDs = extractGamepadIDs(e);
-      log("debug", "mednafen gamepad IDs", gamepadsIDs);
-      return gamepadsIDs;
+    } catch (e) {
+      if (isMednafenError(e)) {
+        const gamepadsIDs = extractGamepadIDs(e);
+        log("debug", "mednafen gamepad IDs", gamepadsIDs);
+        return gamepadsIDs;
+      }
     }
   }
   return [];

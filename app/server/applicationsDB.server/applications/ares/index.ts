@@ -330,6 +330,7 @@ const getSharedAresOptionParams: OptionParamFunction = ({
     ...hotkeyLoad,
     ...inputSDL,
     ...getVirtualGamepads(hasAnalogStick),
+    "--no-file-prompt",
   ];
   if (fullscreen) {
     optionParams.push("--fullscreen");

@@ -1,12 +1,16 @@
-import type { Application, OptionParamFunction } from "../../types";
-import { isWindows } from "../../../operationsystem.server";
+import type {Application, OptionParamFunction} from "../../types";
+import {isWindows} from "../../../operationsystem.server";
 import nodepath from "path";
-import { getVirtualGamepadsSaturn } from "./VirtualGamepadSaturn";
-import { getVirtualGamepadsPcEngine } from "./VirtualGamepadPcEngine";
-import { getKeyboardKey } from "./keyboardConfig";
-import { flatpakId, flatpakOptionParams } from "./definitions";
+import {getVirtualGamepadsSaturn} from "./VirtualGamepadSaturn";
+import {getVirtualGamepadsPcEngine} from "./VirtualGamepadPcEngine";
+import {getKeyboardKey} from "./keyboardConfig";
+import {flatpakId, flatpakOptionParams} from "./definitions";
 
-const getSharedMednafenOptionParams: OptionParamFunction = () => {
+const getSharedMednafenOptionParams: OptionParamFunction = ({
+  settings: {
+    appearance: { fullscreen },
+  },
+}) => {
   const hotkeySave = ["-command.save_state", getKeyboardKey("F1")];
   const hotkeyLoad = ["-command.load_state", getKeyboardKey("F3")];
   const hotkeyCommandKey = ["-command.input_configc", getKeyboardKey("F2")];
@@ -14,6 +18,7 @@ const getSharedMednafenOptionParams: OptionParamFunction = () => {
   const soundDevice = !isWindows()
     ? ["-sound.device", "sexyal-literal-default"]
     : [];
+  const setFullscreen = fullscreen ? ["-command.video.fs", "1"] : [];
 
   return [
     ...hotkeyCommandKey,
@@ -21,6 +26,7 @@ const getSharedMednafenOptionParams: OptionParamFunction = () => {
     ...hotkeySave,
     ...hotkeyLoad,
     ...soundDevice,
+    ...setFullscreen,
   ];
 };
 
@@ -37,6 +43,7 @@ export const mednafen: Application = {
       return {
         ...environmentVariables,
         MEDNAFEN_HOME: nodepath.dirname(applicationPath),
+        MEDNAFEN_NOPOPUPS: 1,
       };
     }
     return environmentVariables;
