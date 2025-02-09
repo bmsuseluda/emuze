@@ -109,7 +109,7 @@
     "cross-env": "^7.0.3",
     "decompress": "^4.2.1",
     "del-cli": "^5.1.0",
-    "electron": "33.2.1",
+    "electron": "34.1.1",
     "electron-builder": "24.13.3",
     "eslint": "^8.57.1",
     "eslint-plugin-react": "^7.36.1",
