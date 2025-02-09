@@ -50,8 +50,8 @@ The following systems are supported:
 | Nintendo Wii U | [Cemu](https://github.com/cemu-project/Cemu) | No | No | Yes | 
 | Nintendo Switch | [Ryujinx](https://github.com/GreemDev/Ryujinx) | Yes | Yes | Yes | 
 | PC Engine | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
-| PC Engine CD | [Mednafen](https://mednafen.github.io/) | No | No | Yes | 
-| PC Engine SuperGrafx | [Mednafen](https://mednafen.github.io/) | No | No | Yes | 
+| PC Engine CD | [Mednafen](https://mednafen.github.io/) | Yes | No | Yes | 
+| PC Engine SuperGrafx | [Mednafen](https://mednafen.github.io/) | Yes | No | Yes | 
 | Sega Master System | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
 | Sega Game Gear | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
 | Sega Mega Drive | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
@@ -139,6 +139,9 @@ For now emuze is only released as an AppImage.
 #### Steam Input Profile
 
 There is a Steam Input Profile with the name `emuze`, which has some Hotkeys pre configured on the back pedals of the Steam Deck.
+
+> [!IMPORTANT]
+> Steam Input can result in gamepads not being able to be used correctly in some emulators. Therefore, I recommend disabling Steam Input for all gamepads except the Steam Deck controller.
 
 #### SteamGridDB
 
