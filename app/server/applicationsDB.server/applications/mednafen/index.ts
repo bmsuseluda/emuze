@@ -15,6 +15,7 @@ const getSharedMednafenOptionParams: OptionParamFunction = ({
   const hotkeyLoad = ["-command.load_state", getKeyboardKey("F3")];
   const hotkeyHelp = ["-command.toggle_help", getKeyboardKey("F2")];
   const hotkeyCommandKey = ["-command.input_configc", getKeyboardKey("F4")];
+  const hotkeySyncAnalog = ["-command.input_config_abd", getKeyboardKey("F5")];
   const hotkeyFullscreen = ["-command.toggle_fs", getKeyboardKey("F11")];
   const soundDevice = !isWindows()
     ? ["-sound.device", "sexyal-literal-default"]
@@ -25,6 +26,7 @@ const getSharedMednafenOptionParams: OptionParamFunction = ({
     ...hotkeyHelp,
     ...hotkeyCommandKey,
     ...hotkeyFullscreen,
+    ...hotkeySyncAnalog,
     ...hotkeySave,
     ...hotkeyLoad,
     ...soundDevice,

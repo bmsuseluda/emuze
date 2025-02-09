@@ -16,12 +16,12 @@ export class PhysicalGamepad {
 
   private createAbsString = (
     sdlButtonId: SdlButtonId,
-    axisPositive: boolean,
+    axis: "+" | "-" | "-+",
   ) => {
     const buttonIndex = getButtonIndex(this.mappingObject, sdlButtonId);
 
     if (buttonIndex) {
-      return `joystick ${this.deviceId} abs_${buttonIndex}${axisPositive ? "+" : "-"}`;
+      return `joystick ${this.deviceId} abs_${buttonIndex}${axis}`;
     }
 
     return null;
@@ -63,16 +63,16 @@ export class PhysicalGamepad {
   getBack = () => this.createButtonString("back");
   getLeftTrigger = () =>
     isAnalog(this.mappingObject, "lefttrigger")
-      ? this.createAbsString("lefttrigger", false)
+      ? this.createAbsString("lefttrigger", "-+")
       : this.createButtonString("lefttrigger");
   getRightTrigger = () =>
     isAnalog(this.mappingObject, "righttrigger")
-      ? this.createAbsString("righttrigger", true)
+      ? this.createAbsString("righttrigger", "-+")
       : this.createButtonString("righttrigger");
   getLeftShoulder = () => this.createButtonString("leftshoulder");
   getRightShoulder = () => this.createButtonString("rightshoulder");
-  getLeftStickUp = () => this.createAbsString("lefty", false);
-  getLeftStickDown = () => this.createAbsString("lefty", true);
-  getLeftStickLeft = () => this.createAbsString("leftx", false);
-  getLeftStickRight = () => this.createAbsString("leftx", true);
+  getLeftStickUp = () => this.createAbsString("lefty", "-");
+  getLeftStickDown = () => this.createAbsString("lefty", "+");
+  getLeftStickLeft = () => this.createAbsString("leftx", "-");
+  getLeftStickRight = () => this.createAbsString("leftx", "+");
 }
