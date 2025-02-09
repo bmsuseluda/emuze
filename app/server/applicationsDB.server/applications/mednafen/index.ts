@@ -71,6 +71,9 @@ export const mednafenPcEngineCD: Application = {
   id: "mednafenPcEngineCD",
   createOptionParams: (props) => {
     return [
+      ...["-pce.cddavolume", "100"], // music
+      ...["-pce.cdpsgvolume", "50"], // shooting
+      ...["-pce.adpcmvolume", "50"], // explosions
       ...mednafen.createOptionParams!(props),
       ...getVirtualGamepadsPcEngine(props.applicationPath),
     ];
