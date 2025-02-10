@@ -99,7 +99,6 @@ export const getVirtualGamepadSaturn = (
       gamepadID.id,
       sdlGamepad.mapping,
     );
-    // TODO: disable buttons not used
 
     return [
       ...initialize(),
