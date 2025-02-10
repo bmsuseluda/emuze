@@ -46,6 +46,7 @@ The following Hotkeys are set:
 - Open Emulator Menu (if supported from emulator): F2
 - Save State: F1
 - Load State: F3
+- Fullscreen: F11
 
 ### Bundled
 If a system is bundled, the respective emulator is provided with emuze in a specific version. Therefore you do not need to provide the emulator on your own. 
