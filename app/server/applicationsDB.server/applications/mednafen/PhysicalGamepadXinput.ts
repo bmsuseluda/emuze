@@ -88,8 +88,8 @@ export class PhysicalGamepadXinput implements PhysicalGamepadInterface {
       : this.createButtonString("righttrigger");
   getLeftShoulder = () => this.createButtonString("leftshoulder");
   getRightShoulder = () => this.createButtonString("rightshoulder");
-  getLeftStickUp = () => this.createAbsString("lefty", "-");
-  getLeftStickDown = () => this.createAbsString("lefty", "+");
+  getLeftStickUp = () => this.createAbsString("lefty", "+");
+  getLeftStickDown = () => this.createAbsString("lefty", "-");
   getLeftStickLeft = () => this.createAbsString("leftx", "-");
   getLeftStickRight = () => this.createAbsString("leftx", "+");
 }
