@@ -57,7 +57,7 @@ The following systems are supported:
 | Sega Mega Drive | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
 | Sega 32X | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | Yes | 
 | Sega CD | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | Yes | 
-| Sega Saturn | [Mednafen](https://mednafen.github.io/) | No | No | Yes | 
+| Sega Saturn | [Mednafen](https://mednafen.github.io/) | Yes | No | Yes | 
 | Sega Dreamcast | [Flycast](https://github.com/flyinghead/flycast) | No | No | No | 
 | Arcade | [Mame](https://github.com/mamedev/mame) | No | No | No | 
 | Neo Geo | [Mame](https://github.com/mamedev/mame) | No | No | No | 
