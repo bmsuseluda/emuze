@@ -10,12 +10,13 @@ If your roms are named correctly, a click on the import button should import you
 
 ## 💥 Features
 
-- ⚡️ Fast and responsive UI  
-- 🚂 Import all your emulators and roms with a click of a button  
-- 🪄 Fetches Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms  
-- 🎮️ Gamepad support 
-- 💻️ Windows, Linux and Steam Deck support  
-- 🔧 Can install missing emulators (Linux only)  
+- ⚡️ Fast and responsive UI
+- 🚂 Import all your emulators and roms with a click of a button
+- 🪄 Fetches Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
+- 🎮️ Gamepad support
+- 💻️ Windows, Linux and Steam Deck support
+- 🔧 Can install missing emulators (Linux only)
+- 💫 Updates itself
 
 <br>
 
@@ -31,7 +32,7 @@ If your roms are named correctly, a click on the import button should import you
 The following systems are supported:
 
 | System | Emulator | Pre Configured | Bundled | BIOS needed |
-|--------|----------|----------------|---------|-------------|
+| ------ | -------- | -------------- | ------- | ----------- |
 ```mmd
 return scripts.createSystemsTable()
 ```
@@ -45,6 +46,7 @@ The following Hotkeys are set:
 - Open Emulator Menu (if supported from emulator): F2
 - Save State: F1
 - Load State: F3
+- Fullscreen: F11
 
 ### Bundled
 If a system is bundled, the respective emulator is provided with emuze in a specific version. Therefore you do not need to provide the emulator on your own. 
@@ -69,24 +71,24 @@ You can change the folders in the settings.
 
 #### Emulators Folder (Windows only)
 
-This is the folder where your emulators are installed. It is only necessary on Windows.
+This is the folder where your emulators are installed. It is only necessary on Windows and only for emulators not bundled by emuze.
 
 ```
 emulators
-|-> ares-v135
+|-> ppsspp_win
 |---> ...
-|---> ares.exe
+|---> PPSSPPWindows64.exe
 |---> ...
-|-> duckstation-Windows-x64-release
+|-> mednafen-1.32.1-win64
 |---> ...
-|---> duckstation-qt-x64-ReleaseLTCG.exe
+|---> mednafen.exe
 |---> ...
 ```
 
 ### Linux
 
 For now emuze is only released as an AppImage. Your Linux distribution needs to support Flatpaks.
-All emulators need to be installed via flatpak but emuze can do this for you.
+All emulators, not bundled, need to be installed via flatpak but emuze can do this for you.
 
 ```mmd
 return scripts.getLinuxDownloadLink('1) ')
@@ -111,6 +113,13 @@ return scripts.getLinuxDownloadLink('2) ')
 #### Steam Input Profile
 
 There is a Steam Input Profile with the name `emuze`, which has some Hotkeys pre configured on the back pedals of the Steam Deck.
+
+> [!IMPORTANT]
+> Steam Input can result in gamepads not being able to be used correctly in some emulators. Therefore, I recommend disabling Steam Input for all gamepads except the Steam Deck controller.
+
+#### SteamGridDB
+
+There are several assets for emuze on [SteamGridDB](https://www.steamgriddb.com/game/5441011) which you can use via the SteamGridDB Plugin in [Decky Loader](https://github.com/SteamDeckHomebrew/decky-loader).
 
 ### Roms Folder
 
@@ -161,6 +170,12 @@ If you have a game with multiple discs, like `Final Fantasy VII`, the file name 
 ### Games with multiple Versions (e.g. Regions)
 
 If you have multiple versions of a game you can specify them in brackets, e.g. the file name for the japanese version of `Castlevania` would be `Castlevania (J).nes`.
+
+## 🔧 Commandline Options
+
+```mmd
+return scripts.getCommandLineOptions()
+```
 
 ## 🚑️ Support
 

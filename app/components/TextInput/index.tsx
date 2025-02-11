@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { styled } from "../../../styled-system/jsx";
 
 import { MdErrorOutline } from "react-icons/md";
-import { Typography } from "../Typography";
 
 const Input = styled("input", {
   base: {
@@ -11,15 +10,15 @@ const Input = styled("input", {
     borderColor: "sidebarBackgroundColor",
     backgroundColor: "backgroundColor",
     color: "color",
-    paddingTop: "1",
-    paddingBottom: "1",
+    paddingTop: "0.5rem",
+    paddingBottom: "0.5rem",
     paddingLeft: "1",
     borderRadius: "1",
     outline: "none",
     width: "100%",
     boxSizing: "border-box",
     fontFamily: "inherit",
-    fontSize: "100%",
+    fontSize: "90%",
     fontWeight: 400,
 
     "&:focus": {
@@ -69,15 +68,23 @@ const Error = styled("p", {
     color: "error",
     display: "flex",
     gap: "0.5rem",
-    alignItems: "center",
     flexWrap: "nowrap",
+    fontSize: "90%",
 
     "& > svg": {
       width: "1.3rem",
       aspectRatio: "1",
       verticalAlign: "middle",
-      flexShrink: "0",
     },
+  },
+});
+
+const ErrorIcon = styled("div", {
+  base: {
+    height: "1lh",
+    display: "flex",
+    alignItems: "center",
+    flexShrink: "0",
   },
 });
 
@@ -87,8 +94,10 @@ interface ErrorMessageProps {
 
 const ErrorMessage = ({ children }: ErrorMessageProps) => (
   <Error>
-    <MdErrorOutline />
-    <Typography>{children}</Typography>
+    <ErrorIcon>
+      <MdErrorOutline />
+    </ErrorIcon>
+    <span>{children}</span>
   </Error>
 );
 
@@ -97,6 +106,7 @@ const Wrapper = styled("div", {
     display: "flex",
     gap: "0.5rem",
     flexDirection: "column",
+    lineHeight: "inherit",
   },
 });
 

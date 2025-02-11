@@ -58,6 +58,7 @@ export const useGamepads = () => {
   const { throttleFunction } = useThrottlePress();
   const requestAnimationFrameRef = useRef<number>();
   const focusRef = useRef<boolean>(true);
+  const isEnabled = useRef<boolean>(true);
   const [gamepadType, setGamepadType] = useState<GamepadType>();
 
   // TODO: split function
@@ -159,6 +160,7 @@ export const useGamepads = () => {
 
   const disableGamepads = useCallback(() => {
     focusRef.current = false;
+    isEnabled.current = false;
     if (requestAnimationFrameRef.current) {
       cancelAnimationFrame(requestAnimationFrameRef.current);
     }
@@ -166,6 +168,7 @@ export const useGamepads = () => {
 
   const enableGamepads = useCallback(() => {
     focusRef.current = true;
+    isEnabled.current = true;
     requestAnimationFrameRef.current = requestAnimationFrame(update);
   }, [update]);
 
@@ -198,5 +201,6 @@ export const useGamepads = () => {
     gamepadType,
     disableGamepads,
     enableGamepads,
+    isEnabled,
   };
 };

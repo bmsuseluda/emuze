@@ -47,8 +47,8 @@ export const mameNeoGeo: Application = {
 export const mameNeoGeoCD: Application = {
   ...mame,
   id: "mameNeoGeoCD",
-  createOptionParams: (...props) => [
-    ...getSharedMameOptionParams(...props),
+  createOptionParams: (props) => [
+    ...getSharedMameOptionParams(props),
     "neocdz",
     "-cdrm",
   ],

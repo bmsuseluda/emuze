@@ -23,24 +23,32 @@ const getPngName = (size: (typeof sizes)[number]) =>
 
 try {
   sizes.forEach((size) => {
-    execFileSync("flatpak", [
-      "run",
-      "org.inkscape.Inkscape",
-      "-w",
-      size,
-      "-h",
-      size,
-      "-o",
-      getPngName(size),
-      nodepath.join("artwork", "icon.svg"),
-    ]);
+    execFileSync(
+      "flatpak",
+      [
+        "run",
+        "org.inkscape.Inkscape",
+        "-w",
+        size,
+        "-h",
+        size,
+        "-o",
+        getPngName(size),
+        nodepath.join("artwork", "icon.svg"),
+      ],
+      {
+        encoding: "utf8",
+      },
+    );
   });
 
-  execFileSync("magick", [
-    "convert",
-    ...sizes.map(getPngName),
-    nodepath.join("public", "icon.ico"),
-  ]);
+  execFileSync(
+    "magick",
+    ["convert", ...sizes.map(getPngName), nodepath.join("public", "icon.ico")],
+    {
+      encoding: "utf8",
+    },
+  );
 } catch (e) {
   console.log(e);
 }

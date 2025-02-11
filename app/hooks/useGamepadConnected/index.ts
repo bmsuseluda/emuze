@@ -9,11 +9,12 @@ export const useGamepadConnected = () => {
     );
   }
 
-  const { gamepadType, disableGamepads, enableGamepads } = context;
+  const { gamepadType, disableGamepads, enableGamepads, isEnabled } = context;
 
   return {
     gamepadType,
     disableGamepads,
     enableGamepads,
+    isEnabled,
   };
 };

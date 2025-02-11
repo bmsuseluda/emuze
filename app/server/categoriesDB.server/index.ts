@@ -2,7 +2,6 @@ import {
   cemu,
   flycast,
   lime3ds,
-  mednafen,
   melonds,
   mgba,
   ppsspp,
@@ -15,6 +14,7 @@ import {
   aresSega32x,
   aresSegaCd,
   aresSuperNintendo,
+  isRmgForN64,
 } from "../applicationsDB.server/applications/ares";
 import {
   mame,
@@ -29,6 +29,11 @@ import { duckstation } from "../applicationsDB.server/applications/duckstation";
 import { pcsx2 } from "../applicationsDB.server/applications/pcsx2";
 import { ryujinx } from "../applicationsDB.server/applications/ryujinx";
 import { dolphin } from "../applicationsDB.server/applications/dolphin";
+import {
+  mednafenPcEngineCD,
+  mednafenPcEngineSuperGrafx,
+  mednafenSaturn,
+} from "../applicationsDB.server/applications/mednafen";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",
@@ -209,7 +214,7 @@ export const nintendo64: Category = {
   id: "nintendo64",
   names: ["Nintendo 64", "N64"],
   igdbPlatformIds: [4],
-  application: rosaliesMupenGui,
+  application: isRmgForN64() ? rosaliesMupenGui : ares,
   hasAnalogStick: true,
 };
 
@@ -241,7 +246,7 @@ export const segasaturn: Category = {
   id: "segasaturn",
   names: ["Sega Saturn", "Saturn"],
   igdbPlatformIds: [32],
-  application: mednafen,
+  application: mednafenSaturn,
   hasAnalogStick: true,
 };
 
@@ -265,7 +270,7 @@ export const pcenginecd: Category = {
   id: "pcenginecd",
   names: ["PC Engine CD", "TurboGrafx-CD", "TurboGrafx CD"],
   igdbPlatformIds: [150],
-  application: mednafen,
+  application: mednafenPcEngineCD,
   hasAnalogStick: false,
 };
 
@@ -273,7 +278,7 @@ export const pcenginesupergrafx: Category = {
   id: "pcenginesupergrafx",
   names: ["PC Engine SuperGrafx", "SuperGrafx"],
   igdbPlatformIds: [128],
-  application: mednafen,
+  application: mednafenPcEngineSuperGrafx,
   hasAnalogStick: false,
 };
 

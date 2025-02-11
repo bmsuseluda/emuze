@@ -1,6 +1,6 @@
 import type { Application } from "../../types";
-import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
+import type { Sdl } from "@bmsuseluda/node-sdl";
+import sdl from "@bmsuseluda/node-sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
 import { log } from "../../../debug.server";
 import fs from "fs";
@@ -10,13 +10,25 @@ import type { SectionReplacement } from "../../configFile";
 import {
   chainSectionReplacements,
   findConfigFile,
-  getFlatpakConfigPath,
   replaceSection,
   splitConfigBySection,
   writeConfig,
 } from "../../configFile";
 import nodepath from "path";
 import { defaultSettings } from "./defaultSettings";
+import type { ApplicationId } from "../../applicationId";
+
+const flatpakId = "org.duckstation.DuckStation";
+const applicationId: ApplicationId = "duckstation";
+const bundledPathLinux = nodepath.join(
+  applicationId,
+  "DuckStation-x64.AppImage",
+);
+const bundledPathWindows = nodepath.join(
+  applicationId,
+  "duckstation-qt-x64-ReleaseLTCG.exe",
+);
+const configFileName = "settings.ini";
 
 export const getVirtualGamepad = (
   sdlDevice: Sdl.Controller.Device,
@@ -115,9 +127,6 @@ export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
 export const replaceControllerPortsConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[ControllerPorts]", ["MultitapMode = Port1Only"]);
 
-const flatpakId = "org.duckstation.DuckStation";
-const configFileName = "settings.ini";
-
 /**
  * look into application folder for config file, if not then home folder
  */
@@ -144,7 +153,6 @@ export const getWindowsConfigFilePath = (
 };
 
 export const getConfigFilePath = (
-  flatpakId: string,
   configFileName: string,
   applicationPath?: string,
 ) => {
@@ -152,7 +160,9 @@ export const getConfigFilePath = (
     return getWindowsConfigFilePath(configFileName, applicationPath);
   } else {
     return nodepath.join(
-      getFlatpakConfigPath(flatpakId),
+      homedir(),
+      ".local",
+      "share",
       "duckstation",
       configFileName,
     );
@@ -174,11 +184,7 @@ const readConfigFile = (filePath: string) => {
 };
 
 export const replaceConfigSections = (applicationPath?: string) => {
-  const filePath = getConfigFilePath(
-    flatpakId,
-    configFileName,
-    applicationPath,
-  );
+  const filePath = getConfigFilePath(configFileName, applicationPath);
   const fileContent = readConfigFile(filePath);
 
   const sections = splitConfigBySection(fileContent);
@@ -196,8 +202,8 @@ export const replaceConfigSections = (applicationPath?: string) => {
 };
 
 export const duckstation: Application = {
-  id: "duckstation",
-  name: "DuckStation",
+  id: applicationId,
+  name: "DuckStation (Legacy)",
   fileExtensions: [".chd", ".cue"],
   flatpakId,
   createOptionParams: ({
@@ -216,4 +222,6 @@ export const duckstation: Application = {
     }
     return optionParams;
   },
+  bundledPathLinux,
+  bundledPathWindows,
 };

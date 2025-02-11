@@ -22,7 +22,7 @@ import { categories as categoriesDB } from "../categoriesDB.server";
 import { getExpiresOn } from "../getExpiresOn.server";
 import type { Entry } from "../../types/jsonFiles/category";
 
-vi.mock("@kmamal/sdl");
+vi.mock("@bmsuseluda/node-sdl");
 vi.mock("../openDialog.server.ts");
 
 const igdbRequestMock = vi.fn();

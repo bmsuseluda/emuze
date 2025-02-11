@@ -20,7 +20,7 @@ import { readFilenames } from "../readWriteData.server";
 import { when } from "vitest-when";
 import { updateFlatpakAppList } from "../applicationsDB.server/checkEmulatorIsInstalled";
 
-vi.mock("@kmamal/sdl");
+vi.mock("@bmsuseluda/node-sdl");
 vi.mock("child_process");
 vi.mock("fs");
 vi.mock("../readWriteData.server");
@@ -65,9 +65,18 @@ describe("execute.server", () => {
 
         startGame(pcenginecd.id, entry);
 
-        expect(execFileSync).toHaveBeenCalledWith(mednafen.path, [
-          createAbsoluteEntryPath(pcenginecd.name, entry.path),
-        ]);
+        expect(execFileSync).toHaveBeenCalledWith(mednafen.path, ["wrong"], {
+          encoding: "utf8",
+        });
+        expect(execFileSync).toHaveBeenCalledWith(
+          mednafen.path,
+          expect.arrayContaining([
+            createAbsoluteEntryPath(pcenginecd.name, entry.path),
+          ]),
+          {
+            encoding: "utf8",
+          },
+        );
       });
 
       it("Should add optional params", () => {
@@ -79,16 +88,22 @@ describe("execute.server", () => {
 
         startGame(neogeo.id, entry);
 
-        expect(execFileSync).toHaveBeenCalledWith(mameNeoGeo.path, [
-          "-w",
-          "-rompath",
-          entryDirname,
-          "-cfg_directory",
-          nodepath.join(entryDirname, "cfg"),
-          "-nvram_directory",
-          nodepath.join(entryDirname, "nvram"),
-          createAbsoluteEntryPath(neogeo.name, entry.path),
-        ]);
+        expect(execFileSync).toHaveBeenCalledWith(
+          mameNeoGeo.path,
+          [
+            "-w",
+            "-rompath",
+            entryDirname,
+            "-cfg_directory",
+            nodepath.join(entryDirname, "cfg"),
+            "-nvram_directory",
+            nodepath.join(entryDirname, "nvram"),
+            createAbsoluteEntryPath(neogeo.name, entry.path),
+          ],
+          {
+            encoding: "utf8",
+          },
+        );
       });
 
       it("Should add environment varables", () => {
@@ -99,9 +114,18 @@ describe("execute.server", () => {
 
         startGame(pcenginecd.id, entry);
 
-        expect(execFileSync).toHaveBeenCalledWith(mednafen.path, [
-          createAbsoluteEntryPath(pcenginecd.name, entry.path),
-        ]);
+        expect(execFileSync).toHaveBeenCalledWith(mednafen.path, ["wrong"], {
+          encoding: "utf8",
+        });
+        expect(execFileSync).toHaveBeenCalledWith(
+          mednafen.path,
+          expect.arrayContaining([
+            createAbsoluteEntryPath(pcenginecd.name, entry.path),
+          ]),
+          {
+            encoding: "utf8",
+          },
+        );
         expect(process.env.MEDNAFEN_HOME).toBe(nodepath.dirname(mednafen.path));
       });
 
@@ -131,25 +155,47 @@ describe("execute.server", () => {
 
       it("Should execute the entry with the defined application of the category", () => {
         when(execFileSync)
-          .calledWith("flatpak", ["list", "--app"])
+          .calledWith("flatpak", ["list", "--app"], {
+            encoding: "utf8",
+          })
           .thenReturn(flatpakAppList);
         vi.mocked(readCategory).mockReturnValueOnce(pcenginecdLinux);
         const entry = getFirstEntry(pcenginecdLinux);
 
         startGame(pcenginecdLinux.id, entry);
 
-        expect(execFileSync).toHaveBeenCalledWith("flatpak", [
-          "run",
-          "--filesystem=F:/games/Emulation/roms",
-          "--command=mednafen",
-          applicationsDB.mednafen.flatpakId,
-          createAbsoluteEntryPath(pcenginecdLinux.name, entry.path),
-        ]);
+        expect(execFileSync).toHaveBeenCalledWith(
+          "flatpak",
+          [
+            "run",
+            "--command=mednafen",
+            applicationsDB.mednafen.flatpakId,
+            "wrong",
+          ],
+          {
+            encoding: "utf8",
+          },
+        );
+        expect(execFileSync).toHaveBeenCalledWith(
+          "flatpak",
+          expect.arrayContaining([
+            "run",
+            "--filesystem=F:/games/Emulation/roms",
+            "--command=mednafen",
+            applicationsDB.mednafen.flatpakId,
+            createAbsoluteEntryPath(pcenginecdLinux.name, entry.path),
+          ]),
+          {
+            encoding: "utf8",
+          },
+        );
       });
 
       it("Should add optional params", () => {
         when(execFileSync)
-          .calledWith("flatpak", ["list", "--app"])
+          .calledWith("flatpak", ["list", "--app"], {
+            encoding: "utf8",
+          })
           .thenReturn(flatpakAppList);
         vi.mocked(readCategory).mockReturnValueOnce(neogeo);
         const entryDirname = "F:/games/Emulation/roms/Neo Geo";
@@ -157,24 +203,32 @@ describe("execute.server", () => {
 
         startGame(neogeo.id, entry);
 
-        expect(execFileSync).toHaveBeenCalledWith("flatpak", [
-          "run",
-          "--filesystem=F:/games/Emulation/roms",
-          applicationsDB.mame.flatpakId,
-          "-w",
-          "-rompath",
-          entryDirname,
-          "-cfg_directory",
-          nodepath.join(entryDirname, "cfg"),
-          "-nvram_directory",
-          nodepath.join(entryDirname, "nvram"),
-          createAbsoluteEntryPath(neogeo.name, entry.path),
-        ]);
+        expect(execFileSync).toHaveBeenCalledWith(
+          "flatpak",
+          [
+            "run",
+            "--filesystem=F:/games/Emulation/roms",
+            applicationsDB.mame.flatpakId,
+            "-w",
+            "-rompath",
+            entryDirname,
+            "-cfg_directory",
+            nodepath.join(entryDirname, "cfg"),
+            "-nvram_directory",
+            nodepath.join(entryDirname, "nvram"),
+            createAbsoluteEntryPath(neogeo.name, entry.path),
+          ],
+          {
+            encoding: "utf8",
+          },
+        );
       });
 
       it("Should not execute if emulator is not installed", () => {
         when(execFileSync)
-          .calledWith("flatpak", ["list", "--app"])
+          .calledWith("flatpak", ["list", "--app"], {
+            encoding: "utf8",
+          })
           .thenReturn("");
         updateFlatpakAppList();
         vi.mocked(readCategory).mockReturnValueOnce(pcenginecdLinux);
@@ -182,15 +236,21 @@ describe("execute.server", () => {
 
         expect(() => startGame(pcenginecdLinux.id, entry)).toThrowError();
 
-        expect(execFileSync).toBeCalledTimes(2);
+        expect(execFileSync).toBeCalledTimes(3);
 
-        expect(execFileSync).not.toHaveBeenCalledWith("flatpak", [
-          "run",
-          "--filesystem=F:/games/Emulation/roms",
-          "--command=mednafen",
-          applicationsDB.mednafen.flatpakId,
-          createAbsoluteEntryPath(pcenginecdLinux.name, entry.path),
-        ]);
+        expect(execFileSync).not.toHaveBeenCalledWith(
+          "flatpak",
+          expect.arrayContaining([
+            "run",
+            "--filesystem=F:/games/Emulation/roms",
+            "--command=mednafen",
+            applicationsDB.mednafen.flatpakId,
+            createAbsoluteEntryPath(pcenginecdLinux.name, entry.path),
+          ]),
+          {
+            encoding: "utf8",
+          },
+        );
       });
     });
   });

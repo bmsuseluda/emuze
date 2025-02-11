@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 import { useImportButton } from "./useImportButton";
 import type { ImportButtonId } from "./importButtonId";
 import { importButtonGamepadButtonIndex } from "./importButtonId";
+import { LogoPulseModal } from "../../components/LogoPulseModal";
 
 interface Props {
   gamepadType?: GamepadType;
@@ -23,26 +24,30 @@ export const ImportButton = ({
 }: Props) => {
   const { state, formData } = useNavigation();
   useImportButton(isInFocus, id);
+  const isImporting =
+    state === "submitting" && formData?.get("_actionId") === id;
 
   return (
-    <Button
-      type="submit"
-      id={id}
-      name="_actionId"
-      value={id}
-      loading={state === "submitting" && formData?.get("_actionId") === id}
-      icon={
-        gamepadType ? (
-          <GamepadButtonIcon
-            buttonIndex={importButtonGamepadButtonIndex}
-            gamepadType={gamepadType}
-          />
-        ) : (
-          <IoMdRefresh />
-        )
-      }
-    >
-      {children}
-    </Button>
+    <>
+      <Button
+        type="submit"
+        id={id}
+        name="_actionId"
+        value={id}
+        icon={
+          gamepadType ? (
+            <GamepadButtonIcon
+              buttonIndex={importButtonGamepadButtonIndex}
+              gamepadType={gamepadType}
+            />
+          ) : (
+            <IoMdRefresh />
+          )
+        }
+      >
+        {children}
+      </Button>
+      <LogoPulseModal active={isImporting} />
+    </>
   );
 };

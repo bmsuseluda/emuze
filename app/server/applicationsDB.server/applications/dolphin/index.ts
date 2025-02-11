@@ -10,19 +10,21 @@ import { EOL } from "os";
 import fs from "fs";
 import { log } from "../../../debug.server";
 import nodepath from "path";
-import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
+import type { Sdl } from "@bmsuseluda/node-sdl";
+import sdl from "@bmsuseluda/node-sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
 import { defaultGamepadSettings } from "./defaultGamepadSettings";
 import { defaultHotkeys } from "./defaultHotkeys";
 import type { ApplicationId } from "../../applicationId";
 import { emulatorsDirectory } from "../../../homeDirectory.server";
+import { isGamecubeController } from "../../gamepads";
+import { defaultDolphinSettings } from "./defaultDolphinSettings";
 
 const flatpakId = "org.DolphinEmu.dolphin-emu";
 const applicationId: ApplicationId = "dolphin";
 const bundledPathLinux = nodepath.join(
   applicationId,
-  "Dolphin_Emulator-git-x86_64.AppImage",
+  "Dolphin_Emulator-1.2412-4-x86_64.AppImage",
 );
 const bundledPathWindows = nodepath.join(
   applicationId,
@@ -30,6 +32,11 @@ const bundledPathWindows = nodepath.join(
   "Dolphin.exe",
 );
 const configFolderPath = nodepath.join(emulatorsDirectory, applicationId);
+const dolphinConfigFileName = nodepath.join(
+  configFolderPath,
+  "Config",
+  "Dolphin.ini",
+);
 const gamepadConfigFileName = nodepath.join(
   configFolderPath,
   "Config",
@@ -45,38 +52,41 @@ export const getVirtualGamepad = (
   sdlDevice: Sdl.Controller.Device,
   index: number,
 ) => {
-  log("debug", "gamepad", { index, sdlDevice });
+  const openedDevice = sdl.controller.openDevice(sdlDevice);
+  log("debug", "gamepad", { index, sdlDevice, openedDevice });
+
+  const gamecubeController = isGamecubeController(openedDevice.controllerName);
 
   return [
     `[GCPad${index + 1}]`,
-    `Device = SDL/${index}/${sdlDevice.mapping.split(",")[1]}`,
-    `Buttons/A = \`Button E\``,
-    `Buttons/B = \`Button S\``,
-    `Buttons/X = \`Button N\``,
-    `Buttons/Y = \`Button W\``,
-    `Buttons/Z = Back`,
+    `Device = SDL/0/${openedDevice.controllerName}`,
+    `Buttons/A = ${gamecubeController ? "`Button S`" : "`Button E`"}`,
+    `Buttons/B = ${gamecubeController ? "`Button W`" : "`Button S`"}`,
+    `Buttons/X = ${gamecubeController ? "`Button E`" : "`Button N`"}`,
+    `Buttons/Y = ${gamecubeController ? "`Button N`" : "`Button W` | `Shoulder L`"}`,
+    `Buttons/Z = \`Shoulder R\``,
     `Buttons/Start = Start`,
     `Main Stick/Up = \`Left Y+\``,
     `Main Stick/Down = \`Left Y-\``,
     `Main Stick/Left = \`Left X-\``,
     `Main Stick/Right = \`Left X+\``,
-    `Main Stick/Modifier = \`Shift\``,
+    `Main Stick/Modifier = \`Thumb L\``,
     `Main Stick/Calibration = 100.00 141.42 100.00 141.42 100.00 141.42 100.00 141.42`,
     `C-Stick/Up = \`Right Y+\``,
     `C-Stick/Down = \`Right Y-\``,
     `C-Stick/Left = \`Right X-\``,
     `C-Stick/Right = \`Right X+\``,
-    `C-Stick/Modifier = \`Ctrl\``,
+    `C-Stick/Modifier = \`Thumb R\``,
     `C-Stick/Calibration = 100.00 141.42 100.00 141.42 100.00 141.42 100.00 141.42`,
-    `Triggers/L = \`Shoulder L\``,
-    `Triggers/R = \`Shoulder R\``,
+    `Triggers/L = \`Trigger L\``,
+    `Triggers/R = \`Trigger R\``,
     `D-Pad/Up = \`Pad N\``,
     `D-Pad/Down = \`Pad S\``,
     `D-Pad/Left = \`Pad W\``,
     `D-Pad/Right = \`Pad E\``,
     `Triggers/L-Analog = \`Trigger L\``,
     `Triggers/R-Analog = \`Trigger R\``,
-    `Rumble/Motor = Weak`,
+    `Rumble/Motor = \`Motor L\` | \`Motor R\``,
   ].join(EOL);
 };
 
@@ -138,6 +148,31 @@ export const replaceHotkeysFile = () =>
     replaceHotkeysSection,
   );
 
+export const replaceDolphinCoreSection: SectionReplacement = (sections) => {
+  const gamepads = sdl.controller.devices;
+  const siDevices = [
+    ...gamepads.map((_, index) => `SIDevice${index} = 6`),
+    ...resetUnusedVirtualGamepads(
+      4,
+      gamepads.length,
+      (index: number) => `SIDevice${index} = 0`,
+    ),
+  ];
+
+  return replaceSection(sections, "[Core]", siDevices);
+};
+
+export const replaceDolphinAutoUpdateSection: SectionReplacement = (sections) =>
+  replaceSection(sections, "[AutoUpdate]", ["UpdateTrack = "]);
+
+export const replaceDolphinFile = () =>
+  replaceConfigSections(
+    dolphinConfigFileName,
+    defaultDolphinSettings,
+    replaceDolphinCoreSection,
+    replaceDolphinAutoUpdateSection,
+  );
+
 export const replaceConfigSections = (
   filePath: string,
   fallback: string,
@@ -165,6 +200,7 @@ export const dolphin: Application = {
       appearance: { fullscreen },
     },
   }) => {
+    replaceDolphinFile();
     replaceGamepadConfigFile();
     replaceHotkeysFile();
 

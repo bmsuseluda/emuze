@@ -1,5 +1,3 @@
-import nodepath from "path";
-
 import type { Application } from "./types";
 import { scummvm } from "./applications/scummvm";
 import { dosboxstaging } from "./applications/dosbox";
@@ -12,11 +10,16 @@ import {
   aresSegaCd,
   aresSuperNintendo,
 } from "./applications/ares";
-import { isWindows } from "../operationsystem.server";
 import { duckstation } from "./applications/duckstation";
 import { pcsx2 } from "./applications/pcsx2";
 import { ryujinx } from "./applications/ryujinx";
 import { dolphin } from "./applications/dolphin";
+import {
+  mednafen,
+  mednafenPcEngineCD,
+  mednafenPcEngineSuperGrafx,
+  mednafenSaturn,
+} from "./applications/mednafen";
 
 export const ppsspp: Application = {
   id: "ppsspp",
@@ -78,24 +81,6 @@ export const cemu: Application = {
     }
     optionParams.push("-g");
     return optionParams;
-  },
-};
-
-export const mednafen: Application = {
-  id: "mednafen",
-  name: "Mednafen",
-  fileExtensions: [".cue", ".pce", ".nes", ".sms", ".gg"],
-  flatpakId: "com.github.AmatCoder.mednaffe",
-  flatpakOptionParams: ["--command=mednafen"],
-  defineEnvironmentVariables: ({ applicationPath }) => {
-    const environmentVariables = {};
-    if (isWindows() && applicationPath) {
-      return {
-        ...environmentVariables,
-        MEDNAFEN_HOME: nodepath.dirname(applicationPath),
-      };
-    }
-    return environmentVariables;
   },
 };
 
@@ -166,6 +151,9 @@ export const applications = {
   ryujinx,
   cemu,
   mednafen,
+  mednafenSaturn,
+  mednafenPcEngineCD,
+  mednafenPcEngineSuperGrafx,
   mame,
   mameNeoGeo,
   mameNeoGeoCD,

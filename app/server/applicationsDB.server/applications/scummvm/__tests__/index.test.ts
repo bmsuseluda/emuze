@@ -1,6 +1,6 @@
 import { parseScummDetectResult } from "..";
 
-vi.mock("@kmamal/sdl");
+vi.mock("@bmsuseluda/node-sdl");
 
 describe("applicationsDB.scummvm", () => {
   describe("parseScummDetectResult", () => {

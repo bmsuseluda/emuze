@@ -1,28 +1,3 @@
-export type SdlButtonId =
-  | "a"
-  | "b"
-  | "x"
-  | "y"
-  | "back"
-  | "start"
-  | "guide"
-  | "dpdown"
-  | "dpleft"
-  | "dpright"
-  | "dpup"
-  | "leftshoulder"
-  | "rightshoulder"
-  | "lefttrigger"
-  | "righttrigger"
-  | "leftstick"
-  | "rightstick"
-  | "leftx"
-  | "lefty"
-  | "rightx"
-  | "righty";
-
-export type SdlButtonMapping = Partial<Record<SdlButtonId, string>>;
-
 export type AresButtonId =
   | "Pad.Up"
   | "Pad.Down"
@@ -51,12 +26,13 @@ export type AresButtonId =
   | "Rumble";
 
 export type GamepadGroupId = "Axis" | "HAT" | "Button";
+export type GamepadQualifier = "Hi" | "Lo";
 
 export interface PhysicalGamepadButton {
   deviceId: string;
   groupId: GamepadGroupId;
   inputId?: string;
-  qualifier?: "Hi" | "Lo";
+  qualifier?: GamepadQualifier;
 }
 
 export interface VirtualGamepad {

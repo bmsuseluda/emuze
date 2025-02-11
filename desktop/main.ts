@@ -6,6 +6,10 @@ import * as dotenv from "dotenv";
 import { autoUpdater } from "electron-updater";
 import { readAppearance, writeAppearance } from "../app/server/settings.server";
 import { createLogFile, isDebug } from "../app/server/debug.server";
+import {
+  commandLineOptions,
+  commandLineOptionsString,
+} from "../app/server/commandLine.server";
 
 dotenv.config();
 
@@ -16,7 +20,17 @@ const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
   writeAppearance({ ...appearance, fullscreen });
 };
 
+const showHelp = () => {
+  console.log(commandLineOptionsString);
+  app.quit();
+};
+
 app.on("ready", async () => {
+  if (app.commandLine.hasSwitch(commandLineOptions.help.id)) {
+    showHelp();
+    return;
+  }
+
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
       responseHeaders: {
@@ -40,7 +54,8 @@ app.on("ready", async () => {
 
   const appearance = readAppearance();
   const fullscreen =
-    app.commandLine.hasSwitch("fullscreen") || appearance?.fullscreen;
+    app.commandLine.hasSwitch(commandLineOptions.fullscreen.id) ||
+    appearance?.fullscreen;
 
   const url = await initRemix({
     serverBuild: nodepath.join(__dirname, "../../build/index.js"),

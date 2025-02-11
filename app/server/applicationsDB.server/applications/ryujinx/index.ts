@@ -9,11 +9,13 @@ import fs from "fs";
 import { log } from "../../../debug.server";
 import type { Config, InputConfig } from "./config";
 import { defaultConfig, defaultInputConfig } from "./config";
-import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
+import type { Sdl } from "@bmsuseluda/node-sdl";
+import sdl from "@bmsuseluda/node-sdl";
 import { emulatorsDirectory } from "../../../homeDirectory.server";
 import { keyboardConfig } from "./keyboardConfig";
 import type { ApplicationId } from "../../applicationId";
+import { isGamecubeController } from "../../gamepads";
+import { sortGamecubeLast } from "../../sortGamepads";
 
 const applicationId: ApplicationId = "ryujinx";
 const flatpakId = "org.ryujinx.Ryujinx";
@@ -123,19 +125,52 @@ export const createControllerId = (sdlGuiId: string) => {
   return `0-${mapping[3]}${mapping[2]}${mapping[1]}${mapping[0]}-${mapping[5]}${mapping[4]}-${mapping[6]}-${mapping[7]}-${mapping[8]}`;
 };
 
+/**
+ * TODO: Check joycons
+ */
+const createControllerType = () => {
+  return "ProController";
+};
+
+const createDeviceSpecificInputConfig = (controllerName: string) => {
+  if (isGamecubeController(controllerName)) {
+    return {
+      ...defaultInputConfig,
+      right_joycon: {
+        ...defaultInputConfig.right_joycon,
+        button_x: "X",
+        button_b: "B",
+        button_y: "Y",
+        button_a: "A",
+      },
+    };
+  }
+
+  return defaultInputConfig;
+};
+
 const createInputConfig = (
   sdlDevice: Sdl.Controller.Device,
   index: number,
-): InputConfig => ({
-  ...defaultInputConfig,
-  id: createControllerId(sdlDevice.guid),
-  player_index: `Player${index + 1}`,
-});
+): InputConfig => {
+  const openedDevice = sdl.controller.openDevice(sdlDevice);
+  log("debug", "gamepad", { index, sdlDevice, openedController: openedDevice });
+
+  return {
+    ...createDeviceSpecificInputConfig(openedDevice.controllerName),
+    id: createControllerId(sdlDevice.guid),
+    controller_type: createControllerType(),
+    player_index: `Player${index + 1}`,
+  };
+};
 
 const replaceConfig = (switchRomsPath: string) => {
   const gamepads = sdl.controller.devices;
+  const gamepadsSorted = gamepads.toSorted(sortGamecubeLast);
   const inputConfig =
-    gamepads.length > 0 ? gamepads.map(createInputConfig) : [keyboardConfig];
+    gamepadsSorted.length > 0
+      ? gamepadsSorted.map(createInputConfig)
+      : [keyboardConfig];
 
   const oldConfig = readConfigFile(configFilePath);
 

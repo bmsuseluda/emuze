@@ -16,10 +16,10 @@ import {
   playstation,
   scumm,
 } from "../__testData__/category";
-import { mednafen } from "../applicationsDB.server";
 import { duckstation } from "../applicationsDB.server/applications/duckstation";
+import { mednafen } from "../applicationsDB.server/applications/mednafen";
 
-vi.mock("@kmamal/sdl");
+vi.mock("@bmsuseluda/node-sdl");
 vi.mock("fs");
 
 class SimpleDirent {
