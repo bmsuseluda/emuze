@@ -77,6 +77,7 @@ The following Hotkeys are set:
 - Open Emulator Menu (if supported from emulator): F2
 - Save State: F1
 - Load State: F3
+- Fullscreen: F11
 
 ### Bundled
 If a system is bundled, the respective emulator is provided with emuze in a specific version. Therefore you do not need to provide the emulator on your own. 
@@ -88,7 +89,7 @@ Some emulators need a BIOS or firmware to run. Please check the documentation of
 
 ### Windows
 
-[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.52.1/emuze-Setup-0.52.1.exe) the latest Version of emuze and install it.
+[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.53.0/emuze-Setup-0.53.0.exe) the latest Version of emuze and install it.
 
 If you start emuze for the first time, it asks for the following folders to work:
 
@@ -118,7 +119,7 @@ emulators
 For now emuze is only released as an AppImage. Your Linux distribution needs to support Flatpaks.
 All emulators, not bundled, need to be installed via flatpak but emuze can do this for you.
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.52.1/emuze-0.52.1.AppImage) the latest Version of emuze
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.53.0/emuze-0.53.0.AppImage) the latest Version of emuze
 
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
@@ -128,7 +129,7 @@ All emulators, not bundled, need to be installed via flatpak but emuze can do th
 For now emuze is only released as an AppImage.
 
 1) Switch to Desktop
-2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.52.1/emuze-0.52.1.AppImage) the latest Version of emuze
+2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.53.0/emuze-0.53.0.AppImage) the latest Version of emuze
 
 3) Mark the AppImage as executable and start emuze
 4) Choose the [folder where your Roms are located](#roms-folder)
