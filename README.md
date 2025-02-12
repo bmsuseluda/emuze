@@ -33,10 +33,13 @@ The following systems are supported:
 
 | System | Emulator | Pre Configured | Bundled | BIOS needed |
 | ------ | -------- | -------------- | ------- | ----------- |
-| Sony PlayStation | [DuckStation (Legacy)](https://github.com/stenzek/duckstation) | Yes | Yes | Yes | 
-| Sony PlayStation 2 | [PCSX2](https://github.com/PCSX2/pcsx2) | Yes | No | Yes | 
-| Sony PlayStation 3 | [RPCS3](https://github.com/RPCS3/rpcs3) | No | No | Yes | 
-| Sony PlayStation Portable | [PPSSPP](https://github.com/hrydgard/ppsspp) | No | No | No | 
+| Sega Master System | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
+| Sega Game Gear | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
+| Sega Mega Drive | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
+| Sega 32X | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | Yes | 
+| Sega CD | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | Yes | 
+| Sega Saturn | [Mednafen](https://mednafen.github.io/) | Yes | No | Yes | 
+| Sega Dreamcast | [Flycast](https://github.com/flyinghead/flycast) | No | No | No | 
 | Nintendo Entertainment System | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
 | Super Nintendo Entertainment System | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
 | Nintendo Game Boy | [mgba](https://github.com/mgba-emu/mgba) | No | No | No | 
@@ -49,16 +52,13 @@ The following systems are supported:
 | Nintendo Wii | [Dolphin](https://github.com/dolphin-emu/dolphin) | Yes | Yes | No | 
 | Nintendo Wii U | [Cemu](https://github.com/cemu-project/Cemu) | No | No | Yes | 
 | Nintendo Switch | [Ryujinx](https://github.com/GreemDev/Ryujinx) | Yes | Yes | Yes | 
+| Sony PlayStation | [DuckStation (Legacy)](https://github.com/stenzek/duckstation) | Yes | Yes | Yes | 
+| Sony PlayStation 2 | [PCSX2](https://github.com/PCSX2/pcsx2) | Yes | No | Yes | 
+| Sony PlayStation 3 | [RPCS3](https://github.com/RPCS3/rpcs3) | No | No | Yes | 
+| Sony PlayStation Portable | [PPSSPP](https://github.com/hrydgard/ppsspp) | No | No | No | 
 | PC Engine | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
 | PC Engine CD | [Mednafen](https://mednafen.github.io/) | Yes | No | Yes | 
 | PC Engine SuperGrafx | [Mednafen](https://mednafen.github.io/) | Yes | No | Yes | 
-| Sega Master System | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
-| Sega Game Gear | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
-| Sega Mega Drive | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
-| Sega 32X | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | Yes | 
-| Sega CD | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | Yes | 
-| Sega Saturn | [Mednafen](https://mednafen.github.io/) | Yes | No | Yes | 
-| Sega Dreamcast | [Flycast](https://github.com/flyinghead/flycast) | No | No | No | 
 | Arcade | [Mame](https://github.com/mamedev/mame) | No | No | No | 
 | Neo Geo | [Mame](https://github.com/mamedev/mame) | No | No | No | 
 | Neo Geo CD | [Mame](https://github.com/mamedev/mame) | No | No | No | 
