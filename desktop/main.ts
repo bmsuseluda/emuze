@@ -5,7 +5,7 @@ import nodepath from "path";
 import * as dotenv from "dotenv";
 import { autoUpdater } from "electron-updater";
 import { readAppearance, writeAppearance } from "../app/server/settings.server";
-import { createLogFile, isDebug } from "../app/server/debug.server";
+import { createLogFile, isDebug, log } from "../app/server/debug.server";
 import {
   commandLineOptions,
   commandLineOptionsString,
@@ -31,6 +31,10 @@ app.on("ready", async () => {
     return;
   }
 
+  if (isDebug()) {
+    createLogFile();
+  }
+
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
       responseHeaders: {
@@ -40,17 +44,21 @@ app.on("ready", async () => {
     });
   });
 
-  autoUpdater.checkForUpdatesAndNotify().then((result) => {
-    if (result) {
-      console.log({
-        version: result?.updateInfo.version,
-      });
-    }
+  autoUpdater
+    .checkForUpdatesAndNotify()
+    .then((result) => {
+      if (result) {
+        log("info", "check for updates", {
+          version: result?.updateInfo.version,
+        });
+      }
+    })
+    .catch((reason) => {
+      log("error", "check for updates", reason);
+    });
+  autoUpdater.on("error", (error, message) => {
+    log("error", "check for updates", error, message);
   });
-
-  if (isDebug()) {
-    createLogFile();
-  }
 
   const appearance = readAppearance();
   const fullscreen =
@@ -115,7 +123,7 @@ app.on("ready", async () => {
         window.close();
         break;
       default:
-        console.log("unknown window change event name", name);
+        log("error", "unknown window change event name", name);
         break;
     }
   });

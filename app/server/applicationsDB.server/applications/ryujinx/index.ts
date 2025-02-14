@@ -20,7 +20,10 @@ import { sortGamecubeLast } from "../../sortGamepads";
 const applicationId: ApplicationId = "ryujinx";
 const flatpakId = "org.ryujinx.Ryujinx";
 const bundledDirectory = nodepath.join(applicationId, "publish");
-const bundledPathLinux = nodepath.join(bundledDirectory, "Ryujinx.sh");
+const bundledPathLinux = nodepath.join(
+  applicationId,
+  "ryujinx-1.2.81-x64.AppImage",
+);
 const bundledPathWindows = nodepath.join(bundledDirectory, "Ryujinx.exe");
 const configFolderPath = nodepath.join(emulatorsDirectory, applicationId);
 const configFileName = "Config.json";

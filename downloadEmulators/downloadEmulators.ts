@@ -1,9 +1,15 @@
-import { ApplicationId } from "../app/server/applicationsDB.server/applicationId";
+import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId";
 import { join } from "node:path";
 import { https } from "follow-redirects";
 import decompress from "decompress";
 import { applications } from "../app/server/applicationsDB.server";
-import { chmodSync, createWriteStream, existsSync, mkdirSync } from "node:fs";
+import {
+  chmodSync,
+  createWriteStream,
+  existsSync,
+  mkdirSync,
+  rmSync,
+} from "node:fs";
 import _7z from "7zip-min";
 import nodepath from "path";
 
@@ -30,6 +36,7 @@ const downloadEmulator = (
   const bundledPathRelative = applications[emulatorId][`bundledPath${os}`]!;
   const bundledPath = join(emulatorsFolderPath, bundledPathRelative);
   const bundledPathExists = existsSync(bundledPath);
+
   if (!bundledPathExists) {
     const emulatorFolderPath = join(emulatorsFolderPath, emulatorId);
     if (!existsSync(emulatorFolderPath)) {
@@ -37,7 +44,7 @@ const downloadEmulator = (
     }
 
     if (downloadLink.toLowerCase().endsWith(".appimage")) {
-      downloadFile(downloadLink, bundledPath);
+      downloadAppImage(downloadLink, bundledPath);
     } else if (downloadLink.toLowerCase().endsWith(".7z")) {
       downloadAndExtract7z(
         downloadLink,
@@ -70,24 +77,46 @@ const downloadAndExtract7z = (
   fileToCheck: string,
 ) => {
   const zipFilePath = nodepath.join(outputFolder, url.split("/").at(-1) || "");
-  const zipFile = createWriteStream(zipFilePath);
+
+  downloadFile(url, zipFilePath, () => {
+    _7z.unpack(zipFilePath, outputFolder, () => {
+      if (existsSync(fileToCheck)) {
+        console.log(`Download of ${url} complete`);
+      } else {
+        console.error(`${fileToCheck} does not exist`);
+        process.exit(1);
+      }
+    });
+  });
+};
+
+const exitOnResponseCodeError = (url: string, statusCode?: number) => {
+  if (statusCode !== 200) {
+    console.error(`Failed to download ${url}. Status code: ${statusCode}`);
+    rmSync(emulatorsFolderPath, { recursive: true, force: true });
+    process.exit(1);
+  }
+};
+
+const downloadFile = (
+  url: string,
+  fileToCheck: string,
+  onFinish?: () => void,
+) => {
+  const file = createWriteStream(fileToCheck);
   console.log(`Download of ${url} started`);
 
   https
     .get(url, (response) => {
-      response.pipe(zipFile);
+      exitOnResponseCodeError(url, response.statusCode);
 
-      zipFile.on("finish", () => {
-        zipFile.close();
+      response.pipe(file);
 
-        _7z.unpack(zipFilePath, outputFolder, (err) => {
-          if (existsSync(fileToCheck)) {
-            console.log(`Download of ${url} complete`);
-          } else {
-            console.error(`${fileToCheck} does not exist`);
-            process.exit(1);
-          }
-        });
+      file.on("finish", () => {
+        file.close();
+
+        console.log(`Download of ${url} complete`);
+        onFinish?.();
       });
     })
     .on("error", (err) => {
@@ -96,24 +125,10 @@ const downloadAndExtract7z = (
     });
 };
 
-const downloadFile = (url: string, fileToCheck: string) => {
-  const file = createWriteStream(fileToCheck);
-  console.log(`Download of ${url} started`);
-
-  https
-    .get(url, (response) => {
-      response.pipe(file);
-
-      file.on("finish", () => {
-        file.close();
-        console.log(`Download of ${url} complete`);
-        makeFileExecutableLinux(fileToCheck);
-      });
-    })
-    .on("error", (err) => {
-      console.error(`Error downloading the file: ${err.message}`);
-      process.exit(1);
-    });
+const downloadAppImage = (url: string, fileToCheck: string) => {
+  downloadFile(url, fileToCheck, () => {
+    makeFileExecutableLinux(fileToCheck);
+  });
 };
 
 const downloadAndExtract = (
@@ -124,6 +139,8 @@ const downloadAndExtract = (
   console.log(`Download of ${url} started`);
   https
     .get(url, (response) => {
+      exitOnResponseCodeError(url, response.statusCode);
+
       const chunks: Buffer[] = [];
 
       response.on("data", (chunk) => {
