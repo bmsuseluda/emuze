@@ -1,0 +1,2368 @@
+[
+  {
+    "id": 74049,
+    "cover": { "id": 264166, "image_id": "co5nty" },
+    "name": "Master of Monsters"
+  },
+  {
+    "id": 112038,
+    "cover": { "id": 334185, "image_id": "co75ux" },
+    "name": "Yami no Ketsuzoku: Haruka Naru Kioku"
+  },
+  {
+    "id": 5435,
+    "alternative_names": [
+      { "id": 16545, "name": "Sherlock Holmes no Tantei Kouza" },
+      { "id": 43231, "name": "Sherlock Holmes no Tantei Kouza" }
+    ],
+    "cover": { "id": 273936, "image_id": "co5vdc" },
+    "name": "Sherlock Holmes: Consulting Detective"
+  },
+  {
+    "id": 64747,
+    "cover": { "id": 45527, "image_id": "ajpswoxgztjaee1tdcm7" },
+    "name": "Gulclight TDF2"
+  },
+  {
+    "id": 64691,
+    "alternative_names": [
+      { "id": 124751, "name": "銀河お嬢様伝説ユナ" },
+      { "id": 124752, "name": "Ginga Ojousama Densetsu Yuna" }
+    ],
+    "cover": { "id": 199015, "image_id": "co49k7" },
+    "name": "Galaxy Fräulein Yuna",
+    "game_localizations": [{ "id": 30905, "name": "銀河お嬢様伝説ユナ" }]
+  },
+  {
+    "id": 66141,
+    "cover": { "id": 47376, "image_id": "qy3fpn0sf1lf8tbiuuj1" },
+    "name": "Seiryuu Densetsu Monbit"
+  },
+  {
+    "id": 66140,
+    "alternative_names": [
+      { "id": 156265, "name": "Lodoss-tou Senki II" },
+      { "id": 156266, "name": "Lodoss-tou Senki 2" }
+    ],
+    "cover": { "id": 47377, "image_id": "bcx5tskbetmc4liy7dgs" },
+    "name": "Record of Lodoss War II"
+  },
+  {
+    "id": 330102,
+    "cover": { "id": 436392, "image_id": "co9cq0" },
+    "name": "Hatsukoi Monogatari",
+    "game_localizations": [{ "id": 39326, "name": "初恋物語" }]
+  },
+  {
+    "id": 37593,
+    "cover": { "id": 428084, "image_id": "co96b8" },
+    "name": "L-Dis"
+  },
+  {
+    "id": 191357,
+    "alternative_names": [
+      { "id": 83044, "name": "エグザイル ～時の狭間へ～" },
+      { "id": 83045, "name": "Exile" }
+    ],
+    "cover": { "id": 208709, "image_id": "co4h1h" },
+    "name": "Exile: Toki no Hazama he",
+    "game_localizations": [{ "id": 16535, "name": "エグザイル 時の狭間へ" }]
+  },
+  {
+    "id": 243238,
+    "cover": { "id": 295083, "image_id": "co6bor" },
+    "name": "Hyper Wars"
+  },
+  {
+    "id": 125857,
+    "alternative_names": [{ "id": 147326, "name": "Zero 4 Champ II" }],
+    "cover": { "id": 179152, "image_id": "co3u8g" },
+    "name": "Zero4 Champ II"
+  },
+  {
+    "id": 65278,
+    "alternative_names": [
+      { "id": 131008, "name": "バザールでござーるのゲームでござーる" }
+    ],
+    "cover": { "id": 292702, "image_id": "co69um" },
+    "name": "Bazaru de Gozaru no Game de Gozaru"
+  },
+  {
+    "id": 266915,
+    "alternative_names": [
+      {
+        "id": 140610,
+        "name": "Stage X \"The Fate of Blood Must be Cut with the SUPER CD-ROM² ROM\""
+      },
+      { "id": 163950, "name": "Akumajou Dracula Peke" }
+    ],
+    "cover": { "id": 427828, "image_id": "co9644" },
+    "name": "Akumajyo Dracula Peke",
+    "game_localizations": [
+      { "id": 30005, "name": "あくまぢょお どらきゅら ぺけ" }
+    ]
+  },
+  {
+    "id": 75858,
+    "alternative_names": [
+      {
+        "id": 93936,
+        "name": "Ranma ½: Knockdown, The Founder's Anything-Goes Melee-Style!"
+      },
+      {
+        "id": 93937,
+        "name": "Ranma 1/2: Datou, Ganso Musabetsu Kakutou-ryuu!"
+      },
+      {
+        "id": 93938,
+        "name": "Ranma Nibunnoichi: Datou, Ganso Musabetsu Kakutou-ryuu!"
+      }
+    ],
+    "cover": { "id": 230019, "image_id": "co4xhf" },
+    "name": "Ranma ½: Datou, Ganso Musabetsu Kakutou-ryuu!"
+  },
+  {
+    "id": 37589,
+    "cover": { "id": 388127, "image_id": "co8bhb" },
+    "name": "Fighting Street",
+    "game_localizations": [
+      {
+        "id": 35414,
+        "name": "ファイティング・ストリート",
+        "cover": { "id": 388128, "image_id": "co8bhc" }
+      }
+    ]
+  },
+  {
+    "id": 10495,
+    "alternative_names": [
+      { "id": 35998, "name": "Wizardry 5" },
+      { "id": 35999, "name": "Wizardry V" },
+      { "id": 36000, "name": "BS Wizardry 5" },
+      { "id": 36001, "name": "BS Wizardry V" },
+      { "id": 77531, "name": "ウィザードリィ５" }
+    ],
+    "cover": { "id": 271936, "image_id": "co5tts" },
+    "name": "Wizardry V: Heart of the Maelstrom",
+    "game_localizations": [{ "id": 4807, "name": "ウィザードリィ5" }]
+  },
+  {
+    "id": 204250,
+    "cover": { "id": 271925, "image_id": "co5tth" },
+    "name": "Strider Hiryuu"
+  },
+  {
+    "id": 145363,
+    "alternative_names": [
+      { "id": 58209, "name": "ダウンタウン熱血物語" },
+      { "id": 58211, "name": "Downtown Hot-Blooded Story" },
+      { "id": 58212, "name": "Downtown Nekketsu Story" }
+    ],
+    "cover": { "id": 209982, "image_id": "co4i0u" },
+    "name": "Downtown Nekketsu Monogatari",
+    "game_localizations": [{ "id": 14270, "name": "ダウンタウン熱血物語" }]
+  },
+  {
+    "id": 221317,
+    "cover": { "id": 254740, "image_id": "co5gk4" },
+    "name": "Mad Stalker: Full Metal Force"
+  },
+  {
+    "id": 37607,
+    "alternative_names": [
+      { "id": 39685, "name": "ヴァリスⅢ" },
+      { "id": 41333, "name": "Valis 3" },
+      { "id": 62638, "name": "Valis III" }
+    ],
+    "cover": { "id": 101081, "image_id": "co25zt" },
+    "name": "Valis III",
+    "game_localizations": [{ "id": 6895, "name": "ヴァリス Ⅲ" }]
+  },
+  {
+    "id": 78944,
+    "cover": { "id": 345407, "image_id": "co7ein" },
+    "name": "Startling Odyssey"
+  },
+  {
+    "id": 70166,
+    "alternative_names": [
+      { "id": 96851, "name": "Ys Book I & II " },
+      { "id": 96852, "name": "Ys I & II" }
+    ],
+    "cover": { "id": 161721, "image_id": "co3gs9" },
+    "name": "Ys: Book I & II"
+  },
+  {
+    "id": 61416,
+    "cover": { "id": 57908, "image_id": "jqv1zvzve7hkg6h1bcmu" },
+    "name": "Go! Go! Birdie Chance"
+  },
+  {
+    "id": 67666,
+    "alternative_names": [
+      { "id": 54645, "name": "バステッド" },
+      { "id": 54646, "name": "Basuteddo" }
+    ],
+    "cover": { "id": 236025, "image_id": "co5249" },
+    "name": "Basted",
+    "game_localizations": [{ "id": 9348, "name": "バステッド" }]
+  },
+  {
+    "id": 42009,
+    "cover": { "id": 428106, "image_id": "co96bu" },
+    "name": "Neo Nectaris"
+  },
+  {
+    "id": 317808,
+    "cover": { "id": 413359, "image_id": "co8uy7" },
+    "name": "Quiz Marugoto The World"
+  },
+  { "id": 267942, "name": "Ultrabox No. 2" },
+  {
+    "id": 59507,
+    "cover": { "id": 38936, "image_id": "lk8ijhgldywjetg5suuh" },
+    "name": "Pachio-kun 3: Pachi-Slot & Pachinko"
+  },
+  {
+    "id": 112569,
+    "alternative_names": [
+      { "id": 126724, "name": "百物語〜ほんとにあった怖い話〜" },
+      { "id": 126725, "name": "Hyaku Monogatari: Honto ni Atta Kowai Hanashi" }
+    ],
+    "cover": { "id": 289311, "image_id": "co678f" },
+    "name": "Hyaku Monogatari: Honto ni Atta Kowai Hanashi",
+    "game_localizations": [
+      { "id": 25282, "name": "百物語 ほんとにあった怖い話" }
+    ]
+  },
+  {
+    "id": 42008,
+    "cover": { "id": 215863, "image_id": "co4mk7" },
+    "name": "Renny Blaster"
+  },
+  {
+    "id": 210577,
+    "cover": { "id": 233710, "image_id": "co50by" },
+    "name": "Space Invaders: The Original Game"
+  },
+  {
+    "id": 37626,
+    "alternative_names": [
+      {
+        "id": 144135,
+        "name": "Shin Nihon Pro Wrestling '94: Battlefield in Tokyo Dome"
+      }
+    ],
+    "cover": { "id": 344546, "image_id": "co7duq" },
+    "name": "Shin Nippon Pro Wrestling '94: Battlefield in Tokyo Dome"
+  },
+  {
+    "id": 37628,
+    "cover": { "id": 236058, "image_id": "co5256" },
+    "name": "Fausseté Amour"
+  },
+  {
+    "id": 75897,
+    "alternative_names": [
+      { "id": 12642, "name": "Digital Comic - Patlabor: Chapter of Griffon" }
+    ],
+    "cover": { "id": 44624, "image_id": "euivhatlah7dqkrfsenz" },
+    "name": "Kido Keisatstsu Patlabor: Griffon-hen"
+  },
+  {
+    "id": 44310,
+    "alternative_names": [
+      { "id": 120367, "name": "ヘルファイヤーS" },
+      { "id": 133740, "name": "Hellfire S: The Another Story" }
+    ],
+    "cover": { "id": 279890, "image_id": "co5zyq" },
+    "name": "Hellfire S"
+  },
+  {
+    "id": 222333,
+    "cover": { "id": 262799, "image_id": "co5mrz" },
+    "name": "Inoue Mami: Kono Hoshi ni Tatta Hitori no Kimi"
+  },
+  {
+    "id": 37611,
+    "alternative_names": [{ "id": 96869, "name": "Crest of Wolf" }],
+    "cover": { "id": 428161, "image_id": "co96dd" },
+    "name": "Riot Zone"
+  },
+  {
+    "id": 54921,
+    "alternative_names": [{ "id": 88799, "name": "バスティール2" }],
+    "cover": { "id": 221627, "image_id": "co4r0b" },
+    "name": "Vasteel 2",
+    "game_localizations": [{ "id": 8331, "name": "バスティール 2" }]
+  },
+  {
+    "id": 81278,
+    "alternative_names": [{ "id": 81577, "name": "Gulliver Boy" }],
+    "cover": { "id": 203016, "image_id": "co4cnc" },
+    "name": "Kuusou Kagaku Sekai Gulliver Boy"
+  },
+  {
+    "id": 7733,
+    "alternative_names": [
+      { "id": 2752, "name": "MM1" },
+      { "id": 2754, "name": "Might & Magic: Secret of the Inner Sanctum" }
+    ],
+    "cover": { "id": 141616, "image_id": "co319s" },
+    "name": "Might and Magic: Book One - The Secret of the Inner Sanctum"
+  },
+  {
+    "id": 191,
+    "alternative_names": [
+      { "id": 3203, "name": "האורגים" },
+      { "id": 3201, "name": "紗之器" },
+      { "id": 3202, "name": "ルーム" }
+    ],
+    "cover": { "id": 114744, "image_id": "co2gjc" },
+    "name": "Loom",
+    "game_localizations": [{ "id": 2981, "name": "ルーム" }]
+  },
+  {
+    "id": 80189,
+    "cover": { "id": 57088, "image_id": "mu1lh2yslqiacgp124ye" },
+    "name": "Dead of the Brain 1 & 2"
+  },
+  {
+    "id": 309012,
+    "alternative_names": [{ "id": 155126, "name": "Travel Epule" }],
+    "cover": { "id": 416673, "image_id": "co8xi9" },
+    "name": "Travel Epuru"
+  },
+  {
+    "id": 37579,
+    "cover": { "id": 323162, "image_id": "co6xcq" },
+    "name": "Bakushou Yoshimoto ShinkiGeki"
+  },
+  {
+    "id": 76906,
+    "alternative_names": [
+      { "id": 155124, "name": "Chou Jikuu Yousai Macross: Eien no Love Song" },
+      { "id": 155125, "name": "Macross: Eien no Love Song" }
+    ],
+    "cover": { "id": 57577, "image_id": "gkb2abq8nit9tbdcqf1n" },
+    "name": "Choujikuu Yousai Macross: Eien no Love Song"
+  },
+  {
+    "id": 44314,
+    "alternative_names": [
+      { "id": 15891, "name": "Final Zone 2" },
+      { "id": 97995, "name": "ファイナルゾーンII" }
+    ],
+    "cover": { "id": 236592, "image_id": "co52k0" },
+    "name": "Final Zone II",
+    "game_localizations": [{ "id": 7581, "name": "ファイナルゾーン II" }]
+  },
+  {
+    "id": 19661,
+    "alternative_names": [
+      { "id": 59936, "name": "ゲッションディーナー" },
+      { "id": 59937, "name": "GöTzenDieneR" },
+      { "id": 98861, "name": "Gotzendiener" }
+    ],
+    "cover": { "id": 136665, "image_id": "co2xg9" },
+    "name": "Götzendiener",
+    "game_localizations": [{ "id": 5614, "name": "ゲッションディーナー" }]
+  },
+  {
+    "id": 80122,
+    "cover": { "id": 57478, "image_id": "n8xehn9ucomiuisjsvaf" },
+    "name": "Solid Force"
+  },
+  {
+    "id": 3448,
+    "alternative_names": [
+      { "id": 56349, "name": "Mega Bomberman" },
+      { "id": 56350, "name": "Bomberman 08" },
+      { "id": 112494, "name": "ボンバーマン '94 " }
+    ],
+    "cover": { "id": 97333, "image_id": "co233p" },
+    "name": "Bomberman '94",
+    "game_localizations": [{ "id": 3612, "name": "ボンバーマン '94" }]
+  },
+  {
+    "id": 42011,
+    "cover": { "id": 35443, "image_id": "qn7xh0pfqvhg9vrqo7mt" },
+    "name": "Kiaidan 00"
+  },
+  {
+    "id": 73449,
+    "cover": { "id": 181139, "image_id": "co3vrn" },
+    "name": "Cosmic Fantasy 3: Bouken Shounen Rei"
+  },
+  {
+    "id": 37583,
+    "alternative_names": [
+      { "id": 35419, "name": "改造町人シュビビンマン3 －異界のプリンセス－" },
+      {
+        "id": 35420,
+        "name": "Restructuring Super Human Shubibinman 3: The Princess of the Alien World"
+      },
+      {
+        "id": 154740,
+        "name": "Kaizou Choujin Shubibinman 3: Ikai no Princess"
+      },
+      {
+        "id": 154741,
+        "name": "Cyber Citizen Shockman 3: The Princess From Another World"
+      }
+    ],
+    "cover": { "id": 179825, "image_id": "co3ur5" },
+    "name": "Kaizou Choujin Schbibinman 3: Ikai no Princess",
+    "game_localizations": [
+      { "id": 6890, "name": "改造町人シュビビンマン 3 異界のプリンセス" }
+    ]
+  },
+  {
+    "id": 79293,
+    "alternative_names": [
+      { "id": 28993, "name": "Gensō Tairiku Auleria" },
+      { "id": 28994, "name": "幻想大陸オーりーリア" },
+      { "id": 41817, "name": "Gensou Tairiku Aurelia" }
+    ],
+    "cover": { "id": 303490, "image_id": "co6i6a" },
+    "name": "Gensou Tairiku Aurelia"
+  },
+  {
+    "id": 250188,
+    "cover": { "id": 303489, "image_id": "co6i69" },
+    "name": "Hi-Leg Fantasy",
+    "game_localizations": [{ "id": 31949, "name": "ハイレグファンタジー" }]
+  },
+  {
+    "id": 210583,
+    "cover": { "id": 344086, "image_id": "co7dhy" },
+    "name": "R-Type Complete CD"
+  },
+  {
+    "id": 242129,
+    "cover": { "id": 292754, "image_id": "co69w2" },
+    "name": "Popful Mail"
+  },
+  {
+    "id": 109599,
+    "cover": { "id": 395787, "image_id": "co8he3" },
+    "name": "Avenger",
+    "game_localizations": [{ "id": 31878, "name": "アヴェンジャー" }]
+  },
+  {
+    "id": 37625,
+    "cover": { "id": 197860, "image_id": "co48o4" },
+    "name": "Wrestle Angels: Double Impact"
+  },
+  {
+    "id": 240091,
+    "cover": { "id": 361896, "image_id": "co7r8o" },
+    "name": "Lemmings"
+  },
+  {
+    "id": 42017,
+    "cover": { "id": 233720, "image_id": "co50c8" },
+    "name": "SimEarth: The Living Planet"
+  },
+  {
+    "id": 132129,
+    "cover": { "id": 392584, "image_id": "co8ex4" },
+    "name": "The Pro Yakyuu"
+  },
+  {
+    "id": 41980,
+    "cover": { "id": 396938, "image_id": "co8ia2" },
+    "name": "Browning"
+  },
+  {
+    "id": 42287,
+    "cover": { "id": 343001, "image_id": "co7cnt" },
+    "name": "Princess Minerva",
+    "game_localizations": [{ "id": 28328, "name": "プリンセス・ミネルバ" }]
+  },
+  {
+    "id": 12184,
+    "alternative_names": [{ "id": 5119, "name": "Chiki Chiki Boys" }],
+    "cover": { "id": 284166, "image_id": "co639i" },
+    "name": "Mega Twins"
+  },
+  {
+    "id": 46066,
+    "alternative_names": [{ "id": 114465, "name": "Davis Cup World Tour" }],
+    "cover": { "id": 260607, "image_id": "co5l33" },
+    "name": "Davis Cup Tennis",
+    "game_localizations": [{ "id": 22409, "name": "Davis Cup World Tour" }]
+  },
+  {
+    "id": 71472,
+    "alternative_names": [
+      { "id": 87790, "name": "Cobra II: Densetsu no Otoko" },
+      {
+        "id": 87791,
+        "name": "The Space Adventure - Cobra: The Legendary Bandit"
+      },
+      { "id": 153277, "name": "コブラ2 伝説の男" }
+    ],
+    "cover": { "id": 388821, "image_id": "co8c0l" },
+    "name": "The Space Adventure",
+    "game_localizations": [
+      {
+        "id": 35449,
+        "name": "コブラII 伝説の男",
+        "cover": { "id": 388822, "image_id": "co8c0m" }
+      }
+    ]
+  },
+  {
+    "id": 3800,
+    "alternative_names": [
+      { "id": 151717, "name": "ダンジョン・マスター セロンズ・クエスト" }
+    ],
+    "cover": { "id": 390400, "image_id": "co8d8g" },
+    "name": "Dungeon Master: Theron's Quest"
+  },
+  {
+    "id": 255876,
+    "alternative_names": [
+      { "id": 136066, "name": "Uchū Senkan Yamato" },
+      { "id": 136067, "name": "Space Battleship Yamato" },
+      { "id": 136068, "name": "宇宙戦艦ヤマト" }
+    ],
+    "cover": { "id": 313604, "image_id": "co6pz8" },
+    "name": "Uchuu Senkan Yamato",
+    "game_localizations": [{ "id": 33375, "name": "宇宙戦艦ヤマト" }]
+  },
+  {
+    "id": 6475,
+    "alternative_names": [
+      { "id": 38610, "name": "愛・超兄貴" },
+      { "id": 38611, "name": "Super Big Brother of Love" },
+      { "id": 96878, "name": "Ai Cho Aniki" }
+    ],
+    "cover": { "id": 112647, "image_id": "co2ex3" },
+    "name": "Ai Chou Aniki",
+    "game_localizations": [{ "id": 4124, "name": "愛・超兄貴" }]
+  },
+  {
+    "id": 62914,
+    "alternative_names": [
+      { "id": 80907, "name": "Far East of Eden: Deden no Den" }
+    ],
+    "cover": { "id": 42929, "image_id": "sor4ooizulnwy1gs3zrc" },
+    "name": "Tengai Makyou: Deden no Den"
+  },
+  {
+    "id": 41779,
+    "alternative_names": [{ "id": 55013, "name": "ドラゴンナイトII" }],
+    "cover": { "id": 323221, "image_id": "co6xed" },
+    "name": "Dragon Knight II",
+    "game_localizations": [{ "id": 7292, "name": "ドラゴンナイト II" }]
+  },
+  {
+    "id": 72691,
+    "alternative_names": [
+      { "id": 93928, "name": "Ranma ½: The Captive Bride" },
+      { "id": 93929, "name": "Ranma Nibunnoichi: Toraware no Hanayome" },
+      { "id": 93951, "name": "らんま ½ とらわれの花嫁" },
+      { "id": 126621, "name": "Ranma ½: Toraware no Hanayome" }
+    ],
+    "cover": { "id": 44545, "image_id": "x86onzhntmqhoyojs71x" },
+    "name": "Ranma 1/2: Toraware no Hanayome",
+    "game_localizations": [{ "id": 9589, "name": "らんま ½ とらわれの花嫁" }]
+  },
+  {
+    "id": 108921,
+    "alternative_names": [
+      { "id": 133687, "name": "Travellers! Densetsu o Buttobase" }
+    ],
+    "cover": { "id": 303491, "image_id": "co6i6b" },
+    "name": "Travellers!"
+  },
+  {
+    "id": 59508,
+    "cover": { "id": 38937, "image_id": "mfqsugzxx3ucosil2vuf" },
+    "name": "Pachio-kun: Warau Uchuu"
+  },
+  {
+    "id": 320847,
+    "alternative_names": [{ "id": 160234, "name": "Murder Club" }],
+    "cover": { "id": 419078, "image_id": "co8zd2" },
+    "name": "J.B. Harold: Murder Club"
+  },
+  {
+    "id": 37606,
+    "alternative_names": [
+      { "id": 86118, "name": "Xak 3: The Eternal Recurrence" }
+    ],
+    "cover": { "id": 215878, "image_id": "co4mkm" },
+    "name": "Xak III: The Eternal Recurrence"
+  },
+  {
+    "id": 59509,
+    "cover": { "id": 38938, "image_id": "mtqd6jpjhtknai2znqi0" },
+    "name": "Pachio-kun: Maboroshi no Densetsu",
+    "game_localizations": [{ "id": 36502, "name": "パチ夫くん幻の伝説" }]
+  },
+  {
+    "id": 137528,
+    "cover": { "id": 404163, "image_id": "co8nur" },
+    "name": "Mashou Denki: La Valeur"
+  },
+  {
+    "id": 37592,
+    "alternative_names": [
+      { "id": 148264, "name": "ЯAYXANBER II" },
+      { "id": 148265, "name": "Rayxanber 2" }
+    ],
+    "cover": { "id": 363716, "image_id": "co7sn8" },
+    "name": "Rayxanber II",
+    "game_localizations": [{ "id": 33852, "name": "ライザンバーII" }]
+  },
+  {
+    "id": 213189,
+    "cover": { "id": 236842, "image_id": "co52qy" },
+    "name": "Gradius II: Gofer no Yabou"
+  },
+  {
+    "id": 90988,
+    "alternative_names": [
+      { "id": 129188, "name": "NOBUNAGA'S AMBITION: Bushou Fuunroku" },
+      { "id": 154097, "name": "Nobunaga no Yabou: Bushou Fuuunroku" }
+    ],
+    "cover": { "id": 396155, "image_id": "co8hob" },
+    "name": "Nobunaga's Ambition: Bushou Fuunroku",
+    "game_localizations": [{ "id": 35737, "name": "信長の野望・武将風雲録" }]
+  },
+  {
+    "id": 186074,
+    "alternative_names": [
+      { "id": 80105, "name": "Mugen Senshi: Varisu" },
+      { "id": 80106, "name": "夢幻戦士 ヴァリス" },
+      { "id": 80107, "name": "Dream Soldier: Valis" }
+    ],
+    "cover": { "id": 201159, "image_id": "co4b7r" },
+    "name": "Mugen Senshi Valis: The Legend of a Fantasm Soldier",
+    "game_localizations": [
+      {
+        "id": 16304,
+        "name": "夢幻戦士ヴァリス The Legend of a Fantasm Soldier"
+      }
+    ]
+  },
+  {
+    "id": 5565,
+    "alternative_names": [
+      { "id": 89524, "name": "ゴールデンアックス: 戦斧" },
+      { "id": 89525, "name": "Golden Axe: Senpuu" },
+      { "id": 89526, "name": "Golden Axe: Fighting Blades" },
+      { "id": 89527, "name": "Golden Axe Classic" }
+    ],
+    "cover": { "id": 100757, "image_id": "co25qt" },
+    "name": "Golden Axe",
+    "game_localizations": [{ "id": 3976, "name": "ゴールデンアックス: 戦斧" }]
+  },
+  {
+    "id": 292863,
+    "cover": { "id": 370575, "image_id": "co7xxr" },
+    "name": "Mamono Hunter Youko: Tooki Yobigoe"
+  },
+  {
+    "id": 250297,
+    "alternative_names": [
+      { "id": 134066, "name": "Puyo Puyo CD 2" },
+      { "id": 134067, "name": "Puyo Puyo CD Tsu" }
+    ],
+    "cover": { "id": 305659, "image_id": "co6juj" },
+    "name": "Puyo Puyo CD Tsuu"
+  },
+  {
+    "id": 91933,
+    "cover": { "id": 139873, "image_id": "co2zxd" },
+    "name": "Mahjong Vanilla Syndrome"
+  },
+  {
+    "id": 123080,
+    "alternative_names": [
+      { "id": 92266, "name": "ウィザードリィI・II" },
+      { "id": 130250, "name": "Wizardry I・II" }
+    ],
+    "cover": { "id": 379373, "image_id": "co84q5" },
+    "name": "Wizardry I & II",
+    "game_localizations": [{ "id": 12281, "name": "ウィザードリィ I・II" }]
+  },
+  {
+    "id": 191464,
+    "alternative_names": [{ "id": 83216, "name": "女神天国" }],
+    "cover": { "id": 209214, "image_id": "co4hfi" },
+    "name": "Megami Paradise",
+    "game_localizations": [{ "id": 16553, "name": "女神天国" }]
+  },
+  {
+    "id": 250300,
+    "cover": { "id": 304476, "image_id": "co6ixo" },
+    "name": "Championship Rally"
+  },
+  {
+    "id": 79389,
+    "alternative_names": [
+      { "id": 48195, "name": "Motoroader MC" },
+      { "id": 105699, "name": "モトローダーMC" }
+    ],
+    "cover": { "id": 171126, "image_id": "co3o1i" },
+    "name": "Moto Roader MC",
+    "game_localizations": [{ "id": 10023, "name": "モトローダー MC" }]
+  },
+  {
+    "id": 42013,
+    "cover": { "id": 239823, "image_id": "co551r" },
+    "name": "Gain Ground SX"
+  },
+  {
+    "id": 64611,
+    "cover": { "id": 91474, "image_id": "co1yky" },
+    "name": "Mysterious Song"
+  },
+  {
+    "id": 37612,
+    "cover": { "id": 197616, "image_id": "co48hc" },
+    "name": "Kaze Kiri: Ninja Action"
+  },
+  {
+    "id": 38078,
+    "alternative_names": [
+      { "id": 59194, "name": "ダライアス プラス" },
+      {
+        "id": 59196,
+        "name": "Darius PC-Engine SuperGrafx TurboGrafx-16 HuCard"
+      }
+    ],
+    "cover": { "id": 137257, "image_id": "co2xwp" },
+    "name": "Darius Plus",
+    "game_localizations": [{ "id": 6967, "name": "ダライアス プラス" }]
+  },
+  {
+    "id": 138826,
+    "alternative_names": [
+      {
+        "id": 49239,
+        "name": "Super リアル麻雀 Special ～ミカ・カスミ・ショウコの思い出より～"
+      }
+    ],
+    "name": "Super Real Mahjong Special: Mika, Kasumi, Shouko no Omoide yori",
+    "game_localizations": [
+      {
+        "id": 13562,
+        "name": "Super リアル麻雀 Special: ミカ・カスミ・ショウコの思い出より"
+      }
+    ]
+  },
+  {
+    "id": 8893,
+    "cover": { "id": 43872, "image_id": "k2nlnhu36pkmorlpuqht" },
+    "name": "Populous: The Promised Lands"
+  },
+  {
+    "id": 4435,
+    "alternative_names": [
+      { "id": 42926, "name": "Garou Densetsu 2" },
+      { "id": 146176, "name": "Garou Densetsu 2Arata naru Tatakai" },
+      { "id": 146177, "name": "Garou Densetsu 2 Arata naru Tatakai" }
+    ],
+    "cover": { "id": 97479, "image_id": "co237r" },
+    "name": "Fatal Fury 2",
+    "game_localizations": [{ "id": 3801, "name": "餓狼伝説2 新たなる闘い" }]
+  },
+  {
+    "id": 69765,
+    "alternative_names": [
+      { "id": 72063, "name": "オーロラクエスト おたくの星座 IN ANOTHER WORLD" }
+    ],
+    "cover": { "id": 52445, "image_id": "iprtggcyhbps5ww3ohho" },
+    "name": "Aurora Quest: Otaku no Seiza in Another World",
+    "game_localizations": [
+      { "id": 9472, "name": "オーロラクエスト おたくの星座 in Another World" }
+    ]
+  },
+  {
+    "id": 126122,
+    "alternative_names": [{ "id": 115244, "name": "DE·JA" }],
+    "cover": { "id": 210431, "image_id": "co4idb" },
+    "name": "De Ja"
+  },
+  {
+    "id": 44307,
+    "alternative_names": [
+      { "id": 59192, "name": "スーパーダライアス " },
+      { "id": 59193, "name": "Suupaa Daraiasu" }
+    ],
+    "cover": { "id": 137256, "image_id": "co2xwo" },
+    "name": "Super Darius",
+    "game_localizations": [{ "id": 7579, "name": "スーパーダライアス" }]
+  },
+  {
+    "id": 321173,
+    "cover": { "id": 419811, "image_id": "co8zxf" },
+    "name": "Jantei Monogatari 3: Saver Angels"
+  },
+  {
+    "id": 39628,
+    "alternative_names": [{ "id": 18953, "name": "ドラゴンナイト" }],
+    "cover": { "id": 262965, "image_id": "co5mwl" },
+    "name": "Dragon Knight",
+    "game_localizations": [{ "id": 7154, "name": "ドラゴンナイト" }]
+  },
+  {
+    "id": 71530,
+    "alternative_names": [
+      { "id": 138633, "name": "Far East of Eden: Fuun Kabuki-den" },
+      { "id": 138659, "name": "Far East of Eden: Kabuki Den" }
+    ],
+    "cover": { "id": 53955, "image_id": "gs5x4jwqkgcq69xx0gop" },
+    "name": "Tengai Makyou: Fuun Kabuki-den"
+  },
+  {
+    "id": 42014,
+    "alternative_names": [{ "id": 11680, "name": "Magical Saurs Tour" }],
+    "cover": { "id": 40593, "image_id": "ahkmie6s6xfbuqi41agp" },
+    "name": "Magical Dinosaur Tour"
+  },
+  {
+    "id": 74015,
+    "alternative_names": [{ "id": 134800, "name": "3x3 EYES ～三只眼變成～" }],
+    "cover": { "id": 323143, "image_id": "co6xc7" },
+    "name": "3x3 Eyes: Sanjiyan Henjou"
+  },
+  {
+    "id": 42015,
+    "cover": { "id": 57969, "image_id": "m71iyd056drbjzqrnuzr" },
+    "name": "Motteke Tamago"
+  },
+  {
+    "id": 6823,
+    "alternative_names": [
+      { "id": 131186, "name": "Pang" },
+      { "id": 131187, "name": "Pomping World" }
+    ],
+    "cover": { "id": 122813, "image_id": "co2mrh" },
+    "name": "Buster Bros.",
+    "game_localizations": [
+      { "id": 26454, "name": "Pang" },
+      { "id": 26453, "name": "ポンピング・ワールド" }
+    ]
+  },
+  {
+    "id": 311040,
+    "cover": { "id": 416792, "image_id": "co8xlk" },
+    "name": "Xump 2: Back to Space"
+  },
+  {
+    "id": 108923,
+    "cover": { "id": 116285, "image_id": "co2hq5" },
+    "name": "Efera & Jiliora: The Emblem From Darkness"
+  },
+  {
+    "id": 321794,
+    "cover": { "id": 421151, "image_id": "co90yn" },
+    "name": "Remute: Electronic Deathstyle"
+  },
+  {
+    "id": 37251,
+    "alternative_names": [
+      { "id": 61820, "name": "ワールドヒーローズ２" },
+      { "id": 61821, "name": "World Heroes 2" }
+    ],
+    "cover": { "id": 129467, "image_id": "co2rwb" },
+    "name": "World Heroes 2",
+    "game_localizations": [{ "id": 6842, "name": "ワールドヒーローズ 2" }]
+  },
+  {
+    "id": 267948,
+    "cover": { "id": 340730, "image_id": "co7awq" },
+    "name": "CD Battle: Hikari no Yuushitachi"
+  },
+  {
+    "id": 123081,
+    "alternative_names": [
+      { "id": 119200, "name": "ウィザードリィIII ・IV" },
+      { "id": 130251, "name": "Wizardry III・IV" }
+    ],
+    "cover": { "id": 276678, "image_id": "co5xhi" },
+    "name": "Wizardry III & IV"
+  },
+  {
+    "id": 42022,
+    "alternative_names": [{ "id": 46408, "name": "Dungeon Explorer 2" }],
+    "cover": { "id": 219038, "image_id": "co4p0e" },
+    "name": "Dungeon Explorer II"
+  },
+  {
+    "id": 58548,
+    "alternative_names": [
+      { "id": 70973, "name": "Terra Cresta 2" },
+      { "id": 70974, "name": "テラクレスタII マンドラーの逆襲 " },
+      { "id": 70975, "name": "Terra Cresta II: Mandler Strikes Back" }
+    ],
+    "cover": { "id": 164867, "image_id": "co3j7n" },
+    "name": "Terra Cresta II: Mandler no Gyakushuu",
+    "game_localizations": [
+      { "id": 8568, "name": "テラクレスタ II マンドラーの逆襲" }
+    ]
+  },
+  {
+    "id": 72828,
+    "alternative_names": [
+      { "id": 37199, "name": "Gojira: Bakutou Retsuden" },
+      { "id": 37200, "name": "ゴジラ 爆闘烈伝" }
+    ],
+    "cover": { "id": 293729, "image_id": "co6an5" },
+    "name": "Godzilla: Battle Legends",
+    "game_localizations": [{ "id": 9609, "name": "ゴジラ 爆闘烈伝" }]
+  },
+  {
+    "id": 256323,
+    "alternative_names": [{ "id": 136230, "name": "鏡の国のレジェンド" }],
+    "cover": { "id": 314200, "image_id": "co6qfs" },
+    "name": "Kagami no Kuni no Legend",
+    "game_localizations": [{ "id": 33385, "name": "鏡の国のレジェンド" }]
+  },
+  {
+    "id": 72801,
+    "cover": { "id": 50747, "image_id": "ge8i1u058fwh7fvaijt3" },
+    "name": "Lady Phantom"
+  },
+  {
+    "id": 254494,
+    "alternative_names": [{ "id": 135317, "name": "眠れぬ夜の小さなお" }],
+    "cover": { "id": 311359, "image_id": "co6o8v" },
+    "name": "Nemurenu Yoru no Chiisana Ohanashi",
+    "game_localizations": [{ "id": 33326, "name": "眠れぬ夜の小さなお" }]
+  },
+  {
+    "id": 8698,
+    "cover": { "id": 214227, "image_id": "co4lar" },
+    "name": "Beyond Shadowgate"
+  },
+  {
+    "id": 210636,
+    "cover": { "id": 233837, "image_id": "co50fh" },
+    "name": "Summer Carnival '93: Nexzr Special"
+  },
+  {
+    "id": 73824,
+    "alternative_names": [
+      { "id": 84995, "name": "Legend of Xanadu" },
+      { "id": 85351, "name": "바람의 전설 제나두" },
+      { "id": 85352, "name": "風の伝説ザナドゥ" },
+      { "id": 85353, "name": "Kaze no Densetsu Xanadu" }
+    ],
+    "cover": { "id": 213273, "image_id": "co4kk9" },
+    "name": "The Legend of Xanadu",
+    "game_localizations": [
+      { "id": 9640, "name": "風の伝説ザナドゥ" },
+      { "id": 20461, "name": "바람의 전설 제나두" }
+    ]
+  },
+  {
+    "id": 5400,
+    "alternative_names": [
+      { "id": 96884, "name": "Winds of Thunder" },
+      { "id": 114292, "name": "WINDS OF THUNDER ウィンズ オブ サンダー" },
+      { "id": 114452, "name": "ウィンズ オブ サンダー" }
+    ],
+    "cover": { "id": 216299, "image_id": "co4mwb" },
+    "name": "Lords of Thunder",
+    "game_localizations": [{ "id": 3951, "name": "ウィンズ オブ サンダー" }]
+  },
+  {
+    "id": 255444,
+    "alternative_names": [
+      { "id": 135821, "name": "麻雀ソード プリンセスクエスト外伝" }
+    ],
+    "cover": { "id": 312755, "image_id": "co6pbn" },
+    "name": "Mahjong Sword: Princess Quest Gaiden",
+    "game_localizations": [
+      { "id": 33367, "name": "麻雀ソード プリンセスクエスト外伝" }
+    ]
+  },
+  {
+    "id": 5579,
+    "alternative_names": [
+      { "id": 4471, "name": "英雄传说" },
+      { "id": 10046, "name": "Dragon Slayer 6: Legend of Heroes" },
+      { "id": 35857, "name": "ドラゴンスレイヤー英雄伝説" },
+      { "id": 96877, "name": "Dragon Slayer: Eiyuu Densetsu" }
+    ],
+    "cover": { "id": 113138, "image_id": "co2faq" },
+    "name": "Dragon Slayer: The Legend of Heroes",
+    "game_localizations": [{ "id": 3977, "name": "ドラゴンスレイヤー英雄伝説" }]
+  },
+  {
+    "id": 37623,
+    "alternative_names": [
+      { "id": 96863, "name": "Image Fight 2: Operation Deepstriker" },
+      { "id": 147325, "name": "ImageFight II - Operation Deepstriker" }
+    ],
+    "cover": { "id": 210041, "image_id": "co4i2h" },
+    "name": "Image Fight II: Operation Deepstriker",
+    "game_localizations": [{ "id": 27728, "name": "イメージファイトII" }]
+  },
+  {
+    "id": 288133,
+    "alternative_names": [
+      { "id": 148339, "name": "Tenchi Muyou! Ryououki" },
+      { "id": 148340, "name": "Tiandi Wuyong! Lianghuanggui" }
+    ],
+    "cover": { "id": 364093, "image_id": "co7sxp" },
+    "name": "Tenchi Muyo! Ryo-Ohki"
+  },
+  {
+    "id": 135161,
+    "cover": { "id": 370493, "image_id": "co7xvh" },
+    "name": "Cardangels"
+  },
+  {
+    "id": 37641,
+    "alternative_names": [
+      { "id": 59102, "name": "Super Darius 2" },
+      { "id": 59103, "name": "スーパーダライアスII" },
+      { "id": 59104, "name": "Suupaa Daraiasu Tsuu" },
+      { "id": 59227, "name": "Super Sagaia II" },
+      { "id": 59228, "name": "Sagaia" }
+    ],
+    "cover": { "id": 137273, "image_id": "co2xx5" },
+    "name": "Super Darius II",
+    "game_localizations": [{ "id": 6902, "name": "スーパーダライアス II" }]
+  },
+  {
+    "id": 37634,
+    "cover": { "id": 327564, "image_id": "co70r0" },
+    "name": "Ghost Sweeper Mikami",
+    "game_localizations": [{ "id": 29727, "name": "ゴーストスイーパー美神" }]
+  },
+  {
+    "id": 56419,
+    "alternative_names": [
+      { "id": 29582, "name": "ジェノサイド" },
+      { "id": 29583, "name": "Jenosaido" }
+    ],
+    "cover": { "id": 31813, "image_id": "j5x8z7reryp84yh2ga6t" },
+    "name": "Genocide",
+    "game_localizations": [{ "id": 8443, "name": "ジェノサイド" }]
+  },
+  {
+    "id": 4481,
+    "alternative_names": [
+      { "id": 97890, "name": "Monster Lair: Wonder Boy III" }
+    ],
+    "cover": { "id": 236337, "image_id": "co52cx" },
+    "name": "Wonder Boy III: Monster Lair"
+  },
+  {
+    "id": 319203,
+    "cover": { "id": 415982, "image_id": "co8wz2" },
+    "name": "Legion",
+    "game_localizations": [{ "id": 37192, "name": "レギオン" }]
+  },
+  {
+    "id": 54891,
+    "cover": { "id": 30519, "image_id": "b4mnm1mcdugo67ozbu6r" },
+    "name": "The TV Show"
+  },
+  {
+    "id": 210578,
+    "alternative_names": [
+      { "id": 96989, "name": "Eikan wa Kimi ni: Kōkō Yakyū Zenkoku Taikai" },
+      { "id": 96990, "name": "Eikan wa Kimi ni: Koukou Yakyuu Zenkoku Taikai" }
+    ],
+    "cover": { "id": 233719, "image_id": "co50c7" },
+    "name": "Eikan ha Kimi ni: Koukou Yakyuu Zenkoku Taikai"
+  },
+  {
+    "id": 108919,
+    "alternative_names": [
+      { "id": 139734, "name": "Fang of Alnam" },
+      {
+        "id": 139735,
+        "name": "Arunamu no Kiba: Juuzoku Juuni Shinto Densetsu"
+      },
+      { "id": 139736, "name": "Alnam no Kiba" }
+    ],
+    "cover": { "id": 327322, "image_id": "co70ka" },
+    "name": "Alnam no Kiba: Juuzoku Juuni Shinto Densetsu",
+    "game_localizations": [
+      { "id": 29918, "name": "アルナムの牙 獣族十二神徒伝説" }
+    ]
+  },
+  {
+    "id": 37605,
+    "alternative_names": [{ "id": 87329, "name": "Fantasy Star Soldier" }],
+    "cover": { "id": 175327, "image_id": "co3ra7" },
+    "name": "Star Parodier"
+  },
+  {
+    "id": 1060,
+    "cover": { "id": 142690, "image_id": "co323m" },
+    "name": "It Came from the Desert"
+  },
+  {
+    "id": 62260,
+    "alternative_names": [{ "id": 28837, "name": "マジクール " }],
+    "cover": { "id": 42243, "image_id": "mrjb6npgh8qkapaqrywu" },
+    "name": "Magicoal",
+    "game_localizations": [{ "id": 8892, "name": "マジクール" }]
+  },
+  {
+    "id": 4262,
+    "alternative_names": [
+      { "id": 22826, "name": "PM3" },
+      { "id": 22827, "name": "プリンセスメーカー2" },
+      { "id": 43452, "name": "PM2" }
+    ],
+    "cover": { "id": 128301, "image_id": "co2qzx" },
+    "name": "Princess Maker 2",
+    "game_localizations": [{ "id": 3772, "name": "プリンセスメーカー2" }]
+  },
+  {
+    "id": 20512,
+    "alternative_names": [
+      { "id": 96862, "name": " 川のぬし釣り自然派" },
+      { "id": 143137, "name": "Fishing the River Master: Natural Style" }
+    ],
+    "cover": { "id": 323343, "image_id": "co6xhr" },
+    "name": "Kawa no Nushi Tsuri: Shizen-ha",
+    "game_localizations": [{ "id": 5757, "name": "川のぬし釣り 自然派" }]
+  },
+  {
+    "id": 48436,
+    "alternative_names": [
+      { "id": 76882, "name": "Last Armageddon: CD Special" },
+      { "id": 76883, "name": "ラスト・ハルマゲドン" }
+    ],
+    "cover": { "id": 412775, "image_id": "co8uhz" },
+    "name": "Last Armageddon",
+    "game_localizations": [{ "id": 8023, "name": "ラスト・ハルマゲドン" }]
+  },
+  {
+    "id": 7735,
+    "alternative_names": [
+      { "id": 2785, "name": "魔法門 III" },
+      { "id": 2786, "name": "Might and Magic III: Die Inseln von Terra" },
+      { "id": 2787, "name": "Les Îles de Terra" },
+      { "id": 2788, "name": "MM3" }
+    ],
+    "cover": { "id": 139295, "image_id": "co2zhb" },
+    "name": "Might and Magic III: Isles of Terra"
+  },
+  {
+    "id": 19701,
+    "cover": { "id": 349305, "image_id": "co7hix" },
+    "name": "Faceball 2000"
+  },
+  {
+    "id": 44308,
+    "alternative_names": [
+      { "id": 16131, "name": "Shapeshifter: Makai Eiyuuden" }
+    ],
+    "cover": { "id": 28602, "image_id": "rssc0zwtvsooyrk7zdf4" },
+    "name": "Shape Shifter"
+  },
+  {
+    "id": 44309,
+    "alternative_names": [
+      { "id": 72168, "name": "スチーム・ハーツ" },
+      { "id": 72171, "name": "STEAM-HEART'S" }
+    ],
+    "cover": { "id": 217953, "image_id": "co4o69" },
+    "name": "Steam-Heart's",
+    "game_localizations": [{ "id": 7580, "name": "スチーム・ハーツ" }]
+  },
+  {
+    "id": 71310,
+    "alternative_names": [
+      { "id": 72307, "name": "Sotsugyou II: Neo Generation" },
+      { "id": 139464, "name": "Sotsugyō II: Neo Generation FX" },
+      { "id": 139465, "name": "Sotsugyō II: Neo Generation" },
+      { "id": 139466, "name": "Sotsugyou II: Neo Generation Special" },
+      { "id": 139467, "name": "卒業II Neo Generation" },
+      { "id": 139468, "name": "卒業II Neo Generation FX " }
+    ],
+    "cover": { "id": 54298, "image_id": "cvqzjhpqmsu3jxhnqd6u" },
+    "name": "Graduation"
+  },
+  {
+    "id": 44316,
+    "cover": { "id": 28598, "image_id": "kfoabigqk9j8x13duwt7" },
+    "name": "Ane-san"
+  },
+  {
+    "id": 60835,
+    "alternative_names": [
+      { "id": 82773, "name": "カプコンのクイズ殿様の野望" }
+    ],
+    "cover": { "id": 271928, "image_id": "co5ttk" },
+    "name": "Quiz Tonosama no Yabou",
+    "game_localizations": [{ "id": 8754, "name": "カプコンのクイズ殿様の野望" }]
+  },
+  {
+    "id": 324956,
+    "alternative_names": [{ "id": 162940, "name": "ジ・アトラス" }],
+    "cover": { "id": 426128, "image_id": "co94sw" },
+    "name": "The Atlas: Renaissance Voyager"
+  },
+  {
+    "id": 55887,
+    "cover": { "id": 30843, "image_id": "ksghp51qi1hnjs849d35" },
+    "name": "God Panic: Shijou Saikyou Gundan"
+  },
+  {
+    "id": 229229,
+    "cover": { "id": 276397, "image_id": "co5x9p" },
+    "name": "Auto Crusher Palladium"
+  },
+  {
+    "id": 71489,
+    "alternative_names": [
+      { "id": 80905, "name": "Tengai Makyou II: Manji-maru" },
+      { "id": 138474, "name": "Tengai Makyou II: Manji Maru" },
+      { "id": 138476, "name": "The Devil's Cave Outside Heaven: Manji Maru" },
+      { "id": 140418, "name": "Far East of Eden II: Manji Maru" },
+      { "id": 140419, "name": "天外魔境II卍丸" }
+    ],
+    "cover": { "id": 155469, "image_id": "co3byl" },
+    "name": "Far East of Eden II: Manji-maru"
+  },
+  {
+    "id": 37604,
+    "alternative_names": [
+      { "id": 80908, "name": "Far East of Eden: Kabuki Ittou Ryoudan" }
+    ],
+    "cover": { "id": 24874, "image_id": "rs5ycite65bry2idlwmj" },
+    "name": "Tengai Makyou: Kabuki Ittou Ryoudan"
+  },
+  {
+    "id": 37618,
+    "cover": { "id": 255377, "image_id": "co5h1t" },
+    "name": "Psychic Storm",
+    "game_localizations": [{ "id": 31874, "name": "サイキックストーム" }]
+  },
+  {
+    "id": 103172,
+    "cover": { "id": 370528, "image_id": "co7xwg" },
+    "name": "Slider",
+    "game_localizations": [
+      {
+        "id": 34285,
+        "name": "Skweek",
+        "cover": { "id": 370529, "image_id": "co7xwh" }
+      },
+      { "id": 34286, "name": "スクウィーク" }
+    ]
+  },
+  {
+    "id": 306917,
+    "cover": { "id": 392029, "image_id": "co8ehp" },
+    "name": "Shinsetsu Shiawase Usagi 2"
+  },
+  {
+    "id": 37590,
+    "cover": { "id": 46231, "image_id": "d6vez5oks1da7dxqeiug" },
+    "name": "Camp California"
+  },
+  {
+    "id": 37591,
+    "alternative_names": [
+      { "id": 148266, "name": "ЯAYXANBER III" },
+      { "id": 148267, "name": "Rayxanber 3" }
+    ],
+    "cover": { "id": 363717, "image_id": "co7sn9" },
+    "name": "Rayxanber III",
+    "game_localizations": [{ "id": 33853, "name": "ライザンバーIII" }]
+  },
+  {
+    "id": 75853,
+    "alternative_names": [
+      { "id": 93950, "name": "らんま1/2" },
+      { "id": 93921, "name": "Ranma Nibunnoichi" },
+      { "id": 126613, "name": "Ranma ½" }
+    ],
+    "cover": { "id": 423868, "image_id": "co9324" },
+    "name": "Ranma 1/2",
+    "game_localizations": [{ "id": 9754, "name": "らんま 1/2" }]
+  },
+  {
+    "id": 125295,
+    "alternative_names": [
+      { "id": 115526, "name": "エグザイル 時の狭間へ" },
+      { "id": 115527, "name": "Eguzairu: Toki no Hazama e" },
+      { "id": 115528, "name": "Exile: Into the Boundaries of Time" }
+    ],
+    "cover": { "id": 355505, "image_id": "co7mb5" },
+    "name": "Exile",
+    "game_localizations": [{ "id": 12440, "name": "エグザイル 時の狭間へ" }]
+  },
+  {
+    "id": 206524,
+    "alternative_names": [
+      { "id": 93223, "name": "イースIII" },
+      { "id": 93224, "name": "ワンダラーズフロムイース" },
+      { "id": 93225, "name": "Wanderers from Ys" },
+      { "id": 165695, "name": "Ys 3" }
+    ],
+    "cover": { "id": 434849, "image_id": "co9bj5" },
+    "name": "Ys III: Wanderers from Ys",
+    "game_localizations": [
+      {
+        "id": 17561,
+        "name": "イースIII",
+        "cover": { "id": 434848, "image_id": "co9bj4" }
+      }
+    ]
+  },
+  {
+    "id": 37614,
+    "alternative_names": [
+      { "id": 10975, "name": "Terraforming" },
+      { "id": 48178, "name": "Terraforming" }
+    ],
+    "cover": { "id": 38099, "image_id": "ifdvy6yq85vryoxn1sxc" },
+    "name": "Syd Mead's Terraforming"
+  },
+  {
+    "id": 41995,
+    "cover": { "id": 229086, "image_id": "co4wri" },
+    "name": "Star Mobile"
+  },
+  {
+    "id": 4511,
+    "alternative_names": [{ "id": 71288, "name": "Bonanza Brothers" }],
+    "cover": { "id": 289977, "image_id": "co67qx" },
+    "name": "Bonanza Bros."
+  },
+  {
+    "id": 44312,
+    "cover": { "id": 51031, "image_id": "dw8rl4v4imwpiso44oqh" },
+    "name": "John Madden Duo CD Football"
+  },
+  {
+    "id": 64689,
+    "cover": { "id": 199016, "image_id": "co49k8" },
+    "name": "Galaxy Fraulein Yuna 2: Eien no Princess",
+    "game_localizations": [
+      { "id": 30906, "name": "銀河お嬢様伝説ユナ 2: 永遠のプリンセス" }
+    ]
+  },
+  {
+    "id": 66196,
+    "alternative_names": [
+      { "id": 55857, "name": "うる星やつら STAY WITH YOU" }
+    ],
+    "cover": { "id": 304015, "image_id": "co6ikv" },
+    "name": "Urusei Yatsura: Stay With You",
+    "game_localizations": [{ "id": 9258, "name": "うる星やつら Stay With You" }]
+  },
+  {
+    "id": 284772,
+    "cover": { "id": 393649, "image_id": "co8fqp" },
+    "name": "Prince of Persia",
+    "game_localizations": [
+      {
+        "id": 32679,
+        "name": "プリンス・オブ・ペルシャ",
+        "cover": { "id": 359508, "image_id": "co7pec" }
+      }
+    ]
+  },
+  {
+    "id": 285141,
+    "alternative_names": [
+      { "id": 147435, "name": "A-Ressha de Ikou III" },
+      { "id": 147436, "name": "AIII" },
+      { "id": 147523, "name": "Take the \"A\" Train III" }
+    ],
+    "cover": { "id": 359754, "image_id": "co7pl6" },
+    "name": "A-Ressha de Ikou III",
+    "game_localizations": [{ "id": 32715, "name": "A列車で行こうIII" }]
+  },
+  {
+    "id": 63929,
+    "cover": { "id": 355819, "image_id": "co7mjv" },
+    "name": "Startling Odyssey II: Maryuu Sensou"
+  },
+  {
+    "id": 37617,
+    "alternative_names": [{ "id": 33537, "name": "精霊戦士スプリガン" }],
+    "cover": { "id": 100943, "image_id": "co25vz" },
+    "name": "Seirei Senshi Spriggan",
+    "game_localizations": [{ "id": 6898, "name": "精霊戦士スプリガン" }]
+  },
+  {
+    "id": 38315,
+    "alternative_names": [
+      { "id": 162934, "name": "ジ・アトラス" },
+      { "id": 162933, "name": "The Atlas" }
+    ],
+    "cover": { "id": 158791, "image_id": "co3eiv" },
+    "name": "The Atlas: Renaissance Voyager"
+  },
+  {
+    "id": 4369,
+    "alternative_names": [
+      { "id": 96736, "name": "Nobunaga no Yabou: Zenkoku-ban" },
+      { "id": 154081, "name": "Nobunaga's Ambition: Zenkokuban" },
+      { "id": 154846, "name": "Nobunaga's Ambition: Nation" },
+      { "id": 154847, "name": "Nobunaga's Ambition: National Version" }
+    ],
+    "cover": { "id": 276874, "image_id": "co5xmy" },
+    "name": "Nobunaga's Ambition"
+  },
+  {
+    "id": 37608,
+    "alternative_names": [
+      { "id": 55119, "name": "Mugen Senshi: The Fantasm Soldier - Valis II" },
+      { "id": 55120, "name": "Valis 2" },
+      { "id": 55121, "name": "Valis: The Fantasm Soldier II" },
+      { "id": 67282, "name": "Mugen Senshi Valis II" }
+    ],
+    "cover": { "id": 101080, "image_id": "co25zs" },
+    "name": "Valis II",
+    "game_localizations": [{ "id": 31475, "name": "ヴァリスII" }]
+  },
+  {
+    "id": 141807,
+    "alternative_names": [{ "id": 132009, "name": "魔導物語Ｉ 炎の卒園児" }],
+    "cover": { "id": 122918, "image_id": "co2mue" },
+    "name": "Madou Monogatari I: Honoo no Sotsuenji"
+  },
+  {
+    "id": 73031,
+    "alternative_names": [
+      { "id": 96873, "name": "CD Denjin: Rockabilly Tengoku" },
+      { "id": 96874, "name": "Super Air Zonk" }
+    ],
+    "cover": { "id": 239140, "image_id": "co54is" },
+    "name": "Super Air Zonk: Rockabilly-Paradise"
+  },
+  {
+    "id": 258871,
+    "alternative_names": [
+      { "id": 137091, "name": "電脳天使 デジタルアンジュ" },
+      { "id": 137092, "name": "電脳天使 ～デジタルアンジュ～" }
+    ],
+    "cover": { "id": 319478, "image_id": "co6uie" },
+    "name": "Dennou Tenshi: Digital Ange",
+    "game_localizations": [{ "id": 33418, "name": "電脳天使 デジタルアンジュ" }]
+  },
+  {
+    "id": 292862,
+    "cover": { "id": 370574, "image_id": "co7xxq" },
+    "name": "Mamono Hunter Youko: Makai Kara no Tenkousei"
+  },
+  {
+    "id": 58885,
+    "cover": { "id": 42684, "image_id": "pw970rlealtlsuby2zks" },
+    "name": "Yawara! 2"
+  },
+  {
+    "id": 37613,
+    "cover": { "id": 197617, "image_id": "co48hd" },
+    "name": "Ginga Fukei Densetsu Sapphire"
+  },
+  {
+    "id": 108121,
+    "cover": { "id": 354441, "image_id": "co7lhl" },
+    "name": "FX-Unit Yuki: The Henshin Engine"
+  },
+  {
+    "id": 216175,
+    "cover": { "id": 241976, "image_id": "co56pk" },
+    "name": "Ultimate Rally Club"
+  },
+  {
+    "id": 58886,
+    "cover": { "id": 44013, "image_id": "y8lcwwtvrnwuqxm0ypbo" },
+    "name": "Yawara!"
+  },
+  {
+    "id": 37621,
+    "cover": { "id": 24887, "image_id": "rrefz9ivcozhnvmqqjb7" },
+    "name": "Travel Eple"
+  },
+  {
+    "id": 72984,
+    "alternative_names": [{ "id": 53579, "name": "ときめきメモリアル" }],
+    "cover": { "id": 241924, "image_id": "co56o4" },
+    "name": "Tokimeki Memorial",
+    "game_localizations": [{ "id": 1157, "name": "ときめきメモリアル" }]
+  },
+  {
+    "id": 81469,
+    "alternative_names": [
+      { "id": 76743, "name": "ラプラスの魔" },
+      { "id": 85053, "name": "Laplace's Demon" }
+    ],
+    "cover": { "id": 231219, "image_id": "co4yer" },
+    "name": "Laplace no Ma",
+    "game_localizations": [{ "id": 10154, "name": "ラプラスの魔" }]
+  },
+  {
+    "id": 323330,
+    "cover": { "id": 423815, "image_id": "co930n" },
+    "name": "Mega Man CD: Rock Version"
+  },
+  {
+    "id": 6794,
+    "alternative_names": [
+      { "id": 33167, "name": "Lost Worlds" },
+      { "id": 33168, "name": "ロストワールド" },
+      { "id": 43458, "name": "Lost Worlds" },
+      { "id": 43459, "name": "ロストワールド" }
+    ],
+    "cover": { "id": 101775, "image_id": "co26j3" },
+    "name": "Forgotten Worlds",
+    "game_localizations": [{ "id": 4222, "name": "ロストワールド" }]
+  },
+  {
+    "id": 16289,
+    "cover": { "id": 122574, "image_id": "co2mku" },
+    "name": "Brandish"
+  },
+  {
+    "id": 37602,
+    "cover": { "id": 117836, "image_id": "co2ix8" },
+    "name": "4 In 1 Super CD"
+  },
+  {
+    "id": 145932,
+    "alternative_names": [
+      { "id": 59484, "name": "The Addams Family TurboGrafx-16 CD" },
+      { "id": 59485, "name": "The Addams Family PC Engine" },
+      { "id": 59486, "name": "The Addams Family Super CD-ROM" },
+      { "id": 59487, "name": "アダムスファミリー" }
+    ],
+    "cover": { "id": 137623, "image_id": "co2y6v" },
+    "name": "The Addams Family",
+    "game_localizations": [{ "id": 14336, "name": "アダムスファミリー" }]
+  },
+  {
+    "id": 142392,
+    "cover": { "id": 124618, "image_id": "co2o5m" },
+    "name": "Jessie Jaeger in Cleopatra's Curse"
+  },
+  {
+    "id": 44305,
+    "cover": { "id": 209997, "image_id": "co4i19" },
+    "name": "Nekketsu Koukou Dodgeball-bu: CD Soccer-hen"
+  },
+  {
+    "id": 85809,
+    "cover": { "id": 90799, "image_id": "co1y27" },
+    "name": "Sol Moonarge",
+    "game_localizations": [{ "id": 27729, "name": "ソル：モナージュ" }]
+  },
+  {
+    "id": 2518,
+    "alternative_names": [
+      { "id": 32872, "name": "ドラゴンナイトIII" },
+      { "id": 115243, "name": "Dragon Knight III" }
+    ],
+    "cover": { "id": 104095, "image_id": "co28bj" },
+    "name": "Knights of Xentar",
+    "game_localizations": [{ "id": 3488, "name": "ドラゴンナイトIII" }]
+  },
+  {
+    "id": 85810,
+    "alternative_names": [{ "id": 69871, "name": "Download II" }],
+    "cover": { "id": 395624, "image_id": "co8h9k" },
+    "name": "Down Load 2"
+  },
+  {
+    "id": 1139,
+    "alternative_names": [
+      { "id": 69177, "name": "悪魔城ドラキュラX 血の輪廻" },
+      { "id": 69178, "name": "Akumajou Dracula X: Chi no Rondo" },
+      { "id": 69179, "name": "Devil's Castle Dracula X: Rebirth of Blood" }
+    ],
+    "cover": { "id": 93800, "image_id": "co20dk" },
+    "name": "Castlevania: Rondo of Blood",
+    "game_localizations": [
+      {
+        "id": 2677,
+        "name": "悪魔城ドラキュラX 血の輪廻",
+        "cover": { "id": 261396, "image_id": "co5lp0" }
+      }
+    ]
+  },
+  {
+    "id": 42016,
+    "cover": { "id": 290512, "image_id": "co685s" },
+    "name": "Nexzr"
+  },
+  {
+    "id": 44306,
+    "cover": { "id": 215875, "image_id": "co4mkj" },
+    "name": "Super Raiden"
+  },
+  {
+    "id": 78738,
+    "alternative_names": [
+      { "id": 81773, "name": "風の伝説 ザナドゥII" },
+      { "id": 81774, "name": "Kaze no Densetsu Xanadu II" },
+      { "id": 84993, "name": "Legend of Xanadu II" },
+      { "id": 84994, "name": "Legend of Xanadu 2" }
+    ],
+    "cover": { "id": 213272, "image_id": "co4kk8" },
+    "name": "The Legend of Xanadu II",
+    "game_localizations": [{ "id": 9972, "name": "風の伝説 ザナドゥ II" }]
+  },
+  {
+    "id": 59325,
+    "cover": { "id": 404173, "image_id": "co8nv1" },
+    "name": "Ruin: Kami no Isan"
+  },
+  {
+    "id": 28040,
+    "alternative_names": [
+      { "id": 15045, "name": "Daisenpuu" },
+      { "id": 15046, "name": "Daisenpuu Custom" },
+      { "id": 8358, "name": "Daisenpū" },
+      { "id": 94962, "name": "트윈호크 " }
+    ],
+    "cover": { "id": 138729, "image_id": "co2z1l" },
+    "name": "Twin Hawk",
+    "game_localizations": [{ "id": 19979, "name": "트윈호크" }]
+  },
+  {
+    "id": 21255,
+    "cover": { "id": 101127, "image_id": "co2613" },
+    "name": "Legacy of Ys: Books I & II"
+  },
+  {
+    "id": 42020,
+    "cover": { "id": 237003, "image_id": "co52vf" },
+    "name": "Blood Gear"
+  },
+  {
+    "id": 8669,
+    "alternative_names": [{ "id": 17053, "name": "Rising Sun" }],
+    "cover": { "id": 78784, "image_id": "co1osg" },
+    "name": "Lords of the Rising Sun"
+  },
+  {
+    "id": 37629,
+    "alternative_names": [
+      { "id": 80571, "name": "Yu Yu Hakusho Yamishoubu!! Ankoku Bujutsu Kai" },
+      { "id": 80572, "name": "Yuu Yuu Hakusho Yamishoubu!! Ankoku Bujutsu Kai" }
+    ],
+    "cover": { "id": 295152, "image_id": "co6bqo" },
+    "name": "YuYu Hakusho Yamishoubu!! Ankoku Bujutsu Kai"
+  },
+  {
+    "id": 108766,
+    "cover": { "id": 303005, "image_id": "co6hst" },
+    "name": "High Grenadier"
+  },
+  {
+    "id": 64382,
+    "cover": { "id": 45391, "image_id": "iosblccnrwqfwelsv8ot" },
+    "name": "Cyber City Oedo 808: Kemono no Zokusei"
+  },
+  {
+    "id": 39488,
+    "alternative_names": [
+      { "id": 54055, "name": "Fantastic Night Dreams: Cotton" },
+      { "id": 163349, "name": "Fantastic Night Dreams: Cotton - Original" }
+    ],
+    "cover": { "id": 237075, "image_id": "co52xf" },
+    "name": "Cotton: Fantastic Night Dreams",
+    "game_localizations": [
+      { "id": 38253, "name": "Fantastic Night Dreams: コットン" }
+    ]
+  },
+  {
+    "id": 65023,
+    "cover": { "id": 45840, "image_id": "piyqsxzcxwamua7inacg" },
+    "name": "J.League Tremendous Soccer '94"
+  },
+  {
+    "id": 128359,
+    "cover": { "id": 88796, "image_id": "co1wik" },
+    "name": "F1 Team Simulation: Project F"
+  },
+  {
+    "id": 37586,
+    "cover": { "id": 201390, "image_id": "co4be6" },
+    "name": "Kakutou Haou Densetsu Algunos"
+  },
+  {
+    "id": 38073,
+    "alternative_names": [
+      { "id": 89673, "name": "Beast King's Chronicle" },
+      { "id": 89674, "name": "Altered Beast" },
+      { "id": 89677, "name": "獣王記" }
+    ],
+    "cover": { "id": 224098, "image_id": "co4swy" },
+    "name": "Juuouki",
+    "game_localizations": [{ "id": 6965, "name": "獣王記" }]
+  },
+  {
+    "id": 64540,
+    "alternative_names": [
+      { "id": 34254, "name": "No.Ri.Ko" },
+      { "id": 34255, "name": "Noriko" },
+      { "id": 34256, "name": "No・Ri・Ko" },
+      { "id": 48188, "name": "Noriko" },
+      { "id": 48189, "name": "No.Ri.Ko" },
+      { "id": 48190, "name": "No・Ri・Ko" }
+    ],
+    "cover": { "id": 45409, "image_id": "xo4bm2qqto2rizxwkuaa" },
+    "name": "No-Ri-Ko"
+  },
+  {
+    "id": 251,
+    "cover": { "id": 233697, "image_id": "co50bl" },
+    "name": "Where in the World Is Carmen Sandiego?"
+  },
+  {
+    "id": 42003,
+    "alternative_names": [
+      { "id": 69349, "name": "Cosmic Fantasy 2: Bouken Shounen-ban" }
+    ],
+    "cover": { "id": 91465, "image_id": "co1ykp" },
+    "name": "Cosmic Fantasy 2"
+  },
+  {
+    "id": 42005,
+    "cover": { "id": 53226, "image_id": "fge8va1hedmtognhpsur" },
+    "name": "Cosmic Fantasy: Bouken Shounen Yuu"
+  },
+  {
+    "id": 37582,
+    "cover": { "id": 24888, "image_id": "uiiu8hznl8uhafsv7ssk" },
+    "name": "Pop 'n Magic"
+  },
+  {
+    "id": 62479,
+    "cover": { "id": 123218, "image_id": "co2n2q" },
+    "name": "Tecmo World Cup Super Soccer"
+  },
+  {
+    "id": 37603,
+    "alternative_names": [
+      { "id": 62636, "name": "Valis IV" },
+      { "id": 62637, "name": "ヴァリスIV" }
+    ],
+    "cover": { "id": 123290, "image_id": "co2n4q" },
+    "name": "Valis IV",
+    "game_localizations": [{ "id": 6894, "name": "ヴァリス IV" }]
+  },
+  {
+    "id": 247568,
+    "alternative_names": [
+      { "id": 133013, "name": "Sotsugyou II: Neo Generation" },
+      { "id": 133014, "name": "Sotsugyou II: Neo Generation Special" }
+    ],
+    "cover": { "id": 300087, "image_id": "co6fjr" },
+    "name": "Sotsugyou 2"
+  },
+  { "id": 267982, "name": "Minesweeper" },
+  {
+    "id": 99908,
+    "cover": { "id": 375855, "image_id": "co820f" },
+    "name": "Color Wars"
+  },
+  {
+    "id": 4514,
+    "alternative_names": [
+      { "id": 52595, "name": "龍虎の拳" },
+      { "id": 52596, "name": "Ryuuko no Ken" },
+      { "id": 52597, "name": "Fists of Dragon and Tiger" },
+      { "id": 95048, "name": "용호의 권" }
+    ],
+    "cover": { "id": 97132, "image_id": "co22y4" },
+    "name": "Art of Fighting",
+    "game_localizations": [
+      { "id": 3815, "name": "龍虎の拳" },
+      { "id": 19382, "name": "용호의 권" }
+    ]
+  },
+  {
+    "id": 55899,
+    "cover": { "id": 359628, "image_id": "co7pho" },
+    "name": "Iga Ninden Ga-ou",
+    "game_localizations": [{ "id": 33640, "name": "伊賀忍伝凱王" }]
+  },
+  {
+    "id": 107646,
+    "cover": { "id": 229753, "image_id": "co4xa1" },
+    "name": "Mitsubachi Gakuen"
+  },
+  {
+    "id": 4405,
+    "alternative_names": [
+      { "id": 75386, "name": "レインボーアイランド" },
+      { "id": 157740, "name": "Bubble Bobble 2" },
+      { "id": 157741, "name": "Rainbow Islands" },
+      { "id": 157770, "name": "Rainbow Islands: Story of Bubble Bobble II" }
+    ],
+    "cover": { "id": 409977, "image_id": "co8sc9" },
+    "name": "Rainbow Islands: The Story of Bubble Bobble 2",
+    "game_localizations": [
+      {
+        "id": 3792,
+        "name": "レインボーアイランド",
+        "cover": { "id": 409974, "image_id": "co8sc6" }
+      }
+    ]
+  },
+  {
+    "id": 37610,
+    "cover": { "id": 54422, "image_id": "semobye2uu2zsdkskj9c" },
+    "name": "Splash Lake"
+  },
+  {
+    "id": 6841,
+    "alternative_names": [
+      { "id": 26315, "name": "雷電伝説" },
+      { "id": 115601, "name": "雷電" }
+    ],
+    "cover": { "id": 278970, "image_id": "co5z96" },
+    "name": "Raiden",
+    "game_localizations": [{ "id": 4241, "name": "雷電" }]
+  },
+  {
+    "id": 198377,
+    "cover": { "id": 218708, "image_id": "co4or8" },
+    "name": "Babel"
+  },
+  {
+    "id": 65419,
+    "cover": { "id": 46400, "image_id": "jxqvgm1ioybsgivnbmrx" },
+    "name": "Tenshi no Uta II: Datenshi no Sentaku"
+  },
+  { "id": 267943, "name": "Ultrabox" },
+  {
+    "id": 38282,
+    "cover": { "id": 153852, "image_id": "co3apo" },
+    "name": "Super Fire Pro Wrestling: Queen's Special"
+  },
+  {
+    "id": 41994,
+    "cover": { "id": 48134, "image_id": "dy9hwl3lrwnrqqlmez5o" },
+    "name": "Macross - Eternal Love Song"
+  },
+  {
+    "id": 44313,
+    "cover": { "id": 350123, "image_id": "co7i5n" },
+    "name": "Gate of Thunder",
+    "game_localizations": [
+      { "id": 31858, "cover": { "id": 350133, "image_id": "co7i5x" } }
+    ]
+  },
+  {
+    "id": 210633,
+    "cover": { "id": 233830, "image_id": "co50fa" },
+    "name": "Pastel Lime"
+  },
+  {
+    "id": 15066,
+    "cover": { "id": 182216, "image_id": "co3wlk" },
+    "name": "The Manhole"
+  },
+  {
+    "id": 145674,
+    "cover": { "id": 397258, "image_id": "co8iiy" },
+    "name": "Dekoboko Densetsu: Hashiru Wagamanma"
+  },
+  {
+    "id": 37598,
+    "cover": { "id": 300988, "image_id": "co6g8s" },
+    "name": "Sylphia"
+  },
+  {
+    "id": 185879,
+    "cover": { "id": 200646, "image_id": "co4ati" },
+    "name": "F1 Circus Special: Pole to Win"
+  },
+  {
+    "id": 112577,
+    "cover": { "id": 404159, "image_id": "co8nun" },
+    "name": "Kisou Louga"
+  },
+  {
+    "id": 218023,
+    "alternative_names": [{ "id": 145173, "name": "Private eye dol" }],
+    "cover": { "id": 280153, "image_id": "co6061" },
+    "name": "Private Eye Dol"
+  },
+  {
+    "id": 37578,
+    "cover": { "id": 215876, "image_id": "co4mkk" },
+    "name": "Alshark"
+  },
+  {
+    "id": 92701,
+    "alternative_names": [{ "id": 88796, "name": "バスティール" }],
+    "cover": { "id": 221620, "image_id": "co4r04" },
+    "name": "Vasteel",
+    "game_localizations": [{ "id": 10624, "name": "バスティール" }]
+  },
+  {
+    "id": 41998,
+    "cover": { "id": 240153, "image_id": "co55ax" },
+    "name": "Road Spirits"
+  },
+  {
+    "id": 55896,
+    "cover": { "id": 30864, "image_id": "jr71vvrn8bb54mlanx3v" },
+    "name": "Hihou Densetsu Chris no Bouken"
+  },
+  {
+    "id": 37633,
+    "cover": { "id": 52768, "image_id": "o14b4drsn9lodqgqt8tn" },
+    "name": "Metal Angel"
+  },
+  {
+    "id": 5389,
+    "alternative_names": [
+      { "id": 96727, "name": "蒼き狼と白き牝鹿・元朝秘史" },
+      { "id": 96728, "name": "Aoki Ōkami to Shiroki Mejika: Genchou Hishi" },
+      { "id": 96729, "name": "Genghis Khan 2: Clan of the Grey Wolf" },
+      {
+        "id": 96730,
+        "name": "Super Aoki Ookami to Shiroki Meshika: Genchou Hishi"
+      },
+      { "id": 96731, "name": "Aoki Ookami to Shiroki Mejika: Genchou Hishi" }
+    ],
+    "cover": { "id": 99179, "image_id": "co24iz" },
+    "name": "Genghis Khan II: Clan of the Gray Wolf",
+    "game_localizations": [{ "id": 3948, "name": "蒼き狼と白き牝鹿・元朝秘史" }]
+  },
+  {
+    "id": 281525,
+    "cover": { "id": 353613, "image_id": "co7kul" },
+    "name": "Double Dragon II: The Revenge"
+  },
+  {
+    "id": 314220,
+    "alternative_names": [
+      { "id": 156890, "name": "Shanghai III: Dragon's Eye" }
+    ],
+    "cover": { "id": 416813, "image_id": "co8xm5" },
+    "name": "Battle Shanghai: Dragon's Eye"
+  },
+  {
+    "id": 70822,
+    "cover": { "id": 304243, "image_id": "co6ir7" },
+    "name": "Dragon Knight & Graffiti"
+  },
+  {
+    "id": 15834,
+    "alternative_names": [{ "id": 107038, "name": "エメラルドドラゴン" }],
+    "cover": { "id": 152913, "image_id": "co39zl" },
+    "name": "Emerald Dragon",
+    "game_localizations": [{ "id": 2194, "name": "エメラルドドラゴン" }]
+  },
+  {
+    "id": 42128,
+    "alternative_names": [{ "id": 85810, "name": "Panza Kick Boxing" }],
+    "cover": { "id": 323160, "image_id": "co6xco" },
+    "name": "Andre Panza Kick Boxing"
+  },
+  {
+    "id": 281081,
+    "cover": { "id": 352698, "image_id": "co7k56" },
+    "name": "Star of Quiz",
+    "game_localizations": [
+      {
+        "id": 32007,
+        "name": "クイズの星",
+        "cover": { "id": 352699, "image_id": "co7k57" }
+      }
+    ]
+  },
+  {
+    "id": 292078,
+    "cover": { "id": 430601, "image_id": "co9895" },
+    "name": "240p Test Suite"
+  },
+  {
+    "id": 37600,
+    "cover": { "id": 24877, "image_id": "cm5ypganniiwrfd22all" },
+    "name": "Flash Hiders"
+  },
+  {
+    "id": 37635,
+    "alternative_names": [{ "id": 80089, "name": "ドラゴンハーフ" }],
+    "cover": { "id": 47360, "image_id": "nuncpxyw76zcltbfcsvm" },
+    "name": "Dragon Half",
+    "game_localizations": [{ "id": 6900, "name": "ドラゴンハーフ" }]
+  },
+  {
+    "id": 94511,
+    "alternative_names": [{ "id": 133679, "name": "ソルビアンカ" }],
+    "cover": { "id": 303426, "image_id": "co6i4i" },
+    "name": "Sol Bianca"
+  },
+  {
+    "id": 65978,
+    "alternative_names": [
+      { "id": 77155, "name": "聖夜物語 AnEarth Fantasy Stories" }
+    ],
+    "cover": { "id": 47091, "image_id": "nfkpga7behavfg0uhc0u" },
+    "name": "Seiya Monogatari: Anearth Fantasy Stories",
+    "game_localizations": [
+      { "id": 9227, "name": "聖夜物語 Anearth Fantasy Stories" }
+    ]
+  },
+  {
+    "id": 42007,
+    "cover": { "id": 197615, "image_id": "co48hb" },
+    "name": "Space Fantasy Zone"
+  },
+  {
+    "id": 37594,
+    "cover": { "id": 47011, "image_id": "k8ipqwmuwrp7ifqhwkxf" },
+    "name": "Hyper Dyne Side Arms Special"
+  },
+  {
+    "id": 277859,
+    "cover": { "id": 345408, "image_id": "co7eio" },
+    "name": "Shinsetsu Shiawase Usagi F: Yuujou Yori mo Aiyoku"
+  },
+  {
+    "id": 14777,
+    "alternative_names": [{ "id": 85978, "name": "Jim Power" }],
+    "cover": { "id": 293668, "image_id": "co6alg" },
+    "name": "Jim Power in Mutant Planet"
+  },
+  {
+    "id": 108922,
+    "cover": { "id": 303488, "image_id": "co6i68" },
+    "name": "KO Seiki Beast Sanjuushi"
+  },
+  {
+    "id": 37615,
+    "alternative_names": [
+      { "id": 96811, "name": "PC-Genjin 3" },
+      { "id": 96812, "name": "PC-原人3" },
+      { "id": 96860, "name": "Bonk III: Bonk's Big Adventure" },
+      { "id": 96861, "name": "PC Genjin 3: Pithecanthropus Computerurus" }
+    ],
+    "cover": { "id": 319412, "image_id": "co6ugk" },
+    "name": "Bonk 3: Bonk's Big Adventure",
+    "game_localizations": [{ "id": 6896, "name": "PC 原人 3" }]
+  },
+  {
+    "id": 37631,
+    "cover": { "id": 47070, "image_id": "gkn8vbteyvxncvtczjmy" },
+    "name": "Metamor Jupiter"
+  },
+  {
+    "id": 65179,
+    "alternative_names": [
+      { "id": 124036, "name": "フォーメーションサッカー95 della セリエA" }
+    ],
+    "cover": { "id": 359626, "image_id": "co7phm" },
+    "name": "Formation Soccer 95: della Serie A",
+    "game_localizations": [
+      { "id": 24796, "name": "フォーメーションサッカー95 della セリエA" }
+    ]
+  },
+  {
+    "id": 184472,
+    "alternative_names": [{ "id": 79417, "name": "太平記" }],
+    "cover": { "id": 199722, "image_id": "co4a3u" },
+    "name": "Taiheiki",
+    "game_localizations": [{ "id": 16259, "name": "太平記" }]
+  },
+  {
+    "id": 89153,
+    "alternative_names": [{ "id": 151715, "name": "マインスウィーパー" }],
+    "cover": { "id": 381240, "image_id": "co8660" },
+    "name": "Minesweeper"
+  },
+  {
+    "id": 92225,
+    "alternative_names": [
+      { "id": 57689, "name": "あすか120%マキシマ BURNING Fest." }
+    ],
+    "cover": { "id": 202169, "image_id": "co4bzt" },
+    "name": "Asuka 120% Maxima Burning Fest.",
+    "game_localizations": [
+      { "id": 10605, "name": "あすか120%マキシマ Burning Fest." }
+    ]
+  },
+  {
+    "id": 65273,
+    "alternative_names": [
+      { "id": 79971, "name": "フレイCD サーク外伝\t" },
+      { "id": 131082, "name": "Fray CD: Xak Gaiden" }
+    ],
+    "cover": { "id": 292909, "image_id": "co6a0d" },
+    "name": "Fray in Magical Adventure CD: Xak Gaiden",
+    "game_localizations": [{ "id": 9154, "name": "フレイ CD サーク外伝" }]
+  },
+  {
+    "id": 62537,
+    "cover": { "id": 330402, "image_id": "co72xu" },
+    "name": "Moonlight Lady"
+  },
+  {
+    "id": 80733,
+    "cover": { "id": 56793, "image_id": "gu9dybf3bi4cf34vaofj" },
+    "name": "Tenshi no Uta"
+  },
+  {
+    "id": 38075,
+    "alternative_names": [
+      { "id": 39831, "name": "Darius α" },
+      { "id": 59197, "name": "ダライアス アルファ" },
+      { "id": 59198, "name": "Daraiasu Arufa" },
+      { "id": 59199, "name": "Dariusα" }
+    ],
+    "cover": { "id": 323216, "image_id": "co6xe8" },
+    "name": "Darius Alpha",
+    "game_localizations": [{ "id": 6966, "name": "ダライアス アルファ" }]
+  },
+  {
+    "id": 250195,
+    "cover": { "id": 359978, "image_id": "co7pre" },
+    "name": "Shin Megami Tensei"
+  },
+  {
+    "id": 15452,
+    "alternative_names": [
+      { "id": 61332, "name": "イースIV The Dawn of Ys" },
+      { "id": 61333, "name": "Ys 4: The Dawn of Ys" },
+      { "id": 61334, "name": "Ys IV The Dawn of Ys" }
+    ],
+    "cover": { "id": 324522, "image_id": "co6yei" },
+    "name": "Ys IV: The Dawn of Ys",
+    "game_localizations": [{ "id": 5322, "name": "イース IV The Dawn of Ys" }]
+  },
+  {
+    "id": 44311,
+    "alternative_names": [{ "id": 98012, "name": "Red Alert" }],
+    "cover": { "id": 236633, "image_id": "co52l5" },
+    "name": "Last Alert"
+  },
+  {
+    "id": 85547,
+    "alternative_names": [
+      { "id": 38606, "name": "超兄貴" },
+      { "id": 38607, "name": "Super Big Brother" },
+      { "id": 53822, "name": "Cho Aniki" },
+      { "id": 96853, "name": "Chō Aniki" }
+    ],
+    "cover": { "id": 112646, "image_id": "co2ex2" },
+    "name": "Chou Aniki",
+    "game_localizations": [{ "id": 10397, "name": "超兄貴" }]
+  },
+  {
+    "id": 94898,
+    "alternative_names": [
+      { "id": 85522, "name": "Linda³" },
+      { "id": 138435, "name": "Linda 3" }
+    ],
+    "cover": { "id": 272246, "image_id": "co5u2e" },
+    "name": "Linda Cube",
+    "game_localizations": [{ "id": 22721, "name": "リンダキューブ" }]
+  },
+  {
+    "id": 37616,
+    "alternative_names": [
+      { "id": 33538, "name": "スプリガンmark2リ・テラフォーム・プロジェクト" }
+    ],
+    "cover": { "id": 100944, "image_id": "co25w0" },
+    "name": "Spriggan Mark 2: Re-Terraform Project",
+    "game_localizations": [
+      { "id": 6897, "name": "スプリガンMark 2 リ・テラフォーム・プロジェクト" }
+    ]
+  },
+  {
+    "id": 59997,
+    "alternative_names": [
+      { "id": 86937, "name": "同級生" },
+      { "id": 86938, "name": "Tongjisheng" },
+      { "id": 86939, "name": "동급생" },
+      { "id": 86941, "name": "Classmates" },
+      { "id": 86942, "name": "Nanpa 1" }
+    ],
+    "cover": { "id": 217772, "image_id": "co4o18" },
+    "name": "Doukyuusei",
+    "game_localizations": [
+      { "id": 8685, "name": "同級生" },
+      { "id": 20319, "name": "동급생" }
+    ]
+  },
+  {
+    "id": 4543,
+    "alternative_names": [
+      { "id": 67302, "name": "Slime World" },
+      { "id": 67303, "name": "スライムワールド" }
+    ],
+    "cover": { "id": 381547, "image_id": "co86ej" },
+    "name": "Todd's Adventures in Slime World",
+    "game_localizations": [{ "id": 3818, "name": "スライムワールド" }]
+  },
+  {
+    "id": 39544,
+    "cover": { "id": 237761, "image_id": "co53gh" },
+    "name": "Martial Champion"
+  },
+  {
+    "id": 278303,
+    "cover": { "id": 381241, "image_id": "co8661" },
+    "name": "Sword Master",
+    "game_localizations": [{ "id": 34933, "name": "ソードマスター" }]
+  },
+  {
+    "id": 46405,
+    "cover": { "id": 231339, "image_id": "co4yi3" },
+    "name": "Black Hole Assault"
+  },
+  {
+    "id": 56374,
+    "cover": { "id": 233839, "image_id": "co50fj" },
+    "name": "Summer Carnival '92 Alzadick"
+  },
+  {
+    "id": 38077,
+    "alternative_names": [
+      { "id": 129997, "name": "ドラえもん のび太のドラビアンナイト" },
+      { "id": 136925, "name": "Doraemon: Nobita's Dorabian Night" }
+    ],
+    "cover": { "id": 323211, "image_id": "co6xe3" },
+    "name": "Doraemon: Nobita no Dorabian Night",
+    "game_localizations": [
+      { "id": 25773, "name": "ドラえもん のび太のドラビアンナイト" }
+    ]
+  },
+  {
+    "id": 282977,
+    "cover": { "id": 356556, "image_id": "co7n4c" },
+    "name": "Shanghai II"
+  },
+  {
+    "id": 37639,
+    "alternative_names": [{ "id": 67835, "name": "Advanced Variable Geo" }],
+    "cover": { "id": 205491, "image_id": "co4ek3" },
+    "name": "Advanced V.G."
+  },
+  {
+    "id": 42000,
+    "cover": { "id": 30865, "image_id": "ay8v54rvfotpi5urlr5b" },
+    "name": "Fiend Hunter"
+  },
+  {
+    "id": 307092,
+    "cover": { "id": 392585, "image_id": "co8ex5" },
+    "name": "The Pro Yakyuu Super '94"
+  },
+  {
+    "id": 72805,
+    "alternative_names": [{ "id": 155120, "name": "Macross 2036" }],
+    "cover": { "id": 50738, "image_id": "aubh4qozjbghqbmprfyf" },
+    "name": "Choujikuu Yousai Macross 2036"
+  },
+  {
+    "id": 128362,
+    "cover": { "id": 378708, "image_id": "co847o" },
+    "name": "Hawk F-123"
+  },
+  {
+    "id": 42002,
+    "alternative_names": [{ "id": 141953, "name": "Tengai Makyou: Ziria" }],
+    "cover": { "id": 155486, "image_id": "co3bz2" },
+    "name": "Far East of Eden: Ziria",
+    "game_localizations": [{ "id": 27911, "name": "天外魔境 Ziria" }]
+  },
+  {
+    "id": 81386,
+    "alternative_names": [{ "id": 156264, "name": "Lodoss-tou Senki" }],
+    "cover": { "id": 303486, "image_id": "co6i66" },
+    "name": "Record of Lodoss War"
+  },
+  {
+    "id": 41781,
+    "cover": { "id": 329197, "image_id": "co720d" },
+    "name": "Daisenryaku II: Campaign Version"
+  },
+  {
+    "id": 39663,
+    "alternative_names": [
+      { "id": 114294, "name": "ボンバーマン ぱにっくボンバー " }
+    ],
+    "cover": { "id": 140236, "image_id": "co307g" },
+    "name": "Bomberman: Panic Bomber",
+    "game_localizations": [
+      { "id": 7159, "name": "ボンバーマン ぱにっくボンバー" }
+    ]
+  },
+  {
+    "id": 37601,
+    "alternative_names": [
+      { "id": 96854, "name": "超英雄伝説ダイナスティックヒーロー" },
+      { "id": 96855, "name": "Chou Eiyuu Densetsu: Dynastic Hero" }
+    ],
+    "cover": { "id": 233655, "image_id": "co50af" },
+    "name": "The Dynastic Hero",
+    "game_localizations": [
+      { "id": 6893, "name": "超英雄伝説ダイナスティックヒーロー" }
+    ]
+  },
+  {
+    "id": 5434,
+    "cover": { "id": 118582, "image_id": "co2jhy" },
+    "name": "Shadow of the Beast"
+  },
+  {
+    "id": 123005,
+    "alternative_names": [
+      { "id": 51968, "name": "The Davis Cup Tennis" },
+      { "id": 51969, "name": "Davis Cup Tennis" }
+    ],
+    "cover": { "id": 323616, "image_id": "co6xpc" },
+    "name": "Tennis Cup"
+  },
+  {
+    "id": 4412,
+    "alternative_names": [
+      { "id": 49311, "name": "ゼロウィング" },
+      { "id": 60920, "name": "Zero Wing" }
+    ],
+    "cover": { "id": 104716, "image_id": "co28ss" },
+    "name": "Zero Wing",
+    "game_localizations": [{ "id": 3794, "name": "ゼロウィング" }]
+  },
+  {
+    "id": 41997,
+    "alternative_names": [{ "id": 157968, "name": "Tanjou S: Debut" }],
+    "cover": { "id": 410678, "image_id": "co8svq" },
+    "name": "Tanjou Debut",
+    "game_localizations": [{ "id": 31035, "name": "誕生 Debut" }]
+  },
+  {
+    "id": 44315,
+    "alternative_names": [
+      { "id": 29634, "name": "Exile 2: Wicked Phenomenon" }
+    ],
+    "cover": { "id": 208015, "image_id": "co4gi7" },
+    "name": "Exile: Wicked Phenomenon"
+  },
+  {
+    "id": 42019,
+    "cover": { "id": 236339, "image_id": "co52cz" },
+    "name": "Monster Lair"
+  },
+  {
+    "id": 5385,
+    "alternative_names": [
+      { "id": 29239, "name": "Garou Densetsu Special" },
+      { "id": 22866, "name": "餓狼伝説スペシャル" },
+      { "id": 44412, "name": "Garou Densetsu Special" }
+    ],
+    "cover": { "id": 154501, "image_id": "co3b7p" },
+    "name": "Fatal Fury Special"
+  }
+]

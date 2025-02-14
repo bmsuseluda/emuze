@@ -31,6 +31,7 @@
     "convertSvgs": "svgr --svgo-config svgo.config.js --config-file .svgrrc.js ./svgs",
     "downloadEmulators:windows": "ts-node downloadEmulators/downloadEmulatorsWindows.ts",
     "downloadEmulators:linux": "ts-node downloadEmulators/downloadEmulatorsLinux.ts",
+    "fetchMetaData": "ts-node fetchMetaData/fetchMetaData.ts",
     "app:distLinux": "yarn downloadEmulators:linux && yarn build && electron-builder --linux",
     "app:distWindows": "yarn downloadEmulators:windows && yarn build && electron-builder --win",
     "storybook": "yarn clean && cross-env NODE_ENV=development yarn panda:codegen && storybook dev -p 6006 --no-open",

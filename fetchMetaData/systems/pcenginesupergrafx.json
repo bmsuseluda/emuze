@@ -1,0 +1,62 @@
+[
+  {
+    "id": 42065,
+    "cover": { "id": 26044, "image_id": "lvbkrmyf3vhcfzumsf2d" },
+    "name": "Madou Ou Granzort"
+  },
+  {
+    "id": 38103,
+    "alternative_names": [{ "id": 13159, "name": "Fighter Bomber" }],
+    "cover": { "id": 437038, "image_id": "co9d7y" },
+    "name": "Battle Ace"
+  },
+  {
+    "id": 213187,
+    "cover": { "id": 427628, "image_id": "co95yk" },
+    "name": "Daimakaimura"
+  },
+  {
+    "id": 12611,
+    "cover": { "id": 191190, "image_id": "co43iu" },
+    "name": "Impossamole"
+  },
+  {
+    "id": 42078,
+    "alternative_names": [
+      { "id": 29223, "name": "Aldynes" },
+      { "id": 29224, "name": "オルディネス" }
+    ],
+    "cover": { "id": 323161, "image_id": "co6xcp" },
+    "name": "Aldynes: The Mission Code for Rage Crisis"
+  },
+  {
+    "id": 6077,
+    "cover": { "id": 120195, "image_id": "co2kqr" },
+    "name": "1941: Counter Attack"
+  },
+  {
+    "id": 38075,
+    "alternative_names": [
+      { "id": 39831, "name": "Darius α" },
+      { "id": 59197, "name": "ダライアス アルファ" },
+      { "id": 59198, "name": "Daraiasu Arufa" },
+      { "id": 59199, "name": "Dariusα" }
+    ],
+    "cover": { "id": 323216, "image_id": "co6xe8" },
+    "name": "Darius Alpha",
+    "game_localizations": [{ "id": 6966, "name": "ダライアス アルファ" }]
+  },
+  {
+    "id": 38078,
+    "alternative_names": [
+      { "id": 59194, "name": "ダライアス プラス" },
+      {
+        "id": 59196,
+        "name": "Darius PC-Engine SuperGrafx TurboGrafx-16 HuCard"
+      }
+    ],
+    "cover": { "id": 137257, "image_id": "co2xwp" },
+    "name": "Darius Plus",
+    "game_localizations": [{ "id": 6967, "name": "ダライアス プラス" }]
+  }
+]
