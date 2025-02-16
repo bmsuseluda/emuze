@@ -4,7 +4,7 @@ import {
   getButtonIndex,
   isAnalog,
 } from "../../gamepads";
-import { PhysicalGamepadInterface } from "./PhysicalGamepad";
+import type { PhysicalGamepadInterface } from "./PhysicalGamepad";
 
 const sdlXinputButtonMapping = {
   dpup: 0,

@@ -68,18 +68,22 @@ const extractGames = (xmlData: string) => {
 
 const importMame = () => {
   try {
-    const xmlData = spawnSync(
+    const result = spawnSync(
       "flatpak",
       ["run", "org.mamedev.MAME", "-listxml"],
       {
         encoding: "utf-8",
-        maxBuffer: 1000000000,
+        maxBuffer: 10000000000000,
       },
-    ).stdout.toString();
+    );
+    if (result.stderr) {
+      console.log(result.stderr);
+    }
+    const xmlData = result.stdout.toString();
 
-    const result = extractGames(xmlData);
+    const extractedGames = extractGames(xmlData);
 
-    writeFile(result, nodepath.join(resultPath, "mame.json"));
+    writeFile(extractedGames, nodepath.join(resultPath, "mame.json"));
   } catch (error) {
     console.log(error);
   }

@@ -6,7 +6,7 @@ import type { Category, Entry } from "../types/jsonFiles/category";
 import { readDirectorynames, readFilenames } from "./readWriteData.server";
 import { convertToId } from "./convertToId.server";
 import { sortCaseInsensitive } from "./sortCaseInsensitive.server";
-import { fetchMetaData } from "./igdb.server";
+import { fetchMetaDataFromDB } from "./igdb.server";
 import { readGeneral } from "./settings.server";
 import type {
   ExcludeFilesFunction,
@@ -18,10 +18,8 @@ import type { Category as CategoryDB } from "./categoriesDB.server/types";
 import { categories, getCategoryDataByName } from "./categoriesDB.server";
 import { getInstalledApplicationForCategory } from "./applications.server";
 import { FileDataCache, MultipleFileDataCache } from "./FileDataCache.server";
-import { setErrorDialog } from "./errorDialog.server";
 import type { ApplicationId } from "./applicationsDB.server/applicationId";
 import type { SystemId } from "./categoriesDB.server/systemId";
-import { log } from "./debug.server";
 import { syncLastPlayedWithCategoryCached } from "./lastPlayed.server";
 
 export const paths = {
@@ -227,8 +225,8 @@ export const readEntries = ({
   return oldEntries || [];
 };
 
-export const readEntriesWithMetaData = async (
-  igdbPlatformIds: number[],
+export const readEntriesWithMetaData = (
+  systemId: SystemId,
   entries: Entry[],
 ) => {
   const entriesWithMetaData: Entry[] = [];
@@ -245,18 +243,17 @@ export const readEntriesWithMetaData = async (
 
   return [
     ...entriesWithMetaData,
-    ...(await fetchMetaData(igdbPlatformIds, entriesWithoutMetaData)),
+    ...fetchMetaDataFromDB(systemId, entriesWithoutMetaData),
   ].sort(sortEntries);
 };
 
-export const importEntries = async (category: SystemId) => {
+export const importEntries = (category: SystemId) => {
   const categoryDbData = categories[category];
   const oldCategoryData = readCategory(category);
   const generalData = readGeneral();
 
   if (oldCategoryData && categoryDbData && generalData) {
     const { applicationsPath } = generalData;
-    const { igdbPlatformIds } = categoryDbData;
 
     const application = getInstalledApplicationForCategory({
       applicationsPath,
@@ -270,47 +267,26 @@ export const importEntries = async (category: SystemId) => {
       oldEntries: oldCategoryData.entries,
     });
 
-    await readEntriesWithMetaData(igdbPlatformIds, entries)
-      .then((entries) => {
-        writeCategory({
-          ...oldCategoryData,
-          entries,
-        });
-      })
-      .catch((error) => {
-        setErrorDialog(
-          "Fetch MetaData from igdb failed",
-          "Please try again later",
-        );
+    const entriesWithMetaData = readEntriesWithMetaData(category, entries);
 
-        error().catch((error: { response: object }) => {
-          log("error", "igdb error", error.response);
-        });
-
-        // Write data anyway to add or remove games
-        writeCategory({
-          ...oldCategoryData,
-          entries,
-        });
-        throw new Error();
-      });
+    writeCategory({
+      ...oldCategoryData,
+      entries: entriesWithMetaData,
+    });
   }
 };
 
-const createCategoryDataWithMetaData =
-  (category: Category) => async (): Promise<Category> => {
-    const categoryDbData = getCategoryDataByName(category.name);
-    if (category.entries && categoryDbData) {
-      return readEntriesWithMetaData(
-        categoryDbData.igdbPlatformIds,
-        category.entries,
-      ).then((entries) => ({
-        ...category,
-        entries,
-      }));
-    }
-    return category;
-  };
+const createCategoryDataWithMetaData = (category: Category): Category => {
+  const categoryDbData = getCategoryDataByName(category.name);
+  if (category.entries && categoryDbData) {
+    const entries = readEntriesWithMetaData(category.id, category.entries);
+    return {
+      ...category,
+      entries,
+    };
+  }
+  return category;
+};
 
 const createCategoryData = (
   categoryDbData: CategoryDB,
@@ -340,7 +316,7 @@ const createCategoryData = (
   };
 };
 
-export const importCategories = async () => {
+export const importCategories = () => {
   const generalData = readGeneral();
 
   if (generalData?.categoriesPath) {
@@ -369,47 +345,14 @@ export const importCategories = async () => {
       [],
     );
 
-    const getCategoriesWithMetaData = categories.map<() => Promise<Category>>(
-      (category) => createCategoryDataWithMetaData(category),
+    const categoriesWithUpdatedMetaData = categories.map(
+      createCategoryDataWithMetaData,
     );
 
-    await Promise.allSettled(
-      getCategoriesWithMetaData.map((func) => func()),
-    ).then((settledResult) => {
-      const categoriesWithUpdatedMetaData = settledResult.map(
-        (categorySettledResult, index) => {
-          if (categorySettledResult.status === "fulfilled") {
-            return categorySettledResult.value;
-          }
-
-          categorySettledResult
-            .reason()
-            .catch((error: { response: object }) => {
-              log("error", "igdb error all settled", error.response);
-            });
-
-          return categories[index];
-        },
-      );
-
-      deleteCategories();
-      categoriesWithUpdatedMetaData.forEach((category) => {
-        writeCategory(category);
-      });
-      writeCategories(categoriesWithUpdatedMetaData);
-
-      if (
-        settledResult.find(
-          (categorySettledResult) =>
-            categorySettledResult.status === "rejected",
-        )
-      ) {
-        setErrorDialog(
-          "Fetch MetaData from igdb failed",
-          "Please try again later",
-        );
-        throw new Error();
-      }
+    deleteCategories();
+    categoriesWithUpdatedMetaData.forEach((category) => {
+      writeCategory(category);
     });
+    writeCategories(categoriesWithUpdatedMetaData);
   }
 };

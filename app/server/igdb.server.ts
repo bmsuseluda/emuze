@@ -1,9 +1,7 @@
 import type { Entry } from "../types/jsonFiles/category";
-import type { Apicalypse } from "apicalypse";
-import apicalypse from "apicalypse";
 import { getExpiresOn } from "./getExpiresOn.server";
-import { retryPromise } from "../retryPromise";
-import { log } from "./debug.server";
+import type { SystemId } from "./categoriesDB.server/systemId";
+import nodepath from "path";
 
 interface GameLocalization {
   name?: string;
@@ -20,10 +18,6 @@ export interface Game {
   alternative_names?: [{ name: string }];
   game_localizations?: GameLocalization[];
 }
-
-export const url =
-  process.env.EMUZE_IGDB_DEVELOPMENT_URL ||
-  "https://emuze-api-d7jjhe73ba-uc.a.run.app/games";
 
 export const removeSubTitle = (a: string) => a.split(/ -|[:/]|_/g)[0];
 
@@ -68,26 +62,6 @@ export const getCoverUrl = (entryName: string, gameData: Game) => {
   return null;
 };
 
-const filterCaseInsensitive = (field: string, value: string) =>
-  `${field}~"${value}"*`;
-
-const gameFilters = [
-  "name",
-  "alternative_names.name",
-  "game_localizations.name",
-];
-
-const createLocalizedFilter = (name: string) =>
-  gameFilters.map((filter) => filterCaseInsensitive(filter, name));
-
-export const filterGame = ({ name }: Entry): string[] => {
-  const normalizedName = removeSubTitle(
-    setCommaSeparatedArticleAsPrefix(removeBrackets(name)),
-  );
-
-  return createLocalizedFilter(normalizedName);
-};
-
 const normalizeString = (a: string) =>
   setCommaSeparatedArticleAsPrefix(removeBrackets(a))
     .replace(/[`~!@#$%^&*()_|+\-=?;:/'",. ]/gi, "")
@@ -96,27 +70,6 @@ const normalizeString = (a: string) =>
 
 const matchName = (a: string, b: string) =>
   normalizeString(a) === normalizeString(b);
-
-export const chunk = <T>(array: T[], maxEntries: number): Array<T[]> => {
-  const chunks = [];
-  const chunkNumber = Math.ceil(array.length / maxEntries);
-
-  for (let i = 0; i < chunkNumber; i++) {
-    chunks.push(array.slice(i * maxEntries, (i + 1) * maxEntries));
-  }
-
-  return chunks;
-};
-
-export interface GamesResponse {
-  data: Game[];
-  config?: {
-    data?: unknown;
-  };
-  status?: unknown;
-  headers?: unknown;
-  request?: unknown;
-}
 
 const findGameDataByName = (nameToFind: string, games: Game[]) =>
   games.find(
@@ -142,72 +95,7 @@ const findGameDataByNameLoose = (nameToFind: string, games: Game[]) => {
   return undefined;
 };
 
-const igdbResponseLimit = 500;
-
-const fetchMetaDataForChunkLimitless = async (
-  client: Apicalypse,
-  platformId: number[],
-  entries: Entry[],
-  offset: number = 0,
-): Promise<Game[]> => {
-  const gamesFiltered = entries.flatMap(filterGame);
-  // TODO: replace apicalypse and use shorthands
-  const gamesResponse: GamesResponse = await retryPromise(
-    () =>
-      client
-        .fields([
-          "name",
-          "cover.image_id",
-          "alternative_names.name",
-          "game_localizations.name",
-          "game_localizations.cover.image_id",
-        ])
-        .where(
-          `platforms=(${platformId}) &
-            (${gamesFiltered.join(" | ")})`,
-        )
-        .limit(igdbResponseLimit)
-        .offset(offset)
-        .request(url),
-    3,
-    250,
-  );
-
-  log("debug", "igdb request games filtered", gamesFiltered);
-  log(
-    "debug",
-    "igdb response",
-    gamesResponse.status,
-    gamesResponse.headers,
-    gamesResponse.data,
-  );
-
-  if (gamesResponse.data.length === igdbResponseLimit) {
-    return [
-      ...gamesResponse.data,
-      ...(await fetchMetaDataForChunkLimitless(
-        client,
-        platformId,
-        entries,
-        offset + igdbResponseLimit,
-      )),
-    ];
-  }
-
-  return gamesResponse.data;
-};
-
-const fetchMetaDataForChunk = async (
-  client: Apicalypse,
-  platformId: number[],
-  entries: Entry[],
-) => {
-  const data = await fetchMetaDataForChunkLimitless(
-    client,
-    platformId,
-    entries,
-  );
-
+const parseData = (entries: Entry[], data: Game[]) => {
   const expiresOn = getExpiresOn();
   return entries.map((entry) => {
     const nameWithoutSubTitle = removeSubTitle(entry.name);
@@ -226,107 +114,21 @@ const fetchMetaDataForChunk = async (
             imageUrl,
             expiresOn,
           },
-        };
+        } as Entry;
       }
     }
     return entry;
   });
 };
 
-export const fetchMetaData = async (platformId: number[], entries: Entry[]) => {
-  if (entries.length > 0) {
-    const entryChunks = chunk(entries, 200);
-    const client = apicalypse({
-      method: "POST",
-      headers: {
-        "Accept-Encoding": "gzip",
-      },
-    });
-
-    const entriesWithMetaData = await Promise.all(
-      entryChunks.map((entryChunk) =>
-        fetchMetaDataForChunk(client, platformId, entryChunk),
-      ),
-    );
-
-    return entriesWithMetaData.flat();
-  }
-  return entries;
-};
-
-interface ResponseHeader {
-  "ratelimit-reset": string;
-  "ratelimit-remaining": string;
-}
-
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-const fetchMetaDataForSystemWithOffset = async (
-  client: Apicalypse,
-  platformId: number[],
-  offset: number = 0,
-): Promise<Game[]> => {
-  await delay(4000);
-
-  const gamesResponse: GamesResponse = await retryPromise(
-    () =>
-      client
-        .fields([
-          "name",
-          "cover.image_id",
-          "alternative_names.name",
-          "game_localizations.name",
-          "game_localizations.cover.image_id",
-        ])
-        .where(`platforms=(${platformId})`)
-        .limit(igdbResponseLimit)
-        .offset(offset)
-        .request(url),
-    3,
-    4000,
+export const fetchMetaDataFromDB = (systemId: SystemId, entries: Entry[]) => {
+  const dbPath = nodepath.join(
+    __dirname,
+    "..",
+    "fetchMetaData",
+    "systems",
+    `${systemId}.json`,
   );
-
-  console.log("debug", "igdb request games", platformId, offset);
-  console.log(
-    "debug",
-    "igdb response",
-    gamesResponse.status,
-    gamesResponse.headers,
-    gamesResponse.data.length,
-  );
-
-  const headers = gamesResponse.headers as ResponseHeader;
-  if (Number(headers["ratelimit-remaining"]) < 5) {
-    const waitFor = Number(headers["ratelimit-reset"]);
-    await delay(waitFor * 1000);
-  }
-
-  if (gamesResponse.data.length === igdbResponseLimit) {
-    return [
-      ...gamesResponse.data,
-      ...(await fetchMetaDataForSystemWithOffset(
-        client,
-        platformId,
-        offset + igdbResponseLimit,
-      )),
-    ];
-  }
-
-  return gamesResponse.data;
-};
-
-export const fetchMetaDataForSystem = async (platformId: number[]) => {
-  const client = apicalypse({
-    method: "POST",
-    headers: {
-      "Accept-Encoding": "gzip",
-    },
-  });
-
-  const entriesWithMetaData = await fetchMetaDataForSystemWithOffset(
-    client,
-    platformId,
-  );
-
-  return entriesWithMetaData;
+  const data: Game[] = require(dbPath);
+  return parseData(entries, data);
 };

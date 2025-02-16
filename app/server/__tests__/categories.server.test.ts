@@ -46,7 +46,7 @@ import {
 import { applications as applicationsTestData } from "../__testData__/applications";
 import type { Entry, MetaData } from "../../types/jsonFiles/category";
 import { general } from "../__testData__/general";
-import { fetchMetaData } from "../igdb.server";
+import { fetchMetaDataFromDB } from "../igdb.server";
 import { categories as categoriesDB } from "../categoriesDB.server";
 import { lime3ds } from "../applicationsDB.server";
 import { getInstalledApplicationForCategory } from "../applications.server";
@@ -275,7 +275,7 @@ describe("categories.server", () => {
 
   describe("readEntriesWithMetaData", () => {
     it("Should only fetch metaData for entries without metaData", async () => {
-      const fetchMetaDataMock = vi.fn().mockResolvedValue(
+      const fetchMetaDataMock = vi.fn().mockReturnValue(
         addIndex([
           {
             ...finalfantasy7disc1,
@@ -293,10 +293,10 @@ describe("categories.server", () => {
           },
         ]),
       );
-      vi.mocked(fetchMetaData).mockImplementation(fetchMetaDataMock);
+      vi.mocked(fetchMetaDataFromDB).mockImplementation(fetchMetaDataMock);
 
-      const result = await readEntriesWithMetaData(
-        categoriesDB.sonyplaystation.igdbPlatformIds,
+      const result = readEntriesWithMetaData(
+        "sonyplaystation",
         addIndex([
           {
             ...finalfantasy7disc1,
@@ -376,15 +376,12 @@ describe("categories.server", () => {
       vi.mocked(readFileHome).mockReturnValueOnce(pcenginecd);
       vi.mocked(readFileHome).mockReturnValueOnce(nintendo3ds);
 
-      when(fetchMetaData)
-        .calledWith(categoriesDB.pcenginecd.igdbPlatformIds, pcenginecd.entries)
-        .thenResolve(pcenginecd.entries);
-      when(fetchMetaData)
-        .calledWith(
-          categoriesDB.nintendo3ds.igdbPlatformIds,
-          nintendo3ds.entries,
-        )
-        .thenResolve(nintendo3ds.entries);
+      when(fetchMetaDataFromDB)
+        .calledWith("pcenginecd", pcenginecd.entries)
+        .thenReturn(pcenginecd.entries);
+      when(fetchMetaDataFromDB)
+        .calledWith("nintendo3ds", nintendo3ds.entries)
+        .thenReturn(nintendo3ds.entries);
 
       vi.mocked(getInstalledApplicationForCategory).mockReturnValueOnce(
         applicationsTestData.lime3ds,
@@ -394,7 +391,7 @@ describe("categories.server", () => {
       );
 
       // execute
-      await importCategories();
+      importCategories();
 
       // expect
       expect(writeFileHome).toBeCalledTimes(7);
@@ -450,13 +447,13 @@ describe("categories.server", () => {
         createAbsoluteEntryPath(playstation.name, hugo.path),
         createAbsoluteEntryPath(playstation.name, hugo2.path),
       ]);
-      vi.mocked(fetchMetaData).mockResolvedValueOnce(playstation.entries);
+      vi.mocked(fetchMetaDataFromDB).mockReturnValueOnce(playstation.entries);
       vi.mocked(getInstalledApplicationForCategory).mockReturnValueOnce(
         applicationsTestData.duckstation,
       );
 
       // execute
-      await importEntries(playstation.id);
+      importEntries(playstation.id);
 
       // expect
       expect(writeFileHome).toHaveBeenCalledWith(
