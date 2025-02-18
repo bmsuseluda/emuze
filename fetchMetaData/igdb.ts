@@ -36,6 +36,7 @@ const igdbResponseLimit = 500;
 interface ResponseHeader {
   "ratelimit-reset": string;
   "ratelimit-remaining": string;
+  "x-count": "string";
 }
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -58,6 +59,7 @@ const fetchMetaDataForSystemWithOffset = async (
         .where(`platforms=(${platformId})`)
         .limit(igdbResponseLimit)
         .offset(offset)
+        .sort("id")
         .request(url),
     3,
     4000,

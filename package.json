@@ -146,7 +146,8 @@
     "files": [
       "buildDesktop",
       "build",
-      "public"
+      "public",
+      "fetchMetaData"
     ],
     "extraFiles": [
       "emulators/**"
