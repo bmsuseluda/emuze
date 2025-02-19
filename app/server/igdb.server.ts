@@ -95,7 +95,7 @@ const findGameDataByNameLoose = (nameToFind: string, games: Game[]) => {
   return undefined;
 };
 
-const parseData = (entries: Entry[], data: Game[]) => {
+export const parseData = (entries: Entry[], data: Game[]) => {
   const expiresOn = getExpiresOn();
   return entries.map((entry) => {
     const nameWithoutSubTitle = removeSubTitle(entry.name);

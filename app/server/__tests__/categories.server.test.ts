@@ -342,7 +342,7 @@ describe("categories.server", () => {
         ]),
       );
       expect(fetchMetaDataMock).toHaveBeenCalledWith(
-        categoriesDB.sonyplaystation.igdbPlatformIds,
+        categoriesDB.sonyplaystation.id,
         addIndex([finalfantasy7disc1, hugo]),
       );
     });
