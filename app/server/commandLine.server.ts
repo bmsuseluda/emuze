@@ -13,6 +13,10 @@ export const commandLineOptions = {
     description:
       "Activates the less accurate Rosalies Mupen GUI (RMG) emulator to play N64",
   },
+  mgba: {
+    id: "mgba",
+    description: "Activates the mgba emulator to play Game Boy",
+  },
   noSandbox: {
     id: "no-sandbox",
     description:

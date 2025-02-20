@@ -21,11 +21,11 @@ import { commandLineOptions } from "../../../commandLine.server";
 const applicationId: ApplicationId = "ares";
 const bundledPathLinux = nodepath.join(
   applicationId,
-  "ares-v142-x86_64.AppImage",
+  "ares-v143-x86_64.AppImage",
 );
 const bundledPathWindows = nodepath.join(
   applicationId,
-  "ares-v142",
+  "ares-v143",
   "ares.exe",
 );
 
@@ -409,3 +409,7 @@ export const aresSega32x: Application = {
 export const isRmgForN64 = () =>
   app?.commandLine.hasSwitch(commandLineOptions.rmgN64.id) ||
   process.env.EMUZE_RMG_N64 === "true";
+
+export const isMgbaForGameBoy = () =>
+  app?.commandLine.hasSwitch(commandLineOptions.mgba.id) ||
+  process.env.EMUZE_MGBA === "true";
