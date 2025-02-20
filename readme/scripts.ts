@@ -42,6 +42,7 @@ const biosNeeded: SystemId[] = [
   "pcenginesupergrafx",
   "neogeopocket",
   "neogeopocketcolor",
+  "nintendogameboyadvance",
   "nintendowiiu",
   "nintendoswitch",
 ];

@@ -14,6 +14,7 @@ import {
   aresSega32x,
   aresSegaCd,
   aresSuperNintendo,
+  isMgbaForGameBoy,
   isRmgForN64,
 } from "../applicationsDB.server/applications/ares";
 import {
@@ -222,7 +223,7 @@ export const nintendogameboy: Category = {
   id: "nintendogameboy",
   names: ["Nintendo Game Boy", "Game Boy", "GB"],
   igdbPlatformIds: [33, 22, 24],
-  application: mgba,
+  application: isMgbaForGameBoy() ? mgba : ares,
   hasAnalogStick: false,
 };
 
@@ -230,7 +231,7 @@ export const nintendogameboycolor: Category = {
   id: "nintendogameboycolor",
   names: ["Nintendo Game Boy Color", "Game Boy Color", "GBC"],
   igdbPlatformIds: [22],
-  application: mgba,
+  application: isMgbaForGameBoy() ? mgba : ares,
   hasAnalogStick: false,
 };
 
@@ -238,7 +239,7 @@ export const nintendogameboyadvance: Category = {
   id: "nintendogameboyadvance",
   names: ["Nintendo Game Boy Advance", "Game Boy Advance", "GBA"],
   igdbPlatformIds: [24],
-  application: mgba,
+  application: isMgbaForGameBoy() ? mgba : ares,
   hasAnalogStick: false,
 };
 

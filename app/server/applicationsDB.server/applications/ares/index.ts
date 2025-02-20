@@ -409,3 +409,7 @@ export const aresSega32x: Application = {
 export const isRmgForN64 = () =>
   app?.commandLine.hasSwitch(commandLineOptions.rmgN64.id) ||
   process.env.EMUZE_RMG_N64 === "true";
+
+export const isMgbaForGameBoy = () =>
+  app?.commandLine.hasSwitch(commandLineOptions.mgba.id) ||
+  process.env.EMUZE_MGBA === "true";
