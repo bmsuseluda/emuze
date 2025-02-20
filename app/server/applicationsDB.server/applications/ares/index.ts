@@ -21,11 +21,11 @@ import { commandLineOptions } from "../../../commandLine.server";
 const applicationId: ApplicationId = "ares";
 const bundledPathLinux = nodepath.join(
   applicationId,
-  "ares-v142-x86_64.AppImage",
+  "ares-v143-x86_64.AppImage",
 );
 const bundledPathWindows = nodepath.join(
   applicationId,
-  "ares-v142",
+  "ares-v143",
   "ares.exe",
 );
 
