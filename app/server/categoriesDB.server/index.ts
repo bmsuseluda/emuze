@@ -10,6 +10,7 @@ import {
 import { rpcs3 } from "../applicationsDB.server/applications/rpcs3";
 import {
   ares,
+  aresGameBoyColor,
   aresMegaDrive,
   aresSega32x,
   aresSegaCd,
@@ -222,8 +223,8 @@ export const nintendo64: Category = {
 export const nintendogameboy: Category = {
   id: "nintendogameboy",
   names: ["Nintendo Game Boy", "Game Boy", "GB"],
-  igdbPlatformIds: [33, 22, 24],
-  application: isMgbaForGameBoy() ? mgba : ares,
+  igdbPlatformIds: [33, 22],
+  application: isMgbaForGameBoy() ? mgba : aresGameBoyColor,
   hasAnalogStick: false,
 };
 
@@ -231,7 +232,7 @@ export const nintendogameboycolor: Category = {
   id: "nintendogameboycolor",
   names: ["Nintendo Game Boy Color", "Game Boy Color", "GBC"],
   igdbPlatformIds: [22],
-  application: isMgbaForGameBoy() ? mgba : ares,
+  application: isMgbaForGameBoy() ? mgba : aresGameBoyColor,
   hasAnalogStick: false,
 };
 

@@ -354,6 +354,7 @@ export const ares: Application = {
     ".sgd",
     ".smd",
     ".gb",
+    ".gbc",
     ".gba",
     ".cue",
     ".pce",
@@ -364,6 +365,16 @@ export const ares: Application = {
   createOptionParams: getSharedAresOptionParams,
   bundledPathLinux,
   bundledPathWindows,
+};
+
+export const aresGameBoyColor: Application = {
+  ...ares,
+  id: "aresGameBoyColor",
+  fileExtensions: [".gb", ".gbc"],
+  createOptionParams: (props) => [
+    ...getSharedAresOptionParams(props),
+    ...["--system", "Game Boy Color"],
+  ],
 };
 
 export const aresSuperNintendo: Application = {
