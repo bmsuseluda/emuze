@@ -5,6 +5,7 @@ import { mame, mameNeoGeo, mameNeoGeoCD } from "./applications/mame";
 import { rpcs3 } from "./applications/rpcs3";
 import {
   ares,
+  aresGameBoyColor,
   aresMegaDrive,
   aresSega32x,
   aresSegaCd,
@@ -106,7 +107,7 @@ export const rosaliesMupenGui: Application = {
 export const mgba: Application = {
   id: "mgba",
   name: "mgba",
-  fileExtensions: [".gb", ".gba"],
+  fileExtensions: [".gb", ".gbc", ".gba"],
   flatpakId: "io.mgba.mGBA",
   createOptionParams: ({
     settings: {
@@ -158,6 +159,7 @@ export const applications = {
   mameNeoGeo,
   mameNeoGeoCD,
   ares,
+  aresGameBoyColor,
   aresSuperNintendo,
   aresMegaDrive,
   aresSegaCd,

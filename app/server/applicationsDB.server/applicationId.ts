@@ -16,6 +16,7 @@ export type ApplicationId =
   | "mameNeoGeo"
   | "mameNeoGeoCD"
   | "ares"
+  | "aresGameBoyColor"
   | "aresSuperNintendo"
   | "aresMegaDrive"
   | "aresSegaCd"
