@@ -175,6 +175,24 @@ describe("categories.server", () => {
       expect(result).toStrictEqual(expectedResult);
     });
 
+    it("Should remove old data if it does not exist anymore", () => {
+      vi.mocked(readFilenames).mockReturnValueOnce([
+        createAbsoluteEntryPath(playstation.name, hugo.path),
+      ]);
+
+      const oldEntries: Entry[] = addIndex([hugo, hugo2]);
+
+      const expectedResult: Entry[] = addIndex([{ ...hugo }]);
+
+      const result = readEntries({
+        categoryName: playstation.name,
+        applicationId: duckstation.id,
+        oldEntries,
+      });
+
+      expect(result).toStrictEqual(expectedResult);
+    });
+
     it("Should return game with game versions", () => {
       vi.mocked(readFilenames).mockReturnValueOnce([
         createAbsoluteEntryPath(playstation.name, ehrgeiz.path),
@@ -458,6 +476,27 @@ describe("categories.server", () => {
       // expect
       expect(writeFileHome).toHaveBeenCalledWith(
         playstation,
+        nodepath.join(paths.entries, `${playstation.id}.json`),
+      );
+    });
+
+    it("Should remove entries that do not exist anymore", async () => {
+      // evaluate
+      vi.mocked(readFileHome).mockReturnValueOnce(playstation);
+      vi.mocked(readFilenames).mockReturnValueOnce([
+        createAbsoluteEntryPath(playstation.name, hugo.path),
+      ]);
+      vi.mocked(fetchMetaDataFromDB).mockReturnValueOnce(addIndex([hugo]));
+      vi.mocked(getInstalledApplicationForCategory).mockReturnValueOnce(
+        applicationsTestData.duckstation,
+      );
+
+      // execute
+      importEntries(playstation.id);
+
+      // expect
+      expect(writeFileHome).toHaveBeenCalledWith(
+        { ...playstation, entries: addIndex([hugo]) },
         nodepath.join(paths.entries, `${playstation.id}.json`),
       );
     });
