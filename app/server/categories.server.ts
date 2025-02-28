@@ -7,10 +7,8 @@ import { sortCaseInsensitive } from "./sortCaseInsensitive.server";
 import { readGeneral } from "./settings.server";
 import { getCategoryDataByName } from "./categoriesDB.server";
 import { FileDataCache } from "./FileDataCache.server";
-import {
-  createCategoryData,
-  createCategoryDataWithMetaData,
-} from "./importCategory.server";
+import type { CategoryImportData } from "./importCategory.server";
+import { importCategory } from "./importCategory.server";
 import {
   deleteCategoryConfigFiles,
   writeCategory,
@@ -49,30 +47,28 @@ export const importCategories = () => {
     const categoryFolderNames = readDirectorynames(categoriesPath);
     categoryFolderNames.sort(sortCaseInsensitive);
 
-    const categories = categoryFolderNames.reduce<Category[]>(
-      (result, categoryFolderName) => {
-        const categoryFolderBasename = nodepath.basename(categoryFolderName);
-        const categoryDbData = getCategoryDataByName(categoryFolderBasename);
+    // TODO: check if the following is necessary anymore
+    // if (categoryData.entries && categoryData.entries.length > 0) {
 
-        if (categoryDbData) {
-          const categoryData = createCategoryData(
-            categoryDbData,
-            categoryFolderBasename,
-            applicationsPath,
-          );
-          if (categoryData.entries && categoryData.entries.length > 0) {
-            result.push(categoryData);
-          }
-        }
+    const categoryImportDataList = categoryFolderNames.reduce<
+      CategoryImportData[]
+    >((result, categoryFolderName) => {
+      const categoryFolderBaseName = nodepath.basename(categoryFolderName);
+      const categoryDbData = getCategoryDataByName(categoryFolderBaseName);
 
-        return result;
-      },
-      [],
-    );
+      if (categoryDbData) {
+        result.push({
+          categoryDbData,
+          categoryFolderBaseName,
+          applicationsPath,
+        });
+      }
 
-    const categoriesWithUpdatedMetaData = categories.map(
-      createCategoryDataWithMetaData,
-    );
+      return result;
+    }, []);
+
+    const categoriesWithUpdatedMetaData =
+      categoryImportDataList.map(importCategory);
 
     deleteCategories();
     categoriesWithUpdatedMetaData.forEach((category) => {

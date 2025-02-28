@@ -198,11 +198,17 @@ export const readEntriesWithMetaData = (
   ].sort(sortEntries);
 };
 
-export const createCategoryData = (
-  categoryDbData: CategoryDB,
-  categoryFolderBaseName: string,
-  applicationsPath?: string,
-): Category => {
+export interface CategoryImportData {
+  categoryDbData: CategoryDB;
+  categoryFolderBaseName: string;
+  applicationsPath?: string;
+}
+
+export const createCategoryData = ({
+  categoryDbData,
+  categoryFolderBaseName,
+  applicationsPath,
+}: CategoryImportData): Category => {
   const { id } = categoryDbData;
   const oldCategoryData = readCategory(id);
 
@@ -239,3 +245,6 @@ export const createCategoryDataWithMetaData = (
   }
   return category;
 };
+
+export const importCategory = (categoryImportData: CategoryImportData) =>
+  createCategoryDataWithMetaData(createCategoryData(categoryImportData));
