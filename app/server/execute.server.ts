@@ -1,5 +1,4 @@
 import { execFileSync } from "child_process";
-import { readCategory } from "./categories.server";
 import { readAppearance, readGeneral } from "./settings.server";
 import type { Category, Entry } from "../types/jsonFiles/category";
 import { createAbsoluteEntryPath } from "../types/jsonFiles/category";
@@ -22,6 +21,7 @@ import type {
 } from "./applicationsDB.server/types";
 import type { Settings } from "../types/jsonFiles/settings";
 import nodepath from "path";
+import { readCategory } from "./categoryDataCache.server";
 
 const executeBundledApplication = ({
   absoluteEntryPath,

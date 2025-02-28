@@ -1,14 +1,11 @@
 import { categories as categoriesDB } from "./categoriesDB.server";
 import { installFlatpak } from "./execute.server";
-import {
-  readCategories,
-  readCategory,
-  writeCategory,
-} from "./categories.server";
+import { readCategories } from "./categories.server";
 import {
   checkFlatpakIsInstalled,
   updateFlatpakAppList,
 } from "./applicationsDB.server/checkEmulatorIsInstalled";
+import { readCategory, writeCategory } from "./categoryDataCache.server";
 
 export const checkFlatpakIsInstalledParallel = (flatpakId: string) =>
   new Promise<boolean>((resolve, reject) => {
