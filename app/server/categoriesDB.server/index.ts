@@ -224,14 +224,14 @@ export const nintendogameboy: Category = {
   id: "nintendogameboy",
   names: ["Nintendo Game Boy", "Game Boy", "GB"],
   igdbPlatformIds: [33, 22],
-  application: isMgbaForGameBoy() ? mgba : aresGameBoyColor,
+  application: isMgbaForGameBoy() ? mgba : ares,
   hasAnalogStick: false,
 };
 
 export const nintendogameboycolor: Category = {
   id: "nintendogameboycolor",
   names: ["Nintendo Game Boy Color", "Game Boy Color", "GBC"],
-  igdbPlatformIds: [22],
+  igdbPlatformIds: [33, 22],
   application: isMgbaForGameBoy() ? mgba : aresGameBoyColor,
   hasAnalogStick: false,
 };

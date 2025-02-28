@@ -129,7 +129,6 @@ export const fetchMetaDataFromDB = (systemId: SystemId, entries: Entry[]) => {
     "systems",
     `${systemId}.json`,
   );
-  console.log("test");
   const data: Game[] = require(dbPath);
   return parseData(entries, data);
 };
