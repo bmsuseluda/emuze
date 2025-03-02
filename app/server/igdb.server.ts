@@ -1,3 +1,5 @@
+import { readFile } from "fs/promises";
+
 import type { Entry } from "../types/jsonFiles/category";
 import { getExpiresOn } from "./getExpiresOn.server";
 import type { SystemId } from "./categoriesDB.server/systemId";
@@ -121,7 +123,10 @@ export const parseData = (entries: Entry[], data: Game[]) => {
   });
 };
 
-export const fetchMetaDataFromDB = (systemId: SystemId, entries: Entry[]) => {
+export const fetchMetaDataFromDB = async (
+  systemId: SystemId,
+  entries: Entry[],
+) => {
   const dbPath = nodepath.join(
     __dirname,
     "..",
@@ -129,6 +134,8 @@ export const fetchMetaDataFromDB = (systemId: SystemId, entries: Entry[]) => {
     "systems",
     `${systemId}.json`,
   );
-  const data: Game[] = require(dbPath);
+
+  const data: Game[] = JSON.parse(await readFile(dbPath, { encoding: "utf8" }));
+
   return parseData(entries, data);
 };

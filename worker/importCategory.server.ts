@@ -1,23 +1,25 @@
-import type { Category as CategoryDB } from "./categoriesDB.server/types";
-import type { Category, Entry } from "../types/jsonFiles/category";
-import { getCategoryDataByName } from "./categoriesDB.server";
-import { getInstalledApplicationForCategory } from "./applications.server";
-import type { SystemId } from "./categoriesDB.server/systemId";
+import workerpool from "workerpool";
+
+import type { Category as CategoryDB } from "../app/server/categoriesDB.server/types";
+import type { Category, Entry } from "../app/types/jsonFiles/category";
+import { getCategoryDataByName } from "../app/server/categoriesDB.server";
+import { getInstalledApplicationForCategory } from "../app/server/applications.server";
+import type { SystemId } from "../app/server/categoriesDB.server/systemId";
 import nodepath from "path";
 import type {
   ExcludeFilesFunction,
   FindEntryNameFunction,
   InstalledApplication,
-} from "./applicationsDB.server/types";
-import { convertToId } from "./convertToId.server";
-import type { ApplicationId } from "./applicationsDB.server/applicationId";
-import { applications } from "./applicationsDB.server";
-import { readGeneral } from "./settings.server";
-import { readFilenames } from "./readWriteData.server";
-import { fetchMetaDataFromDB } from "./igdb.server";
-import { readCategory, writeCategory } from "./categoryDataCache.server";
-import { sortCaseInsensitive } from "./sortCaseInsensitive.server";
-import { log } from "./debug.server";
+} from "../app/server/applicationsDB.server/types";
+import { convertToId } from "../app/server/convertToId.server";
+import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId";
+import { applications } from "../app/server/applicationsDB.server";
+import { readGeneral } from "../app/server/settings.server";
+import { readFilenames } from "../app/server/readWriteData.server";
+import { fetchMetaDataFromDB } from "../app/server/igdb.server";
+import { readCategory } from "../app/server/categoryDataCache.server";
+import { sortCaseInsensitive } from "../app/server/sortCaseInsensitive.server";
+import { log } from "../app/server/debug.server";
 
 const sortEntries = (a: Entry, b: Entry) => sortCaseInsensitive(a.name, b.name);
 
@@ -177,7 +179,7 @@ export const readEntries = ({
   return oldEntries || [];
 };
 
-export const readEntriesWithMetaData = async (
+export const readEntriesWithMetaData = (
   systemId: SystemId,
   entries: Entry[],
 ) => {
@@ -195,7 +197,7 @@ export const readEntriesWithMetaData = async (
 
   return [
     ...entriesWithMetaData,
-    ...(await fetchMetaDataFromDB(systemId, entriesWithoutMetaData)),
+    ...fetchMetaDataFromDB(systemId, entriesWithoutMetaData),
   ].sort(sortEntries);
 };
 
@@ -233,40 +235,33 @@ export const createCategoryData = ({
   };
 };
 
-export const createCategoryDataWithMetaData = async (
+export const createCategoryDataWithMetaData = (
   category: Category,
-): Promise<Category> => {
+): Category => {
   const categoryDbData = getCategoryDataByName(category.name);
   if (category.entries && categoryDbData) {
-    const entries = await readEntriesWithMetaData(
-      category.id,
-      category.entries,
-    );
+    const entries = readEntriesWithMetaData(category.id, category.entries);
     return {
       ...category,
       entries,
     };
   }
-  return Promise.resolve(category);
+  return category;
 };
 
-export const importCategory = async (
-  categoryImportData: CategoryImportData,
-) => {
-  log("debug", `importCategory start ${categoryImportData.categoryDbData.id}`);
-  const startTime = new Date().getTime();
-  const result = await createCategoryDataWithMetaData(
+export const importCategory = (categoryImportData: CategoryImportData) => {
+  log("debug", "importCategory start", categoryImportData.categoryDbData.id);
+  const timeName = `importCategory ${categoryImportData.categoryDbData.id}`;
+  console.time(timeName);
+  const result = createCategoryDataWithMetaData(
     createCategoryData(categoryImportData),
   );
-  const endTime = new Date().getTime();
-  log(
-    "debug",
-    `importCategory complete ${categoryImportData.categoryDbData.id} ${endTime - startTime}ms`,
-  );
-
-  writeCategory(result);
+  log("debug", "importCategory complete", categoryImportData.categoryDbData.id);
+  console.timeLog(timeName);
+  console.timeEnd(timeName);
+  return result;
 };
 
-// workerpool.worker({
-//   importCategory,
-// });
+workerpool.worker({
+  importCategory,
+});

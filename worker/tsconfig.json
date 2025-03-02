@@ -1,33 +1,19 @@
 {
-  "include": [
-    "remix.env.d.ts",
-    "app/**/*",
-    "styled-system",
-    "panda.config.ts",
-    ".storybook/**/*",
-    "./electronApi.d.ts",
-    "e2eTests/**/*",
-    "generateIcon/**/*",
-    "generateNameMappings/**/*"
-  ],
+  "include": ["importCategory.server.ts"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2023"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
+    "module": "commonjs",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "target": "ES2022",
-    "module": "ESNext",
     "strict": true,
     "baseUrl": ".",
     "skipLibCheck": true,
-    "paths": {
-      "@emotion/core": ["./types/emotion.d.ts"]
-    },
-    "noEmit": true,
     "allowJs": false,
     "forceConsistentCasingInFileNames": true,
-    "types": ["vitest/globals"]
+    "outDir": "../buildWorker"
   }
 }

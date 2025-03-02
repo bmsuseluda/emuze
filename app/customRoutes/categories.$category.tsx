@@ -91,7 +91,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     }
 
     if (_actionId === actionIds.import) {
-      importCategories();
+      await importCategories();
     }
   } catch (e) {
     log("error", "category action", e);

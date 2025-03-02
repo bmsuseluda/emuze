@@ -16,6 +16,7 @@
     "build": "yarn clean && cross-env NODE_ENV=production yarn panda:codegen && concurrently -c 'auto' --kill-others-on-fail 'yarn:build:*'",
     "build:remix": "yarn transpileConfigs && remix build",
     "build:electron": "tsc -p ./desktop/tsconfig.json",
+    "build:worker": "tsc -p ./worker/tsconfig.json",
     "serve:remix": "npx remix-serve build/index.js",
     "test": "vitest run --passWithNoTests",
     "lint": "concurrently -c 'auto' --kill-others-on-fail 'yarn:lint:*'",
@@ -68,7 +69,8 @@
     "react-dom": "^18.3.1",
     "react-icons": "^5.3.0",
     "react-use": "^17.5.1",
-    "remix-electron": "^2.0.2"
+    "remix-electron": "^2.0.2",
+    "workerpool": "^9.2.0"
   },
   "devDependencies": {
     "7zip-min": "^1.4.5",
@@ -104,6 +106,7 @@
     "@types/node": "^20.16.9",
     "@types/react": "^18.3.9",
     "@types/react-dom": "^18.3.0",
+    "@types/workerpool": "^6.4.7",
     "@vitejs/plugin-react": "^4.3.1",
     "concurrently": "^9.0.1",
     "cross-env": "^7.0.3",
@@ -149,6 +152,7 @@
       "fetchMetaData"
     ],
     "extraFiles": [
+      "buildWorker",
       "emulators/**"
     ],
     "win": {
