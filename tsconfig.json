@@ -18,7 +18,6 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "target": "ES2022",
-    "module": "ESNext",
     "strict": true,
     "baseUrl": ".",
     "skipLibCheck": true,

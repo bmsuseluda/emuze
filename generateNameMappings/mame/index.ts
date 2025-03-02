@@ -59,6 +59,7 @@ const parseXmlData = (xmlData: string): MameListXmlStructure | null => {
 const extractGames = (xmlData: string) => {
   const objectToExtend: Result = {};
   const machine = parseXmlData(xmlData)?.mame?.machine;
+  // TODO: filter machines out that have a softwarelist
   machine?.forEach((game) => {
     addToObject(objectToExtend, game);
   });

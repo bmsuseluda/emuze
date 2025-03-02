@@ -5,21 +5,7 @@ import { getExpiresOn } from "./getExpiresOn.server";
 import type { SystemId } from "./categoriesDB.server/systemId";
 import nodepath from "path";
 
-interface GameLocalization {
-  name?: string;
-  cover?: {
-    image_id: string;
-  };
-}
-
-export interface Game {
-  cover?: {
-    image_id: string;
-  };
-  name: string;
-  alternative_names?: [{ name: string }];
-  game_localizations?: GameLocalization[];
-}
+export type Game = [name: string, cover: string];
 
 export const removeSubTitle = (a: string) => a.split(/ -|[:/]|_/g)[0];
 
@@ -44,18 +30,8 @@ const setCommaSeparatedArticleAsPrefix = (a: string) => {
  */
 const removeBrackets = (a: string) => a.replace(/\(.*\)|\[.*]/gi, "").trim();
 
-const findGameLocalization = (
-  entryName: string,
-  gameLocalizations?: GameLocalization[],
-) => gameLocalizations?.find(({ name }) => name && matchName(name, entryName));
-
-export const getCoverUrl = (entryName: string, gameData: Game) => {
-  const localization = findGameLocalization(
-    entryName,
-    gameData.game_localizations,
-  );
-
-  const gameId = localization?.cover?.image_id || gameData.cover?.image_id;
+export const getCoverUrl = (gameData: Game) => {
+  const gameId = gameData[1];
 
   if (gameId) {
     return `https://images.igdb.com/igdb/image/upload/t_cover_big/${gameId}.webp`;
@@ -70,26 +46,14 @@ const normalizeString = (a: string) =>
     .toLowerCase()
     .trim();
 
-const matchName = (a: string, b: string) =>
+export const matchName = (a: string, b: string) =>
   normalizeString(a) === normalizeString(b);
 
 const findGameDataByName = (nameToFind: string, games: Game[]) =>
-  games.find(
-    ({ name, alternative_names, game_localizations }) =>
-      matchName(name, nameToFind) ||
-      !!alternative_names?.find(({ name }) => matchName(name, nameToFind)) ||
-      !!findGameLocalization(nameToFind, game_localizations),
-  );
+  games.find(([name]) => matchName(name, nameToFind));
 
 const findGameDataByNameLoose = (nameToFind: string, games: Game[]) => {
-  const foundGames = games.filter(
-    ({ name, alternative_names, game_localizations }) =>
-      name.startsWith(nameToFind) ||
-      !!alternative_names?.find(({ name }) => name.startsWith(nameToFind)) ||
-      !!game_localizations?.find(
-        ({ name }) => name && name.startsWith(nameToFind),
-      ),
-  );
+  const foundGames = games.filter(([name]) => name.startsWith(nameToFind));
 
   if (foundGames.length === 1) {
     return foundGames[0];
@@ -108,7 +72,7 @@ export const parseData = (entries: Entry[], data: Game[]) => {
       findGameDataByNameLoose(entry.name, data);
 
     if (gameData) {
-      const imageUrl = getCoverUrl(entry.name, gameData);
+      const imageUrl = getCoverUrl(gameData);
       if (imageUrl) {
         return {
           ...entry,
