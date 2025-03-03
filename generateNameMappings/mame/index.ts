@@ -37,6 +37,8 @@ const filterDescription = (description: string) =>
 
 const descriptionPatches: Record<string, string> = {
   ironclad: "Chotetsu Brikin'ger",
+  twocrude: "Two Crude Dudes",
+  twocrudea: "Two Crude Dudes",
 };
 
 const addToObject = (
@@ -74,14 +76,10 @@ const extractGames = (xmlData: string) => {
 
 const importMame = () => {
   try {
-    const result = spawnSync(
-      "flatpak",
-      ["run", "org.mamedev.MAME", "-listxml"],
-      {
-        encoding: "utf-8",
-        maxBuffer: 10000000000000,
-      },
-    );
+    const result = spawnSync("mame", ["-listxml"], {
+      encoding: "utf-8",
+      maxBuffer: 10000000000000,
+    });
     if (result.stderr) {
       console.log(result.stderr);
     }
