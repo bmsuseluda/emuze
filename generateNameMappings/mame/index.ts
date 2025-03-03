@@ -35,6 +35,10 @@ const removeAdditionalNames = (a: string) => a.split(" / ")[0].trim();
 const filterDescription = (description: string) =>
   removeAdditionalNames(removeBrackets(description));
 
+const descriptionPatches: Record<string, string> = {
+  ironclad: "Chotetsu Brikin'ger",
+};
+
 const addToObject = (
   objectToExtend: Result,
   { "@_name": name, description }: Game,
@@ -43,7 +47,8 @@ const addToObject = (
     const descriptionAsString =
       typeof description === "number" ? description.toString() : description;
 
-    objectToExtend[name] = filterDescription(descriptionAsString);
+    objectToExtend[name] =
+      descriptionPatches[name] || filterDescription(descriptionAsString);
   }
 };
 

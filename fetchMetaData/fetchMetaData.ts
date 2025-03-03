@@ -29,8 +29,15 @@ const filterWithNameMapping = async (systemId: SystemId) => {
     );
     const supportedGames = Object.values(nameMapping);
 
-    return ([name]: GameTrimmed) =>
-      supportedGames.find((supportedGame) => matchName(supportedGame, name));
+    return (games: GameTrimmed[]) =>
+      supportedGames.reduce<GameTrimmed[]>((accumulator, supportedGame) => {
+        const match = games.find(([name]) => matchName(supportedGame, name));
+        if (match) {
+          accumulator.push(match);
+        }
+
+        return accumulator;
+      }, []);
   }
   return null;
 };
@@ -62,7 +69,7 @@ export const fetchMetaData = async (systemId: SystemId) => {
     }, []);
 
     if (filterByNameMapping) {
-      entries = entries.filter(filterByNameMapping);
+      entries = filterByNameMapping(entries);
     }
 
     writeFile(entries, filePath);
