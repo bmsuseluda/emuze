@@ -1,7 +1,6 @@
 import nodepath from "path";
 import { execFileSync } from "child_process";
 
-import { readCategory } from "../categories.server";
 import { readAppearance, readGeneral } from "../settings.server";
 import type { Category } from "../../types/jsonFiles/category";
 import { applications as applicationsDB } from "../applicationsDB.server";
@@ -19,12 +18,13 @@ import { mameNeoGeo, mednafen } from "../__testData__/applications";
 import { readFilenames } from "../readWriteData.server";
 import { when } from "vitest-when";
 import { updateFlatpakAppList } from "../applicationsDB.server/checkEmulatorIsInstalled";
+import { readCategory } from "../categoryDataCache.server";
 
 vi.mock("@bmsuseluda/node-sdl");
 vi.mock("child_process");
 vi.mock("fs");
 vi.mock("../readWriteData.server");
-vi.mock("../categories.server");
+vi.mock("../categoryDataCache.server");
 vi.mock("../settings.server");
 vi.mock("../lastPlayed.server");
 

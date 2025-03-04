@@ -72,6 +72,7 @@ const fetchMetaDataForSystemWithOffset = async (
     gamesResponse.status,
     gamesResponse.headers,
     gamesResponse.data.length,
+    `with offset ${offset}`,
   );
 
   const headers = gamesResponse.headers;
