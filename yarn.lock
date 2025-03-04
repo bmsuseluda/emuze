@@ -7165,15 +7165,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/workerpool@npm:^6.4.7":
-  version: 6.4.7
-  resolution: "@types/workerpool@npm:6.4.7"
-  dependencies:
-    "@types/node": "npm:*"
-  checksum: 10/523c873f3ac9fd47932db3e3912ceff3157bde2a8eaf906040ce750e1c9dbf010760ab6d6054f92eaeae3d990e443d36f90df85d92724bfd5ab0a26e4f1b238d
-  languageName: node
-  linkType: hard
-
 "@types/yauzl@npm:^2.9.1":
   version: 2.9.2
   resolution: "@types/yauzl@npm:2.9.2"
@@ -11022,7 +11013,6 @@ __metadata:
     "@types/node": "npm:^20.16.9"
     "@types/react": "npm:^18.3.9"
     "@types/react-dom": "npm:^18.3.0"
-    "@types/workerpool": "npm:^6.4.7"
     "@vitejs/plugin-react": "npm:^4.3.1"
     apicalypse: "npm:^0.2.0"
     axios: "npm:^1.7.7"
@@ -11066,7 +11056,6 @@ __metadata:
     vitest: "npm:2.1.1"
     vitest-when: "npm:^0.4.1"
     wait-on: "npm:^8.0.1"
-    workerpool: "npm:^9.2.0"
   languageName: unknown
   linkType: soft
 
@@ -23254,13 +23243,6 @@ __metadata:
   dependencies:
     string-width: "npm:^1.0.2 || 2 || 3 || 4"
   checksum: 10/d5f8027b9a8255a493a94e4ec1b74a27bff6679d5ffe29316a3215e4712945c84ef73ca4045c7e20ae7d0c72f5f57f296e04a4928e773d4276a2f1222e4c2e99
-  languageName: node
-  linkType: hard
-
-"workerpool@npm:^9.2.0":
-  version: 9.2.0
-  resolution: "workerpool@npm:9.2.0"
-  checksum: 10/53b7a08001493a2bc24899f562ff6cc0824c942f656c05a68436c3db2c228cb1eea3090d8e726ecba4b02c08b35ace46e1a5435eee50444e683334329a7510da
   languageName: node
   linkType: hard
 

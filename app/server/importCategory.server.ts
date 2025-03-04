@@ -266,7 +266,3 @@ export const importCategory = async (
 
   writeCategory(result);
 };
-
-// workerpool.worker({
-//   importCategory,
-// });

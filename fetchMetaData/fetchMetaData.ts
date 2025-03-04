@@ -58,7 +58,7 @@ export const fetchMetaData = async (systemId: SystemId) => {
           accumulator.push([alternativeName.name, cover.image_id]);
         });
         game_localizations?.forEach((localization) => {
-          if (localization.name)
+          if (localization.name && localization.name !== name)
             accumulator.push([
               localization.name,
               localization.cover?.image_id || cover.image_id,
@@ -76,7 +76,7 @@ export const fetchMetaData = async (systemId: SystemId) => {
   }
 };
 
-const fetchMetaDataForAllSystems = async () => {
+export const fetchMetaDataForAllSystems = async () => {
   for (const { id } of Object.values(categories)) {
     if (id !== "lastPlayed") {
       await fetchMetaData(id)
@@ -91,5 +91,3 @@ const fetchMetaDataForAllSystems = async () => {
     }
   }
 };
-
-fetchMetaDataForAllSystems();

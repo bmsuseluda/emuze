@@ -31,18 +31,6 @@ export const invalidateCategoriesDataCache = () => {
   categoriesDataCache.invalidateCache();
 };
 
-// const workerPath = nodepath.join(
-//   // process.env.APPDIR || "",
-//   "/home/dennisludwig/projects/emuze/dist/linux-unpacked",
-//   "buildWorker",
-//   "worker",
-//   "importCategory.server.js",
-// );
-//
-// log("debug", "workerPath", workerPath);
-
-// const pool = workerpool.pool(workerPath);
-
 export const importCategories = async () => {
   const generalData = readGeneral();
 

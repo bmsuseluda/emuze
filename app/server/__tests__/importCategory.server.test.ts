@@ -288,7 +288,7 @@ describe("categories.server", () => {
       );
       vi.mocked(fetchMetaDataFromDB).mockImplementation(fetchMetaDataMock);
 
-      const result = readEntriesWithMetaData(
+      const result = await readEntriesWithMetaData(
         "sonyplaystation",
         addIndex([
           {

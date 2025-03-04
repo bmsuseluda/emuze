@@ -2,7 +2,6 @@ import { when } from "vitest-when";
 import nodepath from "path";
 
 import { importCategories, paths } from "../categories.server";
-import { paths as lastPlayedPaths } from "../lastPlayed.server";
 import {
   readDirectorynames,
   readFileHome,
@@ -28,6 +27,7 @@ import { entriesPath } from "../categoryDataCache.server";
 
 vi.mock("@bmsuseluda/node-sdl");
 vi.mock("../readWriteData.server");
+vi.mock("../lastPlayed.server.ts");
 vi.mock("../applications.server");
 vi.mock("../openDialog.server.ts");
 vi.mock("fs");
@@ -83,10 +83,10 @@ describe("categories.server", () => {
 
       when(fetchMetaDataFromDB)
         .calledWith("pcenginecd", pcenginecd.entries)
-        .thenReturn(pcenginecd.entries);
+        .thenResolve(pcenginecd.entries);
       when(fetchMetaDataFromDB)
         .calledWith("nintendo3ds", nintendo3ds.entries)
-        .thenReturn(nintendo3ds.entries);
+        .thenResolve(nintendo3ds.entries);
 
       vi.mocked(getInstalledApplicationForCategory).mockReturnValueOnce(
         applicationsTestData.lime3ds,
@@ -96,39 +96,22 @@ describe("categories.server", () => {
       );
 
       // execute
-      importCategories();
+      await importCategories();
 
       // expect
-      expect(writeFileHome).toBeCalledTimes(7);
-      expect(writeFileHome).toHaveBeenNthCalledWith(1, [], paths.categories);
+      expect(writeFileHome).toBeCalledTimes(3);
       expect(writeFileHome).toHaveBeenNthCalledWith(
-        2,
+        1,
         nintendo3ds,
         nodepath.join(entriesPath, `${nintendo3ds.id}.json`),
       );
-      // last played cache warmup
       expect(writeFileHome).toHaveBeenNthCalledWith(
-        3,
-        [],
-        lastPlayedPaths.lastPlayed,
-      );
-      expect(writeFileHome).toHaveBeenNthCalledWith(
-        4,
-        [],
-        lastPlayedPaths.lastPlayed,
-      );
-      expect(writeFileHome).toHaveBeenNthCalledWith(
-        5,
+        2,
         pcenginecd,
         nodepath.join(entriesPath, `${pcenginecd.id}.json`),
       );
       expect(writeFileHome).toHaveBeenNthCalledWith(
-        6,
-        [],
-        lastPlayedPaths.lastPlayed,
-      );
-      expect(writeFileHome).toHaveBeenNthCalledWith(
-        7,
+        3,
         [
           {
             id: nintendo3ds.id,
