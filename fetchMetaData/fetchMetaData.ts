@@ -5,41 +5,44 @@ import type { SystemId } from "../app/server/categoriesDB.server/systemId";
 import { categories } from "../app/server/categoriesDB.server";
 import { existsSync } from "node:fs";
 import { readFile } from "fs/promises";
-import { matchName } from "../app/server/igdb.server";
-
-const nameMappings: Partial<Record<SystemId, string>> = {
-  dos: "../app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json",
-  scumm:
-    "../app/server/applicationsDB.server/applications/scummvm/nameMapping/scummvm.json",
-  sonyplaystation3:
-    "../app/server/applicationsDB.server/applications/rpcs3/nameMapping/ps3.json",
-  arcade:
-    "../app/server/applicationsDB.server/applications/mame/nameMapping/mame.json",
-};
+import { normalizeString } from "../app/server/igdb.server";
 
 export type GameTrimmed = [name: string, cover: string];
 
-const filterWithNameMapping = async (systemId: SystemId) => {
-  const nameMappingPath = nameMappings[systemId];
-  if (nameMappingPath) {
+const getNameMapping = async (systemId: SystemId) => {
+  const nameMappingPath = nodepath.join(
+    __dirname,
+    "nameMappings",
+    `${systemId}.json`,
+  );
+  if (existsSync(nameMappingPath)) {
     const nameMapping: Record<string, string> = JSON.parse(
-      await readFile(nodepath.join(__dirname, nameMappingPath), {
+      await readFile(nodepath.join(nameMappingPath), {
         encoding: "utf8",
       }),
     );
-    const supportedGames = Object.values(nameMapping);
-
-    return (games: GameTrimmed[]) =>
-      supportedGames.reduce<GameTrimmed[]>((accumulator, supportedGame) => {
-        const match = games.find(([name]) => matchName(supportedGame, name));
-        if (match) {
-          accumulator.push(match);
-        }
-
-        return accumulator;
-      }, []);
+    return Object.values(nameMapping);
   }
-  return null;
+  return undefined;
+};
+
+const addNormalizedIfNotExist = (
+  checkNotIfExist: boolean,
+  entries: Record<string, string>,
+  gameName: string,
+  cover: string,
+  nameMapping?: string[],
+) => {
+  const gameNameNormalized = normalizeString(gameName);
+  if (checkNotIfExist || !(gameNameNormalized in entries)) {
+    const isNameSupported = nameMapping
+      ? !!nameMapping.includes(gameNameNormalized)
+      : true;
+
+    if (isNameSupported) {
+      entries[gameNameNormalized] = cover;
+    }
+  }
 };
 
 export const fetchMetaData = async (systemId: SystemId) => {
@@ -47,32 +50,44 @@ export const fetchMetaData = async (systemId: SystemId) => {
 
   if (!existsSync(filePath)) {
     const platformIds = categories[systemId].igdbPlatformIds;
-    const filterByNameMapping = await filterWithNameMapping(systemId);
+    const nameMapping = await getNameMapping(systemId);
 
     let entries = (await fetchMetaDataForSystem(platformIds)).reduce<
-      GameTrimmed[]
+      Record<string, string>
     >((accumulator, { name, alternative_names, game_localizations, cover }) => {
       if (cover) {
-        accumulator.push([name, cover.image_id]);
-        alternative_names?.forEach((alternativeName) => {
-          accumulator.push([alternativeName.name, cover.image_id]);
-        });
+        addNormalizedIfNotExist(
+          true,
+          accumulator,
+          name,
+          cover.image_id,
+          nameMapping,
+        );
         game_localizations?.forEach((localization) => {
-          if (localization.name && localization.name !== name)
-            accumulator.push([
+          if (localization.name && localization.name !== name) {
+            addNormalizedIfNotExist(
+              false,
+              accumulator,
               localization.name,
               localization.cover?.image_id || cover.image_id,
-            ]);
+              nameMapping,
+            );
+          }
+        });
+        alternative_names?.forEach((alternativeName) => {
+          addNormalizedIfNotExist(
+            false,
+            accumulator,
+            alternativeName.name,
+            cover.image_id,
+            nameMapping,
+          );
         });
       }
       return accumulator;
-    }, []);
+    }, {});
 
-    if (filterByNameMapping) {
-      entries = filterByNameMapping(entries);
-    }
-
-    writeFile(entries, filePath);
+    writeFile(Object.entries(entries) as GameTrimmed[], filePath);
   }
 };
 

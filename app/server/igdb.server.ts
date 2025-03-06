@@ -4,6 +4,8 @@ import type { Entry } from "../types/jsonFiles/category";
 import { getExpiresOn } from "./getExpiresOn.server";
 import type { SystemId } from "./categoriesDB.server/systemId";
 import nodepath from "path";
+import { parseRoman } from "@ultirequiem/roman";
+import { log } from "./debug.server";
 
 export type Game = [name: string, cover: string];
 
@@ -40,20 +42,34 @@ export const getCoverUrl = (gameData: Game) => {
   return null;
 };
 
-const normalizeString = (a: string) =>
+const parseRomanToNumber = (romanAsString: string): string => {
+  try {
+    const num = parseRoman(romanAsString.toUpperCase());
+    if (num < 100) {
+      return num.toString();
+    }
+  } catch (error) {
+    log("error", "parseRomanToNumber", romanAsString, error);
+    return romanAsString;
+  }
+
+  return romanAsString;
+};
+
+export const normalizeString = (a: string) =>
   setCommaSeparatedArticleAsPrefix(removeBrackets(a))
-    .replace(/[`~!@#$%^&*()_|+\-=?;:/'",. ]/gi, "")
     .toLowerCase()
+    .replace(/\b[xliv]+\b/g, (match) => parseRomanToNumber(match))
+    .replace(/[`~!@#$%^&*()_|+\-=?;:/'",. ]/gi, "")
     .trim();
 
-export const matchName = (a: string, b: string) =>
-  normalizeString(a) === normalizeString(b);
-
 const findGameDataByName = (nameToFind: string, games: Game[]) =>
-  games.find(([name]) => matchName(name, nameToFind));
+  games.find(([name]) => normalizeString(nameToFind) === name);
 
 const findGameDataByNameLoose = (nameToFind: string, games: Game[]) => {
-  const foundGames = games.filter(([name]) => name.startsWith(nameToFind));
+  const foundGames = games.filter(([name]) =>
+    name.startsWith(normalizeString(nameToFind)),
+  );
 
   if (foundGames.length === 1) {
     return foundGames[0];
