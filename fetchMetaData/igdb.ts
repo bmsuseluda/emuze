@@ -43,7 +43,7 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const fetchMetaDataForSystemWithOffset = async (
   client: Apicalypse,
-  platformId: number[],
+  platformId: number,
   offset: number = 0,
 ): Promise<Game[]> => {
   const gamesResponse: GamesResponse = await retryPromise(
@@ -95,7 +95,7 @@ const fetchMetaDataForSystemWithOffset = async (
   return gamesResponse.data;
 };
 
-export const fetchMetaDataForSystem = async (platformId: number[]) => {
+export const fetchMetaDataForSystem = async (platformIds: number[]) => {
   const client = apicalypse({
     method: "POST",
     headers: {
@@ -103,10 +103,13 @@ export const fetchMetaDataForSystem = async (platformId: number[]) => {
     },
   });
 
-  const entriesWithMetaData = await fetchMetaDataForSystemWithOffset(
-    client,
-    platformId,
-  );
+  const entriesWithMetaData: Game[] = [];
+
+  for (const platformId of platformIds) {
+    entriesWithMetaData.push(
+      ...(await fetchMetaDataForSystemWithOffset(client, platformId)),
+    );
+  }
 
   return entriesWithMetaData;
 };

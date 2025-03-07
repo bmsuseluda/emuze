@@ -142,8 +142,9 @@ export const supernintendo: Category = {
     "Super Nintendo",
     "SNES",
     "Super Famicom",
+    "Super Family Computer",
   ],
-  igdbPlatformIds: [19, 51, 58],
+  igdbPlatformIds: [/** Super Famicom */ 58, 19],
   application: aresSuperNintendo,
   hasAnalogStick: false,
 };
@@ -159,7 +160,7 @@ export const nintendods: Category = {
 export const nintendo3ds: Category = {
   id: "nintendo3ds",
   names: ["Nintendo 3DS", "3DS"],
-  igdbPlatformIds: [37, 137],
+  igdbPlatformIds: [37, /** New Nintendo 3DS */ 137],
   application: lime3ds,
   hasAnalogStick: true,
 };
@@ -206,8 +207,8 @@ export const nintendoswitch: Category = {
 
 export const nintendoentertainmentsystem: Category = {
   id: "nintendoentertainmentsystem",
-  names: ["Nintendo Entertainment System", "NES", "Famicom"],
-  igdbPlatformIds: [18, 99],
+  names: ["Nintendo Entertainment System", "NES", "Famicom", "Family Computer"],
+  igdbPlatformIds: [/** Famicom Disc System */ 51, /** Famicom */ 99, 18],
   application: ares,
   hasAnalogStick: false,
 };
@@ -223,15 +224,15 @@ export const nintendo64: Category = {
 export const nintendogameboy: Category = {
   id: "nintendogameboy",
   names: ["Nintendo Game Boy", "Game Boy", "GB"],
-  igdbPlatformIds: [33, 22],
-  application: isMgbaForGameBoy() ? mgba : ares,
+  igdbPlatformIds: [33],
+  application: isMgbaForGameBoy() ? mgba : aresGameBoyColor,
   hasAnalogStick: false,
 };
 
 export const nintendogameboycolor: Category = {
   id: "nintendogameboycolor",
   names: ["Nintendo Game Boy Color", "Game Boy Color", "GBC"],
-  igdbPlatformIds: [33, 22],
+  igdbPlatformIds: [22],
   application: isMgbaForGameBoy() ? mgba : aresGameBoyColor,
   hasAnalogStick: false,
 };
@@ -303,7 +304,7 @@ export const neogeocd: Category = {
 export const neogeopocket: Category = {
   id: "neogeopocket",
   names: ["Neo Geo Pocket", "NeoGeo Pocket"],
-  igdbPlatformIds: [119, 120],
+  igdbPlatformIds: [119],
   application: ares,
   hasAnalogStick: false,
 };
@@ -327,7 +328,7 @@ export const dos: Category = {
 export const scumm: Category = {
   id: "scumm",
   names: ["Scumm", "Scumm VM", "ScummVM"],
-  igdbPlatformIds: [6, 13],
+  igdbPlatformIds: [/** PC */ 6, /** Dos */ 13],
   application: scummvm,
   hasAnalogStick: true,
 };

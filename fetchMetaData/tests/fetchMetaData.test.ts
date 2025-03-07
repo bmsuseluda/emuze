@@ -49,6 +49,38 @@ describe("fetchMetaData", () => {
     );
   });
 
+  it("Should prioritize localizations over alternative names", async () => {
+    const igdbResult: Game[] = [
+      {
+        name: "Lightening Force",
+        cover: {
+          image_id: "lighteningforce",
+        },
+        alternative_names: [{ name: "Thunder Force IV" }],
+        game_localizations: [
+          {
+            name: "Thunder Force IV",
+            cover: {
+              image_id: "thunderforceiv",
+            },
+          },
+        ],
+      },
+    ];
+    vi.mocked(fetchMetaDataForSystem).mockResolvedValue(igdbResult);
+    vi.mocked(existsSync).mockReturnValue(false);
+
+    await fetchMetaData("segamegadrive");
+
+    expect(writeFile).toBeCalledWith(
+      [
+        ["lighteningforce", "lighteningforce"],
+        ["thunderforce4", "thunderforceiv"],
+      ],
+      "/home/dennisludwig/projects/emuze/fetchMetaData/systems/segamegadrive.json",
+    );
+  });
+
   it("Should filter games with covers only", async () => {
     const igdbResult: Game[] = [
       {
