@@ -144,7 +144,7 @@ export const supernintendo: Category = {
     "Super Famicom",
     "Super Family Computer",
   ],
-  igdbPlatformIds: [/** Super Famicom */ 58, 19],
+  igdbPlatformIds: [19, /** Super Famicom */ 58],
   application: aresSuperNintendo,
   hasAnalogStick: false,
 };
@@ -208,7 +208,7 @@ export const nintendoswitch: Category = {
 export const nintendoentertainmentsystem: Category = {
   id: "nintendoentertainmentsystem",
   names: ["Nintendo Entertainment System", "NES", "Famicom", "Family Computer"],
-  igdbPlatformIds: [/** Famicom Disc System */ 51, /** Famicom */ 99, 18],
+  igdbPlatformIds: [18, /** Famicom Disc System */ 51, /** Famicom */ 99],
   application: ares,
   hasAnalogStick: false,
 };

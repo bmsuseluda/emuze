@@ -41,10 +41,14 @@ interface ResponseHeader {
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+const getFilterMaxReleaseDate = (maxReleaseDate?: number) =>
+  maxReleaseDate ? ` & first_release_date < ${maxReleaseDate}` : "";
+
 const fetchMetaDataForSystemWithOffset = async (
   client: Apicalypse,
   platformId: number,
-  offset: number = 0,
+  offset: number,
+  maxReleaseDate?: number,
 ): Promise<Game[]> => {
   const gamesResponse: GamesResponse = await retryPromise(
     () =>
@@ -56,7 +60,9 @@ const fetchMetaDataForSystemWithOffset = async (
           "game_localizations.name",
           "game_localizations.cover.image_id",
         ])
-        .where(`platforms=(${platformId})`)
+        .where(
+          `platforms=(${platformId})${getFilterMaxReleaseDate(maxReleaseDate)}`,
+        )
         .limit(igdbResponseLimit)
         .offset(offset)
         .sort("id")
@@ -88,6 +94,7 @@ const fetchMetaDataForSystemWithOffset = async (
         client,
         platformId,
         offset + igdbResponseLimit,
+        maxReleaseDate,
       )),
     ];
   }
@@ -95,7 +102,10 @@ const fetchMetaDataForSystemWithOffset = async (
   return gamesResponse.data;
 };
 
-export const fetchMetaDataForSystem = async (platformIds: number[]) => {
+export const fetchMetaDataForSystem = async (
+  platformIds: number[],
+  maxReleaseDate?: number,
+) => {
   const client = apicalypse({
     method: "POST",
     headers: {
@@ -107,7 +117,12 @@ export const fetchMetaDataForSystem = async (platformIds: number[]) => {
 
   for (const platformId of platformIds) {
     entriesWithMetaData.push(
-      ...(await fetchMetaDataForSystemWithOffset(client, platformId)),
+      ...(await fetchMetaDataForSystemWithOffset(
+        client,
+        platformId,
+        0,
+        maxReleaseDate,
+      )),
     );
   }
 

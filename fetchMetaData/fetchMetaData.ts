@@ -9,6 +9,10 @@ import { normalizeString } from "../app/server/igdb.server";
 
 export type GameTrimmed = [name: string, cover: string];
 
+const maxReleaseDates: Partial<Record<SystemId, number>> = {
+  scumm: new Date(2015, 0).getTime() / 1000,
+};
+
 const getNameMapping = async (systemId: SystemId) => {
   const nameMappingPath = nodepath.join(
     __dirname,
@@ -27,14 +31,13 @@ const getNameMapping = async (systemId: SystemId) => {
 };
 
 const addNormalizedIfNotExist = (
-  checkNotIfExist: boolean,
   entries: Record<string, string>,
   gameName: string,
   cover: string,
   nameMapping?: string[],
 ) => {
   const gameNameNormalized = normalizeString(gameName);
-  if (checkNotIfExist || !(gameNameNormalized in entries)) {
+  if (!(gameNameNormalized in entries)) {
     const isNameSupported = nameMapping
       ? !!nameMapping.includes(gameNameNormalized)
       : true;
@@ -51,23 +54,29 @@ export const fetchMetaData = async (systemId: SystemId) => {
   if (!existsSync(filePath)) {
     const platformIds = categories[systemId].igdbPlatformIds;
     const nameMapping = await getNameMapping(systemId);
+    const maxReleaseDate = maxReleaseDates[systemId];
 
-    let entries = (await fetchMetaDataForSystem(platformIds)).reduce<
-      Record<string, string>
-    >((accumulator, { name, alternative_names, game_localizations, cover }) => {
+    const result = await fetchMetaDataForSystem(platformIds, maxReleaseDate);
+
+    const entries: Record<string, string> = {};
+
+    for (const { cover, name } of result) {
       if (cover) {
-        addNormalizedIfNotExist(
-          true,
-          accumulator,
-          name,
-          cover.image_id,
-          nameMapping,
-        );
+        addNormalizedIfNotExist(entries, name, cover.image_id, nameMapping);
+      }
+    }
+
+    for (const {
+      cover,
+      name,
+      game_localizations,
+      alternative_names,
+    } of result) {
+      if (cover) {
         game_localizations?.forEach((localization) => {
           if (localization.name && localization.name !== name) {
             addNormalizedIfNotExist(
-              false,
-              accumulator,
+              entries,
               localization.name,
               localization.cover?.image_id || cover.image_id,
               nameMapping,
@@ -76,16 +85,14 @@ export const fetchMetaData = async (systemId: SystemId) => {
         });
         alternative_names?.forEach((alternativeName) => {
           addNormalizedIfNotExist(
-            false,
-            accumulator,
+            entries,
             alternativeName.name,
             cover.image_id,
             nameMapping,
           );
         });
       }
-      return accumulator;
-    }, {});
+    }
 
     writeFile(Object.entries(entries) as GameTrimmed[], filePath);
   }
@@ -99,9 +106,7 @@ export const fetchMetaDataForAllSystems = async () => {
           console.log(`fetchMetaData completed for ${id}`);
         })
         .catch((error) => {
-          error().catch((error: { response: object }) => {
-            console.log(`error for ${id}`, error.response);
-          });
+          console.log(`error for ${id}`, error);
         });
     }
   }
