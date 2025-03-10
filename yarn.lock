@@ -7474,6 +7474,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ultirequiem/roman@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@ultirequiem/roman@npm:1.1.0"
+  checksum: 10/83f7e6b5c9bab82dd2c103b60c0b8a8bdcd1b88d8ff431e414cd7713e85b95a1d882ef8dadafbe47e4e116b984184df5f9c775e6b31670ea13aa94a03ad9636e
+  languageName: node
+  linkType: hard
+
 "@ungap/structured-clone@npm:^1.0.0, @ungap/structured-clone@npm:^1.2.0":
   version: 1.2.0
   resolution: "@ungap/structured-clone@npm:1.2.0"
@@ -11013,6 +11020,7 @@ __metadata:
     "@types/node": "npm:^20.16.9"
     "@types/react": "npm:^18.3.9"
     "@types/react-dom": "npm:^18.3.0"
+    "@ultirequiem/roman": "npm:^1.1.0"
     "@vitejs/plugin-react": "npm:^4.3.1"
     apicalypse: "npm:^0.2.0"
     axios: "npm:^1.7.7"

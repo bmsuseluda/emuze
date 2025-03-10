@@ -25,8 +25,7 @@ export const extractGames = (data: string) => {
     if (row.match(/\w+:\w+.*/)) {
       // split by minimum of 3 whitespaces
       const [engineAndId, name] = row.split(/\s{3,}/);
-      const [, id] = engineAndId.split(":");
-      objectToExtend[id] = name;
+      objectToExtend[engineAndId] = name;
     }
   });
 

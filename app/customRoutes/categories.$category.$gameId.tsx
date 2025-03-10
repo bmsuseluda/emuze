@@ -19,7 +19,6 @@ import { useGamepadConnected } from "../hooks/useGamepadConnected";
 import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction";
 import type { DataFunctionArgs } from "../context";
 import { log } from "../server/debug.server";
-import { readCategory } from "../server/categories.server";
 import type { SystemId } from "../server/categoriesDB.server/systemId";
 import { startGame } from "../server/execute.server";
 import { SidebarMainLayout } from "app/components/layouts/SidebarMainLayout";
@@ -28,6 +27,7 @@ import type { Entry } from "../types/jsonFiles/category";
 import { useInputSettings } from "../hooks/useDirectionalInput";
 import { GameVersions } from "../components/GameVersions";
 import { GameDialog } from "../components/GameDialog";
+import { readCategory } from "../server/categoryDataCache.server";
 
 const getGameData = (category: SystemId, gameId: string) => {
   let systemId: SystemId | undefined;

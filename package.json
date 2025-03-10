@@ -26,16 +26,17 @@
     "generate:icon": "ts-node ./generateIcon/index.ts",
     "generate:readme": "del-cli ./readme/build && tsc -p ./readme/tsconfig.json && mmarkdown && git add README.md",
     "import": "concurrently -c 'auto' --kill-others-on-fail 'yarn:import:*'",
-    "import:mame": "ts-node generateNameMappings/mame/index.ts && prettier ./app/server/applicationsDB.server/applications/mame/nameMapping/mame.json --write",
-    "import:scummvm": "ts-node generateNameMappings/scummvm/index.ts && prettier ./app/server/applicationsDB.server/applications/scummvm/nameMapping/scummvm.json --write",
+    "import:mame": "ts-node generateNameMappings/mame/index.ts",
+    "import:scummvm": "ts-node generateNameMappings/scummvm/index.ts",
     "convertSvgs": "svgr --svgo-config svgo.config.js --config-file .svgrrc.js ./svgs",
     "downloadEmulators:windows": "ts-node downloadEmulators/downloadEmulatorsWindows.ts",
     "downloadEmulators:linux": "ts-node downloadEmulators/downloadEmulatorsLinux.ts",
+    "fetchMetaData:prepareNameMappings": "ts-node fetchMetaData/prepareNameMappings.ts",
+    "fetchMetaData": "yarn fetchMetaData:prepareNameMappings && ts-node fetchMetaData/fetchMetaDataForAllSystems.ts",
     "app:distLinux": "yarn downloadEmulators:linux && yarn build && electron-builder --linux",
     "app:distWindows": "yarn downloadEmulators:windows && yarn build && electron-builder --win",
     "storybook": "yarn clean && cross-env NODE_ENV=development yarn panda:codegen && storybook dev -p 6006 --no-open",
-    "e2e": "yarn clean && cross-env NODE_ENV=production yarn panda:codegen && yarn build:remix && concurrently -c 'auto' --kill-others -P 'yarn:e2e:mock-api' 'yarn:e2e:serveRemix:*' 'yarn:e2e:playwright {@}'",
-    "e2e:mock-api": "yarn json-server --middlewares ./e2eTests/apiMockServer/middleware.js --watch ./e2eTests/apiMockServer/db.json --port 8080",
+    "e2e": "yarn clean && cross-env NODE_ENV=production yarn panda:codegen && yarn build:remix && concurrently -c 'auto' --kill-others -P 'yarn:e2e:serveRemix:*' 'yarn:e2e:playwright {@}'",
     "e2e:serveRemix:default": "ts-node e2eTests/tests/default/start.ts",
     "e2e:serveRemix:initial": "ts-node e2eTests/tests/initial/start.ts",
     "e2e:serveRemix:initialWindows": "ts-node e2eTests/tests/initialWindows/start.ts",
@@ -57,6 +58,7 @@
     "@remix-run/serve": "^2.12.1",
     "@remix-run/server-runtime": "^2.12.1",
     "@remix-run/web-stream": "^1.1.0",
+    "@ultirequiem/roman": "^1.1.0",
     "apicalypse": "^0.2.0",
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
@@ -145,7 +147,8 @@
     "files": [
       "buildDesktop",
       "build",
-      "public"
+      "public",
+      "fetchMetaData"
     ],
     "extraFiles": [
       "emulators/**"

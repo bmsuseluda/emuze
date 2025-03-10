@@ -35,6 +35,12 @@ const removeAdditionalNames = (a: string) => a.split(" / ")[0].trim();
 const filterDescription = (description: string) =>
   removeAdditionalNames(removeBrackets(description));
 
+const descriptionPatches: Record<string, string> = {
+  ironclad: "Chotetsu Brikin'ger",
+  twocrude: "Two Crude Dudes",
+  twocrudea: "Two Crude Dudes",
+};
+
 const addToObject = (
   objectToExtend: Result,
   { "@_name": name, description }: Game,
@@ -43,7 +49,8 @@ const addToObject = (
     const descriptionAsString =
       typeof description === "number" ? description.toString() : description;
 
-    objectToExtend[name] = filterDescription(descriptionAsString);
+    objectToExtend[name] =
+      descriptionPatches[name] || filterDescription(descriptionAsString);
   }
 };
 
@@ -59,6 +66,7 @@ const parseXmlData = (xmlData: string): MameListXmlStructure | null => {
 const extractGames = (xmlData: string) => {
   const objectToExtend: Result = {};
   const machine = parseXmlData(xmlData)?.mame?.machine;
+  // TODO: filter machines out that have a softwarelist
   machine?.forEach((game) => {
     addToObject(objectToExtend, game);
   });
@@ -68,18 +76,18 @@ const extractGames = (xmlData: string) => {
 
 const importMame = () => {
   try {
-    const xmlData = spawnSync(
-      "flatpak",
-      ["run", "org.mamedev.MAME", "-listxml"],
-      {
-        encoding: "utf-8",
-        maxBuffer: 1000000000,
-      },
-    ).stdout.toString();
+    const result = spawnSync("mame", ["-listxml"], {
+      encoding: "utf-8",
+      maxBuffer: 10000000000000,
+    });
+    if (result.stderr) {
+      console.log(result.stderr);
+    }
+    const xmlData = result.stdout.toString();
 
-    const result = extractGames(xmlData);
+    const extractedGames = extractGames(xmlData);
 
-    writeFile(result, nodepath.join(resultPath, "mame.json"));
+    writeFile(extractedGames, nodepath.join(resultPath, "mame.json"));
   } catch (error) {
     console.log(error);
   }
