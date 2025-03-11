@@ -17,11 +17,9 @@ import {
   nintendo3ds,
   pcenginecd,
 } from "../__testData__/category";
-import { applications as applicationsTestData } from "../__testData__/applications";
 import { general } from "../__testData__/general";
 import { fetchMetaDataFromDB } from "../igdb.server";
 import { lime3ds } from "../applicationsDB.server";
-import { getInstalledApplicationForCategory } from "../applications.server";
 import { mednafen } from "../applicationsDB.server/applications/mednafen";
 import { entriesPath } from "../categoryDataCache.server";
 
@@ -87,13 +85,6 @@ describe("categories.server", () => {
       when(fetchMetaDataFromDB)
         .calledWith("nintendo3ds", nintendo3ds.entries)
         .thenResolve(nintendo3ds.entries);
-
-      vi.mocked(getInstalledApplicationForCategory).mockReturnValueOnce(
-        applicationsTestData.lime3ds,
-      );
-      vi.mocked(getInstalledApplicationForCategory).mockReturnValueOnce(
-        applicationsTestData.mednafen,
-      );
 
       // execute
       await importCategories();

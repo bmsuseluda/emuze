@@ -50,12 +50,10 @@ export type FindEntryNameFunction = ({
   entry,
   categoriesPath,
   categoryName,
-  installedApplication,
 }: {
   entry: Entry;
   categoriesPath: string;
   categoryName: string;
-  installedApplication?: InstalledApplication;
 }) => string;
 
 export type ExcludeFilesFunction = (filePaths: string[]) => string[];
