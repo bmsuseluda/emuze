@@ -5,11 +5,8 @@ import type {
   InstalledApplicationWindows,
 } from "./applicationsDB.server/types";
 import { applications as applicationsDB } from "./applicationsDB.server";
-import type { Category as CategoryDB } from "./categoriesDB.server/types";
 import { readFilenames } from "./readWriteData.server";
-import { isWindows } from "./operationsystem.server";
 import type { ApplicationId } from "./applicationsDB.server/applicationId";
-import { checkFlatpakIsInstalled } from "./applicationsDB.server/checkEmulatorIsInstalled";
 
 export const paths = {
   applications: "data/applications.json",
@@ -35,16 +32,6 @@ export const findExecutable = (
     return executables[0];
   }
   return null;
-};
-
-export const getInstalledApplicationForCategoryOnLinux = (
-  applicationFromDB: ApplicationDB,
-) => {
-  if (checkFlatpakIsInstalled(applicationFromDB.flatpakId)) {
-    return applicationFromDB;
-  }
-
-  return undefined;
 };
 
 let applicationPathsWindows: Partial<Record<ApplicationId, string>> = {};
@@ -78,22 +65,4 @@ export const getInstalledApplicationForCategoryOnWindows = (
   }
 
   return undefined;
-};
-
-export const getInstalledApplicationForCategory = ({
-  applicationsPath,
-  categoryDB,
-}: {
-  applicationsPath?: string;
-  categoryDB: CategoryDB;
-}) => {
-  if (isWindows() && applicationsPath) {
-    // TODO: find a way to cache which windows applications are installed
-    return getInstalledApplicationForCategoryOnWindows(
-      categoryDB.application,
-      applicationsPath,
-    );
-  }
-
-  return getInstalledApplicationForCategoryOnLinux(categoryDB.application);
 };

@@ -1,13 +1,11 @@
 import type { Category as CategoryDB } from "./categoriesDB.server/types";
 import type { Category, Entry } from "../types/jsonFiles/category";
 import { getCategoryDataByName } from "./categoriesDB.server";
-import { getInstalledApplicationForCategory } from "./applications.server";
 import type { SystemId } from "./categoriesDB.server/systemId";
 import nodepath from "path";
 import type {
   ExcludeFilesFunction,
   FindEntryNameFunction,
-  InstalledApplication,
 } from "./applicationsDB.server/types";
 import { convertToId } from "./convertToId.server";
 import type { ApplicationId } from "./applicationsDB.server/applicationId";
@@ -49,7 +47,6 @@ const createEntry = ({
   categoryName,
   index,
   oldEntries,
-  installedApplication,
   findEntryName,
 }: {
   filename: string;
@@ -58,7 +55,6 @@ const createEntry = ({
   categoryName: string;
   index: number;
   oldEntries?: Entry[];
-  installedApplication?: InstalledApplication;
   findEntryName?: FindEntryNameFunction;
 }): EntryWithoutSubEntries => {
   const now = Date.now();
@@ -85,7 +81,6 @@ const createEntry = ({
       entry,
       categoriesPath,
       categoryName,
-      installedApplication,
     });
     return {
       ...entry,
@@ -122,12 +117,10 @@ const addAsGameVersion = (lastEntry: Entry, { metaData, ...entry }: Entry) => {
 export const readEntries = ({
   categoryName,
   applicationId,
-  installedApplication,
   oldEntries,
 }: {
   categoryName: string;
   applicationId: ApplicationId;
-  installedApplication?: InstalledApplication;
   oldEntries?: Entry[];
 }) => {
   const applicationDbData = applications[applicationId];
@@ -157,7 +150,6 @@ export const readEntries = ({
           categoryPath,
           filename,
           findEntryName,
-          installedApplication,
         }),
       )
       .sort(sortEntries)
@@ -208,20 +200,13 @@ export interface CategoryImportData {
 export const createCategoryData = ({
   categoryDbData,
   categoryFolderBaseName,
-  applicationsPath,
 }: CategoryImportData): Category => {
   const { id } = categoryDbData;
   const oldCategoryData = readCategory(id);
 
-  const application = getInstalledApplicationForCategory({
-    applicationsPath,
-    categoryDB: categoryDbData,
-  });
-
   const entries = readEntries({
     categoryName: categoryFolderBaseName,
     applicationId: categoryDbData.application.id,
-    installedApplication: application,
     oldEntries: oldCategoryData?.entries,
   });
 

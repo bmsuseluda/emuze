@@ -3,10 +3,15 @@ import { writeFile } from "../../app/server/readWriteData.server";
 import { existsSync } from "node:fs";
 import type { Game } from "../igdb";
 import { fetchMetaDataForSystem } from "../igdb";
+import type { SystemId } from "../../app/server/categoriesDB.server/systemId";
+import nodepath from "path";
 
 vi.mock("../igdb.ts");
 vi.mock("../../app/server/readWriteData.server");
 vi.mock("node:fs");
+
+const getDbPath = (systemId: SystemId) =>
+  nodepath.join(__dirname, "..", "systems", `${systemId}.json`);
 
 describe("fetchMetaData", () => {
   beforeEach(() => {
@@ -14,7 +19,6 @@ describe("fetchMetaData", () => {
   });
 
   // TODO: add test for a name mapping
-  // TODO: add test for lightening force
 
   it("Should add an entry for alternative name and localization", async () => {
     const igdbResult: Game[] = [
@@ -37,7 +41,8 @@ describe("fetchMetaData", () => {
     vi.mocked(fetchMetaDataForSystem).mockResolvedValue(igdbResult);
     vi.mocked(existsSync).mockReturnValue(false);
 
-    await fetchMetaData("nintendoentertainmentsystem");
+    const systemId = "nintendoentertainmentsystem";
+    await fetchMetaData(systemId);
 
     expect(writeFile).toBeCalledWith(
       [
@@ -45,7 +50,7 @@ describe("fetchMetaData", () => {
         ["teenagemutantheroturtles", "dsfsdf"],
         ["tmnt", "ddsada"],
       ],
-      "/home/dennisludwig/projects/emuze/fetchMetaData/systems/nintendoentertainmentsystem.json",
+      getDbPath(systemId),
     );
   });
 
@@ -70,14 +75,15 @@ describe("fetchMetaData", () => {
     vi.mocked(fetchMetaDataForSystem).mockResolvedValue(igdbResult);
     vi.mocked(existsSync).mockReturnValue(false);
 
-    await fetchMetaData("segamegadrive");
+    const systemId = "segamegadrive";
+    await fetchMetaData(systemId);
 
     expect(writeFile).toBeCalledWith(
       [
         ["lighteningforce", "lighteningforce"],
         ["thunderforce4", "thunderforceiv"],
       ],
-      "/home/dennisludwig/projects/emuze/fetchMetaData/systems/segamegadrive.json",
+      getDbPath(systemId),
     );
   });
 
@@ -96,11 +102,12 @@ describe("fetchMetaData", () => {
     vi.mocked(fetchMetaDataForSystem).mockResolvedValue(igdbResult);
     vi.mocked(existsSync).mockReturnValue(false);
 
-    await fetchMetaData("nintendoentertainmentsystem");
+    const systemId = "nintendoentertainmentsystem";
+    await fetchMetaData(systemId);
 
     expect(writeFile).toBeCalledWith(
       [["teenagemutantninjaturtles", "ddsada"]],
-      "/home/dennisludwig/projects/emuze/fetchMetaData/systems/nintendoentertainmentsystem.json",
+      getDbPath(systemId),
     );
   });
 
@@ -131,14 +138,15 @@ describe("fetchMetaData", () => {
     vi.mocked(fetchMetaDataForSystem).mockResolvedValue(igdbResult);
     vi.mocked(existsSync).mockReturnValue(false);
 
-    await fetchMetaData("nintendoentertainmentsystem");
+    const systemId = "nintendoentertainmentsystem";
+    await fetchMetaData(systemId);
 
     expect(writeFile).toBeCalledWith(
       [
         ["teenagemutantninjaturtles", "ddsada"],
         ["teenagemutantninjaturtles2thearcadegame", "ddsada"],
       ],
-      "/home/dennisludwig/projects/emuze/fetchMetaData/systems/nintendoentertainmentsystem.json",
+      getDbPath(systemId),
     );
   });
 
@@ -154,11 +162,12 @@ describe("fetchMetaData", () => {
     vi.mocked(fetchMetaDataForSystem).mockResolvedValue(igdbResult);
     vi.mocked(existsSync).mockReturnValue(false);
 
-    await fetchMetaData("nintendoentertainmentsystem");
+    const systemId = "nintendoentertainmentsystem";
+    await fetchMetaData(systemId);
 
     expect(writeFile).toBeCalledWith(
       [["teenagemutantninjaturtles2000", "ddsada"]],
-      "/home/dennisludwig/projects/emuze/fetchMetaData/systems/nintendoentertainmentsystem.json",
+      getDbPath(systemId),
     );
   });
 });
