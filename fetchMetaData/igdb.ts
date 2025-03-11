@@ -1,4 +1,3 @@
-import type { Apicalypse } from "apicalypse";
 import apicalypse from "apicalypse";
 import { retryPromise } from "../app/retryPromise";
 
@@ -21,23 +20,14 @@ export interface Game {
 export const url =
   process.env.EMUZE_IGDB_DEVELOPMENT_URL || "http://localhost:8080/games";
 
-export interface GamesResponse {
-  data: Game[];
-  config?: {
-    data?: unknown;
-  };
-  status?: unknown;
-  headers: ResponseHeader;
-  request?: unknown;
-}
+const client = apicalypse({
+  method: "POST",
+  headers: {
+    "Accept-Encoding": "gzip",
+  },
+});
 
 const igdbResponseLimit = 500;
-
-interface ResponseHeader {
-  "ratelimit-reset": string;
-  "ratelimit-remaining": string;
-  "x-count": "string";
-}
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -45,12 +35,11 @@ const getFilterMaxReleaseDate = (maxReleaseDate?: number) =>
   maxReleaseDate ? ` & first_release_date < ${maxReleaseDate}` : "";
 
 const fetchMetaDataForSystemWithOffset = async (
-  client: Apicalypse,
   platformId: number,
   offset: number,
   maxReleaseDate?: number,
 ): Promise<Game[]> => {
-  const gamesResponse: GamesResponse = await retryPromise(
+  const gamesResponse = await retryPromise(
     () =>
       client
         .fields([
@@ -91,7 +80,6 @@ const fetchMetaDataForSystemWithOffset = async (
     return [
       ...gamesResponse.data,
       ...(await fetchMetaDataForSystemWithOffset(
-        client,
         platformId,
         offset + igdbResponseLimit,
         maxReleaseDate,
@@ -106,19 +94,11 @@ export const fetchMetaDataForSystem = async (
   platformIds: number[],
   maxReleaseDate?: number,
 ) => {
-  const client = apicalypse({
-    method: "POST",
-    headers: {
-      "Accept-Encoding": "gzip",
-    },
-  });
-
   const entriesWithMetaData: Game[] = [];
 
   for (const platformId of platformIds) {
     entriesWithMetaData.push(
       ...(await fetchMetaDataForSystemWithOffset(
-        client,
         platformId,
         0,
         maxReleaseDate,
