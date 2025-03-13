@@ -7,7 +7,7 @@ const emulatorDownloadsWindows: Partial<EmulatorDownloads> = {
     "https://github.com/stenzek/duckstation/releases/download/v0.1-7371/duckstation-windows-x64-release.zip",
   dolphin: "https://dl.dolphin-emu.org/releases/2503/dolphin-2503-x64.7z",
   ryujinx:
-    "https://github.com/Ryubing/Ryujinx/releases/download/1.2.82/ryujinx-1.2.82-win_x64.zip",
+    "https://github.com/Ryubing/Ryujinx/releases/download/1.2.86/ryujinx-1.2.86-win_x64.zip",
 };
 
 export const downloadEmulatorsWindows = () =>
