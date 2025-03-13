@@ -42,9 +42,9 @@ The following systems are supported:
 | Sega Dreamcast | [Flycast](https://github.com/flyinghead/flycast) | No | No | No | 
 | Nintendo Entertainment System | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
 | Super Nintendo Entertainment System | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
-| Nintendo Game Boy | [mgba](https://github.com/mgba-emu/mgba) | No | No | No | 
-| Nintendo Game Boy Color | [mgba](https://github.com/mgba-emu/mgba) | No | No | No | 
-| Nintendo Game Boy Advance | [mgba](https://github.com/mgba-emu/mgba) | No | No | No | 
+| Nintendo Game Boy | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
+| Nintendo Game Boy Color | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
+| Nintendo Game Boy Advance | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | Yes | 
 | Nintendo DS | [MelonDS](https://github.com/melonDS-emu/melonDS) | No | No | No | 
 | Nintendo 3DS | [Lime3DS](https://github.com/Lime3DS/Lime3DS) | No | No | No | 
 | Nintendo 64 | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
@@ -89,7 +89,7 @@ Some emulators need a BIOS or firmware to run. Please check the documentation of
 
 ### Windows
 
-[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.53.1/emuze-Setup-0.53.1.exe) the latest Version of emuze and install it.
+[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.54.0/emuze-Setup-0.54.0.exe) the latest Version of emuze and install it.
 
 If you start emuze for the first time, it asks for the following folders to work:
 
@@ -119,7 +119,7 @@ emulators
 For now emuze is only released as an AppImage. Your Linux distribution needs to support Flatpaks.
 All emulators, not bundled, need to be installed via flatpak but emuze can do this for you.
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.53.1/emuze-0.53.1.AppImage) the latest Version of emuze
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.54.0/emuze-0.54.0.AppImage) the latest Version of emuze
 
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
@@ -129,7 +129,7 @@ All emulators, not bundled, need to be installed via flatpak but emuze can do th
 For now emuze is only released as an AppImage.
 
 1) Switch to Desktop
-2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.53.1/emuze-0.53.1.AppImage) the latest Version of emuze
+2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.54.0/emuze-0.54.0.AppImage) the latest Version of emuze
 
 3) Mark the AppImage as executable and start emuze
 4) Choose the [folder where your Roms are located](#roms-folder)
@@ -208,6 +208,7 @@ Options:
   --fullscreen       Start the app in fullscreen mode
   --debugEmuze       Activates verbose logging to .emuze/emuze.log
   --rmgN64           Activates the less accurate Rosalies Mupen GUI (RMG) emulator to play N64
+  --mgba             Activates the mgba emulator to play Game Boy
   --no-sandbox       Necessary if emuze is used as a non steam game (Steam Deck Game Mode)
 ```
 
