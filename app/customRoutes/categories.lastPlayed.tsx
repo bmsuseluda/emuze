@@ -19,6 +19,9 @@ import { readLastPlayed } from "../server/lastPlayed.server";
 import { SystemIcon } from "../components/SystemIcon";
 import fs from "fs";
 import { LaunchButton } from "../containers/LaunchButton";
+import { ImportButton } from "../containers/ImportButton";
+import type { ImportButtonId } from "../containers/ImportButton/importButtonId";
+import { importCategories } from "../server/categories.server";
 
 export const loader = () => {
   const lastPlayed = readLastPlayed();
@@ -27,8 +30,11 @@ export const loader = () => {
   return json({ lastPlayed, alwaysGameNames });
 };
 
+const importButtonId: ImportButtonId = "importGames";
+
 const actionIds = {
   launch: "launch",
+  import: importButtonId,
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -59,6 +65,10 @@ export const action: ActionFunction = async ({ request }) => {
 
         return null;
       }
+    }
+
+    if (_actionId === actionIds.import) {
+      await importCategories();
     }
   } catch (e) {
     log("error", "lastPlayed action", e);
@@ -145,6 +155,14 @@ export default function LastPlayed() {
                   launchButtonRef={launchButtonRef}
                   disabled={!lastPlayed || lastPlayed.length === 0}
                 />
+
+                <ImportButton
+                  gamepadType={gamepadType}
+                  isInFocus={isInFocus}
+                  id={actionIds.import}
+                >
+                  Import Games
+                </ImportButton>
               </>
             }
           />
