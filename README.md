@@ -182,14 +182,6 @@ The Search is case-insensitive.
 > [!TIP]
 > [igdb](https://www.igdb.com) is a community driven open source database for game information. If there is something missing or wrong, please help and correct it there.
 
-### Games with a Subtitle
-
-If a game has a subtitle, the subtitle needs to be in the file name.<br>
-For the title `Max Payne 2` emuze wouldn't find metadata. Correct would be `Max Payne 2: The Fall of Max Payne.chd`.
-
-On Windows special characters like `:` can't be part of a file name, therefore you have to write it the following:
-`Max Payne 2 - The Fall of Max Payne.chd`
-
 ### Games with multiple Discs
 
 If you have a game with multiple discs, like `Final Fantasy VII`, the file name for the first disc would be `Final Fantasy VII (Disc 1).chd`.
