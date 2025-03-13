@@ -1,12 +1,10 @@
 import {
   findExecutable,
-  getInstalledApplicationForCategoryOnLinux,
   getInstalledApplicationForCategoryOnWindows,
 } from "../applications.server";
 import { applicationsPath, pcsx2 } from "../__testData__/applications";
 import * as categoriesFromDB from "../categoriesDB.server";
 import { readFilenames } from "../readWriteData.server";
-import { checkFlatpakIsInstalled } from "../applicationsDB.server/checkEmulatorIsInstalled";
 
 vi.mock("@bmsuseluda/node-sdl");
 vi.mock("../readWriteData.server");
@@ -92,24 +90,6 @@ describe("applications.server", () => {
 
       // expect
       expect(executable).toBeNull();
-    });
-  });
-
-  describe("getInstalledApplicationForCategoryOnLinux", () => {
-    const application = categoriesFromDB.sonyplaystation2.application;
-
-    it("Should return application if installed", () => {
-      vi.mocked(checkFlatpakIsInstalled).mockReturnValueOnce(true);
-
-      const result = getInstalledApplicationForCategoryOnLinux(application);
-
-      expect(result).toBe(application);
-    });
-
-    it("Should return undefined if application is not installed", () => {
-      const result = getInstalledApplicationForCategoryOnLinux(application);
-
-      expect(result).toBeUndefined();
     });
   });
 

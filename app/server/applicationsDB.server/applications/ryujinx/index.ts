@@ -22,7 +22,7 @@ const flatpakId = "org.ryujinx.Ryujinx";
 const bundledDirectory = nodepath.join(applicationId, "publish");
 const bundledPathLinux = nodepath.join(
   applicationId,
-  "ryujinx-1.2.81-x64.AppImage",
+  "ryujinx-1.2.86-x64.AppImage",
 );
 const bundledPathWindows = nodepath.join(bundledDirectory, "Ryujinx.exe");
 const configFolderPath = nodepath.join(emulatorsDirectory, applicationId);

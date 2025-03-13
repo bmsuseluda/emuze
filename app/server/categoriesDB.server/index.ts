@@ -10,10 +10,12 @@ import {
 import { rpcs3 } from "../applicationsDB.server/applications/rpcs3";
 import {
   ares,
+  aresGameBoyColor,
   aresMegaDrive,
   aresSega32x,
   aresSegaCd,
   aresSuperNintendo,
+  isMgbaForGameBoy,
   isRmgForN64,
 } from "../applicationsDB.server/applications/ares";
 import {
@@ -140,8 +142,9 @@ export const supernintendo: Category = {
     "Super Nintendo",
     "SNES",
     "Super Famicom",
+    "Super Family Computer",
   ],
-  igdbPlatformIds: [19, 51, 58],
+  igdbPlatformIds: [19, /** Super Famicom */ 58],
   application: aresSuperNintendo,
   hasAnalogStick: false,
 };
@@ -157,7 +160,7 @@ export const nintendods: Category = {
 export const nintendo3ds: Category = {
   id: "nintendo3ds",
   names: ["Nintendo 3DS", "3DS"],
-  igdbPlatformIds: [37, 137],
+  igdbPlatformIds: [37, /** New Nintendo 3DS */ 137],
   application: lime3ds,
   hasAnalogStick: true,
 };
@@ -204,8 +207,8 @@ export const nintendoswitch: Category = {
 
 export const nintendoentertainmentsystem: Category = {
   id: "nintendoentertainmentsystem",
-  names: ["Nintendo Entertainment System", "NES", "Famicom"],
-  igdbPlatformIds: [18, 99],
+  names: ["Nintendo Entertainment System", "NES", "Famicom", "Family Computer"],
+  igdbPlatformIds: [18, /** Famicom Disc System */ 51, /** Famicom */ 99],
   application: ares,
   hasAnalogStick: false,
 };
@@ -221,8 +224,8 @@ export const nintendo64: Category = {
 export const nintendogameboy: Category = {
   id: "nintendogameboy",
   names: ["Nintendo Game Boy", "Game Boy", "GB"],
-  igdbPlatformIds: [33, 22, 24],
-  application: mgba,
+  igdbPlatformIds: [33],
+  application: isMgbaForGameBoy() ? mgba : aresGameBoyColor,
   hasAnalogStick: false,
 };
 
@@ -230,7 +233,7 @@ export const nintendogameboycolor: Category = {
   id: "nintendogameboycolor",
   names: ["Nintendo Game Boy Color", "Game Boy Color", "GBC"],
   igdbPlatformIds: [22],
-  application: mgba,
+  application: isMgbaForGameBoy() ? mgba : aresGameBoyColor,
   hasAnalogStick: false,
 };
 
@@ -238,7 +241,7 @@ export const nintendogameboyadvance: Category = {
   id: "nintendogameboyadvance",
   names: ["Nintendo Game Boy Advance", "Game Boy Advance", "GBA"],
   igdbPlatformIds: [24],
-  application: mgba,
+  application: isMgbaForGameBoy() ? mgba : ares,
   hasAnalogStick: false,
 };
 
@@ -301,7 +304,7 @@ export const neogeocd: Category = {
 export const neogeopocket: Category = {
   id: "neogeopocket",
   names: ["Neo Geo Pocket", "NeoGeo Pocket"],
-  igdbPlatformIds: [119, 120],
+  igdbPlatformIds: [119],
   application: ares,
   hasAnalogStick: false,
 };
@@ -325,7 +328,7 @@ export const dos: Category = {
 export const scumm: Category = {
   id: "scumm",
   names: ["Scumm", "Scumm VM", "ScummVM"],
-  igdbPlatformIds: [6, 13],
+  igdbPlatformIds: [/** PC */ 6, /** Dos */ 13],
   application: scummvm,
   hasAnalogStick: true,
 };

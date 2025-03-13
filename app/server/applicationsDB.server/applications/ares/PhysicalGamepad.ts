@@ -1,5 +1,6 @@
 import type { PhysicalGamepadButton } from "./types";
-import { getButtonIndex, isAnalog, SdlButtonMapping } from "../../gamepads";
+import type { SdlButtonMapping } from "../../gamepads";
+import { getButtonIndex, isAnalog } from "../../gamepads";
 
 export class PhysicalGamepad {
   deviceId;

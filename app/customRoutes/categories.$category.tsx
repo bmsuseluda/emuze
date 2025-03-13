@@ -4,7 +4,7 @@ import type { ActionFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, Outlet, redirect, useLoaderData } from "@remix-run/react";
 import { startGame } from "../server/execute.server";
-import { importEntries, readCategory } from "../server/categories.server";
+import { importCategories } from "../server/categories.server";
 import { GameGridDynamic } from "../components/GameGrid";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
 import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
@@ -24,6 +24,7 @@ import { log } from "../server/debug.server";
 import { ImportButton } from "../containers/ImportButton";
 import type { ImportButtonId } from "../containers/ImportButton/importButtonId";
 import { LaunchButton, launchId } from "../containers/LaunchButton";
+import { readCategory } from "../server/categoryDataCache.server";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -90,7 +91,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     }
 
     if (_actionId === actionIds.import) {
-      await importEntries(category as SystemId);
+      await importCategories();
     }
   } catch (e) {
     log("error", "category action", e);

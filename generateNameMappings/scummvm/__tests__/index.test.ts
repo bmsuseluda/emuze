@@ -1,4 +1,5 @@
-import { extractGames, Result } from "../index";
+import type { Result } from "../index";
+import { extractGames } from "../index";
 
 describe("generateNameMappings", () => {
   describe("scummvm", () => {
@@ -14,12 +15,12 @@ describe("generateNameMappings", () => {
           "scumm:ft                       Full Throttle\n" +
           "scumm:comi                     The Curse of Monkey Island\n";
         const expected: Result = {
-          atlantis: "Indiana Jones and the Fate of Atlantis",
-          maniac: "Maniac Mansion",
-          monkey: "The Secret of Monkey Island",
-          monkey2: "Monkey Island 2: LeChuck's Revenge",
-          ft: "Full Throttle",
-          comi: "The Curse of Monkey Island",
+          "scumm:atlantis": "Indiana Jones and the Fate of Atlantis",
+          "scumm:maniac": "Maniac Mansion",
+          "scumm:monkey": "The Secret of Monkey Island",
+          "scumm:monkey2": "Monkey Island 2: LeChuck's Revenge",
+          "scumm:ft": "Full Throttle",
+          "scumm:comi": "The Curse of Monkey Island",
         };
 
         expect(extractGames(scummvmResult)).toStrictEqual(expected);

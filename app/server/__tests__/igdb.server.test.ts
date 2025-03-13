@@ -2,7 +2,6 @@ import {
   bayoubilly,
   boyandhisblob,
   commanderkeen4,
-  fahrenheit,
   finalfantasy7disc1,
   hugo,
   hugo2,
@@ -11,34 +10,10 @@ import {
   marioTetrisWorldCup,
   turtles2,
 } from "../__testData__/category";
-import type { GamesResponse } from "../igdb.server";
-import {
-  chunk,
-  fetchMetaData,
-  filterGame,
-  removeSubTitle,
-} from "../igdb.server";
-import { categories as categoriesDB } from "../categoriesDB.server";
+import type { Game } from "../igdb.server";
+import { parseData, removeSubTitle } from "../igdb.server";
 import { getExpiresOn } from "../getExpiresOn.server";
 import type { Entry } from "../../types/jsonFiles/category";
-
-vi.mock("@bmsuseluda/node-sdl");
-vi.mock("../openDialog.server.ts");
-
-const igdbRequestMock = vi.fn();
-vi.mock("apicalypse", () => ({
-  default: () => ({
-    fields: () => ({
-      where: () => ({
-        limit: () => ({
-          offset: () => ({
-            request: igdbRequestMock,
-          }),
-        }),
-      }),
-    }),
-  }),
-}));
 
 vi.mock("../getExpiresOn.server.ts", () => {
   const getFutureDate = () => {
@@ -86,97 +61,13 @@ describe("igdb.server", () => {
     });
   });
 
-  describe("filterGame", () => {
-    it("Should return filter array for game with simple game name", () => {
-      const result = filterGame(hugo);
-      expect(result).toStrictEqual([
-        'name~"Hugo"*',
-        'alternative_names.name~"Hugo"*',
-        'game_localizations.name~"Hugo"*',
-      ]);
-    });
-
-    it("Should return filter array for game with multiple discs and region", () => {
-      const result = filterGame(finalfantasy7disc1);
-      expect(result).toStrictEqual([
-        'name~"Final Fantasy VII"*',
-        'alternative_names.name~"Final Fantasy VII"*',
-        'game_localizations.name~"Final Fantasy VII"*',
-      ]);
-    });
-
-    it("Should return filter array for game with subtitle", () => {
-      const result = filterGame(turtles2);
-      expect(result).toStrictEqual([
-        'name~"Teenage Mutant Hero Turtles II"*',
-        'alternative_names.name~"Teenage Mutant Hero Turtles II"*',
-        'game_localizations.name~"Teenage Mutant Hero Turtles II"*',
-      ]);
-    });
-
-    it("Should return filter array for game with multiple subtitles", () => {
-      const result = filterGame(marioTetrisWorldCup);
-      expect(result).toStrictEqual([
-        'name~"Super Mario Bros."*',
-        'alternative_names.name~"Super Mario Bros."*',
-        'game_localizations.name~"Super Mario Bros."*',
-      ]);
-    });
-
-    it("Should return filter array for game with comma separated article 'a'", () => {
-      const result = filterGame(boyandhisblob);
-      expect(result).toStrictEqual([
-        'name~"A Boy and his Blob"*',
-        'alternative_names.name~"A Boy and his Blob"*',
-        'game_localizations.name~"A Boy and his Blob"*',
-      ]);
-    });
-
-    it("Should return filter array for game with comma separated article 'the'", () => {
-      const result = filterGame(bayoubilly);
-      expect(result).toStrictEqual([
-        'name~"The Adventures of Bayou Billy"*',
-        'alternative_names.name~"The Adventures of Bayou Billy"*',
-        'game_localizations.name~"The Adventures of Bayou Billy"*',
-      ]);
-    });
-
-    it("Should return filter array for game with comma that does not seperates an article", () => {
-      const result = filterGame(commanderkeen4);
-      expect(result).toStrictEqual([
-        'name~"Commander Keen in Goodbye, Galaxy!"*',
-        'alternative_names.name~"Commander Keen in Goodbye, Galaxy!"*',
-        'game_localizations.name~"Commander Keen in Goodbye, Galaxy!"*',
-      ]);
-    });
-  });
-
-  describe("fetchMetaData", () => {
-    it("Should return games if they match directly on name or alternative name", async () => {
-      const igdbResponse: GamesResponse = {
-        data: [
-          {
-            name: "Hugo",
-          },
-          {
-            name: "Hugo 360",
-            alternative_names: [
-              {
-                name: "Hugo 2",
-              },
-            ],
-            cover: {
-              image_id: "hugo360img",
-            },
-          },
-        ],
-      };
-      igdbRequestMock.mockResolvedValue(igdbResponse);
-
-      const entriesWithImages = await fetchMetaData(
-        categoriesDB.sonyplaystation.igdbPlatformIds,
-        [hugo, hugo2],
-      );
+  describe("parseData", () => {
+    it("Should return games if they match directly", async () => {
+      const igdbDB: Game[] = [
+        ["hugo360", "hugo360img"],
+        ["hugo2", "hugo360img"],
+      ];
+      const entriesWithImages = parseData([hugo, hugo2], igdbDB);
 
       expect(entriesWithImages).toStrictEqual([
         {
@@ -193,66 +84,12 @@ describe("igdb.server", () => {
       ]);
     });
 
-    it("Should return games if they match on localized name", async () => {
-      const igdbResponse: GamesResponse = {
-        data: [
-          {
-            name: "Indigo Prophecy",
-            cover: {
-              image_id: "indigoimg",
-            },
-            game_localizations: [
-              {
-                name: "Fahrenheit",
-                cover: {
-                  image_id: "fahrenheitimg",
-                },
-              },
-            ],
-          },
-        ],
-      };
-      igdbRequestMock.mockResolvedValue(igdbResponse);
-
-      const entriesWithImages = await fetchMetaData(
-        categoriesDB.sonyplaystation2.igdbPlatformIds,
-        [fahrenheit],
-      );
-
-      expect(entriesWithImages).toStrictEqual([
-        {
-          ...fahrenheit,
-          metaData: {
-            expiresOn: getExpiresOn(),
-            imageUrl:
-              "https://images.igdb.com/igdb/image/upload/t_cover_big/fahrenheitimg.webp",
-          },
-        },
-      ]);
-    });
-
     it("Should return games with multiple discs and region", async () => {
-      const igdbResponse: GamesResponse = {
-        data: [
-          {
-            name: "Final Fantasy vii",
-            alternative_names: [
-              {
-                name: "FF7",
-              },
-            ],
-            cover: {
-              image_id: "ff7img",
-            },
-          },
-        ],
-      };
-      igdbRequestMock.mockResolvedValue(igdbResponse);
-
-      const entriesWithImages = await fetchMetaData(
-        categoriesDB.sonyplaystation.igdbPlatformIds,
-        [finalfantasy7disc1],
-      );
+      const igdbDB: Game[] = [
+        ["finalfantasy7", "ff7img"],
+        ["ff7", "ff7img"],
+      ];
+      const entriesWithImages = parseData([finalfantasy7disc1], igdbDB);
 
       expect(entriesWithImages).toStrictEqual([
         {
@@ -267,33 +104,12 @@ describe("igdb.server", () => {
     });
 
     it("Should return games with subtitle", async () => {
-      const igdbResponse: GamesResponse = {
-        data: [
-          {
-            name: "Teenage Mutant Ninja Turtles II: The Arcade Game",
-            alternative_names: [
-              {
-                name: "Teenage Mutant Hero Turtles II: The Arcade Game",
-              },
-            ],
-            cover: {
-              image_id: "turtles2img",
-            },
-          },
-          {
-            name: "King of Fighters R-2",
-            cover: {
-              image_id: "kingoffightersr2img",
-            },
-          },
-        ],
-      };
-      igdbRequestMock.mockResolvedValue(igdbResponse);
-
-      const entriesWithImages = await fetchMetaData(
-        [18],
-        [turtles2, kingOfFightersR2],
-      );
+      const igdbDB: Game[] = [
+        ["teenagemutantninjaturtles2thearcadegame", "turtles2img"],
+        ["teenagemutantheroturtles2thearcadegame", "turtles2img"],
+        ["kingoffightersr2", "kingoffightersr2img"],
+      ];
+      const entriesWithImages = parseData([turtles2, kingOfFightersR2], igdbDB);
 
       expect(entriesWithImages).toStrictEqual([
         {
@@ -316,24 +132,11 @@ describe("igdb.server", () => {
     });
 
     it("Should return games with subtitle, but other subTitleChar", async () => {
-      const igdbResponse: GamesResponse = {
-        data: [
-          {
-            name: "Teenage Mutant Ninja Turtles II - The Arcade Game",
-            alternative_names: [
-              {
-                name: "Teenage Mutant Hero Turtles II: The Arcade Game",
-              },
-            ],
-            cover: {
-              image_id: "turtles2img",
-            },
-          },
-        ],
-      };
-      igdbRequestMock.mockResolvedValue(igdbResponse);
-
-      const entriesWithImages = await fetchMetaData([18], [turtles2]);
+      const igdbDB: Game[] = [
+        ["teenagemutantninjaturtles2thearcadegame", "turtles2img"],
+        ["teenagemutantheroturtles2thearcadegame", "turtles2img"],
+      ];
+      const entriesWithImages = parseData([turtles2], igdbDB);
 
       expect(entriesWithImages).toStrictEqual([
         {
@@ -347,26 +150,24 @@ describe("igdb.server", () => {
       ]);
     });
 
-    it("Should return games that starts with name, if no exact match", async () => {
-      const igdbResponse: GamesResponse = {
-        data: [
-          {
-            name: "Max Payne 2: The Fall of Max Payne",
-            cover: {
-              image_id: "maxpayne2img",
-            },
-          },
-        ],
-      };
-      igdbRequestMock.mockResolvedValue(igdbResponse);
-
+    it("Should return games that start with name, if no exact match", async () => {
+      const igdbDB: Game[] = [
+        ["maxpayne2thefallofmaxpayne", "maxpayne2img"],
+        ["teenagemutantninjaturtles2thearcadegame", "turtles2img"],
+        ["teenagemutantninjaturtles3themanhattanproject", "turtles3img"],
+      ];
       const maxPayne2: Entry = {
         id: "maxpayne2",
         name: "Max Payne 2",
         path: "Max Payne 2.chd",
       };
+      const turtles2: Entry = {
+        id: "teenagemutantninjaturtles2",
+        name: "Teenage Mutant Ninja Turtles 2",
+        path: "Teenage Mutant Ninja Turtles 2.nes",
+      };
 
-      const entriesWithImages = await fetchMetaData([18], [maxPayne2]);
+      const entriesWithImages = parseData([maxPayne2, turtles2], igdbDB);
 
       expect(entriesWithImages).toStrictEqual([
         {
@@ -377,30 +178,6 @@ describe("igdb.server", () => {
               "https://images.igdb.com/igdb/image/upload/t_cover_big/maxpayne2img.webp",
           },
         },
-      ]);
-    });
-
-    it("Should return games with subtitle, but through alternative name", async () => {
-      const igdbResponse: GamesResponse = {
-        data: [
-          {
-            name: "Teenage Mutant Ninja Turtles 2 - The Arcade Game",
-            alternative_names: [
-              {
-                name: "Teenage Mutant Hero Turtles II",
-              },
-            ],
-            cover: {
-              image_id: "turtles2img",
-            },
-          },
-        ],
-      };
-      igdbRequestMock.mockResolvedValue(igdbResponse);
-
-      const entriesWithImages = await fetchMetaData([18], [turtles2]);
-
-      expect(entriesWithImages).toStrictEqual([
         {
           ...turtles2,
           metaData: {
@@ -413,22 +190,10 @@ describe("igdb.server", () => {
     });
 
     it("Should return games with multiple subtitles", async () => {
-      const igdbResponse: GamesResponse = {
-        data: [
-          {
-            name: "Super Mario Bros. / Tetris / Nintendo World Cup",
-            cover: {
-              image_id: "mariotetrisworldcupimg",
-            },
-          },
-        ],
-      };
-      igdbRequestMock.mockResolvedValue(igdbResponse);
-
-      const entriesWithImages = await fetchMetaData(
-        [18],
-        [marioTetrisWorldCup],
-      );
+      const igdbDB: Game[] = [
+        ["supermariobrostetrisnintendoworldcup", "mariotetrisworldcupimg"],
+      ];
+      const entriesWithImages = parseData([marioTetrisWorldCup], igdbDB);
 
       expect(entriesWithImages).toStrictEqual([
         {
@@ -443,39 +208,15 @@ describe("igdb.server", () => {
     });
 
     it("Should return games with comma separated article", async () => {
-      const igdbResponse: GamesResponse = {
-        data: [
-          {
-            name: "The Adventures of Bayou Billy",
-            cover: {
-              image_id: "bayoubillyimg",
-            },
-          },
-          {
-            name: "A Boy and his Blob",
-            cover: {
-              image_id: "boyandhisblobimg",
-            },
-          },
-          {
-            name: "Commander Keen in Goodbye, Galaxy!: Secret of the Oracle",
-            cover: {
-              image_id: "keen4img",
-            },
-          },
-          {
-            name: "The Last Blade: Beyond the Destiny",
-            cover: {
-              image_id: "lastbladebeyonddestinyimg",
-            },
-          },
-        ],
-      };
-      igdbRequestMock.mockResolvedValue(igdbResponse);
-
-      const entriesWithImages = await fetchMetaData(
-        [18],
+      const igdbDB: Game[] = [
+        ["theadventuresofbayoubilly", "bayoubillyimg"],
+        ["aboyandhisblob", "boyandhisblobimg"],
+        ["commanderkeeningoodbyegalaxysecretoftheoracle", "keen4img"],
+        ["thelastbladebeyondthedestiny", "lastbladebeyonddestinyimg"],
+      ];
+      const entriesWithImages = parseData(
         [bayoubilly, boyandhisblob, commanderkeen4, lastBladeBeyondDestiny],
+        igdbDB,
       );
 
       expect(entriesWithImages).toStrictEqual([
@@ -513,17 +254,5 @@ describe("igdb.server", () => {
         },
       ]);
     });
-  });
-});
-
-describe("chunk", () => {
-  it("Should chunk the array into 2 chunks for 5 entries", () => {
-    const entries = [1, 2, 3, 4, 5];
-    const result = chunk(entries, 3);
-
-    expect(result).toStrictEqual([
-      [1, 2, 3],
-      [4, 5],
-    ]);
   });
 });
