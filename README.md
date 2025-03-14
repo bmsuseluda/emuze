@@ -32,7 +32,6 @@ The following systems are supported:
 
 | System | Emulator | Pre Configured | Bundled | BIOS needed |
 | ------ | -------- | -------------- | ------- | ----------- |
-
 | Sega Master System | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No |
 | Sega Game Gear | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No |
 | Sega Mega Drive | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No |
