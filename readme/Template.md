@@ -2,6 +2,7 @@
   <img src="https://raw.githubusercontent.com/bmsuseluda/emuze/main/artwork/logo400x400.png" alt="Logo" />
 </p>
 
+
 💥 [Features](#-features) | 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) | 🚀 [Getting Started](#-getting-started) | 🪄 [Metadata](#-metadata) | 🚑️ [Support](#%EF%B8%8F-support)
 
 My main goal for emuze is to have a emulation launcher that is as fast and simple as possible. With this you don't have to configure every emulator and fine tune metadata of your roms.
@@ -32,31 +33,25 @@ The following systems are supported:
 
 | System | Emulator | Pre Configured | Bundled | BIOS needed |
 | ------ | -------- | -------------- | ------- | ----------- |
-
 ```mmd
 return scripts.createSystemsTable()
 ```
-
 > [!IMPORTANT]  
 > ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
 
 ### Pre Configured
-
 If a System is pre configured, all connected gamepads will be configured for the specific Emulator.
 
 The following Hotkeys are set:
-
 - Open Emulator Menu (if supported from emulator): F2
 - Save State: F1
 - Load State: F3
 - Fullscreen: F11
 
 ### Bundled
-
 If a system is bundled, the respective emulator is provided with emuze in a specific version. Therefore you do not need to provide the emulator on your own.
 
 ### BIOS needed
-
 Some emulators need a BIOS or firmware to run. Please check the documentation of an emulator for more information.
 
 ## 🚀 Getting started
@@ -98,25 +93,22 @@ All emulators, not bundled, need to be installed via flatpak but emuze can do th
 ```mmd
 return scripts.getLinuxDownloadLink('1) ')
 ```
-
-2. Mark the AppImage as executable and start emuze
-3. Choose the [folder where your Roms are located](#roms-folder)
+2) Mark the AppImage as executable and start emuze
+3) Choose the [folder where your Roms are located](#roms-folder)
 
 ### Steam Deck in Game mode
 
 For now emuze is only released as an AppImage.
 
-1. Switch to Desktop
-
+1) Switch to Desktop
 ```mmd
 return scripts.getLinuxDownloadLink('2) ')
 ```
-
-3. Mark the AppImage as executable and start emuze
-4. Choose the [folder where your Roms are located](#roms-folder)
-5. Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze`
-6. Add `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
-7. Switch to Game Mode
+3) Mark the AppImage as executable and start emuze
+4) Choose the [folder where your Roms are located](#roms-folder)
+5) Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze`
+6) Add `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
+7) Switch to Game Mode
 
 #### Steam Input Profile
 
@@ -153,7 +145,6 @@ roms
 ## 🪄 Metadata
 
 Metadata provides additional information about your games, e.g.
-
 - Cover art
 - Description
 - Genre
@@ -165,7 +156,16 @@ Metadata provides additional information about your games, e.g.
 Metadata will be fetched from [igdb](https://www.igdb.com). emuze crawls the name and alternative name of a game filtered by the specific system.
 The Search is case-insensitive.
 
-> [!TIP] > [igdb](https://www.igdb.com) is a community driven open source database for game information. If there is something missing or wrong, please help and correct it there.
+> [!TIP]
+> [igdb](https://www.igdb.com) is a community driven open source database for game information. If there is something missing or wrong, please help and correct it there.
+
+### Games with a Subtitle
+
+If a game has a subtitle, the subtitle needs to be in the file name.<br>
+For the title `Max Payne 2` emuze wouldn't find metadata. Correct would be `Max Payne 2: The Fall of Max Payne.chd`.
+
+On Windows special characters like `:` can't be part of a file name, therefore you have to write it the following:
+`Max Payne 2 - The Fall of Max Payne.chd`
 
 ### Games with multiple Discs
 
