@@ -176,6 +176,7 @@ export default function Category() {
             <Typography ellipsis>{name}</Typography>
           </IconChildrenWrapper>
         }
+        paddingLeft="large"
       >
         <Form method="POST">
           <ListActionBarLayout.ListActionBarContainer

@@ -110,6 +110,9 @@ export const replaceHotkeyConfig: SectionReplacement = (sections) =>
     "LoadSelectedSaveState = Keyboard/F3",
   ]);
 
+export const replaceAutoUpdaterConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[AutoUpdater]", ["CheckAtStartup = false"]);
+
 export const replaceMainConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Main]", ["ConfirmPowerOff = false"]);
 
@@ -196,6 +199,7 @@ export const replaceConfigSections = (applicationPath?: string) => {
     replaceMainConfig,
     replaceHotkeyConfig,
     replaceGamepadConfig,
+    replaceAutoUpdaterConfig,
   ).join(EOL);
 
   writeConfig(filePath, fileContentNew);

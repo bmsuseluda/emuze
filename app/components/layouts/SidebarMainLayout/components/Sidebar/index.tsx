@@ -79,7 +79,10 @@ export const Sidebar = ({
         <Separator />
       </HeaderWrapper>
     )}
-    <ListActionBarLayout headline={collapse ? undefined : headline}>
+    <ListActionBarLayout
+      headline={collapse ? undefined : headline}
+      paddingLeft="small"
+    >
       <ListActionBarLayout.ListActionBarContainer
         list={
           <nav>

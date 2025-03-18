@@ -29,6 +29,20 @@ const borderRounded = defineUtility({
   },
 });
 
+const outlineRounded = defineUtility({
+  className: "outlineRounded",
+  values: { type: "boolean" },
+  transform: (value: boolean, { token }) => {
+    if (value) {
+      return {
+        borderRadius: token("radii.outline"),
+        position: "relative",
+      };
+    }
+    return {};
+  },
+});
+
 export default defineConfig({
   preflight: true,
   eject: true,
@@ -118,7 +132,7 @@ export default defineConfig({
     },
     tokens: {
       spacing: {
-        outlinePadding: { value: "2rem" },
+        outlinePadding: { value: "1rem" },
         1: { value: "0.8rem" },
         2: { value: "2rem" },
         3: { value: "3rem" },
@@ -149,6 +163,7 @@ export default defineConfig({
       //   3: "4px",
       // },
       radii: {
+        outline: { value: "0.1rem" },
         1: { value: "0.8rem" },
       },
       fonts: {
@@ -194,6 +209,7 @@ export default defineConfig({
   utilities: {
     extend: {
       borderRounded,
+      outlineRounded,
     },
   },
 

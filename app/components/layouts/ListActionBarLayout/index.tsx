@@ -3,8 +3,11 @@ import type { ElementRef, ForwardedRef, ReactNode } from "react";
 import { useCallback, useRef } from "react";
 import { styled } from "../../../../styled-system/jsx";
 
+type paddingLeft = "none" | "small" | "medium" | "large";
+
 interface Props {
   headline?: ReactNode;
+  paddingLeft?: paddingLeft;
   children: ReactNode;
 }
 
@@ -14,6 +17,28 @@ const Layout = styled("div", {
     flexDirection: "column",
     flex: 1,
     width: "100%",
+  },
+});
+
+const HeadlineWrapper = styled("div", {
+  base: {
+    paddingLeft: 0,
+  },
+  variants: {
+    paddingLeft: {
+      none: {
+        paddingLeft: 0,
+      },
+      small: {
+        paddingLeft: "1rem",
+      },
+      medium: {
+        paddingLeft: "1.5rem",
+      },
+      large: {
+        paddingLeft: "calc(1.5rem + 4px)",
+      },
+    },
   },
 });
 
@@ -67,7 +92,7 @@ const List = styled("div", {
     },
     paddingSide: {
       true: {
-        paddingLeft: "0.5rem",
+        paddingLeft: "1.5rem",
         paddingRight: "0.5rem",
       },
     },
@@ -88,6 +113,11 @@ const ActionBar = styled("div", {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+      },
+    },
+    paddingSide: {
+      true: {
+        paddingLeft: "1.5rem",
       },
     },
   },
@@ -146,15 +176,27 @@ const ListActionBarContainer = ({
       >
         {listEntries}
       </List>
-      {actions && <ActionBar collapse={collapse}>{actions}</ActionBar>}
+      {actions && (
+        <ActionBar collapse={collapse} paddingSide={paddingSide}>
+          {actions}
+        </ActionBar>
+      )}
     </ListWrapper>
   );
 };
 ListActionBarContainer.displayName = "ListActionBarContainer";
 
-export const ListActionBarLayout = ({ headline, children }: Props) => (
+export const ListActionBarLayout = ({
+  headline,
+  paddingLeft = "medium",
+  children,
+}: Props) => (
   <Layout>
-    {headline && <Headline>{headline}</Headline>}
+    {headline && (
+      <HeadlineWrapper paddingLeft={paddingLeft}>
+        <Headline>{headline}</Headline>
+      </HeadlineWrapper>
+    )}
     <Wrapper>{children}</Wrapper>
   </Layout>
 );

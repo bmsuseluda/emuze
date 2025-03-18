@@ -7,19 +7,21 @@ export const CheckboxLabel = styled(LabelPrimitive.Root, {
     flexDirection: "row",
     alignItems: "center",
     gap: "1",
-    padding: 1,
     margin: 0,
-    borderRounded: true,
-    borderWidth: "1px",
-    borderColor: "transparent",
+    width: "fit-content",
+    outlineRounded: true,
+    outlineWidth: "2px",
+    outlineStyle: "solid",
+    outlineOffset: 1,
+    outlineColor: "transparent",
     color: "color",
 
     "&:hover": {
       cursor: "pointer",
     },
 
-    "&:focus-within": {
-      borderColor: "accent",
+    "&:has(:focus-visible)": {
+      outlineColor: "accent",
     },
   },
 });

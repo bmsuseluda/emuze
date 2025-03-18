@@ -49,6 +49,9 @@ const createSettingsRoutes = (route: DefineRouteFunction, id: string) => {
           id: `${id}SettingsAppearance`,
         },
       );
+      route("about", "customRoutes/categories.$category.settings.about.tsx", {
+        id: `${id}SettingsAbout`,
+      });
     },
   );
 };
