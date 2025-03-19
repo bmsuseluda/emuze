@@ -1,5 +1,5 @@
 import { styled } from "../../../styled-system/jsx";
-import logo from "../../../artwork/logo.svg";
+import logo from "../../../artwork/logoPlain.svg";
 
 export const Image = styled("img", {
   base: {
