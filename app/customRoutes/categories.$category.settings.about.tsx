@@ -8,7 +8,10 @@ import { version } from "../../package.json";
 import { styled } from "../../styled-system/jsx";
 import { Logo } from "../components/Logo";
 import { Link } from "../components/Link";
-import { useInputBack } from "../hooks/useDirectionalInput";
+import {
+  useInputBack,
+  useInputConfirmation,
+} from "../hooks/useDirectionalInput";
 import type { ElementRef } from "react";
 import { useCallback } from "react";
 import { useFocus } from "../hooks/useFocus";
@@ -105,13 +108,18 @@ export default function About() {
     [goBack],
   );
 
-  const { entryListRef, entriesRefCallback, resetSelected } = useGamepadsOnGrid(
-    {
+  const { entryListRef, entriesRefCallback, selectedEntry, resetSelected } =
+    useGamepadsOnGrid({
       onSelectEntry: selectEntry,
       isInFocus,
       onLeftOverTheEdge,
-    },
-  );
+    });
+
+  const onConfirmation = useCallback(() => {
+    if (isInFocus) {
+      selectedEntry.current?.click();
+    }
+  }, [isInFocus, selectedEntry]);
 
   const onBack = useCallback(() => {
     if (isInFocus) {
@@ -119,6 +127,7 @@ export default function About() {
     }
   }, [isInFocus, resetSelected, goBack]);
 
+  useInputConfirmation(onConfirmation);
   useInputBack(onBack);
 
   return (
