@@ -34,7 +34,7 @@ const StyledLink = styled("a", {
 export const Link = forwardRef<ElementRef<typeof StyledLink>, Props>(
   ({ href, children, icon: Icon, ...rest }, ref) => {
     return (
-      <StyledLink href={href} {...rest} ref={ref}>
+      <StyledLink href={href} target="_blank" {...rest} ref={ref}>
         <IconChildrenWrapper>
           <Icon />
           {children}
