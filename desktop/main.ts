@@ -1,6 +1,6 @@
 import { initRemix } from "remix-electron";
 import { platform } from "os";
-import { app, BrowserWindow, ipcMain, session } from "electron";
+import { app, BrowserWindow, ipcMain, session, shell } from "electron";
 import nodepath from "path";
 import * as dotenv from "dotenv";
 import { autoUpdater } from "electron-updater";
@@ -137,6 +137,11 @@ app.on("ready", async () => {
       event.preventDefault();
       setFullscreen(window, !window.isFullScreen());
     }
+  });
+
+  window.webContents.setWindowOpenHandler(({ url }) => {
+    shell.openExternal(url);
+    return { action: "deny" };
   });
 
   await window.loadURL(url);

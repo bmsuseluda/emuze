@@ -22,6 +22,7 @@ import {
   useInputConfirmation,
 } from "../hooks/useDirectionalInput";
 import { Typography } from "app/components/Typography";
+import { FormRow } from "../components/FormRow";
 
 export const loader = () => {
   const appearance = readAppearance();
@@ -149,46 +150,52 @@ export default function Appearance() {
           list={
             <FormBox ref={entryListRef}>
               <li>
-                <CheckboxLabel>
-                  <Checkbox
-                    id="fullscreen"
-                    name="fullscreen"
-                    checked={fullscreen}
-                    ref={entriesRefCallback(0)}
-                    onCheckedChange={() => {
-                      window.electronAPI &&
-                        window.electronAPI.changeWindow("fullscreen");
-                    }}
-                    onClick={onClick}
-                  />
-                  Fullscreen
-                </CheckboxLabel>
+                <FormRow>
+                  <CheckboxLabel>
+                    <Checkbox
+                      id="fullscreen"
+                      name="fullscreen"
+                      checked={fullscreen}
+                      ref={entriesRefCallback(0)}
+                      onCheckedChange={() => {
+                        window.electronAPI &&
+                          window.electronAPI.changeWindow("fullscreen");
+                      }}
+                      onClick={onClick}
+                    />
+                    Fullscreen
+                  </CheckboxLabel>
+                </FormRow>
               </li>
               <li>
-                <CheckboxLabel>
-                  <Checkbox
-                    id="alwaysGameNames"
-                    name="alwaysGameNames"
-                    defaultChecked={alwaysGameNames}
-                    ref={entriesRefCallback(1)}
-                    onCheckedChange={onSave}
-                    onClick={onClick}
-                  />
-                  Always show game names
-                </CheckboxLabel>
+                <FormRow>
+                  <CheckboxLabel>
+                    <Checkbox
+                      id="alwaysGameNames"
+                      name="alwaysGameNames"
+                      defaultChecked={alwaysGameNames}
+                      ref={entriesRefCallback(1)}
+                      onCheckedChange={onSave}
+                      onClick={onClick}
+                    />
+                    Always show game names
+                  </CheckboxLabel>
+                </FormRow>
               </li>
               <li>
-                <CheckboxLabel>
-                  <Checkbox
-                    id="collapseSidebar"
-                    name="collapseSidebar"
-                    defaultChecked={collapseSidebar}
-                    ref={entriesRefCallback(2)}
-                    onCheckedChange={onSave}
-                    onClick={onClick}
-                  />
-                  Collapse sidebar
-                </CheckboxLabel>
+                <FormRow>
+                  <CheckboxLabel>
+                    <Checkbox
+                      id="collapseSidebar"
+                      name="collapseSidebar"
+                      defaultChecked={collapseSidebar}
+                      ref={entriesRefCallback(2)}
+                      onCheckedChange={onSave}
+                      onClick={onClick}
+                    />
+                    Collapse sidebar
+                  </CheckboxLabel>
+                </FormRow>
               </li>
             </FormBox>
           }

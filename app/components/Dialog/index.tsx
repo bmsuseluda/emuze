@@ -24,7 +24,7 @@ const DialogContent = styled("div", {
     borderWidth: "0.2rem",
 
     width: "55rem",
-    maxWidth: "90vw",
+    maxWidth: "min(900px, 90vw)",
     transition: "max-width 0.5s ease-in-out",
     height: "60vh",
     maxHeight: "90vh",
@@ -36,7 +36,7 @@ const DialogContent = styled("div", {
   variants: {
     smaller: {
       true: {
-        maxWidth: "60vw",
+        maxWidth: "min(700px, 90vw)",
       },
     },
     variant: {

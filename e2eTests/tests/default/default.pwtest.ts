@@ -110,4 +110,14 @@ test("game versions", async ({ libraryPage }) => {
   await libraryPage.expectIsSystem("Playstation", "Gex");
 });
 
+test("Should open the about page", async ({ page, settingsPage }) => {
+  await settingsPage.openSettingsViaClick();
+  await settingsPage.goToSubPageViaClick(settingsPage.aboutPage.name);
+  await expect(settingsPage.aboutPage.github).toBeVisible();
+  await settingsPage.press("ArrowRight");
+  await settingsPage.press("ArrowDown");
+  await expect(settingsPage.aboutPage.changelog).toBeFocused();
+  await expect(page).toHaveScreenshot();
+});
+
 // TODO: add offline test

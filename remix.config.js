@@ -28,6 +28,9 @@ var createSettingsRoutes = function (route, id) {
         route("appearance", "customRoutes/categories.$category.settings.appearance.tsx", {
             id: "".concat(id, "SettingsAppearance"),
         });
+        route("about", "customRoutes/categories.$category.settings.about.tsx", {
+            id: "".concat(id, "SettingsAbout"),
+        });
     });
 };
 var createCategoriesRoutes = function (route) {
