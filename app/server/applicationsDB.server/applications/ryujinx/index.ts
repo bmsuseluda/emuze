@@ -9,8 +9,8 @@ import fs from "fs";
 import { log } from "../../../debug.server";
 import type { Config, InputConfig } from "./config";
 import { defaultConfig, defaultInputConfig } from "./config";
-import type { Sdl } from "@bmsuseluda/node-sdl";
-import sdl from "@bmsuseluda/node-sdl";
+import type { Sdl } from "@kmamal/sdl";
+import sdl from "@kmamal/sdl";
 import { emulatorsDirectory } from "../../../homeDirectory.server";
 import { keyboardConfig } from "./keyboardConfig";
 import type { ApplicationId } from "../../applicationId";
@@ -160,7 +160,7 @@ const createInputConfig = (
   log("debug", "gamepad", { index, sdlDevice, openedController: openedDevice });
 
   return {
-    ...createDeviceSpecificInputConfig(openedDevice.controllerName),
+    ...createDeviceSpecificInputConfig(openedDevice.device.name),
     id: createControllerId(sdlDevice.guid),
     controller_type: createControllerType(),
     player_index: `Player${index + 1}`,

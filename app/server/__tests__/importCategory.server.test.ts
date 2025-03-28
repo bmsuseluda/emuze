@@ -32,7 +32,7 @@ import { duckstation } from "../applicationsDB.server/applications/duckstation";
 import { dosboxstaging } from "../applicationsDB.server/applications/dosbox";
 import { rpcs3 } from "../applicationsDB.server/applications/rpcs3";
 
-vi.mock("@bmsuseluda/node-sdl");
+vi.mock("@kmamal/sdl");
 vi.mock("../readWriteData.server");
 vi.mock("../applications.server");
 vi.mock("../openDialog.server.ts");

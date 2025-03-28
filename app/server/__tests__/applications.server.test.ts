@@ -6,7 +6,7 @@ import { applicationsPath, pcsx2 } from "../__testData__/applications";
 import * as categoriesFromDB from "../categoriesDB.server";
 import { readFilenames } from "../readWriteData.server";
 
-vi.mock("@bmsuseluda/node-sdl");
+vi.mock("@kmamal/sdl");
 vi.mock("../readWriteData.server");
 vi.mock("../applicationsDB.server/checkEmulatorIsInstalled");
 vi.mock("../categories.server");

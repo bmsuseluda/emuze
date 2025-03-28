@@ -1,6 +1,6 @@
 import type { Application, OptionParamFunction } from "../../types";
-import type { Sdl } from "@bmsuseluda/node-sdl";
-import sdl from "@bmsuseluda/node-sdl";
+import type { Sdl } from "@kmamal/sdl";
+import sdl from "@kmamal/sdl";
 import { log } from "../../../debug.server";
 import type {
   GamepadGroupId,
@@ -176,7 +176,7 @@ export const createDeviceId = ({
   id,
 }: Sdl.Controller.Device) => {
   const deviceIdIndex = getIndexForDeviceId(id);
-  return `0x${deviceIdIndex}${vendor.toString(16).padStart(deviceIdIndex.length > 0 ? 4 : 3, "0")}${product.toString(16).padStart(4, "0")}`;
+  return `0x${deviceIdIndex}${vendor?.toString(16).padStart(deviceIdIndex.length > 0 ? 4 : 3, "0")}${product?.toString(16).padStart(4, "0")}`;
 };
 
 export const getVirtualGamepad =

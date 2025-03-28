@@ -10,8 +10,8 @@ import { EOL } from "os";
 import fs from "fs";
 import { log } from "../../../debug.server";
 import nodepath from "path";
-import type { Sdl } from "@bmsuseluda/node-sdl";
-import sdl from "@bmsuseluda/node-sdl";
+import type { Sdl } from "@kmamal/sdl";
+import sdl from "@kmamal/sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
 import { defaultGamepadSettings } from "./defaultGamepadSettings";
 import { defaultHotkeys } from "./defaultHotkeys";
@@ -55,11 +55,13 @@ export const getVirtualGamepad = (
   const openedDevice = sdl.controller.openDevice(sdlDevice);
   log("debug", "gamepad", { index, sdlDevice, openedDevice });
 
-  const gamecubeController = isGamecubeController(openedDevice.controllerName);
+  const deviceName = openedDevice.device.name;
+
+  const gamecubeController = isGamecubeController(deviceName);
 
   return [
     `[GCPad${index + 1}]`,
-    `Device = SDL/0/${openedDevice.controllerName}`,
+    `Device = SDL/0/${deviceName}`,
     `Buttons/A = ${gamecubeController ? "`Button S`" : "`Button E`"}`,
     `Buttons/B = ${gamecubeController ? "`Button W`" : "`Button S`"}`,
     `Buttons/X = ${gamecubeController ? "`Button E`" : "`Button N`"}`,

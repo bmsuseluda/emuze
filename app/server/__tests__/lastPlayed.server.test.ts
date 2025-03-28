@@ -14,7 +14,7 @@ import {
 } from "../__testData__/category";
 import { scumm, sonyplaystation } from "../categoriesDB.server";
 
-vi.mock("@bmsuseluda/node-sdl");
+vi.mock("@kmamal/sdl");
 
 describe("lastPlayed.server", () => {
   beforeEach(() => {

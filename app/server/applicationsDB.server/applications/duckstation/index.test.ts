@@ -17,7 +17,7 @@ import {
 } from "./__testData__/settings";
 import { splitConfigBySection } from "../../configFile";
 
-vi.mock("@bmsuseluda/node-sdl");
+vi.mock("@kmamal/sdl");
 
 describe("duckstation", () => {
   describe("splitConfigBySection", () => {

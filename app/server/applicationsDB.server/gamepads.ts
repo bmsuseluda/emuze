@@ -1,4 +1,4 @@
-import type { Sdl } from "@bmsuseluda/node-sdl";
+import type { Sdl } from "@kmamal/sdl";
 
 export const isGamecubeController = (controllerName: string) =>
   controllerName.toLowerCase().includes("gamecube");
@@ -56,6 +56,7 @@ export const createSdlMappingObject = (sdlMapping: string) =>
 
 export const eightBitDoPro2 = {
   id: 0,
+  type: "xboxOne",
   name: "Xbox One Wireless Controller",
   path: "/dev/input/event19",
   guid: "050095ac5e040000e002000003090000",
@@ -72,6 +73,7 @@ export const eightBitDoPro2 = {
  */
 export const steamDeck = {
   id: 0,
+  type: "virtual",
   name: "Microsoft X-Box 360 pad 0",
   path: "/dev/input/event6",
   guid: "030079f6de280000ff11000001000000",
@@ -85,6 +87,7 @@ export const steamDeck = {
 
 export const gamepadPs4 = {
   id: 1,
+  type: "ps4",
   name: "Playstation 4 Controller",
   path: "/dev/input/event6",
   guid: "030079f6de280000ff11000001000000",
@@ -98,6 +101,7 @@ export const gamepadPs4 = {
 
 export const gamepadPs3 = {
   id: 2,
+  type: "ps3",
   name: "Playstation 3 Controller",
   path: "/dev/input/event7",
   guid: "0300afd34c0500006802000011810000",

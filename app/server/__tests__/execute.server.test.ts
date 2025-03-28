@@ -20,7 +20,7 @@ import { when } from "vitest-when";
 import { updateFlatpakAppList } from "../applicationsDB.server/checkEmulatorIsInstalled";
 import { readCategory } from "../categoryDataCache.server";
 
-vi.mock("@bmsuseluda/node-sdl");
+vi.mock("@kmamal/sdl");
 vi.mock("child_process");
 vi.mock("fs");
 vi.mock("../readWriteData.server");

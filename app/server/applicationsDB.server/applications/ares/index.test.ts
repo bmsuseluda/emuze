@@ -1,7 +1,7 @@
 import { createDeviceId, getVirtualGamepad } from "./index";
 import { gamepadPs3, gamepadPs4, steamDeck } from "../../gamepads";
 
-vi.mock("@bmsuseluda/node-sdl");
+vi.mock("@kmamal/sdl");
 
 describe("ares", () => {
   describe("createDeviceId", () => {

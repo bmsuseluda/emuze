@@ -19,7 +19,7 @@ import {
 import { duckstation } from "../applicationsDB.server/applications/duckstation";
 import { mednafen } from "../applicationsDB.server/applications/mednafen";
 
-vi.mock("@bmsuseluda/node-sdl");
+vi.mock("@kmamal/sdl");
 vi.mock("fs");
 
 class SimpleDirent {

@@ -48,7 +48,7 @@
     "e2e:playwright": "playwright test"
   },
   "dependencies": {
-    "@bmsuseluda/node-sdl": "https://github.com/bmsuseluda/node-sdl",
+    "@kmamal/sdl": "^0.11.7",
     "@radix-ui/react-checkbox": "^1.1.4",
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-label": "^2.1.2",

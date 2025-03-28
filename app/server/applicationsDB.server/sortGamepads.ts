@@ -1,5 +1,5 @@
-import type { Sdl } from "@bmsuseluda/node-sdl";
-import sdl from "@bmsuseluda/node-sdl";
+import type { Sdl } from "@kmamal/sdl";
+import sdl from "@kmamal/sdl";
 import { isGamecubeController, steamDeck } from "./gamepads";
 
 /**
@@ -29,8 +29,8 @@ export const sortGamecubeLast = (
 ) => {
   const aOpened = sdl.controller.openDevice(a);
   const bOpened = sdl.controller.openDevice(b);
-  const aIsGamecubeController = isGamecubeController(aOpened.controllerName);
-  const bIsGamecubeController = isGamecubeController(bOpened.controllerName);
+  const aIsGamecubeController = isGamecubeController(aOpened.device.name);
+  const bIsGamecubeController = isGamecubeController(bOpened.device.name);
   if (aIsGamecubeController === bIsGamecubeController) {
     return 0;
   }

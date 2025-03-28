@@ -1,5 +1,5 @@
-import type { Sdl } from "@bmsuseluda/node-sdl";
-import sdl from "@bmsuseluda/node-sdl";
+import type { Sdl } from "@kmamal/sdl";
+import sdl from "@kmamal/sdl";
 
 export const getKeyboardKey = (
   keyboardScancodeName: Sdl.Keyboard.ScancodeNames,

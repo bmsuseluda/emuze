@@ -1,7 +1,7 @@
 import { isWindows } from "../../../operationsystem.server";
 import { execFileSync } from "child_process";
 import { log } from "../../../debug.server";
-import sdl from "@bmsuseluda/node-sdl";
+import sdl from "@kmamal/sdl";
 import { checkFlatpakIsInstalled } from "../../checkEmulatorIsInstalled";
 import { flatpakId, flatpakOptionParams } from "./definitions";
 
@@ -68,7 +68,7 @@ export const findSdlGamepad = (gamepadId: GamepadID, index: number) => {
     return (
       gamepad.name.toLowerCase().replaceAll(" ", "") ===
         gamepadId.name.toLowerCase().replaceAll(" ", "") ||
-      openedDevice.controllerName.toLowerCase().replaceAll(" ", "") ===
+      openedDevice.device.name.toLowerCase().replaceAll(" ", "") ===
         gamepadId.name.toLowerCase().replaceAll(" ", "")
     );
   });
