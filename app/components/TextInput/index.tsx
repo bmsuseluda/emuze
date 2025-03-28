@@ -6,7 +6,7 @@ import { MdErrorOutline } from "react-icons/md";
 const Input = styled("input", {
   base: {
     borderStyle: "solid",
-    borderWidth: "2px",
+    borderWidth: 2,
     borderColor: "sidebarBackgroundColor",
     backgroundColor: "backgroundColor",
     color: "color",

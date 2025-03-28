@@ -32,10 +32,13 @@ const borderRounded = defineUtility({
 export default defineConfig({
   preflight: true,
   eject: true,
+  // strictTokens: true,
+  strictPropertyValues: true,
   presets: ["@pandacss/preset-base"],
   jsxFramework: "react",
   jsxStyleProps: "none",
   outExtension: "js",
+  watch: process.env.NODE_ENV !== "production",
   minify: process.env.NODE_ENV === "production",
   hash: process.env.NODE_ENV === "production",
   include: ["./app/**/*.{ts,tsx}", "./.storybook/preview.tsx"],
@@ -142,12 +145,11 @@ export default defineConfig({
           value: "4px solid black",
         },
       },
-      // TODO: check how to define them
-      // borderWidths: {
-      //   1: "1px",
-      //   2: "2px",
-      //   3: "4px",
-      // },
+      borderWidths: {
+        1: { value: "1px" },
+        2: { value: "2px" },
+        3: { value: "4px" },
+      },
       radii: {
         1: { value: "0.8rem" },
       },

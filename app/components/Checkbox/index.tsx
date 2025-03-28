@@ -7,10 +7,10 @@ import { styled } from "../../../styled-system/jsx";
 const Wrapper = styled("div", {
   base: {
     backgroundColor: "backgroundColor",
-    borderWidth: "2px",
+    borderWidth: 2,
     borderRadius: 4,
     borderColor: "accent",
-    outline: "none",
+    outline: "[none]",
     width: 2,
     height: 2,
 

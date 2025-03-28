@@ -11,7 +11,7 @@ export const FormRow = styled("fieldset", {
     paddingLeft: "0",
     margin: 0,
     borderRounded: true,
-    borderWidth: "1px",
+    borderWidth: "1",
     borderColor: "transparent",
   },
 });
