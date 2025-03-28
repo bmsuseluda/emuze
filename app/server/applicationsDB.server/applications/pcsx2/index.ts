@@ -6,8 +6,6 @@ import nodepath from "path";
 import type { SectionReplacement } from "../../configFile";
 import {
   chainSectionReplacements,
-  findConfigFile,
-  getFlatpakConfigPath,
   replaceSection,
   splitConfigBySection,
   writeConfig,
@@ -17,6 +15,16 @@ import { defaultSettings } from "./defaultSettings";
 import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
+import type { ApplicationId } from "../../applicationId";
+
+const flatpakId = "net.pcsx2.PCSX2";
+const applicationId: ApplicationId = "pcsx2";
+const bundledPathLinux = nodepath.join(
+  applicationId,
+  "pcsx2-v2.2.0-linux-appimage-x64-Qt.AppImage",
+);
+const bundledPathWindows = nodepath.join(applicationId, "pcsx2-qt.exe");
+const configFileName = "PCSX2.ini";
 
 export const getVirtualGamepad = (
   sdlDevice: Sdl.Controller.Device,
@@ -103,6 +111,9 @@ export const replaceHotkeyConfig: SectionReplacement = (sections) =>
     "LoadStateFromSlot = Keyboard/F3",
   ]);
 
+export const replaceAutoUpdaterConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[AutoUpdater]", ["CheckAtStartup = false"]);
+
 export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[InputSources]", [
     "SDL = true",
@@ -120,9 +131,6 @@ export const replaceUiConfig: SectionReplacement = (sections) =>
 export const replacePadConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Pad]", ["MultitapPort1 = true"]);
 
-const flatpakId = "net.pcsx2.PCSX2";
-const configFileName = "PCSX2.ini";
-
 const readConfigFile = (filePath: string) => {
   try {
     return fs.readFileSync(filePath, "utf8");
@@ -137,50 +145,22 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
-/**
- * look into application folder for config file, if not then home folder
- */
-export const getWindowsConfigFilePath = (
-  configFileName: string,
-  applicationPath?: string,
-) => {
-  if (applicationPath) {
-    const applicationDirectory = nodepath.dirname(applicationPath);
-    const configFilePath = findConfigFile(applicationDirectory, configFileName);
-    const portableExists = fs.existsSync(
-      nodepath.join(applicationDirectory, "portable.ini"),
-    );
-
-    if (portableExists) {
-      if (configFilePath) {
-        return configFilePath;
-      }
-      return nodepath.join(applicationDirectory, configFileName);
-    }
-  }
-
-  return nodepath.join(homedir(), "Documents", "PCSX2", "inis", configFileName);
-};
-
-export const configFile = (
-  flatpakId: string,
-  configFileName: string,
-  applicationPath?: string,
-) => {
+export const getConfigFilePath = (configFileName: string) => {
   if (isWindows()) {
-    return getWindowsConfigFilePath(configFileName, applicationPath);
-  } else {
     return nodepath.join(
-      getFlatpakConfigPath(flatpakId),
+      homedir(),
+      "Documents",
       "PCSX2",
       "inis",
       configFileName,
     );
+  } else {
+    return nodepath.join(homedir(), ".config", "PCSX2", "inis", configFileName);
   }
 };
 
-export const replaceConfigSections = (applicationPath?: string) => {
-  const filePath = configFile(flatpakId, configFileName, applicationPath);
+export const replaceConfigSections = () => {
+  const filePath = getConfigFilePath(configFileName);
   const fileContent = readConfigFile(filePath);
 
   const sections = splitConfigBySection(fileContent);
@@ -192,13 +172,14 @@ export const replaceConfigSections = (applicationPath?: string) => {
     // replacePadConfig,
     replaceHotkeyConfig,
     replaceGamepadConfig,
+    replaceAutoUpdaterConfig,
   ).join(EOL);
 
   writeConfig(filePath, fileContentNew);
 };
 
 export const pcsx2: Application = {
-  id: "pcsx2",
+  id: applicationId,
   name: "PCSX2",
   fileExtensions: [".chd", ".iso"],
   flatpakId,
@@ -207,9 +188,8 @@ export const pcsx2: Application = {
     settings: {
       appearance: { fullscreen },
     },
-    applicationPath,
   }) => {
-    replaceConfigSections(applicationPath);
+    replaceConfigSections();
 
     const optionParams = [];
     if (fullscreen) {
@@ -219,4 +199,6 @@ export const pcsx2: Application = {
     }
     return optionParams;
   },
+  bundledPathLinux,
+  bundledPathWindows,
 };

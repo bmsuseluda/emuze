@@ -7,6 +7,8 @@ const emulatorDownloadsLinux: Partial<EmulatorDownloads> = {
     "https://github.com/stenzek/duckstation/releases/download/v0.1-7371/DuckStation-x64.AppImage",
   dolphin:
     "https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/2503-33/Dolphin_Emulator-2503-33-anylinux.squashfs-x86_64.AppImage",
+  pcsx2:
+    "https://github.com/PCSX2/pcsx2/releases/download/v2.2.0/pcsx2-v2.2.0-linux-appimage-x64-Qt.AppImage",
   ryujinx:
     "https://github.com/Ryubing/Stable-Releases/releases/download/1.2.86/ryujinx-1.2.86-x64.AppImage",
 };

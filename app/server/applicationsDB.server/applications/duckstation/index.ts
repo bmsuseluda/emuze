@@ -9,7 +9,6 @@ import { isWindows } from "../../../operationsystem.server";
 import type { SectionReplacement } from "../../configFile";
 import {
   chainSectionReplacements,
-  findConfigFile,
   replaceSection,
   splitConfigBySection,
   writeConfig,
@@ -130,37 +129,9 @@ export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
 export const replaceControllerPortsConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[ControllerPorts]", ["MultitapMode = Port1Only"]);
 
-/**
- * look into application folder for config file, if not then home folder
- */
-export const getWindowsConfigFilePath = (
-  configFileName: string,
-  applicationPath?: string,
-) => {
-  if (applicationPath) {
-    const applicationDirectory = nodepath.dirname(applicationPath);
-    const configFilePath = findConfigFile(applicationDirectory, configFileName);
-    const portableExists = fs.existsSync(
-      nodepath.join(applicationDirectory, "portable.txt"),
-    );
-
-    if (portableExists) {
-      if (configFilePath) {
-        return configFilePath;
-      }
-      return nodepath.join(applicationDirectory, configFileName);
-    }
-  }
-
-  return nodepath.join(homedir(), "Documents", "DuckStation", configFileName);
-};
-
-export const getConfigFilePath = (
-  configFileName: string,
-  applicationPath?: string,
-) => {
+export const getConfigFilePath = (configFileName: string) => {
   if (isWindows()) {
-    return getWindowsConfigFilePath(configFileName, applicationPath);
+    return nodepath.join(homedir(), "Documents", "DuckStation", configFileName);
   } else {
     return nodepath.join(
       homedir(),
@@ -186,8 +157,8 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
-export const replaceConfigSections = (applicationPath?: string) => {
-  const filePath = getConfigFilePath(configFileName, applicationPath);
+export const replaceConfigSections = () => {
+  const filePath = getConfigFilePath(configFileName);
   const fileContent = readConfigFile(filePath);
 
   const sections = splitConfigBySection(fileContent);
@@ -214,9 +185,8 @@ export const duckstation: Application = {
     settings: {
       appearance: { fullscreen },
     },
-    applicationPath,
   }) => {
-    replaceConfigSections(applicationPath);
+    replaceConfigSections();
 
     const optionParams = [];
     if (fullscreen) {
