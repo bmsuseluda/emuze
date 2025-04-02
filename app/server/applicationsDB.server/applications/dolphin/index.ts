@@ -19,12 +19,13 @@ import type { ApplicationId } from "../../applicationId";
 import { emulatorsDirectory } from "../../../homeDirectory.server";
 import { isGamecubeController } from "../../gamepads";
 import { defaultDolphinSettings } from "./defaultDolphinSettings";
+import { keyboardConfig } from "./keyboardConfig";
 
 const flatpakId = "org.DolphinEmu.dolphin-emu";
 const applicationId: ApplicationId = "dolphin";
 const bundledPathLinux = nodepath.join(
   applicationId,
-  "Dolphin_Emulator-2503-33-anylinux.squashfs-x86_64.AppImage",
+  "Dolphin_Emulator-2503-176-anylinux.squashfs-x86_64.AppImage",
 );
 const bundledPathWindows = nodepath.join(
   applicationId,
@@ -101,7 +102,8 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
 export const getVirtualGamepads = () => {
   const gamepads = sdl.controller.devices;
 
-  const virtualGamepads = gamepads.map(getVirtualGamepad);
+  const virtualGamepads =
+    gamepads.length > 0 ? gamepads.map(getVirtualGamepad) : [keyboardConfig];
 
   return [
     ...virtualGamepads,
@@ -150,13 +152,16 @@ export const replaceHotkeysFile = () =>
     replaceHotkeysSection,
   );
 
+const setDeviceToStandardController = (index: number) => `SIDevice${index} = 6`;
+
 export const replaceDolphinCoreSection: SectionReplacement = (sections) => {
   const gamepads = sdl.controller.devices;
+  const virtualGamepads = gamepads.length > 0 ? gamepads : ["keyboard"];
   const siDevices = [
-    ...gamepads.map((_, index) => `SIDevice${index} = 6`),
+    ...virtualGamepads.map((_, index) => setDeviceToStandardController(index)),
     ...resetUnusedVirtualGamepads(
       4,
-      gamepads.length,
+      virtualGamepads.length,
       (index: number) => `SIDevice${index} = 0`,
     ),
   ];

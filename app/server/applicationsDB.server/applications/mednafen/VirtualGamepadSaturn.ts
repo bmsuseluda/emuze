@@ -79,7 +79,7 @@ export const getKeyboardSaturn = () => {
     ...createButtonMapping("c", getKeyboardKey("L")),
     ...createButtonMapping("x", getKeyboardKey("U")),
     ...createButtonMapping("y", getKeyboardKey("I")),
-    ...createButtonMapping("z", getKeyboardKey("0")),
+    ...createButtonMapping("z", getKeyboardKey("O")),
     ...createButtonMapping("ls", getKeyboardKey("8")),
     ...createButtonMapping("rs", getKeyboardKey("9")),
     ...createButtonMapping("mode", getKeyboardKey("BACKSPACE")),

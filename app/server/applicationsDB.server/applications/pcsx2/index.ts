@@ -16,6 +16,7 @@ import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
 import type { ApplicationId } from "../../applicationId";
+import { keyboardConfig } from "./keyboardConfig";
 
 const flatpakId = "net.pcsx2.PCSX2";
 const applicationId: ApplicationId = "pcsx2";
@@ -79,11 +80,16 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
 export const getVirtualGamepads = () => {
   const gamepads = sdl.controller.devices;
 
-  const virtualGamepads = gamepads.map(getVirtualGamepad);
+  const virtualGamepads =
+    gamepads.length > 0 ? gamepads.map(getVirtualGamepad) : [keyboardConfig];
 
   return [
     ...virtualGamepads,
-    ...resetUnusedVirtualGamepads(8, gamepads.length, getVirtualGamepadReset),
+    ...resetUnusedVirtualGamepads(
+      8,
+      virtualGamepads.length,
+      getVirtualGamepadReset,
+    ),
   ];
 };
 

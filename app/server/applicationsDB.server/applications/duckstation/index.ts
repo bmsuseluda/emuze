@@ -16,6 +16,7 @@ import {
 import nodepath from "path";
 import { defaultSettings } from "./defaultSettings";
 import type { ApplicationId } from "../../applicationId";
+import { keyboardConfig } from "./keyboardConfig";
 
 const flatpakId = "org.duckstation.DuckStation";
 const applicationId: ApplicationId = "duckstation";
@@ -77,11 +78,16 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
 export const getVirtualGamepads = () => {
   const gamepads = sdl.controller.devices;
 
-  const virtualGamepads = gamepads.map(getVirtualGamepad);
+  const virtualGamepads =
+    gamepads.length > 0 ? gamepads.map(getVirtualGamepad) : [keyboardConfig];
 
   return [
     ...virtualGamepads,
-    ...resetUnusedVirtualGamepads(8, gamepads.length, getVirtualGamepadReset),
+    ...resetUnusedVirtualGamepads(
+      8,
+      virtualGamepads.length,
+      getVirtualGamepadReset,
+    ),
   ];
 };
 
