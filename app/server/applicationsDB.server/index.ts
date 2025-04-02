@@ -21,6 +21,7 @@ import {
   mednafenPcEngineSuperGrafx,
   mednafenSaturn,
 } from "./applications/mednafen";
+import { azahar } from "./applications/azahar";
 
 export const ppsspp: Application = {
   id: "ppsspp",
@@ -147,6 +148,7 @@ export const applications = {
   rpcs3,
   ppsspp,
   lime3ds,
+  azahar,
   melonds,
   dolphin,
   ryujinx,

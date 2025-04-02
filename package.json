@@ -31,6 +31,7 @@
     "convertSvgs": "svgr --svgo-config svgo.config.js --config-file .svgrrc.js ./svgs",
     "downloadEmulators:windows": "ts-node downloadEmulators/downloadEmulatorsWindows.ts",
     "downloadEmulators:linux": "ts-node downloadEmulators/downloadEmulatorsLinux.ts",
+    "dumpGame:cd": "ts-node dumpGames/dumpCdAndConvert.ts",
     "fetchMetaData:prepareNameMappings": "ts-node fetchMetaData/prepareNameMappings.ts",
     "fetchMetaData": "yarn fetchMetaData:prepareNameMappings && ts-node fetchMetaData/fetchMetaDataForAllSystems.ts",
     "app:distLinux": "yarn downloadEmulators:linux && yarn build && electron-builder --linux",

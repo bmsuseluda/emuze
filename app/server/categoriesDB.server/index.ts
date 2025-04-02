@@ -1,7 +1,6 @@
 import {
   cemu,
   flycast,
-  lime3ds,
   melonds,
   mgba,
   ppsspp,
@@ -36,6 +35,7 @@ import {
   mednafenPcEngineSuperGrafx,
   mednafenSaturn,
 } from "../applicationsDB.server/applications/mednafen";
+import { azahar } from "../applicationsDB.server/applications/azahar";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",
@@ -161,7 +161,7 @@ export const nintendo3ds: Category = {
   id: "nintendo3ds",
   names: ["Nintendo 3DS", "3DS"],
   igdbPlatformIds: [37, /** New Nintendo 3DS */ 137],
-  application: lime3ds,
+  application: azahar,
   hasAnalogStick: true,
 };
 

@@ -4,6 +4,7 @@ export type ApplicationId =
   | "rpcs3"
   | "ppsspp"
   | "lime3ds"
+  | "azahar"
   | "melonds"
   | "dolphin"
   | "ryujinx"

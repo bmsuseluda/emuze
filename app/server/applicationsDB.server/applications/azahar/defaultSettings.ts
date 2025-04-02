@@ -1,0 +1,518 @@
+export const defaultSettings = `[UI]
+SettingsVersion = 1
+InhibitScreensaver = true
+ConfirmShutdown = false
+StartPaused = false
+PauseOnFocusLoss = false
+StartFullscreen = false
+DoubleClickTogglesFullscreen = true
+HideMouseCursor = false
+RenderToSeparateWindow = false
+HideMainWindowWhenRunning = false
+DisableWindowResize = false
+PreferEnglishGameList = false
+Theme = darkfusion
+SetupWizardIncomplete = false
+MainWindowGeometry = AdnQywADAAAAAAAyAAAAMgAABEsAAALvAAAAMgAAAFYAAARLAAAC7wAAAAAAAAAAB4AAAAAyAAAAVgAABEsAAALv
+MainWindowState = AAAA/wAAAAD9AAAAAAAABBoAAAJnAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAEAAAAOAHQAbwBvAGwAQgBhAHIAAAAAAP////8AAAAAAAAAAA==
+
+
+[Folders]
+Bios = bios
+Snapshots = snaps
+Savestates = sstates
+MemoryCards = memcards
+Logs = logs
+Cheats = cheats
+Patches = patches
+UserResources = resources
+Cache = cache
+Textures = textures
+InputProfiles = inputprofiles
+Videos = videos
+
+
+[EmuCore]
+CdvdVerboseReads = false
+CdvdDumpBlocks = false
+CdvdPrecache = false
+EnablePatches = true
+EnableCheats = false
+EnablePINE = false
+EnableWideScreenPatches = false
+EnableNoInterlacingPatches = false
+EnableFastBoot = true
+EnableFastBootFastForward = false
+EnableThreadPinning = false
+EnableRecordingTools = true
+EnableGameFixes = true
+SaveStateOnShutdown = false
+EnableDiscordPresence = false
+InhibitScreensaver = true
+HostFs = false
+BackupSavestate = true
+SavestateZstdCompression = true
+McdFolderAutoManage = true
+WarnAboutUnsafeSettings = true
+GzipIsoIndexTemplate = $(f).pindex.tmp
+PINESlot = 28011
+BlockDumpSaveDirectory = 
+
+
+[EmuCore/Speedhacks]
+EECycleRate = 0
+EECycleSkip = 0
+fastCDVD = false
+IntcStat = true
+WaitLoop = true
+vuFlagHack = true
+vuThread = true
+vu1Instant = true
+
+
+[EmuCore/CPU]
+FPU.DenormalsAreZero = true
+FPU.Roundmode = 3
+FPUDiv.DenormalsAreZero = true
+FPUDiv.Roundmode = 0
+VU0.DenormalsAreZero = true
+VU0.Roundmode = 3
+VU1.DenormalsAreZero = true
+VU1.Roundmode = 3
+ExtraMemory = false
+
+
+[EmuCore/CPU/Recompiler]
+EnableEE = true
+EnableIOP = true
+EnableEECache = false
+EnableVU0 = true
+EnableVU1 = true
+EnableFastmem = true
+PauseOnTLBMiss = false
+vu0Overflow = true
+vu0ExtraOverflow = false
+vu0SignOverflow = false
+vu0Underflow = false
+vu1Overflow = true
+vu1ExtraOverflow = false
+vu1SignOverflow = false
+vu1Underflow = false
+fpuOverflow = true
+fpuExtraOverflow = false
+fpuFullMode = false
+
+
+[EmuCore/GS]
+VsyncEnable = false
+DisableMailboxPresentation = false
+VsyncQueueSize = 2
+FramerateNTSC = 59.94
+FrameratePAL = 50
+AspectRatio = Auto 4:3/3:2
+FMVAspectRatioSwitch = Off
+ScreenshotSize = 0
+ScreenshotFormat = 0
+ScreenshotQuality = 50
+StretchY = 100
+CropLeft = 0
+CropTop = 0
+CropRight = 0
+CropBottom = 0
+pcrtc_antiblur = true
+disable_interlace_offset = false
+pcrtc_offsets = false
+pcrtc_overscan = false
+IntegerScaling = false
+UseDebugDevice = false
+UseBlitSwapChain = false
+DisableShaderCache = false
+DisableFramebufferFetch = false
+DisableVertexShaderExpand = false
+SkipDuplicateFrames = false
+OsdShowMessages = true
+OsdShowSpeed = false
+OsdShowFPS = false
+OsdShowCPU = false
+OsdShowGPU = false
+OsdShowResolution = false
+OsdShowGSStats = false
+OsdShowIndicators = true
+OsdShowSettings = false
+OsdShowInputs = false
+OsdShowFrameTimes = false
+HWSpinGPUForReadbacks = false
+HWSpinCPUForReadbacks = false
+paltex = false
+autoflush_sw = true
+preload_frame_with_gs_data = false
+mipmap = true
+UserHacks = false
+UserHacks_align_sprite_X = false
+UserHacks_AutoFlushLevel = 0
+UserHacks_CPU_FB_Conversion = false
+UserHacks_ReadTCOnClose = false
+UserHacks_DisableDepthSupport = false
+UserHacks_DisablePartialInvalidation = false
+UserHacks_Disable_Safe_Features = false
+UserHacks_DisableRenderFixes = false
+UserHacks_merge_pp_sprite = false
+UserHacks_ForceEvenSpritePosition = false
+UserHacks_BilinearHack = 0
+UserHacks_NativePaletteDraw = false
+UserHacks_TextureInsideRt = 0
+UserHacks_EstimateTextureRegion = false
+fxaa = false
+ShadeBoost = false
+dump = false
+save = false
+savef = false
+savet = false
+savez = false
+DumpReplaceableTextures = false
+DumpReplaceableMipmaps = false
+DumpTexturesWithFMVActive = false
+DumpDirectTextures = true
+DumpPaletteTextures = true
+LoadTextureReplacements = false
+LoadTextureReplacementsAsync = true
+PrecacheTextureReplacements = false
+EnableVideoCapture = true
+EnableVideoCaptureParameters = false
+VideoCaptureAutoResolution = false
+EnableAudioCapture = true
+EnableAudioCaptureParameters = false
+linear_present_mode = 1
+deinterlace_mode = 0
+OsdScale = 100
+Renderer = -1
+upscale_multiplier = 1
+hw_mipmap = true
+accurate_blending_unit = 1
+filter = 2
+texture_preloading = 2
+GSDumpCompression = 2
+HWDownloadMode = 0
+CASMode = 0
+CASSharpness = 50
+dithering_ps2 = 2
+MaxAnisotropy = 0
+extrathreads = 3
+extrathreads_height = 4
+TVShader = 0
+UserHacks_SkipDraw_Start = 0
+UserHacks_SkipDraw_End = 0
+UserHacks_HalfPixelOffset = 0
+UserHacks_round_sprite_offset = 0
+UserHacks_native_scaling = 0
+UserHacks_TCOffsetX = 0
+UserHacks_TCOffsetY = 0
+UserHacks_CPUSpriteRenderBW = 0
+UserHacks_CPUSpriteRenderLevel = 0
+UserHacks_CPUCLUTRender = 0
+UserHacks_GPUTargetCLUTMode = 0
+TriFilter = -1
+OverrideTextureBarriers = -1
+ShadeBoost_Brightness = 50
+ShadeBoost_Contrast = 50
+ShadeBoost_Saturation = 50
+ExclusiveFullscreenControl = -1
+png_compression_level = 1
+saven = 0
+savel = 5000
+CaptureContainer = mp4
+VideoCaptureCodec = 
+VideoCaptureParameters = 
+AudioCaptureCodec = 
+AudioCaptureParameters = 
+VideoCaptureBitrate = 6000
+VideoCaptureWidth = 640
+VideoCaptureHeight = 480
+AudioCaptureBitrate = 160
+Adapter = 
+HWDumpDirectory = 
+SWDumpDirectory = 
+SyncToHostRefreshRate = false
+UseVSyncForTiming = false
+
+
+[SPU2/Debug]
+Global_Enable = false
+Show_Messages = false
+Show_Messages_Key_On_Off = false
+Show_Messages_Voice_Off = false
+Show_Messages_DMA_Transfer = false
+Show_Messages_AutoDMA = false
+Show_Messages_CacheStats = false
+Log_Register_Access = false
+Log_DMA_Transfers = false
+Log_WAVE_Output = false
+Dump_Info = false
+Dump_Memory = false
+Dump_Regs = false
+
+
+[SPU2/Output]
+OutputVolume = 100
+FastForwardVolume = 100
+OutputMuted = false
+Backend = Cubeb
+SyncMode = TimeStretch
+DriverName = 
+DeviceName = 
+ExpansionMode = Disabled
+OutputLatencyMinimal = false
+BufferMS = 50
+OutputLatencyMS = 50
+StretchSequenceLengthMS = 30
+StretchSeekWindowMS = 20
+StretchOverlapMS = 10
+StretchUseQuickSeek = false
+StretchUseAAFilter = false
+ExpandBlockSize = 2048
+ExpandCircularWrap = 90
+ExpandShift = 0
+ExpandDepth = 1
+ExpandFocus = 0
+ExpandCenterImage = 1
+ExpandFrontSeparation = 1
+ExpandRearSeparation = 1
+ExpandLowCutoff = 40
+ExpandHighCutoff = 90
+
+
+[DEV9/Eth]
+EthEnable = false
+EthApi = Unset
+EthDevice = 
+EthLogDHCP = false
+EthLogDNS = false
+InterceptDHCP = false
+PS2IP = 0.0.0.0
+Mask = 0.0.0.0
+Gateway = 0.0.0.0
+DNS1 = 0.0.0.0
+DNS2 = 0.0.0.0
+AutoMask = true
+AutoGateway = true
+ModeDNS1 = Auto
+ModeDNS2 = Auto
+
+
+[DEV9/Eth/Hosts]
+Count = 0
+
+
+[DEV9/Hdd]
+HddEnable = false
+HddFile = DEV9hdd.raw
+
+
+[EmuCore/Gamefixes]
+VuAddSubHack = false
+FpuMulHack = false
+XgKickHack = false
+EETimingHack = false
+InstantDMAHack = false
+SoftwareRendererFMVHack = false
+SkipMPEGHack = false
+OPHFlagHack = false
+DMABusyHack = false
+VIFFIFOHack = false
+VIF1StallHack = false
+GIFFIFOHack = false
+GoemonTlbHack = false
+IbitHack = false
+VUSyncHack = false
+VUOverflowHack = false
+BlitInternalFPSHack = false
+FullVU0SyncHack = false
+
+
+[EmuCore/Profiler]
+Enabled = false
+RecBlocks_EE = true
+RecBlocks_IOP = true
+RecBlocks_VU0 = true
+RecBlocks_VU1 = true
+
+
+[EmuCore/Debugger]
+ShowDebuggerOnStart = false
+AlignMemoryWindowStart = true
+FontWidth = 8
+FontHeight = 12
+WindowWidth = 0
+WindowHeight = 0
+MemoryViewBytesPerRow = 16
+
+
+[EmuCore/TraceLog]
+Enabled = false
+EE.bitset = 0
+IOP.bitset = 0
+
+
+[Achievements]
+Enabled = false
+ChallengeMode = false
+EncoreMode = false
+SpectatorMode = false
+UnofficialTestMode = false
+Notifications = true
+LeaderboardNotifications = true
+SoundEffects = true
+Overlays = true
+NotificationsDuration = 5
+LeaderboardsDuration = 10
+
+
+[Filenames]
+BIOS = 
+
+
+[Framerate]
+NominalScalar = 1
+TurboScalar = 2
+SlomoScalar = 0.5
+
+
+[MemoryCards]
+Slot1_Enable = true
+Slot1_Filename = Mcd001.ps2
+Slot2_Enable = true
+Slot2_Filename = Mcd002.ps2
+Multitap1_Slot2_Enable = false
+Multitap1_Slot2_Filename = Mcd-Multitap1-Slot02.ps2
+Multitap1_Slot3_Enable = false
+Multitap1_Slot3_Filename = Mcd-Multitap1-Slot03.ps2
+Multitap1_Slot4_Enable = false
+Multitap1_Slot4_Filename = Mcd-Multitap1-Slot04.ps2
+Multitap2_Slot2_Enable = false
+Multitap2_Slot2_Filename = Mcd-Multitap2-Slot02.ps2
+Multitap2_Slot3_Enable = false
+Multitap2_Slot3_Filename = Mcd-Multitap2-Slot03.ps2
+Multitap2_Slot4_Enable = false
+Multitap2_Slot4_Filename = Mcd-Multitap2-Slot04.ps2
+
+
+[Logging]
+EnableSystemConsole = false
+EnableFileLogging = false
+EnableTimestamps = true
+EnableVerbose = false
+EnableEEConsole = false
+EnableIOPConsole = false
+EnableInputRecordingLogs = true
+EnableControllerLogs = false
+
+
+[InputSources]
+Keyboard = true
+Mouse = true
+SDL = true
+SDLControllerEnhancedMode = false
+SDLPS5PlayerLED = false
+
+
+[Hotkeys]
+ToggleFullscreen = Keyboard/Alt & Keyboard/Return
+CycleAspectRatio = Keyboard/F6
+CycleInterlaceMode = Keyboard/F5
+ToggleMipmapMode = Keyboard/Insert
+GSDumpMultiFrame = Keyboard/Control & Keyboard/Shift & Keyboard/F8
+Screenshot = Keyboard/F8
+GSDumpSingleFrame = Keyboard/Shift & Keyboard/F8
+ToggleSoftwareRendering = Keyboard/F9
+ZoomIn = Keyboard/Control & Keyboard/Plus
+ZoomOut = Keyboard/Control & Keyboard/Minus
+InputRecToggleMode = Keyboard/Shift & Keyboard/R
+LoadStateFromSlot = Keyboard/F3
+SaveStateToSlot = Keyboard/F1
+NextSaveStateSlot = Keyboard/F2
+PreviousSaveStateSlot = Keyboard/Shift & Keyboard/F2
+OpenPauseMenu = Keyboard/Escape
+ToggleFrameLimit = Keyboard/F4
+TogglePause = Keyboard/Space
+ToggleSlowMotion = Keyboard/Shift & Keyboard/Backtab
+ToggleTurbo = Keyboard/Tab
+HoldTurbo = Keyboard/Period
+
+
+[Pad]
+MultitapPort1 = false
+MultitapPort2 = false
+PointerXScale = 8
+PointerYScale = 8
+
+
+[Pad1]
+Type = DualShock2
+InvertL = 0
+InvertR = 0
+Deadzone = 0
+AxisScale = 1.33
+LargeMotorScale = 1
+SmallMotorScale = 1
+ButtonDeadzone = 0
+PressureModifier = 0.5
+Up = Keyboard/Up
+Right = Keyboard/Right
+Down = Keyboard/Down
+Left = Keyboard/Left
+Triangle = Keyboard/I
+Circle = Keyboard/L
+Cross = Keyboard/K
+Square = Keyboard/J
+Select = Keyboard/Backspace
+Start = Keyboard/Return
+L1 = Keyboard/Q
+L2 = Keyboard/1
+R1 = Keyboard/E
+R2 = Keyboard/3
+L3 = Keyboard/2
+R3 = Keyboard/4
+LUp = Keyboard/W
+LRight = Keyboard/D
+LDown = Keyboard/S
+LLeft = Keyboard/A
+RUp = Keyboard/T
+RRight = Keyboard/H
+RDown = Keyboard/G
+RLeft = Keyboard/F
+
+
+[Pad2]
+Type = None
+
+
+[Pad3]
+Type = None
+
+
+[Pad4]
+Type = None
+
+
+[Pad5]
+Type = None
+
+
+[Pad6]
+Type = None
+
+
+[Pad7]
+Type = None
+
+
+[Pad8]
+Type = None
+
+
+[USB1]
+Type = None
+
+
+[USB2]
+Type = None`;
