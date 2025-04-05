@@ -13,12 +13,10 @@ import { EOL } from "os";
  */
 const replaceParams = (params: string[], paramsToReplace: string[]) => [
   ...params.reduce<string[]>((accumulator, param) => {
-    const [id, value] = param.split("=");
+    const [id] = param.split("=");
     if (
-      !paramsToReplace.find(
-        (paramToReplace) =>
-          paramToReplace.startsWith(id.trim()) ||
-          (value && paramToReplace.includes(value.trim())),
+      !paramsToReplace.find((paramToReplace) =>
+        paramToReplace.startsWith(id + "="),
       )
     ) {
       accumulator.push(param);
@@ -66,7 +64,7 @@ export const chainSectionReplacements = (
  * Split by new line characters that are followed by a section header (e.g. [Pad1])
  */
 export const splitConfigBySection = (config: string) =>
-  config.split(new RegExp(`${EOL}(?=\\[[^]+])`));
+  config.split(new RegExp(`${EOL}(?=\\[[^]+])`, "m"));
 
 export const findConfigFile = (path: string, fileName: string) =>
   readdirSync(path, { encoding: "utf8", withFileTypes: true, recursive: true })

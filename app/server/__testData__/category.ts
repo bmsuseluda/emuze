@@ -42,7 +42,7 @@ export const createAbsoluteEntryPath = (
 export const metroidsamusreturns: Entry = {
   id: "metroidsamusreturns",
   name: "Metroid Samus Returns",
-  path: "Metroid Samus Returns.3ds",
+  path: "Metroid Samus Returns.cci",
 };
 
 export const nintendo3ds = {

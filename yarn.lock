@@ -10845,7 +10845,7 @@ __metadata:
     fs-extra: "npm:^11.3.0"
     happy-dom: "npm:^17.4.3"
     husky: "npm:^9.1.7"
-    isbot: "npm:^5.1.23"
+    isbot: "npm:^4"
     json-server: "npm:^0.17.4"
     lint-staged: "npm:^15.4.3"
     lodash.debounce: "npm:^4.0.8"
@@ -15182,10 +15182,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"isbot@npm:^5.1.23":
-  version: 5.1.23
-  resolution: "isbot@npm:5.1.23"
-  checksum: 10/f42fb41a8be77df1b5f51d49c5a3f95a541d31c89a62f816bcd4fe9ce6c048c0e74590cd2557847fbe765016de05a0f4466a29421674d8a2efc1082076f7b217
+"isbot@npm:^4":
+  version: 4.4.0
+  resolution: "isbot@npm:4.4.0"
+  checksum: 10/8ebf10efc7c7e8ba07fc105cbd24c0d9539e41b4c8e4452909f1cd44752ad0c9b2381cb4e712c977a78e82a79827eb1b8e800f211046ee96eefedb29db2acb70
   languageName: node
   linkType: hard
 

@@ -17,6 +17,10 @@ export const commandLineOptions = {
     id: "mgba",
     description: "Activates the mgba emulator to play Game Boy",
   },
+  lime3ds: {
+    id: "lime3ds",
+    description: "Activates the lime3DS emulator to play 3DS",
+  },
   noSandbox: {
     id: "no-sandbox",
     description:

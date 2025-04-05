@@ -45,7 +45,7 @@ export const ppsspp: Application = {
 export const lime3ds: Application = {
   id: "lime3ds",
   name: "Lime3DS",
-  fileExtensions: [".3ds"],
+  fileExtensions: [".cci"],
   flatpakId: "io.github.lime3ds.Lime3DS",
 };
 

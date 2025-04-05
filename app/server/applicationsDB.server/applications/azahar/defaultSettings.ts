@@ -1,518 +1,651 @@
-export const defaultSettings = `[UI]
-SettingsVersion = 1
-InhibitScreensaver = true
-ConfirmShutdown = false
-StartPaused = false
-PauseOnFocusLoss = false
-StartFullscreen = false
-DoubleClickTogglesFullscreen = true
-HideMouseCursor = false
-RenderToSeparateWindow = false
-HideMainWindowWhenRunning = false
-DisableWindowResize = false
-PreferEnglishGameList = false
-Theme = darkfusion
-SetupWizardIncomplete = false
-MainWindowGeometry = AdnQywADAAAAAAAyAAAAMgAABEsAAALvAAAAMgAAAFYAAARLAAAC7wAAAAAAAAAAB4AAAAAyAAAAVgAABEsAAALv
-MainWindowState = AAAA/wAAAAD9AAAAAAAABBoAAAJnAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAEAAAAOAHQAbwBvAGwAQgBhAHIAAAAAAP////8AAAAAAAAAAA==
-
-
-[Folders]
-Bios = bios
-Snapshots = snaps
-Savestates = sstates
-MemoryCards = memcards
-Logs = logs
-Cheats = cheats
-Patches = patches
-UserResources = resources
-Cache = cache
-Textures = textures
-InputProfiles = inputprofiles
-Videos = videos
-
-
-[EmuCore]
-CdvdVerboseReads = false
-CdvdDumpBlocks = false
-CdvdPrecache = false
-EnablePatches = true
-EnableCheats = false
-EnablePINE = false
-EnableWideScreenPatches = false
-EnableNoInterlacingPatches = false
-EnableFastBoot = true
-EnableFastBootFastForward = false
-EnableThreadPinning = false
-EnableRecordingTools = true
-EnableGameFixes = true
-SaveStateOnShutdown = false
-EnableDiscordPresence = false
-InhibitScreensaver = true
-HostFs = false
-BackupSavestate = true
-SavestateZstdCompression = true
-McdFolderAutoManage = true
-WarnAboutUnsafeSettings = true
-GzipIsoIndexTemplate = $(f).pindex.tmp
-PINESlot = 28011
-BlockDumpSaveDirectory = 
-
-
-[EmuCore/Speedhacks]
-EECycleRate = 0
-EECycleSkip = 0
-fastCDVD = false
-IntcStat = true
-WaitLoop = true
-vuFlagHack = true
-vuThread = true
-vu1Instant = true
-
-
-[EmuCore/CPU]
-FPU.DenormalsAreZero = true
-FPU.Roundmode = 3
-FPUDiv.DenormalsAreZero = true
-FPUDiv.Roundmode = 0
-VU0.DenormalsAreZero = true
-VU0.Roundmode = 3
-VU1.DenormalsAreZero = true
-VU1.Roundmode = 3
-ExtraMemory = false
-
-
-[EmuCore/CPU/Recompiler]
-EnableEE = true
-EnableIOP = true
-EnableEECache = false
-EnableVU0 = true
-EnableVU1 = true
-EnableFastmem = true
-PauseOnTLBMiss = false
-vu0Overflow = true
-vu0ExtraOverflow = false
-vu0SignOverflow = false
-vu0Underflow = false
-vu1Overflow = true
-vu1ExtraOverflow = false
-vu1SignOverflow = false
-vu1Underflow = false
-fpuOverflow = true
-fpuExtraOverflow = false
-fpuFullMode = false
-
-
-[EmuCore/GS]
-VsyncEnable = false
-DisableMailboxPresentation = false
-VsyncQueueSize = 2
-FramerateNTSC = 59.94
-FrameratePAL = 50
-AspectRatio = Auto 4:3/3:2
-FMVAspectRatioSwitch = Off
-ScreenshotSize = 0
-ScreenshotFormat = 0
-ScreenshotQuality = 50
-StretchY = 100
-CropLeft = 0
-CropTop = 0
-CropRight = 0
-CropBottom = 0
-pcrtc_antiblur = true
-disable_interlace_offset = false
-pcrtc_offsets = false
-pcrtc_overscan = false
-IntegerScaling = false
-UseDebugDevice = false
-UseBlitSwapChain = false
-DisableShaderCache = false
-DisableFramebufferFetch = false
-DisableVertexShaderExpand = false
-SkipDuplicateFrames = false
-OsdShowMessages = true
-OsdShowSpeed = false
-OsdShowFPS = false
-OsdShowCPU = false
-OsdShowGPU = false
-OsdShowResolution = false
-OsdShowGSStats = false
-OsdShowIndicators = true
-OsdShowSettings = false
-OsdShowInputs = false
-OsdShowFrameTimes = false
-HWSpinGPUForReadbacks = false
-HWSpinCPUForReadbacks = false
-paltex = false
-autoflush_sw = true
-preload_frame_with_gs_data = false
-mipmap = true
-UserHacks = false
-UserHacks_align_sprite_X = false
-UserHacks_AutoFlushLevel = 0
-UserHacks_CPU_FB_Conversion = false
-UserHacks_ReadTCOnClose = false
-UserHacks_DisableDepthSupport = false
-UserHacks_DisablePartialInvalidation = false
-UserHacks_Disable_Safe_Features = false
-UserHacks_DisableRenderFixes = false
-UserHacks_merge_pp_sprite = false
-UserHacks_ForceEvenSpritePosition = false
-UserHacks_BilinearHack = 0
-UserHacks_NativePaletteDraw = false
-UserHacks_TextureInsideRt = 0
-UserHacks_EstimateTextureRegion = false
-fxaa = false
-ShadeBoost = false
-dump = false
-save = false
-savef = false
-savet = false
-savez = false
-DumpReplaceableTextures = false
-DumpReplaceableMipmaps = false
-DumpTexturesWithFMVActive = false
-DumpDirectTextures = true
-DumpPaletteTextures = true
-LoadTextureReplacements = false
-LoadTextureReplacementsAsync = true
-PrecacheTextureReplacements = false
-EnableVideoCapture = true
-EnableVideoCaptureParameters = false
-VideoCaptureAutoResolution = false
-EnableAudioCapture = true
-EnableAudioCaptureParameters = false
-linear_present_mode = 1
-deinterlace_mode = 0
-OsdScale = 100
-Renderer = -1
-upscale_multiplier = 1
-hw_mipmap = true
-accurate_blending_unit = 1
-filter = 2
-texture_preloading = 2
-GSDumpCompression = 2
-HWDownloadMode = 0
-CASMode = 0
-CASSharpness = 50
-dithering_ps2 = 2
-MaxAnisotropy = 0
-extrathreads = 3
-extrathreads_height = 4
-TVShader = 0
-UserHacks_SkipDraw_Start = 0
-UserHacks_SkipDraw_End = 0
-UserHacks_HalfPixelOffset = 0
-UserHacks_round_sprite_offset = 0
-UserHacks_native_scaling = 0
-UserHacks_TCOffsetX = 0
-UserHacks_TCOffsetY = 0
-UserHacks_CPUSpriteRenderBW = 0
-UserHacks_CPUSpriteRenderLevel = 0
-UserHacks_CPUCLUTRender = 0
-UserHacks_GPUTargetCLUTMode = 0
-TriFilter = -1
-OverrideTextureBarriers = -1
-ShadeBoost_Brightness = 50
-ShadeBoost_Contrast = 50
-ShadeBoost_Saturation = 50
-ExclusiveFullscreenControl = -1
-png_compression_level = 1
-saven = 0
-savel = 5000
-CaptureContainer = mp4
-VideoCaptureCodec = 
-VideoCaptureParameters = 
-AudioCaptureCodec = 
-AudioCaptureParameters = 
-VideoCaptureBitrate = 6000
-VideoCaptureWidth = 640
-VideoCaptureHeight = 480
-AudioCaptureBitrate = 160
-Adapter = 
-HWDumpDirectory = 
-SWDumpDirectory = 
-SyncToHostRefreshRate = false
-UseVSyncForTiming = false
-
-
-[SPU2/Debug]
-Global_Enable = false
-Show_Messages = false
-Show_Messages_Key_On_Off = false
-Show_Messages_Voice_Off = false
-Show_Messages_DMA_Transfer = false
-Show_Messages_AutoDMA = false
-Show_Messages_CacheStats = false
-Log_Register_Access = false
-Log_DMA_Transfers = false
-Log_WAVE_Output = false
-Dump_Info = false
-Dump_Memory = false
-Dump_Regs = false
-
-
-[SPU2/Output]
-OutputVolume = 100
-FastForwardVolume = 100
-OutputMuted = false
-Backend = Cubeb
-SyncMode = TimeStretch
-DriverName = 
-DeviceName = 
-ExpansionMode = Disabled
-OutputLatencyMinimal = false
-BufferMS = 50
-OutputLatencyMS = 50
-StretchSequenceLengthMS = 30
-StretchSeekWindowMS = 20
-StretchOverlapMS = 10
-StretchUseQuickSeek = false
-StretchUseAAFilter = false
-ExpandBlockSize = 2048
-ExpandCircularWrap = 90
-ExpandShift = 0
-ExpandDepth = 1
-ExpandFocus = 0
-ExpandCenterImage = 1
-ExpandFrontSeparation = 1
-ExpandRearSeparation = 1
-ExpandLowCutoff = 40
-ExpandHighCutoff = 90
-
-
-[DEV9/Eth]
-EthEnable = false
-EthApi = Unset
-EthDevice = 
-EthLogDHCP = false
-EthLogDNS = false
-InterceptDHCP = false
-PS2IP = 0.0.0.0
-Mask = 0.0.0.0
-Gateway = 0.0.0.0
-DNS1 = 0.0.0.0
-DNS2 = 0.0.0.0
-AutoMask = true
-AutoGateway = true
-ModeDNS1 = Auto
-ModeDNS2 = Auto
-
-
-[DEV9/Eth/Hosts]
-Count = 0
-
-
-[DEV9/Hdd]
-HddEnable = false
-HddFile = DEV9hdd.raw
-
-
-[EmuCore/Gamefixes]
-VuAddSubHack = false
-FpuMulHack = false
-XgKickHack = false
-EETimingHack = false
-InstantDMAHack = false
-SoftwareRendererFMVHack = false
-SkipMPEGHack = false
-OPHFlagHack = false
-DMABusyHack = false
-VIFFIFOHack = false
-VIF1StallHack = false
-GIFFIFOHack = false
-GoemonTlbHack = false
-IbitHack = false
-VUSyncHack = false
-VUOverflowHack = false
-BlitInternalFPSHack = false
-FullVU0SyncHack = false
-
-
-[EmuCore/Profiler]
-Enabled = false
-RecBlocks_EE = true
-RecBlocks_IOP = true
-RecBlocks_VU0 = true
-RecBlocks_VU1 = true
-
-
-[EmuCore/Debugger]
-ShowDebuggerOnStart = false
-AlignMemoryWindowStart = true
-FontWidth = 8
-FontHeight = 12
-WindowWidth = 0
-WindowHeight = 0
-MemoryViewBytesPerRow = 16
-
-
-[EmuCore/TraceLog]
-Enabled = false
-EE.bitset = 0
-IOP.bitset = 0
-
-
-[Achievements]
-Enabled = false
-ChallengeMode = false
-EncoreMode = false
-SpectatorMode = false
-UnofficialTestMode = false
-Notifications = true
-LeaderboardNotifications = true
-SoundEffects = true
-Overlays = true
-NotificationsDuration = 5
-LeaderboardsDuration = 10
-
-
-[Filenames]
-BIOS = 
-
-
-[Framerate]
-NominalScalar = 1
-TurboScalar = 2
-SlomoScalar = 0.5
-
-
-[MemoryCards]
-Slot1_Enable = true
-Slot1_Filename = Mcd001.ps2
-Slot2_Enable = true
-Slot2_Filename = Mcd002.ps2
-Multitap1_Slot2_Enable = false
-Multitap1_Slot2_Filename = Mcd-Multitap1-Slot02.ps2
-Multitap1_Slot3_Enable = false
-Multitap1_Slot3_Filename = Mcd-Multitap1-Slot03.ps2
-Multitap1_Slot4_Enable = false
-Multitap1_Slot4_Filename = Mcd-Multitap1-Slot04.ps2
-Multitap2_Slot2_Enable = false
-Multitap2_Slot2_Filename = Mcd-Multitap2-Slot02.ps2
-Multitap2_Slot3_Enable = false
-Multitap2_Slot3_Filename = Mcd-Multitap2-Slot03.ps2
-Multitap2_Slot4_Enable = false
-Multitap2_Slot4_Filename = Mcd-Multitap2-Slot04.ps2
-
-
-[Logging]
-EnableSystemConsole = false
-EnableFileLogging = false
-EnableTimestamps = true
-EnableVerbose = false
-EnableEEConsole = false
-EnableIOPConsole = false
-EnableInputRecordingLogs = true
-EnableControllerLogs = false
-
-
-[InputSources]
-Keyboard = true
-Mouse = true
-SDL = true
-SDLControllerEnhancedMode = false
-SDLPS5PlayerLED = false
-
-
-[Hotkeys]
-ToggleFullscreen = Keyboard/Alt & Keyboard/Return
-CycleAspectRatio = Keyboard/F6
-CycleInterlaceMode = Keyboard/F5
-ToggleMipmapMode = Keyboard/Insert
-GSDumpMultiFrame = Keyboard/Control & Keyboard/Shift & Keyboard/F8
-Screenshot = Keyboard/F8
-GSDumpSingleFrame = Keyboard/Shift & Keyboard/F8
-ToggleSoftwareRendering = Keyboard/F9
-ZoomIn = Keyboard/Control & Keyboard/Plus
-ZoomOut = Keyboard/Control & Keyboard/Minus
-InputRecToggleMode = Keyboard/Shift & Keyboard/R
-LoadStateFromSlot = Keyboard/F3
-SaveStateToSlot = Keyboard/F1
-NextSaveStateSlot = Keyboard/F2
-PreviousSaveStateSlot = Keyboard/Shift & Keyboard/F2
-OpenPauseMenu = Keyboard/Escape
-ToggleFrameLimit = Keyboard/F4
-TogglePause = Keyboard/Space
-ToggleSlowMotion = Keyboard/Shift & Keyboard/Backtab
-ToggleTurbo = Keyboard/Tab
-HoldTurbo = Keyboard/Period
-
-
-[Pad]
-MultitapPort1 = false
-MultitapPort2 = false
-PointerXScale = 8
-PointerYScale = 8
-
-
-[Pad1]
-Type = DualShock2
-InvertL = 0
-InvertR = 0
-Deadzone = 0
-AxisScale = 1.33
-LargeMotorScale = 1
-SmallMotorScale = 1
-ButtonDeadzone = 0
-PressureModifier = 0.5
-Up = Keyboard/Up
-Right = Keyboard/Right
-Down = Keyboard/Down
-Left = Keyboard/Left
-Triangle = Keyboard/I
-Circle = Keyboard/L
-Cross = Keyboard/K
-Square = Keyboard/J
-Select = Keyboard/Backspace
-Start = Keyboard/Return
-L1 = Keyboard/Q
-L2 = Keyboard/1
-R1 = Keyboard/E
-R2 = Keyboard/3
-L3 = Keyboard/2
-R3 = Keyboard/4
-LUp = Keyboard/W
-LRight = Keyboard/D
-LDown = Keyboard/S
-LLeft = Keyboard/A
-RUp = Keyboard/T
-RRight = Keyboard/H
-RDown = Keyboard/G
-RLeft = Keyboard/F
-
-
-[Pad2]
-Type = None
-
-
-[Pad3]
-Type = None
-
-
-[Pad4]
-Type = None
-
-
-[Pad5]
-Type = None
-
-
-[Pad6]
-Type = None
-
-
-[Pad7]
-Type = None
-
-
-[Pad8]
-Type = None
-
-
-[USB1]
-Type = None
-
-
-[USB2]
-Type = None`;
+export const defaultSettings = `[Audio]
+audio_emulation=0
+audio_emulation\\default=true
+enable_audio_stretching=true
+enable_audio_stretching\\default=true
+enable_realtime_audio=false
+enable_realtime_audio\\default=true
+input_device=auto
+input_device\\default=true
+input_type=0
+input_type\\default=true
+output_device=auto
+output_device\\default=true
+output_type=0
+output_type\\default=true
+volume=1
+volume\\default=true
+
+[Camera]
+camera_inner_config=
+camera_inner_config\\default=true
+camera_inner_flip=0
+camera_inner_flip\\default=true
+camera_inner_name=blank
+camera_inner_name\\default=true
+camera_outer_left_config=
+camera_outer_left_config\\default=true
+camera_outer_left_flip=0
+camera_outer_left_flip\\default=true
+camera_outer_left_name=blank
+camera_outer_left_name\\default=true
+camera_outer_right_config=
+camera_outer_right_config\\default=true
+camera_outer_right_flip=0
+camera_outer_right_flip\\default=true
+camera_outer_right_name=blank
+camera_outer_right_name\\default=true
+
+[Controls]
+profile=0
+profile\\default=true
+profiles\\1\\button_a="code:65,engine:keyboard"
+profiles\\1\\button_a\\default=true
+profiles\\1\\button_b="code:83,engine:keyboard"
+profiles\\1\\button_b\\default=true
+profiles\\1\\button_debug="code:79,engine:keyboard"
+profiles\\1\\button_debug\\default=true
+profiles\\1\\button_down="code:71,engine:keyboard"
+profiles\\1\\button_down\\default=true
+profiles\\1\\button_gpio14="code:80,engine:keyboard"
+profiles\\1\\button_gpio14\\default=true
+profiles\\1\\button_home="code:66,engine:keyboard"
+profiles\\1\\button_home\\default=true
+profiles\\1\\button_l="code:81,engine:keyboard"
+profiles\\1\\button_l\\default=true
+profiles\\1\\button_left="code:70,engine:keyboard"
+profiles\\1\\button_left\\default=true
+profiles\\1\\button_power="code:86,engine:keyboard"
+profiles\\1\\button_power\\default=true
+profiles\\1\\button_r="code:87,engine:keyboard"
+profiles\\1\\button_r\\default=true
+profiles\\1\\button_right="code:72,engine:keyboard"
+profiles\\1\\button_right\\default=true
+profiles\\1\\button_select="code:78,engine:keyboard"
+profiles\\1\\button_select\\default=true
+profiles\\1\\button_start="code:77,engine:keyboard"
+profiles\\1\\button_start\\default=true
+profiles\\1\\button_up="code:84,engine:keyboard"
+profiles\\1\\button_up\\default=true
+profiles\\1\\button_x="code:90,engine:keyboard"
+profiles\\1\\button_x\\default=true
+profiles\\1\\button_y="code:88,engine:keyboard"
+profiles\\1\\button_y\\default=true
+profiles\\1\\button_zl="code:49,engine:keyboard"
+profiles\\1\\button_zl\\default=true
+profiles\\1\\button_zr="code:50,engine:keyboard"
+profiles\\1\\button_zr\\default=true
+profiles\\1\\c_stick="down:code$075$1engine$0keyboard,engine:analog_from_button,left:code$074$1engine$0keyboard,modifier:code$068$1engine$0keyboard,modifier_scale:0.500000,right:code$076$1engine$0keyboard,up:code$073$1engine$0keyboard"
+profiles\\1\\c_stick\\default=true
+profiles\\1\\circle_pad="down:code$016777237$1engine$0keyboard,engine:analog_from_button,left:code$016777234$1engine$0keyboard,modifier:code$068$1engine$0keyboard,modifier_scale:0.500000,right:code$016777236$1engine$0keyboard,up:code$016777235$1engine$0keyboard"
+profiles\\1\\circle_pad\\default=true
+profiles\\1\\motion_device="engine:motion_emu,update_period:100,sensitivity:0.01,tilt_clamp:90.0"
+profiles\\1\\motion_device\\default=true
+profiles\\1\\name=default
+profiles\\1\\name\\default=true
+profiles\\1\\touch_device=engine:emu_window
+profiles\\1\\touch_device\\default=true
+profiles\\1\\touch_from_button_map=0
+profiles\\1\\touch_from_button_map\\default=true
+profiles\\1\\udp_input_address=127.0.0.1
+profiles\\1\\udp_input_address\\default=true
+profiles\\1\\udp_input_port=26760
+profiles\\1\\udp_input_port\\default=true
+profiles\\1\\udp_pad_index=0
+profiles\\1\\udp_pad_index\\default=true
+profiles\\1\\use_touch_from_button=false
+profiles\\1\\use_touch_from_button\\default=true
+profiles\\size=1
+touch_from_button_maps\\1\\entries\\size=0
+touch_from_button_maps\\1\\name=default
+touch_from_button_maps\\1\\name\\default=true
+touch_from_button_maps\\size=1
+use_artic_base_controller=false
+use_artic_base_controller\\default=true
+
+[Core]
+cpu_clock_percentage=100
+cpu_clock_percentage\\default=true
+delay_start_for_lle_modules=true
+delay_start_for_lle_modules\\default=true
+use_cpu_jit=true
+use_cpu_jit\\default=true
+
+[Data%20Storage]
+nand_directory=/home/dennisludwig/.local/share/azahar-emu/nand/
+nand_directory\\default=false
+sdmc_directory=/home/dennisludwig/.local/share/azahar-emu/sdmc/
+sdmc_directory\\default=false
+use_custom_storage=false
+use_custom_storage\\default=true
+use_virtual_sd=true
+use_virtual_sd\\default=true
+
+[Debugging]
+LLE\\AC=false
+LLE\\AC\\default=true
+LLE\\ACT=false
+LLE\\ACT\\default=true
+LLE\\AM=false
+LLE\\AM\\default=true
+LLE\\BOSS=false
+LLE\\BOSS\\default=true
+LLE\\CAM=false
+LLE\\CAM\\default=true
+LLE\\CDC=false
+LLE\\CDC\\default=true
+LLE\\CECD=false
+LLE\\CECD\\default=true
+LLE\\CFG=false
+LLE\\CFG\\default=true
+LLE\\CSND=false
+LLE\\CSND\\default=true
+LLE\\DLP=false
+LLE\\DLP\\default=true
+LLE\\DSP=false
+LLE\\DSP\\default=true
+LLE\\ERR=false
+LLE\\ERR\\default=true
+LLE\\FRD=false
+LLE\\FRD\\default=true
+LLE\\FS=false
+LLE\\FS\\default=true
+LLE\\GPIO=false
+LLE\\GPIO\\default=true
+LLE\\GSP=false
+LLE\\GSP\\default=true
+LLE\\HID=false
+LLE\\HID\\default=true
+LLE\\HTTP=false
+LLE\\HTTP\\default=true
+LLE\\I2C=false
+LLE\\I2C\\default=true
+LLE\\IR=false
+LLE\\IR\\default=true
+LLE\\LDR=false
+LLE\\LDR\\default=true
+LLE\\MCU=false
+LLE\\MCU\\default=true
+LLE\\MIC=false
+LLE\\MIC\\default=true
+LLE\\MP=false
+LLE\\MP\\default=true
+LLE\\MVD=false
+LLE\\MVD\\default=true
+LLE\\NDM=false
+LLE\\NDM\\default=true
+LLE\\NEWS=false
+LLE\\NEWS\\default=true
+LLE\\NFC=false
+LLE\\NFC\\default=true
+LLE\\NIM=false
+LLE\\NIM\\default=true
+LLE\\NS=false
+LLE\\NS\\default=true
+LLE\\NWM=false
+LLE\\NWM\\default=true
+LLE\\PDN=false
+LLE\\PDN\\default=true
+LLE\\PLGLDR=false
+LLE\\PLGLDR\\default=true
+LLE\\PM=false
+LLE\\PM\\default=true
+LLE\\PS=false
+LLE\\PS\\default=true
+LLE\\PTM=false
+LLE\\PTM\\default=true
+LLE\\PXI=false
+LLE\\PXI\\default=true
+LLE\\QTM=false
+LLE\\QTM\\default=true
+LLE\\SOC=false
+LLE\\SOC\\default=true
+LLE\\SPI=false
+LLE\\SPI\\default=true
+LLE\\SSL=false
+LLE\\SSL\\default=true
+gdbstub_port=24689
+gdbstub_port\\default=true
+instant_debug_log=false
+instant_debug_log\\default=true
+record_frame_times=false
+renderer_debug=false
+renderer_debug\\default=true
+use_gdbstub=false
+use_gdbstub\\default=true
+
+[Layout]
+anaglyph_shader_name=dubois (builtin)
+anaglyph_shader_name\\default=true
+custom_bottom_height=480
+custom_bottom_height\\default=true
+custom_bottom_width=640
+custom_bottom_width\\default=true
+custom_bottom_x=80
+custom_bottom_x\\default=true
+custom_bottom_y=500
+custom_bottom_y\\default=true
+custom_portrait_bottom_height=480
+custom_portrait_bottom_height\\default=true
+custom_portrait_bottom_width=640
+custom_portrait_bottom_width\\default=true
+custom_portrait_bottom_x=80
+custom_portrait_bottom_x\\default=true
+custom_portrait_bottom_y=500
+custom_portrait_bottom_y\\default=true
+custom_portrait_top_height=480
+custom_portrait_top_height\\default=true
+custom_portrait_top_width=800
+custom_portrait_top_width\\default=true
+custom_portrait_top_x=0
+custom_portrait_top_x\\default=true
+custom_portrait_top_y=0
+custom_portrait_top_y\\default=true
+custom_second_layer_opacity=100
+custom_second_layer_opacity\\default=true
+custom_top_height=480
+custom_top_height\\default=true
+custom_top_width=800
+custom_top_width\\default=true
+custom_top_x=0
+custom_top_x\\default=true
+custom_top_y=0
+custom_top_y\\default=true
+factor_3d=0
+factor_3d\\default=true
+filter_mode=true
+filter_mode\\default=true
+large_screen_proportion=4
+large_screen_proportion\\default=true
+layout_option=0
+layout_option\\default=true
+mono_render_option=0
+mono_render_option\\default=true
+pp_shader_name=none (builtin)
+pp_shader_name\\default=true
+render_3d=0
+render_3d\\default=true
+screen_bottom_leftright_padding=0
+screen_bottom_leftright_padding\\default=true
+screen_bottom_stretch=false
+screen_bottom_stretch\\default=true
+screen_bottom_topbottom_padding=0
+screen_bottom_topbottom_padding\\default=true
+screen_top_leftright_padding=0
+screen_top_leftright_padding\\default=true
+screen_top_stretch=false
+screen_top_stretch\\default=true
+screen_top_topbottom_padding=0
+screen_top_topbottom_padding\\default=true
+small_screen_position=2
+small_screen_position\\default=true
+swap_screen=false
+swap_screen\\default=true
+upright_screen=false
+upright_screen\\default=true
+
+[Miscellaneous]
+check_for_update_on_start=true
+check_for_update_on_start\\default=true
+enable_gamemode=true
+enable_gamemode\\default=true
+log_filter=*:Info
+log_filter\\default=true
+log_regex_filter=
+log_regex_filter\\default=true
+
+[Renderer]
+async_presentation=true
+async_presentation\\default=true
+async_shader_compilation=false
+async_shader_compilation\\default=true
+bg_blue=0
+bg_blue\\default=true
+bg_green=0
+bg_green\\default=true
+bg_red=0
+bg_red\\default=true
+delay_game_render_thread_us=0
+delay_game_render_thread_us\\default=true
+disable_right_eye_render=false
+disable_right_eye_render\\default=true
+frame_limit=100
+frame_limit\\default=true
+graphics_api=1
+graphics_api\\default=true
+physical_device=0
+physical_device\\default=true
+resolution_factor=1
+resolution_factor\\default=true
+shaders_accurate_mul=true
+shaders_accurate_mul\\default=true
+spirv_shader_gen=true
+spirv_shader_gen\\default=true
+texture_filter=0
+texture_filter\\default=true
+texture_sampling=0
+texture_sampling\\default=true
+use_disk_shader_cache=true
+use_disk_shader_cache\\default=true
+use_hw_shader=true
+use_hw_shader\\default=true
+use_shader_jit=true
+use_shader_jit\\default=true
+use_vsync_new=true
+use_vsync_new\\default=true
+
+[System]
+allow_plugin_loader=true
+allow_plugin_loader\\default=true
+enable_required_online_lle_modules=false
+enable_required_online_lle_modules\\default=true
+init_clock=0
+init_clock\\default=true
+init_ticks_override=@Variant(\\0\\0\\0\x81\\0\\0\\0\\0\\0\\0\\0\\0)
+init_ticks_override\\default=true
+init_ticks_type=0
+init_ticks_type\\default=true
+init_time=@Variant(\\0\\0\\0\x84\\0\\0\\0\\0\x38m5\xbd)
+init_time\\default=true
+init_time_offset=@Variant(\\0\\0\\0\x81\\0\\0\\0\\0\\0\\0\\0\\0)
+init_time_offset\\default=true
+is_new_3ds=true
+is_new_3ds\\default=true
+lle_applets=true
+lle_applets\\default=true
+plugin_loader=false
+plugin_loader\\default=true
+region_value=-1
+region_value\\default=true
+steps_per_hour=0
+steps_per_hour\\default=true
+
+[UI]
+GameList\\favorites\\size=0
+GameList\\hideNoIcon=false
+GameList\\hideNoIcon\\default=true
+GameList\\iconSize=2
+GameList\\iconSize\\default=true
+GameList\\row1=2
+GameList\\row1\\default=true
+GameList\\row2=0
+GameList\\row2\\default=true
+GameList\\show_3ds_files_warning=true
+GameList\\show_3ds_files_warning\\default=true
+GameList\\show_compat_column=true
+GameList\\show_compat_column\\default=true
+GameList\\show_play_time_column=true
+GameList\\show_play_time_column\\default=true
+GameList\\show_region_column=true
+GameList\\show_region_column\\default=true
+GameList\\show_size_column=true
+GameList\\show_size_column\\default=true
+GameList\\show_type_column=true
+GameList\\show_type_column\\default=true
+GameList\\singleLineMode=false
+GameList\\singleLineMode\\default=true
+Multiplayer\\game_id=0
+Multiplayer\\game_id\\default=true
+Multiplayer\\host_type=0
+Multiplayer\\host_type\\default=true
+Multiplayer\\ip=
+Multiplayer\\ip\\default=true
+Multiplayer\\ip_ban_list\\size=0
+Multiplayer\\max_player=8
+Multiplayer\\max_player\\default=true
+Multiplayer\\multiplayer_filter_games_owned=false
+Multiplayer\\multiplayer_filter_games_owned\\default=true
+Multiplayer\\multiplayer_filter_hide_empty=false
+Multiplayer\\multiplayer_filter_hide_empty\\default=true
+Multiplayer\\multiplayer_filter_hide_full=false
+Multiplayer\\multiplayer_filter_hide_full\\default=true
+Multiplayer\\multiplayer_filter_text=
+Multiplayer\\multiplayer_filter_text\\default=true
+Multiplayer\\nickname=
+Multiplayer\\nickname\\default=true
+Multiplayer\\port=24872
+Multiplayer\\port\\default=true
+Multiplayer\\room_description=
+Multiplayer\\room_description\\default=true
+Multiplayer\\room_name=
+Multiplayer\\room_name\\default=true
+Multiplayer\\room_nickname=
+Multiplayer\\room_nickname\\default=true
+Multiplayer\\room_port=24872
+Multiplayer\\room_port\\default=true
+Multiplayer\\username_ban_list\\size=0
+Paths\\gamedirs\\1\\deep_scan=false
+Paths\\gamedirs\\1\\deep_scan\\default=true
+Paths\\gamedirs\\1\\expanded=true
+Paths\\gamedirs\\1\\expanded\\default=true
+Paths\\gamedirs\\1\\path=INSTALLED
+Paths\\gamedirs\\2\\deep_scan=false
+Paths\\gamedirs\\2\\deep_scan\\default=true
+Paths\\gamedirs\\2\\expanded=true
+Paths\\gamedirs\\2\\expanded\\default=true
+Paths\\gamedirs\\2\\path=SYSTEM
+Paths\\gamedirs\\size=2
+Paths\\language=
+Paths\\language\\default=true
+Paths\\last_artic_base_addr=
+Paths\\last_artic_base_addr\\default=true
+Paths\\moviePlaybackPath=
+Paths\\movieRecordPath=
+Paths\\recentFiles=@Invalid()
+Paths\\romsPath=
+Paths\\screenshotPath=
+Paths\\screenshotPath\\default=true
+Paths\\symbolsPath=
+Paths\\videoDumpingPath=
+Shortcuts\\Main%20Window\\Advance%20Frame\\Context=2
+Shortcuts\\Main%20Window\\Advance%20Frame\\Context\\default=true
+Shortcuts\\Main%20Window\\Advance%20Frame\\KeySeq=
+Shortcuts\\Main%20Window\\Advance%20Frame\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Audio%20Mute\\Unmute\\Context=1
+Shortcuts\\Main%20Window\\Audio%20Mute\\Unmute\\Context\\default=true
+Shortcuts\\Main%20Window\\Audio%20Mute\\Unmute\\KeySeq=Ctrl+M
+Shortcuts\\Main%20Window\\Audio%20Mute\\Unmute\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Audio%20Volume%20Down\\Context=1
+Shortcuts\\Main%20Window\\Audio%20Volume%20Down\\Context\\default=true
+Shortcuts\\Main%20Window\\Audio%20Volume%20Down\\KeySeq=
+Shortcuts\\Main%20Window\\Audio%20Volume%20Down\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Audio%20Volume%20Up\\Context=1
+Shortcuts\\Main%20Window\\Audio%20Volume%20Up\\Context\\default=true
+Shortcuts\\Main%20Window\\Audio%20Volume%20Up\\KeySeq=
+Shortcuts\\Main%20Window\\Audio%20Volume%20Up\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Capture%20Screenshot\\Context=3
+Shortcuts\\Main%20Window\\Capture%20Screenshot\\Context\\default=true
+Shortcuts\\Main%20Window\\Capture%20Screenshot\\KeySeq=Ctrl+P
+Shortcuts\\Main%20Window\\Capture%20Screenshot\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Continue\\Pause%20Emulation\\Context=1
+Shortcuts\\Main%20Window\\Continue\\Pause%20Emulation\\Context\\default=true
+Shortcuts\\Main%20Window\\Continue\\Pause%20Emulation\\KeySeq=F4
+Shortcuts\\Main%20Window\\Continue\\Pause%20Emulation\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Decrease%203D%20Factor\\Context=2
+Shortcuts\\Main%20Window\\Decrease%203D%20Factor\\Context\\default=true
+Shortcuts\\Main%20Window\\Decrease%203D%20Factor\\KeySeq=Ctrl+-
+Shortcuts\\Main%20Window\\Decrease%203D%20Factor\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Decrease%20Speed%20Limit\\Context=2
+Shortcuts\\Main%20Window\\Decrease%20Speed%20Limit\\Context\\default=true
+Shortcuts\\Main%20Window\\Decrease%20Speed%20Limit\\KeySeq=-
+Shortcuts\\Main%20Window\\Decrease%20Speed%20Limit\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Exit%20Azahar\\Context=1
+Shortcuts\\Main%20Window\\Exit%20Azahar\\Context\\default=true
+Shortcuts\\Main%20Window\\Exit%20Azahar\\KeySeq=Ctrl+Q
+Shortcuts\\Main%20Window\\Exit%20Azahar\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Exit%20Fullscreen\\Context=1
+Shortcuts\\Main%20Window\\Exit%20Fullscreen\\Context\\default=true
+Shortcuts\\Main%20Window\\Exit%20Fullscreen\\KeySeq=Esc
+Shortcuts\\Main%20Window\\Exit%20Fullscreen\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Fullscreen\\Context=1
+Shortcuts\\Main%20Window\\Fullscreen\\Context\\default=true
+Shortcuts\\Main%20Window\\Fullscreen\\KeySeq=F11
+Shortcuts\\Main%20Window\\Fullscreen\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Increase%203D%20Factor\\Context=2
+Shortcuts\\Main%20Window\\Increase%203D%20Factor\\Context\\default=true
+Shortcuts\\Main%20Window\\Increase%203D%20Factor\\KeySeq=Ctrl++
+Shortcuts\\Main%20Window\\Increase%203D%20Factor\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Increase%20Speed%20Limit\\Context=2
+Shortcuts\\Main%20Window\\Increase%20Speed%20Limit\\Context\\default=true
+Shortcuts\\Main%20Window\\Increase%20Speed%20Limit\\KeySeq=+
+Shortcuts\\Main%20Window\\Increase%20Speed%20Limit\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Load%20Amiibo\\Context=3
+Shortcuts\\Main%20Window\\Load%20Amiibo\\Context\\default=true
+Shortcuts\\Main%20Window\\Load%20Amiibo\\KeySeq=F2
+Shortcuts\\Main%20Window\\Load%20Amiibo\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Load%20File\\Context=3
+Shortcuts\\Main%20Window\\Load%20File\\Context\\default=true
+Shortcuts\\Main%20Window\\Load%20File\\KeySeq=Ctrl+O
+Shortcuts\\Main%20Window\\Load%20File\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Load%20from%20Newest%20Slot\\Context=1
+Shortcuts\\Main%20Window\\Load%20from%20Newest%20Slot\\Context\\default=true
+Shortcuts\\Main%20Window\\Load%20from%20Newest%20Slot\\KeySeq=Ctrl+V
+Shortcuts\\Main%20Window\\Load%20from%20Newest%20Slot\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Multiplayer%20Browse%20Public%20Lobby\\Context=2
+Shortcuts\\Main%20Window\\Multiplayer%20Browse%20Public%20Lobby\\Context\\default=true
+Shortcuts\\Main%20Window\\Multiplayer%20Browse%20Public%20Lobby\\KeySeq=Ctrl+B
+Shortcuts\\Main%20Window\\Multiplayer%20Browse%20Public%20Lobby\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Multiplayer%20Create%20Room\\Context=2
+Shortcuts\\Main%20Window\\Multiplayer%20Create%20Room\\Context\\default=true
+Shortcuts\\Main%20Window\\Multiplayer%20Create%20Room\\KeySeq=Ctrl+N
+Shortcuts\\Main%20Window\\Multiplayer%20Create%20Room\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Multiplayer%20Direct%20Connect%20to%20Room\\Context=2
+Shortcuts\\Main%20Window\\Multiplayer%20Direct%20Connect%20to%20Room\\Context\\default=true
+Shortcuts\\Main%20Window\\Multiplayer%20Direct%20Connect%20to%20Room\\KeySeq=Ctrl+Shift
+Shortcuts\\Main%20Window\\Multiplayer%20Direct%20Connect%20to%20Room\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Multiplayer%20Leave%20Room\\Context=2
+Shortcuts\\Main%20Window\\Multiplayer%20Leave%20Room\\Context\\default=true
+Shortcuts\\Main%20Window\\Multiplayer%20Leave%20Room\\KeySeq=Ctrl+L
+Shortcuts\\Main%20Window\\Multiplayer%20Leave%20Room\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Multiplayer%20Show%20Current%20Room\\Context=2
+Shortcuts\\Main%20Window\\Multiplayer%20Show%20Current%20Room\\Context\\default=true
+Shortcuts\\Main%20Window\\Multiplayer%20Show%20Current%20Room\\KeySeq=Ctrl+R
+Shortcuts\\Main%20Window\\Multiplayer%20Show%20Current%20Room\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Remove%20Amiibo\\Context=2
+Shortcuts\\Main%20Window\\Remove%20Amiibo\\Context\\default=true
+Shortcuts\\Main%20Window\\Remove%20Amiibo\\KeySeq=F3
+Shortcuts\\Main%20Window\\Remove%20Amiibo\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Restart%20Emulation\\Context=1
+Shortcuts\\Main%20Window\\Restart%20Emulation\\Context\\default=true
+Shortcuts\\Main%20Window\\Restart%20Emulation\\KeySeq=F6
+Shortcuts\\Main%20Window\\Restart%20Emulation\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Rotate%20Screens%20Upright\\Context=1
+Shortcuts\\Main%20Window\\Rotate%20Screens%20Upright\\Context\\default=true
+Shortcuts\\Main%20Window\\Rotate%20Screens%20Upright\\KeySeq=F8
+Shortcuts\\Main%20Window\\Rotate%20Screens%20Upright\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Save%20to%20Oldest%20Slot\\Context=1
+Shortcuts\\Main%20Window\\Save%20to%20Oldest%20Slot\\Context\\default=true
+Shortcuts\\Main%20Window\\Save%20to%20Oldest%20Slot\\KeySeq=Ctrl+C
+Shortcuts\\Main%20Window\\Save%20to%20Oldest%20Slot\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Stop%20Emulation\\Context=1
+Shortcuts\\Main%20Window\\Stop%20Emulation\\Context\\default=true
+Shortcuts\\Main%20Window\\Stop%20Emulation\\KeySeq=F5
+Shortcuts\\Main%20Window\\Stop%20Emulation\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Swap%20Screens\\Context=1
+Shortcuts\\Main%20Window\\Swap%20Screens\\Context\\default=true
+Shortcuts\\Main%20Window\\Swap%20Screens\\KeySeq=F9
+Shortcuts\\Main%20Window\\Swap%20Screens\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Toggle%203D\\Context=2
+Shortcuts\\Main%20Window\\Toggle%203D\\Context\\default=true
+Shortcuts\\Main%20Window\\Toggle%203D\\KeySeq=Ctrl+3
+Shortcuts\\Main%20Window\\Toggle%203D\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Toggle%20Custom%20Textures\\Context=2
+Shortcuts\\Main%20Window\\Toggle%20Custom%20Textures\\Context\\default=true
+Shortcuts\\Main%20Window\\Toggle%20Custom%20Textures\\KeySeq=F7
+Shortcuts\\Main%20Window\\Toggle%20Custom%20Textures\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Toggle%20Filter%20Bar\\Context=1
+Shortcuts\\Main%20Window\\Toggle%20Filter%20Bar\\Context\\default=true
+Shortcuts\\Main%20Window\\Toggle%20Filter%20Bar\\KeySeq=Ctrl+F
+Shortcuts\\Main%20Window\\Toggle%20Filter%20Bar\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Toggle%20Frame%20Advancing\\Context=2
+Shortcuts\\Main%20Window\\Toggle%20Frame%20Advancing\\Context\\default=true
+Shortcuts\\Main%20Window\\Toggle%20Frame%20Advancing\\KeySeq=Ctrl+A
+Shortcuts\\Main%20Window\\Toggle%20Frame%20Advancing\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Toggle%20Per-Application%20Speed\\Context=2
+Shortcuts\\Main%20Window\\Toggle%20Per-Application%20Speed\\Context\\default=true
+Shortcuts\\Main%20Window\\Toggle%20Per-Application%20Speed\\KeySeq=Ctrl+Z
+Shortcuts\\Main%20Window\\Toggle%20Per-Application%20Speed\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Toggle%20Screen%20Layout\\Context=1
+Shortcuts\\Main%20Window\\Toggle%20Screen%20Layout\\Context\\default=true
+Shortcuts\\Main%20Window\\Toggle%20Screen%20Layout\\KeySeq=F10
+Shortcuts\\Main%20Window\\Toggle%20Screen%20Layout\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Toggle%20Status%20Bar\\Context=1
+Shortcuts\\Main%20Window\\Toggle%20Status%20Bar\\Context\\default=true
+Shortcuts\\Main%20Window\\Toggle%20Status%20Bar\\KeySeq=Ctrl+S
+Shortcuts\\Main%20Window\\Toggle%20Status%20Bar\\KeySeq\\default=true
+Shortcuts\\Main%20Window\\Toggle%20Texture%20Dumping\\Context=2
+Shortcuts\\Main%20Window\\Toggle%20Texture%20Dumping\\Context\\default=true
+Shortcuts\\Main%20Window\\Toggle%20Texture%20Dumping\\KeySeq=
+Shortcuts\\Main%20Window\\Toggle%20Texture%20Dumping\\KeySeq\\default=true
+UILayout\\gameListHeaderState=@ByteArray()
+UILayout\\geometry=@ByteArray()
+UILayout\\geometryRenderWindow=@ByteArray()
+UILayout\\microProfileDialogGeometry=@ByteArray()
+UILayout\\microProfileDialogVisible=false
+UILayout\\microProfileDialogVisible\\default=true
+UILayout\\state=@ByteArray()
+calloutFlags=0
+calloutFlags\\default=true
+confirmClose=true
+confirmClose\\default=true
+displayTitleBars=true
+displayTitleBars\\default=true
+enable_discord_presence=true
+enable_discord_presence\\default=true
+firstStart=true
+firstStart\\default=true
+fullscreen=false
+fullscreen\\default=true
+hideInactiveMouse=false
+hideInactiveMouse\\default=true
+muteWhenInBackground=false
+muteWhenInBackground\\default=true
+pauseWhenInBackground=false
+pauseWhenInBackground\\default=true
+saveStateWarning=true
+saveStateWarning\\default=true
+screenshot_resolution_factor=0
+screenshot_resolution_factor\\default=true
+showConsole=false
+showConsole\\default=true
+showFilterBar=true
+showFilterBar\\default=true
+showStatusBar=true
+showStatusBar\\default=true
+singleWindowMode=true
+singleWindowMode\\default=true
+theme=default
+theme\\default=true
+
+[Utility]
+async_custom_loading=true
+async_custom_loading\\default=true
+custom_textures=false
+custom_textures\\default=true
+dump_textures=false
+dump_textures\\default=true
+preload_textures=false
+preload_textures\\default=true
+
+[VideoDumping]
+audio_bitrate=64000
+audio_bitrate\\default=true
+audio_encoder=libvorbis
+audio_encoder\\default=true
+audio_encoder_options=
+audio_encoder_options\\default=true
+format_options=
+output_format=webm
+output_format\\default=true
+video_bitrate=2500000
+video_bitrate\\default=true
+video_encoder=libvpx-vp9
+video_encoder\\default=true
+video_encoder_options="quality:realtime,speed:6,tile-columns:4,frame-parallel:1,threads:8,row-mt:1"
+video_encoder_options\\default=true
+
+[WebService]
+citra_token=
+citra_username=
+web_api_url=https://api.citra-emu.org
+web_api_url\\default=true`;

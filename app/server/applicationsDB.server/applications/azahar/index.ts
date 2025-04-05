@@ -6,7 +6,6 @@ import sdl from "@kmamal/sdl";
 import { log } from "../../../debug.server";
 import { EOL, homedir } from "os";
 import { keyboardConfig } from "./keyboardConfig";
-import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
 import type { SectionReplacement } from "../../configFile";
 import {
   chainSectionReplacements,
@@ -17,6 +16,8 @@ import {
 import fs from "fs";
 import { defaultSettings } from "./defaultSettings";
 import { isWindows } from "../../../operationsystem.server";
+import { app } from "electron";
+import { commandLineOptions } from "../../../commandLine.server";
 
 const flatpakId = "io.github.lime3ds.Lime3DS";
 const applicationId: ApplicationId = "azahar";
@@ -33,66 +34,91 @@ const bundledPathWindows = nodepath.join(
 
 const configFileName = "qt-config.ini";
 
-// TODO: implement
-export const getVirtualGamepad = (
-  sdlDevice: Sdl.Controller.Device,
-  index: number,
-) => {
-  log("debug", "gamepad", { index, sdlDevice });
+export const getVirtualGamepad = (sdlDevice: Sdl.Controller.Device) => {
+  log("debug", "gamepad", { sdlDevice });
 
-  return ["", "", ""].join(EOL);
-};
-
-// TODO: implement
-const getVirtualGamepadReset = (gamepadIndex: number) =>
-  [`[Pad${gamepadIndex + 1}]`, "Type = None", "", "", ""].join(EOL);
-
-export const getVirtualGamepads = () => {
-  const gamepads = sdl.controller.devices;
-
-  const virtualGamepads =
-    gamepads.length > 0 ? gamepads.map(getVirtualGamepad) : [keyboardConfig];
+  const guid = sdlDevice.guid;
 
   return [
-    ...virtualGamepads,
-    ...resetUnusedVirtualGamepads(
-      8,
-      virtualGamepads.length,
-      getVirtualGamepadReset,
-    ),
+    "profile=0",
+    "profile\\default=false",
+    `profiles\\1\\button_a="button:1,engine:sdl,guid:${guid},port:0"`,
+    `profiles\\1\\button_a\\default=false`,
+    `profiles\\1\\button_b="button:0,engine:sdl,guid:${guid},port:0"`,
+    `profiles\\1\\button_b\\default=false`,
+    `profiles\\1\\button_debug="code:79,engine:keyboard"`,
+    `profiles\\1\\button_debug\\default=false`,
+    `profiles\\1\\button_down="direction:down,engine:sdl,guid:${guid},hat:0,port:0"`,
+    `profiles\\1\\button_down\\default=false`,
+    `profiles\\1\\button_gpio14="code:80,engine:keyboard"`,
+    `profiles\\1\\button_gpio14\\default=false`,
+    `profiles\\1\\button_home="button:10,engine:sdl,guid:${guid},port:0"`,
+    `profiles\\1\\button_home\\default=false`,
+    `profiles\\1\\button_l="button:4,engine:sdl,guid:${guid},port:0"`,
+    `profiles\\1\\button_l\\default=false`,
+    `profiles\\1\\button_left="direction:left,engine:sdl,guid:${guid},hat:0,port:0"`,
+    `profiles\\1\\button_left\\default=false`,
+    `profiles\\1\\button_power="code:86,engine:keyboard"`,
+    `profiles\\1\\button_power\\default=false`,
+    `profiles\\1\\button_r="button:5,engine:sdl,guid:${guid},port:0"`,
+    `profiles\\1\\button_r\\default=false`,
+    `profiles\\1\\button_right="direction:right,engine:sdl,guid:${guid},hat:0,port:0"`,
+    `profiles\\1\\button_right\\default=false`,
+    `profiles\\1\\button_select="button:6,engine:sdl,guid:${guid},port:0"`,
+    `profiles\\1\\button_select\\default=false`,
+    `profiles\\1\\button_start="button:7,engine:sdl,guid:${guid},port:0"`,
+    `profiles\\1\\button_start\\default=false`,
+    `profiles\\1\\button_up="direction:up,engine:sdl,guid:${guid},hat:0,port:0"`,
+    `profiles\\1\\button_up\\default=false`,
+    `profiles\\1\\button_x="button:3,engine:sdl,guid:${guid},port:0"`,
+    `profiles\\1\\button_x\\default=false`,
+    `profiles\\1\\button_y="button:2,engine:sdl,guid:${guid},port:0"`,
+    `profiles\\1\\button_y\\default=false`,
+    `profiles\\1\\button_zl="axis:2,engine:sdl,guid:${guid},port:0"`,
+    `profiles\\1\\button_zl\\default=false`,
+    `profiles\\1\\button_zr="axis:5,engine:sdl,guid:${guid},port:0"`,
+    `profiles\\1\\button_zr\\default=false`,
+    `profiles\\1\\c_stick="axis_x:3,axis_y:4,deadzone:0.100000,engine:sdl,guid:${guid},port:0"`,
+    `profiles\\1\\c_stick\\default=false`,
+    `profiles\\1\\circle_pad="axis_x:0,axis_y:1,deadzone:0.100000,engine:sdl,guid:${guid},port:0"`,
+    `profiles\\1\\circle_pad\\default=false`,
   ];
 };
 
 export const replaceGamepadConfig: SectionReplacement = (sections) => {
-  if (sections.find((section) => section.startsWith("[Pad1]"))) {
-    return sections.reduce<string[]>((accumulator, section) => {
-      if (section.startsWith("[Pad1]")) {
-        accumulator.push(...getVirtualGamepads());
-      } else if (section.startsWith("[Pad]") || !section.startsWith("[Pad")) {
-        accumulator.push(section);
-      }
+  const gamepads = sdl.controller.devices;
+  const virtualGamepad =
+    gamepads.length > 0 ? getVirtualGamepad(gamepads[0]) : keyboardConfig;
 
-      return accumulator;
-    }, []);
-  } else {
-    return [...sections, getVirtualGamepads().join(EOL)];
-  }
+  return replaceSection(sections, "[Controls]", virtualGamepad);
 };
 
 export const replaceMiscellaneousConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Miscellaneous]", [
     "check_for_update_on_start=false",
+    "check_for_update_on_start\\default=false",
   ]);
 
-export const replaceUiConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[UI]", [
-    "confirmClose=false",
-    "Shortcuts\\Main%20Window\\Fullscreen\\KeySeq=F11",
-    "Shortcuts\\Main%20Window\\Save%20to%20Oldest%20Slot\\KeySeq=F1",
-    "Shortcuts\\Main%20Window\\Load%20from%20Newest%20Slot\\KeySeq=F3",
-    // TODO: implement
-    `Paths\\romsPath=`,
-  ]);
+export const replaceUiConfig =
+  (n3dsRomsPath: string): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[UI]", [
+      "confirmClose=false",
+      "confirmClose\\default=false",
+      "Shortcuts\\Main%20Window\\Fullscreen\\KeySeq=F2",
+      "Shortcuts\\Main%20Window\\Fullscreen\\KeySeq\\default=false",
+      "Shortcuts\\Main%20Window\\Save%20to%20Oldest%20Slot\\KeySeq=F1",
+      "Shortcuts\\Main%20Window\\Save%20to%20Oldest%20Slot\\KeySeq\\default=false",
+      "Shortcuts\\Main%20Window\\Load%20from%20Newest%20Slot\\KeySeq=F3",
+      "Shortcuts\\Main%20Window\\Load%20from%20Newest%20Slot\\KeySeq\\default=false",
+      "Shortcuts\\Main%20Window\\Load%20Amiibo\\KeySeq=",
+      "Shortcuts\\Main%20Window\\Load%20Amiibo\\KeySeq\\default=false",
+      "Shortcuts\\Main%20Window\\Remove%20Amiibo\\KeySeq=",
+      "Shortcuts\\Main%20Window\\Remove%20Amiibo\\KeySeq\\default=false",
+      `Paths\\romsPath=${n3dsRomsPath}`,
+      "firstStart=false",
+      "firstStart\\default=false",
+    ]);
 
 const readConfigFile = (filePath: string) => {
   try {
@@ -117,7 +143,7 @@ export const getConfigFilePath = (configFileName: string) => {
   }
 };
 
-export const replaceConfigSections = () => {
+export const replaceConfigSections = (n3dsRomsPath: string) => {
   const filePath = getConfigFilePath(configFileName);
   const fileContent = readConfigFile(filePath);
 
@@ -125,7 +151,7 @@ export const replaceConfigSections = () => {
 
   const fileContentNew = chainSectionReplacements(
     sections,
-    replaceUiConfig,
+    replaceUiConfig(n3dsRomsPath),
     replaceGamepadConfig,
     replaceMiscellaneousConfig,
   ).join(EOL);
@@ -141,9 +167,12 @@ export const azahar: Application = {
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
+      general: { categoriesPath },
     },
+    categoryData,
   }) => {
-    replaceConfigSections();
+    const n3dsRomsPath = nodepath.join(categoriesPath, categoryData.name);
+    replaceConfigSections(n3dsRomsPath);
 
     const optionParams = [];
     if (fullscreen) {
@@ -154,3 +183,7 @@ export const azahar: Application = {
   bundledPathLinux,
   bundledPathWindows,
 };
+
+export const isLime3dsFor3ds = () =>
+  app?.commandLine.hasSwitch(commandLineOptions.lime3ds.id) ||
+  process.env.EMUZE_LIME3DS === "true";
