@@ -111,23 +111,37 @@ export const replaceGamepadConfig: SectionReplacement = (sections) => {
 
 export const replaceHotkeyConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Hotkeys]", [
-    "OpenPauseMenu = Keyboard/F2",
-    "ToggleFullscreen = Keyboard/F11",
-    "SaveStateToSlot = Keyboard/F1",
-    "LoadStateFromSlot = Keyboard/F3",
+    {
+      keyValue: "OpenPauseMenu = Keyboard/F2",
+      disableParamWithSameValue: true,
+    },
+    {
+      keyValue: "ToggleFullscreen = Keyboard/F11",
+      disableParamWithSameValue: true,
+    },
+    {
+      keyValue: "SaveStateToSlot = Keyboard/F1",
+      disableParamWithSameValue: true,
+    },
+    {
+      keyValue: "LoadStateFromSlot = Keyboard/F3",
+      disableParamWithSameValue: true,
+    },
   ]);
 
 export const replaceAutoUpdaterConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[AutoUpdater]", ["CheckAtStartup = false"]);
+  replaceSection(sections, "[AutoUpdater]", [
+    { keyValue: "CheckAtStartup = false" },
+  ]);
 
 export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[InputSources]", [
-    "SDL = true",
-    "SDLControllerEnhancedMode = true",
+    { keyValue: "SDL = true" },
+    { keyValue: "SDLControllerEnhancedMode = true" },
   ]);
 
 export const replaceUiConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[UI]", ["ConfirmShutdown = false"]);
+  replaceSection(sections, "[UI]", [{ keyValue: "ConfirmShutdown = false" }]);
 
 /**
  * TODO: Check which game is compatible with multitap
@@ -135,7 +149,7 @@ export const replaceUiConfig: SectionReplacement = (sections) =>
  * @param sections
  */
 export const replacePadConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[Pad]", ["MultitapPort1 = true"]);
+  replaceSection(sections, "[Pad]", [{ keyValue: "MultitapPort1 = true" }]);
 
 const readConfigFile = (filePath: string) => {
   try {

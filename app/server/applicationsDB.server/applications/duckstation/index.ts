@@ -109,22 +109,36 @@ export const replaceGamepadConfig: SectionReplacement = (sections) => {
 
 export const replaceHotkeyConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Hotkeys]", [
-    "OpenPauseMenu = Keyboard/F2",
-    "ToggleFullscreen = Keyboard/F11",
-    "SaveSelectedSaveState = Keyboard/F1",
-    "LoadSelectedSaveState = Keyboard/F3",
+    {
+      keyValue: "OpenPauseMenu = Keyboard/F2",
+      disableParamWithSameValue: true,
+    },
+    {
+      keyValue: "ToggleFullscreen = Keyboard/F11",
+      disableParamWithSameValue: true,
+    },
+    {
+      keyValue: "SaveSelectedSaveState = Keyboard/F1",
+      disableParamWithSameValue: true,
+    },
+    {
+      keyValue: "LoadSelectedSaveState = Keyboard/F3",
+      disableParamWithSameValue: true,
+    },
   ]);
 
 export const replaceAutoUpdaterConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[AutoUpdater]", ["CheckAtStartup = false"]);
+  replaceSection(sections, "[AutoUpdater]", [
+    { keyValue: "CheckAtStartup = false" },
+  ]);
 
 export const replaceMainConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[Main]", ["ConfirmPowerOff = false"]);
+  replaceSection(sections, "[Main]", [{ keyValue: "ConfirmPowerOff = false" }]);
 
 export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[InputSources]", [
-    "SDL = true",
-    "SDLControllerEnhancedMode = true",
+    { keyValue: "SDL = true" },
+    { keyValue: "SDLControllerEnhancedMode = true" },
   ]);
 
 /**
@@ -133,7 +147,9 @@ export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
  * @param sections
  */
 export const replaceControllerPortsConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[ControllerPorts]", ["MultitapMode = Port1Only"]);
+  replaceSection(sections, "[ControllerPorts]", [
+    { keyValue: "MultitapMode = Port1Only" },
+  ]);
 
 export const getConfigFilePath = (configFileName: string) => {
   if (isWindows()) {

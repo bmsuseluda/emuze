@@ -1,5 +1,5 @@
 import type { Application } from "../../types";
-import type { SectionReplacement } from "../../configFile";
+import type { ParamToReplace, SectionReplacement } from "../../configFile";
 import {
   chainSectionReplacements,
   replaceSection,
@@ -139,10 +139,19 @@ export const replaceGamepadConfigFile = () =>
 
 export const replaceHotkeysSection: SectionReplacement = (sections) =>
   replaceSection(sections, "[Hotkeys]", [
-    "General/Toggle Pause = F2",
-    "General/Toggle Fullscreen = F11",
-    "Save State/Save State Slot 1 = F1",
-    "Load State/Load State Slot 1 = F3",
+    { keyValue: "General/Toggle Pause = F2", disableParamWithSameValue: true },
+    {
+      keyValue: "General/Toggle Fullscreen = F11",
+      disableParamWithSameValue: true,
+    },
+    {
+      keyValue: "Save State/Save State Slot 1 = F1",
+      disableParamWithSameValue: true,
+    },
+    {
+      keyValue: "Load State/Load State Slot 1 = F3",
+      disableParamWithSameValue: true,
+    },
   ]);
 
 export const replaceHotkeysFile = () =>
@@ -152,17 +161,19 @@ export const replaceHotkeysFile = () =>
     replaceHotkeysSection,
   );
 
-const setDeviceToStandardController = (index: number) => `SIDevice${index} = 6`;
+const setDeviceToStandardController = (index: number): ParamToReplace => ({
+  keyValue: `SIDevice${index} = 6`,
+});
 
 export const replaceDolphinCoreSection: SectionReplacement = (sections) => {
   const gamepads = sdl.controller.devices;
   const virtualGamepads = gamepads.length > 0 ? gamepads : ["keyboard"];
-  const siDevices = [
+  const siDevices: ParamToReplace[] = [
     ...virtualGamepads.map((_, index) => setDeviceToStandardController(index)),
     ...resetUnusedVirtualGamepads(
       4,
       virtualGamepads.length,
-      (index: number) => `SIDevice${index} = 0`,
+      (index: number): ParamToReplace => ({ keyValue: `SIDevice${index} = 0` }),
     ),
   ];
 
@@ -170,7 +181,7 @@ export const replaceDolphinCoreSection: SectionReplacement = (sections) => {
 };
 
 export const replaceDolphinAutoUpdateSection: SectionReplacement = (sections) =>
-  replaceSection(sections, "[AutoUpdate]", ["UpdateTrack = "]);
+  replaceSection(sections, "[AutoUpdate]", [{ keyValue: "UpdateTrack = " }]);
 
 export const replaceDolphinFile = () =>
   replaceConfigSections(

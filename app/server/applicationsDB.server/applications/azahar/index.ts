@@ -6,7 +6,7 @@ import sdl from "@kmamal/sdl";
 import { log } from "../../../debug.server";
 import { EOL, homedir } from "os";
 import { keyboardConfig } from "./keyboardConfig";
-import type { SectionReplacement } from "../../configFile";
+import type { ParamToReplace, SectionReplacement } from "../../configFile";
 import {
   chainSectionReplacements,
   replaceSection,
@@ -34,54 +34,136 @@ const bundledPathWindows = nodepath.join(
 
 const configFileName = "qt-config.ini";
 
-export const getVirtualGamepad = (sdlDevice: Sdl.Controller.Device) => {
+export const getVirtualGamepad = (
+  sdlDevice: Sdl.Controller.Device,
+): ParamToReplace[] => {
   log("debug", "gamepad", { sdlDevice });
 
   const guid = sdlDevice.guid;
 
   return [
-    "profile=0",
-    "profile\\default=false",
-    `profiles\\1\\button_a="button:1,engine:sdl,guid:${guid},port:0"`,
-    `profiles\\1\\button_a\\default=false`,
-    `profiles\\1\\button_b="button:0,engine:sdl,guid:${guid},port:0"`,
-    `profiles\\1\\button_b\\default=false`,
-    `profiles\\1\\button_debug="code:79,engine:keyboard"`,
-    `profiles\\1\\button_debug\\default=false`,
-    `profiles\\1\\button_down="direction:down,engine:sdl,guid:${guid},hat:0,port:0"`,
-    `profiles\\1\\button_down\\default=false`,
-    `profiles\\1\\button_gpio14="code:80,engine:keyboard"`,
-    `profiles\\1\\button_gpio14\\default=false`,
-    `profiles\\1\\button_home="button:10,engine:sdl,guid:${guid},port:0"`,
-    `profiles\\1\\button_home\\default=false`,
-    `profiles\\1\\button_l="button:4,engine:sdl,guid:${guid},port:0"`,
-    `profiles\\1\\button_l\\default=false`,
-    `profiles\\1\\button_left="direction:left,engine:sdl,guid:${guid},hat:0,port:0"`,
-    `profiles\\1\\button_left\\default=false`,
-    `profiles\\1\\button_power="code:86,engine:keyboard"`,
-    `profiles\\1\\button_power\\default=false`,
-    `profiles\\1\\button_r="button:5,engine:sdl,guid:${guid},port:0"`,
-    `profiles\\1\\button_r\\default=false`,
-    `profiles\\1\\button_right="direction:right,engine:sdl,guid:${guid},hat:0,port:0"`,
-    `profiles\\1\\button_right\\default=false`,
-    `profiles\\1\\button_select="button:6,engine:sdl,guid:${guid},port:0"`,
-    `profiles\\1\\button_select\\default=false`,
-    `profiles\\1\\button_start="button:7,engine:sdl,guid:${guid},port:0"`,
-    `profiles\\1\\button_start\\default=false`,
-    `profiles\\1\\button_up="direction:up,engine:sdl,guid:${guid},hat:0,port:0"`,
-    `profiles\\1\\button_up\\default=false`,
-    `profiles\\1\\button_x="button:3,engine:sdl,guid:${guid},port:0"`,
-    `profiles\\1\\button_x\\default=false`,
-    `profiles\\1\\button_y="button:2,engine:sdl,guid:${guid},port:0"`,
-    `profiles\\1\\button_y\\default=false`,
-    `profiles\\1\\button_zl="axis:2,engine:sdl,guid:${guid},port:0"`,
-    `profiles\\1\\button_zl\\default=false`,
-    `profiles\\1\\button_zr="axis:5,engine:sdl,guid:${guid},port:0"`,
-    `profiles\\1\\button_zr\\default=false`,
-    `profiles\\1\\c_stick="axis_x:3,axis_y:4,deadzone:0.100000,engine:sdl,guid:${guid},port:0"`,
-    `profiles\\1\\c_stick\\default=false`,
-    `profiles\\1\\circle_pad="axis_x:0,axis_y:1,deadzone:0.100000,engine:sdl,guid:${guid},port:0"`,
-    `profiles\\1\\circle_pad\\default=false`,
+    { keyValue: "profile=0" },
+    { keyValue: "profile\\default=false" },
+    {
+      keyValue: `profiles\\1\\button_a="button:1,engine:sdl,guid:${guid},port:0"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_a\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\button_b="button:0,engine:sdl,guid:${guid},port:0"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_b\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\button_debug="code:79,engine:keyboard"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_debug\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\button_down="direction:down,engine:sdl,guid:${guid},hat:0,port:0"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_down\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\button_gpio14="code:80,engine:keyboard"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_gpio14\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\button_home="button:10,engine:sdl,guid:${guid},port:0"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_home\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\button_l="button:4,engine:sdl,guid:${guid},port:0"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_l\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\button_left="direction:left,engine:sdl,guid:${guid},hat:0,port:0"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_left\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\button_power="code:86,engine:keyboard"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_power\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\button_r="button:5,engine:sdl,guid:${guid},port:0"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_r\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\button_right="direction:right,engine:sdl,guid:${guid},hat:0,port:0"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_right\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\button_select="button:6,engine:sdl,guid:${guid},port:0"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_select\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\button_start="button:7,engine:sdl,guid:${guid},port:0"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_start\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\button_up="direction:up,engine:sdl,guid:${guid},hat:0,port:0"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_up\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\button_x="button:3,engine:sdl,guid:${guid},port:0"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_x\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\button_y="button:2,engine:sdl,guid:${guid},port:0"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_y\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\button_zl="axis:2,engine:sdl,guid:${guid},port:0"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_zl\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\button_zr="axis:5,engine:sdl,guid:${guid},port:0"`,
+    },
+    {
+      keyValue: `profiles\\1\\button_zr\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\c_stick="axis_x:3,axis_y:4,deadzone:0.100000,engine:sdl,guid:${guid},port:0"`,
+    },
+    {
+      keyValue: `profiles\\1\\c_stick\\default=false`,
+    },
+    {
+      keyValue: `profiles\\1\\circle_pad="axis_x:0,axis_y:1,deadzone:0.100000,engine:sdl,guid:${guid},port:0"`,
+    },
+    {
+      keyValue: `profiles\\1\\circle_pad\\default=false`,
+    },
   ];
 };
 
@@ -95,29 +177,54 @@ export const replaceGamepadConfig: SectionReplacement = (sections) => {
 
 export const replaceMiscellaneousConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Miscellaneous]", [
-    "check_for_update_on_start=false",
-    "check_for_update_on_start\\default=false",
+    { keyValue: "check_for_update_on_start=false" },
+    { keyValue: "check_for_update_on_start\\default=false" },
   ]);
 
+// TODO: add default programmatically
 export const replaceUiConfig =
   (n3dsRomsPath: string): SectionReplacement =>
   (sections) =>
     replaceSection(sections, "[UI]", [
-      "confirmClose=false",
-      "confirmClose\\default=false",
-      "Shortcuts\\Main%20Window\\Fullscreen\\KeySeq=F2",
-      "Shortcuts\\Main%20Window\\Fullscreen\\KeySeq\\default=false",
-      "Shortcuts\\Main%20Window\\Save%20to%20Oldest%20Slot\\KeySeq=F1",
-      "Shortcuts\\Main%20Window\\Save%20to%20Oldest%20Slot\\KeySeq\\default=false",
-      "Shortcuts\\Main%20Window\\Load%20from%20Newest%20Slot\\KeySeq=F3",
-      "Shortcuts\\Main%20Window\\Load%20from%20Newest%20Slot\\KeySeq\\default=false",
-      "Shortcuts\\Main%20Window\\Load%20Amiibo\\KeySeq=",
-      "Shortcuts\\Main%20Window\\Load%20Amiibo\\KeySeq\\default=false",
-      "Shortcuts\\Main%20Window\\Remove%20Amiibo\\KeySeq=",
-      "Shortcuts\\Main%20Window\\Remove%20Amiibo\\KeySeq\\default=false",
-      `Paths\\romsPath=${n3dsRomsPath}`,
-      "firstStart=false",
-      "firstStart\\default=false",
+      { keyValue: "confirmClose=false" },
+      { keyValue: "confirmClose\\default=false" },
+      { keyValue: "Shortcuts\\Main%20Window\\Fullscreen\\KeySeq=F2" },
+      {
+        keyValue: "Shortcuts\\Main%20Window\\Fullscreen\\KeySeq\\default=false",
+      },
+      {
+        keyValue:
+          "Shortcuts\\Main%20Window\\Save%20to%20Oldest%20Slot\\KeySeq=F1",
+      },
+      {
+        keyValue:
+          "Shortcuts\\Main%20Window\\Save%20to%20Oldest%20Slot\\KeySeq\\default=false",
+      },
+      {
+        keyValue:
+          "Shortcuts\\Main%20Window\\Load%20from%20Newest%20Slot\\KeySeq=F3",
+      },
+      {
+        keyValue:
+          "Shortcuts\\Main%20Window\\Load%20from%20Newest%20Slot\\KeySeq\\default=false",
+      },
+      { keyValue: "Shortcuts\\Main%20Window\\Load%20Amiibo\\KeySeq=" },
+      {
+        keyValue:
+          "Shortcuts\\Main%20Window\\Load%20Amiibo\\KeySeq\\default=false",
+      },
+      { keyValue: "Shortcuts\\Main%20Window\\Remove%20Amiibo\\KeySeq=" },
+      {
+        keyValue:
+          "Shortcuts\\Main%20Window\\Remove%20Amiibo\\KeySeq\\default=false",
+      },
+      { keyValue: `Paths\\romsPath=${n3dsRomsPath}` },
+      {
+        keyValue: "firstStart=false",
+      },
+      {
+        keyValue: "firstStart\\default=false",
+      },
     ]);
 
 const readConfigFile = (filePath: string) => {
