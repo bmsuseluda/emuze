@@ -60,15 +60,16 @@ export const getGamepads = (applicationPath?: string) => {
 
 export const findSdlGamepad = (gamepadId: GamepadID, index: number) => {
   const gamepads = sdl.controller.devices;
+  const joysticks = sdl.joystick.devices;
 
-  const sdlGamepad = gamepads.find((gamepad) => {
-    const openedDevice = sdl.controller.openDevice(gamepad);
-    log("debug", "findSdlGamepad", gamepadId, gamepad, openedDevice);
+  const sdlGamepad = gamepads.find((gamepad, index) => {
+    const joystick = joysticks[index];
+    log("debug", "findSdlGamepad", gamepadId, gamepad, joystick);
 
     return (
       gamepad.name.toLowerCase().replaceAll(" ", "") ===
         gamepadId.name.toLowerCase().replaceAll(" ", "") ||
-      openedDevice.device.name.toLowerCase().replaceAll(" ", "") ===
+      joystick.name.toLowerCase().replaceAll(" ", "") ===
         gamepadId.name.toLowerCase().replaceAll(" ", "")
     );
   });

@@ -153,22 +153,26 @@ const createDeviceSpecificInputConfig = (controllerName: string) => {
 };
 
 const createInputConfig = (
-  sdlDevice: Sdl.Controller.Device,
+  controller: Sdl.Joystick.Device,
   index: number,
 ): InputConfig => {
-  const openedDevice = sdl.controller.openDevice(sdlDevice);
-  log("debug", "gamepad", { index, sdlDevice, openedController: openedDevice });
+  const joystick = sdl.joystick.devices[index];
+  log("debug", "gamepad", {
+    index,
+    controller,
+    joystick,
+  });
 
   return {
-    ...createDeviceSpecificInputConfig(openedDevice.device.name),
-    id: createControllerId(sdlDevice.guid),
+    ...createDeviceSpecificInputConfig(joystick.name),
+    id: createControllerId(controller.guid),
     controller_type: createControllerType(),
     player_index: `Player${index + 1}`,
   };
 };
 
 const replaceConfig = (switchRomsPath: string) => {
-  const gamepads = sdl.controller.devices;
+  const gamepads = sdl.joystick.devices;
   const gamepadsSorted = gamepads.toSorted(sortGamecubeLast);
   const inputConfig =
     gamepadsSorted.length > 0

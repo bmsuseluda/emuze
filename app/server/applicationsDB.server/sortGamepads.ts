@@ -1,5 +1,4 @@
 import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
 import { isGamecubeController, steamDeck } from "./gamepads";
 
 /**
@@ -24,13 +23,11 @@ export const sortSteamDeckLast = (
  * If one of the gamepads is a GameCube Controller, it should be positioned last.
  */
 export const sortGamecubeLast = (
-  a: Sdl.Controller.Device,
-  b: Sdl.Controller.Device,
+  a: Sdl.Joystick.Device,
+  b: Sdl.Joystick.Device,
 ) => {
-  const aOpened = sdl.controller.openDevice(a);
-  const bOpened = sdl.controller.openDevice(b);
-  const aIsGamecubeController = isGamecubeController(aOpened.device.name);
-  const bIsGamecubeController = isGamecubeController(bOpened.device.name);
+  const aIsGamecubeController = isGamecubeController(a.name);
+  const bIsGamecubeController = isGamecubeController(b.name);
   if (aIsGamecubeController === bIsGamecubeController) {
     return 0;
   }

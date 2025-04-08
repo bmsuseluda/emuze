@@ -50,13 +50,12 @@ const hotkeysConfigFileName = nodepath.join(
 );
 
 export const getVirtualGamepad = (
-  sdlDevice: Sdl.Controller.Device,
+  controller: Sdl.Joystick.Device,
   index: number,
 ) => {
-  const openedDevice = sdl.controller.openDevice(sdlDevice);
-  log("debug", "gamepad", { index, sdlDevice, openedDevice });
+  log("debug", "gamepad", { index, controller });
 
-  const deviceName = openedDevice.device.name;
+  const deviceName = controller.name;
 
   const gamecubeController = isGamecubeController(deviceName);
 
@@ -100,7 +99,7 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
   ].join(EOL);
 
 export const getVirtualGamepads = () => {
-  const gamepads = sdl.controller.devices;
+  const gamepads = sdl.joystick.devices;
 
   const virtualGamepads =
     gamepads.length > 0 ? gamepads.map(getVirtualGamepad) : [keyboardConfig];
@@ -166,7 +165,7 @@ const setDeviceToStandardController = (index: number): ParamToReplace => ({
 });
 
 export const replaceDolphinCoreSection: SectionReplacement = (sections) => {
-  const gamepads = sdl.controller.devices;
+  const gamepads = sdl.joystick.devices;
   const virtualGamepads = gamepads.length > 0 ? gamepads : ["keyboard"];
   const siDevices: ParamToReplace[] = [
     ...virtualGamepads.map((_, index) => setDeviceToStandardController(index)),
