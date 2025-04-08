@@ -65,7 +65,6 @@ export const downloadEmulators = (
   emulatorDownloads: Partial<EmulatorDownloads>,
   os: OperatingSystem,
 ) => {
-  // TODO: run in parallel
   Object.entries(emulatorDownloads).forEach(([emulatorId, downloadLink]) => {
     downloadEmulator(emulatorId as ApplicationId, downloadLink, os);
   });
@@ -150,7 +149,9 @@ const downloadAndExtract = (
       response.on("end", async () => {
         const buffer = Buffer.concat(chunks);
         try {
-          await decompress(buffer, outputFolder);
+          await decompress(buffer, outputFolder, {
+            filter: (file) => !file.path.endsWith("/"),
+          });
           if (existsSync(fileToCheck)) {
             console.log(`Download of ${url} complete`);
           } else {
