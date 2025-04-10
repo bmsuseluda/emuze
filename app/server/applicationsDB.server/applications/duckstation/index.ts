@@ -133,7 +133,17 @@ export const replaceAutoUpdaterConfig: SectionReplacement = (sections) =>
   ]);
 
 export const replaceMainConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[Main]", [{ keyValue: "ConfirmPowerOff = false" }]);
+  replaceSection(sections, "[Main]", [
+    { keyValue: "ConfirmPowerOff = false" },
+    { keyValue: "SetupWizardIncomplete = false" },
+  ]);
+
+export const replaceGameListConfig =
+  (psxRomsPath: string): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[GameList]", [
+      { keyValue: `RecursivePaths = ${psxRomsPath}` },
+    ]);
 
 export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[InputSources]", [
@@ -179,7 +189,7 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
-export const replaceConfigSections = () => {
+export const replaceConfigSections = (psxRomsPath: string) => {
   const filePath = getConfigFilePath(configFileName);
   const fileContent = readConfigFile(filePath);
 
@@ -193,6 +203,7 @@ export const replaceConfigSections = () => {
     replaceHotkeyConfig,
     replaceGamepadConfig,
     replaceAutoUpdaterConfig,
+    replaceGameListConfig(psxRomsPath),
   ).join(EOL);
 
   writeConfig(filePath, fileContentNew);
@@ -206,9 +217,12 @@ export const duckstation: Application = {
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
+      general: { categoriesPath },
     },
+    categoryData,
   }) => {
-    replaceConfigSections();
+    const psxRomsPath = nodepath.join(categoriesPath, categoryData.name);
+    replaceConfigSections(psxRomsPath);
 
     const optionParams = [];
     if (fullscreen) {

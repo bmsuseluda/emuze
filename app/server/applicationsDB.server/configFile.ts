@@ -16,7 +16,10 @@ export interface ParamToReplace {
  * @param params
  * @param paramsToReplace
  */
-const replaceParams = (params: string[], paramsToReplace: ParamToReplace[]) => [
+export const replaceParams = (
+  params: string[],
+  paramsToReplace: ParamToReplace[],
+) => [
   ...params.reduce<string[]>((accumulator, param) => {
     const [id, value] = param.split("=");
     if (
@@ -27,7 +30,10 @@ const replaceParams = (params: string[], paramsToReplace: ParamToReplace[]) => [
     ) {
       if (
         paramsToReplace.find(
-          (paramToReplace) => value && paramToReplace.keyValue.includes(value),
+          (paramToReplace) =>
+            value &&
+            paramToReplace.keyValue.includes(value) &&
+            paramToReplace.disableParamWithSameValue,
         )
       ) {
         // Disable the param if it is used for another keybinding

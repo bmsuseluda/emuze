@@ -179,15 +179,11 @@ export const replaceDolphinCoreSection: SectionReplacement = (sections) => {
   return replaceSection(sections, "[Core]", siDevices);
 };
 
-export const replaceDolphinAutoUpdateSection: SectionReplacement = (sections) =>
-  replaceSection(sections, "[AutoUpdate]", [{ keyValue: "UpdateTrack = " }]);
-
 export const replaceDolphinFile = () =>
   replaceConfigSections(
     dolphinConfigFileName,
     defaultDolphinSettings,
     replaceDolphinCoreSection,
-    replaceDolphinAutoUpdateSection,
   );
 
 export const replaceConfigSections = (
@@ -222,16 +218,14 @@ export const dolphin: Application = {
     replaceHotkeysFile();
 
     const optionParams = [
-      "--config",
-      "Dolphin.Interface.ConfirmStop=False",
       `--user=${configFolderPath}`,
-      "--config",
-      "Dolphin.Analytics.PermissionAsked=True",
+      ...["--config", "Dolphin.Interface.ConfirmStop=False"],
+      ...["--config", "Dolphin.Analytics.PermissionAsked=True"],
+      ...["--config", "Dolphin.AutoUpdate.UpdateTrack="],
     ];
 
     if (fullscreen) {
-      optionParams.push("--config");
-      optionParams.push("Dolphin.Display.Fullscreen=True");
+      optionParams.push(...["--config", "Dolphin.Display.Fullscreen=True"]);
       optionParams.push("--batch");
     }
 

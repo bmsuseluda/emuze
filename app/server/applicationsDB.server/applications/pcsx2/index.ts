@@ -134,6 +134,13 @@ export const replaceAutoUpdaterConfig: SectionReplacement = (sections) =>
     { keyValue: "CheckAtStartup = false" },
   ]);
 
+export const replaceGameListConfig =
+  (ps2RomsPath: string): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[GameList]", [
+      { keyValue: `RecursivePaths = ${ps2RomsPath}` },
+    ]);
+
 export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[InputSources]", [
     { keyValue: "SDL = true" },
@@ -141,7 +148,10 @@ export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
   ]);
 
 export const replaceUiConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[UI]", [{ keyValue: "ConfirmShutdown = false" }]);
+  replaceSection(sections, "[UI]", [
+    { keyValue: "ConfirmShutdown = false" },
+    { keyValue: "SetupWizardIncomplete = false" },
+  ]);
 
 /**
  * TODO: Check which game is compatible with multitap
@@ -179,7 +189,7 @@ export const getConfigFilePath = (configFileName: string) => {
   }
 };
 
-export const replaceConfigSections = () => {
+export const replaceConfigSections = (ps2RomsPath: string) => {
   const filePath = getConfigFilePath(configFileName);
   const fileContent = readConfigFile(filePath);
 
@@ -193,6 +203,7 @@ export const replaceConfigSections = () => {
     replaceHotkeyConfig,
     replaceGamepadConfig,
     replaceAutoUpdaterConfig,
+    replaceGameListConfig(ps2RomsPath),
   ).join(EOL);
 
   writeConfig(filePath, fileContentNew);
@@ -207,9 +218,12 @@ export const pcsx2: Application = {
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
+      general: { categoriesPath },
     },
+    categoryData,
   }) => {
-    replaceConfigSections();
+    const ps2RomsPath = nodepath.join(categoriesPath, categoryData.name);
+    replaceConfigSections(ps2RomsPath);
 
     const optionParams = [];
     if (fullscreen) {
