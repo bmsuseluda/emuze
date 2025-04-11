@@ -46,7 +46,7 @@ const closeGameOnGamepad = () => {
 };
 closeGameOnGamepad();
 
-const executeBundledApplication = ({
+const executeBundledApplication = async ({
   absoluteEntryPath,
   optionParams,
   omitAbsoluteEntryPathAsLastParam,
@@ -57,34 +57,42 @@ const executeBundledApplication = ({
   omitAbsoluteEntryPathAsLastParam?: boolean;
   bundledPath: string;
 }) => {
-  const params = [];
+  return new Promise<void>((resolve, reject) => {
+    const params = [];
 
-  params.push(...optionParams);
+    params.push(...optionParams);
 
-  if (!omitAbsoluteEntryPathAsLastParam) {
-    params.push(absoluteEntryPath);
-  }
+    if (!omitAbsoluteEntryPathAsLastParam) {
+      params.push(absoluteEntryPath);
+    }
 
-  childProcess = execFile(
-    nodepath.join(process.env.APPDIR || "", "emulators", bundledPath),
-    params,
-    {
-      encoding: "utf8",
-    },
-    (error, stdout, stderr) => {
-      if (error) {
-        throw error;
+    childProcess = execFile(
+      nodepath.join(process.env.APPDIR || "", "emulators", bundledPath),
+      params,
+      {
+        encoding: "utf8",
+      },
+      (error, stdout, stderr) => {
+        if (error) {
+          log("error", stderr);
+          reject(error);
+        }
+        log("debug", stdout);
+      },
+    );
+
+    globalShortcut?.register("CommandOrControl+C", () => {
+      childProcess.kill();
+    });
+
+    childProcess.on("close", (code) => {
+      globalShortcut?.unregister("CommandOrControl+C");
+      if (code === 0) {
+        resolve();
+      } else {
+        reject(new Error(`Process exited with code ${code}`));
       }
-      console.log(stdout);
-    },
-  );
-
-  globalShortcut.register("CommandOrControl+C", () => {
-    childProcess.kill();
-  });
-
-  childProcess.on("close", () => {
-    globalShortcut.unregister("CommandOrControl+C");
+    });
   });
 };
 
@@ -186,7 +194,7 @@ const setEnvironmentVariables = ({
   });
 };
 
-export const startGame = (
+export const startGame = async (
   systemId: SystemId,
   entryData: Entry,
   parentEntryData?: Entry,
@@ -243,7 +251,7 @@ export const startGame = (
         if (isWindows() && generalData.applicationsPath) {
           if (applicationData.bundledPathWindows) {
             environmentVariables();
-            executeBundledApplication({
+            await executeBundledApplication({
               bundledPath: applicationData.bundledPathWindows,
               absoluteEntryPath,
               optionParams: optionParams(),
@@ -264,7 +272,7 @@ export const startGame = (
         } else {
           environmentVariables();
           if (applicationData.bundledPathLinux) {
-            executeBundledApplication({
+            await executeBundledApplication({
               bundledPath: applicationData.bundledPathLinux,
               absoluteEntryPath,
               optionParams: optionParams(),

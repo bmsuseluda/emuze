@@ -83,7 +83,7 @@ export const action: ActionFunction = async ({ request, params }) => {
           if (entryData.subEntries?.[0]) {
             return redirect(entryData.id);
           } else {
-            startGame(category as SystemId, entryData);
+            await startGame(category as SystemId, entryData);
           }
         }
         return { ok: true };

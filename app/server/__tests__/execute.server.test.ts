@@ -57,13 +57,13 @@ describe("execute.server", () => {
         });
       });
 
-      it("Should execute the entry with the defined application of the category", () => {
+      it("Should execute the entry with the defined application of the category", async () => {
         vi.mocked(existsSync).mockReturnValueOnce(true);
         vi.mocked(readCategory).mockReturnValueOnce(pcenginecd);
         vi.mocked(readFilenames).mockReturnValue([mednafen.path]);
         const entry = getFirstEntry(pcenginecd);
 
-        startGame(pcenginecd.id, entry);
+        await startGame(pcenginecd.id, entry);
 
         expect(execFileSync).toHaveBeenCalledWith(mednafen.path, ["wrong"], {
           encoding: "utf8",
@@ -79,14 +79,14 @@ describe("execute.server", () => {
         );
       });
 
-      it("Should add optional params", () => {
+      it("Should add optional params", async () => {
         vi.mocked(existsSync).mockReturnValueOnce(true);
         vi.mocked(readCategory).mockReturnValueOnce(neogeo);
         const entryDirname = "F:/games/Emulation/roms/Neo Geo";
         vi.mocked(readFilenames).mockReturnValue([mameNeoGeo.path]);
         const entry = getFirstEntry(neogeo);
 
-        startGame(neogeo.id, entry);
+        await startGame(neogeo.id, entry);
 
         expect(execFileSync).toHaveBeenCalledWith(
           mameNeoGeo.path,
@@ -106,13 +106,13 @@ describe("execute.server", () => {
         );
       });
 
-      it("Should add environment varables", () => {
+      it("Should add environment varables", async () => {
         vi.mocked(existsSync).mockReturnValueOnce(true);
         vi.mocked(readCategory).mockReturnValueOnce(pcenginecd);
         vi.mocked(readFilenames).mockReturnValue([mednafen.path]);
         const entry = getFirstEntry(pcenginecd);
 
-        startGame(pcenginecd.id, entry);
+        await startGame(pcenginecd.id, entry);
 
         expect(execFileSync).toHaveBeenCalledWith(mednafen.path, ["wrong"], {
           encoding: "utf8",
@@ -135,7 +135,9 @@ describe("execute.server", () => {
         vi.mocked(readFilenames).mockReturnValue([mednafen.path]);
         const entry = getFirstEntry(pcenginecd);
 
-        expect(() => startGame(pcenginecd.id, entry)).toThrowError();
+        expect(
+          async () => await startGame(pcenginecd.id, entry),
+        ).toThrowError();
 
         expect(execFileSync).not.toHaveBeenCalled();
       });
@@ -153,7 +155,7 @@ describe("execute.server", () => {
         vi.mocked(existsSync).mockReturnValueOnce(true);
       });
 
-      it("Should execute the entry with the defined application of the category", () => {
+      it("Should execute the entry with the defined application of the category", async () => {
         when(execFileSync)
           .calledWith("flatpak", ["list", "--app"], {
             encoding: "utf8",
@@ -162,7 +164,7 @@ describe("execute.server", () => {
         vi.mocked(readCategory).mockReturnValueOnce(pcenginecdLinux);
         const entry = getFirstEntry(pcenginecdLinux);
 
-        startGame(pcenginecdLinux.id, entry);
+        await startGame(pcenginecdLinux.id, entry);
 
         expect(execFileSync).toHaveBeenCalledWith(
           "flatpak",
@@ -191,7 +193,7 @@ describe("execute.server", () => {
         );
       });
 
-      it("Should add optional params", () => {
+      it("Should add optional params", async () => {
         when(execFileSync)
           .calledWith("flatpak", ["list", "--app"], {
             encoding: "utf8",
@@ -201,7 +203,7 @@ describe("execute.server", () => {
         const entryDirname = "F:/games/Emulation/roms/Neo Geo";
         const entry = getFirstEntry(neogeo);
 
-        startGame(neogeo.id, entry);
+        await startGame(neogeo.id, entry);
 
         expect(execFileSync).toHaveBeenCalledWith(
           "flatpak",
@@ -234,7 +236,9 @@ describe("execute.server", () => {
         vi.mocked(readCategory).mockReturnValueOnce(pcenginecdLinux);
         const entry = getFirstEntry(pcenginecdLinux);
 
-        expect(() => startGame(pcenginecdLinux.id, entry)).toThrowError();
+        expect(
+          async () => await startGame(pcenginecdLinux.id, entry),
+        ).toThrowError();
 
         expect(execFileSync).toBeCalledTimes(3);
 
