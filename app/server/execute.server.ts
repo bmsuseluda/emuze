@@ -1,4 +1,5 @@
-import { execFileSync } from "child_process";
+import type { ChildProcess } from "child_process";
+import { execFile, execFileSync } from "child_process";
 import { readAppearance, readGeneral } from "./settings.server";
 import type { Category, Entry } from "../types/jsonFiles/category";
 import { createAbsoluteEntryPath } from "../types/jsonFiles/category";
@@ -22,6 +23,28 @@ import type {
 import type { Settings } from "../types/jsonFiles/settings";
 import nodepath from "path";
 import { readCategory } from "./categoryDataCache.server";
+import { globalShortcut } from "electron";
+import sdl from "@kmamal/sdl";
+
+let childProcess: ChildProcess;
+
+const closeGameOnGamepad = () => {
+  const devices = sdl.controller.devices;
+  if (devices.length > 0) {
+    devices.forEach((device) => {
+      const controller = sdl.controller.openDevice(device);
+      controller.on("buttonDown", (event) => {
+        if (event.button === "back" && controller.buttons.a) {
+          log("debug", "buttons", controller.buttons);
+          if (childProcess && !childProcess.killed) {
+            childProcess.kill();
+          }
+        }
+      });
+    });
+  }
+};
+closeGameOnGamepad();
 
 const executeBundledApplication = ({
   absoluteEntryPath,
@@ -42,13 +65,27 @@ const executeBundledApplication = ({
     params.push(absoluteEntryPath);
   }
 
-  execFileSync(
+  childProcess = execFile(
     nodepath.join(process.env.APPDIR || "", "emulators", bundledPath),
     params,
     {
       encoding: "utf8",
     },
+    (error, stdout, stderr) => {
+      if (error) {
+        throw error;
+      }
+      console.log(stdout);
+    },
   );
+
+  globalShortcut.register("CommandOrControl+C", () => {
+    childProcess.kill();
+  });
+
+  childProcess.on("close", () => {
+    globalShortcut.unregister("CommandOrControl+C");
+  });
 };
 
 const executeApplicationOnLinux = ({
