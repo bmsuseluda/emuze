@@ -25,8 +25,11 @@ import nodepath from "path";
 import { readCategory } from "./categoryDataCache.server";
 import { globalShortcut } from "electron";
 import sdl from "@kmamal/sdl";
+import UInputKeyboard from "./udevKeyboard.server";
 
 let childProcess: ChildProcess;
+
+const keyboardDevice = new UInputKeyboard();
 
 const closeGameOnGamepad = () => {
   const devices = sdl.controller.devices;
@@ -36,9 +39,11 @@ const closeGameOnGamepad = () => {
       controller.on("buttonDown", (event) => {
         if (event.button === "back" && controller.buttons.a) {
           log("debug", "buttons", controller.buttons);
-          if (childProcess && !childProcess.killed) {
-            childProcess.kill();
-          }
+          // if (childProcess && !childProcess.killed) {
+          //   childProcess.kill();
+          // }
+          keyboardDevice.keyToggle("KEY_F11", true);
+          keyboardDevice.keyToggle("KEY_F11", false);
         }
       });
     });
@@ -82,7 +87,9 @@ const executeBundledApplication = async ({
     );
 
     globalShortcut?.register("CommandOrControl+C", () => {
-      childProcess.kill();
+      // childProcess.kill();
+      keyboardDevice.keyToggle("KEY_F2", true);
+      keyboardDevice.keyToggle("KEY_F2", false);
     });
 
     childProcess.on("close", (code) => {
