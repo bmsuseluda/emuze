@@ -34,7 +34,7 @@ const closeGameOnGamepad = () => {
     devices.forEach((device) => {
       const controller = sdl.controller.openDevice(device);
       controller.on("buttonDown", (event) => {
-        if (event.button === "back" && controller.buttons.a) {
+        if (event.button === "a" && controller.buttons.back) {
           log("debug", "buttons", controller.buttons);
           if (childProcess && !childProcess.killed) {
             childProcess.kill();
@@ -88,7 +88,9 @@ const executeBundledApplication = async ({
     childProcess.on("close", (code) => {
       globalShortcut?.unregister("CommandOrControl+C");
       if (code === 0) {
-        resolve();
+        setTimeout(() => {
+          resolve();
+        }, 1000);
       } else {
         reject(new Error(`Process exited with code ${code}`));
       }

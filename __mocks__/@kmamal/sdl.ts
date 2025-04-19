@@ -10,6 +10,16 @@ const devices: Sdl.Controller.Device[] = [steamDeck, gamepadPs4];
 export default {
   controller: {
     devices,
+    openDevice: (device: Sdl.Controller.Device) => {
+      return {
+        on: (button: string, onEvent: (event: { button: string }) => {}) => {
+          onEvent({ button: "a" });
+        },
+        buttons: {
+          back: false,
+        },
+      };
+    },
   },
   keyboard: {
     SCANCODE: scancodes,
