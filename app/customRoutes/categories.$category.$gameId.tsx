@@ -105,7 +105,7 @@ export const action: ActionFunction = async ({ request, params }) => {
           (value) => value.id === game,
         );
 
-        subEntryData && startGame(systemId, subEntryData, gameData);
+        subEntryData && (await startGame(systemId, subEntryData, gameData));
         return { ok: true };
       }
     }

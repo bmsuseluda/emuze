@@ -59,7 +59,7 @@ export const action: ActionFunction = async ({ request }) => {
           if (entryData.subEntries?.[0]) {
             return redirect(`lastPlayed/${entryData.id}`);
           } else {
-            startGame(entryData.systemId, entryData);
+            await startGame(entryData.systemId, entryData);
           }
         }
 

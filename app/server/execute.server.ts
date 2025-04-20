@@ -1,4 +1,5 @@
-import { execFileSync } from "child_process";
+import type { ChildProcess } from "child_process";
+import { execFile, execFileSync } from "child_process";
 import { readAppearance, readGeneral } from "./settings.server";
 import type { Category, Entry } from "../types/jsonFiles/category";
 import { createAbsoluteEntryPath } from "../types/jsonFiles/category";
@@ -22,8 +23,30 @@ import type {
 import type { Settings } from "../types/jsonFiles/settings";
 import nodepath from "path";
 import { readCategory } from "./categoryDataCache.server";
+import { globalShortcut } from "electron";
+import sdl from "@kmamal/sdl";
 
-const executeBundledApplication = ({
+let childProcess: ChildProcess;
+
+const closeGameOnGamepad = () => {
+  const devices = sdl.controller.devices;
+  if (devices.length > 0) {
+    devices.forEach((device) => {
+      const controller = sdl.controller.openDevice(device);
+      controller.on("buttonDown", (event) => {
+        if (event.button === "a" && controller.buttons.back) {
+          log("debug", "buttons", controller.buttons);
+          if (childProcess && !childProcess.killed) {
+            childProcess.kill();
+          }
+        }
+      });
+    });
+  }
+};
+closeGameOnGamepad();
+
+const executeBundledApplication = async ({
   absoluteEntryPath,
   optionParams,
   omitAbsoluteEntryPathAsLastParam,
@@ -34,21 +57,45 @@ const executeBundledApplication = ({
   omitAbsoluteEntryPathAsLastParam?: boolean;
   bundledPath: string;
 }) => {
-  const params = [];
+  return new Promise<void>((resolve, reject) => {
+    const params = [];
 
-  params.push(...optionParams);
+    params.push(...optionParams);
 
-  if (!omitAbsoluteEntryPathAsLastParam) {
-    params.push(absoluteEntryPath);
-  }
+    if (!omitAbsoluteEntryPathAsLastParam) {
+      params.push(absoluteEntryPath);
+    }
 
-  execFileSync(
-    nodepath.join(process.env.APPDIR || "", "emulators", bundledPath),
-    params,
-    {
-      encoding: "utf8",
-    },
-  );
+    childProcess = execFile(
+      nodepath.join(process.env.APPDIR || "", "emulators", bundledPath),
+      params,
+      {
+        encoding: "utf8",
+      },
+      (error, stdout, stderr) => {
+        if (error) {
+          log("error", stderr);
+          reject(error);
+        }
+        log("debug", stdout);
+      },
+    );
+
+    globalShortcut?.register("CommandOrControl+C", () => {
+      childProcess.kill();
+    });
+
+    childProcess.on("close", (code) => {
+      globalShortcut?.unregister("CommandOrControl+C");
+      if (code === 0) {
+        setTimeout(() => {
+          resolve();
+        }, 1000);
+      } else {
+        reject(new Error(`Process exited with code ${code}`));
+      }
+    });
+  });
 };
 
 const executeApplicationOnLinux = ({
@@ -149,7 +196,7 @@ const setEnvironmentVariables = ({
   });
 };
 
-export const startGame = (
+export const startGame = async (
   systemId: SystemId,
   entryData: Entry,
   parentEntryData?: Entry,
@@ -206,7 +253,7 @@ export const startGame = (
         if (isWindows() && generalData.applicationsPath) {
           if (applicationData.bundledPathWindows) {
             environmentVariables();
-            executeBundledApplication({
+            await executeBundledApplication({
               bundledPath: applicationData.bundledPathWindows,
               absoluteEntryPath,
               optionParams: optionParams(),
@@ -227,7 +274,7 @@ export const startGame = (
         } else {
           environmentVariables();
           if (applicationData.bundledPathLinux) {
-            executeBundledApplication({
+            await executeBundledApplication({
               bundledPath: applicationData.bundledPathLinux,
               absoluteEntryPath,
               optionParams: optionParams(),

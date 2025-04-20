@@ -1,6 +1,13 @@
 import { initRemix } from "remix-electron";
 import { platform } from "os";
-import { app, BrowserWindow, ipcMain, session, shell } from "electron";
+import {
+  app,
+  BrowserWindow,
+  globalShortcut,
+  ipcMain,
+  session,
+  shell,
+} from "electron";
 import nodepath from "path";
 import * as dotenv from "dotenv";
 import { autoUpdater } from "electron-updater";
@@ -24,6 +31,8 @@ const showHelp = () => {
   console.log(commandLineOptionsString);
   app.quit();
 };
+
+app.commandLine.appendSwitch("enable-features", "GlobalShortcutsPortal");
 
 app.on("ready", async () => {
   if (app.commandLine.hasSwitch(commandLineOptions.help.id)) {
@@ -151,4 +160,9 @@ app.on("ready", async () => {
   if (fullscreen) {
     setFullscreen(window, true);
   }
+});
+
+app.on("will-quit", () => {
+  // Unregister all shortcuts.
+  globalShortcut.unregisterAll();
 });
