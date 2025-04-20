@@ -23,12 +23,12 @@ const flatpakId = "io.github.lime3ds.Lime3DS";
 const applicationId: ApplicationId = "azahar";
 const bundledPathLinux = nodepath.join(
   applicationId,
-  "azahar-2120.2-linux-appimage",
+  "azahar-2120.3-linux-appimage",
   "azahar.AppImage",
 );
 const bundledPathWindows = nodepath.join(
   applicationId,
-  "azahar-2120.2-windows-msvc",
+  "azahar-2120.3-windows-msvc",
   "azahar.exe",
 );
 
