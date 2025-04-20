@@ -129,15 +129,13 @@ describe("execute.server", () => {
         expect(process.env.MEDNAFEN_HOME).toBe(nodepath.dirname(mednafen.path));
       });
 
-      it("Should not execute if emulator is not installed", () => {
+      it("Should not execute if emulator is not installed", async () => {
         vi.mocked(existsSync).mockReturnValueOnce(false);
         vi.mocked(readCategory).mockReturnValueOnce(pcenginecd);
         vi.mocked(readFilenames).mockReturnValue([mednafen.path]);
         const entry = getFirstEntry(pcenginecd);
 
-        expect(
-          async () => await startGame(pcenginecd.id, entry),
-        ).toThrowError();
+        await expect(startGame(pcenginecd.id, entry)).rejects.toThrowError();
 
         expect(execFileSync).not.toHaveBeenCalled();
       });
@@ -226,7 +224,7 @@ describe("execute.server", () => {
         );
       });
 
-      it("Should not execute if emulator is not installed", () => {
+      it("Should not execute if emulator is not installed", async () => {
         when(execFileSync)
           .calledWith("flatpak", ["list", "--app"], {
             encoding: "utf8",
@@ -236,9 +234,9 @@ describe("execute.server", () => {
         vi.mocked(readCategory).mockReturnValueOnce(pcenginecdLinux);
         const entry = getFirstEntry(pcenginecdLinux);
 
-        expect(
-          async () => await startGame(pcenginecdLinux.id, entry),
-        ).toThrowError();
+        await expect(
+          startGame(pcenginecdLinux.id, entry),
+        ).rejects.toThrowError();
 
         expect(execFileSync).toBeCalledTimes(3);
 
