@@ -10861,6 +10861,7 @@ __metadata:
     require-from-string: "npm:^2.0.2"
     shx: "npm:^0.3.4"
     storybook: "npm:^8.6.4"
+    tree-kill: "npm:^1.2.2"
     ts-node: "npm:^10.9.2"
     typescript: "npm:5.7.3"
     typescript-eslint: "npm:^7.18.0"

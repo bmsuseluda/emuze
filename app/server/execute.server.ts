@@ -1,5 +1,6 @@
 import type { ChildProcess } from "child_process";
 import { execFile, execFileSync } from "child_process";
+import kill from "tree-kill";
 import { readAppearance, readGeneral } from "./settings.server";
 import type { Category, Entry } from "../types/jsonFiles/category";
 import { createAbsoluteEntryPath } from "../types/jsonFiles/category";
@@ -28,6 +29,18 @@ import sdl from "@kmamal/sdl";
 
 let childProcess: ChildProcess;
 
+const killChildProcess = () => {
+  log("debug", "kill process");
+
+  if (childProcess?.pid) {
+    kill(childProcess.pid, "SIGKILL", (err) => {
+      if (err) {
+        log("error", "Failed to kill process:", err);
+      }
+    });
+  }
+};
+
 const closeGameOnGamepad = () => {
   const devices = sdl.controller.devices;
   if (devices.length > 0) {
@@ -37,7 +50,7 @@ const closeGameOnGamepad = () => {
         if (event.button === "a" && controller.buttons.back) {
           log("debug", "buttons", controller.buttons);
           if (childProcess && !childProcess.killed) {
-            childProcess.kill();
+            killChildProcess();
           }
         }
       });
@@ -74,15 +87,21 @@ const executeBundledApplication = async ({
       },
       (error, stdout, stderr) => {
         if (error) {
-          log("error", stderr);
-          reject(error);
+          if (error.signal === "SIGKILL" || error.signal === "SIGABRT") {
+            resolve();
+          } else {
+            log("error", "executeBundledApplication", stderr);
+            reject(error);
+          }
         }
-        log("debug", stdout);
+        if (stdout && stdout.length > 0) {
+          log("debug", stdout);
+        }
       },
     );
 
     globalShortcut?.register("CommandOrControl+C", () => {
-      childProcess.kill();
+      killChildProcess();
     });
 
     childProcess.on("close", (code) => {

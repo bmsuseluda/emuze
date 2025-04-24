@@ -69,7 +69,8 @@
     "react-dom": "^18.3.1",
     "react-icons": "^5.5.0",
     "react-use": "^17.6.0",
-    "remix-electron": "^2.0.2"
+    "remix-electron": "^2.0.2",
+    "tree-kill": "^1.2.2"
   },
   "devDependencies": {
     "7zip-min": "^1.4.5",

@@ -225,6 +225,7 @@ export const replaceUiConfig =
       {
         keyValue: "firstStart\\default=false",
       },
+      { keyValue: "fullscreen\\default=true" },
     ]);
 
 const readConfigFile = (filePath: string) => {
