@@ -92,13 +92,11 @@ const executeApplication = async (file: string, args: string[]) => {
       execFileCallback(resolve, reject),
     );
 
-    log("debug", "executeApplicationOnLinux", "set globalShortcut");
     globalShortcut?.register("CommandOrControl+C", () => {
       killChildProcess();
     });
 
     childProcess.on("close", (code) => {
-      log("debug", "executeApplicationOnLinux", "unregister globalShortcut");
       globalShortcut?.unregister("CommandOrControl+C");
       if (code === 0) {
         setTimeout(() => {
