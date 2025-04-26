@@ -7,11 +7,11 @@ const emulatorDownloadsWindows: Partial<EmulatorDownloads> = {
     "https://github.com/azahar-emu/azahar/releases/download/2120.3/azahar-2120.3-windows-msvc.zip",
   duckstation:
     "https://github.com/stenzek/duckstation/releases/download/v0.1-7371/duckstation-windows-x64-release.zip",
-  dolphin: "https://dl.dolphin-emu.org/releases/2503/dolphin-2503-x64.7z",
+  dolphin: "https://dl.dolphin-emu.org/releases/2503a/dolphin-2503a-x64.7z",
   pcsx2:
     "https://github.com/PCSX2/pcsx2/releases/download/v2.2.0/pcsx2-v2.2.0-windows-x64-Qt.7z",
   ryujinx:
-    "https://github.com/Ryubing/Stable-Releases/releases/download/1.2.86/ryujinx-1.2.86-win_x64.zip",
+    "https://github.com/Ryubing/Stable-Releases/releases/download/1.3.1/ryujinx-1.3.1-win_x64.zip",
 };
 
 export const downloadEmulatorsWindows = () =>

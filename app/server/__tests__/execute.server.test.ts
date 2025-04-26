@@ -1,5 +1,5 @@
 import nodepath from "path";
-import { execFileSync } from "child_process";
+import { execFile, execFileSync } from "child_process";
 
 import { readAppearance, readGeneral } from "../settings.server";
 import type { Category } from "../../types/jsonFiles/category";
@@ -65,10 +65,15 @@ describe("execute.server", () => {
 
         await startGame(pcenginecd.id, entry);
 
-        expect(execFileSync).toHaveBeenCalledWith(mednafen.path, ["wrong"], {
-          encoding: "utf8",
-        });
-        expect(execFileSync).toHaveBeenCalledWith(
+        expect(execFile).toHaveBeenCalledWith(
+          mednafen.path,
+          ["wrong"],
+          {
+            encoding: "utf8",
+          },
+          expect.anything(),
+        );
+        expect(execFile).toHaveBeenCalledWith(
           mednafen.path,
           expect.arrayContaining([
             createAbsoluteEntryPath(pcenginecd.name, entry.path),
@@ -76,6 +81,7 @@ describe("execute.server", () => {
           {
             encoding: "utf8",
           },
+          expect.anything(),
         );
       });
 
@@ -88,7 +94,7 @@ describe("execute.server", () => {
 
         await startGame(neogeo.id, entry);
 
-        expect(execFileSync).toHaveBeenCalledWith(
+        expect(execFile).toHaveBeenCalledWith(
           mameNeoGeo.path,
           [
             "-w",
@@ -106,7 +112,7 @@ describe("execute.server", () => {
         );
       });
 
-      it("Should add environment varables", async () => {
+      it("Should add environment variables", async () => {
         vi.mocked(existsSync).mockReturnValueOnce(true);
         vi.mocked(readCategory).mockReturnValueOnce(pcenginecd);
         vi.mocked(readFilenames).mockReturnValue([mednafen.path]);
@@ -114,10 +120,10 @@ describe("execute.server", () => {
 
         await startGame(pcenginecd.id, entry);
 
-        expect(execFileSync).toHaveBeenCalledWith(mednafen.path, ["wrong"], {
+        expect(execFile).toHaveBeenCalledWith(mednafen.path, ["wrong"], {
           encoding: "utf8",
         });
-        expect(execFileSync).toHaveBeenCalledWith(
+        expect(execFile).toHaveBeenCalledWith(
           mednafen.path,
           expect.arrayContaining([
             createAbsoluteEntryPath(pcenginecd.name, entry.path),
@@ -137,7 +143,7 @@ describe("execute.server", () => {
 
         await expect(startGame(pcenginecd.id, entry)).rejects.toThrowError();
 
-        expect(execFileSync).not.toHaveBeenCalled();
+        expect(execFile).not.toHaveBeenCalled();
       });
     });
 
@@ -164,7 +170,7 @@ describe("execute.server", () => {
 
         await startGame(pcenginecdLinux.id, entry);
 
-        expect(execFileSync).toHaveBeenCalledWith(
+        expect(execFile).toHaveBeenCalledWith(
           "flatpak",
           [
             "run",
@@ -176,7 +182,7 @@ describe("execute.server", () => {
             encoding: "utf8",
           },
         );
-        expect(execFileSync).toHaveBeenCalledWith(
+        expect(execFile).toHaveBeenCalledWith(
           "flatpak",
           expect.arrayContaining([
             "run",
@@ -188,6 +194,7 @@ describe("execute.server", () => {
           {
             encoding: "utf8",
           },
+          expect.anything,
         );
       });
 
@@ -203,7 +210,7 @@ describe("execute.server", () => {
 
         await startGame(neogeo.id, entry);
 
-        expect(execFileSync).toHaveBeenCalledWith(
+        expect(execFile).toHaveBeenCalledWith(
           "flatpak",
           [
             "run",
@@ -221,6 +228,7 @@ describe("execute.server", () => {
           {
             encoding: "utf8",
           },
+          expect.anything(),
         );
       });
 
@@ -238,9 +246,9 @@ describe("execute.server", () => {
           startGame(pcenginecdLinux.id, entry),
         ).rejects.toThrowError();
 
-        expect(execFileSync).toBeCalledTimes(3);
+        expect(execFile).toBeCalledTimes(3);
 
-        expect(execFileSync).not.toHaveBeenCalledWith(
+        expect(execFile).not.toHaveBeenCalledWith(
           "flatpak",
           expect.arrayContaining([
             "run",

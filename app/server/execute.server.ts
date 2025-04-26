@@ -96,7 +96,7 @@ const executeApplication = async (file: string, args: string[]) => {
       killChildProcess();
     });
 
-    childProcess.on("close", (code) => {
+    childProcess?.on("close", (code) => {
       globalShortcut?.unregister("CommandOrControl+C");
       if (code === 0) {
         setTimeout(() => {
