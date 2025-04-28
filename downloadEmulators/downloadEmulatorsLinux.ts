@@ -2,7 +2,7 @@ import type { EmulatorDownloads } from "./downloadEmulators";
 import { downloadEmulators } from "./downloadEmulators";
 
 const emulatorDownloadsLinux: Partial<EmulatorDownloads> = {
-  ares: "https://github.com/Samueru-sama/ares-emu-appimage/releases/download/v143/ares-v143-anylinux-x86_64.AppImage",
+  ares: "https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v144/ares-v144-anylinux-x86_64.AppImage",
   azahar:
     "https://github.com/azahar-emu/azahar/releases/download/2120.3/azahar-2120.3-linux-appimage.tar.gz",
   duckstation:
