@@ -1,4 +1,5 @@
 import nodepath from "path";
+import type { ChildProcess } from "child_process";
 import { execFile, execFileSync } from "child_process";
 
 import { readAppearance, readGeneral } from "../settings.server";
@@ -43,6 +44,14 @@ describe("execute.server", () => {
     vi.resetModules();
     vi.resetAllMocks();
     process.env = { ...env };
+
+    const childProcessMocked = {
+      on: (event: string, callback: (code: number) => void) => {
+        callback(0);
+        return childProcessMocked;
+      },
+    } as ChildProcess;
+    vi.mocked(execFile).mockReturnValue(childProcessMocked);
   });
 
   describe("executeApplication", () => {
@@ -65,14 +74,9 @@ describe("execute.server", () => {
 
         await startGame(pcenginecd.id, entry);
 
-        expect(execFile).toHaveBeenCalledWith(
-          mednafen.path,
-          ["wrong"],
-          {
-            encoding: "utf8",
-          },
-          expect.anything(),
-        );
+        expect(execFileSync).toHaveBeenCalledWith(mednafen.path, ["wrong"], {
+          encoding: "utf8",
+        });
         expect(execFile).toHaveBeenCalledWith(
           mednafen.path,
           expect.arrayContaining([
@@ -109,6 +113,7 @@ describe("execute.server", () => {
           {
             encoding: "utf8",
           },
+          expect.anything(),
         );
       });
 
@@ -120,7 +125,7 @@ describe("execute.server", () => {
 
         await startGame(pcenginecd.id, entry);
 
-        expect(execFile).toHaveBeenCalledWith(mednafen.path, ["wrong"], {
+        expect(execFileSync).toHaveBeenCalledWith(mednafen.path, ["wrong"], {
           encoding: "utf8",
         });
         expect(execFile).toHaveBeenCalledWith(
@@ -131,6 +136,7 @@ describe("execute.server", () => {
           {
             encoding: "utf8",
           },
+          expect.anything(),
         );
         expect(process.env.MEDNAFEN_HOME).toBe(nodepath.dirname(mednafen.path));
       });
@@ -170,7 +176,7 @@ describe("execute.server", () => {
 
         await startGame(pcenginecdLinux.id, entry);
 
-        expect(execFile).toHaveBeenCalledWith(
+        expect(execFileSync).toHaveBeenCalledWith(
           "flatpak",
           [
             "run",
@@ -194,7 +200,7 @@ describe("execute.server", () => {
           {
             encoding: "utf8",
           },
-          expect.anything,
+          expect.anything(),
         );
       });
 
@@ -246,21 +252,7 @@ describe("execute.server", () => {
           startGame(pcenginecdLinux.id, entry),
         ).rejects.toThrowError();
 
-        expect(execFile).toBeCalledTimes(3);
-
-        expect(execFile).not.toHaveBeenCalledWith(
-          "flatpak",
-          expect.arrayContaining([
-            "run",
-            "--filesystem=F:/games/Emulation/roms",
-            "--command=mednafen",
-            applicationsDB.mednafen.flatpakId,
-            createAbsoluteEntryPath(pcenginecdLinux.name, entry.path),
-          ]),
-          {
-            encoding: "utf8",
-          },
-        );
+        expect(execFile).not.toHaveBeenCalled();
       });
     });
   });
