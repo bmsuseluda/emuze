@@ -124,8 +124,7 @@ const splitStringByIndices = (str: string, indices: number[]): string[] => {
 
 export const createControllerId = (sdlGuiId: string) => {
   const mapping = splitStringByIndices(sdlGuiId, [2, 4, 6, 8, 10, 12, 16, 20]);
-
-  return `0-${mapping[3]}${mapping[2]}${mapping[1]}${mapping[0]}-${mapping[5]}${mapping[4]}-${mapping[6]}-${mapping[7]}-${mapping[8]}`;
+  return `0-${mapping[0].padStart(8, "0")}-${mapping[5]}${mapping[4]}-${mapping[6]}-${mapping[7]}-${mapping[8]}`;
 };
 
 /**
@@ -185,6 +184,8 @@ const replaceConfig = (switchRomsPath: string) => {
     ...oldConfig,
     show_confirm_exit: false,
     check_updates_on_start: false,
+    update_checker_type: "Off",
+    skip_user_profiles: true,
     hotkeys: {
       ...oldConfig.hotkeys,
       show_ui: "F2",

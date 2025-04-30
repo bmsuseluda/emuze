@@ -76,7 +76,9 @@ export interface InputConfig {
 
 export interface Config {
   check_updates_on_start?: boolean;
+  update_checker_type?: "Off" | "PromptAtStartup";
   show_confirm_exit?: boolean;
+  skip_user_profiles?: boolean;
   hotkeys?: {
     show_ui?: string;
     toggle_mute?: string;
