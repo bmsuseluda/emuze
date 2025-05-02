@@ -17,6 +17,7 @@ import nodepath from "path";
 import { defaultSettings } from "./defaultSettings";
 import type { ApplicationId } from "../../applicationId";
 import { keyboardConfig } from "./keyboardConfig";
+import envPaths from "env-paths";
 
 const flatpakId = "org.duckstation.DuckStation";
 const applicationId: ApplicationId = "duckstation";
@@ -161,17 +162,13 @@ export const replaceControllerPortsConfig: SectionReplacement = (sections) =>
     { keyValue: "MultitapMode = Port1Only" },
   ]);
 
+const { data } = envPaths("duckstation", { suffix: "" });
+
 export const getConfigFilePath = (configFileName: string) => {
   if (isWindows()) {
     return nodepath.join(homedir(), "Documents", "DuckStation", configFileName);
   } else {
-    return nodepath.join(
-      homedir(),
-      ".local",
-      "share",
-      "duckstation",
-      configFileName,
-    );
+    return nodepath.join(data, configFileName);
   }
 };
 

@@ -25,7 +25,7 @@ const bundledPathLinux = nodepath.join(
 );
 const bundledPathWindows = nodepath.join(
   applicationId,
-  "ares-v143",
+  "ares-v144",
   "ares.exe",
 );
 

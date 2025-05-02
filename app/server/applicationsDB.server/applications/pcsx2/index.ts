@@ -17,6 +17,7 @@ import sdl from "@kmamal/sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
 import type { ApplicationId } from "../../applicationId";
 import { keyboardConfig } from "./keyboardConfig";
+import envPaths from "env-paths";
 
 const flatpakId = "net.pcsx2.PCSX2";
 const applicationId: ApplicationId = "pcsx2";
@@ -175,6 +176,8 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
+const { config } = envPaths("PCSX2", { suffix: "" });
+
 export const getConfigFilePath = (configFileName: string) => {
   if (isWindows()) {
     return nodepath.join(
@@ -185,7 +188,7 @@ export const getConfigFilePath = (configFileName: string) => {
       configFileName,
     );
   } else {
-    return nodepath.join(homedir(), ".config", "PCSX2", "inis", configFileName);
+    return nodepath.join(config, "inis", configFileName);
   }
 };
 
