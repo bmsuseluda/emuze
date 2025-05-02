@@ -81,6 +81,7 @@ const getVirtualGamepadDpad = (
   physicalGamepad: PhysicalGamepad,
   systemHasAnalogStick: boolean,
 ) => {
+  log("debug", "mappingObject", mappingObject);
   if (mappingObject.dpup) {
     if (mappingObject.dpup.startsWith("h")) {
       //     hat
@@ -154,12 +155,7 @@ const getVirtualGamepadDpad = (
   }
 };
 
-const getIndexForDeviceId = (index: number) => {
-  if (index > 0) {
-    return `${index}`;
-  }
-  return "";
-};
+const getIndexForDeviceId = (index: number) => `${index + 1}`;
 
 /**
  * Creates the ares specific device id based on the SDL device input.

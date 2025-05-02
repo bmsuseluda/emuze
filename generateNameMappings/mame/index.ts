@@ -90,6 +90,7 @@ const importMame = () => {
     writeFile(extractedGames, nodepath.join(resultPath, "mame.json"));
   } catch (error) {
     console.log(error);
+    process.exit(1);
   }
 };
 

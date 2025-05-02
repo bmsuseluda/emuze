@@ -2,6 +2,7 @@ import nodepath from "path";
 // Import can't be shortend because path aliases do not work
 import { writeFile } from "../../app/server/readWriteData.server";
 import { spawnSync } from "child_process";
+import { checkFlatpakIsInstalled } from "../../app/server/applicationsDB.server/checkEmulatorIsInstalled";
 
 export type Result = Record<string, string | number>;
 
@@ -33,21 +34,26 @@ export const extractGames = (data: string) => {
 };
 
 const importScummvm = () => {
-  try {
-    const data = spawnSync(
-      "flatpak",
-      ["run", "org.scummvm.ScummVM", "--list-games"],
-      {
+  const flatpakId = "org.scummvm.ScummVM";
+  const isScummVmInstalled = checkFlatpakIsInstalled(flatpakId);
+
+  if (isScummVmInstalled) {
+    try {
+      const data = spawnSync("flatpak", ["run", flatpakId, "--list-games"], {
         encoding: "utf-8",
         maxBuffer: 1000000000,
-      },
-    ).stdout.toString();
+      }).stdout.toString();
 
-    const result = extractGames(data);
+      const result = extractGames(data);
 
-    writeFile(result, nodepath.join(resultPath, "scummvm.json"));
-  } catch (error) {
-    console.log(error);
+      writeFile(result, nodepath.join(resultPath, "scummvm.json"));
+    } catch (error) {
+      console.log(error);
+      process.exit(1);
+    }
+  } else {
+    console.error("ScummVM is not installed");
+    process.exit(1);
   }
 };
 
