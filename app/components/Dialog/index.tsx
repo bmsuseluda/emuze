@@ -79,6 +79,7 @@ interface Props {
   open: boolean;
   onClose: (event?: DialogCloseEvent) => void;
   closable?: boolean;
+  showCloseIcon?: boolean;
   size?: "small" | "medium" | "dynamic";
   variant?: "default" | "accent";
 }
@@ -88,6 +89,7 @@ export const Dialog = ({
   open,
   onClose,
   closable = true,
+  showCloseIcon = true,
   size = "medium",
   variant = "default",
 }: Props) => {
@@ -111,7 +113,7 @@ export const Dialog = ({
           variant={variant}
         >
           {children}
-          {closable && (
+          {closable && showCloseIcon && (
             <IconButton aria-label="Close Modal" onClick={handleClose}>
               <VscChromeClose />
             </IconButton>

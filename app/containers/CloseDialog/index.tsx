@@ -3,7 +3,11 @@ import { useFocus } from "../../hooks/useFocus";
 import type { FocusElement } from "../../types/focusElement";
 import { useGamepadsOnGrid } from "../../hooks/useGamepadsOnGrid";
 import { useCallback } from "react";
-import { useInputConfirmation } from "../../hooks/useDirectionalInput";
+import {
+  useInputBack,
+  useInputConfirmation,
+  useInputSettings,
+} from "../../hooks/useDirectionalInput";
 
 export const CloseDialogContainer = () => {
   const { isInFocus, switchFocusBack } = useFocus<FocusElement>("closeDialog");
@@ -25,13 +29,15 @@ export const CloseDialogContainer = () => {
     }
   }, [isInFocus, selectedEntry]);
 
-  useInputConfirmation(onClick);
-
   const onCancel = useCallback(() => {
     if (isInFocus) {
       switchFocusBack();
     }
   }, [isInFocus, switchFocusBack]);
+
+  useInputConfirmation(onClick);
+  useInputBack(onCancel);
+  useInputSettings(onCancel);
 
   const onClose = useCallback(() => {
     if (isInFocus) {

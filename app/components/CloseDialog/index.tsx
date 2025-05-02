@@ -1,3 +1,5 @@
+import { TbCancel } from "react-icons/tb";
+import { RiShutDownLine } from "react-icons/ri";
 import { Dialog } from "../Dialog";
 import { styled } from "../../../styled-system/jsx";
 import { Headline } from "../Headline";
@@ -16,10 +18,10 @@ const Content = styled("div", {
   base: {
     backgroundColor: "backgroundColor",
     padding: 1,
-    paddingTop: 0,
     display: "flex",
     flexDirection: "column",
-    gap: 1,
+    alignItems: "center",
+    gap: 2,
   },
 });
 
@@ -38,18 +40,26 @@ export const CloseDialog = ({
   entryListRef,
   entriesRefCallback,
 }: Props) => (
-  <Dialog open={open} onClose={onClose} size="dynamic" closable={false}>
+  <Dialog open={open} onClose={onCancel} size="dynamic" showCloseIcon={false}>
     <Content>
       <Headline>Close emuze?</Headline>
       <ButtonRow ref={entryListRef}>
         <li>
-          <Button onClick={onCancel} ref={entriesRefCallback(0)}>
-            No
+          <Button
+            onClick={onCancel}
+            icon={<TbCancel />}
+            ref={entriesRefCallback(0)}
+          >
+            Cancel
           </Button>
         </li>
         <li>
-          <Button onClick={onClose} ref={entriesRefCallback(1)}>
-            Yes
+          <Button
+            onClick={onClose}
+            icon={<RiShutDownLine />}
+            ref={entriesRefCallback(1)}
+          >
+            Close
           </Button>
         </li>
       </ButtonRow>

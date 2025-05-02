@@ -22,6 +22,7 @@ import {
   useInputConfirmation,
   useInputSettings,
 } from "../hooks/useDirectionalInput";
+import { CloseDialogContainer } from "../containers/CloseDialog";
 
 export const loader = () => {
   const { collapseSidebar } = readAppearance();
@@ -64,8 +65,10 @@ export default function Index() {
       switchFocusBackMultiple("settingsMain", "settingsSidebar");
       // TODO: replace with robust solution
       navigate(pathname.split("/settings")[0]);
+    } else {
+      switchFocus("closeDialog");
     }
-  }, [pathname, navigate, switchFocusBackMultiple, closable]);
+  }, [pathname, navigate, switchFocusBackMultiple, closable, switchFocus]);
 
   const handleCloseOnFocus = useCallback(() => {
     if (isInFocus) {
@@ -97,7 +100,6 @@ export default function Index() {
     <Dialog
       open={true}
       onClose={handleClose}
-      closable={closable}
       size={collapseSidebar ? "small" : "medium"}
     >
       <SidebarMainLayout>
@@ -123,6 +125,7 @@ export default function Index() {
           <Outlet />
         </SidebarMainLayout.Main>
       </SidebarMainLayout>
+      <CloseDialogContainer />
     </Dialog>
   );
 }
