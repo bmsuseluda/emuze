@@ -1,5 +1,5 @@
 import { initRemix } from "remix-electron";
-import { platform } from "os";
+import { homedir, platform } from "os";
 import {
   app,
   BrowserWindow,
@@ -17,6 +17,8 @@ import {
   commandLineOptions,
   commandLineOptionsString,
 } from "../app/server/commandLine.server";
+import { cpSync, existsSync, rmSync } from "fs";
+import { homeDirectory } from "../app/server/homeDirectory.server";
 
 dotenv.config();
 
@@ -37,7 +39,27 @@ app.commandLine.appendSwitch("enable-features", "GlobalShortcutsPortal");
 // TODO: remove if workaround is not necessary anymore: https://github.com/electron/electron/issues/46538
 app.commandLine.appendSwitch("gtk-version", "3");
 
+/**
+ * Migration from old home directory to new one.
+ *
+ * TODO: remove this in one of the next releases
+ */
+const moveHomeDirectory = () => {
+  const oldHomeDirectory = nodepath.join(homedir(), ".emuze");
+
+  if (existsSync(oldHomeDirectory)) {
+    cpSync(oldHomeDirectory, homeDirectory, {
+      recursive: true,
+      force: true,
+      preserveTimestamps: true,
+    });
+    rmSync(oldHomeDirectory, { recursive: true, force: true });
+  }
+};
+
 app.on("ready", async () => {
+  moveHomeDirectory();
+
   if (app.commandLine.hasSwitch(commandLineOptions.help.id)) {
     showHelp();
     return;

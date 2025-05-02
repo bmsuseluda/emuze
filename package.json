@@ -47,7 +47,8 @@
     "e2e:serveRemix:wrongEmulatorsPathWindows": "ts-node e2eTests/tests/wrongEmulatorsPathWindows/start.ts",
     "e2e:serveRemix:wrongRomsPath": "ts-node e2eTests/tests/wrongRomsPath/start.ts",
     "e2e:serveRemix:wrongRomsPathWindows": "ts-node e2eTests/tests/wrongRomsPathWindows/start.ts",
-    "e2e:playwright": "playwright test"
+    "e2e:playwright": "playwright test --ui",
+    "e2e:updateSnapshots": "yarn e2e -- --update-snapshots"
   },
   "dependencies": {
     "@kmamal/sdl": "^0.11.7",
