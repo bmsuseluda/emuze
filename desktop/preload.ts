@@ -15,6 +15,7 @@ export const electronAPI = {
       callback(fullscreen),
     ),
   isFullscreen: () => ipcRenderer.invoke("isFullscreen"),
+  closeEmuze: () => ipcRenderer.invoke("closeEmuze"),
   onBlur: (callback: () => void) =>
     ipcRenderer.on("blur", (_event) => callback()),
   onFocus: (callback: () => void) =>

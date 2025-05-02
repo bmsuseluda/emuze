@@ -5,9 +5,14 @@ import {
   useDirectionalInputUp,
   useInputBack,
 } from "../useDirectionalInput";
+import type { FocusElement } from "../../types/focusElement";
 
 // TODO: write tests
-export const useGamepadsOnSidebar = (isInFocus: boolean) => {
+export const useGamepadsOnSidebar = (
+  isInFocus: boolean,
+  switchFocus: (nextFocusElement: FocusElement) => void,
+  inputBack: boolean = true,
+) => {
   const categoryLinksRefs = useRef<ElementRef<"a">[]>([]);
 
   const selectLink = useCallback((index: number) => {
@@ -59,10 +64,15 @@ export const useGamepadsOnSidebar = (isInFocus: boolean) => {
   }, [isInFocus, selectLink]);
 
   const onBack = useCallback(() => {
-    if (isInFocus) {
-      selectLink(0);
+    if (inputBack && isInFocus) {
+      const currentIndex = getCurrentIndex();
+      if (currentIndex === 0) {
+        switchFocus("closeDialog");
+      } else {
+        selectLink(0);
+      }
     }
-  }, [isInFocus, selectLink]);
+  }, [inputBack, isInFocus, selectLink, switchFocus]);
 
   useDirectionalInputUp(onUp);
   useDirectionalInputDown(onDown);

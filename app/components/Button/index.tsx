@@ -24,6 +24,10 @@ export const StyledButton = styled("button", {
       borderStyle: "dashed",
       cursor: "not-allowed",
     },
+
+    "&:focus-visible": {
+      borderColor: "accent",
+    },
   },
 });
 

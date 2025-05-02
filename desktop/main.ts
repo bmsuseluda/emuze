@@ -162,6 +162,10 @@ app.on("ready", async () => {
     }
   });
 
+  ipcMain.handle("closeEmuze", () => {
+    app.quit();
+  });
+
   window.webContents.on("before-input-event", (event, input) => {
     if (input.key.toLowerCase() === "f12") {
       event.preventDefault();

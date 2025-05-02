@@ -52,7 +52,11 @@ export default function Index() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { categoryLinksRefCallback } = useGamepadsOnSidebar(isInFocus);
+  const { categoryLinksRefCallback } = useGamepadsOnSidebar(
+    isInFocus,
+    switchFocus,
+    false,
+  );
   const navigate = useNavigate();
 
   const handleClose = useCallback(() => {
@@ -94,7 +98,7 @@ export default function Index() {
       open={true}
       onClose={handleClose}
       closable={closable}
-      smaller={collapseSidebar}
+      size={collapseSidebar ? "small" : "medium"}
     >
       <SidebarMainLayout>
         <SidebarMainLayout.Sidebar

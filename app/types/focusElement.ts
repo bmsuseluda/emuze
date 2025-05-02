@@ -6,7 +6,8 @@ export type FocusElement =
   | "settingsSidebar"
   | "settingsMain"
   | "errorDialog"
-  | "gameDialog";
+  | "gameDialog"
+  | "closeDialog";
 
 export const getFocusDefault = (general: General | null): FocusElement => {
   if (general?.applicationsPath || general?.categoriesPath) {

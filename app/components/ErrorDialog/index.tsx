@@ -26,7 +26,7 @@ export const ErrorDialog = ({
   onClose,
   listRef,
 }: Props) => (
-  <Dialog open={true} onClose={onClose} variant="accent" smaller>
+  <Dialog open={true} onClose={onClose} variant="accent" size="small">
     <SidebarMainLayout>
       <SidebarMainLayout.Main>
         <ListActionBarLayout

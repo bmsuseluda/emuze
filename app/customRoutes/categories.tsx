@@ -21,6 +21,7 @@ import {
   useDirectionalInputRight,
   useInputConfirmation,
 } from "../hooks/useDirectionalInput";
+import { CloseDialogContainer } from "../containers/CloseDialog";
 
 type CategoryLinks = Array<{ id: SystemId; name: string; to: string }>;
 type LoaderData = {
@@ -87,7 +88,10 @@ export default function Categories() {
   const { isInFocus, switchFocus, enableFocus } =
     useFocus<FocusElement>("sidebar");
 
-  const { categoryLinksRefCallback } = useGamepadsOnSidebar(isInFocus);
+  const { categoryLinksRefCallback } = useGamepadsOnSidebar(
+    isInFocus,
+    switchFocus,
+  );
 
   const switchToMain = useCallback(() => {
     if (isInFocus) {
@@ -130,6 +134,7 @@ export default function Categories() {
       <SidebarMainLayout.Main>
         <Outlet />
       </SidebarMainLayout.Main>
+      <CloseDialogContainer />
     </SidebarMainLayout>
   );
 }
