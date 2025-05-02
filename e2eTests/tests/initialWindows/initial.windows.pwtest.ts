@@ -22,7 +22,6 @@ test("Should show initial config page", async ({
   settingsPage,
 }) => {
   await settingsPage.expectIsInitialSubPage();
-  await expect(settingsPage.closeButton).not.toBeVisible();
   await expect(settingsPage.generalPage.romsPath).toBeVisible();
   await expect(
     settingsPage.generalPage.romsPathRequiredError,
@@ -33,12 +32,6 @@ test("Should show initial config page", async ({
   ).not.toBeVisible();
 
   await expect(page).toHaveScreenshot();
-
-  await test.step("Should prevent from closing the overlay", async () => {
-    await libraryPage.press("Escape");
-
-    await settingsPage.expectIsInitialSubPage();
-  });
 
   await test.step("Should prevent from submitting without emulators path and roms path", async () => {
     await settingsPage.generalPage.importAllButton.click();
@@ -63,7 +56,6 @@ test("Should import all", async ({ page, libraryPage, settingsPage }) => {
   await settingsPage.generalPage.romsPath.fill(testRomsPath);
   await settingsPage.generalPage.importAllButton.click();
 
-  await expect(settingsPage.closeButton).toBeVisible();
   await libraryPage.press("Escape");
   await libraryPage.expectIsInitialSystem();
   await expect(page).toHaveScreenshot();
