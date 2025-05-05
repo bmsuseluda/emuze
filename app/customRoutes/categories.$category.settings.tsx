@@ -111,8 +111,9 @@ export default function Index() {
             <li key={id}>
               <Link
                 to={id}
-                ref={categoryLinksRefCallback(index)}
                 icon={<SettingsIcon id={id} />}
+                aria-label={name}
+                ref={categoryLinksRefCallback(index)}
                 onClick={onLinkClick}
                 isFocused={isInFocus}
               >

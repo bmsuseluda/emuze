@@ -1,5 +1,6 @@
 import { expect, type Locator, type Page } from "@playwright/test";
-import { ports, TestName } from "../tests/ports";
+import type { TestName } from "../tests/ports";
+import { ports } from "../tests/ports";
 import { GameVersionsPage } from "./gameVersionsPage";
 
 export class LibraryPage {
@@ -10,6 +11,7 @@ export class LibraryPage {
   readonly noInstalledEmulatorsButton: Locator;
   readonly importGamesButton: Locator;
   readonly gameVersionsPage: GameVersionsPage;
+  readonly loadingModal: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -23,6 +25,7 @@ export class LibraryPage {
       name: "Import Games",
     });
     this.gameVersionsPage = new GameVersionsPage(page);
+    this.loadingModal = page.getByRole("img", { name: "Logo pulse animation" });
   }
 
   async goto(testName: TestName) {

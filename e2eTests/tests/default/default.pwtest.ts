@@ -111,7 +111,7 @@ test("game versions", async ({ libraryPage }) => {
 });
 
 test("Should open the about page", async ({ page, settingsPage }) => {
-  await settingsPage.openSettingsViaClick();
+  await settingsPage.openSettingsViaClick(true);
   await settingsPage.goToSubPageViaClick(settingsPage.aboutPage.name);
   await expect(settingsPage.aboutPage.github).toBeVisible();
   await settingsPage.press("ArrowRight");

@@ -15,11 +15,7 @@ test.beforeEach(async ({ libraryPage }) => {
   await libraryPage.goto(testName);
 });
 
-test("Should show initial config page", async ({
-  page,
-  libraryPage,
-  settingsPage,
-}) => {
+test("Should show initial config page", async ({ page, settingsPage }) => {
   await settingsPage.expectIsInitialSubPage();
   await expect(settingsPage.generalPage.romsPath).toBeVisible();
   await expect(
@@ -41,6 +37,8 @@ test("Should show initial config page", async ({
 test("Should import all", async ({ page, libraryPage, settingsPage }) => {
   await settingsPage.generalPage.romsPath.fill(testRomsPath);
   await settingsPage.generalPage.importAllButton.click();
+  await expect(libraryPage.loadingModal).toBeVisible();
+  await expect(libraryPage.loadingModal).not.toBeVisible();
 
   await libraryPage.press("Escape");
   await libraryPage.expectIsInitialSystem();
