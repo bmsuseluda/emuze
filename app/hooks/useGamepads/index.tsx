@@ -150,7 +150,6 @@ export const useGamepads = () => {
   );
 
   const update = useCallback(() => {
-    console.log("update", focusRef.current);
     if (focusRef.current) {
       const gamepads = navigator.getGamepads();
       if (gamepads.length > 0 && gamepads.find(Boolean)) {
@@ -196,15 +195,6 @@ export const useGamepads = () => {
   useEffect(() => {
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // window.addEventListener("gamepadconnected", (e) => {
-    //   console.log(
-    //     "Gamepad connected at index %d: %s. %d buttons, %d axes.",
-    //     e.gamepad.index,
-    //     e.gamepad.id,
-    //     e.gamepad.buttons.length,
-    //     e.gamepad.axes.length,
-    //   );
-    // });
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
