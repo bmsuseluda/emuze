@@ -107,8 +107,7 @@ return scripts.getLinuxDownloadLink('2) ')
 3) Mark the AppImage as executable and start emuze
 4) Choose the [folder where your Roms are located](#roms-folder)
 5) Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze`
-6) Add `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
-7) Switch to Game Mode
+6) Switch to Game Mode
 
 #### Steam Input Profile
 

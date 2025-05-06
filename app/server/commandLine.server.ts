@@ -21,11 +21,6 @@ export const commandLineOptions = {
     id: "lime3ds",
     description: "Activates the lime3DS emulator to play 3DS",
   },
-  noSandbox: {
-    id: "no-sandbox",
-    description:
-      "Necessary if emuze is used as a non steam game (Steam Deck Game Mode)",
-  },
 } satisfies Record<string, { id: string; description: string }>;
 
 export const commandLineOptionsString = `Usage: emuze [options]
