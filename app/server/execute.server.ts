@@ -1,6 +1,7 @@
 import type { ChildProcess, ExecFileException } from "child_process";
 import { execFile, execFileSync } from "child_process";
 import kill from "tree-kill";
+import fkill from "fkill";
 import { readAppearance, readGeneral } from "./settings.server";
 import type { Category, Entry } from "../types/jsonFiles/category";
 import { createAbsoluteEntryPath } from "../types/jsonFiles/category";
@@ -33,11 +34,17 @@ const killChildProcess = () => {
   log("debug", "kill process");
 
   if (childProcess?.pid) {
-    kill(childProcess.pid, "SIGKILL", (err) => {
-      if (err) {
-        log("error", "Failed to kill process:", err);
-      }
-    });
+    if (isWindows()) {
+      fkill(childProcess.pid, { tree: true }).catch((reason) => {
+        log("error", "Failed to kill process:", reason);
+      });
+    } else {
+      kill(childProcess.pid, "SIGKILL", (err) => {
+        if (err) {
+          log("error", "Failed to kill process:", err);
+        }
+      });
+    }
   }
 };
 

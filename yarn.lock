@@ -7782,6 +7782,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"aggregate-error@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "aggregate-error@npm:5.0.0"
+  dependencies:
+    clean-stack: "npm:^5.2.0"
+    indent-string: "npm:^5.0.0"
+  checksum: 10/37834eb0dac6ebd05ca8aa82e00deeb65fb7b1462c68ccb620221ba1753640fcb249e46c03401b470701a58826b65426deda83783fc2e8347c4b5037b2724d9b
+  languageName: node
+  linkType: hard
+
 "ahocorasick@npm:1.0.2":
   version: 1.0.2
   resolution: "ahocorasick@npm:1.0.2"
@@ -9299,6 +9309,15 @@ __metadata:
   dependencies:
     escape-string-regexp: "npm:5.0.0"
   checksum: 10/373f656a31face5c615c0839213b9b542a0a48057abfb1df66900eab4dc2a5c6097628e4a0b5aa559cdfc4e66f8a14ea47be9681773165a44470ef5fb8ccc172
+  languageName: node
+  linkType: hard
+
+"clean-stack@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "clean-stack@npm:5.2.0"
+  dependencies:
+    escape-string-regexp: "npm:5.0.0"
+  checksum: 10/9b16c9d56ef673b1666030d04afc5a382c7ec6b5fb8df2dd361090c3ac79273695d6db9867938bb3268903dcebf401e2c6034b2f56f27673f6032b5e89217b81
   languageName: node
   linkType: hard
 
@@ -11016,6 +11035,7 @@ __metadata:
     eslint-plugin-react: "npm:^7.37.4"
     eslint-plugin-storybook: "npm:^0.11.4"
     fast-xml-parser: "npm:^4.5.3"
+    fkill: "npm:^9.0.0"
     follow-redirects: "npm:^1.15.9"
     fs-extra: "npm:^11.3.0"
     happy-dom: "npm:^17.4.3"
@@ -12642,6 +12662,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"execa@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "execa@npm:6.1.0"
+  dependencies:
+    cross-spawn: "npm:^7.0.3"
+    get-stream: "npm:^6.0.1"
+    human-signals: "npm:^3.0.1"
+    is-stream: "npm:^3.0.0"
+    merge-stream: "npm:^2.0.0"
+    npm-run-path: "npm:^5.1.0"
+    onetime: "npm:^6.0.0"
+    signal-exit: "npm:^3.0.7"
+    strip-final-newline: "npm:^3.0.0"
+  checksum: 10/669437011a7896b41b6b84786f9054c93202cb8336bd4fe15b6376bcddc37fd31f2e81f7f446fa1de519cbe831a0b93457ee185e5072caee1f230366f7d07aef
+  languageName: node
+  linkType: hard
+
 "execa@npm:^8.0.1":
   version: 8.0.1
   resolution: "execa@npm:8.0.1"
@@ -13064,6 +13101,20 @@ __metadata:
     path-exists: "npm:^5.0.0"
     unicorn-magic: "npm:^0.1.0"
   checksum: 10/7e6b08fbc05a10677e25e74bb0a020054a86b31d1806c5e6a9e32e75472bbf177210bc16e5f97453be8bda7ae2e3d97669dbb2901f8c30b39ce53929cbea6746
+  languageName: node
+  linkType: hard
+
+"fkill@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "fkill@npm:9.0.0"
+  dependencies:
+    aggregate-error: "npm:^5.0.0"
+    execa: "npm:^8.0.1"
+    pid-port: "npm:^1.0.0"
+    process-exists: "npm:^5.0.0"
+    ps-list: "npm:^8.1.1"
+    taskkill: "npm:^5.0.0"
+  checksum: 10/9f2f3c257c7940ccda5831aeb79b9998681d3d1fcb1b1b41440af8765ea9fccd398af88a995eeb832bb921191a699aa9043b5bcce56734a726ef371fe375717b
   languageName: node
   linkType: hard
 
@@ -13579,7 +13630,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-stream@npm:^6.0.0":
+"get-stream@npm:^6.0.0, get-stream@npm:^6.0.1":
   version: 6.0.1
   resolution: "get-stream@npm:6.0.1"
   checksum: 10/781266d29725f35c59f1d214aedc92b0ae855800a980800e2923b3fbc4e56b3cb6e462c42e09a1cf1a00c64e056a78fa407cbe06c7c92b7e5cd49b4b85c2a497
@@ -14269,6 +14320,13 @@ __metadata:
   version: 2.1.0
   resolution: "human-signals@npm:2.1.0"
   checksum: 10/df59be9e0af479036798a881d1f136c4a29e0b518d4abb863afbd11bf30efa3eeb1d0425fc65942dcc05ab3bf40205ea436b0ff389f2cd20b75b8643d539bf86
+  languageName: node
+  linkType: hard
+
+"human-signals@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "human-signals@npm:3.0.1"
+  checksum: 10/0b2741651e668ddebbc9ba5163c9c33cd4f837270133eda5831f50374d010e7eacc415fe5ed04b4b113d9779a81eef1d03467a7c7eb55ec094b2bd1dd8d3a837
   languageName: node
   linkType: hard
 
@@ -18700,6 +18758,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pid-port@npm:^1.0.0":
+  version: 1.0.2
+  resolution: "pid-port@npm:1.0.2"
+  dependencies:
+    execa: "npm:^8.0.1"
+  checksum: 10/516eb1f7bc549c0a63efb55c2cf2b42275fa0a17b52e5113f38f9f53aebe2cae68d9518b76295a6dceb0ee54bd9b65c04965ae06cc2babffac0d07f36bd0c14b
+  languageName: node
+  linkType: hard
+
 "pidtree@npm:^0.6.0":
   version: 0.6.0
   resolution: "pidtree@npm:0.6.0"
@@ -19223,6 +19290,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"process-exists@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "process-exists@npm:5.0.0"
+  dependencies:
+    ps-list: "npm:^8.0.0"
+  checksum: 10/0e461f8359e2cee813f5aa348ebe008df1dcd0ecd8f706d15a2f0a3988d265af69739cd889c8be6251f7cac01b2bb9dc37f46ec6e09004313c04cfacd27d8d14
+  languageName: node
+  linkType: hard
+
 "process-nextick-args@npm:~2.0.0":
   version: 2.0.1
   resolution: "process-nextick-args@npm:2.0.1"
@@ -19293,6 +19369,13 @@ __metadata:
   version: 1.1.0
   resolution: "proxy-from-env@npm:1.1.0"
   checksum: 10/f0bb4a87cfd18f77bc2fba23ae49c3b378fb35143af16cc478171c623eebe181678f09439707ad80081d340d1593cd54a33a0113f3ccb3f4bc9451488780ee23
+  languageName: node
+  linkType: hard
+
+"ps-list@npm:^8.0.0, ps-list@npm:^8.1.1":
+  version: 8.1.1
+  resolution: "ps-list@npm:8.1.1"
+  checksum: 10/cb40320f1c760b6a803ee064b47ab8fe42723c646ba173a8416138c91de83e59e732359f730ae523a42a5c0f74c8f444a7a48d5edb9680406f20017fa7011922
   languageName: node
   linkType: hard
 
@@ -22125,6 +22208,15 @@ __metadata:
     mkdirp: "npm:^3.0.1"
     yallist: "npm:^5.0.0"
   checksum: 10/12a2a4fc6dee23e07cc47f1aeb3a14a1afd3f16397e1350036a8f4cdfee8dcac7ef5978337a4e7b2ac2c27a9a6d46388fc2088ea7c80cb6878c814b1425f8ecf
+  languageName: node
+  linkType: hard
+
+"taskkill@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "taskkill@npm:5.0.0"
+  dependencies:
+    execa: "npm:^6.1.0"
+  checksum: 10/f79aac4978f0f51b43b8a700bb6ed32467cf05a9af7dada30ee25ba8808827a3336bd302d9514ba32dccc8c7e5aac475ca44265b298e1db79ec9709cf02d6dbc
   languageName: node
   linkType: hard
 

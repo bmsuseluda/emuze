@@ -18,6 +18,7 @@ import { defaultSettings } from "./defaultSettings";
 import { app } from "electron";
 import { commandLineOptions } from "../../../commandLine.server";
 import envPaths from "env-paths";
+import { isWindows } from "../../../operationsystem.server";
 
 const flatpakId = "io.github.lime3ds.Lime3DS";
 const applicationId: ApplicationId = "azahar";
@@ -242,11 +243,15 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
-const { config } = envPaths("azahar", { suffix: "emu" });
-
-// TODO: Check if windows path is correct
-export const getConfigFilePath = (configFileName: string) =>
-  nodepath.join(config, configFileName);
+export const getConfigFilePath = (configFileName: string) => {
+  if (isWindows()) {
+    const { config } = envPaths("Azahar", { suffix: "" });
+    return nodepath.join(config, configFileName);
+  } else {
+    const { config } = envPaths("azahar", { suffix: "emu" });
+    return nodepath.join(config, configFileName);
+  }
+};
 
 export const replaceConfigSections = (n3dsRomsPath: string) => {
   const filePath = getConfigFilePath(configFileName);
