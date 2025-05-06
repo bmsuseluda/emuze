@@ -5,8 +5,8 @@ import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping";
 
 type GamepadContextState = {
   gamepadType?: GamepadType;
-  enableGamepads: () => void;
-  disableGamepads: () => void;
+  enableGamepads: (gameIsNotRunningAnymore?: boolean) => void;
+  disableGamepads: (gameIsRunning?: boolean) => void;
   isEnabled: MutableRefObject<boolean>;
 };
 

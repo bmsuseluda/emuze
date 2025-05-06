@@ -57,6 +57,7 @@ export const identifyGamepadTypeUnmasked = (gamepad: Gamepad) => {
 export const useGamepads = () => {
   const { throttleFunction } = useThrottlePress();
   const requestAnimationFrameRef = useRef<number>();
+  const gameIsRunningRef = useRef<boolean>(false);
   const focusRef = useRef<boolean>(true);
   const isEnabled = useRef<boolean>(true);
   const [gamepadType, setGamepadType] = useState<GamepadType>();
@@ -149,6 +150,7 @@ export const useGamepads = () => {
   );
 
   const update = useCallback(() => {
+    console.log("update", focusRef.current);
     if (focusRef.current) {
       const gamepads = navigator.getGamepads();
       if (gamepads.length > 0 && gamepads.find(Boolean)) {
@@ -158,7 +160,10 @@ export const useGamepads = () => {
     }
   }, [fireEventOnButtonPress]);
 
-  const disableGamepads = useCallback(() => {
+  const disableGamepads = useCallback((gameIsRunning?: boolean) => {
+    if (gameIsRunning) {
+      gameIsRunningRef.current = gameIsRunning;
+    }
     focusRef.current = false;
     isEnabled.current = false;
     if (requestAnimationFrameRef.current) {
@@ -166,11 +171,19 @@ export const useGamepads = () => {
     }
   }, []);
 
-  const enableGamepads = useCallback(() => {
-    focusRef.current = true;
-    isEnabled.current = true;
-    requestAnimationFrameRef.current = requestAnimationFrame(update);
-  }, [update]);
+  const enableGamepads = useCallback(
+    (gameIsNotRunningAnymore?: boolean) => {
+      if (gameIsNotRunningAnymore) {
+        gameIsRunningRef.current = !gameIsNotRunningAnymore;
+      }
+      if (!gameIsRunningRef.current) {
+        focusRef.current = true;
+        isEnabled.current = true;
+        update();
+      }
+    },
+    [update],
+  );
 
   const handleVisibilityChange = useCallback(() => {
     if (document.hidden) {
@@ -182,6 +195,16 @@ export const useGamepads = () => {
 
   useEffect(() => {
     document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // window.addEventListener("gamepadconnected", (e) => {
+    //   console.log(
+    //     "Gamepad connected at index %d: %s. %d buttons, %d axes.",
+    //     e.gamepad.index,
+    //     e.gamepad.id,
+    //     e.gamepad.buttons.length,
+    //     e.gamepad.axes.length,
+    //   );
+    // });
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };

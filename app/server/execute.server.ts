@@ -66,12 +66,10 @@ type ExecFileCallback = (
 ) => void;
 
 const execFileCallback =
-  (resolve: () => void, reject: (reason?: any) => void): ExecFileCallback =>
+  (reject: (reason?: any) => void): ExecFileCallback =>
   (error, stdout, stderr) => {
     if (error) {
-      if (error.signal === "SIGKILL" || error.signal === "SIGABRT") {
-        resolve();
-      } else {
+      if (error.signal !== "SIGKILL" && error.signal !== "SIGABRT") {
         log("error", "executeBundledApplication", stderr);
         reject(error);
       }
@@ -89,7 +87,7 @@ const executeApplication = async (file: string, args: string[]) => {
       {
         encoding: "utf8",
       },
-      execFileCallback(resolve, reject),
+      execFileCallback(reject),
     );
 
     globalShortcut?.register("CommandOrControl+C", () => {
@@ -98,12 +96,12 @@ const executeApplication = async (file: string, args: string[]) => {
 
     childProcess?.on("close", (code) => {
       globalShortcut?.unregister("CommandOrControl+C");
-      if (code === 0) {
+      if (code === 0 || code === null) {
         setTimeout(() => {
           resolve();
         }, 1000);
       } else {
-        reject(new Error(`Process exited with code ${code}`));
+        resolve();
       }
     });
   });

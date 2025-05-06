@@ -138,7 +138,7 @@ export default function Category() {
     useGamepadConnected();
 
   /* Set focus again after launching */
-  useEnableFocusAfterAction(enableGamepads, [actionIds.launch]);
+  useEnableFocusAfterAction(() => enableGamepads(true), [actionIds.launch]);
 
   const onBack = useCallback(() => {
     if (isInFocus) {
@@ -148,7 +148,7 @@ export default function Category() {
 
   const onExecute = useCallback(() => {
     if (launchButtonRef.current && !launchButtonRef.current.disabled) {
-      disableGamepads();
+      disableGamepads(true);
       launchButtonRef.current.click();
     }
   }, [disableGamepads]);

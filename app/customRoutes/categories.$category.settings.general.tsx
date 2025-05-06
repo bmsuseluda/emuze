@@ -315,10 +315,10 @@ export default function General() {
   useInputBack(onBack);
 
   /* Set focus again after open file explorer */
-  useEnableFocusAfterAction(enableGamepads, [
-    actionIds.chooseApplicationsPath,
-    actionIds.chooseCategoriesPath,
-  ]);
+  useEnableFocusAfterAction(
+    () => enableGamepads(true),
+    [actionIds.chooseApplicationsPath, actionIds.chooseCategoriesPath],
+  );
 
   const onOpenFileDialog = useCallback(
     (event: MouseEvent<ElementRef<"button">>) => {
@@ -327,7 +327,7 @@ export default function General() {
         selectedEntry.current = event.currentTarget;
         updatePosition();
       }
-      disableGamepads();
+      disableGamepads(true);
     },
     [disableGamepads, isInFocus, selectedEntry, switchFocus, updatePosition],
   );
