@@ -4,7 +4,7 @@ import { downloadEmulators } from "./downloadEmulators";
 const emulatorDownloadsLinux: Partial<EmulatorDownloads> = {
   ares: "https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v144/ares-v144-anylinux-x86_64.AppImage",
   azahar:
-    "https://github.com/azahar-emu/azahar/releases/download/2120.3/azahar-2120.3-linux-appimage.tar.gz",
+    "https://github.com/azahar-emu/azahar/releases/download/2121.1/azahar.AppImage",
   duckstation:
     "https://github.com/stenzek/duckstation/releases/download/v0.1-7371/DuckStation-x64.AppImage",
   dolphin:

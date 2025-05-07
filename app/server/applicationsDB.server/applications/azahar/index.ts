@@ -22,14 +22,10 @@ import { isWindows } from "../../../operationsystem.server";
 
 const flatpakId = "io.github.lime3ds.Lime3DS";
 const applicationId: ApplicationId = "azahar";
-const bundledPathLinux = nodepath.join(
-  applicationId,
-  "azahar-2120.3-linux-appimage",
-  "azahar.AppImage",
-);
+const bundledPathLinux = nodepath.join(applicationId, "azahar.AppImage");
 const bundledPathWindows = nodepath.join(
   applicationId,
-  "azahar-2120.3-windows-msvc",
+  "azahar-2121.1-windows-msvc",
   "azahar.exe",
 );
 
@@ -183,6 +179,7 @@ export const replaceMiscellaneousConfig: SectionReplacement = (sections) =>
   ]);
 
 // TODO: add default programmatically
+// TODO: implement `disable param with same value` with setting the default value
 export const replaceUiConfig =
   (n3dsRomsPath: string): SectionReplacement =>
   (sections) =>
@@ -194,20 +191,18 @@ export const replaceUiConfig =
         keyValue: "Shortcuts\\Main%20Window\\Fullscreen\\KeySeq\\default=false",
       },
       {
-        keyValue:
-          "Shortcuts\\Main%20Window\\Save%20to%20Oldest%20Slot\\KeySeq=F1",
+        keyValue: "Shortcuts\\Main%20Window\\Quick%20Save\\KeySeq=F1",
       },
       {
         keyValue:
-          "Shortcuts\\Main%20Window\\Save%20to%20Oldest%20Slot\\KeySeq\\default=false",
+          "Shortcuts\\Main%20Window\\Quick%20Save\\KeySeq\\default=false",
+      },
+      {
+        keyValue: "Shortcuts\\Main%20Window\\Quick%20Load\\KeySeq=F3",
       },
       {
         keyValue:
-          "Shortcuts\\Main%20Window\\Load%20from%20Newest%20Slot\\KeySeq=F3",
-      },
-      {
-        keyValue:
-          "Shortcuts\\Main%20Window\\Load%20from%20Newest%20Slot\\KeySeq\\default=false",
+          "Shortcuts\\Main%20Window\\Quick%20Load\\KeySeq\\default=false",
       },
       { keyValue: "Shortcuts\\Main%20Window\\Load%20Amiibo\\KeySeq=" },
       {
@@ -219,6 +214,8 @@ export const replaceUiConfig =
         keyValue:
           "Shortcuts\\Main%20Window\\Remove%20Amiibo\\KeySeq\\default=false",
       },
+      { keyValue: "saveStateWarning=false" },
+      { keyValue: "saveStateWarning\\default=false" },
       { keyValue: `Paths\\romsPath=${n3dsRomsPath}` },
       {
         keyValue: "firstStart=false",

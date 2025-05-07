@@ -4,7 +4,7 @@ import { downloadEmulators } from "./downloadEmulators";
 const emulatorDownloadsWindows: Partial<EmulatorDownloads> = {
   ares: "https://github.com/ares-emulator/ares/releases/download/v144/ares-windows-x64.zip",
   azahar:
-    "https://github.com/azahar-emu/azahar/releases/download/2120.3/azahar-2120.3-windows-msvc.zip",
+    "https://github.com/azahar-emu/azahar/releases/download/2121.1/azahar-2121.1-windows-msvc.zip",
   duckstation:
     "https://github.com/stenzek/duckstation/releases/download/v0.1-7371/duckstation-windows-x64-release.zip",
   dolphin: "https://dl.dolphin-emu.org/releases/2503a/dolphin-2503a-x64.7z",
