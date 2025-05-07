@@ -100,8 +100,7 @@ describe("execute.server", () => {
 
         expect(execFile).toHaveBeenCalledWith(
           mameNeoGeo.path,
-          [
-            "-w",
+          expect.arrayContaining([
             "-rompath",
             entryDirname,
             "-cfg_directory",
@@ -109,7 +108,7 @@ describe("execute.server", () => {
             "-nvram_directory",
             nodepath.join(entryDirname, "nvram"),
             createAbsoluteEntryPath(neogeo.name, entry.path),
-          ],
+          ]),
           {
             encoding: "utf8",
           },
@@ -218,11 +217,10 @@ describe("execute.server", () => {
 
         expect(execFile).toHaveBeenCalledWith(
           "flatpak",
-          [
+          expect.arrayContaining([
             "run",
             "--filesystem=F:/games/Emulation/roms",
             applicationsDB.mame.flatpakId,
-            "-w",
             "-rompath",
             entryDirname,
             "-cfg_directory",
@@ -230,7 +228,7 @@ describe("execute.server", () => {
             "-nvram_directory",
             nodepath.join(entryDirname, "nvram"),
             createAbsoluteEntryPath(neogeo.name, entry.path),
-          ],
+          ]),
           {
             encoding: "utf8",
           },

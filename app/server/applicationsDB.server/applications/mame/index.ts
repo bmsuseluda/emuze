@@ -14,18 +14,21 @@ const getSharedMameOptionParams: OptionParamFunction = ({
   categoryData: { name },
   settings: {
     general: { categoriesPath },
+    appearance: { fullscreen },
   },
 }) => {
   const entryDirname = nodepath.join(categoriesPath, name);
-  return [
-    "-w",
-    "-rompath",
-    entryDirname,
-    "-cfg_directory",
-    nodepath.join(entryDirname, "cfg"),
-    "-nvram_directory",
-    nodepath.join(entryDirname, "nvram"),
-  ];
+  const optionParams = [];
+
+  optionParams.push(
+    ...["-rompath", entryDirname],
+    ...["-cfg_directory", nodepath.join(entryDirname, "cfg")],
+    ...["-nvram_directory", nodepath.join(entryDirname, "nvram")],
+    "-skip_gameinfo",
+    fullscreen ? "-nowindow" : "-window",
+  );
+
+  return optionParams;
 };
 
 export const mame: Application = {
