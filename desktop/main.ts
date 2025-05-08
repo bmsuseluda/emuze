@@ -20,6 +20,7 @@ import {
 import { cpSync, existsSync, rmSync } from "fs";
 import { homeDirectory } from "../app/server/homeDirectory.server";
 
+process.env.SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS = "1";
 dotenv.config();
 
 const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {

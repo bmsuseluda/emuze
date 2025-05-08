@@ -35,8 +35,8 @@
     "dumpGame:dvd": "ts-node dumpGames/dumpDvdAndConvert.ts",
     "fetchMetaData:prepareNameMappings": "ts-node fetchMetaData/prepareNameMappings.ts",
     "fetchMetaData": "yarn fetchMetaData:prepareNameMappings && ts-node fetchMetaData/fetchMetaDataForAllSystems.ts",
-    "app:distLinux": "yarn downloadEmulators:linux && yarn build && electron-builder --linux",
-    "app:distWindows": "yarn downloadEmulators:windows && yarn build && electron-builder --win",
+    "app:distLinux": "yarn downloadEmulators:linux && yarn build && electron-builder  --config electron-builder.config.ts --linux",
+    "app:distWindows": "yarn downloadEmulators:windows && yarn build && electron-builder  --config electron-builder.config.ts --win",
     "storybook": "yarn clean && cross-env NODE_ENV=development yarn panda:codegen && storybook dev -p 6006 --no-open",
     "e2e": "yarn clean && cross-env NODE_ENV=production yarn panda:codegen && yarn build:remix && concurrently -c 'auto' --kill-others -P 'yarn:e2e:serveRemix:*' 'yarn:e2e:playwright {@}'",
     "e2e:serveRemix:default": "ts-node e2eTests/tests/default/start.ts",
@@ -143,49 +143,9 @@
     "wait-on": "^8.0.3"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "sideEffects": false,
-  "build": {
-    "appId": "org.emuze.emuze",
-    "files": [
-      "buildDesktop",
-      "build",
-      "public",
-      "fetchMetaData"
-    ],
-    "extraFiles": [
-      "emulators/**"
-    ],
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        }
-      ],
-      "icon": "public/icon.ico"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
-    },
-    "linux": {
-      "target": [
-        {
-          "target": "AppImage",
-          "arch": [
-            "x64"
-          ]
-        }
-      ],
-      "category": "Emulator",
-      "icon": "public/icons/icon512x512.png"
-    },
-    "afterPack": "./afterPackScript.js"
-  },
   "mmarkdown": {
     "src": "./readme/Template.md",
     "out": "./README.md",
