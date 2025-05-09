@@ -25,7 +25,7 @@ import type {
 import type { Settings } from "../types/jsonFiles/settings";
 import nodepath from "path";
 import { readCategory } from "./categoryDataCache.server";
-import { globalShortcut } from "electron";
+import electron from "electron";
 import sdl from "@kmamal/sdl";
 
 let childProcess: ChildProcess;
@@ -97,12 +97,12 @@ const executeApplication = async (file: string, args: string[]) => {
       execFileCallback(reject),
     );
 
-    globalShortcut?.register("CommandOrControl+C", () => {
+    electron?.globalShortcut?.register("CommandOrControl+C", () => {
       killChildProcess();
     });
 
     childProcess?.on("close", (code) => {
-      globalShortcut?.unregister("CommandOrControl+C");
+      electron?.globalShortcut?.unregister("CommandOrControl+C");
       if (code === 0 || code === null) {
         setTimeout(() => {
           resolve();

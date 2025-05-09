@@ -1,5 +1,5 @@
 import { getErrorDialog, resetErrorDialog } from "../server/errorDialog.server";
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { useLoaderData, useSubmit } from "@remix-run/react";
 import { ErrorDialog } from "../components/ErrorDialog";
 import { useFocus } from "../hooks/useFocus";
@@ -17,7 +17,7 @@ import {
 export const loader = () => {
   const errorDialog = getErrorDialog();
 
-  return json({ errorDialog });
+  return { errorDialog };
 };
 
 export const action = () => {

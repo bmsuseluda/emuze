@@ -1,7 +1,6 @@
 import type { ElementRef } from "react";
 import { useCallback, useRef } from "react";
 import type { ActionFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
 import { Form, Outlet, redirect, useLoaderData } from "@remix-run/react";
 import { startGame } from "../server/execute.server";
 import { importCategories } from "../server/categories.server";
@@ -40,7 +39,7 @@ export const loader = ({ params }: DataFunctionArgs) => {
   }
 
   const { alwaysGameNames } = readAppearance();
-  return json({ categoryData, alwaysGameNames });
+  return { categoryData, alwaysGameNames };
 };
 
 const importButtonId: ImportButtonId = "importGames";

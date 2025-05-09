@@ -1,7 +1,6 @@
 import type { ElementRef } from "react";
 import { useCallback, useRef } from "react";
 import type { ActionFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
 import { Form, Outlet, redirect, useLoaderData } from "@remix-run/react";
 import { startGame } from "../server/execute.server";
 import { GameGridDynamic } from "../components/GameGrid";
@@ -27,7 +26,7 @@ export const loader = () => {
   const lastPlayed = readLastPlayed();
   const { alwaysGameNames } = readAppearance();
 
-  return json({ lastPlayed, alwaysGameNames });
+  return { lastPlayed, alwaysGameNames };
 };
 
 const importButtonId: ImportButtonId = "importGames";

@@ -1,7 +1,7 @@
 import type { ElementRef, MouseEvent } from "react";
 import { useCallback } from "react";
 import type { ActionFunctionArgs } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { Form, Outlet, useActionData, useLoaderData } from "@remix-run/react";
 import { FormBox } from "../components/FormBox";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
@@ -50,7 +50,7 @@ export const loader = () => {
     validateCategoriesPath(errors, general.categoriesPath);
   }
 
-  return json({ ...general, isWindows: isWindows(), categories, errors });
+  return { ...general, isWindows: isWindows(), categories, errors };
 };
 
 const importButtonId: ImportButtonId = "importAll";
@@ -160,7 +160,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
       validateCategoriesPath(errors, categoriesPath);
 
       if (Object.keys(errors).length > 0) {
-        return json({ errors });
+        return { errors };
       }
 
       const fields: General = {
@@ -182,12 +182,12 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
           );
         }
         if (!categories || categories?.length === 0) {
-          return json({
+          return {
             errors: {
               categoriesPath:
                 "No supported Systems were found. The Roms need to be grouped by their System. E.g. 'Final Fantasy VII.chd' needs to be stored in a folder 'Playstation'.",
             },
-          });
+          };
         }
       } catch (error) {
         const categories = readCategories();
@@ -201,10 +201,10 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
         }
       }
 
-      return json({
+      return {
         applicationsPath,
         categoriesPath,
-      });
+      };
     }
 
     if (_actionId === actionIds.installMissingApplications) {
@@ -217,10 +217,10 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
         typeof applicationsPath === "string" ? applicationsPath : undefined,
       );
       if (newApplicationsPath) {
-        return json({
+        return {
           applicationsPath: newApplicationsPath,
           categoriesPath,
-        });
+        };
       }
     }
 
@@ -230,10 +230,10 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
         categoriesPath,
       );
       if (newCategoriesPath) {
-        return json({
+        return {
           applicationsPath,
           categoriesPath: newCategoriesPath,
-        });
+        };
       }
     }
   } catch (e) {

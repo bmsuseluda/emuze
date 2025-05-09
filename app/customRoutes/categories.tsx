@@ -1,4 +1,3 @@
-import { json } from "@remix-run/node";
 import { Outlet, redirect, useLoaderData } from "@remix-run/react";
 import { readCategories } from "../server/categories.server";
 import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout";
@@ -55,10 +54,10 @@ export const loader = ({ params, request }: DataFunctionArgs) => {
       name,
     }));
 
-    return json({
+    return {
       categoryLinks,
       collapseSidebar,
-    });
+    };
   }
 
   return redirect("/settings/general");

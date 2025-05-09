@@ -1,6 +1,7 @@
-import { dialog } from "electron";
+import electron from "electron";
 
 export const openFolderDialog = (title: string, defaultPath?: string) => {
+  const dialog = electron?.dialog;
   if (dialog) {
     const directory = dialog.showOpenDialogSync({
       title,

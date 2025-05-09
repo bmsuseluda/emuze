@@ -15,7 +15,7 @@ import {
 } from "../../configFile";
 import fs from "fs";
 import { defaultSettings } from "./defaultSettings";
-import { app } from "electron";
+import electron from "electron";
 import { commandLineOptions } from "../../../commandLine.server";
 import envPaths from "env-paths";
 import { isWindows } from "../../../operationsystem.server";
@@ -292,5 +292,5 @@ export const azahar: Application = {
 };
 
 export const isLime3dsFor3ds = () =>
-  app?.commandLine.hasSwitch(commandLineOptions.lime3ds.id) ||
+  electron?.app?.commandLine.hasSwitch(commandLineOptions.lime3ds.id) ||
   process.env.EMUZE_LIME3DS === "true";

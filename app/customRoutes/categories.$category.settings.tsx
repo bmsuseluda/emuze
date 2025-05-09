@@ -1,4 +1,3 @@
-import { json } from "@remix-run/node";
 import {
   Outlet,
   useLoaderData,
@@ -27,7 +26,7 @@ import { CloseDialogContainer } from "../containers/CloseDialog";
 export const loader = () => {
   const { collapseSidebar } = readAppearance();
 
-  return json({ categories, collapseSidebar });
+  return { categories, collapseSidebar };
 };
 
 export default function Index() {
