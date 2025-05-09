@@ -1,7 +1,7 @@
 import type { ElementRef } from "react";
 import { useCallback, useRef } from "react";
-import type { ActionFunction } from "@remix-run/node";
-import { Form, Outlet, redirect, useLoaderData } from "@remix-run/react";
+import type { ActionFunction } from "react-router";
+import { Form, Outlet, redirect, useLoaderData } from "react-router";
 import { startGame } from "../server/execute.server";
 import { GameGridDynamic } from "../components/GameGrid";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";

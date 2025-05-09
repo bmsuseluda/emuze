@@ -1,4 +1,4 @@
-import { useNavigation } from "@remix-run/react";
+import { useNavigation } from "react-router";
 import { useEffect } from "react";
 
 export const useEnableFocusAfterAction = (

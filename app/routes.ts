@@ -1,6 +1,6 @@
-import type { RouteConfig } from "@remix-run/route-config";
-import { remixRoutesOptionAdapter } from "@remix-run/routes-option-adapter";
-import type { DefineRouteFunction } from "@remix-run/dev/dist/config/routes";
+import type { RouteConfig } from "@react-router/dev/routes";
+import { remixRoutesOptionAdapter } from "@react-router/remix-routes-option-adapter";
+import type { DefineRouteFunction } from "@react-router/dev/dist/config/routes";
 
 const createErrorDialog = (route: DefineRouteFunction, id: string) => {
   route("errorDialog", "customRoutes/categories.$category.errorDialog.tsx", {

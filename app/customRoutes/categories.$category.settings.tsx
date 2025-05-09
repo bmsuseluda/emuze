@@ -1,9 +1,4 @@
-import {
-  Outlet,
-  useLoaderData,
-  useLocation,
-  useNavigate,
-} from "@remix-run/react";
+import { Outlet, useLoaderData, useLocation, useNavigate } from "react-router";
 import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout";
 import { Link } from "../containers/Link";
 import { categories, readAppearance } from "../server/settings.server";

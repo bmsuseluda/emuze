@@ -1,4 +1,4 @@
-import { Outlet, redirect, useLoaderData } from "@remix-run/react";
+import { Outlet, redirect, useLoaderData } from "react-router";
 import { readCategories } from "../server/categories.server";
 import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout";
 import { Link } from "../containers/Link";

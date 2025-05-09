@@ -1,8 +1,8 @@
-import { Link as RemixLink } from "@remix-run/react";
+import { Link as RemixLink } from "react-router";
 import type { ElementRef } from "react";
 import { forwardRef } from "react";
 import { VscSettingsGear } from "react-icons/vsc";
-import type { RemixLinkProps } from "@remix-run/react/dist/components";
+import type { RemixLinkProps } from "@react-router/react/dist/components";
 import { styled } from "../../../styled-system/jsx";
 
 const Link = styled(RemixLink, {

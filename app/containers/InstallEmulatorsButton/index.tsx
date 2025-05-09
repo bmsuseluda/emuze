@@ -1,5 +1,5 @@
 import { Button } from "../../components/Button";
-import { useNavigation } from "@remix-run/react";
+import { useNavigation } from "react-router";
 import {
   installEmulatorsButtonGamepadButtonIndex,
   installEmulatorsId,

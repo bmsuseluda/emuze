@@ -1,8 +1,8 @@
-import { NavLink } from "@remix-run/react";
+import { NavLink } from "react-router";
 import type { ElementRef, ReactNode } from "react";
 import { forwardRef } from "react";
 import { IconChildrenWrapper } from "../../components/IconChildrenWrapper";
-import type { RemixNavLinkProps } from "@remix-run/react/dist/components";
+import type { RemixNavLinkProps } from "@react-router/react/dist/components";
 import { styled } from "../../../styled-system/jsx";
 
 interface Props extends RemixNavLinkProps {

@@ -6,9 +6,9 @@ import {
   Scripts,
   useLoaderData,
   useRouteError,
-} from "@remix-run/react";
+} from "react-router";
 import { Titlebar } from "./containers/Titlebar";
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction } from "react-router";
 import { FullscreenProvider } from "./provider/FullscreenProvider";
 import { FocusProvider } from "./provider/FocusProvider";
 import { getFocusDefault, getFocusHistoryDefault } from "./types/focusElement";

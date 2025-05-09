@@ -1,12 +1,5 @@
-import type { ActionFunction } from "@remix-run/node";
-import {
-  Form,
-  Outlet,
-  redirect,
-  useLoaderData,
-  useLocation,
-  useNavigate,
-} from "@remix-run/react";
+import type { ActionFunction } from "react-router";
+import { Form, Outlet, redirect, useLoaderData, useLocation, useNavigate } from "react-router";
 import { readGeneral } from "../server/settings.server";
 import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";

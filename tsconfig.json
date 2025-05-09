@@ -1,6 +1,5 @@
 {
   "include": [
-    "remix.env.d.ts",
     "app/**/*",
     "styled-system",
     "panda.config.ts",
@@ -8,10 +7,15 @@
     "./electronApi.d.ts",
     "e2eTests/**/*",
     "generateIcon/**/*",
-    "generateNameMappings/**/*"
+    "generateNameMappings/**/*",
+    ".react-router/types/**/*"
   ],
   "compilerOptions": {
-    "lib": ["DOM", "DOM.Iterable", "ES2023"],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ES2023"
+    ],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
@@ -23,11 +27,18 @@
     "baseUrl": ".",
     "skipLibCheck": true,
     "paths": {
-      "@emotion/core": ["./types/emotion.d.ts"]
+      "@emotion/core": [
+        "./types/emotion.d.ts"
+      ]
     },
     "noEmit": true,
     "allowJs": false,
     "forceConsistentCasingInFileNames": true,
-    "types": ["vitest/globals", "@remix-run/node", "vite/client"]
+    "types": [
+      "vitest/globals",
+      "@react-router/node",
+      "vite/client"
+    ],
+    "rootDirs": [".", "./.react-router/types"]
   }
 }
