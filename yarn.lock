@@ -6055,11 +6055,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:^20.11.14":
-  version: 20.11.16
-  resolution: "@types/node@npm:20.11.16"
+  version: 20.17.46
+  resolution: "@types/node@npm:20.17.46"
   dependencies:
-    undici-types: "npm:~5.26.4"
-  checksum: 10/751f50ec5c9332b11515e82fe37c71479ac4449b711280aa3c7910edf67b1e3f5ac00041512add543f9a892096a68356406998bf02a2c809a73d176c44c28414
+    undici-types: "npm:~6.19.2"
+  checksum: 10/fdc500f78c8d7f1f6ec360acbe2b2d26aafeaf16dd3efaee28cbdbe2515b4e999eab6def82b3a2438a86775584ea89c9580eac25ddaddd0e0cfc81c45e78253a
   languageName: node
   linkType: hard
 
@@ -17363,7 +17363,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"safe-buffer@npm:5.2.1, safe-buffer@npm:^5.1.1, safe-buffer@npm:^5.1.2, safe-buffer@npm:~5.2.0":
+"safe-buffer@npm:5.2.1, safe-buffer@npm:^5.1.1, safe-buffer@npm:~5.2.0":
   version: 5.2.1
   resolution: "safe-buffer@npm:5.2.1"
   checksum: 10/32872cd0ff68a3ddade7a7617b8f4c2ae8764d8b7d884c651b74457967a9e0e886267d3ecc781220629c44a865167b61c375d2da6c720c840ecd73f45d5d9451
@@ -19488,13 +19488,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~5.26.4":
-  version: 5.26.5
-  resolution: "undici-types@npm:5.26.5"
-  checksum: 10/0097779d94bc0fd26f0418b3a05472410408877279141ded2bd449167be1aed7ea5b76f756562cb3586a07f251b90799bab22d9019ceba49c037c76445f7cddd
-  languageName: node
-  linkType: hard
-
 "undici-types@npm:~6.19.2":
   version: 6.19.8
   resolution: "undici-types@npm:6.19.8"
@@ -19726,21 +19719,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"util@npm:^0.12.3":
-  version: 0.12.4
-  resolution: "util@npm:0.12.4"
-  dependencies:
-    inherits: "npm:^2.0.3"
-    is-arguments: "npm:^1.0.4"
-    is-generator-function: "npm:^1.0.7"
-    is-typed-array: "npm:^1.1.3"
-    safe-buffer: "npm:^5.1.2"
-    which-typed-array: "npm:^1.1.2"
-  checksum: 10/8287e2fdff2a98997a3436663535856e6be76ca1c7b6ed167b89a3dd6fbaf6934338ca2e34a189bcd6c6cf415680d20472381ac681bff07d33ef98c6f7126296
-  languageName: node
-  linkType: hard
-
-"util@npm:^0.12.5":
+"util@npm:^0.12.3, util@npm:^0.12.5":
   version: 0.12.5
   resolution: "util@npm:0.12.5"
   dependencies:
@@ -20091,9 +20070,9 @@ __metadata:
   linkType: hard
 
 "web-streams-polyfill@npm:^3.1.1":
-  version: 3.2.0
-  resolution: "web-streams-polyfill@npm:3.2.0"
-  checksum: 10/125d9b65aad1276fc05886b2af179d6f6d2ee280d0ef5ae0a1390ad75020b8219bbaa553876553cbbcdb4b192c6e2f16ae5a754ccf860aafd46e24224dea1702
+  version: 3.3.3
+  resolution: "web-streams-polyfill@npm:3.3.3"
+  checksum: 10/8e7e13501b3834094a50abe7c0b6456155a55d7571312b89570012ef47ec2a46d766934768c50aabad10a9c30dd764a407623e8bfcc74fcb58495c29130edea9
   languageName: node
   linkType: hard
 
