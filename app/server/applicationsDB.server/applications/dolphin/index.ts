@@ -25,13 +25,9 @@ const flatpakId = "org.DolphinEmu.dolphin-emu";
 const applicationId: ApplicationId = "dolphin";
 const bundledPathLinux = nodepath.join(
   applicationId,
-  "Dolphin_Emulator-2503a-316-anylinux.dwarfs-x86_64.AppImage",
+  `${applicationId}.AppImage`,
 );
-const bundledPathWindows = nodepath.join(
-  applicationId,
-  "Dolphin-x64",
-  "Dolphin.exe",
-);
+const bundledPathWindows = nodepath.join(applicationId, "Dolphin.exe");
 const configFolderPath = nodepath.join(emulatorsDirectory, applicationId);
 const dolphinConfigFileName = nodepath.join(
   configFolderPath,

@@ -1,5 +1,5 @@
 {
-  "include": ["remix.config.ts", "afterPackScript.ts"],
+  "include": ["remix.config.ts", "afterPackScript.ts", "electron-builder.config.ts"],
   "compilerOptions": {
     "esModuleInterop": true,
     "module": "commonjs",
