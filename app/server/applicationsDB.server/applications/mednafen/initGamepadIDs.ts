@@ -9,7 +9,10 @@ interface MednafenError {
   stdout: string;
 }
 
-const isMednafenError = (e: any): e is MednafenError =>
+const isMednafenError = (e: unknown): e is MednafenError =>
+  typeof e === "object" &&
+  e !== null &&
+  "stdout" in e &&
   typeof e.stdout === "string";
 
 export interface GamepadID {

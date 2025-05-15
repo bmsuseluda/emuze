@@ -22,12 +22,11 @@ import { isWindows } from "../../../operationsystem.server";
 
 const flatpakId = "io.github.lime3ds.Lime3DS";
 const applicationId: ApplicationId = "azahar";
-const bundledPathLinux = nodepath.join(applicationId, "azahar.AppImage");
-const bundledPathWindows = nodepath.join(
+const bundledPathLinux = nodepath.join(
   applicationId,
-  "azahar-2121.1-windows-msvc",
-  "azahar.exe",
+  `${applicationId}.AppImage`,
 );
+const bundledPathWindows = nodepath.join(applicationId, "azahar.exe");
 
 const configFileName = "qt-config.ini";
 

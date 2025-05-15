@@ -21,13 +21,9 @@ import { commandLineOptions } from "../../../commandLine.server";
 const applicationId: ApplicationId = "ares";
 const bundledPathLinux = nodepath.join(
   applicationId,
-  "ares-v144-anylinux-x86_64.AppImage",
+  `${applicationId}.AppImage`,
 );
-const bundledPathWindows = nodepath.join(
-  applicationId,
-  "ares-v144",
-  "ares.exe",
-);
+const bundledPathWindows = nodepath.join(applicationId, "ares.exe");
 
 const gamepadGroupId: Record<GamepadGroupId, number> = {
   Axis: 0,

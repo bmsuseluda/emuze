@@ -23,7 +23,7 @@ const flatpakId = "org.duckstation.DuckStation";
 const applicationId: ApplicationId = "duckstation";
 const bundledPathLinux = nodepath.join(
   applicationId,
-  "DuckStation-x64.AppImage",
+  `${applicationId}.AppImage`,
 );
 const bundledPathWindows = nodepath.join(
   applicationId,

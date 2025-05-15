@@ -73,7 +73,7 @@ type ExecFileCallback = (
 ) => void;
 
 const execFileCallback =
-  (reject: (reason?: any) => void): ExecFileCallback =>
+  (reject: (reason: ExecFileException) => void): ExecFileCallback =>
   (error, stdout, stderr) => {
     if (error) {
       if (error.signal !== "SIGKILL" && error.signal !== "SIGABRT") {

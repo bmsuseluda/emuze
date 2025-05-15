@@ -1,3 +1,4 @@
+import devtoolsJson from "vite-plugin-devtools-json";
 import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig } from "vite";
 
@@ -14,5 +15,5 @@ export default defineConfig({
     ],
   },
   optimizeDeps: { exclude: ["@kmamal/sdl"], include: ["react-use"] },
-  plugins: [reactRouter()],
+  plugins: [devtoolsJson(), reactRouter()],
 });
