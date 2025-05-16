@@ -1,5 +1,5 @@
 import { homedir, platform } from "os";
-import { app, BrowserWindow, ipcMain, shell } from "electron";
+import { app, BrowserWindow, globalShortcut, ipcMain, shell } from "electron";
 import nodepath from "path";
 import * as dotenv from "dotenv";
 import { autoUpdater } from "electron-updater";
@@ -28,7 +28,7 @@ const showHelp = () => {
   app.quit();
 };
 
-// app.commandLine.appendSwitch("enable-features", "GlobalShortcutsPortal");
+app.commandLine.appendSwitch("enable-features", "GlobalShortcutsPortal");
 
 // TODO: remove if workaround is not necessary anymore: https://github.com/electron/electron/issues/46538
 app.commandLine.appendSwitch("gtk-version", "3");
@@ -88,13 +88,13 @@ app.on("ready", async () => {
 
   const window = new BrowserWindow({
     show: false,
-    // frame: false,
+    frame: false,
     webPreferences: {
-      //   contextIsolation: true,
-      //   nodeIntegration: false,
-      //   sandbox: true,
-      //   webSecurity: true,
-      //   allowRunningInsecureContent: false,
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true,
+      webSecurity: true,
+      allowRunningInsecureContent: false,
       preload: nodepath.join(__dirname, "preload.js"),
     },
     icon:
@@ -173,5 +173,5 @@ app.on("ready", async () => {
 
 app.on("will-quit", () => {
   // Unregister all shortcuts.
-  // globalShortcut.unregisterAll();
+  globalShortcut.unregisterAll();
 });
