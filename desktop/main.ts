@@ -1,13 +1,5 @@
-import { initRemix } from "remix-electron";
 import { homedir, platform } from "os";
-import {
-  app,
-  BrowserWindow,
-  globalShortcut,
-  ipcMain,
-  session,
-  shell,
-} from "electron";
+import { app, BrowserWindow, globalShortcut, ipcMain, shell } from "electron";
 import nodepath from "path";
 import * as dotenv from "dotenv";
 import { autoUpdater } from "electron-updater";
@@ -18,6 +10,7 @@ import {
   commandLineOptionsString,
 } from "../app/server/commandLine.server";
 import { cpSync, existsSync, rmSync } from "fs";
+import { initReactRouter } from "./initReactRouter";
 import { homeDirectory } from "../app/server/homeDirectory.server";
 
 process.env.SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS = "1";
@@ -70,15 +63,6 @@ app.on("ready", async () => {
     createLogFile();
   }
 
-  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-    callback({
-      responseHeaders: {
-        ...details.responseHeaders,
-        "Content-Security-Policy": ["script-src 'self'; object-src 'none';"],
-      },
-    });
-  });
-
   autoUpdater
     .checkForUpdatesAndNotify()
     .then((result) => {
@@ -100,12 +84,7 @@ app.on("ready", async () => {
     app.commandLine.hasSwitch(commandLineOptions.fullscreen.id) ||
     appearance?.fullscreen;
 
-  const url = await initRemix({
-    serverBuild: nodepath.join(__dirname, "../../build/index.js"),
-    getLoadContext: () => ({
-      fullscreen: window.isFullScreen(),
-    }),
-  });
+  const url = await initReactRouter();
 
   const window = new BrowserWindow({
     show: false,

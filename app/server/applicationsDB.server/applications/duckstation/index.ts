@@ -17,7 +17,7 @@ import nodepath from "path";
 import { defaultSettings } from "./defaultSettings";
 import type { ApplicationId } from "../../applicationId";
 import { keyboardConfig } from "./keyboardConfig";
-import envPaths from "env-paths";
+import { envPaths } from "../../../envPaths.server";
 
 const flatpakId = "org.duckstation.DuckStation";
 const applicationId: ApplicationId = "duckstation";

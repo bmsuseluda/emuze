@@ -1,5 +1,5 @@
 import nodepath from "path";
-import envPaths from "env-paths";
+import { envPaths } from "./envPaths.server";
 
 const { data } = envPaths("emuze", { suffix: "" });
 

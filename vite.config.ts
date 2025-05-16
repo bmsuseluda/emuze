@@ -1,6 +1,6 @@
 import devtoolsJson from "vite-plugin-devtools-json";
-import { reactRouter } from "@react-router/dev/vite";
 import { defineConfig } from "vite";
+import { reactRouter } from "@react-router/dev/vite";
 
 export default defineConfig({
   server: {

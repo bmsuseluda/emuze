@@ -12,7 +12,7 @@ import { getVirtualGamepadReset } from "./VirtualGamepadReset";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
 import type { ApplicationId } from "../../applicationId";
 import nodepath from "path";
-import electron from "electron";
+import { electron } from "../../../importElectron.server";
 import { getKeyboard, getKeyboardKey } from "./keyboardConfig";
 import type { SdlButtonMapping } from "../../gamepads";
 import { createSdlMappingObject } from "../../gamepads";

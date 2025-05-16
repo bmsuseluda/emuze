@@ -15,9 +15,9 @@ import {
 } from "../../configFile";
 import fs from "fs";
 import { defaultSettings } from "./defaultSettings";
-import electron from "electron";
+import { electron } from "../../../importElectron.server";
 import { commandLineOptions } from "../../../commandLine.server";
-import envPaths from "env-paths";
+import { envPaths } from "../../../envPaths.server";
 import { isWindows } from "../../../operationsystem.server";
 
 const flatpakId = "io.github.lime3ds.Lime3DS";

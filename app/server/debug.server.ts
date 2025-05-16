@@ -1,4 +1,4 @@
-import electron from "electron";
+import { electron } from "./importElectron.server";
 import nodepath from "path";
 import { appendFileSync, existsSync, mkdirSync, writeFileSync } from "fs";
 import { homeDirectory } from "./homeDirectory.server";

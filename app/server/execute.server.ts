@@ -25,7 +25,7 @@ import type {
 import type { Settings } from "../types/jsonFiles/settings";
 import nodepath from "path";
 import { readCategory } from "./categoryDataCache.server";
-import electron from "electron";
+import { electron } from "./importElectron.server";
 import sdl from "@kmamal/sdl";
 
 let childProcess: ChildProcess;
