@@ -1,6 +1,8 @@
+import CrossProcessExports from "electron";
+
 declare global {
   // eslint-disable-next-line no-var
-  var __electron__: typeof Electron.CrossProcessExports;
+  var __electron__: typeof CrossProcessExports;
 }
 
 const isDev = process.env.NODE_ENV === "development";
