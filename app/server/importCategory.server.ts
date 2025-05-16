@@ -105,7 +105,11 @@ const isSameBaseGame = (gameName: string, lastGameName?: string) =>
   removeAdditionalInfo(gameName).toLowerCase().trim() ===
     removeAdditionalInfo(lastGameName).toLowerCase().trim();
 
+// This is intentional to remove metaData
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const addAsGameVersion = (lastEntry: Entry, { metaData, ...entry }: Entry) => {
+  // This is intentional to remove metaData
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { metaData: metaDataFromLast, ...lastEntryWithoutMetaData } = lastEntry;
   if (lastEntry.subEntries?.[0]) {
     lastEntry.subEntries.push(entry);

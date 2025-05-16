@@ -17,3 +17,4 @@ coverage
 /readme/build/
 /buildConfig
 /emulators/
+.react-router/

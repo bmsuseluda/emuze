@@ -1,11 +1,10 @@
-import { NavLink } from "@remix-run/react";
+import { NavLink, NavLinkProps } from "react-router";
 import type { ElementRef, ReactNode } from "react";
 import { forwardRef } from "react";
 import { IconChildrenWrapper } from "../../components/IconChildrenWrapper";
-import type { RemixNavLinkProps } from "@remix-run/react/dist/components";
 import { styled } from "../../../styled-system/jsx";
 
-interface Props extends RemixNavLinkProps {
+interface Props extends NavLinkProps {
   isFocused?: boolean;
   icon?: ReactNode;
   children?: ReactNode;

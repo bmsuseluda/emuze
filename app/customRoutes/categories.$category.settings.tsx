@@ -1,10 +1,4 @@
-import { json } from "@remix-run/node";
-import {
-  Outlet,
-  useLoaderData,
-  useLocation,
-  useNavigate,
-} from "@remix-run/react";
+import { Outlet, useLoaderData, useLocation, useNavigate } from "react-router";
 import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout";
 import { Link } from "../containers/Link";
 import { categories, readAppearance } from "../server/settings.server";
@@ -27,7 +21,7 @@ import { CloseDialogContainer } from "../containers/CloseDialog";
 export const loader = () => {
   const { collapseSidebar } = readAppearance();
 
-  return json({ categories, collapseSidebar });
+  return { categories, collapseSidebar };
 };
 
 export default function Index() {

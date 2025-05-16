@@ -17,7 +17,7 @@ import sdl from "@kmamal/sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
 import type { ApplicationId } from "../../applicationId";
 import { keyboardConfig } from "./keyboardConfig";
-import envPaths from "env-paths";
+import { envPaths } from "../../../envPaths.server";
 
 const flatpakId = "net.pcsx2.PCSX2";
 const applicationId: ApplicationId = "pcsx2";

@@ -9,7 +9,6 @@ module.exports = {
     "eslint:recommended",
     "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended",
-    "@remix-run/eslint-config",
     "plugin:storybook/recommended",
   ],
   parser: "@typescript-eslint/parser",

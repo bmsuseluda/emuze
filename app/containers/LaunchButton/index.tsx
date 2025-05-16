@@ -5,7 +5,7 @@ import { layout } from "../../hooks/useGamepads/layouts";
 import type { ElementRef, RefObject } from "react";
 import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping";
 import { LogoPulseModal } from "../../components/LogoPulseModal";
-import { useNavigation } from "@remix-run/react";
+import { useNavigation } from "react-router";
 
 interface Props {
   gamepadType?: GamepadType;

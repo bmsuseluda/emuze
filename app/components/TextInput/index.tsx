@@ -63,7 +63,7 @@ const IconButton = styled("button", {
   },
 });
 
-const Error = styled("p", {
+const Error = styled("div", {
   base: {
     color: "error",
     display: "flex",

@@ -34,7 +34,7 @@ export const findExecutable = (
   return null;
 };
 
-let applicationPathsWindows: Partial<Record<ApplicationId, string>> = {};
+const applicationPathsWindows: Partial<Record<ApplicationId, string>> = {};
 
 const getApplicationPathWindows = (
   applicationsPath: string,

@@ -2,7 +2,7 @@ import { Button } from "../../components/Button";
 import { GamepadButtonIcon } from "../../components/GamepadButtonIcon";
 import { IoMdRefresh } from "react-icons/io";
 import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping";
-import { useNavigation } from "@remix-run/react";
+import { useNavigation } from "react-router";
 import type { ReactNode } from "react";
 import { useImportButton } from "./useImportButton";
 import type { ImportButtonId } from "./importButtonId";

@@ -1,16 +1,14 @@
 import {
   isRouteErrorResponse,
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
   useLoaderData,
   useRouteError,
-} from "@remix-run/react";
+} from "react-router";
 import { Titlebar } from "./containers/Titlebar";
-import type { LinksFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import type { LinksFunction } from "react-router";
 import { FullscreenProvider } from "./provider/FullscreenProvider";
 import { FocusProvider } from "./provider/FocusProvider";
 import { getFocusDefault, getFocusHistoryDefault } from "./types/focusElement";
@@ -18,7 +16,7 @@ import type { ReactNode } from "react";
 import { useEffect } from "react";
 import type { DataFunctionArgs } from "./context";
 
-import styles from "./index.css";
+import styles from "./index.css?url";
 import { styled } from "../styled-system/jsx";
 import { readGeneral } from "./server/settings.server";
 import { GamepadProvider } from "./provider/GamepadProvider";
@@ -32,7 +30,7 @@ export const loader = ({ context }: DataFunctionArgs) => {
   const focusDefault = getFocusDefault(general);
   const focusHistoryDefault = getFocusHistoryDefault(general);
 
-  return json({ fullscreen, focusDefault, focusHistoryDefault });
+  return { fullscreen, focusDefault, focusHistoryDefault };
 };
 
 const ElectronFocusProvider = ({ children }: { children: ReactNode }) => {
@@ -128,7 +126,6 @@ function Document({
       <body>
         {children}
         <Scripts />
-        <LiveReload />
       </body>
     </html>
   );

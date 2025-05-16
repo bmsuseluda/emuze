@@ -1,7 +1,19 @@
+import devtoolsJson from "vite-plugin-devtools-json";
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { reactRouter } from "@react-router/dev/vite";
 
-// This config file is only necessary for storybook
 export default defineConfig({
-  plugins: [react()],
+  server: {
+    port: 3000,
+  },
+  ssr: {
+    noExternal: [
+      /**
+       * TODO: remove if fixed: https://github.com/streamich/react-use/issues/2353
+       */
+      "react-use",
+    ],
+  },
+  optimizeDeps: { exclude: ["@kmamal/sdl"], include: ["react-use"] },
+  plugins: [devtoolsJson(), reactRouter()],
 });

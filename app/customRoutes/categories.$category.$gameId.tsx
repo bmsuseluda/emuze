@@ -1,13 +1,5 @@
-import type { ActionFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import {
-  Form,
-  Outlet,
-  redirect,
-  useLoaderData,
-  useLocation,
-  useNavigate,
-} from "@remix-run/react";
+import type { ActionFunction } from "react-router";
+import { Form, Outlet, redirect, useLoaderData, useLocation, useNavigate } from "react-router";
 import { readGeneral } from "../server/settings.server";
 import { useFocus } from "../hooks/useFocus";
 import type { FocusElement } from "../types/focusElement";
@@ -21,7 +13,7 @@ import type { DataFunctionArgs } from "../context";
 import { log } from "../server/debug.server";
 import type { SystemId } from "../server/categoriesDB.server/systemId";
 import { startGame } from "../server/execute.server";
-import { SidebarMainLayout } from "app/components/layouts/SidebarMainLayout";
+import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout";
 import { readLastPlayed } from "../server/lastPlayed.server";
 import type { Entry } from "../types/jsonFiles/category";
 import { useInputSettings } from "../hooks/useDirectionalInput";
@@ -70,7 +62,7 @@ export const loader = (props: DataFunctionArgs) => {
     return redirect("..");
   }
 
-  return json({ systemId, gameData });
+  return { systemId, gameData };
 };
 
 const actionIds = {

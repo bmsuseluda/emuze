@@ -55,7 +55,6 @@ const preview: Preview = {
   globalTypes: {
     theme: {
       description: "Theme",
-      defaultValue: "red",
       toolbar: {
         title: "Theme",
         icon: "lightning",
@@ -68,7 +67,6 @@ const preview: Preview = {
     },
     mode: {
       description: "Mode",
-      defaultValue: "dark",
       toolbar: {
         title: "Mode",
         icon: "lightning",
@@ -80,6 +78,11 @@ const preview: Preview = {
       },
     },
   },
+  initialGlobals: {
+    theme: "red",
+    mode: "dark",
+  },
+  tags: ["autodocs"],
 };
 
 export default preview;

@@ -15,6 +15,6 @@ export const Basic: Story = {
     onClose: () => {},
     onCancel: () => {},
     entryListRef: { current: null },
-    entriesRefCallback: (index: number) => (ref: HTMLButtonElement) => {},
+    entriesRefCallback: () => () => {},
   },
 };
