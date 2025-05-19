@@ -2,7 +2,7 @@ import type { IconType } from "react-icons";
 import { FaPaintBrush } from "react-icons/fa";
 import { GiSettingsKnobs } from "react-icons/gi";
 import { IoHomeSharp } from "react-icons/io5";
-import type { SettingsID } from "../../server/settings.server";
+import type { SettingsID } from "../../server/settings.server.js";
 
 export const icons = {
   general: GiSettingsKnobs,

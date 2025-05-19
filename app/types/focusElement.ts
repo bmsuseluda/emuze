@@ -1,4 +1,4 @@
-import type { General } from "./jsonFiles/settings/general";
+import type { General } from "./jsonFiles/settings/general.js";
 
 export type FocusElement =
   | "sidebar"

@@ -1,27 +1,27 @@
 import type { ActionFunction } from "react-router";
 import { Form, useLoaderData } from "react-router";
-import { Button } from "../components/Button";
-import { FormBox } from "../components/FormBox";
-import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
-import { readAppearance, writeAppearance } from "../server/settings.server";
-import { Checkbox } from "../components/Checkbox";
-import type { Appearance } from "../types/jsonFiles/settings/appearance";
-import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
-import { SettingsIcon } from "../components/SettingsIcon";
-import { useFullscreen } from "../hooks/useFullscreen";
-import { CheckboxLabel } from "../components/CheckboxLabel";
+import { Button } from "../components/Button/index.js";
+import { FormBox } from "../components/FormBox/index.js";
+import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
+import { readAppearance, writeAppearance } from "../server/settings.server.js";
+import { Checkbox } from "../components/Checkbox/index.js";
+import type { Appearance } from "../types/jsonFiles/settings/appearance.js";
+import { IconChildrenWrapper } from "../components/IconChildrenWrapper/index.js";
+import { SettingsIcon } from "../components/SettingsIcon/index.js";
+import { useFullscreen } from "../hooks/useFullscreen/index.js";
+import { CheckboxLabel } from "../components/CheckboxLabel/index.js";
 import type { ElementRef, MouseEvent } from "react";
 import { useCallback, useRef } from "react";
-import type { Result } from "../hooks/useGamepadsOnGrid";
-import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid";
-import { useFocus } from "../hooks/useFocus";
-import type { FocusElement } from "../types/focusElement";
+import type { Result } from "../hooks/useGamepadsOnGrid/index.js";
+import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid/index.js";
+import { useFocus } from "../hooks/useFocus/index.js";
+import type { FocusElement } from "../types/focusElement.js";
 import {
   useInputBack,
   useInputConfirmation,
-} from "../hooks/useDirectionalInput";
-import { Typography } from "../components/Typography";
-import { FormRow } from "../components/FormRow";
+} from "../hooks/useDirectionalInput/index.js";
+import { Typography } from "../components/Typography/index.js";
+import { FormRow } from "../components/FormRow/index.js";
 
 export const loader = () => {
   const appearance = readAppearance();

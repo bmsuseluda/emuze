@@ -1,6 +1,6 @@
 import type { SVGProps } from "react";
 import * as React from "react";
-import type { SVGRProps } from "../../types/svgProps";
+import type { SVGRProps } from "../../types/svgProps.js";
 
 const SvgPlaystationCircle = ({
   title,

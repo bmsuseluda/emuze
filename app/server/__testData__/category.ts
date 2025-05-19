@@ -1,6 +1,6 @@
-import type { Category, Entry } from "../../types/jsonFiles/category";
-import nodepath from "path";
-import { general } from "./general";
+import type { Category, Entry } from "../../types/jsonFiles/category.js";
+import nodepath from "node:path";
+import { general } from "./general.js";
 
 export const addIndex = <P extends Entry>(entries: P[]): P[] => {
   let index = 0;

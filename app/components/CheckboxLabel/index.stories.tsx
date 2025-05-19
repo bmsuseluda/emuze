@@ -1,7 +1,7 @@
-import { CheckboxLabel } from ".";
+import { CheckboxLabel } from "./index.js";
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Checkbox } from "../Checkbox";
+import { Checkbox } from "../Checkbox/index.js";
 
 const meta = {
   component: CheckboxLabel,

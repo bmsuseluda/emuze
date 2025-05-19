@@ -1,4 +1,4 @@
-import { resetUnusedVirtualGamepads } from "../resetUnusedVirtualGamepads";
+import { resetUnusedVirtualGamepads } from "../resetUnusedVirtualGamepads.js";
 
 describe("resetUnusedVirtualGamepads", () => {
   const getReset = (gamepadIndex: number) => [`Pad${gamepadIndex + 1}`];

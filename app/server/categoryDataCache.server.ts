@@ -1,8 +1,8 @@
-import type { Category } from "../types/jsonFiles/category";
-import nodepath from "path";
-import { syncLastPlayedWithCategoryCached } from "./lastPlayed.server";
-import type { SystemId } from "./categoriesDB.server/systemId";
-import { MultipleFileDataCache } from "./FileDataCache.server";
+import type { Category } from "../types/jsonFiles/category.js";
+import nodepath from "node:path";
+import { syncLastPlayedWithCategoryCached } from "./lastPlayed.server.js";
+import type { SystemId } from "./categoriesDB.server/systemId.js";
+import { MultipleFileDataCache } from "./FileDataCache.server.js";
 
 export const entriesPath = "data/categories/";
 

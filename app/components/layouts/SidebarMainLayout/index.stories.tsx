@@ -1,8 +1,8 @@
-import { SidebarMainLayout } from ".";
+import { SidebarMainLayout } from "./index.js";
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { SystemIcon } from "../../SystemIcon";
-import { styled } from "../../../../styled-system/jsx";
+import { SystemIcon } from "../../SystemIcon/index.js";
+import { styled } from "../../../../styled-system/jsx/index.js";
 
 const meta = {
   component: SidebarMainLayout,

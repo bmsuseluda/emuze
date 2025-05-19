@@ -1,9 +1,9 @@
 import {
   useGamepadButtonPressEvent,
   useGamepadStickDirectionEvent,
-} from "../useGamepadEvent";
-import { useKeyboardEvent } from "../useKeyboardEvent";
-import { layout } from "../useGamepads/layouts";
+} from "../useGamepadEvent/index.js";
+import { useKeyboardEvent } from "../useKeyboardEvent/index.js";
+import { layout } from "../useGamepads/layouts/index.js";
 
 export const useDirectionalInputUp = (onUp: () => void) => {
   useGamepadButtonPressEvent(layout.buttons.DPadUp, onUp);

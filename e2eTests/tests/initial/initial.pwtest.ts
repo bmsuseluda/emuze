@@ -1,14 +1,14 @@
-import { expect, test } from "../../pages/fixture";
-import nodepath from "path";
-import fs from "fs-extra";
-import { configFolderPath, e2ePath, testName } from "./config";
+import {expect, test} from "../../pages/fixture.js";
+import nodepath from "node:path";
+import fs from "fs-extra/esm";
+import {configFolderPath, e2ePath, testName} from "./config.js";
 
 test.describe.configure({ mode: "serial" });
 
 const testRomsPath = nodepath.join(e2ePath, "testRoms");
 
 test.beforeAll(async () => {
-  fs.rmSync(configFolderPath, { recursive: true, force: true });
+  fs.removeSync(configFolderPath);
 });
 
 test.beforeEach(async ({ libraryPage }) => {

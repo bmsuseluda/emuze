@@ -1,6 +1,6 @@
 import type { Sdl } from "@kmamal/sdl";
-import { gamepadPs3, gamepadPs4, steamDeck } from "../gamepads";
-import { sortSteamDeckLast } from "../sortGamepads";
+import { gamepadPs3, gamepadPs4, steamDeck } from "../gamepads.js";
+import { sortSteamDeckLast } from "../sortGamepads.js";
 
 describe("sortGamepads", () => {
   it("should sort the steam deck last", () => {

@@ -1,22 +1,22 @@
 import { Outlet, useLoaderData, useLocation, useNavigate } from "react-router";
-import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout";
-import { Link } from "../containers/Link";
-import { categories, readAppearance } from "../server/settings.server";
-import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar";
-import { SettingsIcon } from "../components/SettingsIcon";
-import { useFocus } from "../hooks/useFocus";
-import type { FocusElement } from "../types/focusElement";
+import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout/index.js";
+import { Link } from "../containers/Link/index.js";
+import { categories, readAppearance } from "../server/settings.server.js";
+import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar/index.js";
+import { SettingsIcon } from "../components/SettingsIcon/index.js";
+import { useFocus } from "../hooks/useFocus/index.js";
+import type { FocusElement } from "../types/focusElement.js";
 import { useCallback, useEffect, useMemo } from "react";
-import { Dialog } from "../components/Dialog";
-import { useImportButton } from "../containers/ImportButton/useImportButton";
-import { useInstallEmulatorsButton } from "../containers/InstallEmulatorsButton/useInstallEmulatorsButton";
+import { Dialog } from "../components/Dialog/index.js";
+import { useImportButton } from "../containers/ImportButton/useImportButton.js";
+import { useInstallEmulatorsButton } from "../containers/InstallEmulatorsButton/useInstallEmulatorsButton.js";
 import {
   useDirectionalInputRight,
   useInputBack,
   useInputConfirmation,
   useInputSettings,
-} from "../hooks/useDirectionalInput";
-import { CloseDialogContainer } from "../containers/CloseDialog";
+} from "../hooks/useDirectionalInput/index.js";
+import { CloseDialogContainer } from "../containers/CloseDialog/index.js";
 
 export const loader = () => {
   const { collapseSidebar } = readAppearance();

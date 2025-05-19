@@ -1,29 +1,24 @@
-import nodepath from "path";
-import type { ChildProcess } from "child_process";
-import { execFile, execFileSync } from "child_process";
+import nodepath from "node:path";
+import type {ChildProcess} from "node:child_process";
+import {execFile, execFileSync} from "node:child_process";
 
-import { readAppearance, readGeneral } from "../settings.server";
-import type { Category } from "../../types/jsonFiles/category";
-import { applications as applicationsDB } from "../applicationsDB.server";
+import {readAppearance, readGeneral} from "../settings.server.js";
+import type {Category} from "../../types/jsonFiles/category.js";
+import {applications as applicationsDB} from "../applicationsDB.server/index.js";
 
-import { startGame } from "../execute.server";
-import {
-  createAbsoluteEntryPath,
-  neogeo,
-  pcenginecd,
-  pcenginecdLinux,
-} from "../__testData__/category";
-import { general } from "../__testData__/general";
-import { existsSync } from "fs";
-import { mameNeoGeo, mednafen } from "../__testData__/applications";
-import { readFilenames } from "../readWriteData.server";
-import { when } from "vitest-when";
-import { updateFlatpakAppList } from "../applicationsDB.server/checkEmulatorIsInstalled";
-import { readCategory } from "../categoryDataCache.server";
+import {startGame} from "../execute.server.js";
+import {createAbsoluteEntryPath, neogeo, pcenginecd, pcenginecdLinux,} from "../__testData__/category.js";
+import {general} from "../__testData__/general.js";
+import {existsSync} from "node:fs";
+import {mameNeoGeo, mednafen} from "../__testData__/applications.js";
+import {readFilenames} from "../readWriteData.server.js";
+import {when} from "vitest-when";
+import {updateFlatpakAppList} from "../applicationsDB.server/checkEmulatorIsInstalled.js";
+import {readCategory} from "../categoryDataCache.server.js";
 
 vi.mock("@kmamal/sdl");
-vi.mock("child_process");
-vi.mock("fs");
+vi.mock("node:child_process");
+vi.mock("node:fs");
 vi.mock("../readWriteData.server");
 vi.mock("../categoryDataCache.server");
 vi.mock("../settings.server");

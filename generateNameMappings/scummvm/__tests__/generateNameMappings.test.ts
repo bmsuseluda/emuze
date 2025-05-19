@@ -1,5 +1,5 @@
-import type { Result } from "../generateNameMappings";
-import { extractGames } from "../generateNameMappings";
+import type { Result } from "../generateNameMappings.js";
+import { extractGames } from "../generateNameMappings.js";
 
 describe("generateNameMappings", () => {
   describe("scummvm", () => {

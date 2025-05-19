@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { ErrorDialog } from ".";
+import { ErrorDialog } from "./index.js";
 
 const meta = {
   component: ErrorDialog,

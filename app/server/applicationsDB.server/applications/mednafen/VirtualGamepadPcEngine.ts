@@ -1,12 +1,12 @@
-import type { GamepadID } from "./initGamepadIDs";
-import { findSdlGamepad, getGamepads } from "./initGamepadIDs";
-import { log } from "../../../debug.server";
-import { VirtualGamepad } from "./VirtualGamepad";
-import { PhysicalGamepadLinux } from "./PhysicalGamepadLinux";
-import { getKeyboardKey } from "./keyboardConfig";
-import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
-import { isWindows } from "../../../operationsystem.server";
-import { PhysicalGamepadXinput } from "./PhysicalGamepadXinput";
+import type { GamepadID } from "./initGamepadIDs.js";
+import { findSdlGamepad, getGamepads } from "./initGamepadIDs.js";
+import { log } from "../../../debug.server.js";
+import { VirtualGamepad } from "./VirtualGamepad.js";
+import { PhysicalGamepadLinux } from "./PhysicalGamepadLinux.js";
+import { getKeyboardKey } from "./keyboardConfig.js";
+import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
+import { isWindows } from "../../../operationsystem.server.js";
+import { PhysicalGamepadXinput } from "./PhysicalGamepadXinput.js";
 
 type MednafenButtonIdPcEngine =
   | "up"

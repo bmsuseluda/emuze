@@ -1,7 +1,7 @@
 import { expect, type Locator, type Page } from "@playwright/test";
-import { SettingsGeneralPage } from "./settingsGeneralPage";
-import { SettingsAppearancePage } from "./settingsAppearancePage";
-import { SettingsAboutPage } from "./settingsAboutPage";
+import { SettingsGeneralPage } from "./settingsGeneralPage.js";
+import { SettingsAppearancePage } from "./settingsAppearancePage.js";
+import { SettingsAboutPage } from "./settingsAboutPage.js";
 
 export class SettingsPage {
   readonly page: Page;

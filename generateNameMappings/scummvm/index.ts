@@ -1,3 +1,3 @@
-import { importScummvm } from "./generateNameMappings";
+import { importScummvm } from "./generateNameMappings.js";
 
 importScummvm();

@@ -1,9 +1,9 @@
 import { TbCancel } from "react-icons/tb";
 import { RiShutDownLine } from "react-icons/ri";
-import { Dialog } from "../Dialog";
-import { styled } from "../../../styled-system/jsx";
-import { Headline } from "../Headline";
-import { Button } from "../Button";
+import { Dialog } from "../Dialog/index.js";
+import { styled } from "../../../styled-system/jsx/index.js";
+import { Headline } from "../Headline/index.js";
+import { Button } from "../Button/index.js";
 import type { RefObject } from "react";
 
 interface Props {

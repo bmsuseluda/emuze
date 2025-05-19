@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useThrottlePress } from "../useThrottlePress";
-import { useGamepadConnected } from "../useGamepadConnected";
+import { useThrottlePress } from "../useThrottlePress/index.js";
+import { useGamepadConnected } from "../useGamepadConnected/index.js";
 
 export const useKeyboardEvent = (
   keyboardKey: string,

@@ -1,13 +1,13 @@
-import { Button } from "../../components/Button";
-import { GamepadButtonIcon } from "../../components/GamepadButtonIcon";
+import { Button } from "../../components/Button/index.js";
+import { GamepadButtonIcon } from "../../components/GamepadButtonIcon/index.js";
 import { IoMdRefresh } from "react-icons/io";
-import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping";
+import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping.js";
 import { useNavigation } from "react-router";
 import type { ReactNode } from "react";
-import { useImportButton } from "./useImportButton";
-import type { ImportButtonId } from "./importButtonId";
-import { importButtonGamepadButtonIndex } from "./importButtonId";
-import { LogoPulseModal } from "../../components/LogoPulseModal";
+import { useImportButton } from "./useImportButton.js";
+import type { ImportButtonId } from "./importButtonId.js";
+import { importButtonGamepadButtonIndex } from "./importButtonId.js";
+import { LogoPulseModal } from "../../components/LogoPulseModal/index.js";
 
 interface Props {
   gamepadType?: GamepadType;

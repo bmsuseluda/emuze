@@ -1,12 +1,12 @@
-import { chmodSync, renameSync, writeFileSync } from "node:fs";
-import type { AfterPackContext } from "app-builder-lib";
+import {chmodSync, renameSync, writeFileSync} from "node:fs";
+import type {AfterPackContext} from "app-builder-lib";
 import * as path from "node:path";
-import type { LinuxPackager } from "app-builder-lib/out/linuxPackager";
+import type {LinuxPackager} from "app-builder-lib/out/linuxPackager.js";
 
 /**
  * Thanks to https://github.com/gergof/electron-builder-sandbox-fix for inspiration
  */
-module.exports = (context: AfterPackContext) => {
+export default (context: AfterPackContext) => {
   if (context.electronPlatformName === "linux") {
     const executableName = (context.packager as LinuxPackager).executableName;
     const executable = path.join(context.appOutDir, executableName);

@@ -1,7 +1,7 @@
-import { Headline } from "../../Headline";
+import { Headline } from "../../Headline/index.js";
 import type { ElementRef, ForwardedRef, ReactNode } from "react";
 import { useCallback, useRef } from "react";
-import { styled } from "../../../../styled-system/jsx";
+import { styled } from "../../../../styled-system/jsx/index.js";
 
 type paddingLeft = "none" | "small" | "medium" | "large";
 

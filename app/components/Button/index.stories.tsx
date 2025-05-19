@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Button } from ".";
+import { Button } from "./index.js";
 import { IoMdRefresh } from "react-icons/io";
 
 const meta = {

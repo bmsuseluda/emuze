@@ -1,12 +1,15 @@
-import { electron } from "./importElectron.server";
-import nodepath from "path";
-import { appendFileSync, existsSync, mkdirSync, writeFileSync } from "fs";
-import { homeDirectory } from "./homeDirectory.server";
-import { commandLineOptions } from "./commandLine.server";
+import {importElectron} from "./importElectron.server.js";
+import nodepath from "node:path";
+import {appendFileSync, existsSync, mkdirSync, writeFileSync} from "node:fs";
+import {homeDirectory} from "./homeDirectory.server.js";
+import {commandLineOptions} from "./commandLine.server.js";
 
-export const isDebug = () =>
-  electron?.app?.commandLine.hasSwitch(commandLineOptions.debugEmuze.id) ||
-  process.env.EMUZE_DEBUG === "true";
+export const isDebug = () => {
+  const electron = importElectron();
+
+  return electron?.app?.commandLine.hasSwitch(commandLineOptions.debugEmuze.id) ||
+      process.env.EMUZE_DEBUG === "true";
+}
 
 const logFileName = "emuze.log";
 

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { GameDialog } from ".";
-import { Checkbox } from "../Checkbox";
-import { Label } from "../Label";
+import { GameDialog } from "./index.js";
+import { Checkbox } from "../Checkbox/index.js";
+import { Label } from "../Label/index.js";
 
 const meta = {
   component: GameDialog,

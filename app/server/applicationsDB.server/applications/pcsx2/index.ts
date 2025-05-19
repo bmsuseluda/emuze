@@ -1,23 +1,18 @@
-import type { Application } from "../../types";
-import fs from "fs";
-import { EOL, homedir } from "os";
-import { isWindows } from "../../../operationsystem.server";
-import nodepath from "path";
-import type { SectionReplacement } from "../../configFile";
-import {
-  chainSectionReplacements,
-  replaceSection,
-  splitConfigBySection,
-  writeConfig,
-} from "../../configFile";
-import { log } from "../../../debug.server";
-import { defaultSettings } from "./defaultSettings";
-import type { Sdl } from "@kmamal/sdl";
+import type {Application} from "../../types.js";
+import fs from "node:fs";
+import {EOL, homedir} from "os";
+import {isWindows} from "../../../operationsystem.server.js";
+import nodepath from "node:path";
+import type {SectionReplacement} from "../../configFile.js";
+import {chainSectionReplacements, replaceSection, splitConfigBySection, writeConfig,} from "../../configFile.js";
+import {log} from "../../../debug.server.js";
+import {defaultSettings} from "./defaultSettings.js";
+import type {Sdl} from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
-import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
-import type { ApplicationId } from "../../applicationId";
-import { keyboardConfig } from "./keyboardConfig";
-import { envPaths } from "../../../envPaths.server";
+import {resetUnusedVirtualGamepads} from "../../resetUnusedVirtualGamepads.js";
+import type {ApplicationId} from "../../applicationId.js";
+import {keyboardConfig} from "./keyboardConfig.js";
+import {envPaths} from "../../../envPaths.server.js";
 
 const flatpakId = "net.pcsx2.PCSX2";
 const applicationId: ApplicationId = "pcsx2";

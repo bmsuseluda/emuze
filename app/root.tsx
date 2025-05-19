@@ -7,20 +7,20 @@ import {
   useLoaderData,
   useRouteError,
 } from "react-router";
-import { Titlebar } from "./containers/Titlebar";
+import { Titlebar } from "./containers/Titlebar/index.js";
 import type { LinksFunction } from "react-router";
-import { FullscreenProvider } from "./provider/FullscreenProvider";
-import { FocusProvider } from "./provider/FocusProvider";
-import { getFocusDefault, getFocusHistoryDefault } from "./types/focusElement";
+import { FullscreenProvider } from "./provider/FullscreenProvider/index.js";
+import { FocusProvider } from "./provider/FocusProvider/index.js";
+import { getFocusDefault, getFocusHistoryDefault } from "./types/focusElement.js";
 import type { ReactNode } from "react";
 import { useEffect } from "react";
-import type { DataFunctionArgs } from "./context";
+import type { DataFunctionArgs } from "./context.js";
 
 import styles from "./index.css?url";
-import { styled } from "../styled-system/jsx";
-import { readGeneral } from "./server/settings.server";
-import { GamepadProvider } from "./provider/GamepadProvider";
-import { useGamepadConnected } from "./hooks/useGamepadConnected";
+import { styled } from "../styled-system/jsx/index.js";
+import { readGeneral } from "./server/settings.server.js";
+import { GamepadProvider } from "./provider/GamepadProvider/index.js";
+import { useGamepadConnected } from "./hooks/useGamepadConnected/index.js";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 

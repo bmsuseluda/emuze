@@ -1,7 +1,7 @@
 import type { MutableRefObject, ReactNode } from "react";
 import { createContext } from "react";
-import { useGamepads } from "../../hooks/useGamepads";
-import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping";
+import { useGamepads } from "../../hooks/useGamepads/index.js";
+import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping.js";
 
 type GamepadContextState = {
   gamepadType?: GamepadType;

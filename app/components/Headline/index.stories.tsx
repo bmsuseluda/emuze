@@ -1,4 +1,4 @@
-import { Headline } from ".";
+import { Headline } from "./index.js";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {

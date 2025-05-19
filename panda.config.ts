@@ -1,4 +1,4 @@
-import { defineConfig, defineGlobalStyles, defineUtility } from "@pandacss/dev";
+import {defineConfig, defineGlobalStyles, defineUtility} from "@pandacss/dev";
 
 const globalCss = defineGlobalStyles({
   body: {
@@ -44,6 +44,7 @@ const outlineRounded = defineUtility({
 });
 
 export default defineConfig({
+  forceConsistentTypeExtension: true,
   preflight: true,
   eject: true,
   // strictTokens: true,

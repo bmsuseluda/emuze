@@ -1,13 +1,8 @@
-import { when } from "vitest-when";
-import nodepath from "path";
+import {when} from "vitest-when";
+import nodepath from "node:path";
 
-import { importCategories, paths } from "../categories.server";
-import {
-  readDirectorynames,
-  readFileHome,
-  readFilenames,
-  writeFileHome,
-} from "../readWriteData.server";
+import {importCategories, paths} from "../categories.server.js";
+import {readDirectorynames, readFileHome, readFilenames, writeFileHome,} from "../readWriteData.server.js";
 import {
   cotton,
   createAbsoluteEntryPath,
@@ -16,19 +11,19 @@ import {
   metroidsamusreturns,
   nintendo3ds,
   pcenginecd,
-} from "../__testData__/category";
-import { general } from "../__testData__/general";
-import { fetchMetaDataFromDB } from "../igdb.server";
-import { lime3ds } from "../applicationsDB.server";
-import { mednafen } from "../applicationsDB.server/applications/mednafen";
-import { entriesPath } from "../categoryDataCache.server";
+} from "../__testData__/category.js";
+import {general} from "../__testData__/general.js";
+import {fetchMetaDataFromDB} from "../igdb.server.js";
+import {lime3ds} from "../applicationsDB.server/index.js";
+import {mednafen} from "../applicationsDB.server/applications/mednafen/index.js";
+import {entriesPath} from "../categoryDataCache.server.js";
 
 vi.mock("@kmamal/sdl");
 vi.mock("../readWriteData.server");
 vi.mock("../lastPlayed.server.ts");
 vi.mock("../applications.server");
 vi.mock("../openDialog.server.ts");
-vi.mock("fs");
+vi.mock("node:fs");
 vi.mock("../igdb.server.ts");
 vi.mock("../settings.server.ts", () => ({
   readGeneral: () => general,

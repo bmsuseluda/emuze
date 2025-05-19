@@ -1,6 +1,6 @@
-import { styled } from "../../../styled-system/jsx";
+import { styled } from "../../../styled-system/jsx/index.js";
 import type { IconType } from "react-icons";
-import { IconChildrenWrapper } from "../IconChildrenWrapper";
+import { IconChildrenWrapper } from "../IconChildrenWrapper/index.js";
 import type { ComponentPropsWithoutRef, ElementRef } from "react";
 import { forwardRef } from "react";
 

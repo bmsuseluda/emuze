@@ -1,8 +1,8 @@
-import type { Configuration } from "electron-builder";
+import type {Configuration} from "electron-builder";
 
 const config: Configuration = {
   appId: "org.emuze.emuze",
-  files: ["buildDesktop", "build", "public", "fetchMetaData"],
+  files: ["./buildDesktop/desktop/main.js","buildDesktop", "build", "public", "fetchMetaData"],
   extraFiles: ["emulators/**"],
   win: {
     target: [

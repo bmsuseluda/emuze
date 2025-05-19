@@ -1,7 +1,7 @@
-import { SettingsLink as SettingsLinkComponent } from "../../components/SettingsLink";
-import { useFullscreen } from "../../hooks/useFullscreen";
-import type { FocusElement } from "../../types/focusElement";
-import { openSettingsId, useOpenSettings } from "./useOpenSettings";
+import { SettingsLink as SettingsLinkComponent } from "../../components/SettingsLink/index.js";
+import { useFullscreen } from "../../hooks/useFullscreen/index.js";
+import type { FocusElement } from "../../types/focusElement.js";
+import { openSettingsId, useOpenSettings } from "./useOpenSettings.js";
 
 interface Props {
   isInFocus: boolean;

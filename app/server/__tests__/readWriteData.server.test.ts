@@ -1,26 +1,26 @@
-import { readdirSync } from "fs";
-import { when } from "vitest-when";
-import nodepath from "path";
+import {readdirSync} from "node:fs";
+import {when} from "vitest-when";
+import nodepath from "node:path";
 
-import { readDirectorynames, readFilenames } from "../readWriteData.server";
+import {readDirectorynames, readFilenames} from "../readWriteData.server.js";
 import {
-  bladerunner,
-  cotton,
-  createAbsoluteEntryPath,
-  createCategoryPath,
-  gateofthunder,
-  hugo,
-  hugo2,
-  monkeyIsland,
-  pcenginecd,
-  playstation,
-  scumm,
-} from "../__testData__/category";
-import { duckstation } from "../applicationsDB.server/applications/duckstation";
-import { mednafen } from "../applicationsDB.server/applications/mednafen";
+    bladerunner,
+    cotton,
+    createAbsoluteEntryPath,
+    createCategoryPath,
+    gateofthunder,
+    hugo,
+    hugo2,
+    monkeyIsland,
+    pcenginecd,
+    playstation,
+    scumm,
+} from "../__testData__/category.js";
+import {duckstation} from "../applicationsDB.server/applications/duckstation/index.js";
+import {mednafen} from "../applicationsDB.server/applications/mednafen/index.js";
 
 vi.mock("@kmamal/sdl");
-vi.mock("fs");
+vi.mock("node:fs");
 
 class SimpleDirent {
   name: string;

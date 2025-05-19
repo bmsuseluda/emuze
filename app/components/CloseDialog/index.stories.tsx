@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { CloseDialog } from ".";
+import { CloseDialog } from "./index.js";
 
 const meta = {
   component: CloseDialog,

@@ -1,4 +1,4 @@
-import type { SdlButtonId } from "../../gamepads";
+import type { SdlButtonId } from "../../gamepads.js";
 
 export interface PhysicalGamepadInterface {
   deviceId: string;

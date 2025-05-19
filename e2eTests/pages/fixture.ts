@@ -1,6 +1,6 @@
 import { test as base } from "@playwright/test";
-import { LibraryPage } from "./libraryPage";
-import { SettingsPage } from "./settingsPage";
+import { LibraryPage } from "./libraryPage.js";
+import { SettingsPage } from "./settingsPage.js";
 
 type MyFixtures = {
   libraryPage: LibraryPage;

@@ -1,5 +1,5 @@
-import { GameGrid } from ".";
-import { games, gamesLastPlayed } from "./testData";
+import { GameGrid } from "./index.js";
+import { games, gamesLastPlayed } from "./testData.js";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {

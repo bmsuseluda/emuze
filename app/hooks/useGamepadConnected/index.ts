@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { GamepadContext } from "../../provider/GamepadProvider";
+import { GamepadContext } from "../../provider/GamepadProvider/index.js";
 
 export const useGamepadConnected = () => {
   const context = useContext(GamepadContext);

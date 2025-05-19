@@ -1,7 +1,7 @@
-import "../app/index.css";
+import "../app/index.css" with { type: "css" };
 import type { Decorator, Preview } from "@storybook/react";
 
-import { styled } from "../styled-system/jsx";
+import { styled } from "../styled-system/jsx/index.js";
 
 const StoryWrapper = styled("div", {
   base: {

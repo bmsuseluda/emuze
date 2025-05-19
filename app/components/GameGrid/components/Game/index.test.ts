@@ -1,4 +1,4 @@
-import { getDisplayedName } from ".";
+import { getDisplayedName } from "./index.js";
 
 describe("Game", () => {
   describe("getDisplayedName", () => {

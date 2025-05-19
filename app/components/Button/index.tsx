@@ -1,8 +1,8 @@
 import type { ComponentPropsWithoutRef, ElementRef, ReactNode } from "react";
 import { forwardRef } from "react";
-import { IconChildrenWrapper } from "../IconChildrenWrapper";
-import { Typography } from "../Typography";
-import { styled } from "../../../styled-system/jsx";
+import { IconChildrenWrapper } from "../IconChildrenWrapper/index.js";
+import { Typography } from "../Typography/index.js";
+import { styled } from "../../../styled-system/jsx/index.js";
 
 export const StyledButton = styled("button", {
   base: {

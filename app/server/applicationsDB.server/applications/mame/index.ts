@@ -2,10 +2,10 @@ import type {
   Application,
   FindEntryNameFunction,
   OptionParamFunction,
-} from "../../types";
-import { findGameNameById } from "../../nameMappings/findGameNameById";
-import mameGames from "./nameMapping/mame.json";
-import nodepath from "path";
+} from "../../types.js";
+import { findGameNameById } from "../../nameMappings/findGameNameById.js";
+import mameGames from "./nameMapping/mame.json" with { type: "json" };
+import nodepath from "node:path";
 
 const findMameArcadeGameName: FindEntryNameFunction = ({ entry: { name } }) =>
   findGameNameById(name, mameGames, "mame");

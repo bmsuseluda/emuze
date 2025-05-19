@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Link } from ".";
+import { Link } from "./index.js";
 import { FaGithub } from "react-icons/fa";
 
 const meta = {

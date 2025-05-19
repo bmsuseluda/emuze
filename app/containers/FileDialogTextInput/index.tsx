@@ -1,6 +1,6 @@
-import { FormRow } from "../../components/FormRow";
-import { Label } from "../../components/Label";
-import { TextInput } from "../../components/TextInput";
+import { FormRow } from "../../components/FormRow/index.js";
+import { Label } from "../../components/Label/index.js";
+import { TextInput } from "../../components/TextInput/index.js";
 import { FaFolderOpen } from "react-icons/fa";
 import type { ElementRef, MouseEvent } from "react";
 import { useEffect, useState } from "react";

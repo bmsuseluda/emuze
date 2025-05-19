@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var config = {
+const config = {
     appId: "org.emuze.emuze",
-    files: ["buildDesktop", "build", "public", "fetchMetaData"],
+    files: ["./buildDesktop/desktop/main.js", "buildDesktop", "build", "public", "fetchMetaData"],
     extraFiles: ["emulators/**"],
     win: {
         target: [
@@ -29,4 +27,4 @@ var config = {
     },
     afterPack: "./afterPackScript.js",
 };
-exports.default = config;
+export default config;

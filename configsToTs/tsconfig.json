@@ -2,7 +2,8 @@
   "include": ["afterPackScript.ts", "electron-builder.config.ts"],
   "compilerOptions": {
     "esModuleInterop": true,
-    "module": "commonjs",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "noImplicitAny": true,
     "strict": true,
     "baseUrl": ".",

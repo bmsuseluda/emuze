@@ -1,4 +1,4 @@
-import { convertToId } from "../convertToId.server";
+import { convertToId } from "../convertToId.server.js";
 
 describe("convertToId.server.ts", () => {
   it("Should trim white spaces and convert to lower case", () => {

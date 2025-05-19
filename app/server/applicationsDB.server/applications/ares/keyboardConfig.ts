@@ -1,5 +1,5 @@
-import type { AresButtonId } from "./types";
-import { isWindows } from "../../../operationsystem.server";
+import type { AresButtonId } from "./types.js";
+import { isWindows } from "../../../operationsystem.server.js";
 
 type Scancode = keyof typeof scancodes;
 export const scancodes = {

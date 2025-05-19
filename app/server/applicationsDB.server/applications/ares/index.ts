@@ -1,22 +1,18 @@
-import type { Application, OptionParamFunction } from "../../types";
-import type { Sdl } from "@kmamal/sdl";
+import type {Application, OptionParamFunction} from "../../types.js";
+import type {Sdl} from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
-import { log } from "../../../debug.server";
-import type {
-  GamepadGroupId,
-  PhysicalGamepadButton,
-  VirtualGamepad,
-} from "./types";
-import { PhysicalGamepad } from "./PhysicalGamepad";
-import { getVirtualGamepadReset } from "./VirtualGamepadReset";
-import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
-import type { ApplicationId } from "../../applicationId";
-import nodepath from "path";
-import { electron } from "../../../importElectron.server";
-import { getKeyboard, getKeyboardKey } from "./keyboardConfig";
-import type { SdlButtonMapping } from "../../gamepads";
-import { createSdlMappingObject } from "../../gamepads";
-import { commandLineOptions } from "../../../commandLine.server";
+import {log} from "../../../debug.server.js";
+import type {GamepadGroupId, PhysicalGamepadButton, VirtualGamepad,} from "./types.js";
+import {PhysicalGamepad} from "./PhysicalGamepad.js";
+import {getVirtualGamepadReset} from "./VirtualGamepadReset.js";
+import {resetUnusedVirtualGamepads} from "../../resetUnusedVirtualGamepads.js";
+import type {ApplicationId} from "../../applicationId.js";
+import nodepath from "node:path";
+import {importElectron} from "../../../importElectron.server.js";
+import {getKeyboard, getKeyboardKey} from "./keyboardConfig.js";
+import type {SdlButtonMapping} from "../../gamepads.js";
+import {createSdlMappingObject} from "../../gamepads.js";
+import {commandLineOptions} from "../../../commandLine.server.js";
 
 const applicationId: ApplicationId = "ares";
 const bundledPathLinux = nodepath.join(
@@ -409,10 +405,16 @@ export const aresSega32x: Application = {
   ],
 };
 
-export const isRmgForN64 = () =>
-  electron?.app?.commandLine.hasSwitch(commandLineOptions.rmgN64.id) ||
-  process.env.EMUZE_RMG_N64 === "true";
+export const isRmgForN64 = () => {
+  const electron = importElectron();
 
-export const isMgbaForGameBoy = () =>
-  electron?.app?.commandLine.hasSwitch(commandLineOptions.mgba.id) ||
-  process.env.EMUZE_MGBA === "true";
+  return electron?.app?.commandLine.hasSwitch(commandLineOptions.rmgN64.id) ||
+      process.env.EMUZE_RMG_N64 === "true";
+}
+
+export const isMgbaForGameBoy  = () => {
+  const electron = importElectron();
+
+  return electron?.app?.commandLine.hasSwitch(commandLineOptions.mgba.id) ||
+      process.env.EMUZE_MGBA === "true";
+}

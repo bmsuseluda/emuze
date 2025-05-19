@@ -1,4 +1,4 @@
-import { styled } from "../../../styled-system/jsx";
+import { styled } from "../../../styled-system/jsx/index.js";
 import type { ReactNode } from "react";
 
 const DialogOverlay = styled("div", {

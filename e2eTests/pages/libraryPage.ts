@@ -1,7 +1,7 @@
 import { expect, type Locator, type Page } from "@playwright/test";
-import type { TestName } from "../tests/ports";
-import { ports } from "../tests/ports";
-import { GameVersionsPage } from "./gameVersionsPage";
+import type { TestName } from "../tests/ports.js";
+import { ports } from "../tests/ports.js";
+import { GameVersionsPage } from "./gameVersionsPage.js";
 
 export class LibraryPage {
   readonly page: Page;

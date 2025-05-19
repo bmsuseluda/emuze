@@ -3,7 +3,7 @@ import { forwardRef } from "react";
 import * as RadixSelect from "@radix-ui/react-select";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { GiCheckMark } from "react-icons/gi";
-import { styled } from "../../../styled-system/jsx";
+import { styled } from "../../../styled-system/jsx/index.js";
 
 const SelectTrigger = styled(RadixSelect.SelectTrigger, {
   base: {

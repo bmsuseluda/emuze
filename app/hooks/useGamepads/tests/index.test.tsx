@@ -1,4 +1,4 @@
-import { excludeMaskedGamepads } from "..";
+import { excludeMaskedGamepads } from "../index.js";
 
 const createGamepad = (gamepad: Partial<Gamepad>) => gamepad as Gamepad;
 

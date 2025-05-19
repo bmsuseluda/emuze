@@ -4,8 +4,8 @@ import {
   useDirectionalInputDown,
   useDirectionalInputUp,
   useInputBack,
-} from "../useDirectionalInput";
-import type { FocusElement } from "../../types/focusElement";
+} from "../useDirectionalInput/index.js";
+import type { FocusElement } from "../../types/focusElement.js";
 
 // TODO: write tests
 export const useGamepadsOnSidebar = (

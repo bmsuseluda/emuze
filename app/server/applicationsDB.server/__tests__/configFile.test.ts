@@ -1,5 +1,5 @@
-import type { ParamToReplace } from "../configFile";
-import { replaceParams } from "../configFile";
+import type { ParamToReplace } from "../configFile.js";
+import { replaceParams } from "../configFile.js";
 
 describe("configFile", () => {
   describe("replaceParams", () => {

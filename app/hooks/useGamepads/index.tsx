@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { StickDirection } from "./layouts";
-import { layout } from "./layouts";
-import type { GamepadType } from "./gamepadTypeMapping";
-import { identifyGamepadType } from "./gamepadTypeMapping";
-import { useThrottlePress } from "../useThrottlePress";
+import type { StickDirection } from "./layouts/index.js";
+import { layout } from "./layouts/index.js";
+import type { GamepadType } from "./gamepadTypeMapping.js";
+import { identifyGamepadType } from "./gamepadTypeMapping.js";
+import { useThrottlePress } from "../useThrottlePress/index.js";
 
 const isStickPressed = (stickValue: number) => {
   const normalizedStickValue = stickValue < 0 ? stickValue * -1 : stickValue;

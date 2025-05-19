@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Dialog } from ".";
-import { Checkbox } from "../Checkbox";
-import { Label } from "../Label";
+import { Dialog } from "./index.js";
+import { Checkbox } from "../Checkbox/index.js";
+import { Label } from "../Label/index.js";
 import { useState } from "react";
-import { Button } from "../Button";
+import { Button } from "../Button/index.js";
 
 const meta = {
   component: Dialog,

@@ -1,10 +1,10 @@
-import type { SdlButtonId } from "../../gamepads";
+import type { SdlButtonId } from "../../gamepads.js";
 import {
   createSdlMappingObject,
   getButtonIndex,
   isAnalog,
-} from "../../gamepads";
-import type { PhysicalGamepadInterface } from "./PhysicalGamepad";
+} from "../../gamepads.js";
+import type { PhysicalGamepadInterface } from "./PhysicalGamepad.js";
 
 export class PhysicalGamepadLinux implements PhysicalGamepadInterface {
   deviceId: string;

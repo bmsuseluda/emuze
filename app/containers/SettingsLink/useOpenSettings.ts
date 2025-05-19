@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useInputSettings } from "../../hooks/useDirectionalInput";
+import { useInputSettings } from "../../hooks/useDirectionalInput/index.js";
 
 export const openSettingsId = "openSettings";
 

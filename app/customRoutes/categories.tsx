@@ -1,26 +1,26 @@
 import { Outlet, redirect, useLoaderData } from "react-router";
-import { readCategories } from "../server/categories.server";
-import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout";
-import { Link } from "../containers/Link";
-import { Header } from "../containers/Header";
-import { SystemIcon } from "../components/SystemIcon";
-import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar";
-import { readAppearance } from "../server/settings.server";
+import { readCategories } from "../server/categories.server.js";
+import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout/index.js";
+import { Link } from "../containers/Link/index.js";
+import { Header } from "../containers/Header/index.js";
+import { SystemIcon } from "../components/SystemIcon/index.js";
+import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar/index.js";
+import { readAppearance } from "../server/settings.server.js";
 import { useCallback } from "react";
-import { useFocus } from "../hooks/useFocus";
-import type { FocusElement } from "../types/focusElement";
-import { Typography } from "../components/Typography";
-import { styled } from "../../styled-system/jsx";
-import type { DataFunctionArgs } from "../context";
-import type { SystemId } from "../server/categoriesDB.server/systemId";
-import { readLastPlayed } from "../server/lastPlayed.server";
-import { useOpenSettings } from "../containers/SettingsLink/useOpenSettings";
-import { useImportButton } from "../containers/ImportButton/useImportButton";
+import { useFocus } from "../hooks/useFocus/index.js";
+import type { FocusElement } from "../types/focusElement.js";
+import { Typography } from "../components/Typography/index.js";
+import { styled } from "../../styled-system/jsx/index.js";
+import type { DataFunctionArgs } from "../context.js";
+import type { SystemId } from "../server/categoriesDB.server/systemId.js";
+import { readLastPlayed } from "../server/lastPlayed.server.js";
+import { useOpenSettings } from "../containers/SettingsLink/useOpenSettings.js";
+import { useImportButton } from "../containers/ImportButton/useImportButton.js";
 import {
   useDirectionalInputRight,
   useInputConfirmation,
-} from "../hooks/useDirectionalInput";
-import { CloseDialogContainer } from "../containers/CloseDialog";
+} from "../hooks/useDirectionalInput/index.js";
+import { CloseDialogContainer } from "../containers/CloseDialog/index.js";
 
 type CategoryLinks = Array<{ id: SystemId; name: string; to: string }>;
 type LoaderData = {

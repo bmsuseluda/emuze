@@ -1,9 +1,9 @@
-import { icons, SettingsIcon } from ".";
+import { icons, SettingsIcon } from "./index.js";
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { styled } from "../../../styled-system/jsx";
-import { IconChildrenWrapper } from "../IconChildrenWrapper";
-import { Typography } from "../Typography";
+import { styled } from "../../../styled-system/jsx/index.js";
+import { IconChildrenWrapper } from "../IconChildrenWrapper/index.js";
+import { Typography } from "../Typography/index.js";
 
 const meta = {
   component: SettingsIcon,

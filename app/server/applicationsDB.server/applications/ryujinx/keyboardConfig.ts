@@ -1,4 +1,4 @@
-import type { InputConfig } from "./config";
+import type { InputConfig } from "./config.js";
 
 export const keyboardConfig: InputConfig = {
   left_joycon_stick: {

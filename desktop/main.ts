@@ -1,17 +1,19 @@
-import { homedir, platform } from "os";
-import { app, BrowserWindow, globalShortcut, ipcMain, shell } from "electron";
-import nodepath from "path";
+import {homedir, platform} from "node:os";
+import {app, BrowserWindow, globalShortcut, ipcMain, shell} from "electron";
+import nodepath from "node:path";
+import path from "node:path";
 import * as dotenv from "dotenv";
-import { autoUpdater } from "electron-updater";
-import { readAppearance, writeAppearance } from "../app/server/settings.server";
-import { createLogFile, isDebug, log } from "../app/server/debug.server";
-import {
-  commandLineOptions,
-  commandLineOptionsString,
-} from "../app/server/commandLine.server";
-import { cpSync, existsSync, rmSync } from "fs";
-import { initReactRouter } from "./initReactRouter";
-import { homeDirectory } from "../app/server/homeDirectory.server";
+import electronUpdater from "electron-updater";
+import {readAppearance, writeAppearance} from "../app/server/settings.server.js";
+import {createLogFile, isDebug, log} from "../app/server/debug.server.js";
+import {commandLineOptions, commandLineOptionsString,} from "../app/server/commandLine.server.js";
+import {cpSync, existsSync, rmSync} from "node:fs";
+import {initReactRouter} from "./initReactRouter.js";
+import {homeDirectory} from "../app/server/homeDirectory.server.js";
+import {fileURLToPath} from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const { autoUpdater } = electronUpdater;
 
 process.env.SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS = "1";
 dotenv.config();
@@ -84,6 +86,7 @@ app.on("ready", async () => {
     app.commandLine.hasSwitch(commandLineOptions.fullscreen.id) ||
     appearance?.fullscreen;
 
+  // TODO: Check how to set context for react router with fullscreen
   const url = await initReactRouter();
 
   const window = new BrowserWindow({
@@ -92,10 +95,10 @@ app.on("ready", async () => {
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: true,
+      sandbox: false,
       webSecurity: true,
       allowRunningInsecureContent: false,
-      preload: nodepath.join(__dirname, "preload.js"),
+      preload: nodepath.join(__dirname, "preload.mjs"),
     },
     icon:
       platform() === "win32"

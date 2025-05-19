@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { GamepadButtonIcon } from ".";
-import { layout } from "../../hooks/useGamepads/layouts";
-import { Button } from "../Button";
+import { GamepadButtonIcon } from "./index.js";
+import { layout } from "../../hooks/useGamepads/layouts/index.js";
+import { Button } from "../Button/index.js";
 
 const meta = {
   component: GamepadButtonIcon,

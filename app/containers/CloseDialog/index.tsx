@@ -1,13 +1,13 @@
-import { CloseDialog } from "../../components/CloseDialog";
-import { useFocus } from "../../hooks/useFocus";
-import type { FocusElement } from "../../types/focusElement";
-import { useGamepadsOnGrid } from "../../hooks/useGamepadsOnGrid";
+import { CloseDialog } from "../../components/CloseDialog/index.js";
+import { useFocus } from "../../hooks/useFocus/index.js";
+import type { FocusElement } from "../../types/focusElement.js";
+import { useGamepadsOnGrid } from "../../hooks/useGamepadsOnGrid/index.js";
 import { useCallback } from "react";
 import {
   useInputBack,
   useInputConfirmation,
   useInputSettings,
-} from "../../hooks/useDirectionalInput";
+} from "../../hooks/useDirectionalInput/index.js";
 
 export const CloseDialogContainer = () => {
   const { isInFocus, switchFocusBack } = useFocus<FocusElement>("closeDialog");

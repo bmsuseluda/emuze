@@ -1,20 +1,15 @@
-import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId";
-import { join } from "node:path";
-import { https } from "follow-redirects";
+import type {ApplicationId} from "../app/server/applicationsDB.server/applicationId.js";
+import path, {basename, join} from "node:path";
+import followRedirects from "follow-redirects";
 import decompress from "decompress";
-import { applications } from "../app/server/applicationsDB.server";
-import {
-  chmodSync,
-  createWriteStream,
-  existsSync,
-  mkdirSync,
-  renameSync,
-  rmSync,
-} from "node:fs";
+import {applications} from "../app/server/applicationsDB.server/index.js";
+import {chmodSync, createWriteStream, existsSync, mkdirSync, readdirSync, renameSync, rmSync,} from "node:fs";
 import _7z from "7zip-min";
-import nodepath from "path";
-import { readdirSync } from "fs";
-import { moveSync } from "fs-extra";
+import {moveSync} from "fs-extra/esm";
+
+import {fileURLToPath} from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 type OperatingSystem = "Windows" | "Linux";
 type EmulatorDownloads = Record<ApplicationId, Record<OperatingSystem, string>>;
@@ -113,7 +108,7 @@ const downloadAndExtract7z = (
   outputFolder: string,
   fileToCheck: string,
 ) => {
-  const zipFilePath = nodepath.join(outputFolder, url.split("/").at(-1) || "");
+  const zipFilePath = join(outputFolder, url.split("/").at(-1) || "");
 
   downloadFile(url, zipFilePath, () => {
     _7z.unpack(zipFilePath, outputFolder, (error) => {
@@ -145,7 +140,7 @@ const downloadFile = (
   const file = createWriteStream(fileToCheck);
   console.log(`Download of ${url} started`);
 
-  https
+  followRedirects.https
     .get(url, (response) => {
       exitOnResponseCodeError(url, response.statusCode);
 
@@ -174,17 +169,17 @@ const removeRootFolderIfNecessary = (folder: string) => {
   const files = readdirSync(folder);
 
   if (files.length === 1) {
-    const tempFolder = nodepath.join(
+    const tempFolder = join(
       folder,
       "..",
-      `${nodepath.basename(folder)}TempFolder`,
+      `${basename(folder)}TempFolder`,
     );
 
     // rename target folder to temp folder
     renameSync(folder, tempFolder);
 
     // move and rename root folder to target folder
-    const rootFolder = nodepath.join(tempFolder, files[0]);
+    const rootFolder = join(tempFolder, files[0]);
     moveSync(rootFolder, folder);
 
     // remove temp folder
@@ -198,7 +193,7 @@ const downloadAndExtract = (
   fileToCheck: string,
 ) => {
   console.log(`Download of ${url} started`);
-  https
+  followRedirects.https
     .get(url, (response) => {
       exitOnResponseCodeError(url, response.statusCode);
 

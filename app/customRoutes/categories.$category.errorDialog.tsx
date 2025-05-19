@@ -1,9 +1,9 @@
-import { getErrorDialog, resetErrorDialog } from "../server/errorDialog.server";
+import { getErrorDialog, resetErrorDialog } from "../server/errorDialog.server.js";
 import { redirect } from "react-router";
 import { useLoaderData, useSubmit } from "react-router";
-import { ErrorDialog } from "../components/ErrorDialog";
-import { useFocus } from "../hooks/useFocus";
-import type { FocusElement } from "../types/focusElement";
+import { ErrorDialog } from "../components/ErrorDialog/index.js";
+import { useFocus } from "../hooks/useFocus/index.js";
+import type { FocusElement } from "../types/focusElement.js";
 import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import {
@@ -12,7 +12,7 @@ import {
   useInputBack,
   useInputConfirmation,
   useInputSettings,
-} from "../hooks/useDirectionalInput";
+} from "../hooks/useDirectionalInput/index.js";
 
 export const loader = () => {
   const errorDialog = getErrorDialog();

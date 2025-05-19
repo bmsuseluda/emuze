@@ -1,4 +1,4 @@
-import type { ParamToReplace } from "../../configFile";
+import type { ParamToReplace } from "../../configFile.js";
 
 export const keyboardConfig: ParamToReplace[] = [
   { keyValue: "profile=0" },

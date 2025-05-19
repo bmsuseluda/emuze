@@ -1,6 +1,6 @@
-import fs from "fs";
-import nodepath from "path";
-import { EOL } from "os";
+import fs from "node:fs";
+import nodepath from "node:path";
+import {EOL} from "os";
 
 type Param = `${string}=${string}`;
 

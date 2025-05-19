@@ -1,7 +1,7 @@
-import { layout } from "../../hooks/useGamepads/layouts";
+import { layout } from "../../hooks/useGamepads/layouts/index.js";
 import { useCallback } from "react";
-import { useGamepadButtonPressEvent } from "../../hooks/useGamepadEvent";
-import { useKeyboardEvent } from "../../hooks/useKeyboardEvent";
+import { useGamepadButtonPressEvent } from "../../hooks/useGamepadEvent/index.js";
+import { useKeyboardEvent } from "../../hooks/useKeyboardEvent/index.js";
 
 export const installEmulatorsId = "installMissingEmulators";
 export const installEmulatorsButtonGamepadButtonIndex = layout.buttons.Y;

@@ -1,5 +1,5 @@
-import nodepath from "path";
-import { execFileSync } from "child_process";
+import nodepath from "node:path";
+import {execFileSync} from "node:child_process";
 
 const sizes = [
   "16",

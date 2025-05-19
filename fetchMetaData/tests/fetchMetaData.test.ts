@@ -4,7 +4,7 @@ import { existsSync } from "node:fs";
 import type { Game } from "../igdb";
 import { fetchMetaDataForSystem } from "../igdb";
 import type { SystemId } from "../../app/server/categoriesDB.server/systemId";
-import nodepath from "path";
+import nodepath from "node:path";
 
 vi.mock("../igdb.ts");
 vi.mock("../../app/server/readWriteData.server");

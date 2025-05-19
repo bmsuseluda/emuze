@@ -1,10 +1,10 @@
-import type { Application, OptionParamFunction } from "../../types";
-import { isWindows } from "../../../operationsystem.server";
-import nodepath from "path";
-import { getVirtualGamepadsSaturn } from "./VirtualGamepadSaturn";
-import { getVirtualGamepadsPcEngine } from "./VirtualGamepadPcEngine";
-import { getKeyboardKey } from "./keyboardConfig";
-import { flatpakId, flatpakOptionParams } from "./definitions";
+import type { Application, OptionParamFunction } from "../../types.js";
+import { isWindows } from "../../../operationsystem.server.js";
+import nodepath from "node:path";
+import { getVirtualGamepadsSaturn } from "./VirtualGamepadSaturn.js";
+import { getVirtualGamepadsPcEngine } from "./VirtualGamepadPcEngine.js";
+import { getKeyboardKey } from "./keyboardConfig.js";
+import { flatpakId, flatpakOptionParams } from "./definitions.js";
 
 const getSharedMednafenOptionParams: OptionParamFunction = ({
   settings: {

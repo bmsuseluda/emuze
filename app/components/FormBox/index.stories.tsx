@@ -1,6 +1,6 @@
-import { FormBox } from ".";
-import { Label } from "../Label";
-import { TextInput } from "../TextInput";
+import { FormBox } from "./index.js";
+import { Label } from "../Label/index.js";
+import { TextInput } from "../TextInput/index.js";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {

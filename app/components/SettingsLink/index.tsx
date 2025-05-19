@@ -2,7 +2,7 @@ import { Link as RemixLink, LinkProps } from "react-router";
 import type { ElementRef } from "react";
 import { forwardRef } from "react";
 import { VscSettingsGear } from "react-icons/vsc";
-import { styled } from "../../../styled-system/jsx";
+import { styled } from "../../../styled-system/jsx/index.js";
 
 const Link = styled(RemixLink, {
   base: {
