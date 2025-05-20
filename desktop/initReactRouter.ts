@@ -1,7 +1,8 @@
 import nodepath, { join } from "node:path";
 import electron, { app, protocol } from "electron";
 import mime from "mime";
-import { createServer, ViteDevServer } from "vite";
+import type { ViteDevServer } from "vite";
+import { createServer } from "vite";
 import { createReadStream, promises as fsPromises } from "node:fs";
 import { createRequestHandler } from "react-router";
 import { createReadableStreamFromReadable } from "@react-router/node";

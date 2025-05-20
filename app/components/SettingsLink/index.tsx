@@ -1,4 +1,5 @@
-import { Link as RemixLink, LinkProps } from "react-router";
+import { Link as RemixLink } from "react-router";
+import type { LinkProps } from "react-router";
 import type { ElementRef } from "react";
 import { forwardRef } from "react";
 import { VscSettingsGear } from "react-icons/vsc";

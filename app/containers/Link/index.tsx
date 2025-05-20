@@ -1,4 +1,5 @@
-import { NavLink, NavLinkProps } from "react-router";
+import type { NavLinkProps } from "react-router";
+import { NavLink } from "react-router";
 import type { ElementRef, ReactNode } from "react";
 import { forwardRef } from "react";
 import { IconChildrenWrapper } from "../../components/IconChildrenWrapper/index.js";
