@@ -1,4 +1,4 @@
-import path, {join} from "node:path";
+import nodepath, {join} from "node:path";
 import electron, {app, protocol} from "electron";
 import mime from "mime";
 import {createServer, ViteDevServer} from "vite";
@@ -8,7 +8,7 @@ import {createReadableStreamFromReadable} from "@react-router/node";
 
 import {fileURLToPath, pathToFileURL} from 'node:url';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 
 let viteServer: ViteDevServer;
 

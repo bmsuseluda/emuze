@@ -1,6 +1,6 @@
 import {chmodSync, renameSync, writeFileSync} from "node:fs";
 import type {AfterPackContext} from "app-builder-lib";
-import * as path from "node:path";
+import nodepath from "node:path";
 import type {LinuxPackager} from "app-builder-lib/out/linuxPackager.js";
 
 /**
@@ -9,7 +9,7 @@ import type {LinuxPackager} from "app-builder-lib/out/linuxPackager.js";
 export default (context: AfterPackContext) => {
   if (context.electronPlatformName === "linux") {
     const executableName = (context.packager as LinuxPackager).executableName;
-    const executable = path.join(context.appOutDir, executableName);
+    const executable = nodepath.join(context.appOutDir, executableName);
 
     const loaderScript = `#!/usr/bin/env bash
 set -u

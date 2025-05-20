@@ -1,5 +1,4 @@
 import nodepath from "node:path";
-import path from "node:path";
 // Import can't be shortend because path aliases do not work
 import {writeFile} from "../../app/server/readWriteData.server.js";
 import {spawnSync} from "node:child_process";
@@ -7,7 +6,7 @@ import {checkFlatpakIsInstalled} from "../../app/server/applicationsDB.server/ch
 
 import {fileURLToPath} from 'node:url';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 
 export type Result = Record<string, string | number>;
 

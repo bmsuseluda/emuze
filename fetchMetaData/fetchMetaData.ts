@@ -1,7 +1,6 @@
 import {fetchMetaDataForSystem} from "./igdb.js";
 import {writeFile} from "../app/server/readWriteData.server.js";
 import nodepath from "node:path";
-import path from "node:path";
 import type {SystemId} from "../app/server/categoriesDB.server/systemId.js";
 import {categories} from "../app/server/categoriesDB.server/index.js";
 import {existsSync} from "node:fs";
@@ -10,7 +9,7 @@ import {normalizeString} from "../app/server/igdb.server.js";
 
 import {fileURLToPath} from 'node:url';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 
 export type GameTrimmed = [name: string, cover: string];
 

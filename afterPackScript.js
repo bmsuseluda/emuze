@@ -1,12 +1,12 @@
 import { chmodSync, renameSync, writeFileSync } from "node:fs";
-import * as path from "node:path";
+import nodepath from "node:path";
 /**
  * Thanks to https://github.com/gergof/electron-builder-sandbox-fix for inspiration
  */
 export default (context) => {
     if (context.electronPlatformName === "linux") {
         const executableName = context.packager.executableName;
-        const executable = path.join(context.appOutDir, executableName);
+        const executable = nodepath.join(context.appOutDir, executableName);
         const loaderScript = `#!/usr/bin/env bash
 set -u
 

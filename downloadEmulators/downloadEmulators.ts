@@ -1,5 +1,5 @@
 import type {ApplicationId} from "../app/server/applicationsDB.server/applicationId.js";
-import path, {basename, join} from "node:path";
+import nodepath, {basename, join} from "node:path";
 import followRedirects from "follow-redirects";
 import decompress from "decompress";
 import {applications} from "../app/server/applicationsDB.server/index.js";
@@ -9,7 +9,7 @@ import {moveSync} from "fs-extra/esm";
 
 import {fileURLToPath} from 'node:url';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 
 type OperatingSystem = "Windows" | "Linux";
 type EmulatorDownloads = Record<ApplicationId, Record<OperatingSystem, string>>;

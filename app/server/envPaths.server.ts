@@ -3,7 +3,7 @@
  * A big thank you to Sindre Sorhus for the great work.
  */
 
-import path from "node:path";
+import nodepath from "node:path";
 import os from "node:os";
 import process from "node:process";
 
@@ -12,52 +12,55 @@ const tmpdir = os.tmpdir();
 const { env } = process;
 
 const macos = (name: string) => {
-  const library = path.join(homedir, "Library");
+  const library = nodepath.join(homedir, "Library");
 
   return {
-    data: path.join(library, "Application Support", name),
-    config: path.join(library, "Preferences", name),
-    cache: path.join(library, "Caches", name),
-    log: path.join(library, "Logs", name),
-    temp: path.join(tmpdir, name),
+    data: nodepath.join(library, "Application Support", name),
+    config: nodepath.join(library, "Preferences", name),
+    cache: nodepath.join(library, "Caches", name),
+    log: nodepath.join(library, "Logs", name),
+    temp: nodepath.join(tmpdir, name),
   };
 };
 
 const windows = (name: string) => {
-  const appData = env.APPDATA || path.join(homedir, "AppData", "Roaming");
+  const appData = env.APPDATA || nodepath.join(homedir, "AppData", "Roaming");
   const localAppData =
-    env.LOCALAPPDATA || path.join(homedir, "AppData", "Local");
+    env.LOCALAPPDATA || nodepath.join(homedir, "AppData", "Local");
 
   return {
     // Data/config/cache/log are invented by me as Windows isn't opinionated about this
-    data: path.join(localAppData, name, "Data"),
-    config: path.join(appData, name, "Config"),
-    cache: path.join(localAppData, name, "Cache"),
-    log: path.join(localAppData, name, "Log"),
-    temp: path.join(tmpdir, name),
+    data: nodepath.join(localAppData, name, "Data"),
+    config: nodepath.join(appData, name, "Config"),
+    cache: nodepath.join(localAppData, name, "Cache"),
+    log: nodepath.join(localAppData, name, "Log"),
+    temp: nodepath.join(tmpdir, name),
   };
 };
 
 // https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 const linux = (name: string) => {
-  const username = path.basename(homedir);
+  const username = nodepath.basename(homedir);
 
   return {
-    data: path.join(
-      env.XDG_DATA_HOME || path.join(homedir, ".local", "share"),
+    data: nodepath.join(
+      env.XDG_DATA_HOME || nodepath.join(homedir, ".local", "share"),
       name,
     ),
-    config: path.join(
-      env.XDG_CONFIG_HOME || path.join(homedir, ".config"),
+    config: nodepath.join(
+      env.XDG_CONFIG_HOME || nodepath.join(homedir, ".config"),
       name,
     ),
-    cache: path.join(env.XDG_CACHE_HOME || path.join(homedir, ".cache"), name),
+    cache: nodepath.join(
+      env.XDG_CACHE_HOME || nodepath.join(homedir, ".cache"),
+      name,
+    ),
     // https://wiki.debian.org/XDGBaseDirectorySpecification#state
-    log: path.join(
-      env.XDG_STATE_HOME || path.join(homedir, ".local", "state"),
+    log: nodepath.join(
+      env.XDG_STATE_HOME || nodepath.join(homedir, ".local", "state"),
       name,
     ),
-    temp: path.join(tmpdir, username, name),
+    temp: nodepath.join(tmpdir, username, name),
   };
 };
 

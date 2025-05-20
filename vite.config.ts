@@ -5,6 +5,7 @@ import { reactRouter } from "@react-router/dev/vite";
 export default defineConfig({
   server: {
     port: 3000,
+    warmup: { clientFiles: ["./app/root.tsx"] },
   },
   ssr: {
     noExternal: [
@@ -15,5 +16,9 @@ export default defineConfig({
     ],
   },
   optimizeDeps: { exclude: ["@kmamal/sdl"], include: ["react-use"] },
-  plugins: [devtoolsJson(), reactRouter()],
+  plugins: [
+    // @ts-ignore
+    devtoolsJson(),
+    reactRouter(),
+  ],
 });
