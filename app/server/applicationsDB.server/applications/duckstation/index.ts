@@ -1,18 +1,23 @@
-import type {Application} from "../../types.js";
-import type {Sdl} from "@kmamal/sdl";
+import type { Application } from "../../types.js";
+import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
-import {resetUnusedVirtualGamepads} from "../../resetUnusedVirtualGamepads.js";
-import {log} from "../../../debug.server.js";
+import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
+import { log } from "../../../debug.server.js";
 import fs from "node:fs";
-import {EOL, homedir} from "node:os";
-import {isWindows} from "../../../operationsystem.server.js";
-import type {SectionReplacement} from "../../configFile.js";
-import {chainSectionReplacements, replaceSection, splitConfigBySection, writeConfig,} from "../../configFile.js";
+import { EOL, homedir } from "node:os";
+import { isWindows } from "../../../operationsystem.server.js";
+import type { SectionReplacement } from "../../configFile.js";
+import {
+  chainSectionReplacements,
+  replaceSection,
+  splitConfigBySection,
+  writeConfig,
+} from "../../configFile.js";
 import nodepath from "node:path";
-import {defaultSettings} from "./defaultSettings.js";
-import type {ApplicationId} from "../../applicationId.js";
-import {keyboardConfig} from "./keyboardConfig.js";
-import {envPaths} from "../../../envPaths.server.js";
+import { defaultSettings } from "./defaultSettings.js";
+import type { ApplicationId } from "../../applicationId.js";
+import { keyboardConfig } from "./keyboardConfig.js";
+import { envPaths } from "../../../envPaths.server.js";
 
 const flatpakId = "org.duckstation.DuckStation";
 const applicationId: ApplicationId = "duckstation";

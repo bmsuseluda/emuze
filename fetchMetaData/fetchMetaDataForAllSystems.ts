@@ -1,3 +1,3 @@
-import {fetchMetaDataForAllSystems} from "./fetchMetaData.js";
+import { fetchMetaDataForAllSystems } from "./fetchMetaData.js";
 
 fetchMetaDataForAllSystems();

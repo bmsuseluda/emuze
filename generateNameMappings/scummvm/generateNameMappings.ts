@@ -1,10 +1,10 @@
 import nodepath from "node:path";
 // Import can't be shortend because path aliases do not work
-import {writeFile} from "../../app/server/readWriteData.server.js";
-import {spawnSync} from "node:child_process";
-import {checkFlatpakIsInstalled} from "../../app/server/applicationsDB.server/checkEmulatorIsInstalled.js";
+import { writeFile } from "../../app/server/readWriteData.server.js";
+import { spawnSync } from "node:child_process";
+import { checkFlatpakIsInstalled } from "../../app/server/applicationsDB.server/checkEmulatorIsInstalled.js";
 
-import {fileURLToPath} from 'node:url';
+import { fileURLToPath } from "node:url";
 
 const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 

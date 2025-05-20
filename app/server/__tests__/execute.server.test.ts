@@ -1,20 +1,25 @@
 import nodepath from "node:path";
-import type {ChildProcess} from "node:child_process";
-import {execFile, execFileSync} from "node:child_process";
+import type { ChildProcess } from "node:child_process";
+import { execFile, execFileSync } from "node:child_process";
 
-import {readAppearance, readGeneral} from "../settings.server.js";
-import type {Category} from "../../types/jsonFiles/category.js";
-import {applications as applicationsDB} from "../applicationsDB.server/index.js";
+import { readAppearance, readGeneral } from "../settings.server.js";
+import type { Category } from "../../types/jsonFiles/category.js";
+import { applications as applicationsDB } from "../applicationsDB.server/index.js";
 
-import {startGame} from "../execute.server.js";
-import {createAbsoluteEntryPath, neogeo, pcenginecd, pcenginecdLinux,} from "../__testData__/category.js";
-import {general} from "../__testData__/general.js";
-import {existsSync} from "node:fs";
-import {mameNeoGeo, mednafen} from "../__testData__/applications.js";
-import {readFilenames} from "../readWriteData.server.js";
-import {when} from "vitest-when";
-import {updateFlatpakAppList} from "../applicationsDB.server/checkEmulatorIsInstalled.js";
-import {readCategory} from "../categoryDataCache.server.js";
+import { startGame } from "../execute.server.js";
+import {
+  createAbsoluteEntryPath,
+  neogeo,
+  pcenginecd,
+  pcenginecdLinux,
+} from "../__testData__/category.js";
+import { general } from "../__testData__/general.js";
+import { existsSync } from "node:fs";
+import { mameNeoGeo, mednafen } from "../__testData__/applications.js";
+import { readFilenames } from "../readWriteData.server.js";
+import { when } from "vitest-when";
+import { updateFlatpakAppList } from "../applicationsDB.server/checkEmulatorIsInstalled.js";
+import { readCategory } from "../categoryDataCache.server.js";
 
 vi.mock("@kmamal/sdl");
 vi.mock("node:child_process");

@@ -1,7 +1,13 @@
 import nodepath from "node:path";
-import {existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync,} from "node:fs";
-import {log} from "./debug.server.js";
-import {homeDirectory} from "./homeDirectory.server.js";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
+import { log } from "./debug.server.js";
+import { homeDirectory } from "./homeDirectory.server.js";
 
 const readFiles = (path: string) => {
   try {

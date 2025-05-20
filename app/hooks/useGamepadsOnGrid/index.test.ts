@@ -1,9 +1,9 @@
-import {createEvent, fireEvent, renderHook} from "@testing-library/react";
-import {userEvent} from "@testing-library/user-event";
+import { createEvent, fireEvent, renderHook } from "@testing-library/react";
+import { userEvent } from "@testing-library/user-event";
 
-import {useGamepadsOnGrid} from "./index.js";
-import type {StickDirection} from "../useGamepads/layouts/index.js";
-import {layout} from "../useGamepads/layouts/index.js";
+import { useGamepadsOnGrid } from "./index.js";
+import type { StickDirection } from "../useGamepads/layouts/index.js";
+import { layout } from "../useGamepads/layouts/index.js";
 
 const pressButton = (buttonIndex: number) => {
   fireEvent(window, createEvent(`gamepadonbutton${buttonIndex}press`, window));

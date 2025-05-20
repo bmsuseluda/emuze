@@ -1,20 +1,25 @@
-import type {Application} from "../../types.js";
-import type {ParamToReplace, SectionReplacement} from "../../configFile.js";
-import {chainSectionReplacements, replaceSection, splitConfigBySection, writeConfig,} from "../../configFile.js";
-import {EOL} from "node:os";
+import type { Application } from "../../types.js";
+import type { ParamToReplace, SectionReplacement } from "../../configFile.js";
+import {
+  chainSectionReplacements,
+  replaceSection,
+  splitConfigBySection,
+  writeConfig,
+} from "../../configFile.js";
+import { EOL } from "node:os";
 import fs from "node:fs";
-import {log} from "../../../debug.server.js";
+import { log } from "../../../debug.server.js";
 import nodepath from "node:path";
-import type {Sdl} from "@kmamal/sdl";
+import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
-import {resetUnusedVirtualGamepads} from "../../resetUnusedVirtualGamepads.js";
-import {defaultGamepadSettings} from "./defaultGamepadSettings.js";
-import {defaultHotkeys} from "./defaultHotkeys.js";
-import type {ApplicationId} from "../../applicationId.js";
-import {emulatorsDirectory} from "../../../homeDirectory.server.js";
-import {isGamecubeController} from "../../gamepads.js";
-import {defaultDolphinSettings} from "./defaultDolphinSettings.js";
-import {keyboardConfig} from "./keyboardConfig.js";
+import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
+import { defaultGamepadSettings } from "./defaultGamepadSettings.js";
+import { defaultHotkeys } from "./defaultHotkeys.js";
+import type { ApplicationId } from "../../applicationId.js";
+import { emulatorsDirectory } from "../../../homeDirectory.server.js";
+import { isGamecubeController } from "../../gamepads.js";
+import { defaultDolphinSettings } from "./defaultDolphinSettings.js";
+import { keyboardConfig } from "./keyboardConfig.js";
 
 const flatpakId = "org.DolphinEmu.dolphin-emu";
 const applicationId: ApplicationId = "dolphin";

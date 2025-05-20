@@ -1,4 +1,4 @@
-import {importElectron} from "./importElectron.server.js";
+import { importElectron } from "./importElectron.server.js";
 
 export const openFolderDialog = async (title: string, defaultPath?: string) => {
   const electron = importElectron();

@@ -1,7 +1,12 @@
-import type {ComponentPropsWithoutRef} from "react";
-import type {IconType} from "react-icons";
-import {VscChromeClose, VscChromeMaximize, VscChromeMinimize, VscChromeRestore,} from "react-icons/vsc";
-import {styled} from "../../../../../styled-system/jsx/index.js";
+import type { ComponentPropsWithoutRef } from "react";
+import type { IconType } from "react-icons";
+import {
+  VscChromeClose,
+  VscChromeMaximize,
+  VscChromeMinimize,
+  VscChromeRestore,
+} from "react-icons/vsc";
+import { styled } from "../../../../../styled-system/jsx/index.js";
 
 const iconVariant: Record<WindowChangeEvents, IconType> = {
   close: VscChromeClose,

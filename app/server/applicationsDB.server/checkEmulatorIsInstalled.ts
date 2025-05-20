@@ -1,5 +1,5 @@
-import {execFileSync} from "node:child_process";
-import {log} from "../debug.server.js";
+import { execFileSync } from "node:child_process";
+import { log } from "../debug.server.js";
 
 export class EmulatorNotInstalledError extends Error {
   constructor(emulatorName: string) {

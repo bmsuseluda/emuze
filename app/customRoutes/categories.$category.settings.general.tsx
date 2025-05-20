@@ -1,37 +1,49 @@
-import type {ElementRef, MouseEvent} from "react";
-import {useCallback} from "react";
-import type {ActionFunctionArgs} from "react-router";
-import {Form, Outlet, redirect, useActionData, useLoaderData} from "react-router";
-import {FormBox} from "../components/FormBox/index.js";
-import {ListActionBarLayout} from "../components/layouts/ListActionBarLayout/index.js";
-import {importCategories, readCategories} from "../server/categories.server.js";
-import {openFolderDialog} from "../server/openDialog.server.js";
-import {readGeneral, writeGeneral} from "../server/settings.server.js";
-import type {General} from "../types/jsonFiles/settings/general.js";
-import {isWindows} from "../server/operationsystem.server.js";
-import {IconChildrenWrapper} from "../components/IconChildrenWrapper/index.js";
-import {SettingsIcon} from "../components/SettingsIcon/index.js";
-import {useFocus} from "../hooks/useFocus/index.js";
-import type {FocusElement} from "../types/focusElement.js";
-import type {Result} from "../hooks/useGamepadsOnGrid/index.js";
-import {useGamepadsOnGrid} from "../hooks/useGamepadsOnGrid/index.js";
-import {installMissingApplicationsOnLinux} from "../server/installApplications.server.js";
-import {useEnableFocusAfterAction} from "../hooks/useEnableFocusAfterAction/index.js";
-import {useGamepadConnected} from "../hooks/useGamepadConnected/index.js";
+import type { ElementRef, MouseEvent } from "react";
+import { useCallback } from "react";
+import type { ActionFunctionArgs } from "react-router";
+import {
+  Form,
+  Outlet,
+  redirect,
+  useActionData,
+  useLoaderData,
+} from "react-router";
+import { FormBox } from "../components/FormBox/index.js";
+import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
+import {
+  importCategories,
+  readCategories,
+} from "../server/categories.server.js";
+import { openFolderDialog } from "../server/openDialog.server.js";
+import { readGeneral, writeGeneral } from "../server/settings.server.js";
+import type { General } from "../types/jsonFiles/settings/general.js";
+import { isWindows } from "../server/operationsystem.server.js";
+import { IconChildrenWrapper } from "../components/IconChildrenWrapper/index.js";
+import { SettingsIcon } from "../components/SettingsIcon/index.js";
+import { useFocus } from "../hooks/useFocus/index.js";
+import type { FocusElement } from "../types/focusElement.js";
+import type { Result } from "../hooks/useGamepadsOnGrid/index.js";
+import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid/index.js";
+import { installMissingApplicationsOnLinux } from "../server/installApplications.server.js";
+import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction/index.js";
+import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
 import fs from "node:fs";
-import {log} from "../server/debug.server.js";
-import type {Category} from "../types/jsonFiles/category.js";
-import {readLastPlayed} from "../server/lastPlayed.server.js";
-import type {SystemId} from "../server/categoriesDB.server/systemId.js";
-import {ImportButton} from "../containers/ImportButton/index.js";
+import { log } from "../server/debug.server.js";
+import type { Category } from "../types/jsonFiles/category.js";
+import { readLastPlayed } from "../server/lastPlayed.server.js";
+import type { SystemId } from "../server/categoriesDB.server/systemId.js";
+import { ImportButton } from "../containers/ImportButton/index.js";
 import {
   InstallEmulatorsButton,
   installMissingApplicationsActionId,
 } from "../containers/InstallEmulatorsButton/index.js";
-import type {ImportButtonId} from "../containers/ImportButton/importButtonId.js";
-import {useInputBack, useInputConfirmation,} from "../hooks/useDirectionalInput/index.js";
-import {FileDialogInputField} from "../containers/FileDialogTextInput/index.js";
-import {Typography} from "../components/Typography/index.js";
+import type { ImportButtonId } from "../containers/ImportButton/importButtonId.js";
+import {
+  useInputBack,
+  useInputConfirmation,
+} from "../hooks/useDirectionalInput/index.js";
+import { FileDialogInputField } from "../containers/FileDialogTextInput/index.js";
+import { Typography } from "../components/Typography/index.js";
 
 export const loader = () => {
   const general: General = readGeneral() || {};

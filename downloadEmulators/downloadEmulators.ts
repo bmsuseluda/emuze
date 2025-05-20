@@ -1,13 +1,21 @@
-import type {ApplicationId} from "../app/server/applicationsDB.server/applicationId.js";
-import nodepath, {basename, join} from "node:path";
+import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
+import nodepath, { basename, join } from "node:path";
 import followRedirects from "follow-redirects";
 import decompress from "decompress";
-import {applications} from "../app/server/applicationsDB.server/index.js";
-import {chmodSync, createWriteStream, existsSync, mkdirSync, readdirSync, renameSync, rmSync,} from "node:fs";
+import { applications } from "../app/server/applicationsDB.server/index.js";
+import {
+  chmodSync,
+  createWriteStream,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  renameSync,
+  rmSync,
+} from "node:fs";
 import _7z from "7zip-min";
-import {moveSync} from "fs-extra/esm";
+import { moveSync } from "fs-extra/esm";
 
-import {fileURLToPath} from 'node:url';
+import { fileURLToPath } from "node:url";
 
 const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 
@@ -169,11 +177,7 @@ const removeRootFolderIfNecessary = (folder: string) => {
   const files = readdirSync(folder);
 
   if (files.length === 1) {
-    const tempFolder = join(
-      folder,
-      "..",
-      `${basename(folder)}TempFolder`,
-    );
+    const tempFolder = join(folder, "..", `${basename(folder)}TempFolder`);
 
     // rename target folder to temp folder
     renameSync(folder, tempFolder);

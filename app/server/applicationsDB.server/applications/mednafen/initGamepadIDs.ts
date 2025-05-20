@@ -1,9 +1,9 @@
-import {isWindows} from "../../../operationsystem.server.js";
-import {execFileSync} from "node:child_process";
-import {log} from "../../../debug.server.js";
+import { isWindows } from "../../../operationsystem.server.js";
+import { execFileSync } from "node:child_process";
+import { log } from "../../../debug.server.js";
 import sdl from "@kmamal/sdl";
-import {checkFlatpakIsInstalled} from "../../checkEmulatorIsInstalled.js";
-import {flatpakId, flatpakOptionParams} from "./definitions.js";
+import { checkFlatpakIsInstalled } from "../../checkEmulatorIsInstalled.js";
+import { flatpakId, flatpakOptionParams } from "./definitions.js";
 
 interface MednafenError {
   stdout: string;

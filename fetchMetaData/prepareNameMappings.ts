@@ -1,10 +1,10 @@
-import type {SystemId} from "../app/server/categoriesDB.server/systemId.js";
-import {readFile} from "node:fs/promises";
+import type { SystemId } from "../app/server/categoriesDB.server/systemId.js";
+import { readFile } from "node:fs/promises";
 import nodepath from "node:path";
-import {writeFile} from "../app/server/readWriteData.server.js";
-import {normalizeString} from "../app/server/igdb.server.js";
+import { writeFile } from "../app/server/readWriteData.server.js";
+import { normalizeString } from "../app/server/igdb.server.js";
 
-import {fileURLToPath} from 'node:url';
+import { fileURLToPath } from "node:url";
 
 const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 

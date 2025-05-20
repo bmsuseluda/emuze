@@ -1,12 +1,12 @@
-import nodepath, {join} from "node:path";
-import electron, {app, protocol} from "electron";
+import nodepath, { join } from "node:path";
+import electron, { app, protocol } from "electron";
 import mime from "mime";
-import {createServer, ViteDevServer} from "vite";
-import {createReadStream, promises as fsPromises} from "node:fs";
-import {createRequestHandler} from "react-router";
-import {createReadableStreamFromReadable} from "@react-router/node";
+import { createServer, ViteDevServer } from "vite";
+import { createReadStream, promises as fsPromises } from "node:fs";
+import { createRequestHandler } from "react-router";
+import { createReadableStreamFromReadable } from "@react-router/node";
 
-import {fileURLToPath, pathToFileURL} from 'node:url';
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 
@@ -39,10 +39,9 @@ export const initReactRouter = async () => {
   const isDev = process.env.NODE_ENV === "development";
 
   if (!isDev) {
-    const serverBuild =
-        await import(
-          pathToFileURL(join(__dirname, "../../build/server/index.js")).href
-        );
+    const serverBuild = await import(
+      pathToFileURL(join(__dirname, "../../build/server/index.js")).href
+    );
 
     protocol.handle("http", async (req) => {
       const url = new URL(req.url);

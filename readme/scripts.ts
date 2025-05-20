@@ -1,7 +1,7 @@
-import {categories} from "../app/server/categoriesDB.server/index.js";
-import type {ApplicationId} from "../app/server/applicationsDB.server/applicationId.js";
-import type {SystemId} from "../app/server/categoriesDB.server/systemId.js";
-import {commandLineOptionsString} from "../app/server/commandLine.server.js";
+import { categories } from "../app/server/categoriesDB.server/index.js";
+import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
+import type { SystemId } from "../app/server/categoriesDB.server/systemId.js";
+import { commandLineOptionsString } from "../app/server/commandLine.server.js";
 
 const preConfigured: ApplicationId[] = [
   "ares",

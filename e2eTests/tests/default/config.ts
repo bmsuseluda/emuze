@@ -1,7 +1,7 @@
 import nodepath from "node:path";
-import {TestName} from "../ports.js";
+import { TestName } from "../ports.js";
 
-import {fileURLToPath} from 'node:url';
+import { fileURLToPath } from "node:url";
 
 const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 

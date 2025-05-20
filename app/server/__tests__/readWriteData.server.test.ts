@@ -1,23 +1,23 @@
-import {readdirSync} from "node:fs";
-import {when} from "vitest-when";
+import { readdirSync } from "node:fs";
+import { when } from "vitest-when";
 import nodepath from "node:path";
 
-import {readDirectorynames, readFilenames} from "../readWriteData.server.js";
+import { readDirectorynames, readFilenames } from "../readWriteData.server.js";
 import {
-    bladerunner,
-    cotton,
-    createAbsoluteEntryPath,
-    createCategoryPath,
-    gateofthunder,
-    hugo,
-    hugo2,
-    monkeyIsland,
-    pcenginecd,
-    playstation,
-    scumm,
+  bladerunner,
+  cotton,
+  createAbsoluteEntryPath,
+  createCategoryPath,
+  gateofthunder,
+  hugo,
+  hugo2,
+  monkeyIsland,
+  pcenginecd,
+  playstation,
+  scumm,
 } from "../__testData__/category.js";
-import {duckstation} from "../applicationsDB.server/applications/duckstation/index.js";
-import {mednafen} from "../applicationsDB.server/applications/mednafen/index.js";
+import { duckstation } from "../applicationsDB.server/applications/duckstation/index.js";
+import { mednafen } from "../applicationsDB.server/applications/mednafen/index.js";
 
 vi.mock("@kmamal/sdl");
 vi.mock("node:fs");

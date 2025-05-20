@@ -11,7 +11,10 @@ import { Titlebar } from "./containers/Titlebar/index.js";
 import type { LinksFunction } from "react-router";
 import { FullscreenProvider } from "./provider/FullscreenProvider/index.js";
 import { FocusProvider } from "./provider/FocusProvider/index.js";
-import { getFocusDefault, getFocusHistoryDefault } from "./types/focusElement.js";
+import {
+  getFocusDefault,
+  getFocusHistoryDefault,
+} from "./types/focusElement.js";
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 import type { DataFunctionArgs } from "./context.js";

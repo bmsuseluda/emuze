@@ -1,17 +1,21 @@
-import type {Application, ExcludeFilesFunction, FindEntryNameFunction,} from "../../types.js";
+import type {
+  Application,
+  ExcludeFilesFunction,
+  FindEntryNameFunction,
+} from "../../types.js";
 import nodepath from "node:path";
-import {writeConfig} from "../../configFile.js";
+import { writeConfig } from "../../configFile.js";
 import fs from "node:fs";
-import {log} from "../../../debug.server.js";
-import type {Config, InputConfig} from "./config.js";
-import {defaultConfig, defaultInputConfig} from "./config.js";
-import type {Sdl} from "@kmamal/sdl";
+import { log } from "../../../debug.server.js";
+import type { Config, InputConfig } from "./config.js";
+import { defaultConfig, defaultInputConfig } from "./config.js";
+import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
-import {emulatorsDirectory} from "../../../homeDirectory.server.js";
-import {keyboardConfig} from "./keyboardConfig.js";
-import type {ApplicationId} from "../../applicationId.js";
-import {isGamecubeController} from "../../gamepads.js";
-import {sortGamecubeLast} from "../../sortGamepads.js";
+import { emulatorsDirectory } from "../../../homeDirectory.server.js";
+import { keyboardConfig } from "./keyboardConfig.js";
+import type { ApplicationId } from "../../applicationId.js";
+import { isGamecubeController } from "../../gamepads.js";
+import { sortGamecubeLast } from "../../sortGamepads.js";
 
 const applicationId: ApplicationId = "ryujinx";
 const flatpakId = "org.ryujinx.Ryujinx";

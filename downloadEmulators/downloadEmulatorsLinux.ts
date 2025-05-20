@@ -1,4 +1,4 @@
-import {downloadEmulators} from "./downloadEmulators.js";
+import { downloadEmulators } from "./downloadEmulators.js";
 
 export const downloadEmulatorsLinux = () => downloadEmulators("Linux");
 

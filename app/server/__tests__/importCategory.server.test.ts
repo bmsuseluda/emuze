@@ -1,5 +1,8 @@
-import {readEntries, readEntriesWithMetaData} from "../importCategory.server.js";
-import {readFilenames} from "../readWriteData.server.js";
+import {
+  readEntries,
+  readEntriesWithMetaData,
+} from "../importCategory.server.js";
+import { readFilenames } from "../readWriteData.server.js";
 import {
   addIndex,
   blazingstar,
@@ -22,15 +25,15 @@ import {
   psallstarsDisc,
   psallstarsManual,
 } from "../__testData__/category.js";
-import type {Entry, MetaData} from "../../types/jsonFiles/category.js";
-import {general} from "../__testData__/general.js";
-import {fetchMetaDataFromDB} from "../igdb.server.js";
-import {categories as categoriesDB} from "../categoriesDB.server/index.js";
-import {getExpiresOn} from "../getExpiresOn.server.js";
-import {mameNeoGeo} from "../applicationsDB.server/applications/mame/index.js";
-import {duckstation} from "../applicationsDB.server/applications/duckstation/index.js";
-import {dosboxstaging} from "../applicationsDB.server/applications/dosbox/index.js";
-import {rpcs3} from "../applicationsDB.server/applications/rpcs3/index.js";
+import type { Entry, MetaData } from "../../types/jsonFiles/category.js";
+import { general } from "../__testData__/general.js";
+import { fetchMetaDataFromDB } from "../igdb.server.js";
+import { categories as categoriesDB } from "../categoriesDB.server/index.js";
+import { getExpiresOn } from "../getExpiresOn.server.js";
+import { mameNeoGeo } from "../applicationsDB.server/applications/mame/index.js";
+import { duckstation } from "../applicationsDB.server/applications/duckstation/index.js";
+import { dosboxstaging } from "../applicationsDB.server/applications/dosbox/index.js";
+import { rpcs3 } from "../applicationsDB.server/applications/rpcs3/index.js";
 
 vi.mock("@kmamal/sdl");
 vi.mock("../readWriteData.server");

@@ -1,13 +1,13 @@
-import {fetchMetaDataForSystem} from "./igdb.js";
-import {writeFile} from "../app/server/readWriteData.server.js";
+import { fetchMetaDataForSystem } from "./igdb.js";
+import { writeFile } from "../app/server/readWriteData.server.js";
 import nodepath from "node:path";
-import type {SystemId} from "../app/server/categoriesDB.server/systemId.js";
-import {categories} from "../app/server/categoriesDB.server/index.js";
-import {existsSync} from "node:fs";
-import {readFile} from "node:fs/promises";
-import {normalizeString} from "../app/server/igdb.server.js";
+import type { SystemId } from "../app/server/categoriesDB.server/systemId.js";
+import { categories } from "../app/server/categoriesDB.server/index.js";
+import { existsSync } from "node:fs";
+import { readFile } from "node:fs/promises";
+import { normalizeString } from "../app/server/igdb.server.js";
 
-import {fileURLToPath} from 'node:url';
+import { fileURLToPath } from "node:url";
 
 const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 

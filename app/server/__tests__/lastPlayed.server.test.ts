@@ -1,5 +1,8 @@
-import type {EntryWithSystem} from "../../types/jsonFiles/lastPlayed.js";
-import {addToLastPlayed, syncLastPlayedWithCategory,} from "../lastPlayed.server.js";
+import type { EntryWithSystem } from "../../types/jsonFiles/lastPlayed.js";
+import {
+  addToLastPlayed,
+  syncLastPlayedWithCategory,
+} from "../lastPlayed.server.js";
 import {
   addIndex,
   finalfantasy7,
@@ -9,7 +12,7 @@ import {
   monkeyIsland,
   playstation,
 } from "../__testData__/category.js";
-import {scumm, sonyplaystation} from "../categoriesDB.server/index.js";
+import { scumm, sonyplaystation } from "../categoriesDB.server/index.js";
 
 vi.mock("@kmamal/sdl");
 

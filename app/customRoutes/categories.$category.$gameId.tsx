@@ -1,5 +1,12 @@
 import type { ActionFunction } from "react-router";
-import { Form, Outlet, redirect, useLoaderData, useLocation, useNavigate } from "react-router";
+import {
+  Form,
+  Outlet,
+  redirect,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from "react-router";
 import { readGeneral } from "../server/settings.server.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";

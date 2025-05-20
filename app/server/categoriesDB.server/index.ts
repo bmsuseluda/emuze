@@ -1,5 +1,13 @@
-import {cemu, flycast, lime3ds, melonds, mgba, ppsspp, rosaliesMupenGui,} from "../applicationsDB.server/index.js";
-import {rpcs3} from "../applicationsDB.server/applications/rpcs3/index.js";
+import {
+  cemu,
+  flycast,
+  lime3ds,
+  melonds,
+  mgba,
+  ppsspp,
+  rosaliesMupenGui,
+} from "../applicationsDB.server/index.js";
+import { rpcs3 } from "../applicationsDB.server/applications/rpcs3/index.js";
 import {
   ares,
   aresGameBoyColor,
@@ -10,21 +18,28 @@ import {
   isMgbaForGameBoy,
   isRmgForN64,
 } from "../applicationsDB.server/applications/ares/index.js";
-import {mame, mameNeoGeo, mameNeoGeoCD,} from "../applicationsDB.server/applications/mame/index.js";
-import {dosboxstaging} from "../applicationsDB.server/applications/dosbox/index.js";
-import {scummvm} from "../applicationsDB.server/applications/scummvm/index.js";
-import type {Category} from "./types.js";
-import type {SystemId} from "./systemId.js";
-import {duckstation} from "../applicationsDB.server/applications/duckstation/index.js";
-import {pcsx2} from "../applicationsDB.server/applications/pcsx2/index.js";
-import {ryujinx} from "../applicationsDB.server/applications/ryujinx/index.js";
-import {dolphin} from "../applicationsDB.server/applications/dolphin/index.js";
+import {
+  mame,
+  mameNeoGeo,
+  mameNeoGeoCD,
+} from "../applicationsDB.server/applications/mame/index.js";
+import { dosboxstaging } from "../applicationsDB.server/applications/dosbox/index.js";
+import { scummvm } from "../applicationsDB.server/applications/scummvm/index.js";
+import type { Category } from "./types.js";
+import type { SystemId } from "./systemId.js";
+import { duckstation } from "../applicationsDB.server/applications/duckstation/index.js";
+import { pcsx2 } from "../applicationsDB.server/applications/pcsx2/index.js";
+import { ryujinx } from "../applicationsDB.server/applications/ryujinx/index.js";
+import { dolphin } from "../applicationsDB.server/applications/dolphin/index.js";
 import {
   mednafenPcEngineCD,
   mednafenPcEngineSuperGrafx,
   mednafenSaturn,
 } from "../applicationsDB.server/applications/mednafen/index.js";
-import {azahar, isLime3dsFor3ds,} from "../applicationsDB.server/applications/azahar/index.js";
+import {
+  azahar,
+  isLime3dsFor3ds,
+} from "../applicationsDB.server/applications/azahar/index.js";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",

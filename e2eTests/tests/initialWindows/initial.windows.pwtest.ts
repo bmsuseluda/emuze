@@ -1,7 +1,7 @@
-import {expect, test} from "../../pages/fixture.js";
+import { expect, test } from "../../pages/fixture.js";
 import nodepath from "node:path";
 import fs from "fs-extra/esm";
-import {configFolderPath, e2ePath, testName} from "./config.js";
+import { configFolderPath, e2ePath, testName } from "./config.js";
 
 test.describe.configure({ mode: "serial" });
 

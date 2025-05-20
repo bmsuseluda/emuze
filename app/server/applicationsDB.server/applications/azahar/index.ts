@@ -1,19 +1,24 @@
-import type {Application} from "../../types.js";
-import type {ApplicationId} from "../../applicationId.js";
+import type { Application } from "../../types.js";
+import type { ApplicationId } from "../../applicationId.js";
 import nodepath from "node:path";
-import type {Sdl} from "@kmamal/sdl";
+import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
-import {log} from "../../../debug.server.js";
-import {EOL} from "node:os";
-import {keyboardConfig} from "./keyboardConfig.js";
-import type {ParamToReplace, SectionReplacement} from "../../configFile.js";
-import {chainSectionReplacements, replaceSection, splitConfigBySection, writeConfig,} from "../../configFile.js";
+import { log } from "../../../debug.server.js";
+import { EOL } from "node:os";
+import { keyboardConfig } from "./keyboardConfig.js";
+import type { ParamToReplace, SectionReplacement } from "../../configFile.js";
+import {
+  chainSectionReplacements,
+  replaceSection,
+  splitConfigBySection,
+  writeConfig,
+} from "../../configFile.js";
 import fs from "node:fs";
-import {defaultSettings} from "./defaultSettings.js";
-import {importElectron} from "../../../importElectron.server.js";
-import {commandLineOptions} from "../../../commandLine.server.js";
-import {envPaths} from "../../../envPaths.server.js";
-import {isWindows} from "../../../operationsystem.server.js";
+import { defaultSettings } from "./defaultSettings.js";
+import { importElectron } from "../../../importElectron.server.js";
+import { commandLineOptions } from "../../../commandLine.server.js";
+import { envPaths } from "../../../envPaths.server.js";
+import { isWindows } from "../../../operationsystem.server.js";
 
 const flatpakId = "io.github.lime3ds.Lime3DS";
 const applicationId: ApplicationId = "azahar";
@@ -288,6 +293,8 @@ export const azahar: Application = {
 export const isLime3dsFor3ds = () => {
   const electron = importElectron();
 
-  return electron?.app?.commandLine.hasSwitch(commandLineOptions.lime3ds.id) ||
-      process.env.EMUZE_LIME3DS === "true";
-}
+  return (
+    electron?.app?.commandLine.hasSwitch(commandLineOptions.lime3ds.id) ||
+    process.env.EMUZE_LIME3DS === "true"
+  );
+};

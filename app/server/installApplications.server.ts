@@ -1,8 +1,11 @@
-import {categories as categoriesDB} from "./categoriesDB.server/index.js";
-import {installFlatpak} from "./execute.server.js";
-import {readCategories} from "./categories.server.js";
-import {checkFlatpakIsInstalled, updateFlatpakAppList,} from "./applicationsDB.server/checkEmulatorIsInstalled.js";
-import {readCategory, writeCategory} from "./categoryDataCache.server.js";
+import { categories as categoriesDB } from "./categoriesDB.server/index.js";
+import { installFlatpak } from "./execute.server.js";
+import { readCategories } from "./categories.server.js";
+import {
+  checkFlatpakIsInstalled,
+  updateFlatpakAppList,
+} from "./applicationsDB.server/checkEmulatorIsInstalled.js";
+import { readCategory, writeCategory } from "./categoryDataCache.server.js";
 
 export const checkFlatpakIsInstalledParallel = (flatpakId: string) =>
   new Promise<boolean>((resolve, reject) => {

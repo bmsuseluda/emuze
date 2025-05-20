@@ -1,15 +1,21 @@
-import {homedir, platform} from "node:os";
-import {app, BrowserWindow, globalShortcut, ipcMain, shell} from "electron";
+import { homedir, platform } from "node:os";
+import { app, BrowserWindow, globalShortcut, ipcMain, shell } from "electron";
 import nodepath from "node:path";
 import * as dotenv from "dotenv";
 import electronUpdater from "electron-updater";
-import {readAppearance, writeAppearance} from "../app/server/settings.server.js";
-import {createLogFile, isDebug, log} from "../app/server/debug.server.js";
-import {commandLineOptions, commandLineOptionsString,} from "../app/server/commandLine.server.js";
-import {cpSync, existsSync, rmSync} from "node:fs";
-import {initReactRouter} from "./initReactRouter.js";
-import {homeDirectory} from "../app/server/homeDirectory.server.js";
-import {fileURLToPath} from 'node:url';
+import {
+  readAppearance,
+  writeAppearance,
+} from "../app/server/settings.server.js";
+import { createLogFile, isDebug, log } from "../app/server/debug.server.js";
+import {
+  commandLineOptions,
+  commandLineOptionsString,
+} from "../app/server/commandLine.server.js";
+import { cpSync, existsSync, rmSync } from "node:fs";
+import { initReactRouter } from "./initReactRouter.js";
+import { homeDirectory } from "../app/server/homeDirectory.server.js";
+import { fileURLToPath } from "node:url";
 
 const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 const { autoUpdater } = electronUpdater;

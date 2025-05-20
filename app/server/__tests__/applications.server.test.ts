@@ -1,7 +1,10 @@
-import {findExecutable, getInstalledApplicationForCategoryOnWindows,} from "../applications.server.js";
-import {applicationsPath, pcsx2} from "../__testData__/applications.js";
+import {
+  findExecutable,
+  getInstalledApplicationForCategoryOnWindows,
+} from "../applications.server.js";
+import { applicationsPath, pcsx2 } from "../__testData__/applications.js";
 import * as categoriesFromDB from "../categoriesDB.server/index.js";
-import {readFilenames} from "../readWriteData.server.js";
+import { readFilenames } from "../readWriteData.server.js";
 
 vi.mock("@kmamal/sdl");
 vi.mock("../readWriteData.server");

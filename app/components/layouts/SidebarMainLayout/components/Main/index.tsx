@@ -1,5 +1,5 @@
-import type {ReactNode} from "react";
-import {styled} from "../../../../../../styled-system/jsx/index.js";
+import type { ReactNode } from "react";
+import { styled } from "../../../../../../styled-system/jsx/index.js";
 
 const StyledMain = styled("main", {
   base: {

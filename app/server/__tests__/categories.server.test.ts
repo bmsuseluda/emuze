@@ -1,8 +1,13 @@
-import {when} from "vitest-when";
+import { when } from "vitest-when";
 import nodepath from "node:path";
 
-import {importCategories, paths} from "../categories.server.js";
-import {readDirectorynames, readFileHome, readFilenames, writeFileHome,} from "../readWriteData.server.js";
+import { importCategories, paths } from "../categories.server.js";
+import {
+  readDirectorynames,
+  readFileHome,
+  readFilenames,
+  writeFileHome,
+} from "../readWriteData.server.js";
 import {
   cotton,
   createAbsoluteEntryPath,
@@ -12,11 +17,11 @@ import {
   nintendo3ds,
   pcenginecd,
 } from "../__testData__/category.js";
-import {general} from "../__testData__/general.js";
-import {fetchMetaDataFromDB} from "../igdb.server.js";
-import {lime3ds} from "../applicationsDB.server/index.js";
-import {mednafen} from "../applicationsDB.server/applications/mednafen/index.js";
-import {entriesPath} from "../categoryDataCache.server.js";
+import { general } from "../__testData__/general.js";
+import { fetchMetaDataFromDB } from "../igdb.server.js";
+import { lime3ds } from "../applicationsDB.server/index.js";
+import { mednafen } from "../applicationsDB.server/applications/mednafen/index.js";
+import { entriesPath } from "../categoryDataCache.server.js";
 
 vi.mock("@kmamal/sdl");
 vi.mock("../readWriteData.server");

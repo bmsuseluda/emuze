@@ -1,5 +1,5 @@
 import apicalypse from "apicalypse";
-import {retryPromise} from "../app/retryPromise/index.js";
+import { retryPromise } from "../app/retryPromise/index.js";
 
 interface GameLocalization {
   name?: string;

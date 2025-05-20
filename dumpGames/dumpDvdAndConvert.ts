@@ -1,6 +1,6 @@
-import {execFileSync} from "node:child_process";
-import {rmSync} from "node:fs";
-import {EOL} from "node:os";
+import { execFileSync } from "node:child_process";
+import { rmSync } from "node:fs";
+import { EOL } from "node:os";
 
 const dumpDvdAndConvert = (name: string) => {
   console.log("start dumping dvd and analysing isosize", name);

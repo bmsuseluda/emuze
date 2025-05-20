@@ -1,7 +1,7 @@
-import {chmodSync, renameSync, writeFileSync} from "node:fs";
-import type {AfterPackContext} from "app-builder-lib";
+import { chmodSync, renameSync, writeFileSync } from "node:fs";
+import type { AfterPackContext } from "app-builder-lib";
 import nodepath from "node:path";
-import type {LinuxPackager} from "app-builder-lib/out/linuxPackager.js";
+import type { LinuxPackager } from "app-builder-lib/out/linuxPackager.js";
 
 /**
  * Thanks to https://github.com/gergof/electron-builder-sandbox-fix for inspiration

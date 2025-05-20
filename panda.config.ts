@@ -1,4 +1,4 @@
-import {defineConfig, defineGlobalStyles, defineUtility} from "@pandacss/dev";
+import { defineConfig, defineGlobalStyles, defineUtility } from "@pandacss/dev";
 
 const globalCss = defineGlobalStyles({
   body: {

@@ -1,5 +1,5 @@
-import {execFileSync} from "node:child_process";
-import {rmSync} from "node:fs";
+import { execFileSync } from "node:child_process";
+import { rmSync } from "node:fs";
 
 const dumpCdAndConvert = (name: string) => {
   console.log("start dumping cd and creating bin and toc file", name);

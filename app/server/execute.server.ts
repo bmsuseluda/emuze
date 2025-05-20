@@ -1,25 +1,31 @@
-import type {ChildProcess, ExecFileException} from "node:child_process";
-import {execFile, execFileSync} from "node:child_process";
+import type { ChildProcess, ExecFileException } from "node:child_process";
+import { execFile, execFileSync } from "node:child_process";
 import kill from "tree-kill";
 import fkill from "fkill";
-import {readAppearance, readGeneral} from "./settings.server.js";
-import type {Category, Entry} from "../types/jsonFiles/category.js";
-import {createAbsoluteEntryPath} from "../types/jsonFiles/category.js";
-import {isGeneralConfigured} from "../types/jsonFiles/settings/general.js";
-import {isWindows} from "./operationsystem.server.js";
-import {existsSync} from "node:fs";
-import {setErrorDialog} from "./errorDialog.server.js";
-import type {SystemId} from "./categoriesDB.server/systemId.js";
-import {categories} from "./categoriesDB.server/index.js";
-import {log} from "./debug.server.js";
-import {getInstalledApplicationForCategoryOnWindows} from "./applications.server.js";
-import {addToLastPlayedCached} from "./lastPlayed.server.js";
-import {checkFlatpakIsInstalled, EmulatorNotInstalledError,} from "./applicationsDB.server/checkEmulatorIsInstalled.js";
-import type {Application, EnvironmentVariableFunction,} from "./applicationsDB.server/types.js";
-import type {Settings} from "../types/jsonFiles/settings/index.js";
+import { readAppearance, readGeneral } from "./settings.server.js";
+import type { Category, Entry } from "../types/jsonFiles/category.js";
+import { createAbsoluteEntryPath } from "../types/jsonFiles/category.js";
+import { isGeneralConfigured } from "../types/jsonFiles/settings/general.js";
+import { isWindows } from "./operationsystem.server.js";
+import { existsSync } from "node:fs";
+import { setErrorDialog } from "./errorDialog.server.js";
+import type { SystemId } from "./categoriesDB.server/systemId.js";
+import { categories } from "./categoriesDB.server/index.js";
+import { log } from "./debug.server.js";
+import { getInstalledApplicationForCategoryOnWindows } from "./applications.server.js";
+import { addToLastPlayedCached } from "./lastPlayed.server.js";
+import {
+  checkFlatpakIsInstalled,
+  EmulatorNotInstalledError,
+} from "./applicationsDB.server/checkEmulatorIsInstalled.js";
+import type {
+  Application,
+  EnvironmentVariableFunction,
+} from "./applicationsDB.server/types.js";
+import type { Settings } from "../types/jsonFiles/settings/index.js";
 import nodepath from "node:path";
-import {readCategory} from "./categoryDataCache.server.js";
-import {importElectron} from "./importElectron.server.js";
+import { readCategory } from "./categoryDataCache.server.js";
+import { importElectron } from "./importElectron.server.js";
 import sdl from "@kmamal/sdl";
 
 let childProcess: ChildProcess;
