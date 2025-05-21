@@ -1,2 +1,14 @@
 node_modules
 .yarn
+.cache
+dist
+coverage
+build
+buildDesktop
+buildConfig
+playwright-report
+.idea
+.react-router
+emulators
+test-results
+styled-system

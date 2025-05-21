@@ -1,6 +1,8 @@
 import { chmodSync, renameSync, writeFileSync } from "node:fs";
+// eslint-disable-next-line node/no-extraneous-import
 import type { AfterPackContext } from "app-builder-lib";
 import nodepath from "node:path";
+// eslint-disable-next-line node/no-extraneous-import
 import type { LinuxPackager } from "app-builder-lib/out/linuxPackager.js";
 
 /**

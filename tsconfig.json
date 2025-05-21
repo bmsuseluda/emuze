@@ -14,7 +14,8 @@
     "desktop/*",
     "readme/*",
     "configsToTs/*",
-    ".react-router/types/**/*"
+    ".react-router/types/**/*",
+    "__mocks__/**/*"
   ],
   "compilerOptions": {
     "lib": [

@@ -170,8 +170,7 @@ export default function Index() {
 
   const handleClose = useCallback(() => {
     switchFocusBack();
-    // TODO: replace with robust solution
-    navigate(pathname.split(gameData.id)[0]);
+    navigate(-1);
   }, [gameData, pathname, navigate, switchFocusBack]);
 
   const onExecute = useCallback(() => {

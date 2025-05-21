@@ -3,11 +3,10 @@ import type { Configuration } from "electron-builder";
 const config: Configuration = {
   appId: "org.emuze.emuze",
   files: [
-    "./buildDesktop/desktop/main.js",
     "buildDesktop",
     "build",
     "public",
-    "fetchMetaData",
+    "fetchMetaData/systems",
   ],
   extraFiles: ["emulators/**"],
   win: {
@@ -33,6 +32,7 @@ const config: Configuration = {
     category: "Emulator",
     icon: "public/icons/icon512x512.png",
   },
+  electronLanguages: ["en-US"],
   afterPack: "./afterPackScript.js",
 };
 

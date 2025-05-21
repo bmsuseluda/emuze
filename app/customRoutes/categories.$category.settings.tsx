@@ -57,7 +57,6 @@ export default function Index() {
   const handleClose = useCallback(() => {
     if (closable) {
       switchFocusBackMultiple("settingsMain", "settingsSidebar");
-      // TODO: replace with robust solution
       navigate(pathname.split("/settings")[0]);
     } else {
       switchFocus("closeDialog");
