@@ -1772,15 +1772,15 @@ __metadata:
   linkType: hard
 
 "@electron/asar@npm:^3.2.1":
-  version: 3.3.1
-  resolution: "@electron/asar@npm:3.3.1"
+  version: 3.4.1
+  resolution: "@electron/asar@npm:3.4.1"
   dependencies:
     commander: "npm:^5.0.0"
     glob: "npm:^7.1.6"
     minimatch: "npm:^3.0.4"
   bin:
     asar: bin/asar.js
-  checksum: 10/d62cf199dd004a792e9ce5f90d9316ab18eeec13be185c48dddf48b7a7e3c2addb37c58354d659dc45ad16c823bfeacebd861cbdc7dd2af98aaa818d6e30493d
+  checksum: 10/c41c6b0a5e112e0209b7f6b6eec7d83d3162a8061233375c76ca9f94afcff326a3447e5f53889b35049a855648a09f203c9850c2dbb6cd4690b54a2075eae266
   languageName: node
   linkType: hard
 
@@ -8579,16 +8579,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:36.2.0":
-  version: 36.2.0
-  resolution: "electron@npm:36.2.0"
+"electron@npm:36.2.1":
+  version: 36.2.1
+  resolution: "electron@npm:36.2.1"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^22.7.7"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 10/c855d963e509caa723ce86868b60d761386fac7d3724ba472ad141e6264d397470da70a8a8d0a9cd6159785a56993fdd2ae1236dfb573be8cd6b0823c9810b67
+  checksum: 10/2dbcac9208c6a513b75ef92a969441407e44fb11377a3d831d3e043d3c5e1bf927badc475a490b554e6007995f1a28db9d833044202d21d629bb84587745dbf7
   languageName: node
   linkType: hard
 
@@ -8658,7 +8658,7 @@ __metadata:
     decompress: "npm:^4.2.1"
     del-cli: "npm:^5.1.0"
     dotenv: "npm:^16.4.7"
-    electron: "npm:36.2.0"
+    electron: "npm:36.2.1"
     electron-builder: "npm:24.13.3"
     electron-updater: "npm:6.6.2"
     eslint: "npm:^8.57.1"
@@ -18410,13 +18410,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.7.3, typescript@npm:^5.3.3":
+"typescript@npm:5.7.3":
   version: 5.7.3
   resolution: "typescript@npm:5.7.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10/6a7e556de91db3d34dc51cd2600e8e91f4c312acd8e52792f243c7818dfadb27bae677175fad6947f9c81efb6c57eb6b2d0c736f196a6ee2f1f7d57b74fc92fa
+  languageName: node
+  linkType: hard
+
+"typescript@npm:^5.3.3":
+  version: 5.8.3
+  resolution: "typescript@npm:5.8.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/65c40944c51b513b0172c6710ee62e951b70af6f75d5a5da745cb7fab132c09ae27ffdf7838996e3ed603bb015dadd099006658046941bd0ba30340cc563ae92
   languageName: node
   linkType: hard
 
@@ -18440,13 +18450,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.3.3#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>":
   version: 5.7.3
   resolution: "typescript@patch:typescript@npm%3A5.7.3#optional!builtin<compat/typescript>::version=5.7.3&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10/dc58d777eb4c01973f7fbf1fd808aad49a0efdf545528dab9b07d94fdcb65b8751742804c3057e9619a4627f2d9cc85547fdd49d9f4326992ad0181b49e61d81
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A^5.3.3#optional!builtin<compat/typescript>":
+  version: 5.8.3
+  resolution: "typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/b9b1e73dabac5dc730c041325dbd9c99467c1b0d239f1b74ec3b90d831384af3e2ba973946232df670519147eb51a2c20f6f96163cea2b359f03de1e2091cc4f
   languageName: node
   linkType: hard
 
