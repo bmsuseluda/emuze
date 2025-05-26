@@ -145,8 +145,8 @@
     "out": "./README.md",
     "scripts": "./readme/build/readme/scripts.js"
   },
-  "exports": "./buildDesktop/main.js",
-  "main": "buildDesktop/main.js",
+  "exports": "./buildDesktop/desktop/main.js",
+  "main": "buildDesktop/desktop/main.js",
   "packageManager": "yarn@4.7.0",
   "type": "module"
 }
