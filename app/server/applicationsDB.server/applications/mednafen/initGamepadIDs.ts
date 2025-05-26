@@ -1,61 +1,64 @@
 import { isWindows } from "../../../operationsystem.server.js";
-import { execFileSync } from "node:child_process";
 import { log } from "../../../debug.server.js";
 import sdl from "@kmamal/sdl";
+import { spawnSync } from "node:child_process";
+
 import { checkFlatpakIsInstalled } from "../../checkEmulatorIsInstalled.js";
 import { flatpakId, flatpakOptionParams } from "./definitions.js";
-
-interface MednafenError {
-  stdout: string;
-}
-
-const isMednafenError = (e: unknown): e is MednafenError =>
-  typeof e === "object" &&
-  e !== null &&
-  "stdout" in e &&
-  typeof e.stdout === "string";
 
 export interface GamepadID {
   id: string;
   name: string;
 }
 
-const extractGamepadIDs = (error: MednafenError): GamepadID[] =>
-  error.stdout
+const extractGamepadIDs = (logOutput: string): GamepadID[] =>
+  logOutput
     .split("\n")
-    .filter((line) => line.trim().startsWith("ID: "))
+    .filter((line) => {
+      return line.replace("'", "").trim().startsWith("ID: ");
+    })
     .map((line) => {
-      const [id, name] = line.trim().split("ID: ")[1].split(" - ");
+      const [id, name] = line
+        .replace("'", "")
+        .trim()
+        .split("ID: ")[1]
+        .split(" - ");
+      log("debug", "extractGamepadIDs", id, name, line);
       return {
         id,
         name,
       };
     });
 
+const executeWithLogs = (applicationPath: string, args: string[]): string => {
+  const result = spawnSync(applicationPath, args, {
+    stdio: ["inherit", "pipe", "inherit"],
+    encoding: "utf8",
+  });
+
+  return result.stdout || "";
+};
+
 export const getGamepads = (applicationPath?: string) => {
   if (sdl.controller.devices.length > 0) {
     try {
       if (isWindows() && applicationPath) {
-        execFileSync(applicationPath, ["wrong"], {
-          encoding: "utf8",
-        });
+        const output = executeWithLogs(applicationPath, ["wrong"]);
+        log("debug", "result", output);
+        return extractGamepadIDs(output);
       } else {
         if (checkFlatpakIsInstalled(flatpakId)) {
-          execFileSync(
-            "flatpak",
-            ["run", ...flatpakOptionParams, flatpakId, "wrong"],
-            {
-              encoding: "utf8",
-            },
-          );
+          const output = executeWithLogs("flatpak", [
+            "run",
+            ...flatpakOptionParams,
+            flatpakId,
+            "wrong",
+          ]);
+          return extractGamepadIDs(output);
         }
       }
     } catch (e) {
-      if (isMednafenError(e)) {
-        const gamepadsIDs = extractGamepadIDs(e);
-        log("debug", "mednafen gamepad IDs", gamepadsIDs);
-        return gamepadsIDs;
-      }
+      log("debug", "result in catch", e);
     }
   }
   return [];

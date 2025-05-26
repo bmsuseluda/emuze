@@ -62,7 +62,6 @@
     "@ultirequiem/roman": "^1.1.0",
     "dotenv": "^16.4.7",
     "electron-updater": "6.6.2",
-    "fkill": "^9.0.0",
     "isbot": "^5",
     "lodash.debounce": "^4.0.8",
     "mime": "^4.0.7",
@@ -146,8 +145,8 @@
     "out": "./README.md",
     "scripts": "./readme/build/readme/scripts.js"
   },
-  "exports": "./buildDesktop/desktop/main.js",
-  "main": "buildDesktop/desktop/main.js",
+  "exports": "./buildDesktop/main.js",
+  "main": "buildDesktop/main.js",
   "packageManager": "yarn@4.7.0",
   "type": "module"
 }

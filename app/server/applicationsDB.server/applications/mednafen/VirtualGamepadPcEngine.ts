@@ -132,7 +132,7 @@ export const getVirtualGamepadsPcEngine = (applicationPath?: string) => {
     gamepads.length > 0
       ? gamepads.flatMap(getVirtualGamepadPcEngine)
       : getKeyboardPcEngine();
-  log("debug", "gamepads", gamepads.length, getKeyboardPcEngine());
+  log("debug", "gamepads", gamepads.length);
 
   return [
     ...virtualGamepads,

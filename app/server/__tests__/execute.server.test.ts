@@ -1,6 +1,6 @@
 import nodepath from "node:path";
 import type { ChildProcess } from "node:child_process";
-import { execFile, execFileSync } from "node:child_process";
+import { execFile, execFileSync, spawnSync } from "node:child_process";
 
 import { readAppearance, readGeneral } from "../settings.server.js";
 import type { Category } from "../../types/jsonFiles/category.js";
@@ -74,9 +74,11 @@ describe("execute.server", () => {
 
         await startGame(pcenginecd.id, entry);
 
-        expect(execFileSync).toHaveBeenCalledWith(mednafen.path, ["wrong"], {
-          encoding: "utf8",
-        });
+        expect(spawnSync).toHaveBeenCalledWith(
+          mednafen.path,
+          ["wrong"],
+          expect.anything(),
+        );
         expect(execFile).toHaveBeenCalledWith(
           mednafen.path,
           expect.arrayContaining([
@@ -124,9 +126,11 @@ describe("execute.server", () => {
 
         await startGame(pcenginecd.id, entry);
 
-        expect(execFileSync).toHaveBeenCalledWith(mednafen.path, ["wrong"], {
-          encoding: "utf8",
-        });
+        expect(spawnSync).toHaveBeenCalledWith(
+          mednafen.path,
+          ["wrong"],
+          expect.anything(),
+        );
         expect(execFile).toHaveBeenCalledWith(
           mednafen.path,
           expect.arrayContaining([
@@ -175,7 +179,7 @@ describe("execute.server", () => {
 
         await startGame(pcenginecdLinux.id, entry);
 
-        expect(execFileSync).toHaveBeenCalledWith(
+        expect(spawnSync).toHaveBeenCalledWith(
           "flatpak",
           [
             "run",
@@ -183,9 +187,7 @@ describe("execute.server", () => {
             applicationsDB.mednafen.flatpakId,
             "wrong",
           ],
-          {
-            encoding: "utf8",
-          },
+          expect.anything(),
         );
         expect(execFile).toHaveBeenCalledWith(
           "flatpak",

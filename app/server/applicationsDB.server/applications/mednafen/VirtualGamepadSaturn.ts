@@ -136,7 +136,7 @@ export const getVirtualGamepadsSaturn = (applicationPath?: string) => {
     gamepads.length > 0
       ? gamepads.flatMap(getVirtualGamepadSaturn)
       : getKeyboardSaturn();
-  log("debug", "gamepads", gamepads.length, getKeyboardSaturn());
+  log("debug", "gamepads", gamepads.length);
 
   return [
     ...virtualGamepads,

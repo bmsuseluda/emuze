@@ -1,7 +1,6 @@
 import type { ChildProcess, ExecFileException } from "node:child_process";
 import { execFile, execFileSync } from "node:child_process";
 import kill from "tree-kill";
-import fkill from "fkill";
 import { readAppearance, readGeneral } from "./settings.server.js";
 import type { Category, Entry } from "../types/jsonFiles/category.js";
 import { createAbsoluteEntryPath } from "../types/jsonFiles/category.js";
@@ -34,17 +33,11 @@ const killChildProcess = () => {
   log("debug", "kill process");
 
   if (childProcess?.pid) {
-    if (isWindows()) {
-      fkill(childProcess.pid, { tree: true }).catch((reason) => {
-        log("error", "Failed to kill process:", reason);
-      });
-    } else {
-      kill(childProcess.pid, "SIGKILL", (err) => {
-        if (err) {
-          log("error", "Failed to kill process:", err);
-        }
-      });
-    }
+    kill(childProcess.pid, "SIGKILL", (err) => {
+      if (err) {
+        log("error", "Failed to kill process:", err);
+      }
+    });
   }
 };
 
@@ -76,8 +69,12 @@ const execFileCallback =
   (reject: (reason: ExecFileException) => void): ExecFileCallback =>
   (error, stdout, stderr) => {
     if (error) {
-      if (error.signal !== "SIGKILL" && error.signal !== "SIGABRT") {
-        log("error", "executeBundledApplication", stderr);
+      log("error", "executeApplication", stderr, error);
+      if (
+        !isWindows() &&
+        error.signal !== "SIGKILL" &&
+        error.signal !== "SIGABRT"
+      ) {
         reject(error);
       }
     }
