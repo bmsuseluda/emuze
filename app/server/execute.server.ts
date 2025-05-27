@@ -1,6 +1,5 @@
-import type { ChildProcess, ExecFileException } from "node:child_process";
+import type { ExecFileException } from "node:child_process";
 import { execFile, execFileSync } from "node:child_process";
-import kill from "tree-kill";
 import { readAppearance, readGeneral } from "./settings.server.js";
 import type { Category, Entry } from "../types/jsonFiles/category.js";
 import { createAbsoluteEntryPath } from "../types/jsonFiles/category.js";
@@ -8,6 +7,10 @@ import { isGeneralConfigured } from "../types/jsonFiles/settings/general.js";
 import { isWindows } from "./operationsystem.server.js";
 import { existsSync } from "node:fs";
 import { setErrorDialog } from "./errorDialog.server.js";
+import {
+  registerCloseGameEvent,
+  unregisterCloseGameEvent,
+} from "./closeGame.server.js";
 import type { SystemId } from "./categoriesDB.server/systemId.js";
 import { categories } from "./categoriesDB.server/index.js";
 import { log } from "./debug.server.js";
@@ -24,40 +27,6 @@ import type {
 import type { Settings } from "../types/jsonFiles/settings/index.js";
 import nodepath from "node:path";
 import { readCategory } from "./categoryDataCache.server.js";
-import { importElectron } from "./importElectron.server.js";
-import sdl from "@kmamal/sdl";
-
-let childProcess: ChildProcess;
-
-const killChildProcess = () => {
-  log("debug", "kill process");
-
-  if (childProcess?.pid) {
-    kill(childProcess.pid, "SIGKILL", (err) => {
-      if (err) {
-        log("error", "Failed to kill process:", err);
-      }
-    });
-  }
-};
-
-const closeGameOnGamepad = () => {
-  const devices = sdl.controller.devices;
-  if (devices.length > 0) {
-    devices.forEach((device) => {
-      const controller = sdl.controller.openDevice(device);
-      controller.on("buttonDown", (event) => {
-        if (event.button === "a" && controller.buttons.back) {
-          log("debug", "buttons", controller.buttons);
-          if (childProcess && !childProcess.killed) {
-            killChildProcess();
-          }
-        }
-      });
-    });
-  }
-};
-closeGameOnGamepad();
 
 type ExecFileCallback = (
   error: ExecFileException | null,
@@ -84,9 +53,8 @@ const execFileCallback =
   };
 
 const executeApplication = async (file: string, args: string[]) => {
-  const electron = importElectron();
   return new Promise<void>((resolve, reject) => {
-    childProcess = execFile(
+    const childProcess = execFile(
       file,
       args,
       {
@@ -95,12 +63,10 @@ const executeApplication = async (file: string, args: string[]) => {
       execFileCallback(reject),
     );
 
-    electron?.globalShortcut?.register("CommandOrControl+C", () => {
-      killChildProcess();
-    });
+    registerCloseGameEvent(childProcess);
 
-    childProcess?.on("close", (code) => {
-      electron?.globalShortcut?.unregister("CommandOrControl+C");
+    childProcess.on("close", (code) => {
+      unregisterCloseGameEvent();
       if (code === 0 || code === null) {
         setTimeout(() => {
           resolve();

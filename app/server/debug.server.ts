@@ -15,6 +15,8 @@ export const isDebug = () => {
 
 const logFileName = "emuze.log";
 
+export const getLogFilePath = () => nodepath.join(homeDirectory, logFileName);
+
 export const appendFile = (text: string, path: string) => {
   // TODO: add success message, validation ...
   const dirname = nodepath.dirname(path);
@@ -30,7 +32,7 @@ export const appendFileHome = (text: string, path: string) => {
 };
 
 export const createLogFile = () => {
-  const path = nodepath.join(homeDirectory, logFileName);
+  const path = getLogFilePath();
   const dirname = nodepath.dirname(path);
   if (!existsSync(dirname)) {
     mkdirSync(dirname, { recursive: true });

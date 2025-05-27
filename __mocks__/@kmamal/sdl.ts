@@ -20,6 +20,7 @@ export default {
         },
       };
     },
+    removeAllListeners: () => {},
   },
   keyboard: {
     SCANCODE: scancodes,

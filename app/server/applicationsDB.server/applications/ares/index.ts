@@ -290,7 +290,7 @@ export const getVirtualGamepads = (systemHasAnalogStick: boolean) => {
     gamepads.length > 0
       ? gamepads.flatMap(getVirtualGamepad(systemHasAnalogStick))
       : getKeyboard();
-  log("debug", "gamepads", gamepads.length, getKeyboard());
+  log("debug", "gamepads", gamepads.length);
 
   return [
     ...virtualGamepads,
