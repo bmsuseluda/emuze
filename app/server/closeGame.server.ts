@@ -1,8 +1,8 @@
-import { log } from "./debug.server.js";
-import kill from "tree-kill";
-import sdl from "@kmamal/sdl";
-import { importElectron } from "./importElectron.server.js";
 import type { ChildProcess } from "node:child_process";
+import kill from "tree-kill";
+import type { SdlType } from "../types/sdl.js";
+import { log } from "./debug.server.js";
+import { importElectron } from "./importElectron.server.js";
 
 const killChildProcess = (childProcess: ChildProcess) => {
   log("debug", "kill process");
@@ -16,7 +16,7 @@ const killChildProcess = (childProcess: ChildProcess) => {
   }
 };
 
-const closeGameOnGamepad = (childProcess: ChildProcess) => {
+const closeGameOnGamepad = (childProcess: ChildProcess, sdl: SdlType) => {
   const devices = sdl.controller.devices;
   if (devices.length > 0) {
     devices.forEach((device) => {
@@ -41,12 +41,15 @@ const closeGameOnKeyboard = (childProcess: ChildProcess) => {
   });
 };
 
-export const registerCloseGameEvent = (childProcess: ChildProcess) => {
+export const registerCloseGameEvent = (
+  childProcess: ChildProcess,
+  sdl: SdlType,
+) => {
   closeGameOnKeyboard(childProcess);
-  closeGameOnGamepad(childProcess);
+  closeGameOnGamepad(childProcess, sdl);
 };
 
-export const unregisterCloseGameEvent = () => {
+export const unregisterCloseGameEvent = (sdl: SdlType) => {
   const electron = importElectron();
   electron?.globalShortcut?.unregister("CommandOrControl+C");
   // @ts-ignore types are missing

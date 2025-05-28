@@ -38,6 +38,15 @@ module.exports = {
     "node/no-unsupported-features/es-syntax": "off",
     "no-process-exit": "off",
     "import/no-unresolved": "off",
+    "import/no-absolute-path": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          "app/*",
+        ],
+      }
+    ]
   },
   overrides: [
     {

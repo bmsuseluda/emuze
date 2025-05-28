@@ -24,7 +24,7 @@ export type OptionParamFunction = ({
   settings: Settings;
   absoluteEntryPath: string;
   hasAnalogStick: boolean;
-}) => string[];
+}) => string[] | Promise<string[]>;
 
 export type EnvironmentVariableFunction = ({
   categoryData,

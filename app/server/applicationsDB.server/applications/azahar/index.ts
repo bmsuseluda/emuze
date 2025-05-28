@@ -2,7 +2,6 @@ import type { Application } from "../../types.js";
 import type { ApplicationId } from "../../applicationId.js";
 import nodepath from "node:path";
 import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
 import { log } from "../../../debug.server.js";
 import { EOL } from "node:os";
 import { keyboardConfig } from "./keyboardConfig.js";
@@ -19,6 +18,7 @@ import { importElectron } from "../../../importElectron.server.js";
 import { commandLineOptions } from "../../../commandLine.server.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { isWindows } from "../../../operationsystem.server.js";
+import { getSdl } from "../../../importSdl.server.js";
 
 const flatpakId = "io.github.lime3ds.Lime3DS";
 const applicationId: ApplicationId = "azahar";
@@ -163,13 +163,15 @@ export const getVirtualGamepad = (
   ];
 };
 
-export const replaceGamepadConfig: SectionReplacement = (sections) => {
-  const gamepads = sdl.controller.devices;
-  const virtualGamepad =
-    gamepads.length > 0 ? getVirtualGamepad(gamepads[0]) : keyboardConfig;
+export const replaceGamepadConfig =
+  (controller: Sdl.Controller.Module): SectionReplacement =>
+  (sections) => {
+    const gamepads = controller.devices;
+    const virtualGamepad =
+      gamepads.length > 0 ? getVirtualGamepad(gamepads[0]) : keyboardConfig;
 
-  return replaceSection(sections, "[Controls]", virtualGamepad);
-};
+    return replaceSection(sections, "[Controls]", virtualGamepad);
+  };
 
 export const replaceMiscellaneousConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Miscellaneous]", [
@@ -249,7 +251,8 @@ export const getConfigFilePath = (configFileName: string) => {
   }
 };
 
-export const replaceConfigSections = (n3dsRomsPath: string) => {
+export const replaceConfigSections = async (n3dsRomsPath: string) => {
+  const controller = (await getSdl()).controller;
   const filePath = getConfigFilePath(configFileName);
   const fileContent = readConfigFile(filePath);
 
@@ -258,7 +261,7 @@ export const replaceConfigSections = (n3dsRomsPath: string) => {
   const fileContentNew = chainSectionReplacements(
     sections,
     replaceUiConfig(n3dsRomsPath),
-    replaceGamepadConfig,
+    replaceGamepadConfig(controller),
     replaceMiscellaneousConfig,
   ).join(EOL);
 
@@ -270,7 +273,7 @@ export const azahar: Application = {
   name: "Azahar",
   fileExtensions: [".cci"],
   flatpakId,
-  createOptionParams: ({
+  createOptionParams: async ({
     settings: {
       appearance: { fullscreen },
       general: { categoriesPath },
@@ -278,7 +281,7 @@ export const azahar: Application = {
     categoryData,
   }) => {
     const n3dsRomsPath = nodepath.join(categoriesPath, categoryData.name);
-    replaceConfigSections(n3dsRomsPath);
+    await replaceConfigSections(n3dsRomsPath);
 
     const optionParams = [];
     if (fullscreen) {

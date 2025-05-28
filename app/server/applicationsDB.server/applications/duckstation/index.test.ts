@@ -1,4 +1,5 @@
-import { replaceGamepadConfig, replaceHotkeyConfig } from "./index.js";
+import sdlMock from "../../../../../__mocks__/@kmamal/sdl.js";
+import { splitConfigBySection } from "../../configFile.js";
 import {
   controllerPorts,
   getUnusedPad,
@@ -15,7 +16,7 @@ import {
   settings,
   settingsArray,
 } from "./__testData__/settings.js";
-import { splitConfigBySection } from "../../configFile.js";
+import { replaceGamepadConfig, replaceHotkeyConfig } from "./index.js";
 
 vi.mock("@kmamal/sdl");
 
@@ -49,7 +50,7 @@ describe("duckstation", () => {
   describe("replaceGamepadConfig", () => {
     it("Should set the connected pads and reset the remaining", () => {
       const settings = [main, pad1, pad2, pad3, pad4, hotkeys];
-      expect(replaceGamepadConfig(settings)).toStrictEqual([
+      expect(replaceGamepadConfig(sdlMock)(settings)).toStrictEqual([
         main,
         pad1Mapped,
         pad2Mapped,

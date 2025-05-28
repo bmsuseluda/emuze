@@ -1,21 +1,12 @@
 import type { ExecFileException } from "node:child_process";
 import { execFile, execFileSync } from "node:child_process";
-import { readAppearance, readGeneral } from "./settings.server.js";
+import { existsSync } from "node:fs";
+import nodepath from "node:path";
 import type { Category, Entry } from "../types/jsonFiles/category.js";
 import { createAbsoluteEntryPath } from "../types/jsonFiles/category.js";
 import { isGeneralConfigured } from "../types/jsonFiles/settings/general.js";
-import { isWindows } from "./operationsystem.server.js";
-import { existsSync } from "node:fs";
-import { setErrorDialog } from "./errorDialog.server.js";
-import {
-  registerCloseGameEvent,
-  unregisterCloseGameEvent,
-} from "./closeGame.server.js";
-import type { SystemId } from "./categoriesDB.server/systemId.js";
-import { categories } from "./categoriesDB.server/index.js";
-import { log } from "./debug.server.js";
+import type { Settings } from "../types/jsonFiles/settings/index.js";
 import { getInstalledApplicationForCategoryOnWindows } from "./applications.server.js";
-import { addToLastPlayedCached } from "./lastPlayed.server.js";
 import {
   checkFlatpakIsInstalled,
   EmulatorNotInstalledError,
@@ -24,9 +15,19 @@ import type {
   Application,
   EnvironmentVariableFunction,
 } from "./applicationsDB.server/types.js";
-import type { Settings } from "../types/jsonFiles/settings/index.js";
-import nodepath from "node:path";
+import { categories } from "./categoriesDB.server/index.js";
+import type { SystemId } from "./categoriesDB.server/systemId.js";
 import { readCategory } from "./categoryDataCache.server.js";
+import {
+  registerCloseGameEvent,
+  unregisterCloseGameEvent,
+} from "./closeGame.server.js";
+import { log } from "./debug.server.js";
+import { setErrorDialog } from "./errorDialog.server.js";
+import { getSdl } from "./importSdl.server.js";
+import { addToLastPlayedCached } from "./lastPlayed.server.js";
+import { isWindows } from "./operationsystem.server.js";
+import { readAppearance, readGeneral } from "./settings.server.js";
 
 type ExecFileCallback = (
   error: ExecFileException | null,
@@ -53,6 +54,8 @@ const execFileCallback =
   };
 
 const executeApplication = async (file: string, args: string[]) => {
+  const sdl = await getSdl();
+
   return new Promise<void>((resolve, reject) => {
     const childProcess = execFile(
       file,
@@ -63,10 +66,10 @@ const executeApplication = async (file: string, args: string[]) => {
       execFileCallback(reject),
     );
 
-    registerCloseGameEvent(childProcess);
+    registerCloseGameEvent(childProcess, sdl);
 
     childProcess.on("close", (code) => {
-      unregisterCloseGameEvent();
+      unregisterCloseGameEvent(sdl);
       if (code === 0 || code === null) {
         setTimeout(() => {
           resolve();
@@ -147,7 +150,7 @@ const executeApplicationOnWindows = async ({
   applicationData: Application;
   applicationsPath: string;
   absoluteEntryPath: string;
-  optionParams: (applicationsPath?: string) => string[];
+  optionParams: (applicationsPath?: string) => string[] | Promise<string[]>;
   environmentVariables: (applicationsPath?: string) => void;
   omitAbsoluteEntryPathAsLastParam?: boolean;
 }) => {
@@ -159,7 +162,7 @@ const executeApplicationOnWindows = async ({
   if (applicationPath) {
     environmentVariables(applicationPath);
     const params = [];
-    params.push(...optionParams(applicationPath));
+    params.push(...(await optionParams(applicationPath)));
 
     if (!omitAbsoluteEntryPathAsLastParam) {
       params.push(absoluteEntryPath);
@@ -255,7 +258,7 @@ export const startGame = async (
             await executeBundledApplication({
               bundledPath: applicationData.bundledPathWindows,
               absoluteEntryPath,
-              optionParams: optionParams(),
+              optionParams: await optionParams(),
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
             });
@@ -276,7 +279,7 @@ export const startGame = async (
             await executeBundledApplication({
               bundledPath: applicationData.bundledPathLinux,
               absoluteEntryPath,
-              optionParams: optionParams(),
+              optionParams: await optionParams(),
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
             });
@@ -285,7 +288,7 @@ export const startGame = async (
               applicationFlatpakOptionParams: flatpakOptionParams,
               applicationFlatpakId: flatpakId,
               absoluteEntryPath,
-              optionParams: optionParams(),
+              optionParams: await optionParams(),
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
               categoriesPath: generalData.categoriesPath,

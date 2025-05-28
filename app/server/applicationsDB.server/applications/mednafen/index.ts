@@ -3,15 +3,19 @@ import { isWindows } from "../../../operationsystem.server.js";
 import nodepath from "node:path";
 import { getVirtualGamepadsSaturn } from "./VirtualGamepadSaturn.js";
 import { getVirtualGamepadsPcEngine } from "./VirtualGamepadPcEngine.js";
-import { getKeyboardKey } from "./keyboardConfig.js";
+import { getKeyboardKey as initGetKeyboardKey } from "./keyboardConfig.js";
 import { flatpakId, flatpakOptionParams } from "./definitions.js";
 import { log } from "../../../debug.server.js";
+import { getSdl } from "../../../importSdl.server.js";
 
-const getSharedMednafenOptionParams: OptionParamFunction = ({
+const getSharedMednafenOptionParams: OptionParamFunction = async ({
   settings: {
     appearance: { fullscreen },
   },
 }) => {
+  const sdl = await getSdl();
+  const getKeyboardKey = initGetKeyboardKey(sdl);
+
   const hotkeySave = ["-command.save_state", getKeyboardKey("F1")];
   const hotkeyLoad = ["-command.load_state", getKeyboardKey("F3")];
   const hotkeyHelp = ["-command.toggle_help", getKeyboardKey("F2")];
@@ -70,15 +74,14 @@ export const mednafen: Application = {
 export const mednafenSaturn: Application = {
   ...mednafen,
   id: "mednafenSaturn",
-  createOptionParams: (props) => {
-    log(
-      "debug",
-      "createOptionParams",
-      getVirtualGamepadsSaturn(props.applicationPath),
+  createOptionParams: async (props) => {
+    const virtualGamepadsSaturn = await getVirtualGamepadsSaturn(
+      props.applicationPath,
     );
+    log("debug", "createOptionParams", virtualGamepadsSaturn);
     return [
-      ...mednafen.createOptionParams!(props),
-      ...getVirtualGamepadsSaturn(props.applicationPath),
+      ...(await mednafen.createOptionParams!(props)),
+      ...virtualGamepadsSaturn,
     ];
   },
 };
@@ -86,18 +89,17 @@ export const mednafenSaturn: Application = {
 export const mednafenPcEngineCD: Application = {
   ...mednafen,
   id: "mednafenPcEngineCD",
-  createOptionParams: (props) => {
-    log(
-      "debug",
-      "createOptionParams",
-      getVirtualGamepadsPcEngine(props.applicationPath),
+  createOptionParams: async (props) => {
+    const virtualGamepadsPcEngine = await getVirtualGamepadsPcEngine(
+      props.applicationPath,
     );
+    log("debug", "createOptionParams", virtualGamepadsPcEngine);
     return [
       ...["-pce.cddavolume", "100"], // music
       ...["-pce.cdpsgvolume", "50"], // shooting
       ...["-pce.adpcmvolume", "50"], // explosions
-      ...mednafen.createOptionParams!(props),
-      ...getVirtualGamepadsPcEngine(props.applicationPath),
+      ...(await mednafen.createOptionParams!(props)),
+      ...virtualGamepadsPcEngine,
     ];
   },
 };

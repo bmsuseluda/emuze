@@ -4,7 +4,6 @@ import {
   Outlet,
   redirect,
   useLoaderData,
-  useLocation,
   useNavigate,
 } from "react-router";
 import { readGeneral } from "../server/settings.server.js";
@@ -144,8 +143,6 @@ const focus: FocusElement = "gameDialog";
 export default function Index() {
   const { gameData } = useLoaderData<typeof loader>();
 
-  const { pathname } = useLocation();
-
   const launchButtonRef = useRef<ElementRef<"button">>(null);
 
   const { isInFocus, enableFocus, switchFocusBack } =
@@ -171,7 +168,7 @@ export default function Index() {
   const handleClose = useCallback(() => {
     switchFocusBack();
     navigate(-1);
-  }, [gameData, pathname, navigate, switchFocusBack]);
+  }, [navigate, switchFocusBack]);
 
   const onExecute = useCallback(() => {
     if (launchButtonRef.current && !launchButtonRef.current.disabled) {
