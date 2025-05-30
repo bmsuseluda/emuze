@@ -3,6 +3,7 @@ import nodepath from "node:path";
 import { appendFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { homeDirectory } from "./homeDirectory.server.js";
 import { commandLineOptions } from "./commandLine.server.js";
+import { getLogFilePath, logFileName } from "./log.server.js";
 
 export const isDebug = () => {
   const electron = importElectron();
@@ -12,10 +13,6 @@ export const isDebug = () => {
     process.env.EMUZE_DEBUG === "true"
   );
 };
-
-const logFileName = "emuze.log";
-
-export const getLogFilePath = () => nodepath.join(homeDirectory, logFileName);
 
 export const appendFile = (text: string, path: string) => {
   // TODO: add success message, validation ...

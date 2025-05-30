@@ -1,3 +1,5 @@
+import { getLogFilePath } from "./log.server.js";
+
 export const commandLineOptions = {
   help: { id: "help", description: "Show help" },
   fullscreen: {
@@ -6,7 +8,7 @@ export const commandLineOptions = {
   },
   debugEmuze: {
     id: "debug-emuze",
-    description: "Activates verbose logging to .emuze/emuze.log",
+    description: `Activates verbose logging to ${getLogFilePath()}`,
   },
   rmgN64: {
     id: "rmg",
