@@ -143,12 +143,12 @@ export const getVirtualGamepadsSaturn = async (applicationPath?: string) => {
   const gamepads = getGamepads(sdl, applicationPath);
   const virtualGamepads =
     gamepads.length > 0
-      ? gamepads.flatMap(getVirtualGamepadSaturn(sdl))
+      ? gamepads.map(getVirtualGamepadSaturn(sdl))
       : getKeyboardSaturn(sdl);
   log("debug", "gamepads", gamepads.length);
 
   return [
-    ...virtualGamepads,
+    ...virtualGamepads.flat(),
     ...resetUnusedVirtualGamepads(
       12,
       virtualGamepads.length,

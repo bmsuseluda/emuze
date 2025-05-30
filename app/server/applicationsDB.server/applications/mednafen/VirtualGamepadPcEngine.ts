@@ -133,12 +133,12 @@ export const getVirtualGamepadsPcEngine = async (applicationPath?: string) => {
   const gamepads = getGamepads(sdl, applicationPath);
   const virtualGamepads =
     gamepads.length > 0
-      ? gamepads.flatMap(getVirtualGamepadPcEngine(sdl))
+      ? gamepads.map(getVirtualGamepadPcEngine(sdl))
       : getKeyboardPcEngine(sdl);
   log("debug", "gamepads", gamepads.length);
 
   return [
-    ...virtualGamepads,
+    ...virtualGamepads.flat(),
     ...resetUnusedVirtualGamepads(
       5,
       virtualGamepads.length,

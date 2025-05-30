@@ -156,7 +156,12 @@ const getIndexForDeviceId = (index: number) => `${index + 1}`;
 /**
  * Creates the ares specific device id based on the SDL device input.
  *
- * result e.g. 0x128de11ff
+ * result e.g. 0x1045e02e0 (8bitdo pro 2)
+ *
+ * 0x1054c05c4 (ds4)
+ * 0x2045e02e0 (8bitdo pro 2)
+ * 0x3054c0268 (ds3)
+ *
  * ? = 0x (is always the same)
  * deviceIndex = 1 (optional, only set if id > 0)
  * vendor = 28de (hex value, needs to be padded with "0" on start to 4 characters, to 3 characters if deviceIndex is set)
@@ -291,12 +296,12 @@ export const getVirtualGamepads = (
   const gamepads = controller.devices;
   const virtualGamepads =
     gamepads.length > 0
-      ? gamepads.flatMap(getVirtualGamepad(systemHasAnalogStick))
+      ? gamepads.map(getVirtualGamepad(systemHasAnalogStick))
       : getKeyboard();
   log("debug", "gamepads", gamepads.length);
 
   return [
-    ...virtualGamepads,
+    ...virtualGamepads.flat(),
     ...resetUnusedVirtualGamepads(
       5,
       virtualGamepads.length,

@@ -1,11 +1,6 @@
 const config = {
     appId: "org.emuze.emuze",
-    files: [
-        "buildDesktop",
-        "build",
-        "public",
-        "fetchMetaData/systems",
-    ],
+    files: ["buildDesktop", "build", "public", "fetchMetaData/systems"],
     extraFiles: ["emulators/**"],
     win: {
         target: [
@@ -32,5 +27,7 @@ const config = {
     },
     electronLanguages: ["en-US"],
     afterPack: "./afterPackScript.js",
+    buildDependenciesFromSource: false,
+    npmRebuild: false,
 };
 export default config;
