@@ -20,7 +20,6 @@ import { fileURLToPath } from "node:url";
 const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 const { autoUpdater } = electronUpdater;
 
-process.env.SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS = "1";
 dotenv.config();
 
 const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
@@ -35,7 +34,7 @@ const showHelp = () => {
   app.quit();
 };
 
-app.commandLine.appendSwitch('lang', 'en-US');
+app.commandLine.appendSwitch("lang", "en-US");
 app.commandLine.appendSwitch("enable-features", "GlobalShortcutsPortal");
 
 // TODO: remove if workaround is not necessary anymore: https://github.com/electron/electron/issues/46538

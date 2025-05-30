@@ -5,11 +5,11 @@ export const commandLineOptions = {
     description: "Start the app in fullscreen mode",
   },
   debugEmuze: {
-    id: "debugEmuze",
+    id: "debug-emuze",
     description: "Activates verbose logging to .emuze/emuze.log",
   },
   rmgN64: {
-    id: "rmgN64",
+    id: "rmg",
     description:
       "Activates the less accurate Rosalies Mupen GUI (RMG) emulator to play N64",
   },
