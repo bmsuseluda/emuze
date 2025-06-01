@@ -68,15 +68,12 @@ const executeApplication = async (file: string, args: string[]) => {
 
     registerCloseGameEvent(childProcess, sdl);
 
-    childProcess.on("close", (code) => {
-      unregisterCloseGameEvent(sdl);
-      if (code === 0 || code === null) {
-        setTimeout(() => {
-          resolve();
-        }, 1000);
-      } else {
+    childProcess.on("close", () => {
+      unregisterCloseGameEvent();
+
+      setTimeout(() => {
         resolve();
-      }
+      }, 1000);
     });
   });
 };

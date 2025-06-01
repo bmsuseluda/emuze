@@ -3,6 +3,7 @@ import kill from "tree-kill";
 import type { SdlType } from "../types/sdl.js";
 import { log } from "./debug.server.js";
 import { importElectron } from "./importElectron.server.js";
+import type { Sdl } from "@kmamal/sdl";
 
 const killChildProcess = (childProcess: ChildProcess) => {
   log("debug", "kill process");
@@ -16,11 +17,15 @@ const killChildProcess = (childProcess: ChildProcess) => {
   }
 };
 
+let gamepads: Sdl.Controller.ControllerInstance[] = [];
+
 const closeGameOnGamepad = (childProcess: ChildProcess, sdl: SdlType) => {
   const devices = sdl.controller.devices;
   if (devices.length > 0) {
+    gamepads = [];
     devices.forEach((device) => {
       const controller = sdl.controller.openDevice(device);
+      gamepads.push(controller);
       controller.on("buttonDown", (event) => {
         if (event.button === "a" && controller.buttons.back) {
           log("debug", "buttons", controller.buttons);
@@ -49,10 +54,12 @@ export const registerCloseGameEvent = (
   closeGameOnGamepad(childProcess, sdl);
 };
 
-export const unregisterCloseGameEvent = (sdl: SdlType) => {
+export const unregisterCloseGameEvent = () => {
   const electron = importElectron();
   electron?.globalShortcut?.unregister("CommandOrControl+C");
-  // @ts-ignore types are missing
-  // TODO: create pull request to @kmamal/sdl
-  sdl.controller.removeAllListeners("buttonDown");
+
+  log("debug", "close gamepads");
+  gamepads.forEach((gamepad) => {
+    gamepad.close();
+  });
 };
