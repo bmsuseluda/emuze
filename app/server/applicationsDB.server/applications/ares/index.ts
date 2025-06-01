@@ -79,55 +79,28 @@ const getVirtualGamepadDpad = (
 ) => {
   log("debug", "mappingObject", mappingObject);
   if (mappingObject.dpup) {
-    if (mappingObject.dpup.startsWith("h")) {
-      //     hat
-      return [
-        ...getVirtualGamepadButton(
-          { gamepadIndex, buttonId: "Pad.Left" },
-          physicalGamepad.getDpadHatLeft(),
-          !systemHasAnalogStick ? physicalGamepad.getLeftStickLeft() : null,
-        ),
-        ...getVirtualGamepadButton(
-          { gamepadIndex, buttonId: "Pad.Right" },
-          physicalGamepad.getDpadHatRight(),
-          !systemHasAnalogStick ? physicalGamepad.getLeftStickRight() : null,
-        ),
-        ...getVirtualGamepadButton(
-          { gamepadIndex, buttonId: "Pad.Up" },
-          physicalGamepad.getDpadHatUp(),
-          !systemHasAnalogStick ? physicalGamepad.getLeftStickUp() : null,
-        ),
-        ...getVirtualGamepadButton(
-          { gamepadIndex, buttonId: "Pad.Down" },
-          physicalGamepad.getDpadHatDown(),
-          !systemHasAnalogStick ? physicalGamepad.getLeftStickDown() : null,
-        ),
-      ];
-    } else {
-      //     button
-      return [
-        ...getVirtualGamepadButton(
-          { gamepadIndex, buttonId: "Pad.Left" },
-          physicalGamepad.getDpadLeft(),
-          !systemHasAnalogStick ? physicalGamepad.getLeftStickLeft() : null,
-        ),
-        ...getVirtualGamepadButton(
-          { gamepadIndex, buttonId: "Pad.Right" },
-          physicalGamepad.getDpadRight(),
-          !systemHasAnalogStick ? physicalGamepad.getLeftStickRight() : null,
-        ),
-        ...getVirtualGamepadButton(
-          { gamepadIndex, buttonId: "Pad.Up" },
-          physicalGamepad.getDpadUp(),
-          !systemHasAnalogStick ? physicalGamepad.getLeftStickUp() : null,
-        ),
-        ...getVirtualGamepadButton(
-          { gamepadIndex, buttonId: "Pad.Down" },
-          physicalGamepad.getDpadDown(),
-          !systemHasAnalogStick ? physicalGamepad.getLeftStickDown() : null,
-        ),
-      ];
-    }
+    return [
+      ...getVirtualGamepadButton(
+        { gamepadIndex, buttonId: "Pad.Left" },
+        physicalGamepad.getDpadHatLeft(),
+        !systemHasAnalogStick ? physicalGamepad.getLeftStickLeft() : null,
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex, buttonId: "Pad.Right" },
+        physicalGamepad.getDpadHatRight(),
+        !systemHasAnalogStick ? physicalGamepad.getLeftStickRight() : null,
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex, buttonId: "Pad.Up" },
+        physicalGamepad.getDpadHatUp(),
+        !systemHasAnalogStick ? physicalGamepad.getLeftStickUp() : null,
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex, buttonId: "Pad.Down" },
+        physicalGamepad.getDpadHatDown(),
+        !systemHasAnalogStick ? physicalGamepad.getLeftStickDown() : null,
+      ),
+    ];
   } else {
     //   map left stick to dpad
     return [
