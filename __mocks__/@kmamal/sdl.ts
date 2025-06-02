@@ -19,6 +19,7 @@ const sdlMock = {
         buttons: {
           back: false,
         },
+        close: () => {},
       };
     },
     removeAllListeners: () => {},
@@ -33,6 +34,7 @@ const sdlMock = {
         buttons: {
           back: false,
         },
+        close: () => {},
       };
     },
     removeAllListeners: () => {},
