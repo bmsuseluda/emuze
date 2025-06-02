@@ -29,8 +29,7 @@ const config: Configuration = {
   },
   electronLanguages: ["en-US"],
   afterPack: "./afterPackScript.js",
-  buildDependenciesFromSource: false,
-  npmRebuild: false,
+  nativeRebuilder: "legacy",
 };
 
 export default config;

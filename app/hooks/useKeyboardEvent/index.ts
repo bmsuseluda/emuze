@@ -5,6 +5,7 @@ import { useGamepadConnected } from "../useGamepadConnected/index.js";
 export const useKeyboardEvent = (
   keyboardKey: string,
   onKeyboardEvent: (e: KeyboardEvent) => void,
+  keyboardEventType: "keydown" | "keyup" = "keyup",
 ) => {
   const { throttleFunction } = useThrottlePress();
   const { isEnabled } = useGamepadConnected();
@@ -22,10 +23,16 @@ export const useKeyboardEvent = (
         throttleFunction(functionToThrottle, 0);
       }
     };
-    addEventListener("keydown", handleKeyboardEvent);
+    addEventListener(keyboardEventType, handleKeyboardEvent);
 
     return () => {
-      removeEventListener("keydown", handleKeyboardEvent);
+      removeEventListener(keyboardEventType, handleKeyboardEvent);
     };
-  }, [keyboardKey, onKeyboardEvent, throttleFunction, isEnabled]);
+  }, [
+    keyboardKey,
+    onKeyboardEvent,
+    throttleFunction,
+    isEnabled,
+    keyboardEventType,
+  ]);
 };

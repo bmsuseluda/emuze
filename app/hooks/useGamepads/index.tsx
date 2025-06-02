@@ -5,6 +5,13 @@ import type { GamepadType } from "./gamepadTypeMapping.js";
 import { identifyGamepadType } from "./gamepadTypeMapping.js";
 import { useThrottlePress } from "../useThrottlePress/index.js";
 
+const buttonsForKeyDownEvent = [
+  layout.buttons.DPadDown,
+  layout.buttons.DPadLeft,
+  layout.buttons.DPadRight,
+  layout.buttons.DPadUp,
+];
+
 const isStickPressed = (stickValue: number) => {
   const normalizedStickValue = stickValue < 0 ? stickValue * -1 : stickValue;
   return normalizedStickValue > 0.5;
@@ -54,12 +61,15 @@ export const identifyGamepadTypeUnmasked = (gamepad: Gamepad) => {
   }
 };
 
+type ButtonStates = Record<number, boolean[]>;
+
 export const useGamepads = () => {
   const { throttleFunction } = useThrottlePress();
   const requestAnimationFrameRef = useRef<number>();
   const gameIsRunningRef = useRef<boolean>(false);
   const focusRef = useRef<boolean>(true);
   const isEnabled = useRef<boolean>(true);
+  const buttonStates = useRef<ButtonStates>({});
   const [gamepadType, setGamepadType] = useState<GamepadType>();
 
   // TODO: split function
@@ -69,15 +79,21 @@ export const useGamepads = () => {
         gamepads.forEach((gamepad) => {
           if (gamepad) {
             gamepad.buttons.forEach((button, index) => {
-              if (button.pressed) {
-                const functionToThrottle = () => {
-                  setGamepadType(identifyGamepadTypeUnmasked(gamepad));
-                  dispatchEvent(
-                    new CustomEvent(`gamepadonbutton${index}press`),
-                  );
-                };
+              const dispatchButtonEvent = () => {
+                setGamepadType(identifyGamepadTypeUnmasked(gamepad));
+                dispatchEvent(new CustomEvent(`gamepadonbutton${index}press`));
+              };
 
-                throttleFunction(functionToThrottle, gamepad.index);
+              if (button.pressed && buttonsForKeyDownEvent.includes(index)) {
+                // key down event
+                throttleFunction(dispatchButtonEvent, gamepad.index);
+              } else if (
+                !button.pressed &&
+                !buttonsForKeyDownEvent.includes(index) &&
+                buttonStates.current[gamepad.index]?.[index]
+              ) {
+                // key up event
+                dispatchButtonEvent();
               }
             });
 
@@ -142,6 +158,10 @@ export const useGamepads = () => {
                 throttleFunction(functionToThrottle, gamepad.index);
               }
             });
+
+            buttonStates.current[gamepad.index] = gamepad.buttons.map(
+              ({ pressed }) => pressed,
+            );
           }
         });
       }

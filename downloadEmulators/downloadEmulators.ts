@@ -31,9 +31,9 @@ const emulatorDownloads: Partial<EmulatorDownloads> = {
   },
   azahar: {
     Linux:
-      "https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/2121.1/Azahar-Enhanced-2121.1-anylinux-x86_64.AppImage",
+      "https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/2121.2/Azahar-Enhanced-2121.2-anylinux-x86_64.AppImage",
     Windows:
-      "https://github.com/azahar-emu/azahar/releases/download/2121.1/azahar-2121.1-windows-msys2.zip",
+      "https://github.com/azahar-emu/azahar/releases/download/2121.2/azahar-2121.2-windows-msys2.zip",
   },
   duckstation: {
     Linux:

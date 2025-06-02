@@ -7,28 +7,28 @@ import { layout } from "../useGamepads/layouts/index.js";
 
 export const useDirectionalInputUp = (onUp: () => void) => {
   useGamepadButtonPressEvent(layout.buttons.DPadUp, onUp);
-  useKeyboardEvent("ArrowUp", onUp);
+  useKeyboardEvent("ArrowUp", onUp, "keydown");
   useGamepadStickDirectionEvent("leftStickUp", onUp);
   useGamepadStickDirectionEvent("extraStickUp", onUp);
 };
 
 export const useDirectionalInputDown = (onDown: () => void) => {
   useGamepadButtonPressEvent(layout.buttons.DPadDown, onDown);
-  useKeyboardEvent("ArrowDown", onDown);
+  useKeyboardEvent("ArrowDown", onDown, "keydown");
   useGamepadStickDirectionEvent("leftStickDown", onDown);
   useGamepadStickDirectionEvent("extraStickDown", onDown);
 };
 
 export const useDirectionalInputLeft = (onLeft: () => void) => {
   useGamepadButtonPressEvent(layout.buttons.DPadLeft, onLeft);
-  useKeyboardEvent("ArrowLeft", onLeft);
+  useKeyboardEvent("ArrowLeft", onLeft, "keydown");
   useGamepadStickDirectionEvent("leftStickLeft", onLeft);
   useGamepadStickDirectionEvent("extraStickLeft", onLeft);
 };
 
 export const useDirectionalInputRight = (onRight: () => void) => {
   useGamepadButtonPressEvent(layout.buttons.DPadRight, onRight);
-  useKeyboardEvent("ArrowRight", onRight);
+  useKeyboardEvent("ArrowRight", onRight, "keydown");
   useGamepadStickDirectionEvent("leftStickRight", onRight);
   useGamepadStickDirectionEvent("extraStickRight", onRight);
 };

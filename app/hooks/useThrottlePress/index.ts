@@ -14,7 +14,7 @@ const isThrottled = (oldTimestamp?: number | null) => {
 
 /**
  * The timestamp of the tempTimestamp will be set on every button press.
- * If the timestamp of the tempTimestamp is older than 50ms, it is considered a single button press without holding the button.
+ * If the timestamp of the tempTimestamp is older than 100ms, it is considered a single button press without holding the button.
  *
  * @param tempTimestamp Needs to be set on every button press.
  */
