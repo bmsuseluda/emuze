@@ -46,14 +46,14 @@ The following systems are supported:
 | Nintendo Game Boy Color | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
 | Nintendo Game Boy Advance | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | Yes | 
 | Nintendo DS | [MelonDS](https://github.com/melonDS-emu/melonDS) | No | No | No | 
-| Nintendo 3DS | [Lime3DS](https://github.com/Lime3DS/Lime3DS) | No | No | No | 
+| Nintendo 3DS | [Azahar](https://github.com/azahar-emu/azahar) | Yes | Yes | No | 
 | Nintendo 64 | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
 | Nintendo Gamecube | [Dolphin](https://github.com/dolphin-emu/dolphin) | Yes | Yes | No | 
 | Nintendo Wii | [Dolphin](https://github.com/dolphin-emu/dolphin) | Yes | Yes | No | 
 | Nintendo Wii U | [Cemu](https://github.com/cemu-project/Cemu) | No | No | Yes | 
 | Nintendo Switch | [Ryujinx](https://git.ryujinx.app/ryubing/ryujinx) | Yes | Yes | Yes | 
 | Sony PlayStation | [DuckStation (Legacy)](https://github.com/stenzek/duckstation) | Yes | Yes | Yes | 
-| Sony PlayStation 2 | [PCSX2](https://github.com/PCSX2/pcsx2) | Yes | No | Yes | 
+| Sony PlayStation 2 | [PCSX2](https://github.com/PCSX2/pcsx2) | Yes | Yes | Yes | 
 | Sony PlayStation 3 | [RPCS3](https://github.com/RPCS3/rpcs3) | No | No | Yes | 
 | Sony PlayStation Portable | [PPSSPP](https://github.com/hrydgard/ppsspp) | No | No | No | 
 | PC Engine | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
@@ -89,7 +89,7 @@ Some emulators need a BIOS or firmware to run. Please check the documentation of
 
 ### Windows
 
-[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.54.0/emuze-Setup-0.54.0.exe) the latest Version of emuze and install it.
+[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.55.0/emuze-Setup-0.55.0.exe) the latest Version of emuze and install it.
 
 If you start emuze for the first time, it asks for the following folders to work:
 
@@ -119,7 +119,7 @@ emulators
 For now emuze is only released as an AppImage. Your Linux distribution needs to support Flatpaks.
 All emulators, not bundled, need to be installed via flatpak but emuze can do this for you.
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.54.0/emuze-0.54.0.AppImage) the latest Version of emuze
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.55.0/emuze-0.55.0.AppImage) the latest Version of emuze
 
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
@@ -129,13 +129,12 @@ All emulators, not bundled, need to be installed via flatpak but emuze can do th
 For now emuze is only released as an AppImage.
 
 1) Switch to Desktop
-2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.54.0/emuze-0.54.0.AppImage) the latest Version of emuze
+2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.55.0/emuze-0.55.0.AppImage) the latest Version of emuze
 
 3) Mark the AppImage as executable and start emuze
 4) Choose the [folder where your Roms are located](#roms-folder)
 5) Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze`
-6) Add `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
-7) Switch to Game Mode
+6) Switch to Game Mode
 
 #### Steam Input Profile
 
@@ -202,10 +201,10 @@ Usage: emuze [options]
 Options:
   --help             Show help
   --fullscreen       Start the app in fullscreen mode
-  --debugEmuze       Activates verbose logging to .emuze/emuze.log
-  --rmgN64           Activates the less accurate Rosalies Mupen GUI (RMG) emulator to play N64
+  --debug-emuze      Activates verbose logging to /home/runner/.local/share/emuze/emuze.log
+  --rmg              Activates the less accurate Rosalies Mupen GUI (RMG) emulator to play N64
   --mgba             Activates the mgba emulator to play Game Boy
-  --no-sandbox       Necessary if emuze is used as a non steam game (Steam Deck Game Mode)
+  --lime3ds          Activates the lime3DS emulator to play 3DS
 ```
 
 ## 🚑️ Support
