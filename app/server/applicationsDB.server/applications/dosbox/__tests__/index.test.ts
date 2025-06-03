@@ -1,4 +1,4 @@
-import { excludeDosSecondaryFiles } from "..";
+import { excludeDosSecondaryFiles } from "../index.js";
 
 describe("applicationsDB.dosbox", () => {
   describe("excludeDosSecondaryFiles", () => {

@@ -1,9 +1,9 @@
-import { FileDataCache } from "./FileDataCache.server";
-import type { EntryWithSystem } from "../types/jsonFiles/lastPlayed";
-import type { Category, Entry } from "../types/jsonFiles/category";
-import type { SystemId } from "./categoriesDB.server/systemId";
-import { sortDateTime } from "./sortCaseInsensitive.server";
-import { convertToId } from "./convertToId.server";
+import { FileDataCache } from "./FileDataCache.server.js";
+import type { EntryWithSystem } from "../types/jsonFiles/lastPlayed.js";
+import type { Category, Entry } from "../types/jsonFiles/category.js";
+import type { SystemId } from "./categoriesDB.server/systemId.js";
+import { sortDateTime } from "./sortCaseInsensitive.server.js";
+import { convertToId } from "./convertToId.server.js";
 
 export const paths = {
   lastPlayed: "data/lastPlayed.json",

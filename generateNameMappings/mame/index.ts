@@ -1,7 +1,11 @@
-import nodepath from "path";
+import nodepath from "node:path";
 import { XMLParser } from "fast-xml-parser";
-import { writeFile } from "../../app/server/readWriteData.server";
-import { spawnSync } from "child_process";
+import { writeFile } from "../../app/server/readWriteData.server.js";
+import { spawnSync } from "node:child_process";
+
+import { fileURLToPath } from "node:url";
+
+const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 
 type Result = Record<string, string | number>;
 
@@ -90,6 +94,7 @@ const importMame = () => {
     writeFile(extractedGames, nodepath.join(resultPath, "mame.json"));
   } catch (error) {
     console.log(error);
+    process.exit(1);
   }
 };
 

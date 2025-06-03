@@ -1,4 +1,4 @@
-import type { General } from "./jsonFiles/settings/general";
+import type { General } from "./jsonFiles/settings/general.js";
 
 export type FocusElement =
   | "sidebar"
@@ -6,7 +6,8 @@ export type FocusElement =
   | "settingsSidebar"
   | "settingsMain"
   | "errorDialog"
-  | "gameDialog";
+  | "gameDialog"
+  | "closeDialog";
 
 export const getFocusDefault = (general: General | null): FocusElement => {
   if (general?.applicationsPath || general?.categoriesPath) {

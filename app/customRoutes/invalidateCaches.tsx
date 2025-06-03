@@ -1,12 +1,12 @@
-import type { LoaderFunction } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
+import type { LoaderFunction } from "react-router";
+import { redirect } from "react-router";
 import {
   invalidateAppearanceDataCache,
   invalidateGeneralDataCache,
-} from "../server/settings.server";
-import { invalidateCategoriesDataCache } from "../server/categories.server";
-import { invalidateLastPlayedDataCache } from "../server/lastPlayed.server";
-import { invalidateCategoryDataCache } from "../server/categoryDataCache.server";
+} from "../server/settings.server.js";
+import { invalidateCategoriesDataCache } from "../server/categories.server.js";
+import { invalidateLastPlayedDataCache } from "../server/lastPlayed.server.js";
+import { invalidateCategoryDataCache } from "../server/categoryDataCache.server.js";
 
 export const loader: LoaderFunction = () => {
   invalidateGeneralDataCache();

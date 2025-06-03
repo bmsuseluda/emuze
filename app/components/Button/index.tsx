@@ -1,8 +1,8 @@
 import type { ComponentPropsWithoutRef, ElementRef, ReactNode } from "react";
 import { forwardRef } from "react";
-import { IconChildrenWrapper } from "../IconChildrenWrapper";
-import { Typography } from "../Typography";
-import { styled } from "../../../styled-system/jsx";
+import { IconChildrenWrapper } from "../IconChildrenWrapper/index.js";
+import { Typography } from "../Typography/index.js";
+import { styled } from "../../../styled-system/jsx/index.js";
 
 export const StyledButton = styled("button", {
   base: {
@@ -11,18 +11,22 @@ export const StyledButton = styled("button", {
     color: "color",
     fontWeight: "700",
     borderColor: "sidebarBackgroundColor",
-    borderWidth: "2px",
-    fontFamily: "inherit",
-    fontSize: "80%",
-    padding: "0.5rem 1rem",
+    borderWidth: 2,
+    fontFamily: "[inherit]",
+    fontSize: "[80%]",
+    padding: "[0.5rem 1rem]",
     cursor: "pointer",
-    textDecoration: "none",
-    outline: "none",
+    textDecoration: "[none]",
+    outline: "[none]",
     whiteSpace: "nowrap",
 
     "&:disabled": {
       borderStyle: "dashed",
       cursor: "not-allowed",
+    },
+
+    "&:focus-visible": {
+      borderColor: "accent",
     },
   },
 });

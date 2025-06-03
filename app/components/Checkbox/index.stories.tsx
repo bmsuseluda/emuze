@@ -1,4 +1,4 @@
-import { Checkbox } from ".";
+import { Checkbox } from "./index.js";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {

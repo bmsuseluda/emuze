@@ -2,29 +2,29 @@ import type {
   Application,
   ExcludeFilesFunction,
   FindEntryNameFunction,
-} from "../../types";
-import nodepath from "path";
-import { writeConfig } from "../../configFile";
-import fs from "fs";
-import { log } from "../../../debug.server";
-import type { Config, InputConfig } from "./config";
-import { defaultConfig, defaultInputConfig } from "./config";
-import type { Sdl } from "@bmsuseluda/node-sdl";
-import sdl from "@bmsuseluda/node-sdl";
-import { emulatorsDirectory } from "../../../homeDirectory.server";
-import { keyboardConfig } from "./keyboardConfig";
-import type { ApplicationId } from "../../applicationId";
-import { isGamecubeController } from "../../gamepads";
-import { sortGamecubeLast } from "../../sortGamepads";
+} from "../../types.js";
+import nodepath from "node:path";
+import { writeConfig } from "../../configFile.js";
+import fs from "node:fs";
+import { log } from "../../../debug.server.js";
+import type { Config, InputConfig } from "./config.js";
+import { defaultConfig, defaultInputConfig } from "./config.js";
+import type { Sdl } from "@kmamal/sdl";
+import { emulatorsDirectory } from "../../../homeDirectory.server.js";
+import { keyboardConfig } from "./keyboardConfig.js";
+import type { ApplicationId } from "../../applicationId.js";
+import { isGamecubeController } from "../../gamepads.js";
+import { sortGamecubeLast } from "../../sortGamepads.js";
+import type { SdlType } from "../../../../types/sdl.js";
+import { getSdl } from "../../../importSdl.server.js";
 
 const applicationId: ApplicationId = "ryujinx";
 const flatpakId = "org.ryujinx.Ryujinx";
-const bundledDirectory = nodepath.join(applicationId, "publish");
 const bundledPathLinux = nodepath.join(
   applicationId,
-  "ryujinx-1.2.86-x64.AppImage",
+  `${applicationId}.AppImage`,
 );
-const bundledPathWindows = nodepath.join(bundledDirectory, "Ryujinx.exe");
+const bundledPathWindows = nodepath.join(applicationId, "Ryujinx.exe");
 const configFolderPath = nodepath.join(emulatorsDirectory, applicationId);
 const configFileName = "Config.json";
 const configFilePath = nodepath.join(configFolderPath, configFileName);
@@ -124,8 +124,7 @@ const splitStringByIndices = (str: string, indices: number[]): string[] => {
 
 export const createControllerId = (sdlGuiId: string) => {
   const mapping = splitStringByIndices(sdlGuiId, [2, 4, 6, 8, 10, 12, 16, 20]);
-
-  return `0-${mapping[3]}${mapping[2]}${mapping[1]}${mapping[0]}-${mapping[5]}${mapping[4]}-${mapping[6]}-${mapping[7]}-${mapping[8]}`;
+  return `0-${mapping[0].padStart(8, "0")}-${mapping[5]}${mapping[4]}-${mapping[6]}-${mapping[7]}-${mapping[8]}`;
 };
 
 /**
@@ -152,27 +151,31 @@ const createDeviceSpecificInputConfig = (controllerName: string) => {
   return defaultInputConfig;
 };
 
-const createInputConfig = (
-  sdlDevice: Sdl.Controller.Device,
-  index: number,
-): InputConfig => {
-  const openedDevice = sdl.controller.openDevice(sdlDevice);
-  log("debug", "gamepad", { index, sdlDevice, openedController: openedDevice });
+const createInputConfig =
+  (sdl: SdlType) =>
+  (controller: Sdl.Joystick.Device, index: number): InputConfig => {
+    const joystick = sdl.joystick.devices[index];
+    log("debug", "gamepad", {
+      index,
+      controller,
+      joystick,
+    });
 
-  return {
-    ...createDeviceSpecificInputConfig(openedDevice.controllerName),
-    id: createControllerId(sdlDevice.guid),
-    controller_type: createControllerType(),
-    player_index: `Player${index + 1}`,
+    return {
+      ...createDeviceSpecificInputConfig(joystick.name),
+      id: createControllerId(controller.guid),
+      controller_type: createControllerType(),
+      player_index: `Player${index + 1}`,
+    };
   };
-};
 
-const replaceConfig = (switchRomsPath: string) => {
-  const gamepads = sdl.controller.devices;
+const replaceConfig = async (switchRomsPath: string) => {
+  const sdl = await getSdl();
+  const gamepads = sdl.joystick.devices;
   const gamepadsSorted = gamepads.toSorted(sortGamecubeLast);
   const inputConfig =
     gamepadsSorted.length > 0
-      ? gamepadsSorted.map(createInputConfig)
+      ? gamepadsSorted.map(createInputConfig(sdl))
       : [keyboardConfig];
 
   const oldConfig = readConfigFile(configFilePath);
@@ -181,6 +184,8 @@ const replaceConfig = (switchRomsPath: string) => {
     ...oldConfig,
     show_confirm_exit: false,
     check_updates_on_start: false,
+    update_checker_type: "Off",
+    skip_user_profiles: true,
     hotkeys: {
       ...oldConfig.hotkeys,
       show_ui: "F2",
@@ -198,7 +203,7 @@ export const ryujinx: Application = {
   name: "Ryujinx",
   fileExtensions: [".xci", ".nsp"],
   flatpakId,
-  createOptionParams: ({
+  createOptionParams: async ({
     settings: {
       appearance: { fullscreen },
       general: { categoriesPath },
@@ -206,7 +211,7 @@ export const ryujinx: Application = {
     categoryData,
   }) => {
     const switchRomsPath = nodepath.join(categoriesPath, categoryData.name);
-    replaceConfig(switchRomsPath);
+    await replaceConfig(switchRomsPath);
 
     const optionParams = ["--root-data-dir", configFolderPath];
     if (fullscreen) {

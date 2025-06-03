@@ -1,3 +1,5 @@
+import { getLogFilePath } from "./log.server.js";
+
 export const commandLineOptions = {
   help: { id: "help", description: "Show help" },
   fullscreen: {
@@ -5,11 +7,11 @@ export const commandLineOptions = {
     description: "Start the app in fullscreen mode",
   },
   debugEmuze: {
-    id: "debugEmuze",
-    description: "Activates verbose logging to .emuze/emuze.log",
+    id: "debug-emuze",
+    description: `Activates verbose logging to ${getLogFilePath()}`,
   },
   rmgN64: {
-    id: "rmgN64",
+    id: "rmg",
     description:
       "Activates the less accurate Rosalies Mupen GUI (RMG) emulator to play N64",
   },
@@ -17,10 +19,9 @@ export const commandLineOptions = {
     id: "mgba",
     description: "Activates the mgba emulator to play Game Boy",
   },
-  noSandbox: {
-    id: "no-sandbox",
-    description:
-      "Necessary if emuze is used as a non steam game (Steam Deck Game Mode)",
+  lime3ds: {
+    id: "lime3ds",
+    description: "Activates the lime3DS emulator to play 3DS",
   },
 } satisfies Record<string, { id: string; description: string }>;
 

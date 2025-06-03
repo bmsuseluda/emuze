@@ -1,31 +1,31 @@
-import type { ActionFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
-import { Button } from "../components/Button";
-import { FormBox } from "../components/FormBox";
-import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
-import { readAppearance, writeAppearance } from "../server/settings.server";
-import { Checkbox } from "../components/Checkbox";
-import type { Appearance } from "../types/jsonFiles/settings/appearance";
-import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
-import { SettingsIcon } from "../components/SettingsIcon";
-import { useFullscreen } from "../hooks/useFullscreen";
-import { CheckboxLabel } from "../components/CheckboxLabel";
+import type { ActionFunction } from "react-router";
+import { Form, useLoaderData } from "react-router";
+import { Button } from "../components/Button/index.js";
+import { FormBox } from "../components/FormBox/index.js";
+import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
+import { readAppearance, writeAppearance } from "../server/settings.server.js";
+import { Checkbox } from "../components/Checkbox/index.js";
+import type { Appearance } from "../types/jsonFiles/settings/appearance.js";
+import { IconChildrenWrapper } from "../components/IconChildrenWrapper/index.js";
+import { SettingsIcon } from "../components/SettingsIcon/index.js";
+import { useFullscreen } from "../hooks/useFullscreen/index.js";
+import { CheckboxLabel } from "../components/CheckboxLabel/index.js";
 import type { ElementRef, MouseEvent } from "react";
 import { useCallback, useRef } from "react";
-import type { Result } from "../hooks/useGamepadsOnGrid";
-import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid";
-import { useFocus } from "../hooks/useFocus";
-import type { FocusElement } from "../types/focusElement";
+import type { Result } from "../hooks/useGamepadsOnGrid/index.js";
+import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid/index.js";
+import { useFocus } from "../hooks/useFocus/index.js";
+import type { FocusElement } from "../types/focusElement.js";
 import {
   useInputBack,
   useInputConfirmation,
-} from "../hooks/useDirectionalInput";
-import { Typography } from "app/components/Typography";
+} from "../hooks/useDirectionalInput/index.js";
+import { Typography } from "../components/Typography/index.js";
+import { FormRow } from "../components/FormRow/index.js";
 
 export const loader = () => {
   const appearance = readAppearance();
-  return json(appearance);
+  return appearance;
 };
 
 const actionIds = {
@@ -149,46 +149,52 @@ export default function Appearance() {
           list={
             <FormBox ref={entryListRef}>
               <li>
-                <CheckboxLabel>
-                  <Checkbox
-                    id="fullscreen"
-                    name="fullscreen"
-                    checked={fullscreen}
-                    ref={entriesRefCallback(0)}
-                    onCheckedChange={() => {
-                      window.electronAPI &&
-                        window.electronAPI.changeWindow("fullscreen");
-                    }}
-                    onClick={onClick}
-                  />
-                  Fullscreen
-                </CheckboxLabel>
+                <FormRow>
+                  <CheckboxLabel>
+                    <Checkbox
+                      id="fullscreen"
+                      name="fullscreen"
+                      checked={fullscreen}
+                      ref={entriesRefCallback(0)}
+                      onCheckedChange={() => {
+                        window.electronAPI &&
+                          window.electronAPI.changeWindow("fullscreen");
+                      }}
+                      onClick={onClick}
+                    />
+                    Fullscreen
+                  </CheckboxLabel>
+                </FormRow>
               </li>
               <li>
-                <CheckboxLabel>
-                  <Checkbox
-                    id="alwaysGameNames"
-                    name="alwaysGameNames"
-                    defaultChecked={alwaysGameNames}
-                    ref={entriesRefCallback(1)}
-                    onCheckedChange={onSave}
-                    onClick={onClick}
-                  />
-                  Always show game names
-                </CheckboxLabel>
+                <FormRow>
+                  <CheckboxLabel>
+                    <Checkbox
+                      id="alwaysGameNames"
+                      name="alwaysGameNames"
+                      defaultChecked={alwaysGameNames}
+                      ref={entriesRefCallback(1)}
+                      onCheckedChange={onSave}
+                      onClick={onClick}
+                    />
+                    Always show game names
+                  </CheckboxLabel>
+                </FormRow>
               </li>
               <li>
-                <CheckboxLabel>
-                  <Checkbox
-                    id="collapseSidebar"
-                    name="collapseSidebar"
-                    defaultChecked={collapseSidebar}
-                    ref={entriesRefCallback(2)}
-                    onCheckedChange={onSave}
-                    onClick={onClick}
-                  />
-                  Collapse sidebar
-                </CheckboxLabel>
+                <FormRow>
+                  <CheckboxLabel>
+                    <Checkbox
+                      id="collapseSidebar"
+                      name="collapseSidebar"
+                      defaultChecked={collapseSidebar}
+                      ref={entriesRefCallback(2)}
+                      onCheckedChange={onSave}
+                      onClick={onClick}
+                    />
+                    Collapse sidebar
+                  </CheckboxLabel>
+                </FormRow>
               </li>
             </FormBox>
           }

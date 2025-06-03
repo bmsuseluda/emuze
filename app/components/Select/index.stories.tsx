@@ -1,4 +1,4 @@
-import { Select } from ".";
+import { Select } from "./index.js";
 
 import type { Meta, StoryObj } from "@storybook/react";
 

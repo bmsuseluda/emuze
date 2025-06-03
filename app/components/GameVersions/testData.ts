@@ -1,4 +1,4 @@
-import type { Entry } from "../../types/jsonFiles/category";
+import type { Entry } from "../../types/jsonFiles/category.js";
 
 export const gameVersions: Entry[] = [
   {

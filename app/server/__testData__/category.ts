@@ -1,6 +1,6 @@
-import type { Category, Entry } from "../../types/jsonFiles/category";
-import nodepath from "path";
-import { general } from "./general";
+import type { Category, Entry } from "../../types/jsonFiles/category.js";
+import nodepath from "node:path";
+import { general } from "./general.js";
 
 export const addIndex = <P extends Entry>(entries: P[]): P[] => {
   let index = 0;
@@ -42,7 +42,7 @@ export const createAbsoluteEntryPath = (
 export const metroidsamusreturns: Entry = {
   id: "metroidsamusreturns",
   name: "Metroid Samus Returns",
-  path: "Metroid Samus Returns.3ds",
+  path: "Metroid Samus Returns.cci",
 };
 
 export const nintendo3ds = {

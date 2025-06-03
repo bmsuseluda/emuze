@@ -1,11 +1,15 @@
-import { fetchMetaDataForSystem } from "./igdb";
-import { writeFile } from "../app/server/readWriteData.server";
-import nodepath from "path";
-import type { SystemId } from "../app/server/categoriesDB.server/systemId";
-import { categories } from "../app/server/categoriesDB.server";
+import { fetchMetaDataForSystem } from "./igdb.js";
+import { writeFile } from "../app/server/readWriteData.server.js";
+import nodepath from "node:path";
+import type { SystemId } from "../app/server/categoriesDB.server/systemId.js";
+import { categories } from "../app/server/categoriesDB.server/index.js";
 import { existsSync } from "node:fs";
-import { readFile } from "fs/promises";
-import { normalizeString } from "../app/server/igdb.server";
+import { readFile } from "node:fs/promises";
+import { normalizeString } from "../app/server/igdb.server.js";
+
+import { fileURLToPath } from "node:url";
+
+const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 
 export type GameTrimmed = [name: string, cover: string];
 

@@ -1,4 +1,4 @@
-import { excludePlaystationFiles, findPlaystation3Serial } from "..";
+import { excludePlaystationFiles, findPlaystation3Serial } from "../index.js";
 
 describe("applicationsDB.rpcs3", () => {
   describe("findPlaystation3Serial", () => {

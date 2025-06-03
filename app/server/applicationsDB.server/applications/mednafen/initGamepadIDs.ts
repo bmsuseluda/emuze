@@ -1,74 +1,85 @@
-import { isWindows } from "../../../operationsystem.server";
-import { execFileSync } from "child_process";
-import { log } from "../../../debug.server";
-import sdl from "@bmsuseluda/node-sdl";
-import { checkFlatpakIsInstalled } from "../../checkEmulatorIsInstalled";
-import { flatpakId, flatpakOptionParams } from "./definitions";
+import { isWindows } from "../../../operationsystem.server.js";
+import { log } from "../../../debug.server.js";
+import { spawnSync } from "node:child_process";
 
-interface MednafenError {
-  stdout: string;
-}
-
-const isMednafenError = (e: any): e is MednafenError =>
-  typeof e.stdout === "string";
+import { checkFlatpakIsInstalled } from "../../checkEmulatorIsInstalled.js";
+import { flatpakId, flatpakOptionParams } from "./definitions.js";
+import type { SdlType } from "../../../../types/sdl.js";
 
 export interface GamepadID {
   id: string;
   name: string;
 }
 
-const extractGamepadIDs = (error: MednafenError): GamepadID[] =>
-  error.stdout
+const extractGamepadIDs = (logOutput: string): GamepadID[] =>
+  logOutput
     .split("\n")
-    .filter((line) => line.trim().startsWith("ID: "))
+    .filter((line) => {
+      return line.replace("'", "").trim().startsWith("ID: ");
+    })
     .map((line) => {
-      const [id, name] = line.trim().split("ID: ")[1].split(" - ");
+      const [id, name] = line
+        .replace("'", "")
+        .trim()
+        .split("ID: ")[1]
+        .split(" - ");
+      log("debug", "extractGamepadIDs", id, name, line);
       return {
         id,
         name,
       };
     });
 
-export const getGamepads = (applicationPath?: string) => {
+const executeWithLogs = (applicationPath: string, args: string[]): string => {
+  const result = spawnSync(applicationPath, args, {
+    stdio: ["inherit", "pipe", "inherit"],
+    encoding: "utf8",
+  });
+
+  return result.stdout || "";
+};
+
+export const getGamepads = (sdl: SdlType, applicationPath?: string) => {
   if (sdl.controller.devices.length > 0) {
     try {
       if (isWindows() && applicationPath) {
-        execFileSync(applicationPath, ["wrong"], {
-          encoding: "utf8",
-        });
+        const output = executeWithLogs(applicationPath, ["wrong"]);
+        log("debug", "result", output);
+        return extractGamepadIDs(output);
       } else {
         if (checkFlatpakIsInstalled(flatpakId)) {
-          execFileSync(
-            "flatpak",
-            ["run", ...flatpakOptionParams, flatpakId, "wrong"],
-            {
-              encoding: "utf8",
-            },
-          );
+          const output = executeWithLogs("flatpak", [
+            "run",
+            ...flatpakOptionParams,
+            flatpakId,
+            "wrong",
+          ]);
+          return extractGamepadIDs(output);
         }
       }
     } catch (e) {
-      if (isMednafenError(e)) {
-        const gamepadsIDs = extractGamepadIDs(e);
-        log("debug", "mednafen gamepad IDs", gamepadsIDs);
-        return gamepadsIDs;
-      }
+      log("debug", "result in catch", e);
     }
   }
   return [];
 };
 
-export const findSdlGamepad = (gamepadId: GamepadID, index: number) => {
+export const findSdlGamepad = (
+  sdl: SdlType,
+  gamepadId: GamepadID,
+  index: number,
+) => {
   const gamepads = sdl.controller.devices;
+  const joysticks = sdl.joystick.devices;
 
-  const sdlGamepad = gamepads.find((gamepad) => {
-    const openedDevice = sdl.controller.openDevice(gamepad);
-    log("debug", "findSdlGamepad", gamepadId, gamepad, openedDevice);
+  const sdlGamepad = gamepads.find((gamepad, index) => {
+    const joystick = joysticks[index];
+    log("debug", "findSdlGamepad", gamepadId, gamepad, joystick);
 
     return (
       gamepad.name.toLowerCase().replaceAll(" ", "") ===
         gamepadId.name.toLowerCase().replaceAll(" ", "") ||
-      openedDevice.controllerName.toLowerCase().replaceAll(" ", "") ===
+      joystick.name.toLowerCase().replaceAll(" ", "") ===
         gamepadId.name.toLowerCase().replaceAll(" ", "")
     );
   });

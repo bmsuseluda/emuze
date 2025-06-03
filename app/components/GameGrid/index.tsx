@@ -5,21 +5,21 @@ import type {
   RefObject,
 } from "react";
 import { useCallback } from "react";
-import type { Entry as GameType } from "../../types/jsonFiles/category";
-import type { EntryWithSystem as GameTypeLastPlayed } from "../../types/jsonFiles/lastPlayed";
-import { isEntryWithSystem } from "../../types/jsonFiles/lastPlayed";
-import { Ul } from "../Ul";
-import { Game } from "./components/Game";
-import type { Result } from "../../hooks/useGamepadsOnGrid";
-import { useGamepadsOnGrid } from "../../hooks/useGamepadsOnGrid";
-import { styled } from "../../../styled-system/jsx";
-import { useAddEntriesToRenderOnScrollEnd } from "../../hooks/useAddEntriesToRenderOnScrollEnd";
-import { SystemIcon } from "../SystemIcon";
+import type { Entry as GameType } from "../../types/jsonFiles/category.js";
+import type { EntryWithSystem as GameTypeLastPlayed } from "../../types/jsonFiles/lastPlayed.js";
+import { isEntryWithSystem } from "../../types/jsonFiles/lastPlayed.js";
+import { Ul } from "../Ul/index.js";
+import { Game } from "./components/Game/index.js";
+import type { Result } from "../../hooks/useGamepadsOnGrid/index.js";
+import { useGamepadsOnGrid } from "../../hooks/useGamepadsOnGrid/index.js";
+import { styled } from "../../../styled-system/jsx/index.js";
+import { useAddEntriesToRenderOnScrollEnd } from "../../hooks/useAddEntriesToRenderOnScrollEnd/index.js";
+import { SystemIcon } from "../SystemIcon/index.js";
 import {
   useInputBack,
   useInputConfirmation,
-} from "../../hooks/useDirectionalInput";
-import { useGamepadConnected } from "../../hooks/useGamepadConnected";
+} from "../../hooks/useDirectionalInput/index.js";
+import { useGamepadConnected } from "../../hooks/useGamepadConnected/index.js";
 
 interface Props extends ComponentPropsWithoutRef<"ul"> {
   games: GameType[] | GameTypeLastPlayed[];

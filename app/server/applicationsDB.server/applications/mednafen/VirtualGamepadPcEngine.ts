@@ -1,12 +1,12 @@
-import type { GamepadID } from "./initGamepadIDs";
-import { findSdlGamepad, getGamepads } from "./initGamepadIDs";
-import { log } from "../../../debug.server";
-import { VirtualGamepad } from "./VirtualGamepad";
-import { PhysicalGamepadLinux } from "./PhysicalGamepadLinux";
-import { getKeyboardKey } from "./keyboardConfig";
-import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
-import { isWindows } from "../../../operationsystem.server";
-import { PhysicalGamepadXinput } from "./PhysicalGamepadXinput";
+import type { GamepadID } from "./initGamepadIDs.js";
+import { findSdlGamepad, getGamepads } from "./initGamepadIDs.js";
+import { log } from "../../../debug.server.js";
+import { VirtualGamepad } from "./VirtualGamepad.js";
+import { getKeyboardKey as initGetKeyboardKey } from "./keyboardConfig.js";
+import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
+import type { SdlType } from "../../../../types/sdl.js";
+import { getSdl } from "../../../importSdl.server.js";
+import { getPhysicalGamepad } from "./getPhysicalGamepad.js";
 
 type MednafenButtonIdPcEngine =
   | "up"
@@ -51,7 +51,9 @@ export const getVirtualGamepadReset = (index: number) => {
   ];
 };
 
-export const getKeyboardPcEngine = () => {
+export const getKeyboardPcEngine = (sdl: SdlType) => {
+  const getKeyboardKey = initGetKeyboardKey(sdl);
+
   const { createButtonMapping, disableButtonMapping } =
     new VirtualGamepad<MednafenButtonIdPcEngine>(0, system);
   return [
@@ -73,69 +75,66 @@ export const getKeyboardPcEngine = () => {
   ];
 };
 
-export const getVirtualGamepadPcEngine = (
-  gamepadID: GamepadID,
-  index: number,
-) => {
-  const sdlGamepad = findSdlGamepad(gamepadID, index);
+export const getVirtualGamepadPcEngine =
+  (sdl: SdlType) => (gamepadID: GamepadID, index: number) => {
+    const sdlGamepad = findSdlGamepad(sdl, gamepadID, index);
 
-  if (sdlGamepad) {
-    log("debug", "gamepad", gamepadID, sdlGamepad);
-    const { initialize, createButtonMapping, disableButtonMapping } =
-      new VirtualGamepad<MednafenButtonIdPcEngine>(index, system);
-    const physicalGamepad = isWindows()
-      ? new PhysicalGamepadXinput(gamepadID.id, sdlGamepad.mapping)
-      : new PhysicalGamepadLinux(gamepadID.id, sdlGamepad.mapping);
+    if (sdlGamepad) {
+      log("debug", "gamepad", gamepadID, sdlGamepad);
+      const { initialize, createButtonMapping, disableButtonMapping } =
+        new VirtualGamepad<MednafenButtonIdPcEngine>(index, system);
+      const physicalGamepad = getPhysicalGamepad(sdlGamepad, gamepadID);
 
-    return [
-      ...initialize(),
-      ...createButtonMapping(
-        "up",
-        physicalGamepad.getDpadUp(),
-        physicalGamepad.getLeftStickUp(),
-      ),
-      ...createButtonMapping(
-        "down",
-        physicalGamepad.getDpadDown(),
-        physicalGamepad.getLeftStickDown(),
-      ),
-      ...createButtonMapping(
-        "left",
-        physicalGamepad.getDpadLeft(),
-        physicalGamepad.getLeftStickLeft(),
-      ),
-      ...createButtonMapping(
-        "right",
-        physicalGamepad.getDpadRight(),
-        physicalGamepad.getLeftStickRight(),
-      ),
-      ...createButtonMapping("i", physicalGamepad.getB()),
-      ...createButtonMapping("ii", physicalGamepad.getA()),
-      ...disableButtonMapping("iii"),
-      ...disableButtonMapping("iv"),
-      ...disableButtonMapping("v"),
-      ...disableButtonMapping("vi"),
-      ...createButtonMapping("rapid_i", physicalGamepad.getY()),
-      ...createButtonMapping("rapid_ii", physicalGamepad.getX()),
-      ...disableButtonMapping("mode_select"),
-      ...createButtonMapping("select", physicalGamepad.getBack()),
-      ...createButtonMapping("run", physicalGamepad.getStart()),
-    ];
-  }
+      return [
+        ...initialize(),
+        ...createButtonMapping(
+          "up",
+          physicalGamepad.getDpadUp(),
+          physicalGamepad.getLeftStickUp(),
+        ),
+        ...createButtonMapping(
+          "down",
+          physicalGamepad.getDpadDown(),
+          physicalGamepad.getLeftStickDown(),
+        ),
+        ...createButtonMapping(
+          "left",
+          physicalGamepad.getDpadLeft(),
+          physicalGamepad.getLeftStickLeft(),
+        ),
+        ...createButtonMapping(
+          "right",
+          physicalGamepad.getDpadRight(),
+          physicalGamepad.getLeftStickRight(),
+        ),
+        ...createButtonMapping("i", physicalGamepad.getB()),
+        ...createButtonMapping("ii", physicalGamepad.getA()),
+        ...disableButtonMapping("iii"),
+        ...disableButtonMapping("iv"),
+        ...disableButtonMapping("v"),
+        ...disableButtonMapping("vi"),
+        ...createButtonMapping("rapid_i", physicalGamepad.getY()),
+        ...createButtonMapping("rapid_ii", physicalGamepad.getX()),
+        ...disableButtonMapping("mode_select"),
+        ...createButtonMapping("select", physicalGamepad.getBack()),
+        ...createButtonMapping("run", physicalGamepad.getStart()),
+      ];
+    }
 
-  return [];
-};
+    return [];
+  };
 
-export const getVirtualGamepadsPcEngine = (applicationPath?: string) => {
-  const gamepads = getGamepads(applicationPath);
+export const getVirtualGamepadsPcEngine = async (applicationPath?: string) => {
+  const sdl = await getSdl();
+  const gamepads = getGamepads(sdl, applicationPath);
   const virtualGamepads =
     gamepads.length > 0
-      ? gamepads.flatMap(getVirtualGamepadPcEngine)
-      : getKeyboardPcEngine();
-  log("debug", "gamepads", gamepads.length, getKeyboardPcEngine());
+      ? gamepads.map(getVirtualGamepadPcEngine(sdl))
+      : getKeyboardPcEngine(sdl);
+  log("debug", "gamepads", gamepads.length);
 
   return [
-    ...virtualGamepads,
+    ...virtualGamepads.flat(),
     ...resetUnusedVirtualGamepads(
       5,
       virtualGamepads.length,

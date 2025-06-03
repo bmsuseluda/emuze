@@ -1,5 +1,5 @@
-import { createControllerId, excludeFiles, findEntryName } from "../index";
-import { gamepadPs3, steamDeck } from "../../../gamepads";
+import { createControllerId, excludeFiles, findEntryName } from "../index.js";
+import { gamepadPs3, steamDeck } from "../../../gamepads.js";
 
 const smashUltimateName =
   "Super Smash Bros. Ultimate [01006A800016E000][v0][BASE]";
@@ -10,12 +10,12 @@ describe("ryujinx", () => {
       {
         gamepadName: "ps3",
         sdlGuiId: gamepadPs3.guid,
-        controllerId: "0-d3af0003-054c-0000-6802-000011810000",
+        controllerId: "0-00000003-054c-0000-6802-000011810000",
       },
       {
         gamepadName: "steam deck",
         sdlGuiId: steamDeck.guid,
-        controllerId: "0-f6790003-28de-0000-ff11-000001000000",
+        controllerId: "0-00000003-28de-0000-ff11-000001000000",
       },
     ].forEach(({ gamepadName, sdlGuiId, controllerId }) => {
       it(`Should create a controllerId for ${gamepadName}`, () => {

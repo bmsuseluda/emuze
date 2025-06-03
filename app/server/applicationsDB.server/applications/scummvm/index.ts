@@ -1,4 +1,4 @@
-import type { Application } from "../../types";
+import type { Application } from "../../types.js";
 
 export const scummvm: Application = {
   id: "scummvm",

@@ -1,9 +1,11 @@
-import { getErrorDialog, resetErrorDialog } from "../server/errorDialog.server";
-import { json, redirect } from "@remix-run/node";
-import { useLoaderData, useSubmit } from "@remix-run/react";
-import { ErrorDialog } from "../components/ErrorDialog";
-import { useFocus } from "../hooks/useFocus";
-import type { FocusElement } from "../types/focusElement";
+import {
+  getErrorDialog,
+  resetErrorDialog,
+} from "../server/errorDialog.server.js";
+import { redirect, useLoaderData, useSubmit } from "react-router";
+import { ErrorDialog } from "../components/ErrorDialog/index.js";
+import { useFocus } from "../hooks/useFocus/index.js";
+import type { FocusElement } from "../types/focusElement.js";
 import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import {
@@ -12,12 +14,12 @@ import {
   useInputBack,
   useInputConfirmation,
   useInputSettings,
-} from "../hooks/useDirectionalInput";
+} from "../hooks/useDirectionalInput/index.js";
 
 export const loader = () => {
   const errorDialog = getErrorDialog();
 
-  return json({ errorDialog });
+  return { errorDialog };
 };
 
 export const action = () => {

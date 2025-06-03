@@ -1,13 +1,13 @@
-import dosGames from "./nameMapping/dos.json";
-import { existsSync } from "fs";
+import dosGames from "./nameMapping/dos.json" with { type: "json" };
+import { existsSync } from "node:fs";
 import type {
   Application,
   ExcludeFilesFunction,
   FindEntryNameFunction,
   OptionParamFunction,
-} from "../../types";
-import nodepath from "path";
-import { readFilenames } from "../../../readWriteData.server";
+} from "../../types.js";
+import nodepath from "node:path";
+import { readFilenames } from "../../../readWriteData.server.js";
 
 const findDosGameEntry = (filePath: string) =>
   Object.entries(dosGames).find(([key]) =>

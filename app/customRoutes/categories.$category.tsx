@@ -1,30 +1,29 @@
 import type { ElementRef } from "react";
 import { useCallback, useRef } from "react";
-import type { ActionFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Form, Outlet, redirect, useLoaderData } from "@remix-run/react";
-import { startGame } from "../server/execute.server";
-import { importCategories } from "../server/categories.server";
-import { GameGridDynamic } from "../components/GameGrid";
-import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
-import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
-import { SystemIcon } from "../components/SystemIcon";
-import { useFocus } from "../hooks/useFocus";
-import type { FocusElement } from "../types/focusElement";
-import { readAppearance, readGeneral } from "../server/settings.server";
-import { SettingsLink } from "../containers/SettingsLink";
-import { Typography } from "../components/Typography";
-import type { DataFunctionArgs } from "../context";
-import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction";
-import { useGamepadConnected } from "../hooks/useGamepadConnected";
-import fs from "fs";
-import nodepath from "path";
-import type { SystemId } from "../server/categoriesDB.server/systemId";
-import { log } from "../server/debug.server";
-import { ImportButton } from "../containers/ImportButton";
-import type { ImportButtonId } from "../containers/ImportButton/importButtonId";
-import { LaunchButton, launchId } from "../containers/LaunchButton";
-import { readCategory } from "../server/categoryDataCache.server";
+import type { ActionFunction } from "react-router";
+import { Form, Outlet, redirect, useLoaderData } from "react-router";
+import { startGame } from "../server/execute.server.js";
+import { importCategories } from "../server/categories.server.js";
+import { GameGridDynamic } from "../components/GameGrid/index.js";
+import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
+import { IconChildrenWrapper } from "../components/IconChildrenWrapper/index.js";
+import { SystemIcon } from "../components/SystemIcon/index.js";
+import { useFocus } from "../hooks/useFocus/index.js";
+import type { FocusElement } from "../types/focusElement.js";
+import { readAppearance, readGeneral } from "../server/settings.server.js";
+import { SettingsLink } from "../containers/SettingsLink/index.js";
+import { Typography } from "../components/Typography/index.js";
+import type { DataFunctionArgs } from "../context.js";
+import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction/index.js";
+import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
+import fs from "node:fs";
+import nodepath from "node:path";
+import type { SystemId } from "../server/categoriesDB.server/systemId.js";
+import { log } from "../server/debug.server.js";
+import { ImportButton } from "../containers/ImportButton/index.js";
+import type { ImportButtonId } from "../containers/ImportButton/importButtonId.js";
+import { LaunchButton, launchId } from "../containers/LaunchButton/index.js";
+import { readCategory } from "../server/categoryDataCache.server.js";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -40,7 +39,7 @@ export const loader = ({ params }: DataFunctionArgs) => {
   }
 
   const { alwaysGameNames } = readAppearance();
-  return json({ categoryData, alwaysGameNames });
+  return { categoryData, alwaysGameNames };
 };
 
 const importButtonId: ImportButtonId = "importGames";
@@ -83,7 +82,7 @@ export const action: ActionFunction = async ({ request, params }) => {
           if (entryData.subEntries?.[0]) {
             return redirect(entryData.id);
           } else {
-            startGame(category as SystemId, entryData);
+            await startGame(category as SystemId, entryData);
           }
         }
         return { ok: true };
@@ -138,7 +137,7 @@ export default function Category() {
     useGamepadConnected();
 
   /* Set focus again after launching */
-  useEnableFocusAfterAction(enableGamepads, [actionIds.launch]);
+  useEnableFocusAfterAction(() => enableGamepads(true), [actionIds.launch]);
 
   const onBack = useCallback(() => {
     if (isInFocus) {
@@ -148,7 +147,7 @@ export default function Category() {
 
   const onExecute = useCallback(() => {
     if (launchButtonRef.current && !launchButtonRef.current.disabled) {
-      disableGamepads();
+      disableGamepads(true);
       launchButtonRef.current.click();
     }
   }, [disableGamepads]);
@@ -176,6 +175,7 @@ export default function Category() {
             <Typography ellipsis>{name}</Typography>
           </IconChildrenWrapper>
         }
+        paddingLeft="large"
       >
         <Form method="POST">
           <ListActionBarLayout.ListActionBarContainer

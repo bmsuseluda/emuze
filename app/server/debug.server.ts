@@ -1,14 +1,18 @@
-import { app } from "electron";
-import nodepath from "path";
-import { appendFileSync, existsSync, mkdirSync, writeFileSync } from "fs";
-import { homeDirectory } from "./homeDirectory.server";
-import { commandLineOptions } from "./commandLine.server";
+import { importElectron } from "./importElectron.server.js";
+import nodepath from "node:path";
+import { appendFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { homeDirectory } from "./homeDirectory.server.js";
+import { commandLineOptions } from "./commandLine.server.js";
+import { getLogFilePath, logFileName } from "./log.server.js";
 
-export const isDebug = () =>
-  app?.commandLine.hasSwitch(commandLineOptions.debugEmuze.id) ||
-  process.env.EMUZE_DEBUG === "true";
+export const isDebug = () => {
+  const electron = importElectron();
 
-const logFileName = "emuze.log";
+  return (
+    electron?.app?.commandLine.hasSwitch(commandLineOptions.debugEmuze.id) ||
+    process.env.EMUZE_DEBUG === "true"
+  );
+};
 
 export const appendFile = (text: string, path: string) => {
   // TODO: add success message, validation ...
@@ -25,7 +29,7 @@ export const appendFileHome = (text: string, path: string) => {
 };
 
 export const createLogFile = () => {
-  const path = nodepath.join(homeDirectory, logFileName);
+  const path = getLogFilePath();
   const dirname = nodepath.dirname(path);
   if (!existsSync(dirname)) {
     mkdirSync(dirname, { recursive: true });

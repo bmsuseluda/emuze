@@ -1,6 +1,6 @@
-import type { Entry } from "../../types/jsonFiles/category";
-import { getExpiresOn } from "../../server/getExpiresOn.server";
-import type { EntryWithSystem } from "../../types/jsonFiles/lastPlayed";
+import type { Entry } from "../../types/jsonFiles/category.js";
+import { getExpiresOn } from "../../server/getExpiresOn.server.js";
+import type { EntryWithSystem } from "../../types/jsonFiles/lastPlayed.js";
 
 export const games: Entry[] = [
   {

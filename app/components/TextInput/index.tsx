@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
-import { styled } from "../../../styled-system/jsx";
+import { styled } from "../../../styled-system/jsx/index.js";
 
 import { MdErrorOutline } from "react-icons/md";
 
 const Input = styled("input", {
   base: {
     borderStyle: "solid",
-    borderWidth: "2px",
+    borderWidth: 2,
     borderColor: "sidebarBackgroundColor",
     backgroundColor: "backgroundColor",
     color: "color",
@@ -63,7 +63,7 @@ const IconButton = styled("button", {
   },
 });
 
-const Error = styled("p", {
+const Error = styled("div", {
   base: {
     color: "error",
     display: "flex",

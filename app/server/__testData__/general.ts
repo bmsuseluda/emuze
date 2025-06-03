@@ -1,4 +1,4 @@
-import type { General } from "../../types/jsonFiles/settings/general";
+import type { General } from "../../types/jsonFiles/settings/general.js";
 
 export const general = {
   applicationsPath: "F:/games/Emulation/emulators",

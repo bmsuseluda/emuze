@@ -193,6 +193,7 @@ export const hotkeysMerged = `[Hotkeys]
 FastForward = Keyboard/Tab
 TogglePause = Keyboard/Space
 Screenshot = Keyboard/F10
+SelectPreviousSaveStateSlot =
 SelectNextSaveStateSlot = Keyboard/F4
 OpenPauseMenu = Keyboard/F2
 ToggleFullscreen = Keyboard/F11

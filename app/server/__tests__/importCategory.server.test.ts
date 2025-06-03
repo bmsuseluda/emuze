@@ -1,5 +1,8 @@
-import { readEntries, readEntriesWithMetaData } from "../importCategory.server";
-import { readFilenames } from "../readWriteData.server";
+import {
+  readEntries,
+  readEntriesWithMetaData,
+} from "../importCategory.server.js";
+import { readFilenames } from "../readWriteData.server.js";
 import {
   addIndex,
   blazingstar,
@@ -21,22 +24,22 @@ import {
   psallstarsDigital,
   psallstarsDisc,
   psallstarsManual,
-} from "../__testData__/category";
-import type { Entry, MetaData } from "../../types/jsonFiles/category";
-import { general } from "../__testData__/general";
-import { fetchMetaDataFromDB } from "../igdb.server";
-import { categories as categoriesDB } from "../categoriesDB.server";
-import { getExpiresOn } from "../getExpiresOn.server";
-import { mameNeoGeo } from "../applicationsDB.server/applications/mame";
-import { duckstation } from "../applicationsDB.server/applications/duckstation";
-import { dosboxstaging } from "../applicationsDB.server/applications/dosbox";
-import { rpcs3 } from "../applicationsDB.server/applications/rpcs3";
+} from "../__testData__/category.js";
+import type { Entry, MetaData } from "../../types/jsonFiles/category.js";
+import { general } from "../__testData__/general.js";
+import { fetchMetaDataFromDB } from "../igdb.server.js";
+import { categories as categoriesDB } from "../categoriesDB.server/index.js";
+import { getExpiresOn } from "../getExpiresOn.server.js";
+import { mameNeoGeo } from "../applicationsDB.server/applications/mame/index.js";
+import { duckstation } from "../applicationsDB.server/applications/duckstation/index.js";
+import { dosboxstaging } from "../applicationsDB.server/applications/dosbox/index.js";
+import { rpcs3 } from "../applicationsDB.server/applications/rpcs3/index.js";
 
-vi.mock("@bmsuseluda/node-sdl");
+vi.mock("@kmamal/sdl");
 vi.mock("../readWriteData.server");
 vi.mock("../applications.server");
 vi.mock("../openDialog.server.ts");
-vi.mock("fs");
+vi.mock("node:fs");
 vi.mock("../igdb.server.ts");
 vi.mock("../settings.server.ts", () => ({
   readGeneral: () => general,

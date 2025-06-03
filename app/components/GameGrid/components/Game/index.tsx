@@ -1,6 +1,6 @@
 import type { ElementRef, ReactNode, SyntheticEvent } from "react";
 import { forwardRef, useEffect, useRef, useState } from "react";
-import { styled } from "../../../../../styled-system/jsx";
+import { styled } from "../../../../../styled-system/jsx/index.js";
 
 interface Props {
   id: string;

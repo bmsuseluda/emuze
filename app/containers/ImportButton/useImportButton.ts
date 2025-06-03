@@ -1,8 +1,8 @@
 import { useCallback } from "react";
-import { useGamepadButtonPressEvent } from "../../hooks/useGamepadEvent";
-import type { ImportButtonId } from "./importButtonId";
-import { importButtonGamepadButtonIndex } from "./importButtonId";
-import { useKeyboardEvent } from "../../hooks/useKeyboardEvent";
+import { useGamepadButtonPressEvent } from "../../hooks/useGamepadEvent/index.js";
+import type { ImportButtonId } from "./importButtonId.js";
+import { importButtonGamepadButtonIndex } from "./importButtonId.js";
+import { useKeyboardEvent } from "../../hooks/useKeyboardEvent/index.js";
 
 export const useImportButton = (
   isInFocus: boolean,

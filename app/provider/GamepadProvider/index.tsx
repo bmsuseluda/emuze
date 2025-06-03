@@ -1,12 +1,12 @@
 import type { MutableRefObject, ReactNode } from "react";
 import { createContext } from "react";
-import { useGamepads } from "../../hooks/useGamepads";
-import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping";
+import { useGamepads } from "../../hooks/useGamepads/index.js";
+import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping.js";
 
 type GamepadContextState = {
   gamepadType?: GamepadType;
-  enableGamepads: () => void;
-  disableGamepads: () => void;
+  enableGamepads: (gameIsNotRunningAnymore?: boolean) => void;
+  disableGamepads: (gameIsRunning?: boolean) => void;
   isEnabled: MutableRefObject<boolean>;
 };
 

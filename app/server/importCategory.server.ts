@@ -1,21 +1,21 @@
-import type { Category as CategoryDB } from "./categoriesDB.server/types";
-import type { Category, Entry } from "../types/jsonFiles/category";
-import { getCategoryDataByName } from "./categoriesDB.server";
-import type { SystemId } from "./categoriesDB.server/systemId";
-import nodepath from "path";
+import type { Category as CategoryDB } from "./categoriesDB.server/types.js";
+import type { Category, Entry } from "../types/jsonFiles/category.js";
+import { getCategoryDataByName } from "./categoriesDB.server/index.js";
+import type { SystemId } from "./categoriesDB.server/systemId.js";
+import nodepath from "node:path";
 import type {
   ExcludeFilesFunction,
   FindEntryNameFunction,
-} from "./applicationsDB.server/types";
-import { convertToId } from "./convertToId.server";
-import type { ApplicationId } from "./applicationsDB.server/applicationId";
-import { applications } from "./applicationsDB.server";
-import { readGeneral } from "./settings.server";
-import { readFilenames } from "./readWriteData.server";
-import { fetchMetaDataFromDB } from "./igdb.server";
-import { readCategory, writeCategory } from "./categoryDataCache.server";
-import { sortCaseInsensitive } from "./sortCaseInsensitive.server";
-import { log } from "./debug.server";
+} from "./applicationsDB.server/types.js";
+import { convertToId } from "./convertToId.server.js";
+import type { ApplicationId } from "./applicationsDB.server/applicationId.js";
+import { applications } from "./applicationsDB.server/index.js";
+import { readGeneral } from "./settings.server.js";
+import { readFilenames } from "./readWriteData.server.js";
+import { fetchMetaDataFromDB } from "./igdb.server.js";
+import { readCategory, writeCategory } from "./categoryDataCache.server.js";
+import { sortCaseInsensitive } from "./sortCaseInsensitive.server.js";
+import { log } from "./debug.server.js";
 
 const sortEntries = (a: Entry, b: Entry) => sortCaseInsensitive(a.name, b.name);
 
@@ -105,7 +105,11 @@ const isSameBaseGame = (gameName: string, lastGameName?: string) =>
   removeAdditionalInfo(gameName).toLowerCase().trim() ===
     removeAdditionalInfo(lastGameName).toLowerCase().trim();
 
+// This is intentional to remove metaData
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const addAsGameVersion = (lastEntry: Entry, { metaData, ...entry }: Entry) => {
+  // This is intentional to remove metaData
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { metaData: metaDataFromLast, ...lastEntryWithoutMetaData } = lastEntry;
   if (lastEntry.subEntries?.[0]) {
     lastEntry.subEntries.push(entry);

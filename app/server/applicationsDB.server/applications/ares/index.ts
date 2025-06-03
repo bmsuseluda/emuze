@@ -1,33 +1,29 @@
-import type { Application, OptionParamFunction } from "../../types";
-import type { Sdl } from "@bmsuseluda/node-sdl";
-import sdl from "@bmsuseluda/node-sdl";
-import { log } from "../../../debug.server";
+import type { Application, OptionParamFunction } from "../../types.js";
+import type { Sdl } from "@kmamal/sdl";
+import { log } from "../../../debug.server.js";
 import type {
   GamepadGroupId,
   PhysicalGamepadButton,
   VirtualGamepad,
-} from "./types";
-import { PhysicalGamepad } from "./PhysicalGamepad";
-import { getVirtualGamepadReset } from "./VirtualGamepadReset";
-import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
-import type { ApplicationId } from "../../applicationId";
-import nodepath from "path";
-import { app } from "electron";
-import { getKeyboard, getKeyboardKey } from "./keyboardConfig";
-import type { SdlButtonMapping } from "../../gamepads";
-import { createSdlMappingObject } from "../../gamepads";
-import { commandLineOptions } from "../../../commandLine.server";
+} from "./types.js";
+import { PhysicalGamepad } from "./PhysicalGamepad.js";
+import { getVirtualGamepadReset } from "./VirtualGamepadReset.js";
+import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
+import type { ApplicationId } from "../../applicationId.js";
+import nodepath from "node:path";
+import { importElectron } from "../../../importElectron.server.js";
+import { getKeyboard, getKeyboardKey } from "./keyboardConfig.js";
+import type { SdlButtonMapping } from "../../gamepads.js";
+import { createSdlMappingObject } from "../../gamepads.js";
+import { commandLineOptions } from "../../../commandLine.server.js";
+import { getSdl } from "../../../importSdl.server.js";
 
 const applicationId: ApplicationId = "ares";
 const bundledPathLinux = nodepath.join(
   applicationId,
-  "ares-v143-x86_64.AppImage",
+  `${applicationId}.AppImage`,
 );
-const bundledPathWindows = nodepath.join(
-  applicationId,
-  "ares-v143",
-  "ares.exe",
-);
+const bundledPathWindows = nodepath.join(applicationId, "ares.exe");
 
 const gamepadGroupId: Record<GamepadGroupId, number> = {
   Axis: 0,
@@ -81,56 +77,30 @@ const getVirtualGamepadDpad = (
   physicalGamepad: PhysicalGamepad,
   systemHasAnalogStick: boolean,
 ) => {
+  log("debug", "mappingObject", mappingObject);
   if (mappingObject.dpup) {
-    if (mappingObject.dpup.startsWith("h")) {
-      //     hat
-      return [
-        ...getVirtualGamepadButton(
-          { gamepadIndex, buttonId: "Pad.Left" },
-          physicalGamepad.getDpadHatLeft(),
-          !systemHasAnalogStick ? physicalGamepad.getLeftStickLeft() : null,
-        ),
-        ...getVirtualGamepadButton(
-          { gamepadIndex, buttonId: "Pad.Right" },
-          physicalGamepad.getDpadHatRight(),
-          !systemHasAnalogStick ? physicalGamepad.getLeftStickRight() : null,
-        ),
-        ...getVirtualGamepadButton(
-          { gamepadIndex, buttonId: "Pad.Up" },
-          physicalGamepad.getDpadHatUp(),
-          !systemHasAnalogStick ? physicalGamepad.getLeftStickUp() : null,
-        ),
-        ...getVirtualGamepadButton(
-          { gamepadIndex, buttonId: "Pad.Down" },
-          physicalGamepad.getDpadHatDown(),
-          !systemHasAnalogStick ? physicalGamepad.getLeftStickDown() : null,
-        ),
-      ];
-    } else {
-      //     button
-      return [
-        ...getVirtualGamepadButton(
-          { gamepadIndex, buttonId: "Pad.Left" },
-          physicalGamepad.getDpadLeft(),
-          !systemHasAnalogStick ? physicalGamepad.getLeftStickLeft() : null,
-        ),
-        ...getVirtualGamepadButton(
-          { gamepadIndex, buttonId: "Pad.Right" },
-          physicalGamepad.getDpadRight(),
-          !systemHasAnalogStick ? physicalGamepad.getLeftStickRight() : null,
-        ),
-        ...getVirtualGamepadButton(
-          { gamepadIndex, buttonId: "Pad.Up" },
-          physicalGamepad.getDpadUp(),
-          !systemHasAnalogStick ? physicalGamepad.getLeftStickUp() : null,
-        ),
-        ...getVirtualGamepadButton(
-          { gamepadIndex, buttonId: "Pad.Down" },
-          physicalGamepad.getDpadDown(),
-          !systemHasAnalogStick ? physicalGamepad.getLeftStickDown() : null,
-        ),
-      ];
-    }
+    return [
+      ...getVirtualGamepadButton(
+        { gamepadIndex, buttonId: "Pad.Left" },
+        physicalGamepad.getDpadHatLeft(),
+        !systemHasAnalogStick ? physicalGamepad.getLeftStickLeft() : null,
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex, buttonId: "Pad.Right" },
+        physicalGamepad.getDpadHatRight(),
+        !systemHasAnalogStick ? physicalGamepad.getLeftStickRight() : null,
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex, buttonId: "Pad.Up" },
+        physicalGamepad.getDpadHatUp(),
+        !systemHasAnalogStick ? physicalGamepad.getLeftStickUp() : null,
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex, buttonId: "Pad.Down" },
+        physicalGamepad.getDpadHatDown(),
+        !systemHasAnalogStick ? physicalGamepad.getLeftStickDown() : null,
+      ),
+    ];
   } else {
     //   map left stick to dpad
     return [
@@ -154,17 +124,17 @@ const getVirtualGamepadDpad = (
   }
 };
 
-const getIndexForDeviceId = (index: number) => {
-  if (index > 0) {
-    return `${index}`;
-  }
-  return "";
-};
+const getIndexForDeviceId = (index: number) => `${index + 1}`;
 
 /**
  * Creates the ares specific device id based on the SDL device input.
  *
- * result e.g. 0x128de11ff
+ * result e.g. 0x1045e02e0 (8bitdo pro 2)
+ *
+ * 0x1054c05c4 (ds4)
+ * 0x2045e02e0 (8bitdo pro 2)
+ * 0x3054c0268 (ds3)
+ *
  * ? = 0x (is always the same)
  * deviceIndex = 1 (optional, only set if id > 0)
  * vendor = 28de (hex value, needs to be padded with "0" on start to 4 characters, to 3 characters if deviceIndex is set)
@@ -176,7 +146,7 @@ export const createDeviceId = ({
   id,
 }: Sdl.Controller.Device) => {
   const deviceIdIndex = getIndexForDeviceId(id);
-  return `0x${deviceIdIndex}${vendor.toString(16).padStart(deviceIdIndex.length > 0 ? 4 : 3, "0")}${product.toString(16).padStart(4, "0")}`;
+  return `0x${deviceIdIndex}${vendor?.toString(16).padStart(deviceIdIndex.length > 0 ? 4 : 3, "0")}${product?.toString(16).padStart(4, "0")}`;
 };
 
 export const getVirtualGamepad =
@@ -292,16 +262,19 @@ export const getVirtualGamepad =
     ];
   };
 
-export const getVirtualGamepads = (systemHasAnalogStick: boolean) => {
-  const gamepads = sdl.controller.devices;
+export const getVirtualGamepads = (
+  systemHasAnalogStick: boolean,
+  controller: Sdl.Controller.Module,
+) => {
+  const gamepads = controller.devices;
   const virtualGamepads =
     gamepads.length > 0
-      ? gamepads.flatMap(getVirtualGamepad(systemHasAnalogStick))
+      ? gamepads.map(getVirtualGamepad(systemHasAnalogStick))
       : getKeyboard();
-  log("debug", "gamepads", gamepads.length, getKeyboard());
+  log("debug", "gamepads", gamepads.length);
 
   return [
-    ...virtualGamepads,
+    ...virtualGamepads.flat(),
     ...resetUnusedVirtualGamepads(
       5,
       virtualGamepads.length,
@@ -310,12 +283,14 @@ export const getVirtualGamepads = (systemHasAnalogStick: boolean) => {
   ];
 };
 
-const getSharedAresOptionParams: OptionParamFunction = ({
+const getSharedAresOptionParams: OptionParamFunction = async ({
   settings: {
     appearance: { fullscreen },
   },
   hasAnalogStick,
 }) => {
+  const controller = (await getSdl()).controller;
+
   const hotkeyFullscreen = [
     "--setting",
     `Hotkey/ToggleFullscreen=${getKeyboardKey("F2")}`,
@@ -329,7 +304,7 @@ const getSharedAresOptionParams: OptionParamFunction = ({
     ...hotkeySave,
     ...hotkeyLoad,
     ...inputSDL,
-    ...getVirtualGamepads(hasAnalogStick),
+    ...getVirtualGamepads(hasAnalogStick, controller),
     "--no-file-prompt",
   ];
   if (fullscreen) {
@@ -371,8 +346,8 @@ export const aresGameBoyColor: Application = {
   ...ares,
   id: "aresGameBoyColor",
   fileExtensions: [".gb", ".gbc"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
+  createOptionParams: async (props) => [
+    ...(await getSharedAresOptionParams(props)),
     ...["--system", "Game Boy Color"],
   ],
 };
@@ -381,8 +356,8 @@ export const aresSuperNintendo: Application = {
   ...ares,
   id: "aresSuperNintendo",
   fileExtensions: [".sfc"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
+  createOptionParams: async (props) => [
+    ...(await getSharedAresOptionParams(props)),
     ...["--system", "Super Famicom"],
   ],
 };
@@ -391,8 +366,8 @@ export const aresMegaDrive: Application = {
   ...ares,
   id: "aresMegaDrive",
   fileExtensions: [".sfc", ".smc", ".68K", ".bin", ".md"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
+  createOptionParams: async (props) => [
+    ...(await getSharedAresOptionParams(props)),
     ...["--system", "Mega Drive"],
   ],
 };
@@ -401,8 +376,8 @@ export const aresSegaCd: Application = {
   ...ares,
   id: "aresSegaCd",
   fileExtensions: [".chd", ".cue"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
+  createOptionParams: async (props) => [
+    ...(await getSharedAresOptionParams(props)),
     ...["--system", "Mega CD"],
   ],
 };
@@ -411,16 +386,26 @@ export const aresSega32x: Application = {
   ...ares,
   id: "aresSega32x",
   fileExtensions: [".32x"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
+  createOptionParams: async (props) => [
+    ...(await getSharedAresOptionParams(props)),
     ...["--system", "Mega 32X"],
   ],
 };
 
-export const isRmgForN64 = () =>
-  app?.commandLine.hasSwitch(commandLineOptions.rmgN64.id) ||
-  process.env.EMUZE_RMG_N64 === "true";
+export const isRmgForN64 = () => {
+  const electron = importElectron();
 
-export const isMgbaForGameBoy = () =>
-  app?.commandLine.hasSwitch(commandLineOptions.mgba.id) ||
-  process.env.EMUZE_MGBA === "true";
+  return (
+    electron?.app?.commandLine.hasSwitch(commandLineOptions.rmgN64.id) ||
+    process.env.EMUZE_RMG_N64 === "true"
+  );
+};
+
+export const isMgbaForGameBoy = () => {
+  const electron = importElectron();
+
+  return (
+    electron?.app?.commandLine.hasSwitch(commandLineOptions.mgba.id) ||
+    process.env.EMUZE_MGBA === "true"
+  );
+};

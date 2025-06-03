@@ -1,11 +1,15 @@
-import { readFile } from "fs/promises";
+import { readFile } from "node:fs/promises";
 
-import type { Entry } from "../types/jsonFiles/category";
-import { getExpiresOn } from "./getExpiresOn.server";
-import type { SystemId } from "./categoriesDB.server/systemId";
-import nodepath from "path";
+import type { Entry } from "../types/jsonFiles/category.js";
+import { getExpiresOn } from "./getExpiresOn.server.js";
+import type { SystemId } from "./categoriesDB.server/systemId.js";
+import nodepath from "node:path";
 import { parseRoman } from "@ultirequiem/roman";
-import { log } from "./debug.server";
+import { log } from "./debug.server.js";
+
+import { fileURLToPath } from "node:url";
+
+const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 
 export type Game = [name: string, cover: string];
 
@@ -109,6 +113,7 @@ export const fetchMetaDataFromDB = async (
 ) => {
   const dbPath = nodepath.join(
     __dirname,
+    "..",
     "..",
     "fetchMetaData",
     "systems",

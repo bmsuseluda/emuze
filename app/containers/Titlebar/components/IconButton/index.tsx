@@ -6,7 +6,7 @@ import {
   VscChromeMinimize,
   VscChromeRestore,
 } from "react-icons/vsc";
-import { styled } from "../../../../../styled-system/jsx";
+import { styled } from "../../../../../styled-system/jsx/index.js";
 
 const iconVariant: Record<WindowChangeEvents, IconType> = {
   close: VscChromeClose,

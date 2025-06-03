@@ -2,15 +2,15 @@ import { GiCheckMark } from "react-icons/gi";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import type { ComponentPropsWithoutRef, ElementRef } from "react";
 import { forwardRef } from "react";
-import { styled } from "../../../styled-system/jsx";
+import { styled } from "../../../styled-system/jsx/index.js";
 
 const Wrapper = styled("div", {
   base: {
     backgroundColor: "backgroundColor",
-    borderWidth: "2px",
+    borderWidth: 2,
     borderRadius: 4,
     borderColor: "accent",
-    outline: "none",
+    outline: "[none]",
     width: 2,
     height: 2,
 

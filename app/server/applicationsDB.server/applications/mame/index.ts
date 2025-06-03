@@ -2,10 +2,10 @@ import type {
   Application,
   FindEntryNameFunction,
   OptionParamFunction,
-} from "../../types";
-import { findGameNameById } from "../../nameMappings/findGameNameById";
-import mameGames from "./nameMapping/mame.json";
-import nodepath from "path";
+} from "../../types.js";
+import { findGameNameById } from "../../nameMappings/findGameNameById.js";
+import mameGames from "./nameMapping/mame.json" with { type: "json" };
+import nodepath from "node:path";
 
 const findMameArcadeGameName: FindEntryNameFunction = ({ entry: { name } }) =>
   findGameNameById(name, mameGames, "mame");
@@ -14,18 +14,21 @@ const getSharedMameOptionParams: OptionParamFunction = ({
   categoryData: { name },
   settings: {
     general: { categoriesPath },
+    appearance: { fullscreen },
   },
 }) => {
   const entryDirname = nodepath.join(categoriesPath, name);
-  return [
-    "-w",
-    "-rompath",
-    entryDirname,
-    "-cfg_directory",
-    nodepath.join(entryDirname, "cfg"),
-    "-nvram_directory",
-    nodepath.join(entryDirname, "nvram"),
-  ];
+  const optionParams = [];
+
+  optionParams.push(
+    ...["-rompath", entryDirname],
+    ...["-cfg_directory", nodepath.join(entryDirname, "cfg")],
+    ...["-nvram_directory", nodepath.join(entryDirname, "nvram")],
+    "-skip_gameinfo",
+    fullscreen ? "-nowindow" : "-window",
+  );
+
+  return optionParams;
 };
 
 export const mame: Application = {
@@ -47,8 +50,8 @@ export const mameNeoGeo: Application = {
 export const mameNeoGeoCD: Application = {
   ...mame,
   id: "mameNeoGeoCD",
-  createOptionParams: (props) => [
-    ...getSharedMameOptionParams(props),
+  createOptionParams: async (props) => [
+    ...(await getSharedMameOptionParams(props)),
     "neocdz",
     "-cdrm",
   ],

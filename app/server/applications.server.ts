@@ -1,12 +1,12 @@
-import nodepath from "path";
+import nodepath from "node:path";
 
 import type {
   Application as ApplicationDB,
   InstalledApplicationWindows,
-} from "./applicationsDB.server/types";
-import { applications as applicationsDB } from "./applicationsDB.server";
-import { readFilenames } from "./readWriteData.server";
-import type { ApplicationId } from "./applicationsDB.server/applicationId";
+} from "./applicationsDB.server/types.js";
+import { applications as applicationsDB } from "./applicationsDB.server/index.js";
+import { readFilenames } from "./readWriteData.server.js";
+import type { ApplicationId } from "./applicationsDB.server/applicationId.js";
 
 export const paths = {
   applications: "data/applications.json",
@@ -34,7 +34,7 @@ export const findExecutable = (
   return null;
 };
 
-let applicationPathsWindows: Partial<Record<ApplicationId, string>> = {};
+const applicationPathsWindows: Partial<Record<ApplicationId, string>> = {};
 
 const getApplicationPathWindows = (
   applicationsPath: string,

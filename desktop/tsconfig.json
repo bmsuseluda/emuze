@@ -5,15 +5,15 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
-    "target": "ES2022",
+    "target": "ESNext",
     "strict": true,
     "baseUrl": ".",
     "skipLibCheck": true,
     "allowJs": false,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "../buildDesktop"
+    "outDir": "../buildDesktop",
   }
 }

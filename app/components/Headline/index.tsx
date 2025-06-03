@@ -1,12 +1,12 @@
-import { styled } from "../../../styled-system/jsx";
+import { styled } from "../../../styled-system/jsx/index.js";
 
 export const Headline = styled("h2", {
   base: {
     color: "color",
     margin: 0,
     paddingTop: "0.2em",
-    paddingLeft: "1",
-    paddingRight: "1",
+    paddingLeft: 0,
+    paddingRight: 0,
     paddingBottom: 0,
     fontWeight: 400,
     fontSize: "2rem",

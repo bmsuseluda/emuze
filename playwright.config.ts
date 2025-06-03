@@ -7,7 +7,7 @@ export default defineConfig({
   testDir: "./e2eTests/tests",
   testMatch: "*/*.pwtest.ts",
   snapshotPathTemplate:
-    "{testDir}/{testFileDir}/__screenshots__/{testFileName}/{arg}{ext}",
+    "{testDir}/{testFileDir}/__screenshots__/{arg}{ext}",
   /* Run tests in files in parallel */
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

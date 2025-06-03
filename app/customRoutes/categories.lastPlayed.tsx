@@ -1,33 +1,32 @@
 import type { ElementRef } from "react";
 import { useCallback, useRef } from "react";
-import type { ActionFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Form, Outlet, redirect, useLoaderData } from "@remix-run/react";
-import { startGame } from "../server/execute.server";
-import { GameGridDynamic } from "../components/GameGrid";
-import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
-import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
-import { useFocus } from "../hooks/useFocus";
-import type { FocusElement } from "../types/focusElement";
-import { readAppearance, readGeneral } from "../server/settings.server";
-import { SettingsLink } from "../containers/SettingsLink";
-import { Typography } from "../components/Typography";
-import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction";
-import { useGamepadConnected } from "../hooks/useGamepadConnected";
-import { log } from "../server/debug.server";
-import { readLastPlayed } from "../server/lastPlayed.server";
-import { SystemIcon } from "../components/SystemIcon";
-import fs from "fs";
-import { LaunchButton } from "../containers/LaunchButton";
-import { ImportButton } from "../containers/ImportButton";
-import type { ImportButtonId } from "../containers/ImportButton/importButtonId";
-import { importCategories } from "../server/categories.server";
+import type { ActionFunction } from "react-router";
+import { Form, Outlet, redirect, useLoaderData } from "react-router";
+import { startGame } from "../server/execute.server.js";
+import { GameGridDynamic } from "../components/GameGrid/index.js";
+import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
+import { IconChildrenWrapper } from "../components/IconChildrenWrapper/index.js";
+import { useFocus } from "../hooks/useFocus/index.js";
+import type { FocusElement } from "../types/focusElement.js";
+import { readAppearance, readGeneral } from "../server/settings.server.js";
+import { SettingsLink } from "../containers/SettingsLink/index.js";
+import { Typography } from "../components/Typography/index.js";
+import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction/index.js";
+import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
+import { log } from "../server/debug.server.js";
+import { readLastPlayed } from "../server/lastPlayed.server.js";
+import { SystemIcon } from "../components/SystemIcon/index.js";
+import fs from "node:fs";
+import { LaunchButton } from "../containers/LaunchButton/index.js";
+import { ImportButton } from "../containers/ImportButton/index.js";
+import type { ImportButtonId } from "../containers/ImportButton/importButtonId.js";
+import { importCategories } from "../server/categories.server.js";
 
 export const loader = () => {
   const lastPlayed = readLastPlayed();
   const { alwaysGameNames } = readAppearance();
 
-  return json({ lastPlayed, alwaysGameNames });
+  return { lastPlayed, alwaysGameNames };
 };
 
 const importButtonId: ImportButtonId = "importGames";
@@ -59,7 +58,7 @@ export const action: ActionFunction = async ({ request }) => {
           if (entryData.subEntries?.[0]) {
             return redirect(`lastPlayed/${entryData.id}`);
           } else {
-            startGame(entryData.systemId, entryData);
+            await startGame(entryData.systemId, entryData);
           }
         }
 
@@ -100,7 +99,7 @@ export default function LastPlayed() {
     useGamepadConnected();
 
   /* Set focus again after launching */
-  useEnableFocusAfterAction(enableGamepads, [actionIds.launch]);
+  useEnableFocusAfterAction(() => enableGamepads(true), [actionIds.launch]);
 
   const onBack = useCallback(() => {
     if (isInFocus) {
@@ -110,7 +109,7 @@ export default function LastPlayed() {
 
   const onExecute = useCallback(() => {
     if (launchButtonRef.current && !launchButtonRef.current.disabled) {
-      disableGamepads();
+      disableGamepads(true);
       launchButtonRef.current.click();
     }
   }, [disableGamepads]);

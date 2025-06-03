@@ -1,4 +1,1 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-yarn lint:tsc && yarn lint:tsc:electron && yarn lint:circularDependencies && yarn lint-staged
+yarn lint:tsc && yarn lint:circularDependencies && yarn lint-staged

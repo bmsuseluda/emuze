@@ -1,41 +1,49 @@
 import type { ElementRef, MouseEvent } from "react";
 import { useCallback } from "react";
-import type { ActionFunctionArgs } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
-import { Form, Outlet, useActionData, useLoaderData } from "@remix-run/react";
-import { FormBox } from "../components/FormBox";
-import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
-import { importCategories, readCategories } from "../server/categories.server";
-import { openFolderDialog } from "../server/openDialog.server";
-import { readGeneral, writeGeneral } from "../server/settings.server";
-import type { General } from "../types/jsonFiles/settings/general";
-import { isWindows } from "../server/operationsystem.server";
-import { IconChildrenWrapper } from "../components/IconChildrenWrapper";
-import { SettingsIcon } from "../components/SettingsIcon";
-import { useFocus } from "../hooks/useFocus";
-import type { FocusElement } from "../types/focusElement";
-import type { Result } from "../hooks/useGamepadsOnGrid";
-import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid";
-import { installMissingApplicationsOnLinux } from "../server/installApplications.server";
-import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction";
-import { useGamepadConnected } from "../hooks/useGamepadConnected";
-import fs from "fs";
-import { log } from "../server/debug.server";
-import type { Category } from "../types/jsonFiles/category";
-import { readLastPlayed } from "../server/lastPlayed.server";
-import type { SystemId } from "../server/categoriesDB.server/systemId";
-import { ImportButton } from "../containers/ImportButton";
+import type { ActionFunctionArgs } from "react-router";
+import {
+  Form,
+  Outlet,
+  redirect,
+  useActionData,
+  useLoaderData,
+} from "react-router";
+import { FormBox } from "../components/FormBox/index.js";
+import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
+import {
+  importCategories,
+  readCategories,
+} from "../server/categories.server.js";
+import { openFolderDialog } from "../server/openDialog.server.js";
+import { readGeneral, writeGeneral } from "../server/settings.server.js";
+import type { General } from "../types/jsonFiles/settings/general.js";
+import { isWindows } from "../server/operationsystem.server.js";
+import { IconChildrenWrapper } from "../components/IconChildrenWrapper/index.js";
+import { SettingsIcon } from "../components/SettingsIcon/index.js";
+import { useFocus } from "../hooks/useFocus/index.js";
+import type { FocusElement } from "../types/focusElement.js";
+import type { Result } from "../hooks/useGamepadsOnGrid/index.js";
+import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid/index.js";
+import { installMissingApplicationsOnLinux } from "../server/installApplications.server.js";
+import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction/index.js";
+import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
+import fs from "node:fs";
+import { log } from "../server/debug.server.js";
+import type { Category } from "../types/jsonFiles/category.js";
+import { readLastPlayed } from "../server/lastPlayed.server.js";
+import type { SystemId } from "../server/categoriesDB.server/systemId.js";
+import { ImportButton } from "../containers/ImportButton/index.js";
 import {
   InstallEmulatorsButton,
   installMissingApplicationsActionId,
-} from "../containers/InstallEmulatorsButton";
-import type { ImportButtonId } from "../containers/ImportButton/importButtonId";
+} from "../containers/InstallEmulatorsButton/index.js";
+import type { ImportButtonId } from "../containers/ImportButton/importButtonId.js";
 import {
   useInputBack,
   useInputConfirmation,
-} from "../hooks/useDirectionalInput";
-import { FileDialogInputField } from "../containers/FileDialogTextInput";
-import { Typography } from "../components/Typography";
+} from "../hooks/useDirectionalInput/index.js";
+import { FileDialogInputField } from "../containers/FileDialogTextInput/index.js";
+import { Typography } from "../components/Typography/index.js";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
@@ -50,7 +58,7 @@ export const loader = () => {
     validateCategoriesPath(errors, general.categoriesPath);
   }
 
-  return json({ ...general, isWindows: isWindows(), categories, errors });
+  return { ...general, isWindows: isWindows(), categories, errors };
 };
 
 const importButtonId: ImportButtonId = "importAll";
@@ -160,7 +168,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
       validateCategoriesPath(errors, categoriesPath);
 
       if (Object.keys(errors).length > 0) {
-        return json({ errors });
+        return { errors };
       }
 
       const fields: General = {
@@ -182,12 +190,12 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
           );
         }
         if (!categories || categories?.length === 0) {
-          return json({
+          return {
             errors: {
               categoriesPath:
                 "No supported Systems were found. The Roms need to be grouped by their System. E.g. 'Final Fantasy VII.chd' needs to be stored in a folder 'Playstation'.",
             },
-          });
+          };
         }
       } catch (error) {
         const categories = readCategories();
@@ -201,10 +209,10 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
         }
       }
 
-      return json({
+      return {
         applicationsPath,
         categoriesPath,
-      });
+      };
     }
 
     if (_actionId === actionIds.installMissingApplications) {
@@ -212,28 +220,28 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     }
 
     if (_actionId === actionIds.chooseApplicationsPath) {
-      const newApplicationsPath = openFolderDialog(
+      const newApplicationsPath = await openFolderDialog(
         "Select Emulators Folder",
         typeof applicationsPath === "string" ? applicationsPath : undefined,
       );
       if (newApplicationsPath) {
-        return json({
+        return {
           applicationsPath: newApplicationsPath,
           categoriesPath,
-        });
+        };
       }
     }
 
     if (_actionId === actionIds.chooseCategoriesPath) {
-      const newCategoriesPath = openFolderDialog(
+      const newCategoriesPath = await openFolderDialog(
         "Select Roms Folder",
         categoriesPath,
       );
       if (newCategoriesPath) {
-        return json({
+        return {
           applicationsPath,
           categoriesPath: newCategoriesPath,
-        });
+        };
       }
     }
   } catch (e) {
@@ -315,10 +323,10 @@ export default function General() {
   useInputBack(onBack);
 
   /* Set focus again after open file explorer */
-  useEnableFocusAfterAction(enableGamepads, [
-    actionIds.chooseApplicationsPath,
-    actionIds.chooseCategoriesPath,
-  ]);
+  useEnableFocusAfterAction(
+    () => enableGamepads(true),
+    [actionIds.chooseApplicationsPath, actionIds.chooseCategoriesPath],
+  );
 
   const onOpenFileDialog = useCallback(
     (event: MouseEvent<ElementRef<"button">>) => {
@@ -327,7 +335,7 @@ export default function General() {
         selectedEntry.current = event.currentTarget;
         updatePosition();
       }
-      disableGamepads();
+      disableGamepads(true);
     },
     [disableGamepads, isInFocus, selectedEntry, switchFocus, updatePosition],
   );

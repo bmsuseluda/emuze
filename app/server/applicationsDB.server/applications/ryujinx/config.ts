@@ -45,6 +45,12 @@ export interface InputConfig {
     weak_rumble: 1;
     enable_rumble: boolean;
   };
+  led?: {
+    enable_led: false;
+    turn_off_led: false;
+    use_rainbow: false;
+    led_color: 0;
+  };
   left_joycon: {
     button_minus: string;
     button_l: string;
@@ -76,7 +82,9 @@ export interface InputConfig {
 
 export interface Config {
   check_updates_on_start?: boolean;
+  update_checker_type?: "Off" | "PromptAtStartup";
   show_confirm_exit?: boolean;
+  skip_user_profiles?: boolean;
   hotkeys?: {
     show_ui?: string;
     toggle_mute?: string;
@@ -116,6 +124,12 @@ export const defaultInputConfig: InputConfig = {
     strong_rumble: 1,
     weak_rumble: 1,
     enable_rumble: true,
+  },
+  led: {
+    enable_led: false,
+    turn_off_led: false,
+    use_rainbow: false,
+    led_color: 0,
   },
   left_joycon: {
     button_minus: "Back",

@@ -21,7 +21,7 @@ export const FullscreenProvider = ({
         }
       });
     window.electronAPI &&
-      window.electronAPI.onFullscreen((fullscreen) => {
+      window.electronAPI.onFullscreen((fullscreen: boolean) => {
         setFullscreen(fullscreen);
       });
   }, []);

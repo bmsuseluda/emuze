@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from "electron";
+import electron from "electron";
 
 export type WindowChangeEvents =
   | "close"
@@ -9,16 +9,17 @@ export type WindowChangeEvents =
 
 export const electronAPI = {
   changeWindow: (eventName: WindowChangeEvents) =>
-    ipcRenderer.send("changeWindow", eventName),
+    electron?.ipcRenderer.send("changeWindow", eventName),
   onFullscreen: (callback: (fullscreen: boolean) => void) =>
-    ipcRenderer.on("fullscreen", (_event, fullscreen: boolean) =>
+    electron?.ipcRenderer.on("fullscreen", (_event, fullscreen: boolean) =>
       callback(fullscreen),
     ),
-  isFullscreen: () => ipcRenderer.invoke("isFullscreen"),
+  isFullscreen: () => electron?.ipcRenderer.invoke("isFullscreen"),
+  closeEmuze: () => electron?.ipcRenderer.invoke("closeEmuze"),
   onBlur: (callback: () => void) =>
-    ipcRenderer.on("blur", (_event) => callback()),
+    electron?.ipcRenderer.on("blur", () => callback()),
   onFocus: (callback: () => void) =>
-    ipcRenderer.on("focus", (_event) => callback()),
+    electron?.ipcRenderer.on("focus", () => callback()),
 };
 
-contextBridge.exposeInMainWorld("electronAPI", electronAPI);
+electron?.contextBridge.exposeInMainWorld("electronAPI", electronAPI);

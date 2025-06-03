@@ -1,12 +1,12 @@
-import { styled } from "../../../styled-system/jsx";
-import type { Entry } from "../../types/jsonFiles/category";
-import { useGamepadsOnGrid } from "../../hooks/useGamepadsOnGrid";
+import { styled } from "../../../styled-system/jsx/index.js";
+import type { Entry } from "../../types/jsonFiles/category.js";
+import { useGamepadsOnGrid } from "../../hooks/useGamepadsOnGrid/index.js";
 import type { ElementRef, MutableRefObject } from "react";
 import { useCallback } from "react";
 import {
   useInputBack,
   useInputConfirmation,
-} from "../../hooks/useDirectionalInput";
+} from "../../hooks/useDirectionalInput/index.js";
 
 const List = styled("ul", {
   base: {

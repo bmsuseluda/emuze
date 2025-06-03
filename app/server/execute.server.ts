@@ -1,29 +1,84 @@
-import { execFileSync } from "child_process";
-import { readAppearance, readGeneral } from "./settings.server";
-import type { Category, Entry } from "../types/jsonFiles/category";
-import { createAbsoluteEntryPath } from "../types/jsonFiles/category";
-import { isGeneralConfigured } from "../types/jsonFiles/settings/general";
-import { isWindows } from "./operationsystem.server";
-import { existsSync } from "fs";
-import { setErrorDialog } from "./errorDialog.server";
-import type { SystemId } from "./categoriesDB.server/systemId";
-import { categories } from "./categoriesDB.server";
-import { log } from "./debug.server";
-import { getInstalledApplicationForCategoryOnWindows } from "./applications.server";
-import { addToLastPlayedCached } from "./lastPlayed.server";
+import type { ExecFileException } from "node:child_process";
+import { execFile, execFileSync } from "node:child_process";
+import { existsSync } from "node:fs";
+import nodepath from "node:path";
+import type { Category, Entry } from "../types/jsonFiles/category.js";
+import { createAbsoluteEntryPath } from "../types/jsonFiles/category.js";
+import { isGeneralConfigured } from "../types/jsonFiles/settings/general.js";
+import type { Settings } from "../types/jsonFiles/settings/index.js";
+import { getInstalledApplicationForCategoryOnWindows } from "./applications.server.js";
 import {
   checkFlatpakIsInstalled,
   EmulatorNotInstalledError,
-} from "./applicationsDB.server/checkEmulatorIsInstalled";
+} from "./applicationsDB.server/checkEmulatorIsInstalled.js";
 import type {
   Application,
   EnvironmentVariableFunction,
-} from "./applicationsDB.server/types";
-import type { Settings } from "../types/jsonFiles/settings";
-import nodepath from "path";
-import { readCategory } from "./categoryDataCache.server";
+} from "./applicationsDB.server/types.js";
+import { categories } from "./categoriesDB.server/index.js";
+import type { SystemId } from "./categoriesDB.server/systemId.js";
+import { readCategory } from "./categoryDataCache.server.js";
+import {
+  registerCloseGameEvent,
+  unregisterCloseGameEvent,
+} from "./closeGame.server.js";
+import { log } from "./debug.server.js";
+import { setErrorDialog } from "./errorDialog.server.js";
+import { getSdl } from "./importSdl.server.js";
+import { addToLastPlayedCached } from "./lastPlayed.server.js";
+import { isWindows } from "./operationsystem.server.js";
+import { readAppearance, readGeneral } from "./settings.server.js";
 
-const executeBundledApplication = ({
+type ExecFileCallback = (
+  error: ExecFileException | null,
+  stdout: string,
+  stderr: string,
+) => void;
+
+const execFileCallback =
+  (reject: (reason: ExecFileException) => void): ExecFileCallback =>
+  (error, stdout, stderr) => {
+    if (error) {
+      log("error", "executeApplication", stderr, error);
+      if (
+        !isWindows() &&
+        error.signal !== "SIGKILL" &&
+        error.signal !== "SIGABRT"
+      ) {
+        reject(error);
+      }
+    }
+    if (stdout && stdout.length > 0) {
+      log("debug", stdout);
+    }
+  };
+
+const executeApplication = async (file: string, args: string[]) => {
+  const sdl = await getSdl();
+
+  return new Promise<void>((resolve, reject) => {
+    const childProcess = execFile(
+      file,
+      args,
+      {
+        encoding: "utf8",
+      },
+      execFileCallback(reject),
+    );
+
+    registerCloseGameEvent(childProcess, sdl);
+
+    childProcess.on("close", () => {
+      unregisterCloseGameEvent();
+
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    });
+  });
+};
+
+const executeBundledApplication = async ({
   absoluteEntryPath,
   optionParams,
   omitAbsoluteEntryPathAsLastParam,
@@ -35,23 +90,18 @@ const executeBundledApplication = ({
   bundledPath: string;
 }) => {
   const params = [];
-
   params.push(...optionParams);
 
   if (!omitAbsoluteEntryPathAsLastParam) {
     params.push(absoluteEntryPath);
   }
-
-  execFileSync(
+  return executeApplication(
     nodepath.join(process.env.APPDIR || "", "emulators", bundledPath),
     params,
-    {
-      encoding: "utf8",
-    },
   );
 };
 
-const executeApplicationOnLinux = ({
+const executeApplicationOnLinux = async ({
   applicationFlatpakOptionParams,
   applicationFlatpakId,
   absoluteEntryPath,
@@ -80,15 +130,13 @@ const executeApplicationOnLinux = ({
       params.push(absoluteEntryPath);
     }
 
-    execFileSync("flatpak", params, {
-      encoding: "utf8",
-    });
+    return executeApplication("flatpak", params);
   } else {
     throw new EmulatorNotInstalledError(applicationName);
   }
 };
 
-const executeApplicationOnWindows = ({
+const executeApplicationOnWindows = async ({
   applicationData,
   applicationsPath,
   absoluteEntryPath,
@@ -99,7 +147,7 @@ const executeApplicationOnWindows = ({
   applicationData: Application;
   applicationsPath: string;
   absoluteEntryPath: string;
-  optionParams: (applicationsPath?: string) => string[];
+  optionParams: (applicationsPath?: string) => string[] | Promise<string[]>;
   environmentVariables: (applicationsPath?: string) => void;
   omitAbsoluteEntryPathAsLastParam?: boolean;
 }) => {
@@ -111,15 +159,13 @@ const executeApplicationOnWindows = ({
   if (applicationPath) {
     environmentVariables(applicationPath);
     const params = [];
-    params.push(...optionParams(applicationPath));
+    params.push(...(await optionParams(applicationPath)));
 
     if (!omitAbsoluteEntryPathAsLastParam) {
       params.push(absoluteEntryPath);
     }
 
-    execFileSync(applicationPath, params, {
-      encoding: "utf8",
-    });
+    return executeApplication(applicationPath, params);
   } else {
     throw new EmulatorNotInstalledError(applicationData.name);
   }
@@ -149,7 +195,7 @@ const setEnvironmentVariables = ({
   });
 };
 
-export const startGame = (
+export const startGame = async (
   systemId: SystemId,
   entryData: Entry,
   parentEntryData?: Entry,
@@ -206,15 +252,15 @@ export const startGame = (
         if (isWindows() && generalData.applicationsPath) {
           if (applicationData.bundledPathWindows) {
             environmentVariables();
-            executeBundledApplication({
+            await executeBundledApplication({
               bundledPath: applicationData.bundledPathWindows,
               absoluteEntryPath,
-              optionParams: optionParams(),
+              optionParams: await optionParams(),
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
             });
           } else {
-            executeApplicationOnWindows({
+            await executeApplicationOnWindows({
               applicationData,
               applicationsPath: generalData.applicationsPath,
               absoluteEntryPath,
@@ -227,19 +273,19 @@ export const startGame = (
         } else {
           environmentVariables();
           if (applicationData.bundledPathLinux) {
-            executeBundledApplication({
+            await executeBundledApplication({
               bundledPath: applicationData.bundledPathLinux,
               absoluteEntryPath,
-              optionParams: optionParams(),
+              optionParams: await optionParams(),
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
             });
           } else {
-            executeApplicationOnLinux({
+            await executeApplicationOnLinux({
               applicationFlatpakOptionParams: flatpakOptionParams,
               applicationFlatpakId: flatpakId,
               absoluteEntryPath,
-              optionParams: optionParams(),
+              optionParams: await optionParams(),
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
               categoriesPath: generalData.categoriesPath,

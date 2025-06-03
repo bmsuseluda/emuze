@@ -1,6 +1,6 @@
 import { VscChromeClose } from "react-icons/vsc";
 import type { ReactNode } from "react";
-import { styled } from "../../../styled-system/jsx";
+import { styled } from "../../../styled-system/jsx/index.js";
 
 const DialogOverlay = styled("div", {
   base: {
@@ -24,7 +24,6 @@ const DialogContent = styled("div", {
     borderWidth: "0.2rem",
 
     width: "55rem",
-    maxWidth: "90vw",
     transition: "max-width 0.5s ease-in-out",
     height: "60vh",
     maxHeight: "90vh",
@@ -34,9 +33,16 @@ const DialogContent = styled("div", {
   },
 
   variants: {
-    smaller: {
-      true: {
-        maxWidth: "60vw",
+    size: {
+      small: {
+        maxWidth: "min(700px, 90vw)",
+      },
+      medium: {
+        maxWidth: "min(900px, 90vw)",
+      },
+      dynamic: {
+        width: "fit-content",
+        height: "fit-content",
       },
     },
     variant: {
@@ -73,7 +79,8 @@ interface Props {
   open: boolean;
   onClose: (event?: DialogCloseEvent) => void;
   closable?: boolean;
-  smaller?: boolean;
+  showCloseIcon?: boolean;
+  size?: "small" | "medium" | "dynamic";
   variant?: "default" | "accent";
 }
 
@@ -82,7 +89,8 @@ export const Dialog = ({
   open,
   onClose,
   closable = true,
-  smaller = false,
+  showCloseIcon = true,
+  size = "medium",
   variant = "default",
 }: Props) => {
   const handleClose = (event?: DialogCloseEvent) => {
@@ -101,11 +109,11 @@ export const Dialog = ({
           onClick={(event) => {
             event.stopPropagation();
           }}
-          smaller={smaller}
+          size={size}
           variant={variant}
         >
           {children}
-          {closable && (
+          {closable && showCloseIcon && (
             <IconButton aria-label="Close Modal" onClick={handleClose}>
               <VscChromeClose />
             </IconButton>

@@ -1,4 +1,4 @@
-import type { InstalledApplication } from "../applicationsDB.server/types";
+import type { InstalledApplication } from "../applicationsDB.server/types.js";
 
 export const applicationsPath = "F:/games/Emulation/emulators";
 

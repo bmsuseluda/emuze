@@ -1,12 +1,12 @@
-import { expect, test } from "../../pages/fixture";
-import nodepath from "path";
-import fs from "fs-extra";
-import { configFolderPath, e2ePath, testName } from "./config";
+import { expect, test } from "../../pages/fixture.js";
+import nodepath from "node:path";
+import fs from "fs-extra/esm";
+import { configFolderPath, e2ePath, testName } from "./config.js";
 
 test.describe.configure({ mode: "serial" });
 
 test.beforeAll(async () => {
-  fs.rmSync(configFolderPath, { recursive: true, force: true });
+  fs.removeSync(configFolderPath);
   fs.copySync(nodepath.join(e2ePath, "config"), configFolderPath);
 });
 
@@ -108,6 +108,16 @@ test("game versions", async ({ libraryPage }) => {
 
   await libraryPage.gameVersionsPage.testGameVersionsPage();
   await libraryPage.expectIsSystem("Playstation", "Gex");
+});
+
+test("Should open the about page", async ({ page, settingsPage }) => {
+  await settingsPage.openSettingsViaClick(true);
+  await settingsPage.goToSubPageViaClick(settingsPage.aboutPage.name);
+  await expect(settingsPage.aboutPage.github).toBeVisible();
+  await settingsPage.press("ArrowRight");
+  await settingsPage.press("ArrowDown");
+  await expect(settingsPage.aboutPage.changelog).toBeFocused();
+  await expect(page).toHaveScreenshot();
 });
 
 // TODO: add offline test

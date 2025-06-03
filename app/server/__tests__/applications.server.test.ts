@@ -1,12 +1,12 @@
 import {
   findExecutable,
   getInstalledApplicationForCategoryOnWindows,
-} from "../applications.server";
-import { applicationsPath, pcsx2 } from "../__testData__/applications";
-import * as categoriesFromDB from "../categoriesDB.server";
-import { readFilenames } from "../readWriteData.server";
+} from "../applications.server.js";
+import { applicationsPath, pcsx2 } from "../__testData__/applications.js";
+import * as categoriesFromDB from "../categoriesDB.server/index.js";
+import { readFilenames } from "../readWriteData.server.js";
 
-vi.mock("@bmsuseluda/node-sdl");
+vi.mock("@kmamal/sdl");
 vi.mock("../readWriteData.server");
 vi.mock("../applicationsDB.server/checkEmulatorIsInstalled");
 vi.mock("../categories.server");

@@ -1,10 +1,10 @@
-import { ListActionBarLayout } from ".";
-import { Button } from "../../Button";
-import { Label } from "../../Label";
-import { TextInput } from "../../TextInput";
+import { ListActionBarLayout } from "./index.js";
+import { Button } from "../../Button/index.js";
+import { Label } from "../../Label/index.js";
+import { TextInput } from "../../TextInput/index.js";
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { styled } from "../../../../styled-system/jsx";
+import { styled } from "../../../../styled-system/jsx/index.js";
 
 const meta = {
   component: ListActionBarLayout,

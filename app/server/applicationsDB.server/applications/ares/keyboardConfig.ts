@@ -1,5 +1,5 @@
-import type { AresButtonId } from "./types";
-import { isWindows } from "../../../operationsystem.server";
+import type { AresButtonId } from "./types.js";
+import { isWindows } from "../../../operationsystem.server.js";
 
 type Scancode = keyof typeof scancodes;
 export const scancodes = {
@@ -17,7 +17,8 @@ export const scancodes = {
   U: 55,
   I: 43,
   L: 46,
-  "0": 49,
+  O: 49,
+  "0": 16,
   "8": 24,
   "9": 25,
   X: 58,
@@ -67,7 +68,7 @@ export const getKeyboard = () => [
   ...getVirtualKeyboardKey("X..West", "U"),
   ...getVirtualKeyboardKey("Y..North", "I"),
   ...getVirtualKeyboardKey("L-Bumper", "L"),
-  ...getVirtualKeyboardKey("R-Bumper", "0"),
+  ...getVirtualKeyboardKey("R-Bumper", "O"),
   ...getVirtualKeyboardKey("L-Trigger", "8"),
   ...getVirtualKeyboardKey("R-Trigger", "9"),
   ...getVirtualKeyboardKey("L-Stick..Click", "X"),

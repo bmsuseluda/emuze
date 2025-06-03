@@ -2,10 +2,10 @@ import type {
   Application,
   ExcludeFilesFunction,
   FindEntryNameFunction,
-} from "../../types";
-import nodepath from "path";
-import ps3Games from "./nameMapping/ps3.json";
-import { log } from "../../../debug.server";
+} from "../../types.js";
+import nodepath from "node:path";
+import ps3Games from "./nameMapping/ps3.json" with { type: "json" };
+import { log } from "../../../debug.server.js";
 
 /**
  * Find the 9digit serial number from path

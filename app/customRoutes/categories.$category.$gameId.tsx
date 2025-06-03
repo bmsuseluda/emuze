@@ -1,33 +1,31 @@
-import type { ActionFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import type { ActionFunction } from "react-router";
 import {
   Form,
   Outlet,
   redirect,
   useLoaderData,
-  useLocation,
   useNavigate,
-} from "@remix-run/react";
-import { readGeneral } from "../server/settings.server";
-import { useFocus } from "../hooks/useFocus";
-import type { FocusElement } from "../types/focusElement";
+} from "react-router";
+import { readGeneral } from "../server/settings.server.js";
+import { useFocus } from "../hooks/useFocus/index.js";
+import type { FocusElement } from "../types/focusElement.js";
 import type { ElementRef } from "react";
 import { useCallback, useEffect, useRef } from "react";
-import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout";
-import { LaunchButton, launchId } from "../containers/LaunchButton";
-import { useGamepadConnected } from "../hooks/useGamepadConnected";
-import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction";
-import type { DataFunctionArgs } from "../context";
-import { log } from "../server/debug.server";
-import type { SystemId } from "../server/categoriesDB.server/systemId";
-import { startGame } from "../server/execute.server";
-import { SidebarMainLayout } from "app/components/layouts/SidebarMainLayout";
-import { readLastPlayed } from "../server/lastPlayed.server";
-import type { Entry } from "../types/jsonFiles/category";
-import { useInputSettings } from "../hooks/useDirectionalInput";
-import { GameVersions } from "../components/GameVersions";
-import { GameDialog } from "../components/GameDialog";
-import { readCategory } from "../server/categoryDataCache.server";
+import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
+import { LaunchButton, launchId } from "../containers/LaunchButton/index.js";
+import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
+import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction/index.js";
+import type { DataFunctionArgs } from "../context.js";
+import { log } from "../server/debug.server.js";
+import type { SystemId } from "../server/categoriesDB.server/systemId.js";
+import { startGame } from "../server/execute.server.js";
+import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout/index.js";
+import { readLastPlayed } from "../server/lastPlayed.server.js";
+import type { Entry } from "../types/jsonFiles/category.js";
+import { useInputSettings } from "../hooks/useDirectionalInput/index.js";
+import { GameVersions } from "../components/GameVersions/index.js";
+import { GameDialog } from "../components/GameDialog/index.js";
+import { readCategory } from "../server/categoryDataCache.server.js";
 
 const getGameData = (category: SystemId, gameId: string) => {
   let systemId: SystemId | undefined;
@@ -70,7 +68,7 @@ export const loader = (props: DataFunctionArgs) => {
     return redirect("..");
   }
 
-  return json({ systemId, gameData });
+  return { systemId, gameData };
 };
 
 const actionIds = {
@@ -105,7 +103,7 @@ export const action: ActionFunction = async ({ request, params }) => {
           (value) => value.id === game,
         );
 
-        subEntryData && startGame(systemId, subEntryData, gameData);
+        subEntryData && (await startGame(systemId, subEntryData, gameData));
         return { ok: true };
       }
     }
@@ -145,8 +143,6 @@ const focus: FocusElement = "gameDialog";
 export default function Index() {
   const { gameData } = useLoaderData<typeof loader>();
 
-  const { pathname } = useLocation();
-
   const launchButtonRef = useRef<ElementRef<"button">>(null);
 
   const { isInFocus, enableFocus, switchFocusBack } =
@@ -156,7 +152,7 @@ export default function Index() {
     useGamepadConnected();
 
   /* Set focus again after launching */
-  useEnableFocusAfterAction(enableGamepads, [actionIds.launch]);
+  useEnableFocusAfterAction(() => enableGamepads(true), [actionIds.launch]);
 
   useEffect(() => {
     if (!isInFocus) {
@@ -171,13 +167,12 @@ export default function Index() {
 
   const handleClose = useCallback(() => {
     switchFocusBack();
-    // TODO: replace with robust solution
-    navigate(pathname.split(gameData.id)[0]);
-  }, [gameData, pathname, navigate, switchFocusBack]);
+    navigate(-1);
+  }, [navigate, switchFocusBack]);
 
   const onExecute = useCallback(() => {
     if (launchButtonRef.current && !launchButtonRef.current.disabled) {
-      disableGamepads();
+      disableGamepads(true);
       launchButtonRef.current.click();
     }
   }, [disableGamepads]);

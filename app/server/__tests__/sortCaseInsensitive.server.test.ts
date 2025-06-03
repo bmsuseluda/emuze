@@ -1,4 +1,4 @@
-import { sortCaseInsensitive } from "../sortCaseInsensitive.server";
+import { sortCaseInsensitive } from "../sortCaseInsensitive.server.js";
 
 describe("sortCaseInsensitive", () => {
   it("Should return shorter string first if it is the same as next", () => {

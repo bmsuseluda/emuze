@@ -1,6 +1,6 @@
-import { GameVersions } from ".";
+import { GameVersions } from "./index.js";
 import type { Meta, StoryObj } from "@storybook/react";
-import { gameVersions } from "./testData";
+import { gameVersions } from "./testData.js";
 
 const meta = {
   component: GameVersions,

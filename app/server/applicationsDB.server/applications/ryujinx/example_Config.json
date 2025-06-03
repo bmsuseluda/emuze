@@ -138,6 +138,12 @@
         "weak_rumble": 1,
         "enable_rumble": false
       },
+      "led": {
+        "enable_led": false,
+        "turn_off_led": false,
+        "use_rainbow": false,
+        "led_color": 0
+      },
       "left_joycon": {
         "button_minus": "Back",
         "button_l": "LeftShoulder",

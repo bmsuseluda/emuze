@@ -1,12 +1,12 @@
 import type { MutableRefObject, RefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
-import { useRefsGrid } from "../useRefsGrid";
+import { useRefsGrid } from "../useRefsGrid/index.js";
 import {
   useDirectionalInputDown,
   useDirectionalInputLeft,
   useDirectionalInputRight,
   useDirectionalInputUp,
-} from "../useDirectionalInput";
+} from "../useDirectionalInput/index.js";
 
 export interface Result<T> {
   selectedEntry: MutableRefObject<T | undefined>;

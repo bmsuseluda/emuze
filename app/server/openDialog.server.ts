@@ -1,8 +1,9 @@
-import { dialog } from "electron";
+import { importElectron } from "./importElectron.server.js";
 
-export const openFolderDialog = (title: string, defaultPath?: string) => {
-  if (dialog) {
-    const directory = dialog.showOpenDialogSync({
+export const openFolderDialog = async (title: string, defaultPath?: string) => {
+  const electron = importElectron();
+  if (electron?.dialog) {
+    const directory = electron.dialog.showOpenDialogSync({
       title,
       defaultPath,
       properties: ["openDirectory"],

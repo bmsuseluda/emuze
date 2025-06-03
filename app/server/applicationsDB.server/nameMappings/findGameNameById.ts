@@ -1,4 +1,4 @@
-import { log } from "../../debug.server";
+import { log } from "../../debug.server.js";
 
 export const findGameNameById = (
   id: string,

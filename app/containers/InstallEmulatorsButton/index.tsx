@@ -1,14 +1,14 @@
-import { Button } from "../../components/Button";
-import { useNavigation } from "@remix-run/react";
+import { Button } from "../../components/Button/index.js";
+import { useNavigation } from "react-router";
 import {
   installEmulatorsButtonGamepadButtonIndex,
   installEmulatorsId,
   useInstallEmulatorsButton,
-} from "./useInstallEmulatorsButton";
-import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping";
-import { GamepadButtonIcon } from "../../components/GamepadButtonIcon";
+} from "./useInstallEmulatorsButton.js";
+import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping.js";
+import { GamepadButtonIcon } from "../../components/GamepadButtonIcon/index.js";
 import { IoMdDownload } from "react-icons/io";
-import { LogoPulseModal } from "../../components/LogoPulseModal";
+import { LogoPulseModal } from "../../components/LogoPulseModal/index.js";
 
 export const installMissingApplicationsActionId = "installMissingApplications";
 

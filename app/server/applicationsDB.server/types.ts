@@ -1,9 +1,9 @@
 import type { Required } from "utility-types";
 
-import type { Category, Entry } from "../../types/jsonFiles/category";
-import type { GeneralConfigured } from "../../types/jsonFiles/settings/general";
-import type { Appearance } from "../../types/jsonFiles/settings/appearance";
-import type { ApplicationId } from "./applicationId";
+import type { Category, Entry } from "../../types/jsonFiles/category.js";
+import type { GeneralConfigured } from "../../types/jsonFiles/settings/general.js";
+import type { Appearance } from "../../types/jsonFiles/settings/appearance.js";
+import type { ApplicationId } from "./applicationId.js";
 
 export interface Settings {
   general: GeneralConfigured;
@@ -24,7 +24,7 @@ export type OptionParamFunction = ({
   settings: Settings;
   absoluteEntryPath: string;
   hasAnalogStick: boolean;
-}) => string[];
+}) => string[] | Promise<string[]>;
 
 export type EnvironmentVariableFunction = ({
   categoryData,

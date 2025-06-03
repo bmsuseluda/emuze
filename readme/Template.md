@@ -107,8 +107,7 @@ return scripts.getLinuxDownloadLink('2) ')
 3) Mark the AppImage as executable and start emuze
 4) Choose the [folder where your Roms are located](#roms-folder)
 5) Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze`
-6) Add `--no-sandbox` as a launch option to the added Shortcut in Steam via `Properties` -> `Shortcut` -> `LAUNCH OPTIONS`.
-7) Switch to Game Mode
+6) Switch to Game Mode
 
 #### Steam Input Profile
 
@@ -158,14 +157,6 @@ The Search is case-insensitive.
 
 > [!TIP]
 > [igdb](https://www.igdb.com) is a community driven open source database for game information. If there is something missing or wrong, please help and correct it there.
-
-### Games with a Subtitle
-
-If a game has a subtitle, the subtitle needs to be in the file name.<br>
-For the title `Max Payne 2` emuze wouldn't find metadata. Correct would be `Max Payne 2: The Fall of Max Payne.chd`.
-
-On Windows special characters like `:` can't be part of a file name, therefore you have to write it the following:
-`Max Payne 2 - The Fall of Max Payne.chd`
 
 ### Games with multiple Discs
 

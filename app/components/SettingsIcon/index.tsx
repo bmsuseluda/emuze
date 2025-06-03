@@ -1,11 +1,13 @@
 import type { IconType } from "react-icons";
 import { FaPaintBrush } from "react-icons/fa";
 import { GiSettingsKnobs } from "react-icons/gi";
-import type { SettingsID } from "../../server/settings.server";
+import { IoHomeSharp } from "react-icons/io5";
+import type { SettingsID } from "../../server/settings.server.js";
 
 export const icons = {
   general: GiSettingsKnobs,
   appearance: FaPaintBrush,
+  about: IoHomeSharp,
 } satisfies Record<SettingsID, IconType>;
 
 interface Props {

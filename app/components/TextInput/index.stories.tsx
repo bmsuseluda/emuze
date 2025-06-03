@@ -1,4 +1,4 @@
-import { TextInput } from ".";
+import { TextInput } from "./index.js";
 
 import type { Meta, StoryObj } from "@storybook/react";
 import { FaFolderOpen } from "react-icons/fa";

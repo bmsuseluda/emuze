@@ -1,5 +1,5 @@
-import nodepath from "path";
-import type { SystemId } from "../../server/categoriesDB.server/systemId";
+import nodepath from "node:path";
+import type { SystemId } from "../../server/categoriesDB.server/systemId.js";
 
 export interface MetaData {
   imageUrl?: string;

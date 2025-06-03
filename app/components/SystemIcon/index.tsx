@@ -14,13 +14,13 @@ import { MdVideogameAsset } from "react-icons/md";
 import { TiSpiral } from "react-icons/ti";
 import { GrDos } from "react-icons/gr";
 import { LuComputer } from "react-icons/lu";
-import SvgGameboy from "../Icons/Gameboy";
-import SvgNintendo64 from "../Icons/Nintendo64";
-import SvgGba from "../Icons/Gba";
-import SvgPsp from "../Icons/Psp";
-import Gamegear from "../Icons/Gamegear";
-import Neogeopocket from "../Icons/Neogeopocket";
-import type { SystemId } from "../../server/categoriesDB.server/systemId";
+import SvgGameboy from "../Icons/Gameboy.js";
+import SvgNintendo64 from "../Icons/Nintendo64.js";
+import SvgGba from "../Icons/Gba.js";
+import SvgPsp from "../Icons/Psp.js";
+import Gamegear from "../Icons/Gamegear.js";
+import Neogeopocket from "../Icons/Neogeopocket.js";
+import type { SystemId } from "../../server/categoriesDB.server/systemId.js";
 import { AiFillClockCircle } from "react-icons/ai";
 
 export const icons: Record<SystemId, IconType> = {

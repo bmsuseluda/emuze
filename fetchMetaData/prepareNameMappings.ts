@@ -1,8 +1,12 @@
-import type { SystemId } from "../app/server/categoriesDB.server/systemId";
-import { readFile } from "fs/promises";
-import nodepath from "path";
-import { writeFile } from "../app/server/readWriteData.server";
-import { normalizeString } from "../app/server/igdb.server";
+import type { SystemId } from "../app/server/categoriesDB.server/systemId.js";
+import { readFile } from "node:fs/promises";
+import nodepath from "node:path";
+import { writeFile } from "../app/server/readWriteData.server.js";
+import { normalizeString } from "../app/server/igdb.server.js";
+
+import { fileURLToPath } from "node:url";
+
+const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 
 const nameMappings: [SystemId, string][] = [
   [

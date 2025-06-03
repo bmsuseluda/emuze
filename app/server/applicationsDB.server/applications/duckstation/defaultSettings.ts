@@ -1,12 +1,4 @@
-export const defaultSettings = `[ControllerPorts]
-PointerXScale = 8
-PointerYScale = 8
-PointerXInvert = false
-PointerYInvert = false
-MultitapMode = Port1Only
-
-
-[Main]
+export const defaultSettings = `[Main]
 SettingsVersion = 3
 EmulationSpeed = 1
 FastForwardSpeed = 0
@@ -20,8 +12,8 @@ PauseOnFocusLoss = false
 PauseOnControllerDisconnection = false
 SaveStateOnExit = true
 CreateSaveStateBackups = true
-CompressSaveStates = true
-ConfirmPowerOff = false
+SaveStateCompression = ZstDefault
+ConfirmPowerOff = true
 EnableDiscordPresence = false
 LoadDevicesFromSaveStates = false
 DisableAllEnhancements = false
@@ -65,6 +57,8 @@ DisableDualSourceBlend = false
 DisableFramebufferFetch = false
 DisableTextureBuffers = false
 DisableTextureCopyToSelf = false
+DisableMemoryImport = false
+DisableRasterOrderViews = false
 PerSampleShading = false
 UseThread = true
 ThreadedPresentation = false
@@ -72,7 +66,10 @@ UseSoftwareRendererForReadbacks = false
 TrueColor = true
 Debanding = false
 ScaledDithering = true
+ForceRoundTextureCoordinates = false
+AccurateBlending = false
 TextureFilter = Nearest
+SpriteTextureFilter = 
 LineDetectMode = Disabled
 DownsampleMode = Disabled
 DownsampleScale = 1
@@ -90,6 +87,7 @@ PGXPCPU = false
 PGXPPreserveProjFP = false
 PGXPTolerance = -1
 PGXPDepthBuffer = false
+PGXPDisableOn2DPolygons = false
 PGXPDepthClearThreshold = 300
 
 
@@ -103,6 +101,7 @@ LineEndOffset = 0
 Force4_3For24Bit = false
 AspectRatio = Auto (Game Native)
 Alignment = Center
+Rotation = Normal
 Scaling = BilinearSmooth
 OptimalFramePacing = false
 PreFrameSleep = false
@@ -173,6 +172,7 @@ OutputMuted = false
 
 [Hacks]
 UseOldMDECRoutines = false
+ExportSharedMemory = false
 DMAMaxSliceTicks = 1000
 DMAHaltTicks = 100
 GPUFIFOSize = 16
@@ -196,6 +196,14 @@ Card1Type = PerGameTitle
 Card2Type = None
 UsePlaylistTitle = true
 Directory = memcards
+
+
+[ControllerPorts]
+MultitapMode = Disabled
+PointerXScale = 8
+PointerYScale = 8
+PointerXInvert = false
+PointerYInvert = false
 
 
 [Cheevos]
@@ -245,11 +253,29 @@ DumpVRAMWriteWidthThreshold = 128
 DumpVRAMWriteHeightThreshold = 128
 
 
+[MediaCapture]
+Backend = FFmpeg
+Container = mp4
+VideoCapture = true
+VideoWidth = 640
+VideoHeight = 480
+VideoAutoSize = false
+VideoBitrate = 6000
+VideoCodec = 
+VideoCodecUseArgs = false
+AudioCodecArgs = 
+AudioCapture = true
+AudioBitrate = 128
+AudioCodec = 
+AudioCodecUseArgs = false
+
+
 [Folders]
 Cache = cache
 Cheats = cheats
 Covers = covers
 Dumps = dump
+GameIcons = gameicons
 GameSettings = gamesettings
 InputProfiles = inputprofiles
 SaveStates = savestates
@@ -257,17 +283,43 @@ Screenshots = screenshots
 Shaders = shaders
 Textures = textures
 UserResources = resources
+Videos = videos
 
 
 [InputSources]
+SDL = true
+SDLControllerEnhancedMode = false
+SDLPS5PlayerLED = false
 XInput = false
 RawInput = false
-SDL = true
-SDLControllerEnhancedMode = true
 
 
 [Pad1]
-Type = None
+Type = AnalogController
+Up = Keyboard/Up
+Right = Keyboard/Right
+Down = Keyboard/Down
+Left = Keyboard/Left
+Triangle = Keyboard/I
+Circle = Keyboard/L
+Cross = Keyboard/K
+Square = Keyboard/J
+Select = Keyboard/Backspace
+Start = Keyboard/Return
+L1 = Keyboard/Q
+R1 = Keyboard/E
+L2 = Keyboard/1
+R2 = Keyboard/3
+L3 = Keyboard/2
+R3 = Keyboard/4
+LLeft = Keyboard/A
+LRight = Keyboard/D
+LDown = Keyboard/S
+LUp = Keyboard/W
+RLeft = Keyboard/F
+RRight = Keyboard/H
+RDown = Keyboard/G
+RUp = Keyboard/T
 
 
 [Pad2]
@@ -302,13 +354,13 @@ Type = None
 FastForward = Keyboard/Tab
 TogglePause = Keyboard/Space
 Screenshot = Keyboard/F10
-SelectNextSaveStateSlot = Keyboard/F4
-OpenPauseMenu = Keyboard/F2
 ToggleFullscreen = Keyboard/F11
-SaveSelectedSaveState = Keyboard/F1
-LoadSelectedSaveState = Keyboard/F3
+OpenPauseMenu = Keyboard/Escape
+LoadSelectedSaveState = Keyboard/F1
+SaveSelectedSaveState = Keyboard/F2
+SelectPreviousSaveStateSlot = Keyboard/F3
+SelectNextSaveStateSlot = Keyboard/F4
 
 
-[UI]
-MainWindowGeometry = AdnQywADAAAAAABkAAAAZAAAA4MAAAMWAAAAZAAAAIgAAAODAAADFgAAAAAAAAAADXAAAABkAAAAiAAAA4MAAAMW
-MainWindowState = AAAA/wAAAAD9AAAAAAAAAyAAAAJcAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAEAAAAOAHQAbwBvAGwAQgBhAHIAAAAAAP////8AAAAAAAAAAA==`;
+[AutoUpdater]
+CheckAtStartup = false`;

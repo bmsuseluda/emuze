@@ -1,8 +1,8 @@
-import type { General } from "../types/jsonFiles/settings/general";
-import type { Appearance } from "../types/jsonFiles/settings/appearance";
-import { FileDataCache } from "./FileDataCache.server";
+import type { General } from "../types/jsonFiles/settings/general.js";
+import type { Appearance } from "../types/jsonFiles/settings/appearance.js";
+import { FileDataCache } from "./FileDataCache.server.js";
 
-export type SettingsID = "general" | "appearance";
+export type SettingsID = "general" | "appearance" | "about";
 
 export interface Category {
   id: SettingsID;
@@ -21,11 +21,17 @@ export const categories = [
     name: "Appearance",
     to: "appearance",
   },
+  {
+    id: "about",
+    name: "About",
+    to: "about",
+  },
 ] satisfies Category[];
 
 export const paths = {
   general: "data/settings/general.json",
   appearance: "data/settings/appearance.json",
+  about: "data/settings/about.json",
 } satisfies Record<SettingsID, string>;
 
 const generalDataCache = new FileDataCache<General>(paths.general, {});

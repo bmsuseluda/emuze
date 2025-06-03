@@ -1,22 +1,66 @@
-import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId";
-import { join } from "node:path";
-import { https } from "follow-redirects";
+import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
+import nodepath, { basename, join } from "node:path";
+import followRedirects from "follow-redirects";
 import decompress from "decompress";
-import { applications } from "../app/server/applicationsDB.server";
+import { applications } from "../app/server/applicationsDB.server/index.js";
 import {
   chmodSync,
   createWriteStream,
   existsSync,
   mkdirSync,
+  readdirSync,
+  renameSync,
   rmSync,
 } from "node:fs";
 import _7z from "7zip-min";
-import nodepath from "path";
+import { moveSync } from "fs-extra/esm";
+
+import { fileURLToPath } from "node:url";
+
+const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
+
+type OperatingSystem = "Windows" | "Linux";
+type EmulatorDownloads = Record<ApplicationId, Record<OperatingSystem, string>>;
+
+const emulatorDownloads: Partial<EmulatorDownloads> = {
+  ares: {
+    Linux:
+      "https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v144/ares-v144-anylinux-x86_64.AppImage",
+    Windows:
+      "https://github.com/ares-emulator/ares/releases/download/v144/ares-windows-x64.zip",
+  },
+  azahar: {
+    Linux:
+      "https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/2121.2/Azahar-Enhanced-2121.2-anylinux-x86_64.AppImage",
+    Windows:
+      "https://github.com/azahar-emu/azahar/releases/download/2121.2/azahar-2121.2-windows-msys2.zip",
+  },
+  duckstation: {
+    Linux:
+      "https://github.com/stenzek/duckstation/releases/download/v0.1-7371/DuckStation-x64.AppImage",
+    Windows:
+      "https://github.com/stenzek/duckstation/releases/download/v0.1-7371/duckstation-windows-x64-release.zip",
+  },
+  dolphin: {
+    Linux:
+      "https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/2503a-316/Dolphin_Emulator-2503a-316-anylinux.dwarfs-x86_64.AppImage",
+    Windows: "https://dl.dolphin-emu.org/releases/2503a/dolphin-2503a-x64.7z",
+  },
+  pcsx2: {
+    Linux:
+      "https://github.com/PCSX2/pcsx2/releases/download/v2.2.0/pcsx2-v2.2.0-linux-appimage-x64-Qt.AppImage",
+    Windows:
+      "https://github.com/PCSX2/pcsx2/releases/download/v2.2.0/pcsx2-v2.2.0-windows-x64-Qt.7z",
+  },
+  ryujinx: {
+    Linux:
+      "https://github.com/Ryubing/Stable-Releases/releases/download/1.3.1/ryujinx-1.3.1-x64.AppImage",
+    Windows:
+      "https://github.com/Ryubing/Stable-Releases/releases/download/1.3.1/ryujinx-1.3.1-win_x64.zip",
+  },
+};
 
 const emulatorsFolderPath = join(__dirname, "..", "emulators");
-
-export type EmulatorDownloads = Record<ApplicationId, string>;
-type OperatingSystem = "Windows" | "Linux";
 
 const makeFileExecutableLinux = (filePath: string) => {
   try {
@@ -61,13 +105,9 @@ const downloadEmulator = (
   }
 };
 
-export const downloadEmulators = (
-  emulatorDownloads: Partial<EmulatorDownloads>,
-  os: OperatingSystem,
-) => {
-  // TODO: run in parallel
+export const downloadEmulators = (os: OperatingSystem) => {
   Object.entries(emulatorDownloads).forEach(([emulatorId, downloadLink]) => {
-    downloadEmulator(emulatorId as ApplicationId, downloadLink, os);
+    downloadEmulator(emulatorId as ApplicationId, downloadLink[os], os);
   });
 };
 
@@ -76,13 +116,15 @@ const downloadAndExtract7z = (
   outputFolder: string,
   fileToCheck: string,
 ) => {
-  const zipFilePath = nodepath.join(outputFolder, url.split("/").at(-1) || "");
+  const zipFilePath = join(outputFolder, url.split("/").at(-1) || "");
 
   downloadFile(url, zipFilePath, () => {
-    _7z.unpack(zipFilePath, outputFolder, () => {
-      if (existsSync(fileToCheck)) {
-        console.log(`Download of ${url} complete`);
-      } else {
+    _7z.unpack(zipFilePath, outputFolder, (error) => {
+      if (!error) {
+        rmSync(zipFilePath, { recursive: true, force: true });
+        removeRootFolderIfNecessary(outputFolder);
+        console.log(`${url} extracted`);
+      } else if (!existsSync(fileToCheck)) {
         console.error(`${fileToCheck} does not exist`);
         process.exit(1);
       }
@@ -106,7 +148,7 @@ const downloadFile = (
   const file = createWriteStream(fileToCheck);
   console.log(`Download of ${url} started`);
 
-  https
+  followRedirects.https
     .get(url, (response) => {
       exitOnResponseCodeError(url, response.statusCode);
 
@@ -131,13 +173,31 @@ const downloadAppImage = (url: string, fileToCheck: string) => {
   });
 };
 
+const removeRootFolderIfNecessary = (folder: string) => {
+  const files = readdirSync(folder);
+
+  if (files.length === 1) {
+    const tempFolder = join(folder, "..", `${basename(folder)}TempFolder`);
+
+    // rename target folder to temp folder
+    renameSync(folder, tempFolder);
+
+    // move and rename root folder to target folder
+    const rootFolder = join(tempFolder, files[0]);
+    moveSync(rootFolder, folder);
+
+    // remove temp folder
+    rmSync(tempFolder, { recursive: true, force: true });
+  }
+};
+
 const downloadAndExtract = (
   url: string,
   outputFolder: string,
   fileToCheck: string,
 ) => {
   console.log(`Download of ${url} started`);
-  https
+  followRedirects.https
     .get(url, (response) => {
       exitOnResponseCodeError(url, response.statusCode);
 
@@ -150,10 +210,14 @@ const downloadAndExtract = (
       response.on("end", async () => {
         const buffer = Buffer.concat(chunks);
         try {
-          await decompress(buffer, outputFolder);
-          if (existsSync(fileToCheck)) {
-            console.log(`Download of ${url} complete`);
-          } else {
+          await decompress(buffer, outputFolder, {
+            filter: (file) => !file.path.endsWith("/"),
+          });
+          console.log(`Download of ${url} complete`);
+          console.log(`${url} extracted`);
+          removeRootFolderIfNecessary(outputFolder);
+
+          if (!existsSync(fileToCheck)) {
             console.error(`${fileToCheck} does not exist`);
             process.exit(1);
           }

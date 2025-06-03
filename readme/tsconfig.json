@@ -1,13 +1,11 @@
 {
   "include": [
     "scripts.ts",
-    "../app/server/categoriesDB.server/index.ts",
-    "../app/server/applicationsDB.server/index.ts",
-    "../app/server/commandLine.server.ts"
   ],
   "compilerOptions": {
     "esModuleInterop": true,
-    "module": "commonjs",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "noImplicitAny": true,
     "strict": true,
     "baseUrl": ".",

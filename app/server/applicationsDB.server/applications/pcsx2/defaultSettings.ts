@@ -13,8 +13,8 @@ DisableWindowResize = false
 PreferEnglishGameList = false
 Theme = darkfusion
 SetupWizardIncomplete = false
-MainWindowGeometry = AdnQywADAAAAAAAyAAAAMgAABEsAAALvAAAAMgAAAFYAAARLAAAC7wAAAAAAAAAAB4AAAAAyAAAAVgAABEsAAALv
-MainWindowState = AAAA/wAAAAD9AAAAAAAABBoAAAJnAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAEAAAAOAHQAbwBvAGwAQgBhAHIAAAAAAP////8AAAAAAAAAAA==
+MainWindowGeometry = AdnQywADAAAAAAVzAAAGggAACYwAAAlAAAAFcwAABqcAAAmMAAAJQAAAAAEAAAAAB4AAAAVzAAAGpwAACYwAAAlA
+MainWindowState = AAAA/wAAAAD9AAAAAAAABBoAAAJsAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAEAAAAOAHQAbwBvAGwAQgBhAHIAAAAAAP////8AAAAAAAAAAA==
 
 
 [Folders]
@@ -51,9 +51,10 @@ EnableDiscordPresence = false
 InhibitScreensaver = true
 HostFs = false
 BackupSavestate = true
-SavestateZstdCompression = true
 McdFolderAutoManage = true
 WarnAboutUnsafeSettings = true
+SavestateCompressionType = 2
+SavestateCompressionRatio = 1
 GzipIsoIndexTemplate = $(f).pindex.tmp
 PINESlot = 28011
 BlockDumpSaveDirectory = 
@@ -106,6 +107,7 @@ fpuFullMode = false
 [EmuCore/GS]
 VsyncEnable = false
 DisableMailboxPresentation = false
+ExtendedUpscalingMultipliers = false
 VsyncQueueSize = 2
 FramerateNTSC = 59.94
 FrameratePAL = 50
@@ -130,9 +132,9 @@ DisableShaderCache = false
 DisableFramebufferFetch = false
 DisableVertexShaderExpand = false
 SkipDuplicateFrames = false
-OsdShowMessages = true
 OsdShowSpeed = false
 OsdShowFPS = false
+OsdShowVPS = false
 OsdShowCPU = false
 OsdShowGPU = false
 OsdShowResolution = false
@@ -141,6 +143,10 @@ OsdShowIndicators = true
 OsdShowSettings = false
 OsdShowInputs = false
 OsdShowFrameTimes = false
+OsdShowVersion = false
+OsdShowHardwareInfo = false
+OsdShowVideoCapture = true
+OsdShowInputRec = true
 HWSpinGPUForReadbacks = false
 HWSpinCPUForReadbacks = false
 paltex = false
@@ -185,6 +191,8 @@ EnableAudioCaptureParameters = false
 linear_present_mode = 1
 deinterlace_mode = 0
 OsdScale = 100
+OsdMessagesPos = 1
+OsdPerformancePos = 2
 Renderer = -1
 upscale_multiplier = 1
 hw_mipmap = true
@@ -222,13 +230,14 @@ saven = 0
 savel = 5000
 CaptureContainer = mp4
 VideoCaptureCodec = 
+VideoCaptureFormat = 
 VideoCaptureParameters = 
 AudioCaptureCodec = 
 AudioCaptureParameters = 
 VideoCaptureBitrate = 6000
 VideoCaptureWidth = 640
 VideoCaptureHeight = 480
-AudioCaptureBitrate = 160
+AudioCaptureBitrate = 192
 Adapter = 
 HWDumpDirectory = 
 SWDumpDirectory = 
@@ -347,10 +356,63 @@ WindowHeight = 0
 MemoryViewBytesPerRow = 16
 
 
+[Debugger/Analysis]
+RunCondition = If Debugger Is Open
+GenerateSymbolsForIRXExports = true
+AutomaticallySelectSymbolsToClear = true
+ImportSymbolsFromELF = true
+DemangleSymbols = true
+DemangleParameters = true
+FunctionScanMode = Scan From ELF
+CustomFunctionScanRange = false
+FunctionScanStartAddress = 0
+FunctionScanEndAddress = 0
+GenerateFunctionHashes = true
+
+
+[Debugger/Analysis/SymbolSources]
+Count = 0
+
+
+[Debugger/Analysis/ExtraSymbolFiles]
+Count = 0
+
+
 [EmuCore/TraceLog]
 Enabled = false
-EE.bitset = 0
-IOP.bitset = 0
+EE.bios = false
+EE.memory = false
+EE.giftag = false
+EE.vifcode = false
+EE.mskpath3 = false
+EE.r5900 = false
+EE.cop0 = false
+EE.cop1 = false
+EE.cop2 = false
+EE.cache = false
+EE.knownhw = false
+EE.unknownhw = false
+EE.dmahw = false
+EE.ipu = false
+EE.dmac = false
+EE.counters = false
+EE.spr = false
+EE.vif = false
+EE.gif = false
+IOP.bios = false
+IOP.memcards = false
+IOP.pad = false
+IOP.r3000a = false
+IOP.cop2 = false
+IOP.memory = false
+IOP.knownhw = false
+IOP.unknownhw = false
+IOP.dmahw = false
+IOP.dmac = false
+IOP.counters = false
+IOP.cdvd = false
+IOP.mdec = false
+MISC.sif = false
 
 
 [Achievements]
@@ -515,4 +577,8 @@ Type = None
 
 
 [USB2]
-Type = None`;
+Type = None
+
+
+[AutoUpdater]
+CheckAtStartup = false`;

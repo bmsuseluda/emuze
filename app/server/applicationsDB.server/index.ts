@@ -1,8 +1,8 @@
-import type { Application } from "./types";
-import { scummvm } from "./applications/scummvm";
-import { dosboxstaging } from "./applications/dosbox";
-import { mame, mameNeoGeo, mameNeoGeoCD } from "./applications/mame";
-import { rpcs3 } from "./applications/rpcs3";
+import type { Application } from "./types.js";
+import { scummvm } from "./applications/scummvm/index.js";
+import { dosboxstaging } from "./applications/dosbox/index.js";
+import { mame, mameNeoGeo, mameNeoGeoCD } from "./applications/mame/index.js";
+import { rpcs3 } from "./applications/rpcs3/index.js";
 import {
   ares,
   aresGameBoyColor,
@@ -10,17 +10,18 @@ import {
   aresSega32x,
   aresSegaCd,
   aresSuperNintendo,
-} from "./applications/ares";
-import { duckstation } from "./applications/duckstation";
-import { pcsx2 } from "./applications/pcsx2";
-import { ryujinx } from "./applications/ryujinx";
-import { dolphin } from "./applications/dolphin";
+} from "./applications/ares/index.js";
+import { duckstation } from "./applications/duckstation/index.js";
+import { pcsx2 } from "./applications/pcsx2/index.js";
+import { ryujinx } from "./applications/ryujinx/index.js";
+import { dolphin } from "./applications/dolphin/index.js";
 import {
   mednafen,
   mednafenPcEngineCD,
   mednafenPcEngineSuperGrafx,
   mednafenSaturn,
-} from "./applications/mednafen";
+} from "./applications/mednafen/index.js";
+import { azahar } from "./applications/azahar/index.js";
 
 export const ppsspp: Application = {
   id: "ppsspp",
@@ -44,7 +45,7 @@ export const ppsspp: Application = {
 export const lime3ds: Application = {
   id: "lime3ds",
   name: "Lime3DS",
-  fileExtensions: [".3ds"],
+  fileExtensions: [".cci"],
   flatpakId: "io.github.lime3ds.Lime3DS",
 };
 
@@ -147,6 +148,7 @@ export const applications = {
   rpcs3,
   ppsspp,
   lime3ds,
+  azahar,
   melonds,
   dolphin,
   ryujinx,

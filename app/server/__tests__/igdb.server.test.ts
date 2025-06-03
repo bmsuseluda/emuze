@@ -9,11 +9,11 @@ import {
   lastBladeBeyondDestiny,
   marioTetrisWorldCup,
   turtles2,
-} from "../__testData__/category";
-import type { Game } from "../igdb.server";
-import { parseData, removeSubTitle } from "../igdb.server";
-import { getExpiresOn } from "../getExpiresOn.server";
-import type { Entry } from "../../types/jsonFiles/category";
+} from "../__testData__/category.js";
+import type { Game } from "../igdb.server.js";
+import { parseData, removeSubTitle } from "../igdb.server.js";
+import { getExpiresOn } from "../getExpiresOn.server.js";
+import type { Entry } from "../../types/jsonFiles/category.js";
 
 vi.mock("../getExpiresOn.server.ts", () => {
   const getFutureDate = () => {

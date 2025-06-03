@@ -1,5 +1,5 @@
 const propTypesTemplate = (
-  { componentName, props, interfaces, imports, exports, jsx },
+  { componentName, props, imports, exports, jsx },
   { tpl },
 ) => {
   return tpl`

@@ -1,6 +1,7 @@
 import { expect, type Locator, type Page } from "@playwright/test";
-import { SettingsGeneralPage } from "./settingsGeneralPage";
-import { SettingsAppearancePage } from "./settingsAppearancePage";
+import { SettingsGeneralPage } from "./settingsGeneralPage.js";
+import { SettingsAppearancePage } from "./settingsAppearancePage.js";
+import { SettingsAboutPage } from "./settingsAboutPage.js";
 
 export class SettingsPage {
   readonly page: Page;
@@ -10,6 +11,7 @@ export class SettingsPage {
 
   readonly generalPage: SettingsGeneralPage;
   readonly appearancePage: SettingsAppearancePage;
+  readonly aboutPage: SettingsAboutPage;
 
   constructor(page: Page) {
     this.page = page;
@@ -20,6 +22,7 @@ export class SettingsPage {
 
     this.generalPage = new SettingsGeneralPage(page);
     this.appearancePage = new SettingsAppearancePage(page);
+    this.aboutPage = new SettingsAboutPage(page);
     this.initialSubPage = this.generalPage.name;
   }
 

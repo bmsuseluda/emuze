@@ -1,15 +1,24 @@
-import { initRemix } from "remix-electron";
-import { platform } from "os";
-import { app, BrowserWindow, ipcMain, session } from "electron";
-import nodepath from "path";
+import { homedir, platform } from "node:os";
+import { app, BrowserWindow, globalShortcut, ipcMain, shell } from "electron";
+import nodepath from "node:path";
 import * as dotenv from "dotenv";
-import { autoUpdater } from "electron-updater";
-import { readAppearance, writeAppearance } from "../app/server/settings.server";
-import { createLogFile, isDebug, log } from "../app/server/debug.server";
+import electronUpdater from "electron-updater";
+import {
+  readAppearance,
+  writeAppearance,
+} from "../app/server/settings.server.js";
+import { createLogFile, isDebug, log } from "../app/server/debug.server.js";
 import {
   commandLineOptions,
   commandLineOptionsString,
-} from "../app/server/commandLine.server";
+} from "../app/server/commandLine.server.js";
+import { cpSync, existsSync, rmSync } from "node:fs";
+import { initReactRouter } from "./initReactRouter.js";
+import { homeDirectory } from "../app/server/homeDirectory.server.js";
+import { fileURLToPath } from "node:url";
+
+const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
+const { autoUpdater } = electronUpdater;
 
 dotenv.config();
 
@@ -25,7 +34,33 @@ const showHelp = () => {
   app.quit();
 };
 
+app.commandLine.appendSwitch("lang", "en-US");
+app.commandLine.appendSwitch("enable-features", "GlobalShortcutsPortal");
+
+// TODO: remove if workaround is not necessary anymore: https://github.com/electron/electron/issues/46538
+app.commandLine.appendSwitch("gtk-version", "3");
+
+/**
+ * Migration from old home directory to new one.
+ *
+ * TODO: remove this in one of the next releases
+ */
+const moveHomeDirectory = () => {
+  const oldHomeDirectory = nodepath.join(homedir(), ".emuze");
+
+  if (existsSync(oldHomeDirectory)) {
+    cpSync(oldHomeDirectory, homeDirectory, {
+      recursive: true,
+      force: true,
+      preserveTimestamps: true,
+    });
+    rmSync(oldHomeDirectory, { recursive: true, force: true });
+  }
+};
+
 app.on("ready", async () => {
+  moveHomeDirectory();
+
   if (app.commandLine.hasSwitch(commandLineOptions.help.id)) {
     showHelp();
     return;
@@ -34,15 +69,6 @@ app.on("ready", async () => {
   if (isDebug()) {
     createLogFile();
   }
-
-  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-    callback({
-      responseHeaders: {
-        ...details.responseHeaders,
-        "Content-Security-Policy": ["script-src 'self'; object-src 'none';"],
-      },
-    });
-  });
 
   autoUpdater
     .checkForUpdatesAndNotify()
@@ -65,12 +91,8 @@ app.on("ready", async () => {
     app.commandLine.hasSwitch(commandLineOptions.fullscreen.id) ||
     appearance?.fullscreen;
 
-  const url = await initRemix({
-    serverBuild: nodepath.join(__dirname, "../../build/index.js"),
-    getLoadContext: () => ({
-      fullscreen: window.isFullScreen(),
-    }),
-  });
+  // TODO: Check how to set context for react router with fullscreen
+  const url = await initReactRouter();
 
   const window = new BrowserWindow({
     show: false,
@@ -78,10 +100,10 @@ app.on("ready", async () => {
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: true,
+      sandbox: false,
       webSecurity: true,
       allowRunningInsecureContent: false,
-      preload: nodepath.join(__dirname, "preload.js"),
+      preload: nodepath.join(__dirname, "preload.mjs"),
     },
     icon:
       platform() === "win32"
@@ -128,6 +150,10 @@ app.on("ready", async () => {
     }
   });
 
+  ipcMain.handle("closeEmuze", () => {
+    app.quit();
+  });
+
   window.webContents.on("before-input-event", (event, input) => {
     if (input.key.toLowerCase() === "f12") {
       event.preventDefault();
@@ -139,6 +165,11 @@ app.on("ready", async () => {
     }
   });
 
+  window.webContents.setWindowOpenHandler(({ url }) => {
+    shell.openExternal(url);
+    return { action: "deny" };
+  });
+
   await window.loadURL(url);
   window.maximize();
   window.show();
@@ -146,4 +177,9 @@ app.on("ready", async () => {
   if (fullscreen) {
     setFullscreen(window, true);
   }
+});
+
+app.on("will-quit", () => {
+  // Unregister all shortcuts.
+  globalShortcut.unregisterAll();
 });

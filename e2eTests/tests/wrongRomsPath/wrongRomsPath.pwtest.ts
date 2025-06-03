@@ -1,12 +1,12 @@
-import { expect, test } from "../../pages/fixture";
-import nodepath from "path";
+import { expect, test } from "../../pages/fixture.js";
+import nodepath from "node:path";
 import fs from "fs-extra";
-import { configFolderPath, e2ePath, testName } from "./config";
+import { configFolderPath, e2ePath, testName } from "./config.js";
 
 test.describe.configure({ mode: "serial" });
 
 test.beforeAll(async () => {
-  fs.rmSync(configFolderPath, { recursive: true, force: true });
+  fs.removeSync(configFolderPath);
   fs.copySync(nodepath.join(e2ePath, "config"), configFolderPath);
 });
 

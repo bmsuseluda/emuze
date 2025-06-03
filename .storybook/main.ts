@@ -3,6 +3,12 @@ import type { StorybookConfig } from "@storybook/react-vite";
 const config: StorybookConfig = {
   core: {
     disableTelemetry: true,
+    builder: {
+      name: "@storybook/builder-vite",
+      options: {
+        viteConfigPath: "./.storybook/vite.config.ts",
+      },
+    },
   },
   framework: {
     name: "@storybook/react-vite",
@@ -15,9 +21,6 @@ const config: StorybookConfig = {
     "@storybook/addon-interactions",
   ],
   staticDirs: ["../public"],
-  docs: {
-    autodocs: true,
-  },
 };
 
 export default config;

@@ -1,28 +1,30 @@
-import type { Application } from "../../types";
-import type { Sdl } from "@bmsuseluda/node-sdl";
-import sdl from "@bmsuseluda/node-sdl";
-import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
-import { log } from "../../../debug.server";
-import fs from "fs";
-import { EOL, homedir } from "os";
-import { isWindows } from "../../../operationsystem.server";
-import type { SectionReplacement } from "../../configFile";
+import type { Application } from "../../types.js";
+import type { Sdl } from "@kmamal/sdl";
+import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
+import { log } from "../../../debug.server.js";
+import fs from "node:fs";
+import { EOL, homedir } from "node:os";
+import { isWindows } from "../../../operationsystem.server.js";
+import type { SectionReplacement } from "../../configFile.js";
 import {
   chainSectionReplacements,
-  findConfigFile,
   replaceSection,
   splitConfigBySection,
   writeConfig,
-} from "../../configFile";
-import nodepath from "path";
-import { defaultSettings } from "./defaultSettings";
-import type { ApplicationId } from "../../applicationId";
+} from "../../configFile.js";
+import nodepath from "node:path";
+import { defaultSettings } from "./defaultSettings.js";
+import type { ApplicationId } from "../../applicationId.js";
+import { keyboardConfig } from "./keyboardConfig.js";
+import { envPaths } from "../../../envPaths.server.js";
+import type { SdlType } from "../../../../types/sdl.js";
+import { getSdl } from "../../../importSdl.server.js";
 
 const flatpakId = "org.duckstation.DuckStation";
 const applicationId: ApplicationId = "duckstation";
 const bundledPathLinux = nodepath.join(
   applicationId,
-  "DuckStation-x64.AppImage",
+  `${applicationId}.AppImage`,
 );
 const bundledPathWindows = nodepath.join(
   applicationId,
@@ -75,48 +77,83 @@ export const getVirtualGamepad = (
 const getVirtualGamepadReset = (gamepadIndex: number) =>
   [`[Pad${gamepadIndex + 1}]`, "Type = None", "", "", ""].join(EOL);
 
-export const getVirtualGamepads = () => {
+export const getVirtualGamepads = (sdl: SdlType) => {
   const gamepads = sdl.controller.devices;
 
-  const virtualGamepads = gamepads.map(getVirtualGamepad);
+  const virtualGamepads =
+    gamepads.length > 0 ? gamepads.map(getVirtualGamepad) : [keyboardConfig];
 
   return [
     ...virtualGamepads,
-    ...resetUnusedVirtualGamepads(8, gamepads.length, getVirtualGamepadReset),
+    ...resetUnusedVirtualGamepads(
+      8,
+      virtualGamepads.length,
+      getVirtualGamepadReset,
+    ),
   ];
 };
 
-export const replaceGamepadConfig: SectionReplacement = (sections) => {
-  if (sections.find((section) => section.startsWith("[Pad1]"))) {
-    return sections.reduce<string[]>((accumulator, section) => {
-      if (section.startsWith("[Pad1]")) {
-        accumulator.push(...getVirtualGamepads());
-      } else if (!section.startsWith("[Pad")) {
-        accumulator.push(section);
-      }
+export const replaceGamepadConfig =
+  (sdl: SdlType): SectionReplacement =>
+  (sections) => {
+    const virtualGamepads = getVirtualGamepads(sdl);
+    if (sections.find((section) => section.startsWith("[Pad1]"))) {
+      return sections.reduce<string[]>((accumulator, section) => {
+        if (section.startsWith("[Pad1]")) {
+          accumulator.push(...virtualGamepads);
+        } else if (!section.startsWith("[Pad")) {
+          accumulator.push(section);
+        }
 
-      return accumulator;
-    }, []);
-  } else {
-    return [...sections, getVirtualGamepads().join(EOL)];
-  }
-};
+        return accumulator;
+      }, []);
+    } else {
+      return [...sections, virtualGamepads.join(EOL)];
+    }
+  };
 
 export const replaceHotkeyConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Hotkeys]", [
-    "OpenPauseMenu = Keyboard/F2",
-    "ToggleFullscreen = Keyboard/F11",
-    "SaveSelectedSaveState = Keyboard/F1",
-    "LoadSelectedSaveState = Keyboard/F3",
+    {
+      keyValue: "OpenPauseMenu = Keyboard/F2",
+      disableParamWithSameValue: true,
+    },
+    {
+      keyValue: "ToggleFullscreen = Keyboard/F11",
+      disableParamWithSameValue: true,
+    },
+    {
+      keyValue: "SaveSelectedSaveState = Keyboard/F1",
+      disableParamWithSameValue: true,
+    },
+    {
+      keyValue: "LoadSelectedSaveState = Keyboard/F3",
+      disableParamWithSameValue: true,
+    },
+  ]);
+
+export const replaceAutoUpdaterConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[AutoUpdater]", [
+    { keyValue: "CheckAtStartup = false" },
   ]);
 
 export const replaceMainConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[Main]", ["ConfirmPowerOff = false"]);
+  replaceSection(sections, "[Main]", [
+    { keyValue: "ConfirmPowerOff = false" },
+    { keyValue: "SetupWizardIncomplete = false" },
+  ]);
+
+export const replaceGameListConfig =
+  (psxRomsPath: string): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[GameList]", [
+      { keyValue: `RecursivePaths = ${psxRomsPath}` },
+    ]);
 
 export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[InputSources]", [
-    "SDL = true",
-    "SDLControllerEnhancedMode = true",
+    { keyValue: "SDL = true" },
+    { keyValue: "SDLControllerEnhancedMode = true" },
   ]);
 
 /**
@@ -125,47 +162,17 @@ export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
  * @param sections
  */
 export const replaceControllerPortsConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[ControllerPorts]", ["MultitapMode = Port1Only"]);
+  replaceSection(sections, "[ControllerPorts]", [
+    { keyValue: "MultitapMode = Port1Only" },
+  ]);
 
-/**
- * look into application folder for config file, if not then home folder
- */
-export const getWindowsConfigFilePath = (
-  configFileName: string,
-  applicationPath?: string,
-) => {
-  if (applicationPath) {
-    const applicationDirectory = nodepath.dirname(applicationPath);
-    const configFilePath = findConfigFile(applicationDirectory, configFileName);
-    const portableExists = fs.existsSync(
-      nodepath.join(applicationDirectory, "portable.txt"),
-    );
+const { data } = envPaths("duckstation", { suffix: "" });
 
-    if (portableExists) {
-      if (configFilePath) {
-        return configFilePath;
-      }
-      return nodepath.join(applicationDirectory, configFileName);
-    }
-  }
-
-  return nodepath.join(homedir(), "Documents", "DuckStation", configFileName);
-};
-
-export const getConfigFilePath = (
-  configFileName: string,
-  applicationPath?: string,
-) => {
+export const getConfigFilePath = (configFileName: string) => {
   if (isWindows()) {
-    return getWindowsConfigFilePath(configFileName, applicationPath);
+    return nodepath.join(homedir(), "Documents", "DuckStation", configFileName);
   } else {
-    return nodepath.join(
-      homedir(),
-      ".local",
-      "share",
-      "duckstation",
-      configFileName,
-    );
+    return nodepath.join(data, configFileName);
   }
 };
 
@@ -183,8 +190,9 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
-export const replaceConfigSections = (applicationPath?: string) => {
-  const filePath = getConfigFilePath(configFileName, applicationPath);
+export const replaceConfigSections = async (psxRomsPath: string) => {
+  const sdl = await getSdl();
+  const filePath = getConfigFilePath(configFileName);
   const fileContent = readConfigFile(filePath);
 
   const sections = splitConfigBySection(fileContent);
@@ -195,7 +203,9 @@ export const replaceConfigSections = (applicationPath?: string) => {
     // replaceControllerPortsConfig,
     replaceMainConfig,
     replaceHotkeyConfig,
-    replaceGamepadConfig,
+    replaceGamepadConfig(sdl),
+    replaceAutoUpdaterConfig,
+    replaceGameListConfig(psxRomsPath),
   ).join(EOL);
 
   writeConfig(filePath, fileContentNew);
@@ -206,13 +216,15 @@ export const duckstation: Application = {
   name: "DuckStation (Legacy)",
   fileExtensions: [".chd", ".cue"],
   flatpakId,
-  createOptionParams: ({
+  createOptionParams: async ({
     settings: {
       appearance: { fullscreen },
+      general: { categoriesPath },
     },
-    applicationPath,
+    categoryData,
   }) => {
-    replaceConfigSections(applicationPath);
+    const psxRomsPath = nodepath.join(categoriesPath, categoryData.name);
+    await replaceConfigSections(psxRomsPath);
 
     const optionParams = [];
     if (fullscreen) {

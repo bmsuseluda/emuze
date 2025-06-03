@@ -1,7 +1,7 @@
-import { categories } from "../app/server/categoriesDB.server";
-import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId";
-import type { SystemId } from "../app/server/categoriesDB.server/systemId";
-import { commandLineOptionsString } from "../app/server/commandLine.server";
+import { categories } from "../app/server/categoriesDB.server/index.js";
+import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
+import type { SystemId } from "../app/server/categoriesDB.server/systemId.js";
+import { commandLineOptionsString } from "../app/server/commandLine.server.js";
 
 const preConfigured: ApplicationId[] = [
   "ares",
@@ -10,6 +10,7 @@ const preConfigured: ApplicationId[] = [
   "aresSegaCd",
   "aresGameBoyColor",
   "aresSuperNintendo",
+  "azahar",
   "dolphin",
   "duckstation",
   "mednafen",
@@ -28,8 +29,10 @@ const bundled: ApplicationId[] = [
   "aresSegaCd",
   "aresGameBoyColor",
   "aresSuperNintendo",
+  "azahar",
   "dolphin",
   "duckstation",
+  "pcsx2",
   "ryujinx",
 ];
 
@@ -62,6 +65,7 @@ const homepages: Record<ApplicationId, string> = {
   duckstation: "https://github.com/stenzek/duckstation",
   flycast: "https://github.com/flyinghead/flycast",
   lime3ds: "https://github.com/Lime3DS/Lime3DS",
+  azahar: "https://github.com/azahar-emu/azahar",
   mame: "https://github.com/mamedev/mame",
   mameNeoGeo: "https://github.com/mamedev/mame",
   mameNeoGeoCD: "https://github.com/mamedev/mame",

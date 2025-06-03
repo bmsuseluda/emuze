@@ -29,13 +29,31 @@ const borderRounded = defineUtility({
   },
 });
 
+const outlineRounded = defineUtility({
+  className: "outlineRounded",
+  values: { type: "boolean" },
+  transform: (value: boolean, { token }) => {
+    if (value) {
+      return {
+        borderRadius: token("radii.outline"),
+        position: "relative",
+      };
+    }
+    return {};
+  },
+});
+
 export default defineConfig({
+  forceConsistentTypeExtension: true,
   preflight: true,
   eject: true,
+  // strictTokens: true,
+  strictPropertyValues: true,
   presets: ["@pandacss/preset-base"],
   jsxFramework: "react",
   jsxStyleProps: "none",
   outExtension: "js",
+  watch: process.env.NODE_ENV !== "production",
   minify: process.env.NODE_ENV === "production",
   hash: process.env.NODE_ENV === "production",
   include: ["./app/**/*.{ts,tsx}", "./.storybook/preview.tsx"],
@@ -118,7 +136,7 @@ export default defineConfig({
     },
     tokens: {
       spacing: {
-        outlinePadding: { value: "2rem" },
+        outlinePadding: { value: "1rem" },
         1: { value: "0.8rem" },
         2: { value: "2rem" },
         3: { value: "3rem" },
@@ -142,13 +160,13 @@ export default defineConfig({
           value: "4px solid black",
         },
       },
-      // TODO: check how to define them
-      // borderWidths: {
-      //   1: "1px",
-      //   2: "2px",
-      //   3: "4px",
-      // },
+      borderWidths: {
+        1: { value: "1px" },
+        2: { value: "2px" },
+        3: { value: "4px" },
+      },
       radii: {
+        outline: { value: "0.1rem" },
         1: { value: "0.8rem" },
       },
       fonts: {
@@ -194,6 +212,7 @@ export default defineConfig({
   utilities: {
     extend: {
       borderRounded,
+      outlineRounded,
     },
   },
 

@@ -1,14 +1,14 @@
-import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping";
+import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping.js";
 import type { ReactNode, SVGProps } from "react";
-import Xboxa from "../Icons/Xboxa";
-import type { SVGRProps } from "../../types/svgProps";
-import Xboxb from "../Icons/Xboxb";
-import Xboxx from "../Icons/Xboxx";
-import Xboxy from "../Icons/Xboxy";
-import PlaystationCross from "../Icons/PlaystationCross";
-import PlaystationCircle from "../Icons/PlaystationCircle";
-import PlaystationSquare from "../Icons/PlaystationSquare";
-import PlaystationTriangle from "../Icons/PlaystationTriangle";
+import Xboxa from "../Icons/Xboxa.js";
+import type { SVGRProps } from "../../types/svgProps.js";
+import Xboxb from "../Icons/Xboxb.js";
+import Xboxx from "../Icons/Xboxx.js";
+import Xboxy from "../Icons/Xboxy.js";
+import PlaystationCross from "../Icons/PlaystationCross.js";
+import PlaystationCircle from "../Icons/PlaystationCircle.js";
+import PlaystationSquare from "../Icons/PlaystationSquare.js";
+import PlaystationTriangle from "../Icons/PlaystationTriangle.js";
 
 interface IconMappingProps extends SVGProps<SVGSVGElement>, SVGRProps {}
 

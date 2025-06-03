@@ -1,36 +1,34 @@
-import type { Application } from "../../types";
-import type { SectionReplacement } from "../../configFile";
+import type { Application } from "../../types.js";
+import type { ParamToReplace, SectionReplacement } from "../../configFile.js";
 import {
   chainSectionReplacements,
   replaceSection,
   splitConfigBySection,
   writeConfig,
-} from "../../configFile";
-import { EOL } from "os";
-import fs from "fs";
-import { log } from "../../../debug.server";
-import nodepath from "path";
-import type { Sdl } from "@bmsuseluda/node-sdl";
-import sdl from "@bmsuseluda/node-sdl";
-import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads";
-import { defaultGamepadSettings } from "./defaultGamepadSettings";
-import { defaultHotkeys } from "./defaultHotkeys";
-import type { ApplicationId } from "../../applicationId";
-import { emulatorsDirectory } from "../../../homeDirectory.server";
-import { isGamecubeController } from "../../gamepads";
-import { defaultDolphinSettings } from "./defaultDolphinSettings";
+} from "../../configFile.js";
+import { EOL } from "node:os";
+import fs from "node:fs";
+import { log } from "../../../debug.server.js";
+import nodepath from "node:path";
+import type { Sdl } from "@kmamal/sdl";
+import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
+import { defaultGamepadSettings } from "./defaultGamepadSettings.js";
+import { defaultHotkeys } from "./defaultHotkeys.js";
+import type { ApplicationId } from "../../applicationId.js";
+import { emulatorsDirectory } from "../../../homeDirectory.server.js";
+import { isGamecubeController } from "../../gamepads.js";
+import { defaultDolphinSettings } from "./defaultDolphinSettings.js";
+import { keyboardConfig } from "./keyboardConfig.js";
+import type { SdlType } from "../../../../types/sdl.js";
+import { getSdl } from "../../../importSdl.server.js";
 
 const flatpakId = "org.DolphinEmu.dolphin-emu";
 const applicationId: ApplicationId = "dolphin";
 const bundledPathLinux = nodepath.join(
   applicationId,
-  "Dolphin_Emulator-2503-33-anylinux.squashfs-x86_64.AppImage",
+  `${applicationId}.AppImage`,
 );
-const bundledPathWindows = nodepath.join(
-  applicationId,
-  "Dolphin-x64",
-  "Dolphin.exe",
-);
+const bundledPathWindows = nodepath.join(applicationId, "Dolphin.exe");
 const configFolderPath = nodepath.join(emulatorsDirectory, applicationId);
 const dolphinConfigFileName = nodepath.join(
   configFolderPath,
@@ -49,17 +47,18 @@ const hotkeysConfigFileName = nodepath.join(
 );
 
 export const getVirtualGamepad = (
-  sdlDevice: Sdl.Controller.Device,
+  controller: Sdl.Joystick.Device,
   index: number,
 ) => {
-  const openedDevice = sdl.controller.openDevice(sdlDevice);
-  log("debug", "gamepad", { index, sdlDevice, openedDevice });
+  log("debug", "gamepad", { index, controller });
 
-  const gamecubeController = isGamecubeController(openedDevice.controllerName);
+  const deviceName = controller.name;
+
+  const gamecubeController = isGamecubeController(deviceName);
 
   return [
     `[GCPad${index + 1}]`,
-    `Device = SDL/0/${openedDevice.controllerName}`,
+    `Device = SDL/0/${deviceName}`,
     `Buttons/A = ${gamecubeController ? "`Button S`" : "`Button E`"}`,
     `Buttons/B = ${gamecubeController ? "`Button W`" : "`Button S`"}`,
     `Buttons/X = ${gamecubeController ? "`Button E`" : "`Button N`"}`,
@@ -96,10 +95,11 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
     "Device = XInput2/0/Virtual core pointer",
   ].join(EOL);
 
-export const getVirtualGamepads = () => {
-  const gamepads = sdl.controller.devices;
+export const getVirtualGamepads = (sdl: SdlType) => {
+  const gamepads = sdl.joystick.devices;
 
-  const virtualGamepads = gamepads.map(getVirtualGamepad);
+  const virtualGamepads =
+    gamepads.length > 0 ? gamepads.map(getVirtualGamepad) : [keyboardConfig];
 
   return [
     ...virtualGamepads,
@@ -107,10 +107,9 @@ export const getVirtualGamepads = () => {
   ];
 };
 
-export const replaceGamepadConfigSections: SectionReplacement = (sections) => [
-  ...sections,
-  getVirtualGamepads().join(EOL),
-];
+export const replaceGamepadConfigSections =
+  (sdl: SdlType): SectionReplacement =>
+  (sections) => [...sections, getVirtualGamepads(sdl).join(EOL)];
 
 const readConfigFile = (filePath: string, fallback: string) => {
   try {
@@ -126,19 +125,28 @@ const readConfigFile = (filePath: string, fallback: string) => {
   }
 };
 
-export const replaceGamepadConfigFile = () =>
+export const replaceGamepadConfigFile = (sdl: SdlType) =>
   replaceConfigSections(
     gamepadConfigFileName,
     defaultGamepadSettings,
-    replaceGamepadConfigSections,
+    replaceGamepadConfigSections(sdl),
   );
 
 export const replaceHotkeysSection: SectionReplacement = (sections) =>
   replaceSection(sections, "[Hotkeys]", [
-    "General/Toggle Pause = F2",
-    "General/Toggle Fullscreen = F11",
-    "Save State/Save State Slot 1 = F1",
-    "Load State/Load State Slot 1 = F3",
+    { keyValue: "General/Toggle Pause = F2", disableParamWithSameValue: true },
+    {
+      keyValue: "General/Toggle Fullscreen = F11",
+      disableParamWithSameValue: true,
+    },
+    {
+      keyValue: "Save State/Save State Slot 1 = F1",
+      disableParamWithSameValue: true,
+    },
+    {
+      keyValue: "Load State/Load State Slot 1 = F3",
+      disableParamWithSameValue: true,
+    },
   ]);
 
 export const replaceHotkeysFile = () =>
@@ -148,29 +156,36 @@ export const replaceHotkeysFile = () =>
     replaceHotkeysSection,
   );
 
-export const replaceDolphinCoreSection: SectionReplacement = (sections) => {
-  const gamepads = sdl.controller.devices;
-  const siDevices = [
-    ...gamepads.map((_, index) => `SIDevice${index} = 6`),
-    ...resetUnusedVirtualGamepads(
-      4,
-      gamepads.length,
-      (index: number) => `SIDevice${index} = 0`,
-    ),
-  ];
+const setDeviceToStandardController = (index: number): ParamToReplace => ({
+  keyValue: `SIDevice${index} = 6`,
+});
 
-  return replaceSection(sections, "[Core]", siDevices);
-};
+export const replaceDolphinCoreSection =
+  (sdl: SdlType): SectionReplacement =>
+  (sections) => {
+    const gamepads = sdl.joystick.devices;
+    const virtualGamepads = gamepads.length > 0 ? gamepads : ["keyboard"];
+    const siDevices: ParamToReplace[] = [
+      ...virtualGamepads.map((_, index) =>
+        setDeviceToStandardController(index),
+      ),
+      ...resetUnusedVirtualGamepads(
+        4,
+        virtualGamepads.length,
+        (index: number): ParamToReplace => ({
+          keyValue: `SIDevice${index} = 0`,
+        }),
+      ),
+    ];
 
-export const replaceDolphinAutoUpdateSection: SectionReplacement = (sections) =>
-  replaceSection(sections, "[AutoUpdate]", ["UpdateTrack = "]);
+    return replaceSection(sections, "[Core]", siDevices);
+  };
 
-export const replaceDolphinFile = () =>
+export const replaceDolphinFile = (sdl: SdlType) =>
   replaceConfigSections(
     dolphinConfigFileName,
     defaultDolphinSettings,
-    replaceDolphinCoreSection,
-    replaceDolphinAutoUpdateSection,
+    replaceDolphinCoreSection(sdl),
   );
 
 export const replaceConfigSections = (
@@ -195,26 +210,26 @@ export const dolphin: Application = {
   name: "Dolphin",
   fileExtensions: [".iso", ".rvz"],
   flatpakId,
-  createOptionParams: ({
+  createOptionParams: async ({
     settings: {
       appearance: { fullscreen },
     },
   }) => {
-    replaceDolphinFile();
-    replaceGamepadConfigFile();
+    const sdl = await getSdl();
+
+    replaceDolphinFile(sdl);
+    replaceGamepadConfigFile(sdl);
     replaceHotkeysFile();
 
     const optionParams = [
-      "--config",
-      "Dolphin.Interface.ConfirmStop=False",
       `--user=${configFolderPath}`,
-      "--config",
-      "Dolphin.Analytics.PermissionAsked=True",
+      ...["--config", "Dolphin.Interface.ConfirmStop=False"],
+      ...["--config", "Dolphin.Analytics.PermissionAsked=True"],
+      ...["--config", "Dolphin.AutoUpdate.UpdateTrack="],
     ];
 
     if (fullscreen) {
-      optionParams.push("--config");
-      optionParams.push("Dolphin.Display.Fullscreen=True");
+      optionParams.push(...["--config", "Dolphin.Display.Fullscreen=True"]);
       optionParams.push("--batch");
     }
 

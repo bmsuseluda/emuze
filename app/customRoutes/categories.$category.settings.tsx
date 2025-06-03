@@ -1,32 +1,27 @@
-import { json } from "@remix-run/node";
-import {
-  Outlet,
-  useLoaderData,
-  useLocation,
-  useNavigate,
-} from "@remix-run/react";
-import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout";
-import { Link } from "../containers/Link";
-import { categories, readAppearance } from "../server/settings.server";
-import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar";
-import { SettingsIcon } from "../components/SettingsIcon";
-import { useFocus } from "../hooks/useFocus";
-import type { FocusElement } from "../types/focusElement";
+import { Outlet, useLoaderData, useLocation, useNavigate } from "react-router";
+import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout/index.js";
+import { Link } from "../containers/Link/index.js";
+import { categories, readAppearance } from "../server/settings.server.js";
+import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar/index.js";
+import { SettingsIcon } from "../components/SettingsIcon/index.js";
+import { useFocus } from "../hooks/useFocus/index.js";
+import type { FocusElement } from "../types/focusElement.js";
 import { useCallback, useEffect, useMemo } from "react";
-import { Dialog } from "../components/Dialog";
-import { useImportButton } from "../containers/ImportButton/useImportButton";
-import { useInstallEmulatorsButton } from "../containers/InstallEmulatorsButton/useInstallEmulatorsButton";
+import { Dialog } from "../components/Dialog/index.js";
+import { useImportButton } from "../containers/ImportButton/useImportButton.js";
+import { useInstallEmulatorsButton } from "../containers/InstallEmulatorsButton/useInstallEmulatorsButton.js";
 import {
   useDirectionalInputRight,
   useInputBack,
   useInputConfirmation,
   useInputSettings,
-} from "../hooks/useDirectionalInput";
+} from "../hooks/useDirectionalInput/index.js";
+import { CloseDialogContainer } from "../containers/CloseDialog/index.js";
 
 export const loader = () => {
   const { collapseSidebar } = readAppearance();
 
-  return json({ categories, collapseSidebar });
+  return { categories, collapseSidebar };
 };
 
 export default function Index() {
@@ -52,16 +47,21 @@ export default function Index() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { categoryLinksRefCallback } = useGamepadsOnSidebar(isInFocus);
+  const { categoryLinksRefCallback } = useGamepadsOnSidebar(
+    isInFocus,
+    switchFocus,
+    false,
+  );
   const navigate = useNavigate();
 
   const handleClose = useCallback(() => {
     if (closable) {
       switchFocusBackMultiple("settingsMain", "settingsSidebar");
-      // TODO: replace with robust solution
       navigate(pathname.split("/settings")[0]);
+    } else {
+      switchFocus("closeDialog");
     }
-  }, [pathname, navigate, switchFocusBackMultiple, closable]);
+  }, [pathname, navigate, switchFocusBackMultiple, closable, switchFocus]);
 
   const handleCloseOnFocus = useCallback(() => {
     if (isInFocus) {
@@ -93,8 +93,7 @@ export default function Index() {
     <Dialog
       open={true}
       onClose={handleClose}
-      closable={closable}
-      smaller={collapseSidebar}
+      size={collapseSidebar ? "small" : "medium"}
     >
       <SidebarMainLayout>
         <SidebarMainLayout.Sidebar
@@ -105,8 +104,9 @@ export default function Index() {
             <li key={id}>
               <Link
                 to={id}
-                ref={categoryLinksRefCallback(index)}
                 icon={<SettingsIcon id={id} />}
+                aria-label={name}
+                ref={categoryLinksRefCallback(index)}
                 onClick={onLinkClick}
                 isFocused={isInFocus}
               >
@@ -119,6 +119,7 @@ export default function Index() {
           <Outlet />
         </SidebarMainLayout.Main>
       </SidebarMainLayout>
+      <CloseDialogContainer />
     </Dialog>
   );
 }
