@@ -26,7 +26,7 @@ const closeGameOnGamepad = (childProcess: ChildProcess, sdl: SdlType) => {
     devices.forEach((device) => {
       const controller = sdl.controller.openDevice(device);
       gamepads.push(controller);
-      controller.on("buttonDown", (event) => {
+      controller.on("buttonUp", (event) => {
         if (event.button === "a" && controller.buttons.back) {
           log("debug", "buttons", controller.buttons);
           if (childProcess && !childProcess.killed) {

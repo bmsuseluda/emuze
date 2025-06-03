@@ -6,7 +6,7 @@ import {
 } from "../../gamepads.js";
 import type { PhysicalGamepadInterface } from "./PhysicalGamepad.js";
 
-export class PhysicalGamepadLinux implements PhysicalGamepadInterface {
+export class PhysicalGamepadSdl implements PhysicalGamepadInterface {
   deviceId: string;
   mappingObject: SdlButtonMapping;
 

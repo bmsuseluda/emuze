@@ -1,5 +1,23 @@
 import type { Sdl } from "@kmamal/sdl";
 
+const xinputControllerTypes: Sdl.Controller.ControllerType[] = [
+  "xbox360",
+  "xboxOne",
+  null,
+];
+export const isXinputController = (
+  controllerType: Sdl.Controller.ControllerType | null,
+) => xinputControllerTypes.includes(controllerType);
+
+const dinputControllerTypes: Sdl.Controller.ControllerType[] = [
+  "ps3",
+  "ps4",
+  "ps5",
+];
+export const isDinputController = (
+  controllerType: Sdl.Controller.ControllerType | null,
+) => dinputControllerTypes.includes(controllerType);
+
 export const isGamecubeController = (controllerName: string) =>
   controllerName.toLowerCase().includes("gamecube");
 

@@ -2,13 +2,11 @@ import type { GamepadID } from "./initGamepadIDs.js";
 import { findSdlGamepad, getGamepads } from "./initGamepadIDs.js";
 import { log } from "../../../debug.server.js";
 import { VirtualGamepad } from "./VirtualGamepad.js";
-import { PhysicalGamepadLinux } from "./PhysicalGamepadLinux.js";
 import { getKeyboardKey as initGetKeyboardKey } from "./keyboardConfig.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
-import { isWindows } from "../../../operationsystem.server.js";
-import { PhysicalGamepadXinput } from "./PhysicalGamepadXinput.js";
 import type { SdlType } from "../../../../types/sdl.js";
 import { getSdl } from "../../../importSdl.server.js";
+import { getPhysicalGamepad } from "./getPhysicalGamepad.js";
 
 type MednafenButtonIdPcEngine =
   | "up"
@@ -85,9 +83,7 @@ export const getVirtualGamepadPcEngine =
       log("debug", "gamepad", gamepadID, sdlGamepad);
       const { initialize, createButtonMapping, disableButtonMapping } =
         new VirtualGamepad<MednafenButtonIdPcEngine>(index, system);
-      const physicalGamepad = isWindows()
-        ? new PhysicalGamepadXinput(gamepadID.id, sdlGamepad.mapping)
-        : new PhysicalGamepadLinux(gamepadID.id, sdlGamepad.mapping);
+      const physicalGamepad = getPhysicalGamepad(sdlGamepad, gamepadID);
 
       return [
         ...initialize(),
