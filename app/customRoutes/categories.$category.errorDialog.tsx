@@ -6,7 +6,7 @@ import { redirect, useLoaderData, useSubmit } from "react-router";
 import { ErrorDialog } from "../components/ErrorDialog/index.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
-import type { ElementRef } from "react";
+import type { ComponentRef } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import {
   useDirectionalInputDown,
@@ -39,7 +39,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 export default function RenderComponent() {
   const { errorDialog } = useLoaderData<typeof loader>();
-  const listRef = useRef<ElementRef<"div">>(null);
+  const listRef = useRef<ComponentRef<"div">>(null);
   const submit = useSubmit();
   const { switchFocusBack, isInFocus, enableFocus } =
     useFocus<FocusElement>("errorDialog");

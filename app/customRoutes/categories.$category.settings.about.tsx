@@ -11,7 +11,7 @@ import {
   useInputBack,
   useInputConfirmation,
 } from "../hooks/useDirectionalInput/index.js";
-import type { ElementRef } from "react";
+import type { ComponentRef } from "react";
 import { useCallback } from "react";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
@@ -95,7 +95,7 @@ export default function About() {
   const { version } = useLoaderData<typeof loader>();
   const { isInFocus, switchFocusBack } = useFocus<FocusElement>(focus);
 
-  const selectEntry = useCallback((entry: ElementRef<"a">) => {
+  const selectEntry = useCallback((entry: ComponentRef<"a">) => {
     entry.focus();
   }, []);
 
@@ -108,7 +108,7 @@ export default function About() {
   );
 
   const onLeftOverTheEdge = useCallback(
-    ({ resetSelected }: Result<ElementRef<"a">>) => {
+    ({ resetSelected }: Result<ComponentRef<"a">>) => {
       goBack(resetSelected);
     },
     [goBack],

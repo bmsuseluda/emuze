@@ -1,5 +1,4 @@
-import type { ComponentPropsWithoutRef, ElementRef, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { IconChildrenWrapper } from "../IconChildrenWrapper/index.js";
 import { Typography } from "../Typography/index.js";
 import { styled } from "../../../styled-system/jsx/index.js";
@@ -31,21 +30,17 @@ export const StyledButton = styled("button", {
   },
 });
 
-export interface Props extends ComponentPropsWithoutRef<typeof StyledButton> {
+export interface Props extends ComponentProps<typeof StyledButton> {
   children?: ReactNode;
   loading?: boolean;
   icon?: ReactNode;
 }
 
-export const Button = forwardRef<ElementRef<typeof StyledButton>, Props>(
-  ({ children, loading = false, icon, ...rest }, ref) => (
-    <StyledButton {...rest} ref={ref}>
-      <IconChildrenWrapper rotate={loading}>
-        {icon}
-        {children && <Typography>{children}</Typography>}
-      </IconChildrenWrapper>
-    </StyledButton>
-  ),
+export const Button = ({ children, loading = false, icon, ...rest }: Props) => (
+  <StyledButton {...rest}>
+    <IconChildrenWrapper rotate={loading}>
+      {icon}
+      {children && <Typography>{children}</Typography>}
+    </IconChildrenWrapper>
+  </StyledButton>
 );
-
-Button.displayName = "Button";

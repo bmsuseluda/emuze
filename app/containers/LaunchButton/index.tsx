@@ -2,7 +2,7 @@ import { Button } from "../../components/Button/index.js";
 import { GamepadButtonIcon } from "../../components/GamepadButtonIcon/index.js";
 import { IoMdPlay } from "react-icons/io";
 import { layout } from "../../hooks/useGamepads/layouts/index.js";
-import type { ElementRef, RefObject } from "react";
+import type { ComponentRef, RefObject } from "react";
 import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping.js";
 import { LogoPulseModal } from "../../components/LogoPulseModal/index.js";
 import { useNavigation } from "react-router";
@@ -10,7 +10,7 @@ import { useNavigation } from "react-router";
 interface Props {
   gamepadType?: GamepadType;
   disabled?: boolean;
-  launchButtonRef: RefObject<ElementRef<"button">>;
+  launchButtonRef: RefObject<ComponentRef<"button"> | null>;
 }
 
 export const launchId = "launch";

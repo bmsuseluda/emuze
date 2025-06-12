@@ -10,7 +10,7 @@ import { IconChildrenWrapper } from "../components/IconChildrenWrapper/index.js"
 import { SettingsIcon } from "../components/SettingsIcon/index.js";
 import { useFullscreen } from "../hooks/useFullscreen/index.js";
 import { CheckboxLabel } from "../components/CheckboxLabel/index.js";
-import type { ElementRef, MouseEvent } from "react";
+import type { ComponentRef, MouseEvent } from "react";
 import { useCallback, useRef } from "react";
 import type { Result } from "../hooks/useGamepadsOnGrid/index.js";
 import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid/index.js";
@@ -67,11 +67,11 @@ export default function Appearance() {
   const { alwaysGameNames, collapseSidebar } = useLoaderData<typeof loader>();
   const fullscreen = useFullscreen();
 
-  const saveButtonRef = useRef<ElementRef<"button">>(null);
+  const saveButtonRef = useRef<ComponentRef<"button">>(null);
   const { isInFocus, switchFocusBack, switchFocus } =
     useFocus<FocusElement>(focus);
 
-  const selectEntry = useCallback((entry: ElementRef<"button">) => {
+  const selectEntry = useCallback((entry: ComponentRef<"button">) => {
     entry.focus();
   }, []);
 
@@ -84,7 +84,7 @@ export default function Appearance() {
   );
 
   const onLeftOverTheEdge = useCallback(
-    ({ resetSelected }: Result<ElementRef<"button">>) => {
+    ({ resetSelected }: Result<ComponentRef<"button">>) => {
       goBack(resetSelected);
     },
     [goBack],
@@ -121,7 +121,7 @@ export default function Appearance() {
   }, [isInFocus]);
 
   const onClick = useCallback(
-    (event: MouseEvent<ElementRef<"button">>) => {
+    (event: MouseEvent<ComponentRef<"button">>) => {
       if (!isInFocus) {
         switchFocus(focus);
         selectedEntry.current = event.currentTarget;
@@ -157,8 +157,9 @@ export default function Appearance() {
                       checked={fullscreen}
                       ref={entriesRefCallback(0)}
                       onCheckedChange={() => {
-                        window.electronAPI &&
+                        if (window.electronAPI) {
                           window.electronAPI.changeWindow("fullscreen");
+                        }
                       }}
                       onClick={onClick}
                     />

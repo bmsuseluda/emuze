@@ -40,15 +40,15 @@ const ElectronFocusProvider = ({ children }: { children: ReactNode }) => {
   const { disableGamepads, enableGamepads } = useGamepadConnected();
 
   useEffect(() => {
-    window.electronAPI &&
+    if (window.electronAPI) {
       window.electronAPI.onBlur(() => {
         disableGamepads();
       });
 
-    window.electronAPI &&
       window.electronAPI.onFocus(() => {
         enableGamepads();
       });
+    }
   }, [enableGamepads, disableGamepads]);
 
   return <>{children}</>;

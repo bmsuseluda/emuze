@@ -10,7 +10,7 @@ interface Props {
   open: boolean;
   onClose: () => void;
   onCancel: () => void;
-  entryListRef: RefObject<HTMLUListElement>;
+  entryListRef: RefObject<HTMLUListElement | null>;
   entriesRefCallback: (index: number) => (ref: HTMLButtonElement) => void;
 }
 

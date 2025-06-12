@@ -26,7 +26,9 @@ export const installMissingApplicationsOnLinux = async () => {
         const isInstalled = installFlatpak(flatpakId);
         if (isInstalled) {
           const category = readCategory(id);
-          category && writeCategory(category);
+          if (category) {
+            writeCategory(category);
+          }
         }
       });
     }

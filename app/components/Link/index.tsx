@@ -1,10 +1,9 @@
 import { styled } from "../../../styled-system/jsx/index.js";
 import type { IconType } from "react-icons";
 import { IconChildrenWrapper } from "../IconChildrenWrapper/index.js";
-import type { ComponentPropsWithoutRef, ElementRef } from "react";
-import { forwardRef } from "react";
+import type { ComponentProps } from "react";
 
-interface Props extends ComponentPropsWithoutRef<typeof StyledLink> {
+interface Props extends ComponentProps<typeof StyledLink> {
   icon: IconType;
 }
 
@@ -31,16 +30,13 @@ const StyledLink = styled("a", {
   },
 });
 
-export const Link = forwardRef<ElementRef<typeof StyledLink>, Props>(
-  ({ href, children, icon: Icon, ...rest }, ref) => {
-    return (
-      <StyledLink href={href} target="_blank" {...rest} ref={ref}>
-        <IconChildrenWrapper>
-          <Icon />
-          {children}
-        </IconChildrenWrapper>
-      </StyledLink>
-    );
-  },
-);
-Link.displayName = "Link";
+export const Link = ({ href, children, icon: Icon, ...rest }: Props) => {
+  return (
+    <StyledLink href={href} target="_blank" {...rest}>
+      <IconChildrenWrapper>
+        <Icon />
+        {children}
+      </IconChildrenWrapper>
+    </StyledLink>
+  );
+};

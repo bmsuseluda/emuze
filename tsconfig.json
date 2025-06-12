@@ -9,7 +9,7 @@
     "generateIcon/*",
     "generateNameMappings/**/*",
     "downloadEmulators/*",
-    "fetchMetaData/*",
+    "fetchMetaData/**/*",
     "dumpGames/*",
     "desktop/*",
     "readme/*",

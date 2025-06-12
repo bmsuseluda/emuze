@@ -1,4 +1,4 @@
-import type { ElementRef, MouseEvent } from "react";
+import type { ComponentRef, MouseEvent } from "react";
 import { useCallback } from "react";
 import type { ActionFunctionArgs } from "react-router";
 import {
@@ -288,7 +288,7 @@ export default function General() {
   );
 
   const onLeftOverTheEdge = useCallback(
-    ({ resetSelected }: Result<ElementRef<"button">>) => {
+    ({ resetSelected }: Result<ComponentRef<"button">>) => {
       goBack(resetSelected);
     },
     [goBack],
@@ -329,7 +329,7 @@ export default function General() {
   );
 
   const onOpenFileDialog = useCallback(
-    (event: MouseEvent<ElementRef<"button">>) => {
+    (event: MouseEvent<ComponentRef<"button">>) => {
       if (!isInFocus) {
         switchFocus(focus);
         selectedEntry.current = event.currentTarget;

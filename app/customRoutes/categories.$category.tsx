@@ -1,4 +1,4 @@
-import type { ElementRef } from "react";
+import type { ComponentRef } from "react";
 import { useCallback, useRef } from "react";
 import type { ActionFunction } from "react-router";
 import { Form, Outlet, redirect, useLoaderData } from "react-router";
@@ -128,7 +128,7 @@ const focus: FocusElement = "main";
 export default function Category() {
   const { categoryData, alwaysGameNames } = useLoaderData<typeof loader>();
 
-  const launchButtonRef = useRef<ElementRef<"button">>(null);
+  const launchButtonRef = useRef<ComponentRef<"button">>(null);
 
   const { isInFocus, switchFocus, switchFocusBack, enableFocus } =
     useFocus<FocusElement>(focus);

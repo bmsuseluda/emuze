@@ -62,7 +62,9 @@ export const IconButton = ({ variant, ...rest }: Props) => {
   const Icon = iconVariant[variant];
 
   const handleClick = () => {
-    window.electronAPI && window.electronAPI.changeWindow(variant);
+    if (window.electronAPI) {
+      window.electronAPI.changeWindow(variant);
+    }
   };
 
   if (variant === "close") {

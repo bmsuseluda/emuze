@@ -1,7 +1,5 @@
 import { Link as RemixLink } from "react-router";
 import type { LinkProps } from "react-router";
-import type { ElementRef } from "react";
-import { forwardRef } from "react";
 import { VscSettingsGear } from "react-icons/vsc";
 import { styled } from "../../../styled-system/jsx/index.js";
 
@@ -49,21 +47,20 @@ interface Props extends Omit<LinkProps, "to"> {
   to?: string;
 }
 
-export const SettingsLink = forwardRef<ElementRef<typeof Link>, Props>(
-  ({ isFullscreen = false, to = "settings", ...rest }, ref) => (
-    <Link
-      {...rest}
-      to={to}
-      aria-label="Settings"
-      title="Settings"
-      prefetch="intent"
-      draggable={false}
-      isFullscreen={isFullscreen}
-      ref={ref}
-    >
-      <VscSettingsGear />
-    </Link>
-  ),
+export const SettingsLink = ({
+  isFullscreen = false,
+  to = "settings",
+  ...rest
+}: Props) => (
+  <Link
+    {...rest}
+    to={to}
+    aria-label="Settings"
+    title="Settings"
+    prefetch="intent"
+    draggable={false}
+    isFullscreen={isFullscreen}
+  >
+    <VscSettingsGear />
+  </Link>
 );
-
-SettingsLink.displayName = "SettingsLink";

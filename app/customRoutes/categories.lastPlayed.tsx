@@ -1,4 +1,4 @@
-import type { ElementRef } from "react";
+import type { ComponentRef } from "react";
 import { useCallback, useRef } from "react";
 import type { ActionFunction } from "react-router";
 import { Form, Outlet, redirect, useLoaderData } from "react-router";
@@ -90,7 +90,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 export default function LastPlayed() {
   const { lastPlayed, alwaysGameNames } = useLoaderData<typeof loader>();
 
-  const launchButtonRef = useRef<ElementRef<"button">>(null);
+  const launchButtonRef = useRef<ComponentRef<"button">>(null);
 
   const { isInFocus, switchFocus, switchFocusBack, enableFocus } =
     useFocus<FocusElement>("main");

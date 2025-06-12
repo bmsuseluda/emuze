@@ -1,5 +1,4 @@
-import type { ComponentPropsWithoutRef, ElementRef } from "react";
-import { forwardRef } from "react";
+import type { ComponentProps } from "react";
 import * as RadixSelect from "@radix-ui/react-select";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { GiCheckMark } from "react-icons/gi";
@@ -90,43 +89,39 @@ const StyledItemIndicator = styled(RadixSelect.ItemIndicator, {
   },
 });
 
-const Trigger = forwardRef<
-  ElementRef<typeof SelectTrigger>,
-  ComponentPropsWithoutRef<typeof SelectTrigger> & { placeholder?: string }
->(({ placeholder, ...rest }, ref) => (
-  <SelectTrigger ref={ref} {...rest}>
+const Trigger = ({
+  placeholder,
+  ...rest
+}: ComponentProps<typeof SelectTrigger> & {
+  placeholder?: string;
+}) => (
+  <SelectTrigger {...rest}>
     <RadixSelect.Value placeholder={placeholder} />
     <SelectIcon>
       <TiArrowSortedDown />
     </SelectIcon>
   </SelectTrigger>
-));
-Trigger.displayName = "Trigger";
+);
 
-const Content = forwardRef<
-  ElementRef<typeof StyledContent>,
-  ComponentPropsWithoutRef<typeof StyledContent>
->(({ children, ...rest }, ref) => (
-  <StyledContent position="popper" sideOffset={5} {...rest} ref={ref}>
+const Content = ({
+  children,
+  ...rest
+}: ComponentProps<typeof StyledContent>) => (
+  <StyledContent position="popper" sideOffset={5} {...rest}>
     <RadixSelect.Viewport>
       <RadixSelect.Group>{children}</RadixSelect.Group>
     </RadixSelect.Viewport>
   </StyledContent>
-));
-Content.displayName = "Content";
+);
 
-const Item = forwardRef<
-  ElementRef<typeof StyledItem>,
-  ComponentPropsWithoutRef<typeof StyledItem>
->(({ children, ...props }, ref) => (
-  <StyledItem {...props} ref={ref}>
+const Item = ({ children, ...props }: ComponentProps<typeof StyledItem>) => (
+  <StyledItem {...props}>
     <RadixSelect.ItemText>{children}</RadixSelect.ItemText>
     <StyledItemIndicator>
       <GiCheckMark />
     </StyledItemIndicator>
   </StyledItem>
-));
-Item.displayName = "Item";
+);
 
 export const Select = {
   Root: RadixSelect.Root,

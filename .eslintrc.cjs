@@ -12,6 +12,7 @@ module.exports = {
     "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:storybook/recommended",
+    "plugin:deprecation/recommended",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -20,6 +21,7 @@ module.exports = {
     },
     ecmaVersion: "latest",
     sourceType: "module",
+    project: "./tsconfig.json"
   },
   plugins: ["@typescript-eslint", "react-hooks"],
   settings: {

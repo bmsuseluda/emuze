@@ -61,7 +61,6 @@ export type ExcludeFilesFunction = (filePaths: string[]) => string[];
 export interface Application {
   id: ApplicationId;
   name: string;
-  /** @deprecated use bundledPathWindows instead **/
   executable?: `${string}.exe`;
   fileExtensions?: `${string}.${string}`[];
   entryAsDirectory?: boolean;

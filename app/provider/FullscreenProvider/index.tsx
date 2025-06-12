@@ -14,16 +14,16 @@ export const FullscreenProvider = ({
 }: Props) => {
   const [fullscreen, setFullscreen] = useState(fullscreenDefault);
   useEffect(() => {
-    window.electronAPI &&
+    if (window.electronAPI) {
       window.electronAPI.isFullscreen().then((result: boolean) => {
         if (result) {
           setFullscreen(true);
         }
       });
-    window.electronAPI &&
       window.electronAPI.onFullscreen((fullscreen: boolean) => {
         setFullscreen(fullscreen);
       });
+    }
   }, []);
 
   return (

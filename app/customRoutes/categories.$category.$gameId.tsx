@@ -9,7 +9,7 @@ import {
 import { readGeneral } from "../server/settings.server.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
-import type { ElementRef } from "react";
+import type { ComponentRef } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
 import { LaunchButton, launchId } from "../containers/LaunchButton/index.js";
@@ -103,7 +103,10 @@ export const action: ActionFunction = async ({ request, params }) => {
           (value) => value.id === game,
         );
 
-        subEntryData && (await startGame(systemId, subEntryData, gameData));
+        if (subEntryData) {
+          await startGame(systemId, subEntryData, gameData);
+        }
+
         return { ok: true };
       }
     }
@@ -143,7 +146,7 @@ const focus: FocusElement = "gameDialog";
 export default function Index() {
   const { gameData } = useLoaderData<typeof loader>();
 
-  const launchButtonRef = useRef<ElementRef<"button">>(null);
+  const launchButtonRef = useRef<ComponentRef<"button">>(null);
 
   const { isInFocus, enableFocus, switchFocusBack } =
     useFocus<FocusElement>(focus);

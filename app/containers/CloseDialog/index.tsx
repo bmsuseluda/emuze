@@ -40,8 +40,8 @@ export const CloseDialogContainer = () => {
   useInputSettings(onCancel);
 
   const onClose = useCallback(() => {
-    if (isInFocus) {
-      window.electronAPI && window.electronAPI.closeEmuze();
+    if (isInFocus && window.electronAPI) {
+      window.electronAPI.closeEmuze();
     }
   }, [isInFocus]);
 

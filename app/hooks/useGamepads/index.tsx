@@ -65,7 +65,7 @@ type ButtonStates = Record<number, boolean[]>;
 
 export const useGamepads = () => {
   const { throttleFunction } = useThrottlePress();
-  const requestAnimationFrameRef = useRef<number>();
+  const requestAnimationFrameRef = useRef<number>(undefined);
   const gameIsRunningRef = useRef<boolean>(false);
   const focusRef = useRef<boolean>(true);
   const isEnabled = useRef<boolean>(true);

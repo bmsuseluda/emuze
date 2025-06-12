@@ -1,8 +1,13 @@
-import type { ElementRef, ReactNode, SyntheticEvent } from "react";
-import { forwardRef, useEffect, useRef, useState } from "react";
+import type {
+  ComponentProps,
+  ComponentRef,
+  ReactNode,
+  SyntheticEvent,
+} from "react";
+import { useEffect, useRef, useState } from "react";
 import { styled } from "../../../../../styled-system/jsx/index.js";
 
-interface Props {
+interface Props extends ComponentProps<typeof Input> {
   id: string;
   name: string;
   icon?: ReactNode;
@@ -163,72 +168,65 @@ const getImageSrc = ({ imageUrl }: { imageUrl?: string }) => {
   return imageUrl;
 };
 
-export const Game = forwardRef<ElementRef<typeof Input>, Props>(
-  (
-    {
-      id,
-      name,
-      alwaysGameName = false,
-      imageUrl,
-      onClick,
-      onDoubleClick,
-      icon,
-      isInFocus,
-    },
-    ref,
-  ) => {
-    const [error, setError] = useState(false);
+export const Game = ({
+  id,
+  name,
+  alwaysGameName = false,
+  imageUrl,
+  onClick,
+  onDoubleClick,
+  icon,
+  isInFocus,
+  ref,
+}: Props) => {
+  const [error, setError] = useState(false);
 
-    // TODO: remove ref and useEffect if bug is resolved https://github.com/facebook/react/issues/15446
-    const imageRef = useRef<ElementRef<"img">>(null);
-    useEffect(() => {
-      if (imageRef && imageRef.current) {
-        const { complete, naturalHeight } = imageRef.current;
-        const errorLoadingImgBeforeHydration = complete && naturalHeight === 0;
+  // TODO: remove ref and useEffect if bug is resolved https://github.com/facebook/react/issues/15446
+  const imageRef = useRef<ComponentRef<"img">>(null);
+  useEffect(() => {
+    if (imageRef && imageRef.current) {
+      const { complete, naturalHeight } = imageRef.current;
+      const errorLoadingImgBeforeHydration = complete && naturalHeight === 0;
 
-        if (errorLoadingImgBeforeHydration) {
-          setError(true);
-          imageRef.current.src = fallbackImageUrl;
-        }
+      if (errorLoadingImgBeforeHydration) {
+        setError(true);
+        imageRef.current.src = fallbackImageUrl;
       }
-    }, []);
+    }
+  }, []);
 
-    const displayedName = getDisplayedName(
-      name,
-      alwaysGameName,
-      !!imageUrl,
-      error,
-    );
+  const displayedName = getDisplayedName(
+    name,
+    alwaysGameName,
+    !!imageUrl,
+    error,
+  );
 
-    const handleImageError = (
-      event: SyntheticEvent<HTMLImageElement, Event>,
-    ) => {
-      setError(true);
-      event.currentTarget.src = fallbackImageUrl;
-    };
+  const handleImageError = (event: SyntheticEvent<HTMLImageElement, Event>) => {
+    setError(true);
+    event.currentTarget.src = fallbackImageUrl;
+  };
 
-    return (
-      <Wrapper>
-        <Label
-          onClick={onClick}
-          onDoubleClick={onDoubleClick}
-          isInFocus={isInFocus}
-        >
-          <Input type="radio" name="game" value={id} ref={ref} />
-          <ImageWrapper>
-            {icon && <IconWrapper>{icon}</IconWrapper>}
-            <Image
-              src={getImageSrc({ imageUrl })}
-              alt={`${name} cover`}
-              draggable={false}
-              onError={handleImageError}
-              ref={imageRef}
-            />
-            {displayedName && <Name>{displayedName}</Name>}
-          </ImageWrapper>
-        </Label>
-      </Wrapper>
-    );
-  },
-);
-Game.displayName = "Game";
+  return (
+    <Wrapper>
+      <Label
+        onClick={onClick}
+        onDoubleClick={onDoubleClick}
+        isInFocus={isInFocus}
+      >
+        <Input type="radio" name="game" value={id} ref={ref} />
+        <ImageWrapper>
+          {icon && <IconWrapper>{icon}</IconWrapper>}
+          <Image
+            src={getImageSrc({ imageUrl })}
+            alt={`${name} cover`}
+            draggable={false}
+            onError={handleImageError}
+            ref={imageRef}
+          />
+          {displayedName && <Name>{displayedName}</Name>}
+        </ImageWrapper>
+      </Label>
+    </Wrapper>
+  );
+};
