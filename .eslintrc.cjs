@@ -9,7 +9,7 @@ module.exports = {
     "eslint:recommended",
     "plugin:node/recommended",
     "plugin:import/recommended",
-    "plugin:react-hooks/recommended",
+    "plugin:react-hooks/recommended-legacy",
     "plugin:@typescript-eslint/recommended",
     "plugin:storybook/recommended",
     "plugin:deprecation/recommended",

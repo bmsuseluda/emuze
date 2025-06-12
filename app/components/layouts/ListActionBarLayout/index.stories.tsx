@@ -3,7 +3,7 @@ import { Button } from "../../Button/index.js";
 import { Label } from "../../Label/index.js";
 import { TextInput } from "../../TextInput/index.js";
 
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { styled } from "../../../../styled-system/jsx/index.js";
 
 const meta = {

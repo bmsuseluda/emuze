@@ -1,6 +1,6 @@
 import { SidebarMainLayout } from "./index.js";
 
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SystemIcon } from "../../SystemIcon/index.js";
 import { styled } from "../../../../styled-system/jsx/index.js";
 

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { GamepadButtonIcon } from "./index.js";
 import { layout } from "../../hooks/useGamepads/layouts/index.js";

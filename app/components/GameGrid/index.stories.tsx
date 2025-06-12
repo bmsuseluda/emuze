@@ -1,6 +1,6 @@
 import { GameGrid } from "./index.js";
 import { games, gamesLastPlayed } from "./testData.js";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = {
   component: GameGrid,
