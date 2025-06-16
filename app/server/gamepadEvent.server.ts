@@ -53,10 +53,25 @@ const getAxisButtonId = (
   }
 };
 
+const getAxisButtonSisterId = (
+  axis: Sdl.Controller.Axis,
+  buttonId: ButtonId,
+): ButtonId | undefined => {
+  switch (axis) {
+    case "leftStickX":
+      return buttonId === "leftStickLeft" ? "leftStickRight" : "leftStickLeft";
+    case "leftStickY":
+      return buttonId === "leftStickUp" ? "leftStickDown" : "leftStickUp";
+    default:
+      return undefined;
+  }
+};
+
 let gamepads: Sdl.Controller.ControllerInstance[] = [];
 const axisMaxValue = 1;
 const axisValueThreshold = axisMaxValue / 2;
 
+// TODO: add tests
 const addGamepadEvents = (
   device: Sdl.Controller.Device,
   sendEvent: (data: GamepadData) => void,
@@ -78,18 +93,21 @@ const addGamepadEvents = (
     });
   });
   controller.on("axisMotion", ({ axis, value }) => {
-    log("debug", "axisMotion", axis, value);
     const pressed = value < -axisValueThreshold || value > axisValueThreshold;
     const buttonId = getAxisButtonId(axis, value);
+    const buttonSisterId = getAxisButtonSisterId(axis, buttonId);
 
     if (axisButtonsPressed[buttonId] !== pressed) {
+      log("debug", "axisMotion", axis, value);
       sendEvent({
         gamepadType: getGamepadType(device.type),
         buttonId: buttonId,
         eventType: pressed ? "buttonDown" : "buttonUp",
       });
       axisButtonsPressed[buttonId] = pressed;
-      // TODO: toggle sisterButton or save axis and value instead of buttonId and pressed boolean
+      if (buttonSisterId && pressed) {
+        axisButtonsPressed[buttonSisterId] = false;
+      }
     }
   });
 };
@@ -99,6 +117,9 @@ export const handleGamepadEvents = (sendEvent: (data: GamepadData) => void) => {
 
   sdl.controller.on("deviceAdd", (event) => {
     addGamepadEvents(event.device, sendEvent);
+  });
+  sdl.controller.on("deviceRemove", (event) => {
+    gamepads = gamepads.filter(({ device }) => event.device.id !== device.id);
   });
   const devices = sdl.controller.devices;
   if (devices.length > 0) {
