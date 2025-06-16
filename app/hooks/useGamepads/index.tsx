@@ -1,183 +1,65 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { StickDirection } from "./layouts/index.js";
-import { layout } from "./layouts/index.js";
-import type { GamepadType } from "./gamepadTypeMapping.js";
-import { identifyGamepadType } from "./gamepadTypeMapping.js";
-import { useThrottlePress } from "../useThrottlePress/index.js";
+import {
+  getGamepadButtonEventName,
+  type ButtonId,
+  type GamepadData,
+  type GamepadType,
+} from "../../types/gamepad.js";
 
-const buttonsForKeyDownEvent = [
-  layout.buttons.DPadDown,
-  layout.buttons.DPadLeft,
-  layout.buttons.DPadRight,
-  layout.buttons.DPadUp,
+const buttonsForKeyDownEvent: ButtonId[] = [
+  "dpadUp",
+  "dpadDown",
+  "dpadLeft",
+  "dpadRight",
+  "leftStickUp",
+  "leftStickDown",
+  "leftStickLeft",
+  "leftStickRight",
 ];
 
-const isStickPressed = (stickValue: number) => {
-  const normalizedStickValue = stickValue < 0 ? stickValue * -1 : stickValue;
-  return normalizedStickValue > 0.5;
+const dispatchButtonPressEvent = (buttonId: ButtonId) => {
+  dispatchEvent(new CustomEvent(getGamepadButtonEventName(buttonId)));
 };
 
-const dispatchStickDirectionEvent = (stickDirection: StickDirection) => {
-  dispatchEvent(new CustomEvent(`gamepadon${stickDirection}`));
-};
-
-const filterValveGamepads = (gamepads: (Gamepad | null)[]) =>
-  gamepads.filter(isValveGamepad);
-
-const isValveGamepad = (gamepad: Gamepad | null) =>
-  gamepad && gamepad.id.includes("Vendor: 28de");
-
-const isMaskedGamepad = (valveGamepads: (Gamepad | null)[], gamepad: Gamepad) =>
-  valveGamepads.find(
-    (valveGamepad) =>
-      valveGamepad &&
-      Math.abs(valveGamepad.timestamp - gamepad.timestamp) <= 10,
-  );
-
-export const excludeMaskedGamepads = (gamepads: (Gamepad | null)[]) => {
-  const valveGamepads = filterValveGamepads(gamepads);
-
-  return gamepads.filter(
-    (gamepad) =>
-      gamepad &&
-      (isValveGamepad(gamepad) || !isMaskedGamepad(valveGamepads, gamepad)),
-  );
-};
-
-export const identifyGamepadTypeUnmasked = (gamepad: Gamepad) => {
-  if (isValveGamepad(gamepad)) {
-    const maskedGamepad = navigator
-      .getGamepads()
-      .find(
-        (otherGamepad) =>
-          otherGamepad && isMaskedGamepad([gamepad], otherGamepad),
-      );
-
-    if (maskedGamepad) {
-      return identifyGamepadType(maskedGamepad.id);
-    }
-  } else {
-    return identifyGamepadType(gamepad.id);
-  }
-};
-
-type ButtonStates = Record<number, boolean[]>;
+type ButtonPressedIntervals = Partial<
+  Record<ButtonId, ReturnType<typeof setInterval>>
+>;
 
 export const useGamepads = () => {
-  const { throttleFunction } = useThrottlePress();
-  const requestAnimationFrameRef = useRef<number>(undefined);
+  const eventSourceRef = useRef<EventSource>(undefined);
   const gameIsRunningRef = useRef<boolean>(false);
   const focusRef = useRef<boolean>(true);
   const isEnabled = useRef<boolean>(true);
-  const buttonStates = useRef<ButtonStates>({});
+  const buttonPressedIntervalRef = useRef<ButtonPressedIntervals>({});
   const [gamepadType, setGamepadType] = useState<GamepadType>();
 
-  // TODO: split function
   const fireEventOnButtonPress = useCallback(
-    (gamepads: (Gamepad | null)[]) => {
+    ({ buttonId, gamepadType, eventType }: GamepadData) => {
       if (!document.hidden && document.visibilityState === "visible") {
-        gamepads.forEach((gamepad) => {
-          if (gamepad) {
-            gamepad.buttons.forEach((button, index) => {
-              const dispatchButtonEvent = () => {
-                setGamepadType(identifyGamepadTypeUnmasked(gamepad));
-                dispatchEvent(new CustomEvent(`gamepadonbutton${index}press`));
-              };
+        setGamepadType(gamepadType);
 
-              if (button.pressed && buttonsForKeyDownEvent.includes(index)) {
-                // key down event
-                throttleFunction(dispatchButtonEvent, gamepad.index);
-              } else if (
-                !button.pressed &&
-                !buttonsForKeyDownEvent.includes(index) &&
-                buttonStates.current[gamepad.index]?.[index]
-              ) {
-                // key up event
-                dispatchButtonEvent();
-              }
-            });
-
-            gamepad.axes.forEach((stickValue, index) => {
-              if (isStickPressed(stickValue)) {
-                const functionToThrottle = () => {
-                  setGamepadType(identifyGamepadTypeUnmasked(gamepad));
-
-                  // TODO: simplify with generic function
-                  switch (index) {
-                    case layout.axes.leftStickX: {
-                      if (stickValue > 0) {
-                        dispatchStickDirectionEvent("leftStickRight");
-                      } else {
-                        dispatchStickDirectionEvent("leftStickLeft");
-                      }
-                      break;
-                    }
-                    case layout.axes.leftStickY: {
-                      if (stickValue > 0) {
-                        dispatchStickDirectionEvent("leftStickDown");
-                      } else {
-                        dispatchStickDirectionEvent("leftStickUp");
-                      }
-                      break;
-                    }
-                    case layout.axes.rightStickX: {
-                      if (stickValue > 0) {
-                        dispatchStickDirectionEvent("rightStickRight");
-                      } else {
-                        dispatchStickDirectionEvent("rightStickLeft");
-                      }
-                      break;
-                    }
-                    case layout.axes.rightStickY: {
-                      if (stickValue > 0) {
-                        dispatchStickDirectionEvent("rightStickDown");
-                      } else {
-                        dispatchStickDirectionEvent("rightStickUp");
-                      }
-                      break;
-                    }
-                    case layout.axes.extraStickX: {
-                      if (stickValue > 0) {
-                        dispatchStickDirectionEvent("extraStickRight");
-                      } else {
-                        dispatchStickDirectionEvent("extraStickLeft");
-                      }
-                      break;
-                    }
-                    case layout.axes.extraStickY: {
-                      if (stickValue > 0) {
-                        dispatchStickDirectionEvent("extraStickDown");
-                      } else {
-                        dispatchStickDirectionEvent("extraStickUp");
-                      }
-                      break;
-                    }
-                  }
-                };
-
-                throttleFunction(functionToThrottle, gamepad.index);
-              }
-            });
-
-            buttonStates.current[gamepad.index] = gamepad.buttons.map(
-              ({ pressed }) => pressed,
+        if (eventType === "buttonDown") {
+          if (buttonsForKeyDownEvent.includes(buttonId)) {
+            const intervalId = setInterval(
+              () => dispatchButtonPressEvent(buttonId),
+              200,
             );
+            buttonPressedIntervalRef.current[buttonId] = intervalId;
           }
-        });
+
+          dispatchButtonPressEvent(buttonId);
+        }
+
+        if (eventType === "buttonUp") {
+          const intervalId = buttonPressedIntervalRef.current[buttonId];
+          if (intervalId) {
+            clearInterval(intervalId);
+          }
+        }
       }
     },
-    [throttleFunction],
+    [],
   );
-
-  const update = useCallback(() => {
-    if (focusRef.current) {
-      const gamepads = navigator.getGamepads();
-      if (gamepads.length > 0 && gamepads.find(Boolean)) {
-        fireEventOnButtonPress(excludeMaskedGamepads(gamepads));
-      }
-      requestAnimationFrameRef.current = requestAnimationFrame(update);
-    }
-  }, [fireEventOnButtonPress]);
 
   const disableGamepads = useCallback((gameIsRunning?: boolean) => {
     if (gameIsRunning) {
@@ -185,10 +67,37 @@ export const useGamepads = () => {
     }
     focusRef.current = false;
     isEnabled.current = false;
-    if (requestAnimationFrameRef.current) {
-      cancelAnimationFrame(requestAnimationFrameRef.current);
+    if (eventSourceRef.current) {
+      eventSourceRef.current.close();
     }
   }, []);
+
+  const getEvents = useCallback(() => {
+    const eventSourceOpen: number[] = [
+      EventSource.CONNECTING,
+      EventSource.OPEN,
+    ];
+
+    if (
+      !eventSourceRef.current ||
+      !eventSourceOpen.includes(eventSourceRef.current.readyState)
+    ) {
+      const eventSource = new EventSource("/gamepad-events");
+      eventSourceRef.current = eventSource;
+      eventSource.onmessage = (event) => {
+        try {
+          const gamepadData: GamepadData = JSON.parse(event.data);
+          fireEventOnButtonPress(gamepadData);
+        } catch (error) {
+          console.error("Error parsing gamepad event:", error);
+        }
+      };
+
+      eventSource.onerror = (error) => {
+        console.error("EventSource error:", error);
+      };
+    }
+  }, [fireEventOnButtonPress]);
 
   const enableGamepads = useCallback(
     (gameIsNotRunningAnymore?: boolean) => {
@@ -198,10 +107,10 @@ export const useGamepads = () => {
       if (!gameIsRunningRef.current) {
         focusRef.current = true;
         isEnabled.current = true;
-        update();
+        getEvents();
       }
     },
-    [update],
+    [getEvents],
   );
 
   const handleVisibilityChange = useCallback(() => {
@@ -224,11 +133,9 @@ export const useGamepads = () => {
     enableGamepads();
 
     return () => {
-      if (requestAnimationFrameRef.current) {
-        cancelAnimationFrame(requestAnimationFrameRef.current);
-      }
+      disableGamepads();
     };
-  }, [enableGamepads]);
+  }, [enableGamepads, disableGamepads]);
 
   return {
     gamepadType,

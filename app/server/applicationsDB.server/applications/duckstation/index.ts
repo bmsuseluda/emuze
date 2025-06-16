@@ -17,8 +17,8 @@ import { defaultSettings } from "./defaultSettings.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import { envPaths } from "../../../envPaths.server.js";
-import type { SdlType } from "../../../../types/sdl.js";
 import { getSdl } from "../../../importSdl.server.js";
+import type { SdlType } from "../../../../types/gamepad.js";
 
 const flatpakId = "org.duckstation.DuckStation";
 const applicationId: ApplicationId = "duckstation";

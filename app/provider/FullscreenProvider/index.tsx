@@ -26,9 +26,5 @@ export const FullscreenProvider = ({
     }
   }, []);
 
-  return (
-    <FullscreenContext.Provider value={fullscreen}>
-      {children}
-    </FullscreenContext.Provider>
-  );
+  return <FullscreenContext value={fullscreen}>{children}</FullscreenContext>;
 };

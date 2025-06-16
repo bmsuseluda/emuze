@@ -4,9 +4,9 @@ import { log } from "../../../debug.server.js";
 import { VirtualGamepad } from "./VirtualGamepad.js";
 import { getKeyboardKey as initGetKeyboardKey } from "./keyboardConfig.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
-import type { SdlType } from "../../../../types/sdl.js";
 import { getSdl } from "../../../importSdl.server.js";
 import { getPhysicalGamepad } from "./getPhysicalGamepad.js";
+import type { SdlType } from "../../../../types/gamepad.js";
 
 type MednafenButtonIdPcEngine =
   | "up"

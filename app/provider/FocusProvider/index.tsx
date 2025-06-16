@@ -32,7 +32,7 @@ export const FocusProvider = ({
   const focusHistory = useRef<string[]>(focusHistoryDefault || []);
 
   return (
-    <FocusContext.Provider
+    <FocusContext
       value={{
         elementInFocus,
         setElementInFocus,
@@ -40,6 +40,6 @@ export const FocusProvider = ({
       }}
     >
       {children}
-    </FocusContext.Provider>
+    </FocusContext>
   );
 };

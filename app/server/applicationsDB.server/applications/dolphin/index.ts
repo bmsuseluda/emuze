@@ -19,8 +19,8 @@ import { emulatorsDirectory } from "../../../homeDirectory.server.js";
 import { isGamecubeController } from "../../gamepads.js";
 import { defaultDolphinSettings } from "./defaultDolphinSettings.js";
 import { keyboardConfig } from "./keyboardConfig.js";
-import type { SdlType } from "../../../../types/sdl.js";
 import { getSdl } from "../../../importSdl.server.js";
+import type { SdlType } from "../../../../types/gamepad.js";
 
 const flatpakId = "org.DolphinEmu.dolphin-emu";
 const applicationId: ApplicationId = "dolphin";

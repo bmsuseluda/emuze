@@ -1,9 +1,9 @@
 import type { ChildProcess } from "node:child_process";
 import kill from "tree-kill";
-import type { SdlType } from "../types/sdl.js";
 import { log } from "./debug.server.js";
 import { importElectron } from "./importElectron.server.js";
 import type { Sdl } from "@kmamal/sdl";
+import type { SdlType } from "../types/gamepad.js";
 
 const killChildProcess = (childProcess: ChildProcess) => {
   log("debug", "kill process");

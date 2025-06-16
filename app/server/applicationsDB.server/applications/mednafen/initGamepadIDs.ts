@@ -4,7 +4,7 @@ import { spawnSync } from "node:child_process";
 
 import { checkFlatpakIsInstalled } from "../../checkEmulatorIsInstalled.js";
 import { flatpakId, flatpakOptionParams } from "./definitions.js";
-import type { SdlType } from "../../../../types/sdl.js";
+import type { SdlType } from "../../../../types/gamepad.js";
 
 export interface GamepadID {
   id: string;

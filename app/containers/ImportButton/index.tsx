@@ -1,13 +1,13 @@
 import { Button } from "../../components/Button/index.js";
 import { GamepadButtonIcon } from "../../components/GamepadButtonIcon/index.js";
 import { IoMdRefresh } from "react-icons/io";
-import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping.js";
 import { useNavigation } from "react-router";
 import type { ReactNode } from "react";
 import { useImportButton } from "./useImportButton.js";
 import type { ImportButtonId } from "./importButtonId.js";
-import { importButtonGamepadButtonIndex } from "./importButtonId.js";
+import { importButtonGamepadButtonId } from "./importButtonId.js";
 import { LogoPulseModal } from "../../components/LogoPulseModal/index.js";
+import type { GamepadType } from "../../types/gamepad.js";
 
 interface Props {
   gamepadType?: GamepadType;
@@ -37,7 +37,7 @@ export const ImportButton = ({
         icon={
           gamepadType ? (
             <GamepadButtonIcon
-              buttonIndex={importButtonGamepadButtonIndex}
+              buttonId={importButtonGamepadButtonId}
               gamepadType={gamepadType}
             />
           ) : (

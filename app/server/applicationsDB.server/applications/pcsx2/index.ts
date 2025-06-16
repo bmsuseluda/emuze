@@ -18,7 +18,7 @@ import type { ApplicationId } from "../../applicationId.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { getSdl } from "../../../importSdl.server.js";
-import { type SdlType } from "../../../../types/sdl.js";
+import type { SdlType } from "../../../../types/gamepad.js";
 
 const flatpakId = "net.pcsx2.PCSX2";
 const applicationId: ApplicationId = "pcsx2";

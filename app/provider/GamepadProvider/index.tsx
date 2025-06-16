@@ -1,7 +1,7 @@
 import type { RefObject, ReactNode } from "react";
 import { createContext } from "react";
 import { useGamepads } from "../../hooks/useGamepads/index.js";
-import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping.js";
+import type { GamepadType } from "../../types/gamepad.js";
 
 type GamepadContextState = {
   gamepadType?: GamepadType;
@@ -28,7 +28,7 @@ export const GamepadProvider = ({ children }: Props) => {
     useGamepads();
 
   return (
-    <GamepadContext.Provider
+    <GamepadContext
       value={{
         gamepadType,
         enableGamepads,
@@ -37,6 +37,6 @@ export const GamepadProvider = ({ children }: Props) => {
       }}
     >
       {children}
-    </GamepadContext.Provider>
+    </GamepadContext>
   );
 };

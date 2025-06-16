@@ -15,8 +15,8 @@ import { keyboardConfig } from "./keyboardConfig.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { isGamecubeController } from "../../gamepads.js";
 import { sortGamecubeLast } from "../../sortGamepads.js";
-import type { SdlType } from "../../../../types/sdl.js";
 import { getSdl } from "../../../importSdl.server.js";
+import type { SdlType } from "../../../../types/gamepad.js";
 
 const applicationId: ApplicationId = "ryujinx";
 const flatpakId = "org.ryujinx.Ryujinx";
