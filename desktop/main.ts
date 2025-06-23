@@ -180,6 +180,5 @@ app.on("ready", async () => {
 });
 
 app.on("will-quit", () => {
-  // Unregister all shortcuts.
   globalShortcut.unregisterAll();
 });

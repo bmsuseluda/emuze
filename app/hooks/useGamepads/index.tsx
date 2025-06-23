@@ -6,6 +6,9 @@ import {
   type GamepadType,
 } from "../../types/gamepad.js";
 
+const holdButtonInterval = 225;
+const holdButtonInitialDelay = 275;
+
 const buttonsForKeyDownEvent: ButtonId[] = [
   "dpadUp",
   "dpadDown",
@@ -21,44 +24,81 @@ const dispatchButtonPressEvent = (buttonId: ButtonId) => {
   dispatchEvent(new CustomEvent(getGamepadButtonEventName(buttonId)));
 };
 
-type ButtonPressedIntervals = Partial<
-  Record<ButtonId, ReturnType<typeof setInterval>>
->;
-
 export const useGamepads = () => {
   const eventSourceRef = useRef<EventSource>(undefined);
   const gameIsRunningRef = useRef<boolean>(false);
   const focusRef = useRef<boolean>(true);
   const isEnabled = useRef<boolean>(true);
-  const buttonPressedIntervalRef = useRef<ButtonPressedIntervals>({});
+  const buttonPressedIntervalRef =
+    useRef<ReturnType<typeof setInterval>>(undefined);
+  const buttonPressedTimeoutRef =
+    useRef<ReturnType<typeof setTimeout>>(undefined);
   const [gamepadType, setGamepadType] = useState<GamepadType>();
+
+  const clearButtonPressedInterval = useCallback(() => {
+    const intervalId = buttonPressedIntervalRef.current;
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
+  }, []);
+
+  const clearButtonPressedTimeout = useCallback(() => {
+    const timeoutId = buttonPressedTimeoutRef.current;
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+  }, []);
+
+  const updateButtonPressedIntervalRef = useCallback(
+    (newIntervalId: ReturnType<typeof setInterval>) => {
+      const oldIntervalId = buttonPressedIntervalRef.current;
+      if (oldIntervalId) {
+        clearInterval(oldIntervalId);
+      }
+      buttonPressedIntervalRef.current = newIntervalId;
+    },
+    [],
+  );
+
+  const isFireEventAllowed = () =>
+    !document.hidden &&
+    document.visibilityState === "visible" &&
+    !gameIsRunningRef.current &&
+    focusRef.current &&
+    isEnabled.current;
 
   const fireEventOnButtonPress = useCallback(
     ({ buttonId, gamepadType, eventType }: GamepadData) => {
-      if (!document.hidden && document.visibilityState === "visible") {
+      if (isFireEventAllowed()) {
         setGamepadType(gamepadType);
 
         if (eventType === "buttonDown") {
           if (buttonsForKeyDownEvent.includes(buttonId)) {
-            const intervalId = setInterval(
-              () => dispatchButtonPressEvent(buttonId),
-              200,
-            );
-            buttonPressedIntervalRef.current[buttonId] = intervalId;
+            clearButtonPressedTimeout();
+            const timeoutId = setTimeout(() => {
+              const intervalId = setInterval(
+                () => dispatchButtonPressEvent(buttonId),
+                holdButtonInterval,
+              );
+              updateButtonPressedIntervalRef(intervalId);
+            }, holdButtonInitialDelay);
+            buttonPressedTimeoutRef.current = timeoutId;
           }
 
           dispatchButtonPressEvent(buttonId);
         }
 
         if (eventType === "buttonUp") {
-          const intervalId = buttonPressedIntervalRef.current[buttonId];
-          if (intervalId) {
-            clearInterval(intervalId);
-          }
+          clearButtonPressedTimeout();
+          clearButtonPressedInterval();
         }
       }
     },
-    [],
+    [
+      clearButtonPressedInterval,
+      clearButtonPressedTimeout,
+      updateButtonPressedIntervalRef,
+    ],
   );
 
   const disableGamepads = useCallback((gameIsRunning?: boolean) => {
@@ -67,9 +107,6 @@ export const useGamepads = () => {
     }
     focusRef.current = false;
     isEnabled.current = false;
-    if (eventSourceRef.current) {
-      eventSourceRef.current.close();
-    }
   }, []);
 
   const getEvents = useCallback(() => {

@@ -1,10 +1,10 @@
 import { isWindows } from "../../../operationsystem.server.js";
 import { log } from "../../../debug.server.js";
 import { spawnSync } from "node:child_process";
+import sdl from "@kmamal/sdl";
 
 import { checkFlatpakIsInstalled } from "../../checkEmulatorIsInstalled.js";
 import { flatpakId, flatpakOptionParams } from "./definitions.js";
-import type { SdlType } from "../../../../types/gamepad.js";
 
 export interface GamepadID {
   id: string;
@@ -39,7 +39,7 @@ const executeWithLogs = (applicationPath: string, args: string[]): string => {
   return result.stdout || "";
 };
 
-export const getGamepads = (sdl: SdlType, applicationPath?: string) => {
+export const getGamepads = (applicationPath?: string) => {
   if (sdl.controller.devices.length > 0) {
     try {
       if (isWindows() && applicationPath) {
@@ -64,11 +64,7 @@ export const getGamepads = (sdl: SdlType, applicationPath?: string) => {
   return [];
 };
 
-export const findSdlGamepad = (
-  sdl: SdlType,
-  gamepadId: GamepadID,
-  index: number,
-) => {
+export const findSdlGamepad = (gamepadId: GamepadID, index: number) => {
   const gamepads = sdl.controller.devices;
   const joysticks = sdl.joystick.devices;
 

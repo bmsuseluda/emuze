@@ -4,7 +4,6 @@ import {
   gamepadPs4,
   steamDeck,
 } from "../../app/server/applicationsDB.server/gamepads.js";
-import type { SdlType } from "../../app/types/gamepad.js";
 
 const devices: Sdl.Controller.Device[] = [steamDeck, gamepadPs4];
 
@@ -42,6 +41,6 @@ const sdlMock = {
   keyboard: {
     SCANCODE: scancodes,
   },
-} as unknown as SdlType;
+};
 
 export default sdlMock;

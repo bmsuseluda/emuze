@@ -1,35 +1,29 @@
 import type { LoaderFunctionArgs } from "react-router";
 import { log } from "../server/debug.server.js";
-import {
-  closeGamepads,
-  handleGamepadEvents,
-} from "../server/gamepadEvent.server.js";
+import { registerGamepadNavigationEvents } from "../server/gamepadNavigation.server.js";
 import type { GamepadData } from "../types/gamepad.js";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   log("debug", "gamepadEvents", "Client connected to gamepad event stream");
 
-  // Create a readable stream for Server-Sent Events
   const stream = new ReadableStream({
     start(controller) {
-      // Send initial connection message
       const encoder = new TextEncoder();
       controller.enqueue(encoder.encode('data: {"type":"connected"}\n\n'));
 
       const sendEvent = (data: GamepadData) => {
         try {
           const eventData = JSON.stringify(data);
+          log("debug", eventData, controller.desiredSize);
           controller.enqueue(encoder.encode(`data: ${eventData}\n\n`));
         } catch (error) {
           log("error", "gamepadEvents", "Error encoding gamepad event:", error);
         }
       };
 
-      handleGamepadEvents(sendEvent);
+      registerGamepadNavigationEvents(sendEvent);
 
-      // Handle client disconnect
-      const cleanup = () => {
-        closeGamepads();
+      const onDisconnect = () => {
         log(
           "debug",
           "gamepadEvents",
@@ -37,8 +31,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         );
       };
 
-      // Check for client disconnect
-      request.signal.addEventListener("abort", cleanup);
+      request.signal.addEventListener("abort", onDisconnect);
     },
   });
 

@@ -1,5 +1,6 @@
 import type { Application } from "../../types.js";
 import type { Sdl } from "@kmamal/sdl";
+import sdl from "@kmamal/sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { log } from "../../../debug.server.js";
 import fs from "node:fs";
@@ -17,8 +18,6 @@ import { defaultSettings } from "./defaultSettings.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import { envPaths } from "../../../envPaths.server.js";
-import { getSdl } from "../../../importSdl.server.js";
-import type { SdlType } from "../../../../types/gamepad.js";
 
 const flatpakId = "org.duckstation.DuckStation";
 const applicationId: ApplicationId = "duckstation";
@@ -77,7 +76,7 @@ export const getVirtualGamepad = (
 const getVirtualGamepadReset = (gamepadIndex: number) =>
   [`[Pad${gamepadIndex + 1}]`, "Type = None", "", "", ""].join(EOL);
 
-export const getVirtualGamepads = (sdl: SdlType) => {
+export const getVirtualGamepads = () => {
   const gamepads = sdl.controller.devices;
 
   const virtualGamepads =
@@ -93,24 +92,22 @@ export const getVirtualGamepads = (sdl: SdlType) => {
   ];
 };
 
-export const replaceGamepadConfig =
-  (sdl: SdlType): SectionReplacement =>
-  (sections) => {
-    const virtualGamepads = getVirtualGamepads(sdl);
-    if (sections.find((section) => section.startsWith("[Pad1]"))) {
-      return sections.reduce<string[]>((accumulator, section) => {
-        if (section.startsWith("[Pad1]")) {
-          accumulator.push(...virtualGamepads);
-        } else if (!section.startsWith("[Pad")) {
-          accumulator.push(section);
-        }
+export const replaceGamepadConfig: SectionReplacement = (sections) => {
+  const virtualGamepads = getVirtualGamepads();
+  if (sections.find((section) => section.startsWith("[Pad1]"))) {
+    return sections.reduce<string[]>((accumulator, section) => {
+      if (section.startsWith("[Pad1]")) {
+        accumulator.push(...virtualGamepads);
+      } else if (!section.startsWith("[Pad")) {
+        accumulator.push(section);
+      }
 
-        return accumulator;
-      }, []);
-    } else {
-      return [...sections, virtualGamepads.join(EOL)];
-    }
-  };
+      return accumulator;
+    }, []);
+  } else {
+    return [...sections, virtualGamepads.join(EOL)];
+  }
+};
 
 export const replaceHotkeyConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Hotkeys]", [
@@ -191,7 +188,6 @@ const readConfigFile = (filePath: string) => {
 };
 
 export const replaceConfigSections = async (psxRomsPath: string) => {
-  const sdl = await getSdl();
   const filePath = getConfigFilePath(configFileName);
   const fileContent = readConfigFile(filePath);
 
@@ -203,7 +199,7 @@ export const replaceConfigSections = async (psxRomsPath: string) => {
     // replaceControllerPortsConfig,
     replaceMainConfig,
     replaceHotkeyConfig,
-    replaceGamepadConfig(sdl),
+    replaceGamepadConfig,
     replaceAutoUpdaterConfig,
     replaceGameListConfig(psxRomsPath),
   ).join(EOL);
@@ -216,7 +212,7 @@ export const duckstation: Application = {
   name: "DuckStation (Legacy)",
   fileExtensions: [".chd", ".cue"],
   flatpakId,
-  createOptionParams: async ({
+  createOptionParams: ({
     settings: {
       appearance: { fullscreen },
       general: { categoriesPath },
@@ -224,7 +220,7 @@ export const duckstation: Application = {
     categoryData,
   }) => {
     const psxRomsPath = nodepath.join(categoriesPath, categoryData.name);
-    await replaceConfigSections(psxRomsPath);
+    replaceConfigSections(psxRomsPath);
 
     const optionParams = [];
     if (fullscreen) {
