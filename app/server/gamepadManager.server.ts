@@ -23,6 +23,7 @@ class GamepadManager {
   axisMotionEvents: Record<string, AxisMotionEventFunction> = {};
 
   constructor() {
+    log("info", "sdl version", sdl.info.version);
     sdl.controller.on("deviceAdd", (event) => {
       this.registerEventsForDevice(event.device);
     });
@@ -37,25 +38,30 @@ class GamepadManager {
 
   private registerEventsForDevice(device: Sdl.Controller.Device) {
     log("debug", "registerEvents", device);
-    const controller = sdl.controller.openDevice(device);
 
-    controller.on("buttonUp", (event) => {
-      Object.values(this.buttonUpEvents).forEach((eventFunction) => {
-        eventFunction(event, controller);
-      });
-    });
+    try {
+      const controller = sdl.controller.openDevice(device);
 
-    controller.on("buttonDown", (event) => {
-      Object.values(this.buttonDownEvents).forEach((eventFunction) => {
-        eventFunction(event, controller);
+      controller.on("buttonUp", (event) => {
+        Object.values(this.buttonUpEvents).forEach((eventFunction) => {
+          eventFunction(event, controller);
+        });
       });
-    });
 
-    controller.on("axisMotion", (event) => {
-      Object.values(this.axisMotionEvents).forEach((eventFunction) => {
-        eventFunction(event, controller);
+      controller.on("buttonDown", (event) => {
+        Object.values(this.buttonDownEvents).forEach((eventFunction) => {
+          eventFunction(event, controller);
+        });
       });
-    });
+
+      controller.on("axisMotion", (event) => {
+        Object.values(this.axisMotionEvents).forEach((eventFunction) => {
+          eventFunction(event, controller);
+        });
+      });
+    } catch (error) {
+      log("error", "openDevice", device, error);
+    }
   }
 
   public addButtonUpEvent(id: string, eventFunction: ButtonUpEventFunction) {

@@ -39,13 +39,13 @@ const getAxisButtonId = (
           : "leftStickRight";
       }
       return value < 0 ? "leftStickLeft" : "leftStickRight";
+
     case "leftStickY":
       if (value === 0) {
-        return axisButtonsPressed.leftStickLeft
-          ? "leftStickUp"
-          : "leftStickDown";
+        return axisButtonsPressed.leftStickUp ? "leftStickUp" : "leftStickDown";
       }
       return value < 0 ? "leftStickUp" : "leftStickDown";
+
     case "rightStickX":
       if (value === 0) {
         return axisButtonsPressed.rightStickLeft
@@ -53,13 +53,15 @@ const getAxisButtonId = (
           : "rightStickRight";
       }
       return value < 0 ? "rightStickLeft" : "rightStickRight";
+
     case "rightStickY":
       if (value === 0) {
-        return axisButtonsPressed.rightStickLeft
+        return axisButtonsPressed.rightStickUp
           ? "rightStickUp"
           : "rightStickDown";
       }
       return value < 0 ? "rightStickUp" : "rightStickDown";
+
     case "leftTrigger":
       return axis;
     case "rightTrigger":
@@ -88,7 +90,7 @@ const getAxisButtonSisterId = (
 };
 
 const axisMaxValue = 1;
-const axisValueThreshold = axisMaxValue;
+const axisValueThreshold = axisMaxValue * 0.75;
 
 const gamepadEventId = "general";
 
@@ -125,6 +127,7 @@ export const registerGamepadNavigationEvents = (
     gamepadEventId,
     ({ axis, value }, controller) => {
       if (!isGameRunning() && window?.isFocused()) {
+        log("debug", "axis", axis, value, controller.device.mapping);
         const pressed =
           value <= -axisValueThreshold || value >= axisValueThreshold;
         const buttonId = getAxisButtonId(axis, value);
