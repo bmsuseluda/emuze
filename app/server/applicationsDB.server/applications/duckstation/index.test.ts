@@ -17,7 +17,7 @@ import {
 } from "./__testData__/settings.js";
 import { replaceGamepadConfig, replaceHotkeyConfig } from "./index.js";
 
-vi.mock("@kmamal/sdl");
+vi.mock("@bmsuseluda/sdl");
 
 describe("duckstation", () => {
   describe("splitConfigBySection", () => {

@@ -1,4 +1,4 @@
-import type { Sdl } from "@kmamal/sdl";
+import type { Sdl } from "@bmsuseluda/sdl";
 import type { GamepadID } from "./initGamepadIDs.js";
 import { isDinputController } from "../../gamepads.js";
 import { PhysicalGamepadDinput } from "./PhysicalGamepadDinput.js";

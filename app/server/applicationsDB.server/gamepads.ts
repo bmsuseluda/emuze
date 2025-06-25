@@ -1,4 +1,4 @@
-import type { Sdl } from "@kmamal/sdl";
+import type { Sdl } from "@bmsuseluda/sdl";
 
 const xinputControllerTypes: Sdl.Controller.ControllerType[] = [
   "xbox360",

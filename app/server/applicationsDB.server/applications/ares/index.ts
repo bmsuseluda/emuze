@@ -1,6 +1,6 @@
 import type { Application, OptionParamFunction } from "../../types.js";
-import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
+import type { Sdl } from "@bmsuseluda/sdl";
+import sdl from "@bmsuseluda/sdl";
 import { log } from "../../../debug.server.js";
 import type {
   GamepadGroupId,

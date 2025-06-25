@@ -1,7 +1,7 @@
 import { isWindows } from "../../../operationsystem.server.js";
 import { log } from "../../../debug.server.js";
 import { spawnSync } from "node:child_process";
-import sdl from "@kmamal/sdl";
+import sdl from "@bmsuseluda/sdl";
 
 import { checkFlatpakIsInstalled } from "../../checkEmulatorIsInstalled.js";
 import { flatpakId, flatpakOptionParams } from "./definitions.js";

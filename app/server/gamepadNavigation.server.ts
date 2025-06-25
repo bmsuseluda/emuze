@@ -1,4 +1,4 @@
-import type { Sdl } from "@kmamal/sdl";
+import type { Sdl } from "@bmsuseluda/sdl";
 import { log } from "./debug.server.js";
 import type { ButtonId, GamepadData, GamepadType } from "../types/gamepad.js";
 import { gamepadManager } from "./gamepadManager.server.js";

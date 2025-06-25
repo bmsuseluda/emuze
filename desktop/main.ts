@@ -37,9 +37,6 @@ const showHelp = () => {
 app.commandLine.appendSwitch("lang", "en-US");
 app.commandLine.appendSwitch("enable-features", "GlobalShortcutsPortal");
 
-// TODO: remove if workaround is not necessary anymore: https://github.com/electron/electron/issues/46538
-app.commandLine.appendSwitch("gtk-version", "3");
-
 /**
  * Migration from old home directory to new one.
  *
