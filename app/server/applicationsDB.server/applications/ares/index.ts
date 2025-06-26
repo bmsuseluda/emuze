@@ -14,8 +14,8 @@ import type { ApplicationId } from "../../applicationId.js";
 import nodepath from "node:path";
 import { importElectron } from "../../../importElectron.server.js";
 import { getKeyboard, getKeyboardKey } from "./keyboardConfig.js";
-import type { SdlButtonMapping } from "../../gamepads.js";
-import { createSdlMappingObject } from "../../gamepads.js";
+import type { SdlButtonMapping } from "../../../../types/gamepad.js";
+import { createSdlMappingObject } from "../../../../types/gamepad.js";
 import { commandLineOptions } from "../../../commandLine.server.js";
 
 const applicationId: ApplicationId = "ares";

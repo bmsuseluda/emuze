@@ -1,9 +1,18 @@
 import type { Sdl } from "@bmsuseluda/sdl";
 import { log } from "./debug.server.js";
 import type { ButtonId, GamepadData, GamepadType } from "../types/gamepad.js";
+import type { AxisMotionEventFunction } from "./gamepadManager.server.js";
 import { gamepadManager } from "./gamepadManager.server.js";
 import { isGameRunning } from "./gameIsRunning.server.js";
 import { importElectron } from "./importElectron.server.js";
+import { isImportRunning } from "./importIsRunning.server.js";
+
+const isGamepadNavigationAllowed = () => {
+  const electron = importElectron();
+  const window = electron?.BrowserWindow.getFocusedWindow();
+
+  return window?.isFocused() && !isGameRunning() && !isImportRunning();
+};
 
 const getGamepadType = (
   sdlControllerType: Sdl.Controller.ControllerType,
@@ -90,19 +99,64 @@ const getAxisButtonSisterId = (
 };
 
 const axisMaxValue = 1;
-const axisValueThreshold = axisMaxValue * 0.75;
+const axisValueThreshold = axisMaxValue * 0.45;
 
 const gamepadEventId = "general";
 
-export const registerGamepadNavigationEvents = (
-  sendEvent: (data: GamepadData) => void,
-) => {
+export type SendEvent = (data: GamepadData) => void;
+
+export const handleAxisMotionEvent =
+  (
+    sendEvent: SendEvent,
+    axisButtonsPressed: Partial<Record<ButtonId, boolean>>,
+  ): AxisMotionEventFunction =>
+  ({ axis, value }, controller) => {
+    const buttonId = getAxisButtonId(axis, value);
+    const pressed = value <= -axisValueThreshold || value >= axisValueThreshold;
+    const pressedBefore = !!axisButtonsPressed[buttonId];
+    const buttonSisterId = getAxisButtonSisterId(axis, buttonId);
+    const buttonSisterIdPressedBefore =
+      buttonSisterId && !!axisButtonsPressed[buttonSisterId];
+
+    if (buttonSisterIdPressedBefore && !pressed) {
+      // cleanup from last press
+      sendEvent({
+        gamepadType: getGamepadType(controller.device.type),
+        buttonId: buttonSisterId,
+        eventType: "buttonUp",
+      });
+      axisButtonsPressed[buttonSisterId] = false;
+    }
+
+    if (pressedBefore !== pressed) {
+      log(
+        "debug",
+        "axisMotion",
+        axis,
+        value,
+        buttonId,
+        pressed,
+        axisButtonsPressed,
+        getGamepadType(controller.device.type),
+      );
+      sendEvent({
+        gamepadType: getGamepadType(controller.device.type),
+        buttonId,
+        eventType: pressed ? "buttonDown" : "buttonUp",
+      });
+
+      axisButtonsPressed[buttonId] = pressed;
+      if (buttonSisterId && pressed) {
+        axisButtonsPressed[buttonSisterId] = false;
+      }
+    }
+  };
+
+export const registerGamepadNavigationEvents = (sendEvent: SendEvent) => {
   log("debug", "registerGamepadNavigationEvents");
-  const electron = importElectron();
-  const window = electron?.BrowserWindow.getFocusedWindow();
 
   gamepadManager.addButtonDownEvent(gamepadEventId, (event, controller) => {
-    if (!isGameRunning() && window?.isFocused()) {
+    if (isGamepadNavigationAllowed()) {
       log("debug", "buttonDown", event.button);
       sendEvent({
         gamepadType: getGamepadType(controller.device.type),
@@ -113,7 +167,7 @@ export const registerGamepadNavigationEvents = (
   });
 
   gamepadManager.addButtonUpEvent(gamepadEventId, (event, controller) => {
-    if (!isGameRunning() && window?.isFocused()) {
+    if (isGamepadNavigationAllowed()) {
       log("debug", "buttonUp", event.button);
       sendEvent({
         gamepadType: getGamepadType(controller.device.type),
@@ -125,36 +179,6 @@ export const registerGamepadNavigationEvents = (
 
   gamepadManager.addAxisMotionEvent(
     gamepadEventId,
-    ({ axis, value }, controller) => {
-      if (!isGameRunning() && window?.isFocused()) {
-        log("debug", "axis", axis, value, controller.device.mapping);
-        const pressed =
-          value <= -axisValueThreshold || value >= axisValueThreshold;
-        const buttonId = getAxisButtonId(axis, value);
-        const buttonSisterId = getAxisButtonSisterId(axis, buttonId);
-
-        if (axisButtonsPressed[buttonId] !== pressed) {
-          log(
-            "debug",
-            "axisMotion",
-            axis,
-            value,
-            buttonId,
-            pressed,
-            getGamepadType(controller.device.type),
-          );
-          sendEvent({
-            gamepadType: getGamepadType(controller.device.type),
-            buttonId,
-            eventType: pressed ? "buttonDown" : "buttonUp",
-          });
-
-          axisButtonsPressed[buttonId] = pressed;
-          if (buttonSisterId && pressed) {
-            axisButtonsPressed[buttonSisterId] = false;
-          }
-        }
-      }
-    },
+    handleAxisMotionEvent(sendEvent, axisButtonsPressed),
   );
 };

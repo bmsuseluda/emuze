@@ -14,7 +14,7 @@ import sdl from "@bmsuseluda/sdl";
 import { emulatorsDirectory } from "../../../homeDirectory.server.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import type { ApplicationId } from "../../applicationId.js";
-import { isGamecubeController } from "../../gamepads.js";
+import { isGamecubeController } from "../../../../types/gamepad.js";
 import { sortGamecubeLast } from "../../sortGamepads.js";
 
 const applicationId: ApplicationId = "ryujinx";

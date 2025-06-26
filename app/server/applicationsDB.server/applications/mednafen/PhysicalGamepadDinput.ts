@@ -1,9 +1,12 @@
-import type { SdlButtonId, SdlButtonMapping } from "../../gamepads.js";
+import type {
+  SdlButtonId,
+  SdlButtonMapping,
+} from "../../../../types/gamepad.js";
 import {
   createSdlMappingObject,
   getButtonIndex,
   isAnalog,
-} from "../../gamepads.js";
+} from "../../../../types/gamepad.js";
 import type { PhysicalGamepadInterface } from "./PhysicalGamepad.js";
 
 const sdlDinputButtonMapping = {

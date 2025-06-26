@@ -1,9 +1,6 @@
 import type { Sdl } from "@bmsuseluda/sdl";
 import { scancodes } from "../../app/server/applicationsDB.server/applications/ares/keyboardConfig.js";
-import {
-  gamepadPs4,
-  steamDeck,
-} from "../../app/server/applicationsDB.server/gamepads.js";
+import { gamepadPs4, steamDeck } from "../../app/types/gamepad.js";
 
 const devices: Sdl.Controller.Device[] = [steamDeck, gamepadPs4];
 

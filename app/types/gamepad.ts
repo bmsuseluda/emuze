@@ -1,3 +1,5 @@
+import type { Sdl } from "@bmsuseluda/sdl";
+
 export interface GamepadData {
   gamepadType: GamepadType;
   buttonId: ButtonId;
@@ -39,3 +41,149 @@ export type ButtonId =
 
 export const getGamepadButtonEventName = (buttonId: ButtonId) =>
   `gamepadonbutton${buttonId.toLowerCase()}press`;
+
+const xinputControllerTypes: Sdl.Controller.ControllerType[] = [
+  "xbox360",
+  "xboxOne",
+  null,
+];
+export const isXinputController = (
+  controllerType: Sdl.Controller.ControllerType | null,
+) => xinputControllerTypes.includes(controllerType);
+
+const dinputControllerTypes: Sdl.Controller.ControllerType[] = [
+  "ps3",
+  "ps4",
+  "ps5",
+];
+export const isDinputController = (
+  controllerType: Sdl.Controller.ControllerType | null,
+) => dinputControllerTypes.includes(controllerType);
+
+export const isGamecubeController = (controllerName: string) =>
+  controllerName.toLowerCase().includes("gamecube");
+
+export type SdlButtonId =
+  | "a"
+  | "b"
+  | "x"
+  | "y"
+  | "back"
+  | "start"
+  | "guide"
+  | "dpdown"
+  | "dpleft"
+  | "dpright"
+  | "dpup"
+  | "leftshoulder"
+  | "rightshoulder"
+  | "lefttrigger"
+  | "righttrigger"
+  | "leftstick"
+  | "rightstick"
+  | "leftx"
+  | "lefty"
+  | "rightx"
+  | "righty";
+
+export type SdlButtonMapping = Partial<Record<SdlButtonId, string>>;
+
+export const getButtonIndex = (
+  mappingObject: SdlButtonMapping,
+  buttonId: SdlButtonId,
+): string | undefined =>
+  mappingObject[buttonId]?.replace("b", "").replace("a", "");
+
+export const isAnalog = (
+  mappingObject: SdlButtonMapping,
+  sdlButtonId: SdlButtonId,
+) => mappingObject[sdlButtonId]?.startsWith("a");
+
+/**
+ *
+ * @param sdlMapping "030000004c050000c405000000010000,PS4 Controller,platform:Windows,a:b1,b:b2,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b4,leftstick:b10,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b11,righttrigger:a4,rightx:a2,righty:a5,start:b9,x:b0,y:b3,"
+ */
+export const createSdlMappingObject = (sdlMapping: string) =>
+  sdlMapping
+    .split(",")
+    .reduce<SdlButtonMapping>((accumulator, currentValue) => {
+      if (currentValue.includes(":")) {
+        const [key, value] = currentValue.split(":");
+        accumulator[key as SdlButtonId] = value;
+      }
+      return accumulator;
+    }, {});
+
+export const eightBitDoPro2 = {
+  id: 0,
+  type: "xboxOne",
+  name: "Xbox One Wireless Controller",
+  path: "/dev/input/event19",
+  guid: "050095ac5e040000e002000003090000",
+  vendor: 1118,
+  product: 736,
+  version: 2307,
+  player: 0,
+  mapping:
+    "050095ac5e040000e002000003090000,Xbox One Wireless Controller,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b10,leftshoulder:b4,leftstick:b8,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b9,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,",
+} satisfies Sdl.Controller.Device;
+
+/**
+ * This is the SDL definition of the internal gamepad of the Steam Deck
+ */
+export const steamDeck = {
+  id: 0,
+  type: "virtual",
+  name: "Microsoft X-Box 360 pad 0",
+  path: "/dev/input/event6",
+  guid: "030079f6de280000ff11000001000000",
+  vendor: 10462,
+  product: 4607,
+  version: 1,
+  player: 0,
+  mapping:
+    "030079f6de280000ff11000001000000,Steam Virtual Gamepad,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b8,leftshoulder:b4,leftstick:b9,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
+} satisfies Sdl.Controller.Device;
+
+export const gamepadPs4 = {
+  id: 1,
+  type: "ps4",
+  name: "Playstation 4 Controller",
+  path: "/dev/input/event6",
+  guid: "030079f6de280000ff11000001000000",
+  vendor: 1356,
+  product: 1476,
+  version: 1,
+  player: 1,
+  mapping:
+    "030000004c050000c405000000010000,PS4 Controller,platform:Windows,a:b1,b:b2,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b4,leftstick:b10,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b11,righttrigger:a4,rightx:a2,righty:a5,start:b9,x:b0,y:b3,",
+} satisfies Sdl.Controller.Device;
+
+// Seems to be only in dev mode
+export const gamepadPs4New = {
+  id: 0,
+  type: "ps4",
+  name: "PS4 Controller",
+  path: "/dev/hidraw6",
+  guid: "03008fe54c050000c405000000006800",
+  vendor: 1356,
+  product: 1476,
+  version: null,
+  player: 0,
+  mapping:
+    "03008fe54c050000c405000000006800,*,a:b0,b:b1,back:b4,dpdown:b12,dpleft:b13,dpright:b14,dpup:b11,guide:b5,leftshoulder:b9,leftstick:b7,lefttrigger:a4,leftx:a0,lefty:a1,rightshoulder:b10,rightstick:b8,righttrigger:a5,rightx:a2,righty:a3,start:b6,x:b2,y:b3,touchpad:b15,crc:e58f,",
+} satisfies Sdl.Controller.Device;
+
+export const gamepadPs3 = {
+  id: 2,
+  type: "ps3",
+  name: "Playstation 3 Controller",
+  path: "/dev/input/event7",
+  guid: "0300afd34c0500006802000011810000",
+  vendor: 1356,
+  product: 616,
+  version: 1,
+  player: 2,
+  mapping:
+    "0300afd34c0500006802000011810000,PS3 Controller,platform:Windows,a:b1,b:b2,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b4,leftstick:b10,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b11,righttrigger:a4,rightx:a2,righty:a5,start:b9,x:b0,y:b3,",
+} satisfies Sdl.Controller.Device;

@@ -17,7 +17,7 @@ import { defaultGamepadSettings } from "./defaultGamepadSettings.js";
 import { defaultHotkeys } from "./defaultHotkeys.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { emulatorsDirectory } from "../../../homeDirectory.server.js";
-import { isGamecubeController } from "../../gamepads.js";
+import { isGamecubeController } from "../../../../types/gamepad.js";
 import { defaultDolphinSettings } from "./defaultDolphinSettings.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 

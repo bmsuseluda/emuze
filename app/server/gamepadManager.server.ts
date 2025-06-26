@@ -12,7 +12,7 @@ type ButtonDownEventFunction = (
   controller: Sdl.Controller.ControllerInstance,
 ) => void;
 
-type AxisMotionEventFunction = (
+export type AxisMotionEventFunction = (
   event: sdl.Events.Controller.AxisMotion,
   controller: Sdl.Controller.ControllerInstance,
 ) => void;
