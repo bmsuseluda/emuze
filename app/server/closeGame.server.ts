@@ -1,7 +1,7 @@
 import kill from "tree-kill";
 import { log } from "./debug.server.js";
 import { importElectron } from "./importElectron.server.js";
-import { gamepadManager } from "./gamepadManager.server.js";
+import { gamepadManager } from "./gamepadManager.server/index.js";
 import {
   gameIsRunningChildProcess,
   isGameRunning,

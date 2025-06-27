@@ -27,6 +27,7 @@
     "import": "concurrently -c 'auto' --kill-others-on-fail 'yarn:import:*'",
     "import:mame": "tsx generateNameMappings/mame/index.ts",
     "import:scummvm": "tsx generateNameMappings/scummvm/index.ts",
+    "import:sdlMappings": "tsx fetchSdlMappings/index.ts",
     "convertSvgs": "svgr --svgo-config svgo.config.js --config-file .svgrrc.js ./svgs",
     "downloadEmulators:windows": "tsx ./downloadEmulators/downloadEmulatorsWindows.ts",
     "downloadEmulators:linux": "tsx ./downloadEmulators/downloadEmulatorsLinux.ts",

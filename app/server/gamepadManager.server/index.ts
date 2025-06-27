@@ -1,6 +1,7 @@
 import type { Sdl } from "@bmsuseluda/sdl";
 import sdl from "@bmsuseluda/sdl";
-import { log } from "./debug.server.js";
+import { log } from "../debug.server.js";
+import mappings from "./mappings.json" with { type: "json" };
 
 type ButtonUpEventFunction = (
   event: sdl.Events.Controller.ButtonUp,
@@ -17,12 +18,20 @@ export type AxisMotionEventFunction = (
   controller: Sdl.Controller.ControllerInstance,
 ) => void;
 
+const addMappings = async () => {
+  sdl.controller.addMappings([
+    ...mappings,
+    "0500c0db7e0500001720000001800000,NSO SNES Controller,a:b1,b:b0,x:b2,y:b3,back:b8,start:b9,leftshoulder:b4,rightshoulder:b5,dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,lefttrigger:b6,righttrigger:b7,platform:Linux,",
+  ]);
+};
+
 class GamepadManager {
   buttonUpEvents: Record<string, ButtonUpEventFunction> = {};
   buttonDownEvents: Record<string, ButtonDownEventFunction> = {};
   axisMotionEvents: Record<string, AxisMotionEventFunction> = {};
 
   constructor() {
+    addMappings();
     log("info", "sdl version", sdl.info.version);
     sdl.controller.on("deviceAdd", (event) => {
       this.registerEventsForDevice(event.device);

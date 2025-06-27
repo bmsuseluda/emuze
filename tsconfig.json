@@ -10,6 +10,7 @@
     "generateNameMappings/**/*",
     "downloadEmulators/*",
     "fetchMetaData/**/*",
+    "fetchSdlMappings/*",
     "dumpGames/*",
     "desktop/*",
     "readme/*",

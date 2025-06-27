@@ -8,18 +8,18 @@ import {
 import { GamepadButtonIcon } from "../../components/GamepadButtonIcon/index.js";
 import { IoMdDownload } from "react-icons/io";
 import { LogoPulseModal } from "../../components/LogoPulseModal/index.js";
-import type { GamepadType } from "../../types/gamepad.js";
+import { useGamepadConnected } from "../../hooks/useGamepadConnected/index.js";
 
 export const installMissingApplicationsActionId = "installMissingApplications";
 
 interface Props {
-  gamepadType?: GamepadType;
   isInFocus: boolean;
 }
 
-export const InstallEmulatorsButton = ({ gamepadType, isInFocus }: Props) => {
+export const InstallEmulatorsButton = ({ isInFocus }: Props) => {
   const { state, formData } = useNavigation();
   useInstallEmulatorsButton(isInFocus);
+  const { gamepadType } = useGamepadConnected();
 
   const isInstalling =
     state === "submitting" &&

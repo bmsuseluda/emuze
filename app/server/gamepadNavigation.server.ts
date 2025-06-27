@@ -1,17 +1,23 @@
 import type { Sdl } from "@bmsuseluda/sdl";
 import { log } from "./debug.server.js";
 import type { ButtonId, GamepadData, GamepadType } from "../types/gamepad.js";
-import type { AxisMotionEventFunction } from "./gamepadManager.server.js";
-import { gamepadManager } from "./gamepadManager.server.js";
+import type { AxisMotionEventFunction } from "./gamepadManager.server/index.js";
+import { gamepadManager } from "./gamepadManager.server/index.js";
 import { isGameRunning } from "./gameIsRunning.server.js";
 import { importElectron } from "./importElectron.server.js";
 import { isImportRunning } from "./importIsRunning.server.js";
+import { isFileDialogOpen } from "./openDialog.server.js";
 
 const isGamepadNavigationAllowed = () => {
   const electron = importElectron();
   const window = electron?.BrowserWindow.getFocusedWindow();
 
-  return window?.isFocused() && !isGameRunning() && !isImportRunning();
+  return (
+    window?.isFocused() &&
+    !isGameRunning() &&
+    !isImportRunning() &&
+    !isFileDialogOpen()
+  );
 };
 
 const getGamepadType = (

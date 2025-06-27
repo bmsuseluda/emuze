@@ -5,8 +5,8 @@ import type { GamepadType } from "../../types/gamepad.js";
 
 type GamepadContextState = {
   gamepadType?: GamepadType;
-  enableGamepads: (gameIsNotRunningAnymore?: boolean) => void;
-  disableGamepads: (gameIsRunning?: boolean) => void;
+  enableGamepads: () => void;
+  disableGamepads: () => void;
   isEnabled: RefObject<boolean>;
 };
 

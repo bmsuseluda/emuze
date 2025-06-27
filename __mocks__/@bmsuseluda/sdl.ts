@@ -18,7 +18,10 @@ const sdlMock = {
         close: () => {},
       };
     },
-    removeAllListeners: () => {},
+    on: (_: string, onEvent: (event: { button: string }) => void) => {
+      onEvent({ button: "a" });
+    },
+    addMappings: () => {},
   },
   joystick: {
     devices,
@@ -33,10 +36,23 @@ const sdlMock = {
         close: () => {},
       };
     },
-    removeAllListeners: () => {},
   },
   keyboard: {
     SCANCODE: scancodes,
+  },
+  info: {
+    version: {
+      compile: {
+        major: 2,
+        minor: 32,
+        patch: 8,
+      },
+      runtime: {
+        major: 2,
+        minor: 32,
+        patch: 8,
+      },
+    },
   },
 };
 

@@ -4,10 +4,10 @@ import { IoMdPlay } from "react-icons/io";
 import type { ComponentRef, RefObject } from "react";
 import { LogoPulseModal } from "../../components/LogoPulseModal/index.js";
 import { useNavigation } from "react-router";
-import type { ButtonId, GamepadType } from "../../types/gamepad.js";
+import type { ButtonId } from "../../types/gamepad.js";
+import { useGamepadConnected } from "../../hooks/useGamepadConnected/index.js";
 
 interface Props {
-  gamepadType?: GamepadType;
   disabled?: boolean;
   launchButtonRef: RefObject<ComponentRef<"button"> | null>;
 }
@@ -15,14 +15,11 @@ interface Props {
 export const launchId = "launch";
 export const launchButtonGamepadButtonId: ButtonId = "a";
 
-export const LaunchButton = ({
-  gamepadType,
-  disabled,
-  launchButtonRef,
-}: Props) => {
+export const LaunchButton = ({ disabled, launchButtonRef }: Props) => {
   const { state, formData } = useNavigation();
   const isGameLaunching =
     state === "submitting" && formData?.get("_actionId") === launchId;
+  const { gamepadType } = useGamepadConnected();
 
   return (
     <>

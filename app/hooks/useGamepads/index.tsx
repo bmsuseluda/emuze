@@ -26,8 +26,6 @@ const dispatchButtonPressEvent = (buttonId: ButtonId) => {
 
 export const useGamepads = () => {
   const eventSourceRef = useRef<EventSource>(undefined);
-  const gameIsRunningRef = useRef<boolean>(false);
-  const focusRef = useRef<boolean>(true);
   const isEnabled = useRef<boolean>(true);
   const buttonPressedIntervalRef =
     useRef<ReturnType<typeof setInterval>>(undefined);
@@ -63,8 +61,6 @@ export const useGamepads = () => {
   const isFireEventAllowed = () =>
     !document.hidden &&
     document.visibilityState === "visible" &&
-    !gameIsRunningRef.current &&
-    focusRef.current &&
     isEnabled.current;
 
   const fireEventOnButtonPress = useCallback(
@@ -101,11 +97,7 @@ export const useGamepads = () => {
     ],
   );
 
-  const disableGamepads = useCallback((gameIsRunning?: boolean) => {
-    if (gameIsRunning) {
-      gameIsRunningRef.current = gameIsRunning;
-    }
-    focusRef.current = false;
+  const disableGamepads = useCallback(() => {
     isEnabled.current = false;
   }, []);
 
@@ -129,50 +121,24 @@ export const useGamepads = () => {
           console.error("Error parsing gamepad event:", error);
         }
       };
-
-      eventSource.onerror = (error) => {
-        console.error("EventSource error:", error);
+      eventSource.onerror = (event) => {
+        console.error("EventSource error:", event);
       };
     }
   }, [fireEventOnButtonPress]);
 
-  const enableGamepads = useCallback(
-    (gameIsNotRunningAnymore?: boolean) => {
-      if (gameIsNotRunningAnymore) {
-        gameIsRunningRef.current = !gameIsNotRunningAnymore;
-      }
-      if (!gameIsRunningRef.current) {
-        focusRef.current = true;
-        isEnabled.current = true;
-        getEvents();
-      }
-    },
-    [getEvents],
-  );
-
-  const handleVisibilityChange = useCallback(() => {
-    if (document.hidden) {
-      disableGamepads();
-    } else {
-      enableGamepads();
-    }
-  }, [enableGamepads, disableGamepads]);
-
-  useEffect(() => {
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, [handleVisibilityChange]);
+  const enableGamepads = useCallback(() => {
+    isEnabled.current = true;
+  }, []);
 
   useEffect(() => {
     enableGamepads();
+    getEvents();
 
     return () => {
       disableGamepads();
     };
-  }, [enableGamepads, disableGamepads]);
+  }, [enableGamepads, disableGamepads, getEvents]);
 
   return {
     gamepadType,

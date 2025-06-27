@@ -14,7 +14,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       const sendEvent = (data: GamepadData) => {
         try {
           const eventData = JSON.stringify(data);
-          log("debug", eventData, controller.desiredSize);
+          log("debug", "gamepadEvents", eventData, controller.desiredSize);
           controller.enqueue(encoder.encode(`data: ${eventData}\n\n`));
         } catch (error) {
           log("error", "gamepadEvents", "Error encoding gamepad event:", error);
@@ -22,7 +22,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
       };
 
       registerGamepadNavigationEvents(sendEvent);
-
       const onDisconnect = () => {
         log(
           "debug",
