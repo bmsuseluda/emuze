@@ -1,5 +1,6 @@
 import type { Application, OptionParamFunction } from "../../types.js";
-import type { Sdl } from "@kmamal/sdl";
+import type { Sdl } from "@bmsuseluda/sdl";
+import sdl from "@bmsuseluda/sdl";
 import { log } from "../../../debug.server.js";
 import type {
   GamepadGroupId,
@@ -13,10 +14,9 @@ import type { ApplicationId } from "../../applicationId.js";
 import nodepath from "node:path";
 import { importElectron } from "../../../importElectron.server.js";
 import { getKeyboard, getKeyboardKey } from "./keyboardConfig.js";
-import type { SdlButtonMapping } from "../../gamepads.js";
-import { createSdlMappingObject } from "../../gamepads.js";
+import type { SdlButtonMapping } from "../../../../types/gamepad.js";
+import { createSdlMappingObject } from "../../../../types/gamepad.js";
 import { commandLineOptions } from "../../../commandLine.server.js";
-import { getSdl } from "../../../importSdl.server.js";
 
 const applicationId: ApplicationId = "ares";
 const bundledPathLinux = nodepath.join(
@@ -283,13 +283,13 @@ export const getVirtualGamepads = (
   ];
 };
 
-const getSharedAresOptionParams: OptionParamFunction = async ({
+const getSharedAresOptionParams: OptionParamFunction = ({
   settings: {
     appearance: { fullscreen },
   },
   hasAnalogStick,
 }) => {
-  const controller = (await getSdl()).controller;
+  const controller = sdl.controller;
 
   const hotkeyFullscreen = [
     "--setting",
@@ -346,8 +346,8 @@ export const aresGameBoyColor: Application = {
   ...ares,
   id: "aresGameBoyColor",
   fileExtensions: [".gb", ".gbc"],
-  createOptionParams: async (props) => [
-    ...(await getSharedAresOptionParams(props)),
+  createOptionParams: (props) => [
+    ...getSharedAresOptionParams(props),
     ...["--system", "Game Boy Color"],
   ],
 };
@@ -356,8 +356,8 @@ export const aresSuperNintendo: Application = {
   ...ares,
   id: "aresSuperNintendo",
   fileExtensions: [".sfc"],
-  createOptionParams: async (props) => [
-    ...(await getSharedAresOptionParams(props)),
+  createOptionParams: (props) => [
+    ...getSharedAresOptionParams(props),
     ...["--system", "Super Famicom"],
   ],
 };
@@ -366,8 +366,8 @@ export const aresMegaDrive: Application = {
   ...ares,
   id: "aresMegaDrive",
   fileExtensions: [".sfc", ".smc", ".68K", ".bin", ".md"],
-  createOptionParams: async (props) => [
-    ...(await getSharedAresOptionParams(props)),
+  createOptionParams: (props) => [
+    ...getSharedAresOptionParams(props),
     ...["--system", "Mega Drive"],
   ],
 };
@@ -376,8 +376,8 @@ export const aresSegaCd: Application = {
   ...ares,
   id: "aresSegaCd",
   fileExtensions: [".chd", ".cue"],
-  createOptionParams: async (props) => [
-    ...(await getSharedAresOptionParams(props)),
+  createOptionParams: (props) => [
+    ...getSharedAresOptionParams(props),
     ...["--system", "Mega CD"],
   ],
 };
@@ -386,8 +386,8 @@ export const aresSega32x: Application = {
   ...ares,
   id: "aresSega32x",
   fileExtensions: [".32x"],
-  createOptionParams: async (props) => [
-    ...(await getSharedAresOptionParams(props)),
+  createOptionParams: (props) => [
+    ...getSharedAresOptionParams(props),
     ...["--system", "Mega 32X"],
   ],
 };

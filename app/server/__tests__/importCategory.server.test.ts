@@ -35,7 +35,7 @@ import { duckstation } from "../applicationsDB.server/applications/duckstation/i
 import { dosboxstaging } from "../applicationsDB.server/applications/dosbox/index.js";
 import { rpcs3 } from "../applicationsDB.server/applications/rpcs3/index.js";
 
-vi.mock("@kmamal/sdl");
+vi.mock("@bmsuseluda/sdl");
 vi.mock("../readWriteData.server");
 vi.mock("../applications.server");
 vi.mock("../openDialog.server.ts");

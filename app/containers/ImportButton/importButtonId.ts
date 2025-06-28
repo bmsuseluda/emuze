@@ -1,4 +1,4 @@
-import { layout } from "../../hooks/useGamepads/layouts/index.js";
+import type { ButtonId } from "../../types/gamepad.js";
 
 export type ImportButtonId = "importAll" | "importGames";
-export const importButtonGamepadButtonIndex = layout.buttons.X;
+export const importButtonGamepadButtonId: ButtonId = "x";

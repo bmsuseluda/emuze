@@ -23,7 +23,7 @@ import { lime3ds } from "../applicationsDB.server/index.js";
 import { mednafen } from "../applicationsDB.server/applications/mednafen/index.js";
 import { entriesPath } from "../categoryDataCache.server.js";
 
-vi.mock("@kmamal/sdl");
+vi.mock("@bmsuseluda/sdl");
 vi.mock("../readWriteData.server");
 vi.mock("../lastPlayed.server.ts");
 vi.mock("../applications.server");

@@ -1,6 +1,6 @@
-import type { Sdl } from "@kmamal/sdl";
-import type { SdlType } from "../../../../types/sdl.js";
+import type { Sdl } from "@bmsuseluda/sdl";
+import sdl from "@bmsuseluda/sdl";
 
-export const getKeyboardKey =
-  (sdl: SdlType) => (keyboardScancodeName: Sdl.Keyboard.ScancodeNames) =>
-    `keyboard 0x0 ${sdl.keyboard.SCANCODE[keyboardScancodeName]}`;
+export const getKeyboardKey = (
+  keyboardScancodeName: Sdl.Keyboard.ScancodeNames,
+) => `keyboard 0x0 ${sdl.keyboard.SCANCODE[keyboardScancodeName]}`;

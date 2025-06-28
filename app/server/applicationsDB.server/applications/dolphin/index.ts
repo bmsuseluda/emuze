@@ -10,17 +10,16 @@ import { EOL } from "node:os";
 import fs from "node:fs";
 import { log } from "../../../debug.server.js";
 import nodepath from "node:path";
-import type { Sdl } from "@kmamal/sdl";
+import type { Sdl } from "@bmsuseluda/sdl";
+import sdl from "@bmsuseluda/sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { defaultGamepadSettings } from "./defaultGamepadSettings.js";
 import { defaultHotkeys } from "./defaultHotkeys.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { emulatorsDirectory } from "../../../homeDirectory.server.js";
-import { isGamecubeController } from "../../gamepads.js";
+import { isGamecubeController } from "../../../../types/gamepad.js";
 import { defaultDolphinSettings } from "./defaultDolphinSettings.js";
 import { keyboardConfig } from "./keyboardConfig.js";
-import type { SdlType } from "../../../../types/sdl.js";
-import { getSdl } from "../../../importSdl.server.js";
 
 const flatpakId = "org.DolphinEmu.dolphin-emu";
 const applicationId: ApplicationId = "dolphin";
@@ -95,7 +94,7 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
     "Device = XInput2/0/Virtual core pointer",
   ].join(EOL);
 
-export const getVirtualGamepads = (sdl: SdlType) => {
+export const getVirtualGamepads = () => {
   const gamepads = sdl.joystick.devices;
 
   const virtualGamepads =
@@ -107,9 +106,10 @@ export const getVirtualGamepads = (sdl: SdlType) => {
   ];
 };
 
-export const replaceGamepadConfigSections =
-  (sdl: SdlType): SectionReplacement =>
-  (sections) => [...sections, getVirtualGamepads(sdl).join(EOL)];
+export const replaceGamepadConfigSections: SectionReplacement = (sections) => [
+  ...sections,
+  getVirtualGamepads().join(EOL),
+];
 
 const readConfigFile = (filePath: string, fallback: string) => {
   try {
@@ -125,11 +125,11 @@ const readConfigFile = (filePath: string, fallback: string) => {
   }
 };
 
-export const replaceGamepadConfigFile = (sdl: SdlType) =>
+export const replaceGamepadConfigFile = () =>
   replaceConfigSections(
     gamepadConfigFileName,
     defaultGamepadSettings,
-    replaceGamepadConfigSections(sdl),
+    replaceGamepadConfigSections,
   );
 
 export const replaceHotkeysSection: SectionReplacement = (sections) =>
@@ -160,32 +160,28 @@ const setDeviceToStandardController = (index: number): ParamToReplace => ({
   keyValue: `SIDevice${index} = 6`,
 });
 
-export const replaceDolphinCoreSection =
-  (sdl: SdlType): SectionReplacement =>
-  (sections) => {
-    const gamepads = sdl.joystick.devices;
-    const virtualGamepads = gamepads.length > 0 ? gamepads : ["keyboard"];
-    const siDevices: ParamToReplace[] = [
-      ...virtualGamepads.map((_, index) =>
-        setDeviceToStandardController(index),
-      ),
-      ...resetUnusedVirtualGamepads(
-        4,
-        virtualGamepads.length,
-        (index: number): ParamToReplace => ({
-          keyValue: `SIDevice${index} = 0`,
-        }),
-      ),
-    ];
+export const replaceDolphinCoreSection: SectionReplacement = (sections) => {
+  const gamepads = sdl.joystick.devices;
+  const virtualGamepads = gamepads.length > 0 ? gamepads : ["keyboard"];
+  const siDevices: ParamToReplace[] = [
+    ...virtualGamepads.map((_, index) => setDeviceToStandardController(index)),
+    ...resetUnusedVirtualGamepads(
+      4,
+      virtualGamepads.length,
+      (index: number): ParamToReplace => ({
+        keyValue: `SIDevice${index} = 0`,
+      }),
+    ),
+  ];
 
-    return replaceSection(sections, "[Core]", siDevices);
-  };
+  return replaceSection(sections, "[Core]", siDevices);
+};
 
-export const replaceDolphinFile = (sdl: SdlType) =>
+export const replaceDolphinFile = () =>
   replaceConfigSections(
     dolphinConfigFileName,
     defaultDolphinSettings,
-    replaceDolphinCoreSection(sdl),
+    replaceDolphinCoreSection,
   );
 
 export const replaceConfigSections = (
@@ -210,15 +206,13 @@ export const dolphin: Application = {
   name: "Dolphin",
   fileExtensions: [".iso", ".rvz"],
   flatpakId,
-  createOptionParams: async ({
+  createOptionParams: ({
     settings: {
       appearance: { fullscreen },
     },
   }) => {
-    const sdl = await getSdl();
-
-    replaceDolphinFile(sdl);
-    replaceGamepadConfigFile(sdl);
+    replaceDolphinFile();
+    replaceGamepadConfigFile();
     replaceHotkeysFile();
 
     const optionParams = [

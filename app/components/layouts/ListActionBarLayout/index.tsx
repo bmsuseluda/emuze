@@ -1,5 +1,5 @@
 import { Headline } from "../../Headline/index.js";
-import type { ElementRef, ForwardedRef, ReactNode } from "react";
+import type { ComponentRef, ForwardedRef, ReactNode } from "react";
 import { useCallback, useRef } from "react";
 import { styled } from "../../../../styled-system/jsx/index.js";
 
@@ -142,7 +142,7 @@ const ListActionBarContainer = ({
   paddingSide = true,
   dynamicHeight = false,
 }: ContainerProps) => {
-  const listRef = useRef<ElementRef<"div">>();
+  const listRef = useRef<ComponentRef<"div">>(undefined);
 
   const onClick = useCallback(() => {
     const list = listRef.current;
@@ -184,7 +184,6 @@ const ListActionBarContainer = ({
     </ListWrapper>
   );
 };
-ListActionBarContainer.displayName = "ListActionBarContainer";
 
 export const ListActionBarLayout = ({
   headline,

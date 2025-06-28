@@ -1,5 +1,4 @@
-import type { ElementRef } from "react";
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 import type { ActionFunction } from "react-router";
 import { Form, Outlet, redirect, useLoaderData } from "react-router";
 import { startGame } from "../server/execute.server.js";
@@ -11,7 +10,6 @@ import type { FocusElement } from "../types/focusElement.js";
 import { readAppearance, readGeneral } from "../server/settings.server.js";
 import { SettingsLink } from "../containers/SettingsLink/index.js";
 import { Typography } from "../components/Typography/index.js";
-import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction/index.js";
 import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
 import { log } from "../server/debug.server.js";
 import { readLastPlayed } from "../server/lastPlayed.server.js";
@@ -21,6 +19,7 @@ import { LaunchButton } from "../containers/LaunchButton/index.js";
 import { ImportButton } from "../containers/ImportButton/index.js";
 import type { ImportButtonId } from "../containers/ImportButton/importButtonId.js";
 import { importCategories } from "../server/categories.server.js";
+import { useLaunchButton } from "../hooks/useLaunchButton/index.js";
 
 export const loader = () => {
   const lastPlayed = readLastPlayed();
@@ -90,29 +89,18 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 export default function LastPlayed() {
   const { lastPlayed, alwaysGameNames } = useLoaderData<typeof loader>();
 
-  const launchButtonRef = useRef<ElementRef<"button">>(null);
+  const { launchButtonRef, onExecute } = useLaunchButton();
 
   const { isInFocus, switchFocus, switchFocusBack, enableFocus } =
     useFocus<FocusElement>("main");
 
-  const { gamepadType, enableGamepads, disableGamepads } =
-    useGamepadConnected();
-
-  /* Set focus again after launching */
-  useEnableFocusAfterAction(() => enableGamepads(true), [actionIds.launch]);
+  const { enableGamepads } = useGamepadConnected();
 
   const onBack = useCallback(() => {
     if (isInFocus) {
       switchFocusBack();
     }
   }, [switchFocusBack, isInFocus]);
-
-  const onExecute = useCallback(() => {
-    if (launchButtonRef.current && !launchButtonRef.current.disabled) {
-      disableGamepads(true);
-      launchButtonRef.current.click();
-    }
-  }, [disableGamepads]);
 
   const onEntryClick = useCallback(() => {
     if (!isInFocus) {
@@ -150,16 +138,11 @@ export default function LastPlayed() {
             actions={
               <>
                 <LaunchButton
-                  gamepadType={gamepadType}
                   launchButtonRef={launchButtonRef}
                   disabled={!lastPlayed || lastPlayed.length === 0}
                 />
 
-                <ImportButton
-                  gamepadType={gamepadType}
-                  isInFocus={isInFocus}
-                  id={actionIds.import}
-                >
+                <ImportButton isInFocus={isInFocus} id={actionIds.import}>
                   Import Games
                 </ImportButton>
               </>

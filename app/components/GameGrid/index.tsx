@@ -1,9 +1,4 @@
-import type {
-  ComponentPropsWithoutRef,
-  ElementRef,
-  MutableRefObject,
-  RefObject,
-} from "react";
+import type { ComponentPropsWithoutRef, ComponentRef, RefObject } from "react";
 import { useCallback } from "react";
 import type { Entry as GameType } from "../../types/jsonFiles/category.js";
 import type { EntryWithSystem as GameTypeLastPlayed } from "../../types/jsonFiles/lastPlayed.js";
@@ -76,10 +71,10 @@ export const GameGrid = ({
   onExecute,
   onGameClick,
   inViewRef,
-}: Props & { inViewRef?: RefObject<ElementRef<"div">> }) => {
+}: Props & { inViewRef?: RefObject<ComponentRef<"div"> | null> }) => {
   const { isEnabled } = useGamepadConnected();
 
-  const selectEntry = (game: ElementRef<"input">) => {
+  const selectEntry = (game: ComponentRef<"input">) => {
     if (!game.checked) {
       game.checked = true;
     }
@@ -89,7 +84,7 @@ export const GameGrid = ({
   };
 
   const goBack = useCallback(
-    (selectedGame: MutableRefObject<ElementRef<"input"> | undefined>) => {
+    (selectedGame: RefObject<ComponentRef<"input"> | undefined>) => {
       if (selectedGame.current) {
         selectedGame.current.checked = false;
       }
@@ -99,7 +94,7 @@ export const GameGrid = ({
   );
 
   const onLeftOverTheEdge = useCallback(
-    ({ selectedEntry }: Result<ElementRef<"input">>) => {
+    ({ selectedEntry }: Result<ComponentRef<"input">>) => {
       goBack(selectedEntry);
     },
     [goBack],

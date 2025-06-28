@@ -1,5 +1,5 @@
 import { IconChildrenWrapper } from "./index.js";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Typography } from "../Typography/index.js";
 import { IoMdRefresh } from "react-icons/io";
 

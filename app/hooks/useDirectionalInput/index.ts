@@ -1,49 +1,41 @@
-import {
-  useGamepadButtonPressEvent,
-  useGamepadStickDirectionEvent,
-} from "../useGamepadEvent/index.js";
+import { useGamepadButtonPressEvent } from "../useGamepadEvent/index.js";
 import { useKeyboardEvent } from "../useKeyboardEvent/index.js";
-import { layout } from "../useGamepads/layouts/index.js";
 
 export const useDirectionalInputUp = (onUp: () => void) => {
-  useGamepadButtonPressEvent(layout.buttons.DPadUp, onUp);
+  useGamepadButtonPressEvent("dpadUp", onUp);
   useKeyboardEvent("ArrowUp", onUp, "keydown");
-  useGamepadStickDirectionEvent("leftStickUp", onUp);
-  useGamepadStickDirectionEvent("extraStickUp", onUp);
+  useGamepadButtonPressEvent("leftStickUp", onUp);
 };
 
 export const useDirectionalInputDown = (onDown: () => void) => {
-  useGamepadButtonPressEvent(layout.buttons.DPadDown, onDown);
+  useGamepadButtonPressEvent("dpadDown", onDown);
   useKeyboardEvent("ArrowDown", onDown, "keydown");
-  useGamepadStickDirectionEvent("leftStickDown", onDown);
-  useGamepadStickDirectionEvent("extraStickDown", onDown);
+  useGamepadButtonPressEvent("leftStickDown", onDown);
 };
 
 export const useDirectionalInputLeft = (onLeft: () => void) => {
-  useGamepadButtonPressEvent(layout.buttons.DPadLeft, onLeft);
+  useGamepadButtonPressEvent("dpadLeft", onLeft);
   useKeyboardEvent("ArrowLeft", onLeft, "keydown");
-  useGamepadStickDirectionEvent("leftStickLeft", onLeft);
-  useGamepadStickDirectionEvent("extraStickLeft", onLeft);
+  useGamepadButtonPressEvent("leftStickLeft", onLeft);
 };
 
 export const useDirectionalInputRight = (onRight: () => void) => {
-  useGamepadButtonPressEvent(layout.buttons.DPadRight, onRight);
+  useGamepadButtonPressEvent("dpadRight", onRight);
   useKeyboardEvent("ArrowRight", onRight, "keydown");
-  useGamepadStickDirectionEvent("leftStickRight", onRight);
-  useGamepadStickDirectionEvent("extraStickRight", onRight);
+  useGamepadButtonPressEvent("leftStickRight", onRight);
 };
 
 export const useInputConfirmation = (onConfirmation: () => void) => {
-  useGamepadButtonPressEvent(layout.buttons.A, onConfirmation);
+  useGamepadButtonPressEvent("a", onConfirmation);
   useKeyboardEvent("Enter", onConfirmation);
 };
 
 export const useInputBack = (onBack: () => void) => {
-  useGamepadButtonPressEvent(layout.buttons.B, onBack);
+  useGamepadButtonPressEvent("b", onBack);
   useKeyboardEvent("Backspace", onBack);
 };
 
 export const useInputSettings = (onSettings: () => void) => {
   useKeyboardEvent("Escape", onSettings);
-  useGamepadButtonPressEvent(layout.buttons.Start, onSettings);
+  useGamepadButtonPressEvent("start", onSettings);
 };

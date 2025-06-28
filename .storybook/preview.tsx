@@ -1,5 +1,5 @@
 import "../app/index.css" with { type: "css" };
-import type { Decorator, Preview } from "@storybook/react";
+import type { Decorator, Preview } from "@storybook/react-vite";
 
 import { styled } from "../styled-system/jsx/index.js";
 

@@ -18,16 +18,16 @@ import type {
 import { categories } from "./categoriesDB.server/index.js";
 import type { SystemId } from "./categoriesDB.server/systemId.js";
 import { readCategory } from "./categoryDataCache.server.js";
-import {
-  registerCloseGameEvent,
-  unregisterCloseGameEvent,
-} from "./closeGame.server.js";
 import { log } from "./debug.server.js";
 import { setErrorDialog } from "./errorDialog.server.js";
-import { getSdl } from "./importSdl.server.js";
 import { addToLastPlayedCached } from "./lastPlayed.server.js";
 import { isWindows } from "./operationsystem.server.js";
 import { readAppearance, readGeneral } from "./settings.server.js";
+import {
+  registerCloseGameOnKeyboardEvent,
+  unregisterCloseGameOnKeyboardEvent,
+} from "./closeGame.server.js";
+import { setGameIsRunningChildProcess } from "./gameIsRunning.server.js";
 
 type ExecFileCallback = (
   error: ExecFileException | null,
@@ -53,9 +53,7 @@ const execFileCallback =
     }
   };
 
-const executeApplication = async (file: string, args: string[]) => {
-  const sdl = await getSdl();
-
+const executeApplication = (file: string, args: string[]) => {
   return new Promise<void>((resolve, reject) => {
     const childProcess = execFile(
       file,
@@ -65,13 +63,15 @@ const executeApplication = async (file: string, args: string[]) => {
       },
       execFileCallback(reject),
     );
+    setGameIsRunningChildProcess(childProcess);
 
-    registerCloseGameEvent(childProcess, sdl);
+    registerCloseGameOnKeyboardEvent();
 
     childProcess.on("close", () => {
-      unregisterCloseGameEvent();
+      unregisterCloseGameOnKeyboardEvent();
 
       setTimeout(() => {
+        setGameIsRunningChildProcess();
         resolve();
       }, 1000);
     });

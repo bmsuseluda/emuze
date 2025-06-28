@@ -1,10 +1,10 @@
-import { useCallback, useContext, useMemo } from "react";
+import { use, useCallback, useMemo } from "react";
 import { FocusContext } from "../../provider/FocusProvider/index.js";
 
 export const useFocus = <FocusElement extends string>(
   focusElement: FocusElement,
 ) => {
-  const context = useContext(FocusContext);
+  const context = use(FocusContext);
   if (!context) {
     throw new Error("useFocus must be used within a FocusProvider");
   }

@@ -1,5 +1,5 @@
 import { GameVersions } from "./index.js";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { gameVersions } from "./testData.js";
 
 const meta = {

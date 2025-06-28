@@ -23,10 +23,20 @@ export const useKeyboardEvent = (
         throttleFunction(functionToThrottle, 0);
       }
     };
+    const preventDefault = (e: KeyboardEvent) => {
+      e.preventDefault();
+    };
+
     addEventListener(keyboardEventType, handleKeyboardEvent);
+    if (keyboardEventType === "keyup") {
+      addEventListener("keydown", preventDefault);
+    }
 
     return () => {
       removeEventListener(keyboardEventType, handleKeyboardEvent);
+      if (keyboardEventType === "keyup") {
+        removeEventListener("keydown", preventDefault);
+      }
     };
   }, [
     keyboardKey,

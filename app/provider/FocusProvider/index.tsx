@@ -1,11 +1,11 @@
-import type { MutableRefObject, ReactNode } from "react";
+import type { RefObject, ReactNode } from "react";
 import { createContext, useRef, useState } from "react";
 
 interface FocusContextState {
   // TODO: Check how to use generics to make it type safe
   elementInFocus?: string;
   setElementInFocus: (elementInFocus?: string) => void;
-  focusHistory: MutableRefObject<string[]>;
+  focusHistory: RefObject<string[]>;
 }
 
 const defaultState: FocusContextState = {
@@ -32,7 +32,7 @@ export const FocusProvider = ({
   const focusHistory = useRef<string[]>(focusHistoryDefault || []);
 
   return (
-    <FocusContext.Provider
+    <FocusContext
       value={{
         elementInFocus,
         setElementInFocus,
@@ -40,6 +40,6 @@ export const FocusProvider = ({
       }}
     >
       {children}
-    </FocusContext.Provider>
+    </FocusContext>
   );
 };

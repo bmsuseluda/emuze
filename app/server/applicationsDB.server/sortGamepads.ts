@@ -1,5 +1,5 @@
-import type { Sdl } from "@kmamal/sdl";
-import { isGamecubeController, steamDeck } from "./gamepads.js";
+import type { Sdl } from "@bmsuseluda/sdl";
+import { isGamecubeController, steamDeck } from "../../types/gamepad.js";
 
 /**
  * If one of the gamepads is the Steam Deck, it should be positioned last.

@@ -1,7 +1,7 @@
 import { styled } from "../../../styled-system/jsx/index.js";
 import type { Entry } from "../../types/jsonFiles/category.js";
 import { useGamepadsOnGrid } from "../../hooks/useGamepadsOnGrid/index.js";
-import type { ElementRef, MutableRefObject } from "react";
+import type { ComponentRef, RefObject } from "react";
 import { useCallback } from "react";
 import {
   useInputBack,
@@ -68,7 +68,7 @@ export const GameVersions = ({
   onGameClick,
   onBack,
 }: Props) => {
-  const selectEntry = (game: ElementRef<"input">) => {
+  const selectEntry = (game: ComponentRef<"input">) => {
     if (!game.checked) {
       game.checked = true;
     }
@@ -78,7 +78,7 @@ export const GameVersions = ({
   };
 
   const goBack = useCallback(
-    (selectedGame: MutableRefObject<ElementRef<"input"> | undefined>) => {
+    (selectedGame: RefObject<ComponentRef<"input"> | undefined>) => {
       if (selectedGame.current) {
         selectedGame.current.checked = false;
       }
