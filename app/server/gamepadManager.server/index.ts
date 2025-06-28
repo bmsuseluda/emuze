@@ -21,7 +21,10 @@ export type AxisMotionEventFunction = (
 const addMappings = async () => {
   sdl.controller.addMappings([
     ...mappings,
+    // TODO: Check on windows and submit pull request to db
+    "0500a7a57e0500000720000001800000,NSO NES Controller,a:b0,b:b1,back:b4,start:b5,leftshoulder:b2,rightshoulder:b3,dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,platform:Linux,",
     "0500c0db7e0500001720000001800000,NSO SNES Controller,a:b1,b:b0,x:b2,y:b3,back:b8,start:b9,leftshoulder:b4,rightshoulder:b5,dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,lefttrigger:b6,righttrigger:b7,platform:Linux,",
+    "050067007e0500000620000001800000,Nintendo Switch Left Joy-Con,a:b8,b:b9,back:b5,leftshoulder:b2,leftstick:b6,rightshoulder:b4,lefttrigger:b1,righttrigger:b3,start:b0,x:b10,y:b7,leftx:a1,lefty:a0~,platform:Linux,",
   ]);
 };
 
