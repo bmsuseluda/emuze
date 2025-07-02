@@ -2,7 +2,7 @@ import { FormRow } from "../../components/FormRow/index.js";
 import { Label } from "../../components/Label/index.js";
 import { TextInput } from "../../components/TextInput/index.js";
 import { FaFolderOpen } from "react-icons/fa";
-import type { ElementRef, MouseEvent } from "react";
+import type { ComponentRef, MouseEvent } from "react";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -14,7 +14,7 @@ interface Props {
   newError?: string;
   actionId: string;
   openDialogButtonRef: (ref: HTMLButtonElement) => void;
-  onOpenFileDialog: (event: MouseEvent<ElementRef<"button">>) => void;
+  onOpenFileDialog: (event: MouseEvent<ComponentRef<"button">>) => void;
 }
 
 export const FileDialogInputField = ({

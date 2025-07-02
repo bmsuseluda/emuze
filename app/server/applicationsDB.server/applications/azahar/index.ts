@@ -1,7 +1,8 @@
 import type { Application } from "../../types.js";
 import type { ApplicationId } from "../../applicationId.js";
 import nodepath from "node:path";
-import type { Sdl } from "@kmamal/sdl";
+import type { Sdl } from "@bmsuseluda/sdl";
+import sdl from "@bmsuseluda/sdl";
 import { log } from "../../../debug.server.js";
 import { EOL } from "node:os";
 import { keyboardConfig } from "./keyboardConfig.js";
@@ -18,7 +19,6 @@ import { importElectron } from "../../../importElectron.server.js";
 import { commandLineOptions } from "../../../commandLine.server.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { isWindows } from "../../../operationsystem.server.js";
-import { getSdl } from "../../../importSdl.server.js";
 
 const flatpakId = "io.github.lime3ds.Lime3DS";
 const applicationId: ApplicationId = "azahar";
@@ -251,8 +251,8 @@ export const getConfigFilePath = (configFileName: string) => {
   }
 };
 
-export const replaceConfigSections = async (n3dsRomsPath: string) => {
-  const controller = (await getSdl()).controller;
+export const replaceConfigSections = (n3dsRomsPath: string) => {
+  const controller = sdl.controller;
   const filePath = getConfigFilePath(configFileName);
   const fileContent = readConfigFile(filePath);
 
@@ -273,7 +273,7 @@ export const azahar: Application = {
   name: "Azahar",
   fileExtensions: [".cci"],
   flatpakId,
-  createOptionParams: async ({
+  createOptionParams: ({
     settings: {
       appearance: { fullscreen },
       general: { categoriesPath },
@@ -281,7 +281,7 @@ export const azahar: Application = {
     categoryData,
   }) => {
     const n3dsRomsPath = nodepath.join(categoriesPath, categoryData.name);
-    await replaceConfigSections(n3dsRomsPath);
+    replaceConfigSections(n3dsRomsPath);
 
     const optionParams = [];
     if (fullscreen) {

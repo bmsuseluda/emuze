@@ -1,4 +1,4 @@
-import type { ElementRef } from "react";
+import type { ComponentRef } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import {
   useDirectionalInputDown,
@@ -13,7 +13,7 @@ export const useGamepadsOnSidebar = (
   switchFocus: (nextFocusElement: FocusElement) => void,
   inputBack: boolean = true,
 ) => {
-  const categoryLinksRefs = useRef<ElementRef<"a">[]>([]);
+  const categoryLinksRefs = useRef<ComponentRef<"a">[]>([]);
 
   const selectLink = useCallback((index: number) => {
     const currentLink = categoryLinksRefs.current.at(index);
@@ -79,7 +79,7 @@ export const useGamepadsOnSidebar = (
   useInputBack(onBack);
 
   const categoryLinksRefCallback = useCallback(
-    (index: number) => (ref: ElementRef<"a">) => {
+    (index: number) => (ref: ComponentRef<"a">) => {
       categoryLinksRefs.current[index] = ref;
     },
     [],

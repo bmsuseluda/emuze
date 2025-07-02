@@ -37,9 +37,6 @@ const showHelp = () => {
 app.commandLine.appendSwitch("lang", "en-US");
 app.commandLine.appendSwitch("enable-features", "GlobalShortcutsPortal");
 
-// TODO: remove if workaround is not necessary anymore: https://github.com/electron/electron/issues/46538
-app.commandLine.appendSwitch("gtk-version", "3");
-
 /**
  * Migration from old home directory to new one.
  *
@@ -113,13 +110,6 @@ app.on("ready", async () => {
     minHeight: 600,
   });
 
-  window.on("blur", () => {
-    window.webContents.send("blur");
-  });
-  window.on("focus", () => {
-    window.webContents.send("focus");
-  });
-
   ipcMain.handle("isFullscreen", () => window.isFullScreen());
 
   ipcMain.on("changeWindow", (_event, name: WindowChangeEvents) => {
@@ -180,6 +170,5 @@ app.on("ready", async () => {
 });
 
 app.on("will-quit", () => {
-  // Unregister all shortcuts.
   globalShortcut.unregisterAll();
 });

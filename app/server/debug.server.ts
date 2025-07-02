@@ -63,6 +63,7 @@ export const log = (
       console.log(type, texts);
     } catch (e) {
       appendLogFile("error", "There was an unexpected error while logging");
+      appendLogFile("error", e);
     }
   }
 };

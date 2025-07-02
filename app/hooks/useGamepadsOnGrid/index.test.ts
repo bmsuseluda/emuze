@@ -2,14 +2,13 @@ import { createEvent, fireEvent, renderHook } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 
 import { useGamepadsOnGrid } from "./index.js";
-import type { StickDirection } from "../useGamepads/layouts/index.js";
-import { layout } from "../useGamepads/layouts/index.js";
+import {
+  getGamepadButtonEventName,
+  type ButtonId,
+} from "../../types/gamepad.js";
 
-const pressButton = (buttonIndex: number) => {
-  fireEvent(window, createEvent(`gamepadonbutton${buttonIndex}press`, window));
-};
-const pressStick = (stickDirection: StickDirection) => {
-  fireEvent(window, createEvent(`gamepadon${stickDirection}`, window));
+const pressButton = (buttonId: ButtonId) => {
+  fireEvent(window, createEvent(getGamepadButtonEventName(buttonId), window));
 };
 
 describe("useGamepadsOnGrid", () => {
@@ -42,7 +41,7 @@ describe("useGamepadsOnGrid", () => {
       expect(onSelectEntry).toBeCalledWith("row1element1");
 
       // press down to go to second row
-      pressButton(layout.buttons.DPadDown);
+      pressButton("dpadDown");
 
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row2element1",
@@ -78,8 +77,8 @@ describe("useGamepadsOnGrid", () => {
       expect(onSelectEntry).toBeCalledWith("row1element1");
 
       // press right 2 times to go to last element on first row
-      pressButton(layout.buttons.DPadRight);
-      pressButton(layout.buttons.DPadRight);
+      pressButton("dpadRight");
+      pressButton("dpadRight");
 
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row1element3",
@@ -87,7 +86,7 @@ describe("useGamepadsOnGrid", () => {
       expect(onSelectEntry).toBeCalledWith("row1element3");
 
       // press down to go to second row
-      pressButton(layout.buttons.DPadDown);
+      pressButton("dpadDown");
 
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row2element2",
@@ -115,7 +114,7 @@ describe("useGamepadsOnGrid", () => {
       });
 
       // press down to go to second row
-      pressButton(layout.buttons.DPadDown);
+      pressButton("dpadDown");
 
       expect(result.current.selectedEntry).toStrictEqual({
         current: undefined,
@@ -153,7 +152,7 @@ describe("useGamepadsOnGrid", () => {
       expect(onSelectEntry).toBeCalledWith("row1element1");
 
       // press left to go over the edge
-      pressButton(layout.buttons.DPadLeft);
+      pressButton("dpadLeft");
 
       expect(onLeftOverTheEdge).toBeCalled();
     });
@@ -188,9 +187,9 @@ describe("useGamepadsOnGrid", () => {
       expect(onSelectEntry).toBeCalledWith("row1element1");
 
       // press right to go over the edge
-      pressButton(layout.buttons.DPadRight);
-      pressButton(layout.buttons.DPadRight);
-      pressButton(layout.buttons.DPadRight);
+      pressButton("dpadRight");
+      pressButton("dpadRight");
+      pressButton("dpadRight");
 
       expect(onRightOverTheEdge).toBeCalled();
     });
@@ -225,7 +224,7 @@ describe("useGamepadsOnGrid", () => {
       expect(onSelectEntry).toBeCalledWith("row1element1");
 
       // press up to go over the edge
-      pressButton(layout.buttons.DPadUp);
+      pressButton("dpadUp");
 
       expect(onTopOverTheEdge).toBeCalled();
     });
@@ -260,8 +259,8 @@ describe("useGamepadsOnGrid", () => {
       expect(onSelectEntry).toBeCalledWith("row1element1");
 
       // press down to go over the edge
-      pressButton(layout.buttons.DPadDown);
-      pressButton(layout.buttons.DPadDown);
+      pressButton("dpadDown");
+      pressButton("dpadDown");
 
       expect(onBottomOverTheEdge).toBeCalled();
     });
@@ -296,7 +295,7 @@ describe("useGamepadsOnGrid", () => {
       expect(onSelectEntry).toBeCalledWith("row1element1");
 
       // press down to go to second row
-      pressStick("leftStickDown");
+      pressButton("leftStickDown");
 
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row2element1",
@@ -324,7 +323,7 @@ describe("useGamepadsOnGrid", () => {
       });
 
       // press down to go to second row
-      pressStick("leftStickDown");
+      pressButton("leftStickDown");
 
       expect(result.current.selectedEntry).toStrictEqual({
         current: undefined,

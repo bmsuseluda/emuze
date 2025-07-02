@@ -1,4 +1,4 @@
-import type { ElementRef } from "react";
+import type { ComponentRef } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDeepCompareEffect } from "react-use";
 import type { Entry } from "../../types/jsonFiles/category.js";
@@ -33,7 +33,7 @@ export const useAddEntriesToRenderOnScrollEnd = (entries: Entry[]) => {
     }
   }, [entries, entriesToRender]);
 
-  const inViewRef = useRef<ElementRef<"div">>(null);
+  const inViewRef = useRef<ComponentRef<"div">>(null);
 
   const intersectionCallback: IntersectionObserverCallback = useCallback(
     (entries) => {

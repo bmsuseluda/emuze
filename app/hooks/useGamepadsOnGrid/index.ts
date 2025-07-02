@@ -1,4 +1,4 @@
-import type { MutableRefObject, RefObject } from "react";
+import type { RefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
 import { useRefsGrid } from "../useRefsGrid/index.js";
 import {
@@ -9,14 +9,14 @@ import {
 } from "../useDirectionalInput/index.js";
 
 export interface Result<T> {
-  selectedEntry: MutableRefObject<T | undefined>;
+  selectedEntry: RefObject<T | undefined>;
   resetSelected: () => void;
   updatePosition: () => void;
-  entryListRef: RefObject<HTMLUListElement>;
-  entriesRefs: MutableRefObject<T[]>;
+  entryListRef: RefObject<HTMLUListElement | null>;
+  entriesRefs: RefObject<T[]>;
   entriesRefCallback: (index: number) => (ref: T) => void;
   // TODO: only for tests for now. is it possible without?
-  entriesRefsGrid: MutableRefObject<T[][]>;
+  entriesRefsGrid: RefObject<T[][]>;
 }
 
 interface Props<T> {
@@ -36,12 +36,12 @@ export const useGamepadsOnGrid = <T extends HTMLElement>({
   onTopOverTheEdge,
   onBottomOverTheEdge,
 }: Props<T>): Result<T> => {
-  const selectedX = useRef<number>();
-  const selectedY = useRef<number>();
-  const selectedEntry = useRef<T>();
+  const selectedX = useRef<number>(undefined);
+  const selectedY = useRef<number>(undefined);
+  const selectedEntry = useRef<T>(undefined);
 
   const handleSelectEntry = useCallback(
-    (entriesRefsGrid: MutableRefObject<T[][]>, x: number, y: number) => {
+    (entriesRefsGrid: RefObject<T[][]>, x: number, y: number) => {
       if (entriesRefsGrid.current[y] && entriesRefsGrid.current[y][x]) {
         const entry = entriesRefsGrid.current[y][x];
         selectedEntry.current = entry;
@@ -52,7 +52,7 @@ export const useGamepadsOnGrid = <T extends HTMLElement>({
   );
 
   const selectFirstEntry = useCallback(
-    (entriesRefsGrid: MutableRefObject<T[][]>) => {
+    (entriesRefsGrid: RefObject<T[][]>) => {
       if (isInFocus) {
         selectedX.current = 0;
         selectedY.current = 0;
@@ -67,7 +67,7 @@ export const useGamepadsOnGrid = <T extends HTMLElement>({
   );
 
   const updatePosition = useCallback(
-    (entriesRefsGrid: MutableRefObject<T[][]>) => () => {
+    (entriesRefsGrid: RefObject<T[][]>) => () => {
       if (selectedEntry.current) {
         const selectedEntryInGrid = entriesRefsGrid.current.find(
           (row, indexY) => {

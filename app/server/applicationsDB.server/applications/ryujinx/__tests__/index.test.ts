@@ -1,5 +1,5 @@
 import { createControllerId, excludeFiles, findEntryName } from "../index.js";
-import { gamepadPs3, steamDeck } from "../../../gamepads.js";
+import { gamepadPs3, steamDeck } from "../../../../../types/gamepad.js";
 
 const smashUltimateName =
   "Super Smash Bros. Ultimate [01006A800016E000][v0][BASE]";

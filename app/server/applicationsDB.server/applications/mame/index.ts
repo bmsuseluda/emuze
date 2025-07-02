@@ -50,8 +50,8 @@ export const mameNeoGeo: Application = {
 export const mameNeoGeoCD: Application = {
   ...mame,
   id: "mameNeoGeoCD",
-  createOptionParams: async (props) => [
-    ...(await getSharedMameOptionParams(props)),
+  createOptionParams: (props) => [
+    ...getSharedMameOptionParams(props),
     "neocdz",
     "-cdrm",
   ],

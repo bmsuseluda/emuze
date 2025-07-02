@@ -1,12 +1,12 @@
-import { fetchMetaData } from "../fetchMetaData";
-import { writeFile } from "../../app/server/readWriteData.server";
+import { fetchMetaData } from "../fetchMetaData.js";
+import { writeFile } from "../../app/server/readWriteData.server.js";
 import { existsSync } from "node:fs";
-import type { Game } from "../igdb";
-import { fetchMetaDataForSystem } from "../igdb";
-import type { SystemId } from "../../app/server/categoriesDB.server/systemId";
+import type { Game } from "../igdb.js";
+import { fetchMetaDataForSystem } from "../igdb.js";
+import type { SystemId } from "../../app/server/categoriesDB.server/systemId.js";
 import nodepath from "node:path";
 
-vi.mock("../igdb.ts");
+vi.mock("../igdb");
 vi.mock("../../app/server/readWriteData.server");
 vi.mock("node:fs");
 

@@ -1,4 +1,4 @@
-import type { MutableRefObject } from "react";
+import type { RefObject } from "react";
 import { useCallback, useRef } from "react";
 
 /**
@@ -24,7 +24,7 @@ const isSingleButtonPress = (tempTimestamp?: number | null) => {
 };
 
 const addTimestamp = (
-  timestampsRef: MutableRefObject<Record<number, number>>,
+  timestampsRef: RefObject<Record<number, number>>,
   index: number,
 ) => {
   timestampsRef.current[index] = Date.now();

@@ -1,11 +1,9 @@
-import type { NavLinkProps } from "react-router";
 import { NavLink } from "react-router";
-import type { ElementRef, ReactNode } from "react";
-import { forwardRef } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { IconChildrenWrapper } from "../../components/IconChildrenWrapper/index.js";
 import { styled } from "../../../styled-system/jsx/index.js";
 
-interface Props extends NavLinkProps {
+interface Props extends ComponentProps<typeof StyledNavLink> {
   isFocused?: boolean;
   icon?: ReactNode;
   children?: ReactNode;
@@ -69,27 +67,17 @@ const LinkSpan = styled(IconChildrenWrapper, {
   ],
 });
 
-export const Link = forwardRef<ElementRef<typeof StyledNavLink>, Props>(
-  ({ to, children, icon, isFocused, ...rest }, ref) => (
-    <StyledNavLink
-      to={to}
-      prefetch="intent"
-      draggable={false}
-      {...rest}
-      ref={ref}
-    >
-      {({ isActive }) => (
-        <LinkSpan
-          active={isActive}
-          focused={isFocused}
-          circle={!!icon && !children}
-        >
-          {icon}
-          {children}
-        </LinkSpan>
-      )}
-    </StyledNavLink>
-  ),
+export const Link = ({ to, children, icon, isFocused, ...rest }: Props) => (
+  <StyledNavLink to={to} prefetch="intent" draggable={false} {...rest}>
+    {({ isActive }) => (
+      <LinkSpan
+        active={isActive}
+        focused={isFocused}
+        circle={!!icon && !children}
+      >
+        {icon}
+        {children}
+      </LinkSpan>
+    )}
+  </StyledNavLink>
 );
-
-Link.displayName = "Link";
