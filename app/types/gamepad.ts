@@ -159,21 +159,6 @@ export const gamepadPs4 = {
     "030000004c050000c405000000010000,PS4 Controller,platform:Windows,a:b1,b:b2,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b4,leftstick:b10,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b11,righttrigger:a4,rightx:a2,righty:a5,start:b9,x:b0,y:b3,",
 } satisfies Sdl.Controller.Device;
 
-// Seems to be only in dev mode
-export const gamepadPs4New = {
-  id: 0,
-  type: "ps4",
-  name: "PS4 Controller",
-  path: "/dev/hidraw6",
-  guid: "03008fe54c050000c405000000006800",
-  vendor: 1356,
-  product: 1476,
-  version: null,
-  player: 0,
-  mapping:
-    "03008fe54c050000c405000000006800,*,a:b0,b:b1,back:b4,dpdown:b12,dpleft:b13,dpright:b14,dpup:b11,guide:b5,leftshoulder:b9,leftstick:b7,lefttrigger:a4,leftx:a0,lefty:a1,rightshoulder:b10,rightstick:b8,righttrigger:a5,rightx:a2,righty:a3,start:b6,x:b2,y:b3,touchpad:b15,crc:e58f,",
-} satisfies Sdl.Controller.Device;
-
 export const gamepadPs3 = {
   id: 2,
   type: "ps3",
@@ -187,3 +172,17 @@ export const gamepadPs3 = {
   mapping:
     "0300afd34c0500006802000011810000,PS3 Controller,platform:Windows,a:b1,b:b2,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b4,leftstick:b10,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b11,righttrigger:a4,rightx:a2,righty:a5,start:b9,x:b0,y:b3,",
 } satisfies Sdl.Controller.Device;
+
+export const gamecubeAdapter = {
+  id: 5,
+  name: "Mayflash GameCube Adapter",
+  path: "/dev/input/event5",
+  guid: "0300767a790000004318000010010000",
+  type: null,
+  vendor: 121,
+  product: 6211,
+  version: 272,
+  player: 5,
+  mapping:
+    "0300767a790000004318000010010000,Mayflash GameCube Adapter,a:b1,b:b0,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b7,righttrigger:a4,rightx:a5,righty:a2,start:b9,x:b2,y:b3,platform:Linux,",
+};

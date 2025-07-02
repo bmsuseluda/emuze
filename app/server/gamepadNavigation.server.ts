@@ -1,6 +1,6 @@
 import type { Sdl } from "@bmsuseluda/sdl";
 import { log } from "./debug.server.js";
-import type { ButtonId, GamepadData, GamepadType } from "../types/gamepad.js";
+import type { ButtonId, GamepadData } from "../types/gamepad.js";
 import type { AxisMotionEventFunction } from "./gamepadManager.server/index.js";
 import { gamepadManager } from "./gamepadManager.server/index.js";
 import { isGameRunning } from "./gameIsRunning.server.js";
@@ -20,31 +20,16 @@ const isGamepadNavigationAllowed = () => {
   );
 };
 
-const getGamepadType = (
-  sdlControllerType: Sdl.Controller.ControllerType,
-): GamepadType => {
-  switch (sdlControllerType) {
-    case "ps3":
-    case "ps4":
-    case "ps5": {
-      return "PlayStation";
-    }
-    case "nintendoSwitchJoyconLeft":
-    case "nintendoSwitchJoyconRight":
-    case "nintendoSwitchJoyconPair":
-    case "nintendoSwitchPro": {
-      return "Nintendo";
-    }
-    default:
-      return "XBox";
-  }
-};
-
-const axisButtonsPressed: Partial<Record<ButtonId, boolean>> = {};
+type AxisButtonsPressed = Partial<Record<ButtonId, boolean>>;
+export type AxisButtonsPressedForControllerId = Record<
+  number,
+  AxisButtonsPressed
+>;
 
 const getAxisButtonId = (
   axis: Sdl.Controller.Axis,
   value: number,
+  axisButtonsPressed: AxisButtonsPressed,
 ): ButtonId => {
   switch (axis) {
     case "leftStickX":
@@ -114,10 +99,13 @@ export type SendEvent = (data: GamepadData) => void;
 export const handleAxisMotionEvent =
   (
     sendEvent: SendEvent,
-    axisButtonsPressed: Partial<Record<ButtonId, boolean>>,
+    axisButtonsPressedForControllerId: AxisButtonsPressedForControllerId,
   ): AxisMotionEventFunction =>
-  ({ axis, value }, controller) => {
-    const buttonId = getAxisButtonId(axis, value);
+  ({ axis, value }, { device }, gamepadType) => {
+    const axisButtonsPressed =
+      axisButtonsPressedForControllerId[device.id] || {};
+
+    const buttonId = getAxisButtonId(axis, value, axisButtonsPressed);
     const pressed = value <= -axisValueThreshold || value >= axisValueThreshold;
     const pressedBefore = !!axisButtonsPressed[buttonId];
     const buttonSisterId = getAxisButtonSisterId(axis, buttonId);
@@ -126,8 +114,9 @@ export const handleAxisMotionEvent =
 
     if (buttonSisterIdPressedBefore && !pressed) {
       // cleanup from last press
+      log("debug", "axisMotion", "cleanup", gamepadType, buttonSisterId);
       sendEvent({
-        gamepadType: getGamepadType(controller.device.type),
+        gamepadType,
         buttonId: buttonSisterId,
         eventType: "buttonUp",
       });
@@ -143,10 +132,10 @@ export const handleAxisMotionEvent =
         buttonId,
         pressed,
         axisButtonsPressed,
-        getGamepadType(controller.device.type),
+        gamepadType,
       );
       sendEvent({
-        gamepadType: getGamepadType(controller.device.type),
+        gamepadType,
         buttonId,
         eventType: pressed ? "buttonDown" : "buttonUp",
       });
@@ -156,32 +145,40 @@ export const handleAxisMotionEvent =
         axisButtonsPressed[buttonSisterId] = false;
       }
     }
+    axisButtonsPressedForControllerId[device.id] = axisButtonsPressed;
   };
 
 export const registerGamepadNavigationEvents = (sendEvent: SendEvent) => {
   log("debug", "registerGamepadNavigationEvents");
+  const axisButtonsPressed: AxisButtonsPressedForControllerId = {};
 
-  gamepadManager.addButtonDownEvent(gamepadEventId, (event, controller) => {
-    if (isGamepadNavigationAllowed()) {
-      log("debug", "buttonDown", event.button);
-      sendEvent({
-        gamepadType: getGamepadType(controller.device.type),
-        buttonId: event.button,
-        eventType: event.type,
-      });
-    }
-  });
+  gamepadManager.addButtonDownEvent(
+    gamepadEventId,
+    (event, controller, gamepadType) => {
+      if (isGamepadNavigationAllowed()) {
+        log("debug", "buttonDown", event.button);
+        sendEvent({
+          gamepadType,
+          buttonId: event.button,
+          eventType: event.type,
+        });
+      }
+    },
+  );
 
-  gamepadManager.addButtonUpEvent(gamepadEventId, (event, controller) => {
-    if (isGamepadNavigationAllowed()) {
-      log("debug", "buttonUp", event.button);
-      sendEvent({
-        gamepadType: getGamepadType(controller.device.type),
-        buttonId: event.button,
-        eventType: event.type,
-      });
-    }
-  });
+  gamepadManager.addButtonUpEvent(
+    gamepadEventId,
+    (event, controller, gamepadType) => {
+      if (isGamepadNavigationAllowed()) {
+        log("debug", "buttonUp", event.button);
+        sendEvent({
+          gamepadType,
+          buttonId: event.button,
+          eventType: event.type,
+        });
+      }
+    },
+  );
 
   gamepadManager.addAxisMotionEvent(
     gamepadEventId,
