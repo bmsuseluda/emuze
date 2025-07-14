@@ -16,10 +16,6 @@ export const electronAPI = {
     ),
   isFullscreen: () => electron?.ipcRenderer.invoke("isFullscreen"),
   closeEmuze: () => electron?.ipcRenderer.invoke("closeEmuze"),
-  onBlur: (callback: () => void) =>
-    electron?.ipcRenderer.on("blur", () => callback()),
-  onFocus: (callback: () => void) =>
-    electron?.ipcRenderer.on("focus", () => callback()),
 };
 
 electron?.contextBridge.exposeInMainWorld("electronAPI", electronAPI);

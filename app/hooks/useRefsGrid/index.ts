@@ -1,16 +1,16 @@
 import debounce from "lodash.debounce";
-import type { ElementRef, MutableRefObject } from "react";
+import type { ComponentRef, RefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
 
 /**
  * @param onCreateGrid callback when entriesRefsGrid will be created or updated
  **/
 export const useRefsGrid = <T extends HTMLElement>(
-  onCreateGrid: (entriesRefsGrid: MutableRefObject<T[][]>) => () => void,
+  onCreateGrid: (entriesRefsGrid: RefObject<T[][]>) => () => void,
 ) => {
   const entriesRefsGrid = useRef<T[][]>([]);
   const entriesRefs = useRef<T[]>([]);
-  const entryListRef = useRef<ElementRef<"ul">>(null);
+  const entryListRef = useRef<ComponentRef<"ul">>(null);
 
   const createRefsGrid = useCallback(() => {
     const entriesGrid: T[][] = [];

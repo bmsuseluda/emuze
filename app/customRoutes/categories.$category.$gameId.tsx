@@ -9,12 +9,10 @@ import {
 import { readGeneral } from "../server/settings.server.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
-import type { ElementRef } from "react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
 import { LaunchButton, launchId } from "../containers/LaunchButton/index.js";
 import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
-import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction/index.js";
 import type { DataFunctionArgs } from "../context.js";
 import { log } from "../server/debug.server.js";
 import type { SystemId } from "../server/categoriesDB.server/systemId.js";
@@ -26,6 +24,7 @@ import { useInputSettings } from "../hooks/useDirectionalInput/index.js";
 import { GameVersions } from "../components/GameVersions/index.js";
 import { GameDialog } from "../components/GameDialog/index.js";
 import { readCategory } from "../server/categoryDataCache.server.js";
+import { useLaunchButton } from "../hooks/useLaunchButton/index.js";
 
 const getGameData = (category: SystemId, gameId: string) => {
   let systemId: SystemId | undefined;
@@ -103,7 +102,10 @@ export const action: ActionFunction = async ({ request, params }) => {
           (value) => value.id === game,
         );
 
-        subEntryData && (await startGame(systemId, subEntryData, gameData));
+        if (subEntryData) {
+          await startGame(systemId, subEntryData, gameData);
+        }
+
         return { ok: true };
       }
     }
@@ -143,16 +145,12 @@ const focus: FocusElement = "gameDialog";
 export default function Index() {
   const { gameData } = useLoaderData<typeof loader>();
 
-  const launchButtonRef = useRef<ElementRef<"button">>(null);
+  const { launchButtonRef, onExecute } = useLaunchButton();
 
   const { isInFocus, enableFocus, switchFocusBack } =
     useFocus<FocusElement>(focus);
 
-  const { gamepadType, enableGamepads, disableGamepads } =
-    useGamepadConnected();
-
-  /* Set focus again after launching */
-  useEnableFocusAfterAction(() => enableGamepads(true), [actionIds.launch]);
+  const { enableGamepads } = useGamepadConnected();
 
   useEffect(() => {
     if (!isInFocus) {
@@ -169,13 +167,6 @@ export default function Index() {
     switchFocusBack();
     navigate(-1);
   }, [navigate, switchFocusBack]);
-
-  const onExecute = useCallback(() => {
-    if (launchButtonRef.current && !launchButtonRef.current.disabled) {
-      disableGamepads(true);
-      launchButtonRef.current.click();
-    }
-  }, [disableGamepads]);
 
   const onEntryClick = useCallback(() => {
     if (!isInFocus) {
@@ -219,7 +210,6 @@ export default function Index() {
                 actions={
                   <>
                     <LaunchButton
-                      gamepadType={gamepadType}
                       launchButtonRef={launchButtonRef}
                       disabled={!subEntries || subEntries.length === 0}
                     />

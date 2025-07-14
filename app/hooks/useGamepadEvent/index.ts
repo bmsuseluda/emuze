@@ -1,28 +1,18 @@
 import { useEffect } from "react";
-import type { StickDirection } from "../useGamepads/layouts/index.js";
+import {
+  getGamepadButtonEventName,
+  type ButtonId,
+} from "../../types/gamepad.js";
 
 export const useGamepadButtonPressEvent = (
-  index: number,
+  buttonId: ButtonId,
   onGamepadEvent: (event: Event) => void,
 ) => {
   useEffect(() => {
-    addEventListener(`gamepadonbutton${index}press`, onGamepadEvent);
+    addEventListener(getGamepadButtonEventName(buttonId), onGamepadEvent);
 
     return () => {
-      removeEventListener(`gamepadonbutton${index}press`, onGamepadEvent);
+      removeEventListener(getGamepadButtonEventName(buttonId), onGamepadEvent);
     };
-  }, [index, onGamepadEvent]);
-};
-
-export const useGamepadStickDirectionEvent = (
-  stickDirection: StickDirection,
-  onGamepadEvent: (event: Event) => void,
-) => {
-  useEffect(() => {
-    addEventListener(`gamepadon${stickDirection}`, onGamepadEvent);
-
-    return () => {
-      removeEventListener(`gamepadon${stickDirection}`, onGamepadEvent);
-    };
-  }, [stickDirection, onGamepadEvent]);
+  }, [buttonId, onGamepadEvent]);
 };

@@ -9,14 +9,13 @@ import fs from "node:fs";
 import { log } from "../../../debug.server.js";
 import type { Config, InputConfig } from "./config.js";
 import { defaultConfig, defaultInputConfig } from "./config.js";
-import type { Sdl } from "@kmamal/sdl";
+import type { Sdl } from "@bmsuseluda/sdl";
+import sdl from "@bmsuseluda/sdl";
 import { emulatorsDirectory } from "../../../homeDirectory.server.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import type { ApplicationId } from "../../applicationId.js";
-import { isGamecubeController } from "../../gamepads.js";
+import { isGamecubeController } from "../../../../types/gamepad.js";
 import { sortGamecubeLast } from "../../sortGamepads.js";
-import type { SdlType } from "../../../../types/sdl.js";
-import { getSdl } from "../../../importSdl.server.js";
 
 const applicationId: ApplicationId = "ryujinx";
 const flatpakId = "org.ryujinx.Ryujinx";
@@ -151,31 +150,31 @@ const createDeviceSpecificInputConfig = (controllerName: string) => {
   return defaultInputConfig;
 };
 
-const createInputConfig =
-  (sdl: SdlType) =>
-  (controller: Sdl.Joystick.Device, index: number): InputConfig => {
-    const joystick = sdl.joystick.devices[index];
-    log("debug", "gamepad", {
-      index,
-      controller,
-      joystick,
-    });
+const createInputConfig = (
+  controller: Sdl.Joystick.Device,
+  index: number,
+): InputConfig => {
+  const joystick = sdl.joystick.devices[index];
+  log("debug", "gamepad", {
+    index,
+    controller,
+    joystick,
+  });
 
-    return {
-      ...createDeviceSpecificInputConfig(joystick.name),
-      id: createControllerId(controller.guid),
-      controller_type: createControllerType(),
-      player_index: `Player${index + 1}`,
-    };
+  return {
+    ...createDeviceSpecificInputConfig(joystick.name),
+    id: createControllerId(controller.guid),
+    controller_type: createControllerType(),
+    player_index: `Player${index + 1}`,
   };
+};
 
-const replaceConfig = async (switchRomsPath: string) => {
-  const sdl = await getSdl();
+const replaceConfig = (switchRomsPath: string) => {
   const gamepads = sdl.joystick.devices;
   const gamepadsSorted = gamepads.toSorted(sortGamecubeLast);
   const inputConfig =
     gamepadsSorted.length > 0
-      ? gamepadsSorted.map(createInputConfig(sdl))
+      ? gamepadsSorted.map(createInputConfig)
       : [keyboardConfig];
 
   const oldConfig = readConfigFile(configFilePath);
@@ -203,7 +202,7 @@ export const ryujinx: Application = {
   name: "Ryujinx",
   fileExtensions: [".xci", ".nsp"],
   flatpakId,
-  createOptionParams: async ({
+  createOptionParams: ({
     settings: {
       appearance: { fullscreen },
       general: { categoriesPath },
@@ -211,7 +210,7 @@ export const ryujinx: Application = {
     categoryData,
   }) => {
     const switchRomsPath = nodepath.join(categoriesPath, categoryData.name);
-    await replaceConfig(switchRomsPath);
+    replaceConfig(switchRomsPath);
 
     const optionParams = ["--root-data-dir", configFolderPath];
     if (fullscreen) {

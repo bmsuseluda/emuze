@@ -12,13 +12,12 @@ import {
 } from "../../configFile.js";
 import { log } from "../../../debug.server.js";
 import { defaultSettings } from "./defaultSettings.js";
-import type { Sdl } from "@kmamal/sdl";
+import type { Sdl } from "@bmsuseluda/sdl";
+import sdl from "@bmsuseluda/sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import { envPaths } from "../../../envPaths.server.js";
-import { getSdl } from "../../../importSdl.server.js";
-import { type SdlType } from "../../../../types/sdl.js";
 
 const flatpakId = "net.pcsx2.PCSX2";
 const applicationId: ApplicationId = "pcsx2";
@@ -79,7 +78,7 @@ export const getVirtualGamepad = (
 const getVirtualGamepadReset = (gamepadIndex: number) =>
   [`[Pad${gamepadIndex + 1}]`, "Type = None", "", "", ""].join(EOL);
 
-export const getVirtualGamepads = (sdl: SdlType) => {
+export const getVirtualGamepads = () => {
   const gamepads = sdl.controller.devices;
 
   const virtualGamepads =
@@ -95,24 +94,22 @@ export const getVirtualGamepads = (sdl: SdlType) => {
   ];
 };
 
-export const replaceGamepadConfig =
-  (sdl: SdlType): SectionReplacement =>
-  (sections) => {
-    const virtualGamepads = getVirtualGamepads(sdl);
-    if (sections.find((section) => section.startsWith("[Pad1]"))) {
-      return sections.reduce<string[]>((accumulator, section) => {
-        if (section.startsWith("[Pad1]")) {
-          accumulator.push(...virtualGamepads);
-        } else if (section.startsWith("[Pad]") || !section.startsWith("[Pad")) {
-          accumulator.push(section);
-        }
+export const replaceGamepadConfig: SectionReplacement = (sections) => {
+  const virtualGamepads = getVirtualGamepads();
+  if (sections.find((section) => section.startsWith("[Pad1]"))) {
+    return sections.reduce<string[]>((accumulator, section) => {
+      if (section.startsWith("[Pad1]")) {
+        accumulator.push(...virtualGamepads);
+      } else if (section.startsWith("[Pad]") || !section.startsWith("[Pad")) {
+        accumulator.push(section);
+      }
 
-        return accumulator;
-      }, []);
-    } else {
-      return [...sections, virtualGamepads.join(EOL)];
-    }
-  };
+      return accumulator;
+    }, []);
+  } else {
+    return [...sections, virtualGamepads.join(EOL)];
+  }
+};
 
 export const replaceHotkeyConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Hotkeys]", [
@@ -197,7 +194,6 @@ export const getConfigFilePath = (configFileName: string) => {
 };
 
 export const replaceConfigSections = async (ps2RomsPath: string) => {
-  const sdl = await getSdl();
   const filePath = getConfigFilePath(configFileName);
   const fileContent = readConfigFile(filePath);
 
@@ -209,7 +205,7 @@ export const replaceConfigSections = async (ps2RomsPath: string) => {
     replaceInputSourcesConfig,
     // replacePadConfig,
     replaceHotkeyConfig,
-    replaceGamepadConfig(sdl),
+    replaceGamepadConfig,
     replaceAutoUpdaterConfig,
     replaceGameListConfig(ps2RomsPath),
   ).join(EOL);
@@ -223,7 +219,7 @@ export const pcsx2: Application = {
   fileExtensions: [".chd", ".iso"],
   flatpakId,
   flatpakOptionParams: ["--command=pcsx2-qt"],
-  createOptionParams: async ({
+  createOptionParams: ({
     settings: {
       appearance: { fullscreen },
       general: { categoriesPath },
@@ -231,7 +227,7 @@ export const pcsx2: Application = {
     categoryData,
   }) => {
     const ps2RomsPath = nodepath.join(categoriesPath, categoryData.name);
-    await replaceConfigSections(ps2RomsPath);
+    replaceConfigSections(ps2RomsPath);
 
     const optionParams = [];
     if (fullscreen) {

@@ -91,5 +91,6 @@ export default remixRoutesOptionAdapter((defineRoutes) => {
     createCategoriesRoutes(route);
     createSettingsRoutes(route, "initial");
     route("/invalidateCaches", "customRoutes/invalidateCaches.tsx");
+    route("/gamepad-events", "customRoutes/gamepadEvents.tsx");
   });
 }) satisfies RouteConfig;

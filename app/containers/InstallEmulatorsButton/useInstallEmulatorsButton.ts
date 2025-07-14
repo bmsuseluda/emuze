@@ -1,10 +1,10 @@
-import { layout } from "../../hooks/useGamepads/layouts/index.js";
 import { useCallback } from "react";
 import { useGamepadButtonPressEvent } from "../../hooks/useGamepadEvent/index.js";
 import { useKeyboardEvent } from "../../hooks/useKeyboardEvent/index.js";
+import type { ButtonId } from "../../types/gamepad.js";
 
 export const installEmulatorsId = "installMissingEmulators";
-export const installEmulatorsButtonGamepadButtonIndex = layout.buttons.Y;
+export const installEmulatorsButtonGamepadButtonId: ButtonId = "y";
 
 export const useInstallEmulatorsButton = (isInFocus: boolean) => {
   const onInstallEmulators = useCallback(() => {
@@ -14,7 +14,7 @@ export const useInstallEmulatorsButton = (isInFocus: boolean) => {
   }, [isInFocus]);
 
   useGamepadButtonPressEvent(
-    installEmulatorsButtonGamepadButtonIndex,
+    installEmulatorsButtonGamepadButtonId,
     onInstallEmulators,
   );
   useKeyboardEvent("e", onInstallEmulators);

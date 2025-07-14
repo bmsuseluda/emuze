@@ -1,4 +1,4 @@
-import type { ElementRef, MouseEvent } from "react";
+import type { ComponentRef, MouseEvent } from "react";
 import { useCallback } from "react";
 import type { ActionFunctionArgs } from "react-router";
 import {
@@ -25,8 +25,6 @@ import type { FocusElement } from "../types/focusElement.js";
 import type { Result } from "../hooks/useGamepadsOnGrid/index.js";
 import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid/index.js";
 import { installMissingApplicationsOnLinux } from "../server/installApplications.server.js";
-import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction/index.js";
-import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
 import fs from "node:fs";
 import { log } from "../server/debug.server.js";
 import type { Category } from "../types/jsonFiles/category.js";
@@ -44,6 +42,8 @@ import {
 } from "../hooks/useDirectionalInput/index.js";
 import { FileDialogInputField } from "../containers/FileDialogTextInput/index.js";
 import { Typography } from "../components/Typography/index.js";
+import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction/index.js";
+import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
@@ -268,8 +268,7 @@ export default function General() {
   const defaultData = useLoaderData<typeof loader>();
   const newData = useActionData<ActionReturn>();
 
-  const { gamepadType, disableGamepads, enableGamepads } =
-    useGamepadConnected();
+  const { disableGamepads, enableGamepads } = useGamepadConnected();
 
   // TODO: Maybe create specific files for gamepad controls
   const { isInFocus, switchFocusBack, switchFocus } =
@@ -288,7 +287,7 @@ export default function General() {
   );
 
   const onLeftOverTheEdge = useCallback(
-    ({ resetSelected }: Result<ElementRef<"button">>) => {
+    ({ resetSelected }: Result<ComponentRef<"button">>) => {
       goBack(resetSelected);
     },
     [goBack],
@@ -323,19 +322,20 @@ export default function General() {
   useInputBack(onBack);
 
   /* Set focus again after open file explorer */
-  useEnableFocusAfterAction(
-    () => enableGamepads(true),
-    [actionIds.chooseApplicationsPath, actionIds.chooseCategoriesPath],
-  );
+  useEnableFocusAfterAction(() => {
+    setTimeout(() => {
+      enableGamepads();
+    }, 100);
+  }, [actionIds.chooseApplicationsPath, actionIds.chooseCategoriesPath]);
 
   const onOpenFileDialog = useCallback(
-    (event: MouseEvent<ElementRef<"button">>) => {
+    (event: MouseEvent<ComponentRef<"button">>) => {
       if (!isInFocus) {
         switchFocus(focus);
         selectedEntry.current = event.currentTarget;
         updatePosition();
       }
-      disableGamepads(true);
+      disableGamepads();
     },
     [disableGamepads, isInFocus, selectedEntry, switchFocus, updatePosition],
   );
@@ -388,20 +388,13 @@ export default function General() {
             }
             actions={
               <>
-                <ImportButton
-                  gamepadType={gamepadType}
-                  isInFocus={isInFocus}
-                  id={actionIds.import}
-                >
+                <ImportButton isInFocus={isInFocus} id={actionIds.import}>
                   Import all
                 </ImportButton>
 
                 {!defaultData.isWindows &&
                   defaultData.categories.length > 0 && (
-                    <InstallEmulatorsButton
-                      gamepadType={gamepadType}
-                      isInFocus={isInFocus}
-                    />
+                    <InstallEmulatorsButton isInFocus={isInFocus} />
                   )}
               </>
             }

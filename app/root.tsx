@@ -16,14 +16,12 @@ import {
   getFocusHistoryDefault,
 } from "./types/focusElement.js";
 import type { ReactNode } from "react";
-import { useEffect } from "react";
 import type { DataFunctionArgs } from "./context.js";
 
 import styles from "./index.css?url";
 import { styled } from "../styled-system/jsx/index.js";
 import { readGeneral } from "./server/settings.server.js";
 import { GamepadProvider } from "./provider/GamepadProvider/index.js";
-import { useGamepadConnected } from "./hooks/useGamepadConnected/index.js";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
@@ -34,24 +32,6 @@ export const loader = ({ context }: DataFunctionArgs) => {
   const focusHistoryDefault = getFocusHistoryDefault(general);
 
   return { fullscreen, focusDefault, focusHistoryDefault };
-};
-
-const ElectronFocusProvider = ({ children }: { children: ReactNode }) => {
-  const { disableGamepads, enableGamepads } = useGamepadConnected();
-
-  useEffect(() => {
-    window.electronAPI &&
-      window.electronAPI.onBlur(() => {
-        disableGamepads();
-      });
-
-    window.electronAPI &&
-      window.electronAPI.onFocus(() => {
-        enableGamepads();
-      });
-  }, [enableGamepads, disableGamepads]);
-
-  return <>{children}</>;
 };
 
 export default function App() {
@@ -66,12 +46,10 @@ export default function App() {
           focusHistoryDefault={focusHistoryDefault}
         >
           <GamepadProvider>
-            <ElectronFocusProvider>
-              <FullscreenProvider fullscreenDefault={fullscreen}>
-                <Titlebar />
-                <Outlet />
-              </FullscreenProvider>
-            </ElectronFocusProvider>
+            <FullscreenProvider fullscreenDefault={fullscreen}>
+              <Titlebar />
+              <Outlet />
+            </FullscreenProvider>
           </GamepadProvider>
         </FocusProvider>
       </Layout>

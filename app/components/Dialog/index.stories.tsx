@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Dialog } from "./index.js";
 import { Checkbox } from "../Checkbox/index.js";

@@ -1,25 +1,25 @@
 import { Button } from "../../components/Button/index.js";
 import { useNavigation } from "react-router";
 import {
-  installEmulatorsButtonGamepadButtonIndex,
+  installEmulatorsButtonGamepadButtonId,
   installEmulatorsId,
   useInstallEmulatorsButton,
 } from "./useInstallEmulatorsButton.js";
-import type { GamepadType } from "../../hooks/useGamepads/gamepadTypeMapping.js";
 import { GamepadButtonIcon } from "../../components/GamepadButtonIcon/index.js";
 import { IoMdDownload } from "react-icons/io";
 import { LogoPulseModal } from "../../components/LogoPulseModal/index.js";
+import { useGamepadConnected } from "../../hooks/useGamepadConnected/index.js";
 
 export const installMissingApplicationsActionId = "installMissingApplications";
 
 interface Props {
-  gamepadType?: GamepadType;
   isInFocus: boolean;
 }
 
-export const InstallEmulatorsButton = ({ gamepadType, isInFocus }: Props) => {
+export const InstallEmulatorsButton = ({ isInFocus }: Props) => {
   const { state, formData } = useNavigation();
   useInstallEmulatorsButton(isInFocus);
+  const { gamepadType } = useGamepadConnected();
 
   const isInstalling =
     state === "submitting" &&
@@ -35,7 +35,7 @@ export const InstallEmulatorsButton = ({ gamepadType, isInFocus }: Props) => {
         icon={
           gamepadType ? (
             <GamepadButtonIcon
-              buttonIndex={installEmulatorsButtonGamepadButtonIndex}
+              buttonId={installEmulatorsButtonGamepadButtonId}
               gamepadType={gamepadType}
             />
           ) : (
