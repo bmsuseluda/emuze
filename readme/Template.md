@@ -5,8 +5,10 @@
 
 💥 [Features](#-features) | 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) | 🚀 [Getting Started](#-getting-started) | 🪄 [Metadata](#-metadata) | 🚑️ [Support](#%EF%B8%8F-support)
 
-My main goal for emuze is to have a emulation launcher that is as fast and simple as possible. With this you don't have to configure every emulator and fine tune metadata of your roms.
-If your roms are named correctly, a click on the import button should import your emulators and roms altogether and therefore no configuration is necessary.
+emuze is a emulation frontend designed to simplify your retro gaming experience.
+It automates the configuration of each emulator, including seamless gamepad integration and automatic import of games along with their metadata. With its console-like interface and intuitive controls, emuze lets you focus on enjoying your retro games, just like you would on a gaming console.
+
+It is not there yet for every system and emulator, please have a look at 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems)
 
 ## 💥 Features
 

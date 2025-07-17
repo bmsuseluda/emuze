@@ -25,15 +25,15 @@ type EmulatorDownloads = Record<ApplicationId, Record<OperatingSystem, string>>;
 const emulatorDownloads: Partial<EmulatorDownloads> = {
   ares: {
     Linux:
-      "https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v144/ares-v144-anylinux-x86_64.AppImage",
+      "https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v145%402025-07-09_1752099468/ares-v145-anylinux-x86_64.AppImage",
     Windows:
-      "https://github.com/ares-emulator/ares/releases/download/v144/ares-windows-x64.zip",
+      "https://github.com/ares-emulator/ares/releases/download/v145/ares-windows-x64.zip",
   },
   azahar: {
     Linux:
-      "https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/2121.2/Azahar-Enhanced-2121.2-anylinux-x86_64.AppImage",
+      "https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/2122.1/Azahar-Enhanced-2122.1-anylinux-x86_64.AppImage",
     Windows:
-      "https://github.com/azahar-emu/azahar/releases/download/2121.2/azahar-2121.2-windows-msys2.zip",
+      "https://github.com/azahar-emu/azahar/releases/download/2122.1/azahar-2122.1-windows-msys2.zip",
   },
   duckstation: {
     Linux:
@@ -43,20 +43,20 @@ const emulatorDownloads: Partial<EmulatorDownloads> = {
   },
   dolphin: {
     Linux:
-      "https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/2503a-316/Dolphin_Emulator-2503a-316-anylinux.dwarfs-x86_64.AppImage",
-    Windows: "https://dl.dolphin-emu.org/releases/2503a/dolphin-2503a-x64.7z",
+      "https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/2506/Dolphin_Emulator-2506-anylinux.dwarfs-x86_64.AppImage",
+    Windows: "https://dl.dolphin-emu.org/releases/2506a/dolphin-2506a-x64.7z",
   },
   pcsx2: {
     Linux:
-      "https://github.com/PCSX2/pcsx2/releases/download/v2.2.0/pcsx2-v2.2.0-linux-appimage-x64-Qt.AppImage",
+      "https://github.com/PCSX2/pcsx2/releases/download/v2.4.0/pcsx2-v2.4.0-linux-appimage-x64-Qt.AppImage",
     Windows:
-      "https://github.com/PCSX2/pcsx2/releases/download/v2.2.0/pcsx2-v2.2.0-windows-x64-Qt.7z",
+      "https://github.com/PCSX2/pcsx2/releases/download/v2.4.0/pcsx2-v2.4.0-windows-x64-Qt.7z",
   },
   ryujinx: {
     Linux:
-      "https://github.com/Ryubing/Stable-Releases/releases/download/1.3.1/ryujinx-1.3.1-x64.AppImage",
+      "https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/1.3.2/ryujinx-1.3.2-x64.AppImage",
     Windows:
-      "https://github.com/Ryubing/Stable-Releases/releases/download/1.3.1/ryujinx-1.3.1-win_x64.zip",
+      "https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/1.3.2/ryujinx-1.3.2-win_x64.zip",
   },
 };
 
