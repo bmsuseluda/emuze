@@ -52,6 +52,12 @@ const emulatorDownloads: Partial<EmulatorDownloads> = {
     Windows:
       "https://github.com/PCSX2/pcsx2/releases/download/v2.4.0/pcsx2-v2.4.0-windows-x64-Qt.7z",
   },
+  rpcs3: {
+    Linux:
+      "https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-9c93ec0bc31bbc94ca4dce2a76ceea80da6f6554/rpcs3-v0.0.37-18022-9c93ec0b_linux64.AppImage",
+    Windows:
+      "https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-9c93ec0bc31bbc94ca4dce2a76ceea80da6f6554/rpcs3-v0.0.37-18022-9c93ec0b_win64_msvc.7z",
+  },
   ryujinx: {
     Linux:
       "https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/1.3.2/ryujinx-1.3.2-x64.AppImage",

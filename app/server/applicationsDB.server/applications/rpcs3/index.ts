@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import type {
   Application,
   ExcludeFilesFunction,
@@ -6,6 +7,26 @@ import type {
 import nodepath from "node:path";
 import ps3Games from "./nameMapping/ps3.json" with { type: "json" };
 import { log } from "../../../debug.server.js";
+import type { ApplicationId } from "../../applicationId.js";
+import { defaultGuiSettings } from "./defaultGuiSettings.js";
+import { envPaths } from "../../../envPaths.server.js";
+import type { SectionReplacement } from "../../configFile.js";
+import {
+  chainSectionReplacements,
+  replaceSection,
+  splitConfigBySection,
+  writeConfig,
+} from "../../configFile.js";
+import { EOL } from "node:os";
+
+const flatpakId = "net.rpcs3.RPCS3";
+const applicationId: ApplicationId = "rpcs3";
+const bundledPathLinux = nodepath.join(
+  applicationId,
+  `${applicationId}.AppImage`,
+);
+const bundledPathWindows = nodepath.join(applicationId, "rpcs3.exe");
+const guiConfigFileName = "CurrentSettings.ini";
 
 /**
  * Find the 9digit serial number from path
@@ -84,10 +105,53 @@ export const excludePlaystationFiles: ExcludeFilesFunction = (filepaths) => {
   });
 };
 
+const readGuiConfigFile = (filePath: string) => {
+  try {
+    return fs.readFileSync(filePath, "utf8");
+  } catch (error) {
+    log(
+      "debug",
+      "rpcs3",
+      "config file can not be read. defaultSettings will be used.",
+      error,
+    );
+    return defaultGuiSettings;
+  }
+};
+
+const { config } = envPaths("rpcs3", { suffix: "" });
+export const getGuiConfigFilePath = (configFileName: string) => {
+  return nodepath.join(config, "GuiConfigs", configFileName);
+};
+
+export const replaceMetaConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[Meta]", [{ keyValue: "checkUpdateStart=false" }]);
+
+export const replaceMainWindowConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[main_window]", [
+    { keyValue: "confirmationBoxExitGame=false" },
+    { keyValue: "infoBoxEnabledWelcome=false" },
+  ]);
+
+export const replaceGuiConfigFile = async () => {
+  const filePath = getGuiConfigFilePath(guiConfigFileName);
+  const fileContent = readGuiConfigFile(filePath);
+
+  const sections = splitConfigBySection(fileContent);
+
+  const fileContentNew = chainSectionReplacements(
+    sections,
+    replaceMetaConfig,
+    replaceMainWindowConfig,
+  ).join(EOL);
+
+  writeConfig(filePath, fileContentNew);
+};
+
 export const rpcs3: Application = {
-  id: "rpcs3",
+  id: applicationId,
   name: "RPCS3",
-  flatpakId: "net.rpcs3.RPCS3",
+  flatpakId,
   fileExtensions: ["EBOOT.BIN"],
   findEntryName: findPlaystation3GameName,
   createOptionParams: ({
@@ -95,6 +159,8 @@ export const rpcs3: Application = {
       appearance: { fullscreen },
     },
   }) => {
+    replaceGuiConfigFile();
+
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("--fullscreen");
@@ -103,4 +169,6 @@ export const rpcs3: Application = {
     return optionParams;
   },
   excludeFiles: excludePlaystationFiles,
+  bundledPathLinux,
+  bundledPathWindows,
 };

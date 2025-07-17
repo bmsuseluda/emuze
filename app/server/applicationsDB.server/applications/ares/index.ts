@@ -34,7 +34,7 @@ const gamepadGroupId: Record<GamepadGroupId, number> = {
 const getPhysicalGamepadString = (
   physicalGamepadButton: PhysicalGamepadButton | null,
 ) =>
-  physicalGamepadButton && physicalGamepadButton.inputId
+  physicalGamepadButton?.inputId
     ? [
         physicalGamepadButton.deviceId,
         gamepadGroupId[physicalGamepadButton.groupId].toString(),

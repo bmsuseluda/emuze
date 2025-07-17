@@ -33,6 +33,7 @@ const bundled: ApplicationId[] = [
   "dolphin",
   "duckstation",
   "pcsx2",
+  "rpcs3",
   "ryujinx",
 ];
 
