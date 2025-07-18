@@ -392,6 +392,16 @@ export const aresSega32x: Application = {
   ],
 };
 
+export const aresSuperGrafx: Application = {
+  ...ares,
+  id: "aresSuperGrafx",
+  fileExtensions: [".pce"],
+  createOptionParams: (props) => [
+    ...getSharedAresOptionParams(props),
+    ...["--system", "SuperGrafx"],
+  ],
+};
+
 export const isRmgForN64 = () => {
   const electron = importElectron();
 

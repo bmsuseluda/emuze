@@ -9,6 +9,7 @@ import {
   aresMegaDrive,
   aresSega32x,
   aresSegaCd,
+  aresSuperGrafx,
   aresSuperNintendo,
 } from "./applications/ares/index.js";
 import { duckstation } from "./applications/duckstation/index.js";
@@ -18,7 +19,6 @@ import { dolphin } from "./applications/dolphin/index.js";
 import {
   mednafen,
   mednafenPcEngineCD,
-  mednafenPcEngineSuperGrafx,
   mednafenSaturn,
 } from "./applications/mednafen/index.js";
 import { azahar } from "./applications/azahar/index.js";
@@ -156,7 +156,6 @@ export const applications = {
   mednafen,
   mednafenSaturn,
   mednafenPcEngineCD,
-  mednafenPcEngineSuperGrafx,
   mame,
   mameNeoGeo,
   mameNeoGeoCD,
@@ -166,6 +165,7 @@ export const applications = {
   aresMegaDrive,
   aresSegaCd,
   aresSega32x,
+  aresSuperGrafx,
   rosaliesMupenGui,
   mgba,
   flycast,
