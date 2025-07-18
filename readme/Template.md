@@ -8,16 +8,16 @@
 emuze is a emulation frontend designed to simplify your retro gaming experience.
 It automates the configuration of each emulator, including seamless gamepad integration and automatic import of games along with their metadata. With its console-like interface and intuitive controls, emuze lets you focus on enjoying your retro games, just like you would on a gaming console.
 
-It is not there yet for every system and emulator, please have a look at 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems)
+It is not there yet for every system and emulator, please have a look at 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) for more details.
 
 ## 💥 Features
 
-- ⚡️ Fast and responsive UI
-- 🚂 Import all your emulators and roms with a click of a button
-- 🪄 Fetches Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
-- 🎮️ Gamepad support
+- ⚡️ Intuitive console-like interface
+- 🚂 Import all your roms with a click of a button
+- 🪄 Provides Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
+- 🎮️ Seamless gamepad integration for most emulators
+- 📦️ Bundles most emulators
 - 💻️ Windows, Linux and Steam Deck support
-- 🔧 Can install missing emulators (Linux only)
 - 💫 Updates itself
 
 <br>
@@ -89,8 +89,8 @@ emulators
 
 ### Linux
 
-For now emuze is only released as an AppImage. Your Linux distribution needs to support Flatpaks.
-All emulators, not bundled, need to be installed via flatpak but emuze can do this for you.
+For now emuze is only released as an AppImage.
+All emulators, not bundled, need to be installed via flatpak.
 
 ```mmd
 return scripts.getLinuxDownloadLink('1) ')

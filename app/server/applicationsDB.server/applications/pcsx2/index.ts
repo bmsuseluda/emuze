@@ -218,7 +218,6 @@ export const pcsx2: Application = {
   name: "PCSX2",
   fileExtensions: [".chd", ".iso"],
   flatpakId,
-  flatpakOptionParams: ["--command=pcsx2-qt"],
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },

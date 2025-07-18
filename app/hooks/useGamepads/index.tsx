@@ -21,7 +21,7 @@ const buttonsForKeyDownEvent: ButtonId[] = [
 ];
 
 const dispatchButtonPressEvent = (buttonId: ButtonId) => {
-  dispatchEvent(new CustomEvent(getGamepadButtonEventName(buttonId)));
+  dispatchEvent(new Event(getGamepadButtonEventName(buttonId)));
 };
 
 export const useGamepads = () => {

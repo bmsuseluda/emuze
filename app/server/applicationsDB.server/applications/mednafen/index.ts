@@ -96,8 +96,3 @@ export const mednafenPcEngineCD: Application = {
     ];
   },
 };
-
-export const mednafenPcEngineSuperGrafx: Application = {
-  ...mednafen,
-  id: "mednafenPcEngineSuperGrafx",
-};

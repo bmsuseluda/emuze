@@ -34,7 +34,7 @@ const gamepadGroupId: Record<GamepadGroupId, number> = {
 const getPhysicalGamepadString = (
   physicalGamepadButton: PhysicalGamepadButton | null,
 ) =>
-  physicalGamepadButton && physicalGamepadButton.inputId
+  physicalGamepadButton?.inputId
     ? [
         physicalGamepadButton.deviceId,
         gamepadGroupId[physicalGamepadButton.groupId].toString(),
@@ -389,6 +389,16 @@ export const aresSega32x: Application = {
   createOptionParams: (props) => [
     ...getSharedAresOptionParams(props),
     ...["--system", "Mega 32X"],
+  ],
+};
+
+export const aresSuperGrafx: Application = {
+  ...ares,
+  id: "aresSuperGrafx",
+  fileExtensions: [".pce"],
+  createOptionParams: (props) => [
+    ...getSharedAresOptionParams(props),
+    ...["--system", "SuperGrafx"],
   ],
 };
 
