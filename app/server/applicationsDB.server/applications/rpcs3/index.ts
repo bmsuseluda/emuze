@@ -148,16 +148,23 @@ export const getGuiConfigFilePath = () => {
   return nodepath.join(config, "GuiConfigs", guiConfigFileName);
 };
 
-export const replaceMetaConfig: SectionReplacement = (sections) =>
+const replaceMetaConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Meta]", [{ keyValue: "checkUpdateStart=false" }]);
 
-export const replaceMainWindowConfig: SectionReplacement = (sections) =>
+const replaceMainWindowConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[main_window]", [
     { keyValue: "confirmationBoxExitGame=false" },
     { keyValue: "infoBoxEnabledWelcome=false" },
   ]);
 
-export const replaceFileSystemConfig =
+const replaceShortcutsConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[Shortcuts]", [
+    { keyValue: "game_window_savestate=F1" },
+    { keyValue: "gw_home_menu=F2" },
+    { keyValue: "game_window_toggle_fullscreen=F3" },
+  ]);
+
+const replaceFileSystemConfig =
   (ps3RomsPath: string): SectionReplacement =>
   (sections) =>
     replaceSection(sections, "[FileSystem]", [
@@ -183,6 +190,7 @@ export const replaceGuiConfigFile = (ps3RomsPath: string) => {
     sections,
     replaceMetaConfig,
     replaceMainWindowConfig,
+    replaceShortcutsConfig,
     replaceFileSystemConfig(ps3RomsPath),
   ).join(EOL);
 

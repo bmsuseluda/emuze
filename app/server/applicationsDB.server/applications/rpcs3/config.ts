@@ -25,8 +25,8 @@ export interface ActiveInputConfigFile {
 }
 
 export interface PlayerInput {
-  Handler: "Keyboard" | "SDL" | "Null";
-  Device: string;
+  Handler: "Keyboard" | "SDL" | null;
+  Device: string | null;
   Config: {
     "Left Stick Left": string;
     "Left Stick Down": string;
@@ -120,12 +120,12 @@ export interface PlayerInput {
     "Vendor ID": number;
     "Product ID": number;
   };
-  "Buddy Device": string;
+  "Buddy Device": string | null;
 }
 
 export const playerInputReset: PlayerInput = {
-  Handler: "Null",
-  Device: "Null",
+  Handler: null,
+  Device: null,
   Config: {
     "Left Stick Left": "",
     "Left Stick Down": "",
@@ -219,7 +219,7 @@ export const playerInputReset: PlayerInput = {
     "Vendor ID": 0,
     "Product ID": 0,
   },
-  "Buddy Device": "Null",
+  "Buddy Device": null,
 };
 
 export type PlayerIdString = `Player ${number} Input`;
