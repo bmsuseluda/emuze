@@ -159,9 +159,12 @@ const replaceMainWindowConfig: SectionReplacement = (sections) =>
 
 const replaceShortcutsConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Shortcuts]", [
-    { keyValue: "game_window_savestate=F1" },
-    { keyValue: "gw_home_menu=F2" },
-    { keyValue: "game_window_toggle_fullscreen=F3" },
+    { keyValue: "game_window_savestate=F1", disableParamWithSameValue: true },
+    { keyValue: "gw_home_menu=F2", disableParamWithSameValue: true },
+    {
+      keyValue: "game_window_toggle_fullscreen=F11",
+      disableParamWithSameValue: true,
+    },
   ]);
 
 const replaceFileSystemConfig =
@@ -250,7 +253,7 @@ const readGlobalDefaultInputConfigFile = () =>
   ) as GlobalDefaultInputConfigFile;
 
 export const getVirtualGamepad = (
-  sdlDevice: Sdl.Controller.Device,
+  sdlDevice: Sdl.Joystick.Device,
   index: number,
 ): PlayerInput => {
   log("debug", "gamepad", { index, sdlDevice });
@@ -356,7 +359,7 @@ export const getVirtualGamepad = (
 };
 
 export const getVirtualGamepads = (): GlobalDefaultInputConfigFile => {
-  const gamepads = sdl.controller.devices;
+  const gamepads = sdl.joystick.devices;
   if (gamepads.length > 0) {
     return gamepads.reduce<GlobalDefaultInputConfigFile>(
       (accumulator, currentDevice, index) => {

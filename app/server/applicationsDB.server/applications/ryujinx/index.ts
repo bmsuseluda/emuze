@@ -154,15 +154,13 @@ const createInputConfig = (
   controller: Sdl.Joystick.Device,
   index: number,
 ): InputConfig => {
-  const joystick = sdl.joystick.devices[index];
   log("debug", "gamepad", {
     index,
     controller,
-    joystick,
   });
 
   return {
-    ...createDeviceSpecificInputConfig(joystick.name),
+    ...createDeviceSpecificInputConfig(controller.name),
     id: createControllerId(controller.guid),
     controller_type: createControllerType(),
     player_index: `Player${index + 1}`,

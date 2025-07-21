@@ -29,7 +29,7 @@ const bundledPathWindows = nodepath.join(applicationId, "pcsx2-qt.exe");
 const configFileName = "PCSX2.ini";
 
 export const getVirtualGamepad = (
-  sdlDevice: Sdl.Controller.Device,
+  sdlDevice: Sdl.Joystick.Device,
   index: number,
 ) => {
   log("debug", "gamepad", { index, sdlDevice });
@@ -79,7 +79,7 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
   [`[Pad${gamepadIndex + 1}]`, "Type = None", "", "", ""].join(EOL);
 
 export const getVirtualGamepads = () => {
-  const gamepads = sdl.controller.devices;
+  const gamepads = sdl.joystick.devices;
 
   const virtualGamepads =
     gamepads.length > 0 ? gamepads.map(getVirtualGamepad) : [keyboardConfig];
