@@ -252,6 +252,30 @@ const readGlobalDefaultInputConfigFile = () =>
     getGlobalDefaultInputConfigFilePath(),
   ) as GlobalDefaultInputConfigFile;
 
+/**
+ * check all devices until sdlIndex for name. count how much and return accordingly
+ *
+ * @readonly number starts with 1
+ */
+export const getNameIndex = (
+  devices: Sdl.Joystick.Device[],
+  name: string,
+  sdlIndex: number,
+) => {
+  if (devices.length === 1) {
+    return 1;
+  }
+
+  let nameCount = 0;
+  for (let index = 0; index < sdlIndex; index++) {
+    if (devices[index].name === name) {
+      nameCount++;
+    }
+  }
+
+  return nameCount + 1;
+};
+
 export const getVirtualGamepad = (
   sdlDevice: Sdl.Joystick.Device,
   index: number,
@@ -260,7 +284,7 @@ export const getVirtualGamepad = (
 
   return {
     Handler: "SDL",
-    Device: `${sdlDevice.name} ${index + 1}`,
+    Device: `${sdlDevice.name} ${getNameIndex(sdl.joystick.devices, sdlDevice.name, index)}`,
     Config: {
       "Left Stick Left": "LS X-",
       "Left Stick Down": "LS Y-",
