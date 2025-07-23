@@ -43,7 +43,7 @@ const emulatorDownloads: Partial<EmulatorDownloads> = {
   },
   dolphin: {
     Linux:
-      "https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/2506/Dolphin_Emulator-2506-anylinux.dwarfs-x86_64.AppImage",
+      "https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/2506a%402025-07-23_1753271407/Dolphin_Emulator-2506a-anylinux.dwarfs-x86_64.AppImage",
     Windows: "https://dl.dolphin-emu.org/releases/2506a/dolphin-2506a-x64.7z",
   },
   pcsx2: {
