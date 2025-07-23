@@ -19,6 +19,7 @@ const preConfigured: ApplicationId[] = [
   "mednafenSaturn",
   "pcsx2",
   "scummvm",
+  "rpcs3",
   "ryujinx",
 ];
 
