@@ -20,6 +20,7 @@ import { emulatorsDirectory } from "../../../homeDirectory.server.js";
 import { isGamecubeController } from "../../../../types/gamepad.js";
 import { defaultDolphinSettings } from "./defaultDolphinSettings.js";
 import { keyboardConfig } from "./keyboardConfig.js";
+import { isSteamOs } from "../../../operationsystem.server.js";
 
 const flatpakId = "org.DolphinEmu.dolphin-emu";
 const applicationId: ApplicationId = "dolphin";
@@ -46,7 +47,7 @@ const hotkeysConfigFileName = nodepath.join(
 );
 
 export const getVirtualGamepad = (
-  controller: Sdl.Joystick.Device,
+  controller: Sdl.Joystick.Device | Sdl.Controller.Device,
   index: number,
 ) => {
   log("debug", "gamepad", { index, controller });
@@ -95,7 +96,7 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
   ].join(EOL);
 
 export const getVirtualGamepads = () => {
-  const gamepads = sdl.joystick.devices;
+  const gamepads = isSteamOs() ? sdl.joystick.devices : sdl.controller.devices;
 
   const virtualGamepads =
     gamepads.length > 0 ? gamepads.map(getVirtualGamepad) : [keyboardConfig];

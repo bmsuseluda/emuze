@@ -29,6 +29,7 @@ import type {
 } from "./config.js";
 import { globalDefaultInputConfigFileReset } from "./config.js";
 import { keyboardConfig } from "./keyboardConfig.js";
+import { isSteamOs } from "../../../operationsystem.server.js";
 
 const flatpakId = "net.rpcs3.RPCS3";
 const applicationId: ApplicationId = "rpcs3";
@@ -258,9 +259,9 @@ const readGlobalDefaultInputConfigFile = () =>
  * @readonly number starts with 1
  */
 export const getNameIndex = (
-  devices: Sdl.Joystick.Device[],
   name: string,
   sdlIndex: number,
+  devices: Sdl.Joystick.Device[] | Sdl.Controller.Device[],
 ) => {
   if (devices.length === 1) {
     return 1;
@@ -276,10 +277,14 @@ export const getNameIndex = (
   return nameCount + 1;
 };
 
-export const getVirtualGamepad = (name: string, index: number): PlayerInput => {
+export const getVirtualGamepad = (
+  name: string,
+  index: number,
+  devices: Sdl.Joystick.Device[] | Sdl.Controller.Device[],
+): PlayerInput => {
   return {
     Handler: "SDL",
-    Device: `${name} ${getNameIndex(sdl.joystick.devices, name, index)}`,
+    Device: `${name} ${getNameIndex(name, index, devices)}`,
     Config: {
       "Left Stick Left": "LS X-",
       "Left Stick Down": "LS Y-",
@@ -378,16 +383,18 @@ export const getVirtualGamepad = (name: string, index: number): PlayerInput => {
 };
 
 export const getVirtualGamepads = (): GlobalDefaultInputConfigFile => {
-  const gamepads = sdl.joystick.devices;
+  const gamepads = isSteamOs() ? sdl.joystick.devices : sdl.controller.devices;
   if (gamepads.length > 0) {
     let playerIndex = 0;
     return gamepads.reduce<GlobalDefaultInputConfigFile>(
       (accumulator, currentDevice, index) => {
         if (currentDevice.name) {
           log("debug", "gamepad", { index, currentDevice });
+
           accumulator[`Player ${playerIndex + 1} Input`] = getVirtualGamepad(
             currentDevice.name,
             index,
+            gamepads,
           );
           playerIndex++;
         }

@@ -71,9 +71,9 @@ describe("applicationsDB.rpcs3", () => {
         convertToJoystick(steamDeck),
         convertToJoystick(gamepadPs4),
       ];
-      expect(getNameIndex(devices, gamepadPs4.name, 0)).toBe(1);
-      expect(getNameIndex(devices, steamDeck.name, 1)).toBe(1);
-      expect(getNameIndex(devices, gamepadPs4.name, 2)).toBe(2);
+      expect(getNameIndex(gamepadPs4.name, 0, devices)).toBe(1);
+      expect(getNameIndex(steamDeck.name, 1, devices)).toBe(1);
+      expect(getNameIndex(gamepadPs4.name, 2, devices)).toBe(2);
     });
   });
 });
