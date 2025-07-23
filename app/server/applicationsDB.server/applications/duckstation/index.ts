@@ -1,6 +1,6 @@
 import type { Application } from "../../types.js";
-import type { Sdl } from "@bmsuseluda/sdl";
-import sdl from "@bmsuseluda/sdl";
+import type { Sdl } from "@kmamal/sdl";
+import sdl from "@kmamal/sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { log } from "../../../debug.server.js";
 import fs from "node:fs";

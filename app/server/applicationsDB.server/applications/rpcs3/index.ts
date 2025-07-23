@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import YAML from "yaml";
-import type { Sdl } from "@bmsuseluda/sdl";
-import sdl from "@bmsuseluda/sdl";
+import type { Sdl } from "@kmamal/sdl";
+import sdl from "@kmamal/sdl";
 import type {
   Application,
   ExcludeFilesFunction,
@@ -276,15 +276,10 @@ export const getNameIndex = (
   return nameCount + 1;
 };
 
-export const getVirtualGamepad = (
-  sdlDevice: Sdl.Joystick.Device,
-  index: number,
-): PlayerInput => {
-  log("debug", "gamepad", { index, sdlDevice });
-
+export const getVirtualGamepad = (name: string, index: number): PlayerInput => {
   return {
     Handler: "SDL",
-    Device: `${sdlDevice.name} ${getNameIndex(sdl.joystick.devices, sdlDevice.name, index)}`,
+    Device: `${name} ${getNameIndex(sdl.joystick.devices, name, index)}`,
     Config: {
       "Left Stick Left": "LS X-",
       "Left Stick Down": "LS Y-",
@@ -385,12 +380,17 @@ export const getVirtualGamepad = (
 export const getVirtualGamepads = (): GlobalDefaultInputConfigFile => {
   const gamepads = sdl.joystick.devices;
   if (gamepads.length > 0) {
+    let playerIndex = 0;
     return gamepads.reduce<GlobalDefaultInputConfigFile>(
       (accumulator, currentDevice, index) => {
-        accumulator[`Player ${index + 1} Input`] = getVirtualGamepad(
-          currentDevice,
-          index,
-        );
+        if (currentDevice.name) {
+          log("debug", "gamepad", { index, currentDevice });
+          accumulator[`Player ${playerIndex + 1} Input`] = getVirtualGamepad(
+            currentDevice.name,
+            index,
+          );
+          playerIndex++;
+        }
         return accumulator;
       },
       globalDefaultInputConfigFileReset,

@@ -18,6 +18,6 @@ export default defineConfig({
       "react-use",
     ],
   },
-  optimizeDeps: { exclude: ["@bmsuseluda/sdl"], include: ["react-use"] },
+  optimizeDeps: { exclude: ["@kmamal/sdl"], include: ["react-use"] },
   plugins: [devtoolsJson(), reactRouter()],
 });

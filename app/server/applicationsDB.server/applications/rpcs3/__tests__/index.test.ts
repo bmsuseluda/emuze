@@ -1,4 +1,4 @@
-import type { Sdl } from "@bmsuseluda/sdl";
+import type { Sdl } from "@kmamal/sdl";
 import {
   excludePlaystationFiles,
   findPlaystation3Serial,

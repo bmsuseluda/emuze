@@ -1,4 +1,4 @@
-import type { Sdl } from "@bmsuseluda/sdl";
+import type { Sdl } from "@kmamal/sdl";
 import type { GamepadID } from "./initGamepadIDs.js";
 import { isDinputController } from "../../../../types/gamepad.js";
 import { PhysicalGamepadDinput } from "./PhysicalGamepadDinput.js";
@@ -11,12 +11,12 @@ export const getPhysicalGamepad = (
   gamepadID: GamepadID,
 ) => {
   if (isDinputController(sdlGamepad.type)) {
-    return new PhysicalGamepadDinput(gamepadID.id, sdlGamepad.mapping);
+    return new PhysicalGamepadDinput(gamepadID.id, sdlGamepad.mapping!);
   }
 
   if (isWindows()) {
-    return new PhysicalGamepadXinput(gamepadID.id, sdlGamepad.mapping);
+    return new PhysicalGamepadXinput(gamepadID.id, sdlGamepad.mapping!);
   }
 
-  return new PhysicalGamepadSdl(gamepadID.id, sdlGamepad.mapping);
+  return new PhysicalGamepadSdl(gamepadID.id, sdlGamepad.mapping!);
 };

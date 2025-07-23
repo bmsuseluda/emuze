@@ -1,5 +1,5 @@
-import type { Sdl } from "@bmsuseluda/sdl";
-import sdl from "@bmsuseluda/sdl";
+import type { Sdl } from "@kmamal/sdl";
+import sdl from "@kmamal/sdl";
 import { log } from "../debug.server.js";
 import mappings from "./mappings.json" with { type: "json" };
 import {

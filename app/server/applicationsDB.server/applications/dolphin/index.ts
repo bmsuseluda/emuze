@@ -10,8 +10,8 @@ import { EOL } from "node:os";
 import fs from "node:fs";
 import { log } from "../../../debug.server.js";
 import nodepath from "node:path";
-import type { Sdl } from "@bmsuseluda/sdl";
-import sdl from "@bmsuseluda/sdl";
+import type { Sdl } from "@kmamal/sdl";
+import sdl from "@kmamal/sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { defaultGamepadSettings } from "./defaultGamepadSettings.js";
 import { defaultHotkeys } from "./defaultHotkeys.js";
@@ -51,7 +51,7 @@ export const getVirtualGamepad = (
 ) => {
   log("debug", "gamepad", { index, controller });
 
-  const deviceName = controller.name;
+  const deviceName = controller.name!;
 
   const gamecubeController = isGamecubeController(deviceName);
 

@@ -1,4 +1,4 @@
-import type { Sdl } from "@bmsuseluda/sdl";
+import type { Sdl } from "@kmamal/sdl";
 import { scancodes } from "../../app/server/applicationsDB.server/applications/ares/keyboardConfig.js";
 import { gamepadPs4, steamDeck } from "../../app/types/gamepad.js";
 

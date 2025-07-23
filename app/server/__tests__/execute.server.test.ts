@@ -21,7 +21,7 @@ import { readCategory } from "../categoryDataCache.server.js";
 import { startGame } from "../execute.server.js";
 import { readFilenames } from "../readWriteData.server.js";
 
-vi.mock("@bmsuseluda/sdl");
+vi.mock("@kmamal/sdl");
 vi.mock("node:child_process");
 vi.mock("node:fs");
 vi.mock("../readWriteData.server");
