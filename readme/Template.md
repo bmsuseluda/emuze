@@ -43,12 +43,18 @@ return scripts.createSystemsTable()
 
 ### Pre Configured
 If a System is pre configured, all connected gamepads will be configured for the specific Emulator.
+If there are no gamepads connected, the keyboard will be configured instead.
 
-The following Hotkeys are set:
-- Open Emulator Menu (if supported from emulator): F2
-- Save State: F1
-- Load State: F3
-- Fullscreen: F11
+The following Hotkeys are set as well:
+- Open Emulator Menu (if supported from emulator): `F2`
+- Save State: `F1`
+- Load State: `F3`
+- Fullscreen: `F11`
+
+You can close a game via
+- Xbox: `back + a`
+- PlayStation: `select + x`
+- Nintendo: `select + a`
 
 ### Bundled
 If a system is bundled, the respective emulator is provided with emuze in a specific version. Therefore you do not need to provide the emulator on your own.
@@ -114,6 +120,12 @@ return scripts.getLinuxDownloadLink('2) ')
 #### Steam Input Profile
 
 There is a Steam Input Profile with the name `emuze`, which has some Hotkeys pre configured on the back pedals of the Steam Deck.
+
+- `L4`: Save State
+- `L5`: Load State
+- `R4`: Open Emulator Menu (if supported from emulator) or Fullscreen
+- `R5`: Left Mouse Click
+- `Right Trackpad`: Mouse
 
 #### SteamGridDB
 

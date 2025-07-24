@@ -2,6 +2,7 @@ import { categories } from "../app/server/categoriesDB.server/index.js";
 import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
 import type { SystemId } from "../app/server/categoriesDB.server/systemId.js";
 import { commandLineOptionsString } from "../app/server/commandLine.server.js";
+import { emulatorVersions } from "../downloadEmulators/downloadEmulators.js";
 
 const preConfigured: ApplicationId[] = [
   "ares",
@@ -23,21 +24,21 @@ const preConfigured: ApplicationId[] = [
   "ryujinx",
 ];
 
-const bundled: ApplicationId[] = [
-  "ares",
-  "aresMegaDrive",
-  "aresSega32x",
-  "aresSegaCd",
-  "aresSuperGrafx",
-  "aresGameBoyColor",
-  "aresSuperNintendo",
-  "azahar",
-  "dolphin",
-  "duckstation",
-  "pcsx2",
-  "rpcs3",
-  "ryujinx",
-];
+const bundled: Partial<Record<ApplicationId, string>> = {
+  ares: emulatorVersions["ares"],
+  aresMegaDrive: emulatorVersions["ares"],
+  aresSega32x: emulatorVersions["ares"],
+  aresSegaCd: emulatorVersions["ares"],
+  aresSuperGrafx: emulatorVersions["ares"],
+  aresGameBoyColor: emulatorVersions["ares"],
+  aresSuperNintendo: emulatorVersions["ares"],
+  azahar: emulatorVersions["azahar"],
+  dolphin: emulatorVersions["dolphin"],
+  duckstation: emulatorVersions["duckstation"],
+  pcsx2: emulatorVersions["pcsx2"],
+  rpcs3: emulatorVersions["rpcs3"],
+  ryujinx: emulatorVersions["ryujinx"],
+};
 
 const biosNeeded: SystemId[] = [
   "sonyplaystation",
@@ -101,9 +102,9 @@ export const createSystemsTable = () =>
       const isPreConfigured = preConfigured.includes(category.application.id)
         ? "Yes"
         : "No";
-      const isBundled = bundled.includes(category.application.id)
-        ? "Yes"
-        : "No";
+      const isBundled = bundled[category.application.id]
+        ? `v${bundled[category.application.id]}`
+        : "-";
       const isBiosNeeded = biosNeeded.includes(category.id) ? "Yes" : "No";
 
       return `| ${systemName} | ${emulatorName} | ${isPreConfigured} | ${isBundled} | ${isBiosNeeded} | `;
