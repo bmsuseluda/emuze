@@ -11,7 +11,7 @@ const killChildProcess = () => {
   log("debug", "kill process");
 
   if (isGameRunning() && gameIsRunningChildProcess?.pid) {
-    kill(gameIsRunningChildProcess.pid, "SIGKILL", (err) => {
+    kill(gameIsRunningChildProcess.pid, "SIGHUP", (err) => {
       if (err) {
         log("error", "Failed to kill process:", err);
       }
