@@ -43,7 +43,8 @@ const execFileCallback =
       if (
         !isWindows() &&
         error.signal !== "SIGKILL" &&
-        error.signal !== "SIGABRT"
+        error.signal !== "SIGABRT" &&
+        error.signal !== "SIGHUP"
       ) {
         reject(error);
       }
