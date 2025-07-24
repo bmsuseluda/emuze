@@ -9,8 +9,8 @@ import fs from "node:fs";
 import { log } from "../../../debug.server.js";
 import type { Config, InputConfig } from "./config.js";
 import { defaultConfig, defaultInputConfig } from "./config.js";
-import type { Sdl } from "@bmsuseluda/sdl";
-import sdl from "@bmsuseluda/sdl";
+import type { Sdl } from "@kmamal/sdl";
+import sdl from "@kmamal/sdl";
 import { emulatorsDirectory } from "../../../homeDirectory.server.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import type { ApplicationId } from "../../applicationId.js";
@@ -154,16 +154,14 @@ const createInputConfig = (
   controller: Sdl.Joystick.Device,
   index: number,
 ): InputConfig => {
-  const joystick = sdl.joystick.devices[index];
   log("debug", "gamepad", {
     index,
     controller,
-    joystick,
   });
 
   return {
-    ...createDeviceSpecificInputConfig(joystick.name),
-    id: createControllerId(controller.guid),
+    ...createDeviceSpecificInputConfig(controller.name!),
+    id: createControllerId(controller.guid!),
     controller_type: createControllerType(),
     player_index: `Player${index + 1}`,
   };

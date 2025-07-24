@@ -4,6 +4,7 @@ import {
   Outlet,
   redirect,
   useLoaderData,
+  useLocation,
   useNavigate,
 } from "react-router";
 import { readGeneral } from "../server/settings.server.js";
@@ -67,7 +68,10 @@ export const loader = (props: DataFunctionArgs) => {
     return redirect("..");
   }
 
-  return { systemId, gameData };
+  const pathnameRelative =
+    category === "lastPlayed" ? `${category}/${gameId}` : gameId;
+
+  return { systemId, gameData, pathnameRelative };
 };
 
 const actionIds = {
@@ -143,7 +147,7 @@ export const shouldRevalidate = ({
 const focus: FocusElement = "gameDialog";
 
 export default function Index() {
-  const { gameData } = useLoaderData<typeof loader>();
+  const { gameData, pathnameRelative } = useLoaderData<typeof loader>();
 
   const { launchButtonRef, onExecute } = useLaunchButton();
 
@@ -161,12 +165,13 @@ export default function Index() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const handleClose = useCallback(() => {
     switchFocusBack();
-    navigate(-1);
-  }, [navigate, switchFocusBack]);
+    navigate(pathname.split(`/${pathnameRelative}`)[0]);
+  }, [pathname, navigate, switchFocusBack, pathnameRelative]);
 
   const onEntryClick = useCallback(() => {
     if (!isInFocus) {

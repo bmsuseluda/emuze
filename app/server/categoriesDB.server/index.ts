@@ -14,6 +14,7 @@ import {
   aresMegaDrive,
   aresSega32x,
   aresSegaCd,
+  aresSuperGrafx,
   aresSuperNintendo,
   isMgbaForGameBoy,
   isRmgForN64,
@@ -33,7 +34,6 @@ import { ryujinx } from "../applicationsDB.server/applications/ryujinx/index.js"
 import { dolphin } from "../applicationsDB.server/applications/dolphin/index.js";
 import {
   mednafenPcEngineCD,
-  mednafenPcEngineSuperGrafx,
   mednafenSaturn,
 } from "../applicationsDB.server/applications/mednafen/index.js";
 import {
@@ -283,9 +283,9 @@ export const pcenginecd: Category = {
 
 export const pcenginesupergrafx: Category = {
   id: "pcenginesupergrafx",
-  names: ["PC Engine SuperGrafx", "SuperGrafx"],
+  names: ["PC Engine SuperGrafx", "SuperGrafx", "Super Grafx"],
   igdbPlatformIds: [128],
-  application: mednafenPcEngineSuperGrafx,
+  application: aresSuperGrafx,
   hasAnalogStick: false,
 };
 

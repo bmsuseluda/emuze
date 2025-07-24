@@ -9,7 +9,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const stream = new ReadableStream({
     start(controller) {
       const encoder = new TextEncoder();
-      controller.enqueue(encoder.encode('data: {"type":"connected"}\n\n'));
 
       const sendEvent = (data: GamepadData) => {
         try {

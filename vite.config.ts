@@ -1,6 +1,9 @@
-import devtoolsJson from "vite-plugin-devtools-json";
+import devtoolsJsonDefault from "vite-plugin-devtools-json";
 import { defineConfig } from "vite";
 import { reactRouter } from "@react-router/dev/vite";
+
+const devtoolsJson =
+  devtoolsJsonDefault as unknown as typeof devtoolsJsonDefault.default;
 
 export default defineConfig({
   server: {
@@ -15,6 +18,6 @@ export default defineConfig({
       "react-use",
     ],
   },
-  optimizeDeps: { exclude: ["@bmsuseluda/sdl"], include: ["react-use"] },
+  optimizeDeps: { exclude: ["@kmamal/sdl"], include: ["react-use"] },
   plugins: [devtoolsJson(), reactRouter()],
 });

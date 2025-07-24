@@ -16,49 +16,53 @@ import _7z from "7zip-min";
 import { moveSync } from "fs-extra/esm";
 
 import { fileURLToPath } from "node:url";
+import { rpcs3 } from "../app/server/applicationsDB.server/applications/rpcs3/index.js";
 
 const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 
 type OperatingSystem = "Windows" | "Linux";
 type EmulatorDownloads = Record<ApplicationId, Record<OperatingSystem, string>>;
 
-const emulatorDownloads: Partial<EmulatorDownloads> = {
+export const emulatorVersions = {
+  ares: "145",
+  azahar: "2122.1",
+  dolphin: "2506a",
+  duckstation: "0.1-7371",
+  pcsx2: "2.4.0",
+  rpcs3: "0.0.37",
+  ryujinx: "1.3.2",
+} satisfies Partial<Record<ApplicationId, string>>;
+
+const emulatorDownloads = {
   ares: {
-    Linux:
-      "https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v145%402025-07-09_1752099468/ares-v145-anylinux-x86_64.AppImage",
-    Windows:
-      "https://github.com/ares-emulator/ares/releases/download/v145/ares-windows-x64.zip",
+    Linux: `https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v${emulatorVersions["ares"]}%402025-07-09_1752099468/ares-v${emulatorVersions["ares"]}-anylinux-x86_64.AppImage`,
+    Windows: `https://github.com/ares-emulator/ares/releases/download/v${emulatorVersions["ares"]}/ares-windows-x64.zip`,
   },
   azahar: {
-    Linux:
-      "https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/2122.1/Azahar-Enhanced-2122.1-anylinux-x86_64.AppImage",
-    Windows:
-      "https://github.com/azahar-emu/azahar/releases/download/2122.1/azahar-2122.1-windows-msys2.zip",
+    Linux: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions["azahar"]}/Azahar-Enhanced-${emulatorVersions["azahar"]}-anylinux-x86_64.AppImage`,
+    Windows: `https://github.com/azahar-emu/azahar/releases/download/${emulatorVersions["azahar"]}/azahar-${emulatorVersions["azahar"]}-windows-msys2.zip`,
   },
   duckstation: {
-    Linux:
-      "https://github.com/stenzek/duckstation/releases/download/v0.1-7371/DuckStation-x64.AppImage",
-    Windows:
-      "https://github.com/stenzek/duckstation/releases/download/v0.1-7371/duckstation-windows-x64-release.zip",
+    Linux: `https://github.com/stenzek/duckstation/releases/download/v${emulatorVersions["duckstation"]}/DuckStation-x64.AppImage`,
+    Windows: `https://github.com/stenzek/duckstation/releases/download/v${emulatorVersions["duckstation"]}/duckstation-windows-x64-release.zip`,
   },
   dolphin: {
-    Linux:
-      "https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/2506/Dolphin_Emulator-2506-anylinux.dwarfs-x86_64.AppImage",
-    Windows: "https://dl.dolphin-emu.org/releases/2506a/dolphin-2506a-x64.7z",
+    Linux: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions["dolphin"]}%402025-07-23_1753271407/Dolphin_Emulator-${emulatorVersions["dolphin"]}-anylinux.dwarfs-x86_64.AppImage`,
+    Windows: `https://dl.dolphin-emu.org/releases/${emulatorVersions["dolphin"]}/dolphin-${emulatorVersions["dolphin"]}-x64.7z`,
   },
   pcsx2: {
-    Linux:
-      "https://github.com/PCSX2/pcsx2/releases/download/v2.4.0/pcsx2-v2.4.0-linux-appimage-x64-Qt.AppImage",
-    Windows:
-      "https://github.com/PCSX2/pcsx2/releases/download/v2.4.0/pcsx2-v2.4.0-windows-x64-Qt.7z",
+    Linux: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions["pcsx2"]}/pcsx2-v${emulatorVersions["pcsx2"]}-linux-appimage-x64-Qt.AppImage`,
+    Windows: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions["pcsx2"]}/pcsx2-v${emulatorVersions["pcsx2"]}-windows-x64-Qt.7z`,
+  },
+  rpcs3: {
+    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-9c93ec0bc31bbc94ca4dce2a76ceea80da6f6554/rpcs3-v${rpcs3}-18022-9c93ec0b_linux64.AppImage`,
+    Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-9c93ec0bc31bbc94ca4dce2a76ceea80da6f6554/rpcs3-v${rpcs3}-18022-9c93ec0b_win64_msvc.7z`,
   },
   ryujinx: {
-    Linux:
-      "https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/1.3.2/ryujinx-1.3.2-x64.AppImage",
-    Windows:
-      "https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/1.3.2/ryujinx-1.3.2-win_x64.zip",
+    Linux: `https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/${emulatorVersions["ryujinx"]}/ryujinx-${emulatorVersions["ryujinx"]}-x64.AppImage`,
+    Windows: `https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/${emulatorVersions["ryujinx"]}/ryujinx-${emulatorVersions["ryujinx"]}-win_x64.zip`,
   },
-};
+} satisfies Partial<EmulatorDownloads>;
 
 const emulatorsFolderPath = join(__dirname, "..", "emulators");
 

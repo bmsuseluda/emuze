@@ -255,7 +255,7 @@ export const startGame = async (
             await executeBundledApplication({
               bundledPath: applicationData.bundledPathWindows,
               absoluteEntryPath,
-              optionParams: await optionParams(),
+              optionParams: optionParams(),
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
             });
@@ -276,7 +276,7 @@ export const startGame = async (
             await executeBundledApplication({
               bundledPath: applicationData.bundledPathLinux,
               absoluteEntryPath,
-              optionParams: await optionParams(),
+              optionParams: optionParams(),
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
             });
@@ -285,7 +285,7 @@ export const startGame = async (
               applicationFlatpakOptionParams: flatpakOptionParams,
               applicationFlatpakId: flatpakId,
               absoluteEntryPath,
-              optionParams: await optionParams(),
+              optionParams: optionParams(),
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
               categoriesPath: generalData.categoriesPath,

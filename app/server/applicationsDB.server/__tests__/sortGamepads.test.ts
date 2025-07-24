@@ -1,4 +1,4 @@
-import type { Sdl } from "@bmsuseluda/sdl";
+import type { Sdl } from "@kmamal/sdl";
 import { gamepadPs3, gamepadPs4, steamDeck } from "../../../types/gamepad.js";
 import { sortSteamDeckLast } from "../sortGamepads.js";
 

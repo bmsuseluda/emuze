@@ -1,6 +1,6 @@
 import type { Application } from "../../types.js";
-import type { Sdl } from "@bmsuseluda/sdl";
-import sdl from "@bmsuseluda/sdl";
+import type { Sdl } from "@kmamal/sdl";
+import sdl from "@kmamal/sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { log } from "../../../debug.server.js";
 import fs from "node:fs";
@@ -32,7 +32,7 @@ const bundledPathWindows = nodepath.join(
 const configFileName = "settings.ini";
 
 export const getVirtualGamepad = (
-  sdlDevice: Sdl.Controller.Device,
+  sdlDevice: Sdl.Joystick.Device,
   index: number,
 ) => {
   log("debug", "gamepad", { index, sdlDevice });
@@ -77,7 +77,7 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
   [`[Pad${gamepadIndex + 1}]`, "Type = None", "", "", ""].join(EOL);
 
 export const getVirtualGamepads = () => {
-  const gamepads = sdl.controller.devices;
+  const gamepads = sdl.joystick.devices;
 
   const virtualGamepads =
     gamepads.length > 0 ? gamepads.map(getVirtualGamepad) : [keyboardConfig];

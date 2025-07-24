@@ -3,6 +3,7 @@
     "app/**/*",
     "styled-system",
     "panda.config.ts",
+    "vite.config.ts",
     ".storybook/*",
     "./electronApi.d.ts",
     "e2eTests/**/*",

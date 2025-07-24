@@ -5,7 +5,7 @@ import {
   steamDeck,
 } from "../../../../types/gamepad.js";
 
-vi.mock("@bmsuseluda/sdl");
+vi.mock("@kmamal/sdl");
 
 describe("ares", () => {
   describe("createDeviceId", () => {

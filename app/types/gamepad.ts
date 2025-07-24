@@ -1,4 +1,4 @@
-import type { Sdl } from "@bmsuseluda/sdl";
+import type { Sdl } from "@kmamal/sdl";
 
 export interface GamepadData {
   gamepadType: GamepadType;
@@ -185,4 +185,11 @@ export const gamecubeAdapter = {
   player: 5,
   mapping:
     "0300767a790000004318000010010000,Mayflash GameCube Adapter,a:b1,b:b0,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b7,righttrigger:a4,rightx:a5,righty:a2,start:b9,x:b2,y:b3,platform:Linux,",
-};
+} satisfies Sdl.Controller.Device;
+
+export const convertToJoystick = (
+  controller: Sdl.Controller.Device,
+): Sdl.Joystick.Device => ({
+  ...controller,
+  type: "gamecontroller",
+});

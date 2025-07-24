@@ -1,4 +1,4 @@
-import type { Sdl } from "@bmsuseluda/sdl";
+import type { Sdl } from "@kmamal/sdl";
 import { log } from "./debug.server.js";
 import type { ButtonId, GamepadData } from "../types/gamepad.js";
 import type { AxisMotionEventFunction } from "./gamepadManager.server/index.js";

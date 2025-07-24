@@ -3,21 +3,21 @@
 </p>
 
 
-💥 [Features](#-features) | 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) | 🚀 [Getting Started](#-getting-started) | 🪄 [Metadata](#-metadata) | 🚑️ [Support](#%EF%B8%8F-support)
+💥 [Features](#-features) | 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) | 🚀 [Getting Started](#-getting-started) | 🚑️ [Support](#%EF%B8%8F-support)
 
 emuze is a emulation frontend designed to simplify your retro gaming experience.
 It automates the configuration of each emulator, including seamless gamepad integration and automatic import of games along with their metadata. With its console-like interface and intuitive controls, emuze lets you focus on enjoying your retro games, just like you would on a gaming console.
 
-It is not there yet for every system and emulator, please have a look at 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems)
+It is not there yet for every system and emulator, please have a look at 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) for more details.
 
 ## 💥 Features
 
-- ⚡️ Fast and responsive UI
-- 🚂 Import all your emulators and roms with a click of a button
-- 🪄 Fetches Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
-- 🎮️ Gamepad support
+- ⚡️ Intuitive console-like interface
+- 🚂 Import all your roms with a click of a button
+- 🪄 Provides Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
+- 🎮️ Seamless gamepad integration for most emulators
+- 📦️ Bundles most emulators
 - 💻️ Windows, Linux and Steam Deck support
-- 🔧 Can install missing emulators (Linux only)
 - 💫 Updates itself
 
 <br>
@@ -43,12 +43,18 @@ return scripts.createSystemsTable()
 
 ### Pre Configured
 If a System is pre configured, all connected gamepads will be configured for the specific Emulator.
+If there are no gamepads connected, the keyboard will be configured instead.
 
-The following Hotkeys are set:
-- Open Emulator Menu (if supported from emulator): F2
-- Save State: F1
-- Load State: F3
-- Fullscreen: F11
+The following Hotkeys are set as well:
+- Open Emulator Menu (if supported from emulator): `F2`
+- Save State: `F1`
+- Load State: `F3`
+- Fullscreen: `F11`
+
+You can close a game via
+- Xbox: `back + a`
+- PlayStation: `select + x`
+- Nintendo: `select + a`
 
 ### Bundled
 If a system is bundled, the respective emulator is provided with emuze in a specific version. Therefore you do not need to provide the emulator on your own.
@@ -89,8 +95,8 @@ emulators
 
 ### Linux
 
-For now emuze is only released as an AppImage. Your Linux distribution needs to support Flatpaks.
-All emulators, not bundled, need to be installed via flatpak but emuze can do this for you.
+For now emuze is only released as an AppImage.
+All emulators, not bundled, need to be installed via flatpak.
 
 ```mmd
 return scripts.getLinuxDownloadLink('1) ')
@@ -114,6 +120,12 @@ return scripts.getLinuxDownloadLink('2) ')
 #### Steam Input Profile
 
 There is a Steam Input Profile with the name `emuze`, which has some Hotkeys pre configured on the back pedals of the Steam Deck.
+
+- `L4`: Save State
+- `L5`: Load State
+- `R4`: Open Emulator Menu (if supported from emulator) or Fullscreen
+- `R5`: Left Mouse Click
+- `Right Trackpad`: Mouse
 
 #### SteamGridDB
 
@@ -139,31 +151,6 @@ roms
 |---> Terranigma.sfc
 |---> ...
 ```
-
-## 🪄 Metadata
-
-Metadata provides additional information about your games, e.g.
-- Cover art
-- Description
-- Genre
-- ...
-
-> [!NOTE]
-> Right now, emuze only fetches Cover art for your games.
-
-Metadata will be fetched from [igdb](https://www.igdb.com). emuze crawls the name and alternative name of a game filtered by the specific system.
-The Search is case-insensitive.
-
-> [!TIP]
-> [igdb](https://www.igdb.com) is a community driven open source database for game information. If there is something missing or wrong, please help and correct it there.
-
-### Games with multiple Discs
-
-If you have a game with multiple discs, like `Final Fantasy VII`, the file name for the first disc would be `Final Fantasy VII (Disc 1).chd`.
-
-### Games with multiple Versions (e.g. Regions)
-
-If you have multiple versions of a game you can specify them in brackets, e.g. the file name for the japanese version of `Castlevania` would be `Castlevania (J).nes`.
 
 ## 🔧 Commandline Options
 

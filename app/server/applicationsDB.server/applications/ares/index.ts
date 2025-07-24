@@ -1,6 +1,6 @@
 import type { Application, OptionParamFunction } from "../../types.js";
-import type { Sdl } from "@bmsuseluda/sdl";
-import sdl from "@bmsuseluda/sdl";
+import type { Sdl } from "@kmamal/sdl";
+import sdl from "@kmamal/sdl";
 import { log } from "../../../debug.server.js";
 import type {
   GamepadGroupId,
@@ -34,7 +34,7 @@ const gamepadGroupId: Record<GamepadGroupId, number> = {
 const getPhysicalGamepadString = (
   physicalGamepadButton: PhysicalGamepadButton | null,
 ) =>
-  physicalGamepadButton && physicalGamepadButton.inputId
+  physicalGamepadButton?.inputId
     ? [
         physicalGamepadButton.deviceId,
         gamepadGroupId[physicalGamepadButton.groupId].toString(),
@@ -153,7 +153,7 @@ export const getVirtualGamepad =
   (systemHasAnalogStick: boolean) =>
   (sdlDevice: Sdl.Controller.Device, index: number) => {
     const virtualGamepadIndex = index;
-    const mappingObject = createSdlMappingObject(sdlDevice.mapping);
+    const mappingObject = createSdlMappingObject(sdlDevice.mapping!);
     const deviceId = createDeviceId(sdlDevice);
     const physicalGamepad = new PhysicalGamepad(deviceId, mappingObject);
 
@@ -389,6 +389,16 @@ export const aresSega32x: Application = {
   createOptionParams: (props) => [
     ...getSharedAresOptionParams(props),
     ...["--system", "Mega 32X"],
+  ],
+};
+
+export const aresSuperGrafx: Application = {
+  ...ares,
+  id: "aresSuperGrafx",
+  fileExtensions: [".pce"],
+  createOptionParams: (props) => [
+    ...getSharedAresOptionParams(props),
+    ...["--system", "SuperGrafx"],
   ],
 };
 

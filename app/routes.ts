@@ -1,14 +1,13 @@
 import type { RouteConfig } from "@react-router/dev/routes";
+import type { DefineRouteFunction } from "@react-router/remix-routes-option-adapter";
 import { remixRoutesOptionAdapter } from "@react-router/remix-routes-option-adapter";
 
-// @ts-ignore TODO: remove this when https://github.com/remix-run/react-router/pull/13614 is fixed
 const createErrorDialog = (route: DefineRouteFunction, id: string) => {
   route("errorDialog", "customRoutes/categories.$category.errorDialog.tsx", {
     id: `${id}ErrorDialog`,
   });
 };
 
-// @ts-ignore TODO: remove this when https://github.com/remix-run/react-router/pull/13614 is fixed
 const createGameDialog = (route: DefineRouteFunction, id: string) => {
   route(
     ":gameId",
@@ -22,7 +21,6 @@ const createGameDialog = (route: DefineRouteFunction, id: string) => {
   );
 };
 
-// @ts-ignore TODO: remove this when https://github.com/remix-run/react-router/pull/13614 is fixed
 const createSettingsRoutes = (route: DefineRouteFunction, id: string) => {
   route(
     "settings",
@@ -59,7 +57,6 @@ const createSettingsRoutes = (route: DefineRouteFunction, id: string) => {
   );
 };
 
-// @ts-ignore TODO: remove this when https://github.com/remix-run/react-router/pull/13614 is fixed
 const createCategoriesRoutes = (route: DefineRouteFunction) => {
   route("categories", "customRoutes/categories.tsx", {}, () => {
     route("lastPlayed", "customRoutes/categories.lastPlayed.tsx", () => {

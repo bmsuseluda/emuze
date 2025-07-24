@@ -1,4 +1,4 @@
-import type { Sdl } from "@bmsuseluda/sdl";
+import type { Sdl } from "@kmamal/sdl";
 import { isGamecubeController, steamDeck } from "../../types/gamepad.js";
 
 /**
@@ -26,8 +26,8 @@ export const sortGamecubeLast = (
   a: Sdl.Joystick.Device,
   b: Sdl.Joystick.Device,
 ) => {
-  const aIsGamecubeController = isGamecubeController(a.name);
-  const bIsGamecubeController = isGamecubeController(b.name);
+  const aIsGamecubeController = isGamecubeController(a.name!);
+  const bIsGamecubeController = isGamecubeController(b.name!);
   if (aIsGamecubeController === bIsGamecubeController) {
     return 0;
   }

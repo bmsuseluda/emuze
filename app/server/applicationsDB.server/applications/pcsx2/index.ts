@@ -12,8 +12,8 @@ import {
 } from "../../configFile.js";
 import { log } from "../../../debug.server.js";
 import { defaultSettings } from "./defaultSettings.js";
-import type { Sdl } from "@bmsuseluda/sdl";
-import sdl from "@bmsuseluda/sdl";
+import type { Sdl } from "@kmamal/sdl";
+import sdl from "@kmamal/sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { keyboardConfig } from "./keyboardConfig.js";
@@ -29,7 +29,7 @@ const bundledPathWindows = nodepath.join(applicationId, "pcsx2-qt.exe");
 const configFileName = "PCSX2.ini";
 
 export const getVirtualGamepad = (
-  sdlDevice: Sdl.Controller.Device,
+  sdlDevice: Sdl.Joystick.Device,
   index: number,
 ) => {
   log("debug", "gamepad", { index, sdlDevice });
@@ -79,7 +79,7 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
   [`[Pad${gamepadIndex + 1}]`, "Type = None", "", "", ""].join(EOL);
 
 export const getVirtualGamepads = () => {
-  const gamepads = sdl.controller.devices;
+  const gamepads = sdl.joystick.devices;
 
   const virtualGamepads =
     gamepads.length > 0 ? gamepads.map(getVirtualGamepad) : [keyboardConfig];
@@ -218,7 +218,6 @@ export const pcsx2: Application = {
   name: "PCSX2",
   fileExtensions: [".chd", ".iso"],
   flatpakId,
-  flatpakOptionParams: ["--command=pcsx2-qt"],
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },

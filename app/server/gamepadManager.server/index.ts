@@ -1,5 +1,5 @@
-import type { Sdl } from "@bmsuseluda/sdl";
-import sdl from "@bmsuseluda/sdl";
+import type { Sdl } from "@kmamal/sdl";
+import sdl from "@kmamal/sdl";
 import { log } from "../debug.server.js";
 import mappings from "./mappings.json" with { type: "json" };
 import {
@@ -35,6 +35,7 @@ const addMappings = () => {
     "050067007e0500000620000001800000,Nintendo Switch Left Joy-Con,a:b8,b:b9,back:b5,leftshoulder:b2,leftstick:b6,rightshoulder:b4,lefttrigger:b1,righttrigger:b3,start:b0,x:b10,y:b7,leftx:a1,lefty:a0~,platform:Linux,",
     "05001c5e7e0500001920000001800000,NSO N64 Controller,+rightx:b2,+righty:b3,-rightx:b4,-righty:b10,a:b0,b:b1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b6,lefttrigger:b8,leftx:a0,lefty:a1,misc1:b5,rightshoulder:b7,righttrigger:b9,start:b11,platform:Linux,",
     "0300767a790000004318000010010000,Mayflash GameCube Controller Adapter,a:b1,b:b2,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b7,righttrigger:a4,rightx:a5,righty:a2,start:b9,x:b0,y:b3,platform:Linux,",
+    "050095ac5e040000e002000003090000,Xbox One Wireless Controller,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b10,leftshoulder:b4,leftstick:b8,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b9,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
   ]);
 };
 

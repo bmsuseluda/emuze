@@ -1,8 +1,8 @@
 import type { Application } from "../../types.js";
 import type { ApplicationId } from "../../applicationId.js";
 import nodepath from "node:path";
-import type { Sdl } from "@bmsuseluda/sdl";
-import sdl from "@bmsuseluda/sdl";
+import type { Sdl } from "@kmamal/sdl";
+import sdl from "@kmamal/sdl";
 import { log } from "../../../debug.server.js";
 import { EOL } from "node:os";
 import { keyboardConfig } from "./keyboardConfig.js";
@@ -31,7 +31,7 @@ const bundledPathWindows = nodepath.join(applicationId, "azahar.exe");
 const configFileName = "qt-config.ini";
 
 export const getVirtualGamepad = (
-  sdlDevice: Sdl.Controller.Device,
+  sdlDevice: Sdl.Joystick.Device,
 ): ParamToReplace[] => {
   log("debug", "gamepad", { sdlDevice });
 
@@ -163,15 +163,13 @@ export const getVirtualGamepad = (
   ];
 };
 
-export const replaceGamepadConfig =
-  (controller: Sdl.Controller.Module): SectionReplacement =>
-  (sections) => {
-    const gamepads = controller.devices;
-    const virtualGamepad =
-      gamepads.length > 0 ? getVirtualGamepad(gamepads[0]) : keyboardConfig;
+export const replaceGamepadConfig: SectionReplacement = (sections) => {
+  const gamepads = sdl.joystick.devices;
+  const virtualGamepad =
+    gamepads.length > 0 ? getVirtualGamepad(gamepads[0]) : keyboardConfig;
 
-    return replaceSection(sections, "[Controls]", virtualGamepad);
-  };
+  return replaceSection(sections, "[Controls]", virtualGamepad);
+};
 
 export const replaceMiscellaneousConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Miscellaneous]", [
@@ -252,7 +250,6 @@ export const getConfigFilePath = (configFileName: string) => {
 };
 
 export const replaceConfigSections = (n3dsRomsPath: string) => {
-  const controller = sdl.controller;
   const filePath = getConfigFilePath(configFileName);
   const fileContent = readConfigFile(filePath);
 
@@ -261,7 +258,7 @@ export const replaceConfigSections = (n3dsRomsPath: string) => {
   const fileContentNew = chainSectionReplacements(
     sections,
     replaceUiConfig(n3dsRomsPath),
-    replaceGamepadConfig(controller),
+    replaceGamepadConfig,
     replaceMiscellaneousConfig,
   ).join(EOL);
 

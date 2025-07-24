@@ -1,4 +1,14 @@
-import { excludePlaystationFiles, findPlaystation3Serial } from "../index.js";
+import type { Sdl } from "@kmamal/sdl";
+import {
+  excludePlaystationFiles,
+  findPlaystation3Serial,
+  getNameIndex,
+} from "../index.js";
+import {
+  convertToJoystick,
+  gamepadPs4,
+  steamDeck,
+} from "../../../../../types/gamepad.js";
 
 describe("applicationsDB.rpcs3", () => {
   describe("findPlaystation3Serial", () => {
@@ -51,6 +61,19 @@ describe("applicationsDB.rpcs3", () => {
       ];
 
       expect(excludePlaystationFiles(filenames)).toEqual(filenamesToExclude);
+    });
+  });
+
+  describe("getNameIndex", () => {
+    it("Should return the index based on the name of the joystick", () => {
+      const devices: Sdl.Joystick.Device[] = [
+        convertToJoystick(gamepadPs4),
+        convertToJoystick(steamDeck),
+        convertToJoystick(gamepadPs4),
+      ];
+      expect(getNameIndex(gamepadPs4.name, 0, devices)).toBe(1);
+      expect(getNameIndex(steamDeck.name, 1, devices)).toBe(1);
+      expect(getNameIndex(gamepadPs4.name, 2, devices)).toBe(2);
     });
   });
 });
