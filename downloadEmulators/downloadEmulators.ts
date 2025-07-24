@@ -16,7 +16,6 @@ import _7z from "7zip-min";
 import { moveSync } from "fs-extra/esm";
 
 import { fileURLToPath } from "node:url";
-import { rpcs3 } from "../app/server/applicationsDB.server/applications/rpcs3/index.js";
 
 const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 
@@ -55,8 +54,8 @@ const emulatorDownloads = {
     Windows: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions["pcsx2"]}/pcsx2-v${emulatorVersions["pcsx2"]}-windows-x64-Qt.7z`,
   },
   rpcs3: {
-    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-9c93ec0bc31bbc94ca4dce2a76ceea80da6f6554/rpcs3-v${rpcs3}-18022-9c93ec0b_linux64.AppImage`,
-    Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-9c93ec0bc31bbc94ca4dce2a76ceea80da6f6554/rpcs3-v${rpcs3}-18022-9c93ec0b_win64_msvc.7z`,
+    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-9c93ec0bc31bbc94ca4dce2a76ceea80da6f6554/rpcs3-v${emulatorVersions["rpcs3"]}-18022-9c93ec0b_linux64.AppImage`,
+    Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-9c93ec0bc31bbc94ca4dce2a76ceea80da6f6554/rpcs3-v${emulatorVersions["rpcs3"]}-18022-9c93ec0b_win64_msvc.7z`,
   },
   ryujinx: {
     Linux: `https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/${emulatorVersions["ryujinx"]}/ryujinx-${emulatorVersions["ryujinx"]}-x64.AppImage`,
