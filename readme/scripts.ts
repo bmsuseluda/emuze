@@ -19,6 +19,7 @@ const preConfigured: ApplicationId[] = [
   "mednafenPcEngineCD",
   "mednafenSaturn",
   "pcsx2",
+  "ppsspp",
   "scummvm",
   "rpcs3",
   "ryujinx",
@@ -36,6 +37,7 @@ const bundled: Partial<Record<ApplicationId, string>> = {
   dolphin: emulatorVersions["dolphin"],
   duckstation: emulatorVersions["duckstation"],
   pcsx2: emulatorVersions["pcsx2"],
+  ppsspp: emulatorVersions["ppsspp"],
   rpcs3: emulatorVersions["rpcs3"],
   ryujinx: emulatorVersions["ryujinx"],
 };

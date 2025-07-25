@@ -193,7 +193,7 @@ export const getConfigFilePath = (configFileName: string) => {
   }
 };
 
-export const replaceConfigSections = async (ps2RomsPath: string) => {
+export const replaceConfigSections = (ps2RomsPath: string) => {
   const filePath = getConfigFilePath(configFileName);
   const fileContent = readConfigFile(filePath);
 
