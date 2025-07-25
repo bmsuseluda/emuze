@@ -22,25 +22,7 @@ import {
   mednafenSaturn,
 } from "./applications/mednafen/index.js";
 import { azahar } from "./applications/azahar/index.js";
-
-export const ppsspp: Application = {
-  id: "ppsspp",
-  name: "PPSSPP",
-  fileExtensions: [".chd", ".cso", ".iso"],
-  flatpakId: "org.ppsspp.PPSSPP",
-  createOptionParams: ({
-    settings: {
-      appearance: { fullscreen },
-    },
-  }) => {
-    const optionParams = [];
-    if (fullscreen) {
-      optionParams.push("--fullscreen");
-    }
-    optionParams.push("--pause-menu-exit");
-    return optionParams;
-  },
-};
+import { ppsspp } from "./applications/ppsspp/index.js";
 
 export const lime3ds: Application = {
   id: "lime3ds",

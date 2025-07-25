@@ -4,7 +4,6 @@ import {
   lime3ds,
   melonds,
   mgba,
-  ppsspp,
   rosaliesMupenGui,
 } from "../applicationsDB.server/index.js";
 import { rpcs3 } from "../applicationsDB.server/applications/rpcs3/index.js";
@@ -40,6 +39,7 @@ import {
   azahar,
   isLime3dsFor3ds,
 } from "../applicationsDB.server/applications/azahar/index.js";
+import { ppsspp } from "../applicationsDB.server/applications/ppsspp/index.js";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",

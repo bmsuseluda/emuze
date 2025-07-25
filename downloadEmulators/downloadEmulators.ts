@@ -28,6 +28,7 @@ export const emulatorVersions = {
   dolphin: "2506a",
   duckstation: "0.1-7371",
   pcsx2: "2.4.0",
+  ppsspp: "1.19.3",
   rpcs3: "0.0.37",
   ryujinx: "1.3.2",
 } satisfies Partial<Record<ApplicationId, string>>;
@@ -52,6 +53,10 @@ const emulatorDownloads = {
   pcsx2: {
     Linux: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions["pcsx2"]}/pcsx2-v${emulatorVersions["pcsx2"]}-linux-appimage-x64-Qt.AppImage`,
     Windows: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions["pcsx2"]}/pcsx2-v${emulatorVersions["pcsx2"]}-windows-x64-Qt.7z`,
+  },
+  ppsspp: {
+    Linux: `https://github.com/hrydgard/ppsspp/releases/download/v${emulatorVersions["ppsspp"]}/PPSSPP-v${emulatorVersions["ppsspp"]}-anylinux-x86_64.AppImage`,
+    Windows: `https://www.ppsspp.org/files/${emulatorVersions["ppsspp"].replaceAll(".", "_")}/ppsspp_win.zip`,
   },
   rpcs3: {
     Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-9c93ec0bc31bbc94ca4dce2a76ceea80da6f6554/rpcs3-v${emulatorVersions["rpcs3"]}-18022-9c93ec0b_linux64.AppImage`,
