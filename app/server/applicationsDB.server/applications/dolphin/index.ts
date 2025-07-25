@@ -210,6 +210,7 @@ export const dolphin: Application = {
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
+      general: { categoriesPath },
     },
   }) => {
     replaceDolphinFile();
@@ -221,6 +222,9 @@ export const dolphin: Application = {
       ...["--config", "Dolphin.Interface.ConfirmStop=False"],
       ...["--config", "Dolphin.Analytics.PermissionAsked=True"],
       ...["--config", "Dolphin.AutoUpdate.UpdateTrack="],
+      ...["--config", `Dolphin.General.ISOPath0=${categoriesPath}`],
+      ...["--config", "Dolphin.General.ISOPaths=1"],
+      ...["--config", "Dolphin.General.RecursiveISOPaths=True"],
     ];
 
     if (fullscreen) {
