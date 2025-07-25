@@ -11,15 +11,27 @@ describe("ryujinx", () => {
         gamepadName: "ps3",
         sdlGuiId: gamepadPs3.guid,
         controllerId: "0-00000003-054c-0000-6802-000011810000",
+        controllerIds: [],
+      },
+      {
+        gamepadName: "ps3",
+        sdlGuiId: gamepadPs3.guid,
+        controllerId: "1-00000003-054c-0000-6802-000011810000",
+        controllerIds: ["0-00000003-054c-0000-6802-000011810000"],
       },
       {
         gamepadName: "steam deck",
         sdlGuiId: steamDeck.guid,
-        controllerId: "0-00000003-28de-0000-ff11-000001000000",
+        controllerId: "3-00000003-28de-0000-ff11-000001000000",
+        controllerIds: [
+          "0-00000003-28de-0000-ff11-000001000000",
+          "1-00000003-28de-0000-ff11-000001000000",
+          "2-00000003-28de-0000-ff11-000001000000",
+        ],
       },
-    ].forEach(({ gamepadName, sdlGuiId, controllerId }) => {
+    ].forEach(({ gamepadName, sdlGuiId, controllerId, controllerIds }) => {
       it(`Should create a controllerId for ${gamepadName}`, () => {
-        expect(createControllerId(sdlGuiId)).toBe(controllerId);
+        expect(createControllerId(controllerIds, sdlGuiId)).toBe(controllerId);
       });
     });
   });

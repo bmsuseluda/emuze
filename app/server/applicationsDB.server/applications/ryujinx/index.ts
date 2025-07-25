@@ -121,9 +121,28 @@ const splitStringByIndices = (str: string, indices: number[]): string[] => {
   return result;
 };
 
-export const createControllerId = (sdlGuiId: string) => {
+export const getControllerIdWithIndex = (
+  controllerIds: string[],
+  controllerIdWithoutIndex: string,
+) => {
+  let index = 0;
+  let controllerId = `${index}-${controllerIdWithoutIndex}`;
+  while (controllerIds.includes(controllerId)) {
+    controllerId = `${++index}-${controllerIdWithoutIndex}`;
+  }
+
+  controllerIds.push(controllerId);
+
+  return controllerId;
+};
+
+export const createControllerId = (
+  controllerIds: string[],
+  sdlGuiId: string,
+) => {
   const mapping = splitStringByIndices(sdlGuiId, [2, 4, 6, 8, 10, 12, 16, 20]);
-  return `0-${mapping[0].padStart(8, "0")}-${mapping[5]}${mapping[4]}-${mapping[6]}-${mapping[7]}-${mapping[8]}`;
+  const controllerIdWithoutIndex = `${mapping[0].padStart(8, "0")}-${mapping[5]}${mapping[4]}-${mapping[6]}-${mapping[7]}-${mapping[8]}`;
+  return getControllerIdWithIndex(controllerIds, controllerIdWithoutIndex);
 };
 
 /**
@@ -150,29 +169,31 @@ const createDeviceSpecificInputConfig = (controllerName: string) => {
   return defaultInputConfig;
 };
 
-const createInputConfig = (
-  controller: Sdl.Joystick.Device,
-  index: number,
-): InputConfig => {
-  log("debug", "gamepad", {
-    index,
-    controller,
-  });
+const createInputConfig =
+  (controllerIds: string[]) =>
+  (controller: Sdl.Joystick.Device, index: number): InputConfig => {
+    log("debug", "gamepad", {
+      index,
+      controller,
+    });
 
-  return {
-    ...createDeviceSpecificInputConfig(controller.name!),
-    id: createControllerId(controller.guid!),
-    controller_type: createControllerType(),
-    player_index: `Player${index + 1}`,
+    const gamepadId = createControllerId(controllerIds, controller.guid!);
+
+    return {
+      ...createDeviceSpecificInputConfig(controller.name!),
+      id: gamepadId,
+      controller_type: createControllerType(),
+      player_index: `Player${index + 1}`,
+    };
   };
-};
 
 const replaceConfig = (switchRomsPath: string) => {
+  const controllerIds: string[] = [];
   const gamepads = sdl.joystick.devices;
   const gamepadsSorted = gamepads.toSorted(sortGamecubeLast);
   const inputConfig =
     gamepadsSorted.length > 0
-      ? gamepadsSorted.map(createInputConfig)
+      ? gamepadsSorted.map(createInputConfig(controllerIds))
       : [keyboardConfig];
 
   const oldConfig = readConfigFile(configFilePath);
