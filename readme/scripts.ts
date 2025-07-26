@@ -3,6 +3,7 @@ import type { ApplicationId } from "../app/server/applicationsDB.server/applicat
 import type { SystemId } from "../app/server/categoriesDB.server/systemId.js";
 import { commandLineOptionsString } from "../app/server/commandLine.server.js";
 import { emulatorVersions } from "../downloadEmulators/downloadEmulators.js";
+import { keyboardMapping } from "../app/types/gamepad.js";
 
 const preConfigured: ApplicationId[] = [
   "ares",
@@ -112,6 +113,11 @@ export const createSystemsTable = () =>
       return `| ${systemName} | ${emulatorName} | ${isPreConfigured} | ${isBundled} | ${isBiosNeeded} | `;
     })
     .filter(Boolean)
+    .join("\n");
+
+export const createKeyboardMapping = () =>
+  Object.entries(keyboardMapping)
+    .map(([buttonId, keyboardKey]) => `| ${buttonId} | ${keyboardKey} | `)
     .join("\n");
 
 const windowsDownloadFileName = `emuze-Setup-${process.env.npm_package_version}.exe`;
