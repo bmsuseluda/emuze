@@ -39,6 +39,36 @@ export type ButtonId =
   | "rightStickLeft"
   | "rightStickRight";
 
+export const keyboardMapping: Omit<
+  Record<ButtonId, Sdl.Keyboard.ScancodeNames>,
+  "guide" | "paddle1" | "paddle2" | "paddle3" | "paddle4"
+> = {
+  dpadUp: "T",
+  dpadDown: "G",
+  dpadLeft: "F",
+  dpadRight: "H",
+  a: "J",
+  b: "K",
+  x: "U",
+  y: "I",
+  back: "BACKSPACE",
+  start: "RETURN",
+  leftStick: "X",
+  rightStick: "RSHIFT",
+  leftShoulder: "L",
+  rightShoulder: "O",
+  leftTrigger: "8",
+  rightTrigger: "9",
+  leftStickUp: "W",
+  leftStickDown: "S",
+  leftStickLeft: "A",
+  leftStickRight: "D",
+  rightStickUp: "UP",
+  rightStickDown: "DOWN",
+  rightStickLeft: "LEFT",
+  rightStickRight: "RIGHT",
+};
+
 export const getGamepadButtonEventName = (buttonId: ButtonId) =>
   `gamepadonbutton${buttonId.toLowerCase()}press`;
 

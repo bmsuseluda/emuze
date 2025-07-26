@@ -1,5 +1,6 @@
 import type { AresButtonId } from "./types.js";
 import { isWindows } from "../../../operationsystem.server.js";
+import type { Sdl } from "@kmamal/sdl";
 
 type Scancode = keyof typeof scancodes;
 export const scancodes = {
@@ -31,7 +32,7 @@ export const scancodes = {
   DOWN: 85,
   LEFT: 86,
   RIGHT: 87,
-} satisfies Record<string, number>;
+} satisfies Partial<Record<Sdl.Keyboard.ScancodeNames, number>>;
 
 export const getKeyboardKey = (scancode: Scancode) =>
   `0x1/0/${scancodes[scancode]}`;

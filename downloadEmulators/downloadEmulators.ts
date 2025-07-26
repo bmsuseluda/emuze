@@ -59,7 +59,7 @@ const emulatorDownloads = {
     Windows: `https://www.ppsspp.org/files/${emulatorVersions["ppsspp"].replaceAll(".", "_")}/ppsspp_win.zip`,
   },
   rpcs3: {
-    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-9c93ec0bc31bbc94ca4dce2a76ceea80da6f6554/rpcs3-v${emulatorVersions["rpcs3"]}-18022-9c93ec0b_linux64.AppImage`,
+    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-b90bacba4870534dfc501a51119b5913337a5e95/rpcs3-v${emulatorVersions["rpcs3"]}-18087-b90bacba_linux64.AppImage`,
     Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-9c93ec0bc31bbc94ca4dce2a76ceea80da6f6554/rpcs3-v${emulatorVersions["rpcs3"]}-18022-9c93ec0b_win64_msvc.7z`,
   },
   ryujinx: {

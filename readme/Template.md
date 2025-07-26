@@ -45,6 +45,19 @@ return scripts.createSystemsTable()
 If a System is pre configured, all connected gamepads will be configured for the specific Emulator.
 If there are no gamepads connected, the keyboard will be configured instead.
 
+<details>
+  <summary>Keyboard Mapping</summary>
+
+<br>
+
+| Button | Key |
+| ------ | --- |
+```mmd
+return scripts.createKeyboardMapping()
+```
+</details>
+<br>
+
 The following Hotkeys are set as well:
 - Open Emulator Menu (if supported from emulator): `F2`
 - Save State: `F1`
