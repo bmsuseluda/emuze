@@ -8,7 +8,10 @@ import type {
   VirtualGamepad,
 } from "./types.js";
 import { PhysicalGamepad } from "./PhysicalGamepad.js";
-import { getVirtualGamepadReset } from "./VirtualGamepadReset.js";
+import {
+  getVirtualGamepadButtonReset,
+  getVirtualGamepadReset,
+} from "./VirtualGamepadReset.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import type { ApplicationId } from "../../applicationId.js";
 import nodepath from "node:path";
@@ -65,7 +68,7 @@ const getVirtualGamepadButton = (
     ];
   }
 
-  return [];
+  return getVirtualGamepadButtonReset(virtualGamepad);
 };
 
 /**
@@ -186,7 +189,9 @@ export const getVirtualGamepad =
       ),
       ...getVirtualGamepadButton(
         { gamepadIndex: virtualGamepadIndex, buttonId: "X..West" },
-        physicalGamepad.getX(),
+        physicalGamepad.getX().inputId
+          ? physicalGamepad.getX()
+          : physicalGamepad.getB(),
       ),
       ...getVirtualGamepadButton(
         { gamepadIndex: virtualGamepadIndex, buttonId: "Y..North" },

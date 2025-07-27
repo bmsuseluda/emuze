@@ -1,6 +1,8 @@
 import type { VirtualGamepad } from "./types.js";
 
-const getVirtualGamepadButtonReset = (virtualGamepad: VirtualGamepad) => [
+export const getVirtualGamepadButtonReset = (
+  virtualGamepad: VirtualGamepad,
+) => [
   "--setting",
   `${[
     `VirtualPad${virtualGamepad.gamepadIndex + 1}`,
