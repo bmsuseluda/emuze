@@ -20,6 +20,7 @@ import { getKeyboard, getKeyboardKey } from "./keyboardConfig.js";
 import type { SdlButtonMapping } from "../../../../types/gamepad.js";
 import { createSdlMappingObject } from "../../../../types/gamepad.js";
 import { commandLineOptions } from "../../../commandLine.server.js";
+import { sortSteamDeckLast } from "../../sortGamepads.js";
 
 const applicationId: ApplicationId = "ares";
 const bundledPathLinux = nodepath.join(
@@ -139,7 +140,7 @@ const getIndexForDeviceId = (index: number) => `${index + 1}`;
  * 0x3054c0268 (ds3)
  *
  * ? = 0x (is always the same)
- * deviceIndex = 1 (optional, only set if id > 0)
+ * deviceIndex = 1 (index + 1)
  * vendor = 28de (hex value, needs to be padded with "0" on start to 4 characters, to 3 characters if deviceIndex is set)
  * product = 11ff (hex value, needs to be padded with "0" on start to 4 characters)
  */
@@ -271,7 +272,7 @@ export const getVirtualGamepads = (
   systemHasAnalogStick: boolean,
   controller: Sdl.Controller.Module,
 ) => {
-  const gamepads = controller.devices;
+  const gamepads = controller.devices.toSorted(sortSteamDeckLast);
   const virtualGamepads =
     gamepads.length > 0
       ? gamepads.map(getVirtualGamepad(systemHasAnalogStick))

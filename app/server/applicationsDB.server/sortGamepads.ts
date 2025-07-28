@@ -1,18 +1,21 @@
 import type { Sdl } from "@kmamal/sdl";
-import { isGamecubeController, steamDeck } from "../../types/gamepad.js";
+import {
+  isGamecubeController,
+  isSteamDeckController,
+} from "../../types/gamepad.js";
 
 /**
  * If one of the gamepads is the Steam Deck, it should be positioned last.
  */
 export const sortSteamDeckLast = (
-  gamepadA: Sdl.Controller.Device,
-  gamepadB: Sdl.Controller.Device,
+  gamepadA: Sdl.Joystick.Device | Sdl.Controller.Device,
+  gamepadB: Sdl.Joystick.Device | Sdl.Controller.Device,
 ) => {
-  if (gamepadA.mapping === steamDeck.mapping) {
+  if (isSteamDeckController(gamepadA)) {
     return 1;
   }
 
-  if (gamepadB.mapping === steamDeck.mapping) {
+  if (isSteamDeckController(gamepadB)) {
     return -1;
   }
 

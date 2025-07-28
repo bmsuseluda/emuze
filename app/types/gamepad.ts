@@ -72,6 +72,30 @@ export const keyboardMapping: Omit<
 export const getGamepadButtonEventName = (buttonId: ButtonId) =>
   `gamepadonbutton${buttonId.toLowerCase()}press`;
 
+/**
+ * check all devices until sdlIndex (current index) for name. count how much and return accordingly
+ *
+ * @return number starts with 0
+ */
+export const getNameIndex = (
+  name: string,
+  sdlIndex: number,
+  devices: { name: string | null }[],
+) => {
+  if (devices.length === 1) {
+    return 1;
+  }
+
+  let nameCount = 0;
+  for (let index = 0; index < sdlIndex; index++) {
+    if (devices[index].name === name) {
+      nameCount++;
+    }
+  }
+
+  return nameCount;
+};
+
 const xinputControllerTypes: Sdl.Controller.ControllerType[] = [
   "xbox360",
   "xboxOne",
@@ -92,6 +116,16 @@ export const isDinputController = (
 
 export const isGamecubeController = (controllerName: string) =>
   controllerName.toLowerCase().includes("gamecube");
+
+export const isSteamDeckController = ({
+  guid,
+  vendor,
+  product,
+  name,
+}: Sdl.Joystick.Device | Sdl.Controller.Device) =>
+  guid === steamDeck.guid ||
+  (vendor === steamDeck.vendor && product === steamDeck.product) ||
+  name?.startsWith("Steam Deck");
 
 export type SdlButtonId =
   | "a"
@@ -180,7 +214,7 @@ export const gamepadPs4 = {
   type: "ps4",
   name: "Playstation 4 Controller",
   path: "/dev/input/event6",
-  guid: "030079f6de280000ff11000001000000",
+  guid: "030000004c050000c405000000010000",
   vendor: 1356,
   product: 1476,
   version: 1,

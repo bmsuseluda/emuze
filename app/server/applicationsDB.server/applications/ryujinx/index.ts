@@ -14,8 +14,11 @@ import sdl from "@kmamal/sdl";
 import { emulatorsDirectory } from "../../../homeDirectory.server.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import type { ApplicationId } from "../../applicationId.js";
-import { isGamecubeController } from "../../../../types/gamepad.js";
-import { sortGamecubeLast } from "../../sortGamepads.js";
+import {
+  getNameIndex,
+  isGamecubeController,
+} from "../../../../types/gamepad.js";
+import { sortGamecubeLast, sortSteamDeckLast } from "../../sortGamepads.js";
 
 const applicationId: ApplicationId = "ryujinx";
 const flatpakId = "org.ryujinx.Ryujinx";
@@ -122,22 +125,23 @@ const splitStringByIndices = (str: string, indices: number[]): string[] => {
 };
 
 export const getControllerIdWithIndex = (
-  controllerIds: string[],
+  controllerIds: { name: string }[],
   controllerIdWithoutIndex: string,
 ) => {
-  let index = 0;
-  let controllerId = `${index}-${controllerIdWithoutIndex}`;
-  while (controllerIds.includes(controllerId)) {
-    controllerId = `${++index}-${controllerIdWithoutIndex}`;
-  }
+  const controllerIdIndex = getNameIndex(
+    controllerIdWithoutIndex,
+    controllerIds.length,
+    controllerIds,
+  );
+  const controllerId = `${controllerIdIndex}-${controllerIdWithoutIndex}`;
 
-  controllerIds.push(controllerId);
+  controllerIds.push({ name: controllerIdWithoutIndex });
 
   return controllerId;
 };
 
 export const createControllerId = (
-  controllerIds: string[],
+  controllerIds: { name: string }[],
   sdlGuiId: string,
 ) => {
   const mapping = splitStringByIndices(sdlGuiId, [2, 4, 6, 8, 10, 12, 16, 20]);
@@ -170,7 +174,7 @@ const createDeviceSpecificInputConfig = (controllerName: string) => {
 };
 
 const createInputConfig =
-  (controllerIds: string[]) =>
+  (controllerIds: { name: string }[]) =>
   (controller: Sdl.Joystick.Device, index: number): InputConfig => {
     log("debug", "gamepad", {
       index,
@@ -188,9 +192,11 @@ const createInputConfig =
   };
 
 const replaceConfig = (switchRomsPath: string) => {
-  const controllerIds: string[] = [];
+  const controllerIds: { name: string }[] = [];
   const gamepads = sdl.joystick.devices;
-  const gamepadsSorted = gamepads.toSorted(sortGamecubeLast);
+  const gamepadsSorted = gamepads
+    .toSorted(sortGamecubeLast)
+    .toSorted(sortSteamDeckLast);
   const inputConfig =
     gamepadsSorted.length > 0
       ? gamepadsSorted.map(createInputConfig(controllerIds))

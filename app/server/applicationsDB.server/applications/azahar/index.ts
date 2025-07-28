@@ -19,6 +19,7 @@ import { importElectron } from "../../../importElectron.server.js";
 import { commandLineOptions } from "../../../commandLine.server.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { isWindows } from "../../../operationsystem.server.js";
+import { sortSteamDeckLast } from "../../sortGamepads.js";
 
 const flatpakId = "io.github.lime3ds.Lime3DS";
 const applicationId: ApplicationId = "azahar";
@@ -164,7 +165,7 @@ export const getVirtualGamepad = (
 };
 
 export const replaceGamepadConfig: SectionReplacement = (sections) => {
-  const gamepads = sdl.joystick.devices;
+  const gamepads = sdl.joystick.devices.toSorted(sortSteamDeckLast);
   const virtualGamepad =
     gamepads.length > 0 ? getVirtualGamepad(gamepads[0]) : keyboardConfig;
 

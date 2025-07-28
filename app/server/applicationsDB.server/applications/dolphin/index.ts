@@ -17,10 +17,14 @@ import { defaultGamepadSettings } from "./defaultGamepadSettings.js";
 import { defaultHotkeys } from "./defaultHotkeys.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { emulatorsDirectory } from "../../../homeDirectory.server.js";
-import { isGamecubeController } from "../../../../types/gamepad.js";
+import {
+  getNameIndex,
+  isGamecubeController,
+} from "../../../../types/gamepad.js";
 import { defaultDolphinSettings } from "./defaultDolphinSettings.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import { isSteamOs } from "../../../operationsystem.server.js";
+import { sortSteamDeckLast } from "../../sortGamepads.js";
 
 const flatpakId = "org.DolphinEmu.dolphin-emu";
 const applicationId: ApplicationId = "dolphin";
@@ -46,48 +50,48 @@ const hotkeysConfigFileName = nodepath.join(
   "Hotkeys.ini",
 );
 
-export const getVirtualGamepad = (
-  controller: Sdl.Joystick.Device | Sdl.Controller.Device,
-  index: number,
-) => {
-  log("debug", "gamepad", { index, controller });
+export const getVirtualGamepad =
+  (devices: Sdl.Joystick.Device[] | Sdl.Controller.Device[]) =>
+  (controller: Sdl.Joystick.Device | Sdl.Controller.Device, index: number) => {
+    log("debug", "gamepad", { index, controller });
 
-  const deviceName = controller.name!;
+    const deviceName = controller.name!;
+    const nameIndex = getNameIndex(deviceName, index, devices);
 
-  const gamecubeController = isGamecubeController(deviceName);
+    const gamecubeController = isGamecubeController(deviceName);
 
-  return [
-    `[GCPad${index + 1}]`,
-    `Device = SDL/0/${deviceName}`,
-    `Buttons/A = ${gamecubeController ? "`Button S`" : "`Button E`"}`,
-    `Buttons/B = ${gamecubeController ? "`Button W`" : "`Button S`"}`,
-    `Buttons/X = ${gamecubeController ? "`Button E`" : "`Button N`"}`,
-    `Buttons/Y = ${gamecubeController ? "`Button N`" : "`Button W` | `Shoulder L`"}`,
-    `Buttons/Z = \`Shoulder R\``,
-    `Buttons/Start = Start`,
-    `Main Stick/Up = \`Left Y+\``,
-    `Main Stick/Down = \`Left Y-\``,
-    `Main Stick/Left = \`Left X-\``,
-    `Main Stick/Right = \`Left X+\``,
-    `Main Stick/Modifier = \`Thumb L\``,
-    `Main Stick/Calibration = 100.00 141.42 100.00 141.42 100.00 141.42 100.00 141.42`,
-    `C-Stick/Up = \`Right Y+\``,
-    `C-Stick/Down = \`Right Y-\``,
-    `C-Stick/Left = \`Right X-\``,
-    `C-Stick/Right = \`Right X+\``,
-    `C-Stick/Modifier = \`Thumb R\``,
-    `C-Stick/Calibration = 100.00 141.42 100.00 141.42 100.00 141.42 100.00 141.42`,
-    `Triggers/L = \`Trigger L\``,
-    `Triggers/R = \`Trigger R\``,
-    `D-Pad/Up = \`Pad N\``,
-    `D-Pad/Down = \`Pad S\``,
-    `D-Pad/Left = \`Pad W\``,
-    `D-Pad/Right = \`Pad E\``,
-    `Triggers/L-Analog = \`Trigger L\``,
-    `Triggers/R-Analog = \`Trigger R\``,
-    `Rumble/Motor = \`Motor L\` | \`Motor R\``,
-  ].join(EOL);
-};
+    return [
+      `[GCPad${index + 1}]`,
+      `Device = SDL/${nameIndex}/${deviceName}`,
+      `Buttons/A = ${gamecubeController ? "`Button S`" : "`Button E`"}`,
+      `Buttons/B = ${gamecubeController ? "`Button W`" : "`Button S`"}`,
+      `Buttons/X = ${gamecubeController ? "`Button E`" : "`Button N`"}`,
+      `Buttons/Y = ${gamecubeController ? "`Button N`" : "`Button W` | `Shoulder L`"}`,
+      `Buttons/Z = \`Shoulder R\``,
+      `Buttons/Start = Start`,
+      `Main Stick/Up = \`Left Y+\``,
+      `Main Stick/Down = \`Left Y-\``,
+      `Main Stick/Left = \`Left X-\``,
+      `Main Stick/Right = \`Left X+\``,
+      `Main Stick/Modifier = \`Thumb L\``,
+      `Main Stick/Calibration = 100.00 141.42 100.00 141.42 100.00 141.42 100.00 141.42`,
+      `C-Stick/Up = \`Right Y+\``,
+      `C-Stick/Down = \`Right Y-\``,
+      `C-Stick/Left = \`Right X-\``,
+      `C-Stick/Right = \`Right X+\``,
+      `C-Stick/Modifier = \`Thumb R\``,
+      `C-Stick/Calibration = 100.00 141.42 100.00 141.42 100.00 141.42 100.00 141.42`,
+      `Triggers/L = \`Trigger L\``,
+      `Triggers/R = \`Trigger R\``,
+      `D-Pad/Up = \`Pad N\``,
+      `D-Pad/Down = \`Pad S\``,
+      `D-Pad/Left = \`Pad W\``,
+      `D-Pad/Right = \`Pad E\``,
+      `Triggers/L-Analog = \`Trigger L\``,
+      `Triggers/R-Analog = \`Trigger R\``,
+      `Rumble/Motor = \`Motor L\` | \`Motor R\``,
+    ].join(EOL);
+  };
 
 const getVirtualGamepadReset = (gamepadIndex: number) =>
   [
@@ -96,10 +100,14 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
   ].join(EOL);
 
 export const getVirtualGamepads = () => {
-  const gamepads = isSteamOs() ? sdl.joystick.devices : sdl.controller.devices;
+  const gamepads = (
+    isSteamOs() ? sdl.joystick.devices : sdl.controller.devices
+  ).toSorted(sortSteamDeckLast);
 
   const virtualGamepads =
-    gamepads.length > 0 ? gamepads.map(getVirtualGamepad) : [keyboardConfig];
+    gamepads.length > 0
+      ? gamepads.map(getVirtualGamepad(gamepads))
+      : [keyboardConfig];
 
   return [
     ...virtualGamepads,
