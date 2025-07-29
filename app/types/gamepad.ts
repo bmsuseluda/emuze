@@ -39,10 +39,12 @@ export type ButtonId =
   | "rightStickLeft"
   | "rightStickRight";
 
-export const keyboardMapping: Omit<
-  Record<ButtonId, Sdl.Keyboard.ScancodeNames>,
+export type EmuzeButtonId = Exclude<
+  ButtonId,
   "guide" | "paddle1" | "paddle2" | "paddle3" | "paddle4"
-> = {
+>;
+
+export const keyboardMapping = {
   dpadUp: "T",
   dpadDown: "G",
   dpadLeft: "F",
@@ -67,7 +69,7 @@ export const keyboardMapping: Omit<
   rightStickDown: "DOWN",
   rightStickLeft: "LEFT",
   rightStickRight: "RIGHT",
-};
+} satisfies Record<EmuzeButtonId, Sdl.Keyboard.ScancodeNames>;
 
 export const getGamepadButtonEventName = (buttonId: ButtonId) =>
   `gamepadonbutton${buttonId.toLowerCase()}press`;
@@ -202,7 +204,7 @@ export const steamDeck = {
   path: "/dev/input/event6",
   guid: "030079f6de280000ff11000001000000",
   vendor: 10462,
-  product: 4607,
+  product: 4613,
   version: 1,
   player: 0,
   mapping:
