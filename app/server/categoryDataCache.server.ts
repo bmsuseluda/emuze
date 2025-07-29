@@ -16,6 +16,12 @@ export const writeCategory = (category: Category) => {
   );
   syncLastPlayedWithCategoryCached(category);
 };
+export const removeCategory = (category: Category) => {
+  categoryDataCache.removeCategory(
+    nodepath.join(entriesPath, `${category.id}.json`),
+  );
+  syncLastPlayedWithCategoryCached(category);
+};
 export const invalidateCategoryDataCache = () => {
   categoryDataCache.invalidateCache();
 };

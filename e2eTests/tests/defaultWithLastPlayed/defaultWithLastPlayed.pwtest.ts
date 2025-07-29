@@ -97,6 +97,8 @@ test("import all", async ({ page, libraryPage, settingsPage }) => {
   await libraryPage.goToSystemViaClick(playstationSystemName);
 });
 
+// TODO: open system without roms and import -> last played will be opened and roms from this systems are removed from last played
+
 test("game versions", async ({ libraryPage }) => {
   await libraryPage.expectIsLastPlayed();
   await libraryPage.press("ArrowRight");

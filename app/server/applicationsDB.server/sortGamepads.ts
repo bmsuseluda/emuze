@@ -8,19 +8,9 @@ import {
  * If one of the gamepads is the Steam Deck, it should be positioned last.
  */
 export const sortSteamDeckLast = (
-  gamepadA: Sdl.Joystick.Device | Sdl.Controller.Device,
-  gamepadB: Sdl.Joystick.Device | Sdl.Controller.Device,
-) => {
-  if (isSteamDeckController(gamepadA)) {
-    return 1;
-  }
-
-  if (isSteamDeckController(gamepadB)) {
-    return -1;
-  }
-
-  return gamepadA.id - gamepadB.id;
-};
+  a: Sdl.Joystick.Device | Sdl.Controller.Device,
+  b: Sdl.Joystick.Device | Sdl.Controller.Device,
+) => sortLast(a, b, isSteamDeckController);
 
 /**
  * If one of the gamepads is a GameCube Controller, it should be positioned last.
@@ -28,13 +18,19 @@ export const sortSteamDeckLast = (
 export const sortGamecubeLast = (
   a: Sdl.Joystick.Device,
   b: Sdl.Joystick.Device,
+) => sortLast(a.name!, b.name!, isGamecubeController);
+
+export const sortLast = <T>(
+  a: T,
+  b: T,
+  shouldBeLast: (element: T) => boolean,
 ) => {
-  const aIsGamecubeController = isGamecubeController(a.name!);
-  const bIsGamecubeController = isGamecubeController(b.name!);
-  if (aIsGamecubeController === bIsGamecubeController) {
+  const aShouldBeLast = shouldBeLast(a);
+  const bShouldBeLast = shouldBeLast(b);
+  if (aShouldBeLast === bShouldBeLast) {
     return 0;
   }
-  if (!aIsGamecubeController && bIsGamecubeController) {
+  if (!aShouldBeLast && bShouldBeLast) {
     return -1;
   }
   return 1;

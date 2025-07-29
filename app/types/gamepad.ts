@@ -127,7 +127,7 @@ export const isSteamDeckController = ({
 }: Sdl.Joystick.Device | Sdl.Controller.Device) =>
   guid === steamDeck.guid ||
   (vendor === steamDeck.vendor && product === steamDeck.product) ||
-  name?.startsWith("Steam Deck");
+  !!name?.startsWith("Steam Deck");
 
 export type SdlButtonId =
   | "a"
