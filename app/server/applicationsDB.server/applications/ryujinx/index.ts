@@ -142,9 +142,9 @@ export const getControllerIdWithIndex = (
 
 export const createControllerId = (
   controllerIds: { name: string }[],
-  sdlGuiId: string,
+  sdlGuid: string,
 ) => {
-  const mapping = splitStringByIndices(sdlGuiId, [2, 4, 6, 8, 10, 12, 16, 20]);
+  const mapping = splitStringByIndices(sdlGuid, [2, 4, 6, 8, 10, 12, 16, 20]);
   const controllerIdWithoutIndex = `${mapping[0].padStart(8, "0")}-${mapping[5]}${mapping[4]}-${mapping[6]}-${mapping[7]}-${mapping[8]}`;
   return getControllerIdWithIndex(controllerIds, controllerIdWithoutIndex);
 };

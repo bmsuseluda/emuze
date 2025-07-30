@@ -84,10 +84,6 @@ export const getNameIndex = (
   sdlIndex: number,
   devices: { name: string | null }[],
 ) => {
-  if (devices.length === 1) {
-    return 1;
-  }
-
   let nameCount = 0;
   for (let index = 0; index < sdlIndex; index++) {
     if (devices[index].name === name) {

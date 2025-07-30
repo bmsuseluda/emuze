@@ -5,9 +5,13 @@ import { configFolderPath, e2ePath, testName } from "./config.js";
 
 test.describe.configure({ mode: "serial" });
 
-test.beforeAll(async () => {
+const resetFiles = () => {
   fs.removeSync(configFolderPath);
   fs.copySync(nodepath.join(e2ePath, "config"), configFolderPath);
+};
+
+test.beforeAll(async () => {
+  resetFiles();
 });
 
 test.beforeEach(async ({ libraryPage }) => {
@@ -100,14 +104,36 @@ test("import all", async ({ page, libraryPage, settingsPage }) => {
   await libraryPage.goToSystemViaClick(playstationSystemName, "Gex");
 });
 
-test("game versions", async ({ libraryPage }) => {
-  await libraryPage.goToSystemViaClick("Playstation", "Gex");
+test("import all with cleanup", async ({ page, libraryPage, settingsPage }) => {
+  resetFiles();
+  await libraryPage.goto(testName);
+
+  const pspSystemName = "Sony PSP";
+  const pspLink = page.getByRole("link", {
+    name: pspSystemName,
+  });
+
+  await libraryPage.goToSystemViaClick(pspSystemName, "Little Big Planet");
   await libraryPage.press("ArrowRight");
-  await libraryPage.expectGameFocused("Gex");
+  await libraryPage.expectGameFocused("Little Big Planet");
+
+  await settingsPage.openSettingsViaClick(true);
+  await libraryPage.press("i");
+  await settingsPage.closeSettingsViaClick(true);
+
+  await libraryPage.expectIsInitialSystem();
+
+  await expect(pspLink).not.toBeVisible();
+});
+
+test("game versions", async ({ libraryPage }) => {
+  await libraryPage.goToSystemViaClick("Game Boy", "Super Mario Land");
+  await libraryPage.press("ArrowRight");
+  await libraryPage.expectGameFocused("Super Mario Land");
   await libraryPage.press("Enter");
 
   await libraryPage.gameVersionsPage.testGameVersionsPage();
-  await libraryPage.expectIsSystem("Playstation", "Gex");
+  await libraryPage.expectIsSystem("Game Boy", "Super Mario Land");
 });
 
 test("Should open the about page", async ({ page, settingsPage }) => {

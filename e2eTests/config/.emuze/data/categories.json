@@ -4,6 +4,7 @@
   { "id": "nintendo3ds", "name": "Nintendo 3DS" },
   { "id": "nintendo64", "name": "Nintendo 64" },
   { "id": "nintendods", "name": "Nintendo DS" },
+  { "id": "sonypsp", "name": "Sony PSP" },
   { "id": "segamastersystem", "name": "Sega Master System" },
   { "id": "supernintendo", "name": "Super Nintendo Entertainment System" }
 ]

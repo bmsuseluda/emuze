@@ -1,7 +1,8 @@
 import { spawn } from "node:child_process";
-import { ports, TestName } from "./ports.js";
+import type { TestName } from "./ports.js";
+import { ports } from "./ports.js";
 
-export const startRemix = (testName: TestName) => {
+export const startReactRouter = (testName: TestName) => {
   process.env.EMUZE_IGDB_DEVELOPMENT_URL = "http://localhost:8080/games";
   process.env.EMUZE_DEBUG = "true";
   process.env.PORT = ports[testName].toString();

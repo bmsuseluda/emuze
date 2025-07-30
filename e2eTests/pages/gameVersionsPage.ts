@@ -27,15 +27,19 @@ export class GameVersionsPage {
   async testGameVersionsPage() {
     await expect(this.form).toBeVisible();
     await expect(this.launchGameButton).toBeVisible();
-    await expect(this.form.getByText("Gex (Modded)")).toBeVisible();
-    await expect(this.form.getByText("Gex (USA)")).toBeVisible();
-    await expect(this.form.getByText("Gex", { exact: true })).toBeVisible();
+    await expect(
+      this.form.getByText("Super Mario Land (Modded)"),
+    ).toBeVisible();
+    await expect(this.form.getByText("Super Mario Land (USA)")).toBeVisible();
+    await expect(
+      this.form.getByText("Super Mario Land", { exact: true }),
+    ).toBeVisible();
 
     await expect(this.page).toHaveScreenshot();
 
-    await this.expectGameFocused("Gex (Modded)");
+    await this.expectGameFocused("Super Mario Land (Modded)");
     await this.press("ArrowDown");
-    await this.expectGameFocused("Gex (USA)");
+    await this.expectGameFocused("Super Mario Land (USA)");
 
     await this.press("Escape");
     await expect(this.form).not.toBeVisible();
