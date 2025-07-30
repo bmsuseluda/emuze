@@ -1,4 +1,5 @@
-export const defaultControlsSettings = `[ControlMapping]
+// eslint-disable-next-line no-irregular-whitespace
+export const defaultControlsSettings = `﻿[ControlMapping]
 Up = 1-48,10-19
 Down = 1-35,10-20
 Left = 1-34,10-21

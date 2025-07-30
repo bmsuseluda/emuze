@@ -1,4 +1,5 @@
-export const defaultPpssppSettings = `[General]
+// eslint-disable-next-line no-irregular-whitespace
+export const defaultPpssppSettings = `﻿[General]
 FirstRun = False
 RunCount = 1
 Enable Logging = True

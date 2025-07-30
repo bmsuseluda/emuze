@@ -50,7 +50,7 @@ const readPpssppConfigFile = (filePath: string) => {
 export const replaceGeneralConfig =
   (pspRomsPath: string): SectionReplacement =>
   (sections) =>
-    replaceSection(sections, "[General]", [
+    replaceSection(sections, "﻿[General]", [
       { keyValue: `FirstRun = False` },
       { keyValue: `CurrentDirectory = ${pspRomsPath}` },
       { keyValue: `CheckForNewVersion = False` },
@@ -150,7 +150,7 @@ const getMappingString = (buttonId: PpssppButtonId) =>
   ].join(",");
 
 export const replaceControlMappingConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[ControlMapping]", [
+  replaceSection(sections, "﻿[ControlMapping]", [
     {
       keyValue: `Up = ${getMappingString("dpadUp")}`,
     },
