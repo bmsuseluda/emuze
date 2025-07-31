@@ -18,7 +18,7 @@ import { defaultSettings } from "./defaultSettings.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import { envPaths } from "../../../envPaths.server.js";
-import { sortSteamDeckLast } from "../../sortGamepads.js";
+import { getPlayIndexArray } from "../../../../types/gamepad.js";
 
 const flatpakId = "org.duckstation.DuckStation";
 const applicationId: ApplicationId = "duckstation";
@@ -32,57 +32,58 @@ const bundledPathWindows = nodepath.join(
 );
 const configFileName = "settings.ini";
 
-export const getVirtualGamepad = (
-  sdlDevice: Sdl.Joystick.Device,
-  playerIndex: number,
-) => {
-  log("debug", "gamepad", { index: playerIndex, sdlDevice });
-  const sdlIndex = sdl.joystick.devices.indexOf(sdlDevice);
+export const getVirtualGamepad =
+  (playerIndexArray: number[]) =>
+  (sdlDevice: Sdl.Joystick.Device, sdlIndex: number) => {
+    log("debug", "gamepad", { sdlIndex, sdlDevice });
 
-  return [
-    `[Pad${playerIndex + 1}]`,
-    `Type = AnalogController`,
-    `Up = SDL-${sdlIndex}/DPadUp`,
-    `Right = SDL-${sdlIndex}/DPadRight`,
-    `Down = SDL-${sdlIndex}/DPadDown`,
-    `Left = SDL-${sdlIndex}/DPadLeft`,
-    `Triangle = SDL-${sdlIndex}/Y`,
-    `Circle = SDL-${sdlIndex}/B`,
-    `Cross = SDL-${sdlIndex}/A`,
-    `Square = SDL-${sdlIndex}/X`,
-    `Select = SDL-${sdlIndex}/Back`,
-    `Start = SDL-${sdlIndex}/Start`,
-    `L1 = SDL-${sdlIndex}/LeftShoulder`,
-    `R1 = SDL-${sdlIndex}/RightShoulder`,
-    `L2 = SDL-${sdlIndex}/+LeftTrigger`,
-    `R2 = SDL-${sdlIndex}/+RightTrigger`,
-    `L3 = SDL-${sdlIndex}/LeftStick`,
-    `R3 = SDL-${sdlIndex}/RightStick`,
-    `LLeft = SDL-${sdlIndex}/-LeftX`,
-    `LRight = SDL-${sdlIndex}/+LeftX`,
-    `LDown = SDL-${sdlIndex}/+LeftY`,
-    `LUp = SDL-${sdlIndex}/-LeftY`,
-    `RLeft = SDL-${sdlIndex}/-RightX`,
-    `RRight = SDL-${sdlIndex}/+RightX`,
-    `RDown = SDL-${sdlIndex}/+RightY`,
-    `RUp = SDL-${sdlIndex}/-RightY`,
-    `Analog = SDL-${sdlIndex}/Guide`,
-    `SmallMotor = SDL-${sdlIndex}/SmallMotor`,
-    `LargeMotor = SDL-${sdlIndex}/LargeMotor`,
-    "",
-    "",
-    "",
-  ].join(EOL);
-};
+    return [
+      `[Pad${playerIndexArray[sdlIndex] + 1}]`,
+      `Type = AnalogController`,
+      `Up = SDL-${sdlIndex}/DPadUp`,
+      `Right = SDL-${sdlIndex}/DPadRight`,
+      `Down = SDL-${sdlIndex}/DPadDown`,
+      `Left = SDL-${sdlIndex}/DPadLeft`,
+      `Triangle = SDL-${sdlIndex}/Y`,
+      `Circle = SDL-${sdlIndex}/B`,
+      `Cross = SDL-${sdlIndex}/A`,
+      `Square = SDL-${sdlIndex}/X`,
+      `Select = SDL-${sdlIndex}/Back`,
+      `Start = SDL-${sdlIndex}/Start`,
+      `L1 = SDL-${sdlIndex}/LeftShoulder`,
+      `R1 = SDL-${sdlIndex}/RightShoulder`,
+      `L2 = SDL-${sdlIndex}/+LeftTrigger`,
+      `R2 = SDL-${sdlIndex}/+RightTrigger`,
+      `L3 = SDL-${sdlIndex}/LeftStick`,
+      `R3 = SDL-${sdlIndex}/RightStick`,
+      `LLeft = SDL-${sdlIndex}/-LeftX`,
+      `LRight = SDL-${sdlIndex}/+LeftX`,
+      `LDown = SDL-${sdlIndex}/+LeftY`,
+      `LUp = SDL-${sdlIndex}/-LeftY`,
+      `RLeft = SDL-${sdlIndex}/-RightX`,
+      `RRight = SDL-${sdlIndex}/+RightX`,
+      `RDown = SDL-${sdlIndex}/+RightY`,
+      `RUp = SDL-${sdlIndex}/-RightY`,
+      `Analog = SDL-${sdlIndex}/Guide`,
+      `SmallMotor = SDL-${sdlIndex}/SmallMotor`,
+      `LargeMotor = SDL-${sdlIndex}/LargeMotor`,
+      "",
+      "",
+      "",
+    ].join(EOL);
+  };
 
 const getVirtualGamepadReset = (gamepadIndex: number) =>
   [`[Pad${gamepadIndex + 1}]`, "Type = None", "", "", ""].join(EOL);
 
 export const getVirtualGamepads = () => {
-  const gamepads = sdl.joystick.devices.toSorted(sortSteamDeckLast);
+  const gamepads = sdl.joystick.devices;
+  const playerIndexArray = getPlayIndexArray(gamepads);
 
   const virtualGamepads =
-    gamepads.length > 0 ? gamepads.map(getVirtualGamepad) : [keyboardConfig];
+    gamepads.length > 0
+      ? gamepads.map(getVirtualGamepad(playerIndexArray))
+      : [keyboardConfig];
 
   return [
     ...virtualGamepads,

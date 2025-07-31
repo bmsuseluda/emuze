@@ -260,6 +260,23 @@ export const getVirtualGamepad =
         physicalGamepad.getRightStickRight(),
       ),
 
+      ...getVirtualGamepadButton(
+        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Up" },
+        physicalGamepad.getRightButtonUp(),
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Down" },
+        physicalGamepad.getRightButtonDown(),
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Left" },
+        physicalGamepad.getRightButtonLeft(),
+      ),
+      ...getVirtualGamepadButton(
+        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Right" },
+        physicalGamepad.getRightButtonRight(),
+      ),
+
       //   To activate rumble, it can be any button
       ...getVirtualGamepadButton(
         { gamepadIndex: virtualGamepadIndex, buttonId: "Rumble" },

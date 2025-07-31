@@ -365,18 +365,16 @@ export const getVirtualGamepads = (): GlobalDefaultInputConfigFile => {
     isSteamOs() ? sdl.joystick.devices : sdl.controller.devices
   ).toSorted(sortSteamDeckLast);
   if (gamepads.length > 0) {
-    let playerIndex = 0;
     return gamepads.reduce<GlobalDefaultInputConfigFile>(
       (accumulator, currentDevice, index) => {
         if (currentDevice.name) {
           log("debug", "gamepad", { index, currentDevice });
 
-          accumulator[`Player ${playerIndex + 1} Input`] = getVirtualGamepad(
+          accumulator[`Player ${index + 1} Input`] = getVirtualGamepad(
             currentDevice.name,
             index,
             gamepads,
           );
-          playerIndex++;
         }
         return accumulator;
       },

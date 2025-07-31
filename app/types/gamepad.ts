@@ -146,7 +146,11 @@ export type SdlButtonId =
   | "leftx"
   | "lefty"
   | "rightx"
-  | "righty";
+  | "righty"
+  | "+rightx"
+  | "+righty"
+  | "-rightx"
+  | "-righty";
 
 export type SdlButtonMapping = Partial<Record<SdlButtonId, string>>;
 
@@ -160,6 +164,22 @@ export const isAnalog = (
   mappingObject: SdlButtonMapping,
   sdlButtonId: SdlButtonId,
 ) => mappingObject[sdlButtonId]?.startsWith("a");
+
+export const getPlayIndexArray = (gamepads: Sdl.Joystick.Device[]) => {
+  let playerIndex = 0;
+  const playerIndexArray: number[] = [];
+
+  gamepads.forEach((gamepad) => {
+    if (isSteamDeckController(gamepad)) {
+      playerIndexArray.push(gamepads.length - 1);
+    } else {
+      playerIndexArray.push(playerIndex);
+      playerIndex++;
+    }
+  });
+
+  return playerIndexArray;
+};
 
 /**
  *

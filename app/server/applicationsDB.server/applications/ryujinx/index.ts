@@ -16,9 +16,9 @@ import { keyboardConfig } from "./keyboardConfig.js";
 import type { ApplicationId } from "../../applicationId.js";
 import {
   getNameIndex,
+  getPlayIndexArray,
   isGamecubeController,
 } from "../../../../types/gamepad.js";
-import { sortGamecubeLast, sortSteamDeckLast } from "../../sortGamepads.js";
 
 const applicationId: ApplicationId = "ryujinx";
 const flatpakId = "org.ryujinx.Ryujinx";
@@ -174,7 +174,7 @@ const createDeviceSpecificInputConfig = (controllerName: string) => {
 };
 
 const createInputConfig =
-  (controllerIds: { name: string }[]) =>
+  (controllerIds: { name: string }[], playerIndexArray: number[]) =>
   (controller: Sdl.Joystick.Device, index: number): InputConfig => {
     log("debug", "gamepad", {
       index,
@@ -187,19 +187,17 @@ const createInputConfig =
       ...createDeviceSpecificInputConfig(controller.name!),
       id: gamepadId,
       controller_type: createControllerType(),
-      player_index: `Player${index + 1}`,
+      player_index: `Player${playerIndexArray[index] + 1}`,
     };
   };
 
 const replaceConfig = (switchRomsPath: string) => {
   const controllerIds: { name: string }[] = [];
   const gamepads = sdl.joystick.devices;
-  const gamepadsSorted = gamepads
-    .toSorted(sortGamecubeLast)
-    .toSorted(sortSteamDeckLast);
-  const inputConfig =
-    gamepadsSorted.length > 0
-      ? gamepadsSorted.map(createInputConfig(controllerIds))
+  const playerIndexArray = getPlayIndexArray(gamepads);
+  const inputConfigs =
+    gamepads.length > 0
+      ? gamepads.map(createInputConfig(controllerIds, playerIndexArray))
       : [keyboardConfig];
 
   const oldConfig = readConfigFile(configFilePath);
@@ -217,7 +215,7 @@ const replaceConfig = (switchRomsPath: string) => {
     },
     game_dirs: [switchRomsPath],
     autoload_dirs: [switchRomsPath],
-    input_config: inputConfig,
+    input_config: inputConfigs,
   };
   writeConfig(configFilePath, JSON.stringify(newConfig));
 };
