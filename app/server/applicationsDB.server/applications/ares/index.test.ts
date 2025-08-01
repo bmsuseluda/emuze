@@ -27,14 +27,14 @@ describe("ares", () => {
 
   describe("getVirtualGamepad", () => {
     it("Should position the Steam Deck controls on first position if there are no other gamepdads connected", () => {
-      const result = getVirtualGamepad(true)(steamDeck, 0);
+      const result = getVirtualGamepad(true, [0])(steamDeck, 0);
 
       expect(result.at(1)).toContain("VirtualPad1");
       expect(result.at(1)).toContain("0x128de1205");
     });
 
     it("Should position the Steam Deck controls on last position if there are other gamepdads connected", () => {
-      const result = getVirtualGamepad(true)(steamDeck, 4);
+      const result = getVirtualGamepad(true, [4, 0, 1, 2, 3])(steamDeck, 0);
 
       expect(result.at(1)).toContain("VirtualPad5");
       expect(result.at(1)).toContain("0x128de1205");

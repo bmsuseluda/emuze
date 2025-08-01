@@ -18,9 +18,11 @@ import nodepath from "node:path";
 import { importElectron } from "../../../importElectron.server.js";
 import { getKeyboard, getKeyboardKey } from "./keyboardConfig.js";
 import type { SdlButtonMapping } from "../../../../types/gamepad.js";
-import { createSdlMappingObject } from "../../../../types/gamepad.js";
+import {
+  createSdlMappingObject,
+  getPlayerIndexArray,
+} from "../../../../types/gamepad.js";
 import { commandLineOptions } from "../../../commandLine.server.js";
-import { sortSteamDeckLast } from "../../sortGamepads.js";
 
 const applicationId: ApplicationId = "ares";
 const bundledPathLinux = nodepath.join(
@@ -154,9 +156,9 @@ export const createDeviceId = ({
 };
 
 export const getVirtualGamepad =
-  (systemHasAnalogStick: boolean) =>
+  (systemHasAnalogStick: boolean, playerIndexArray: number[]) =>
   (sdlDevice: Sdl.Controller.Device, index: number) => {
-    const virtualGamepadIndex = index;
+    const virtualGamepadIndex = playerIndexArray[index];
     const mappingObject = createSdlMappingObject(sdlDevice.mapping!);
     const deviceId = createDeviceId(sdlDevice);
     const physicalGamepad = new PhysicalGamepad(deviceId, mappingObject);
@@ -245,36 +247,27 @@ export const getVirtualGamepad =
 
       ...getVirtualGamepadButton(
         { gamepadIndex: virtualGamepadIndex, buttonId: "R-Up" },
-        physicalGamepad.getRightStickUp(),
+        physicalGamepad.getRightStickUp().inputId
+          ? physicalGamepad.getRightStickUp()
+          : physicalGamepad.getRightButtonUp(),
       ),
       ...getVirtualGamepadButton(
         { gamepadIndex: virtualGamepadIndex, buttonId: "R-Down" },
-        physicalGamepad.getRightStickDown(),
+        physicalGamepad.getRightStickDown().inputId
+          ? physicalGamepad.getRightStickDown()
+          : physicalGamepad.getRightButtonDown(),
       ),
       ...getVirtualGamepadButton(
         { gamepadIndex: virtualGamepadIndex, buttonId: "R-Left" },
-        physicalGamepad.getRightStickLeft(),
+        physicalGamepad.getRightStickLeft().inputId
+          ? physicalGamepad.getRightStickLeft()
+          : physicalGamepad.getRightButtonLeft(),
       ),
       ...getVirtualGamepadButton(
         { gamepadIndex: virtualGamepadIndex, buttonId: "R-Right" },
-        physicalGamepad.getRightStickRight(),
-      ),
-
-      ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Up" },
-        physicalGamepad.getRightButtonUp(),
-      ),
-      ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Down" },
-        physicalGamepad.getRightButtonDown(),
-      ),
-      ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Left" },
-        physicalGamepad.getRightButtonLeft(),
-      ),
-      ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Right" },
-        physicalGamepad.getRightButtonRight(),
+        physicalGamepad.getRightStickRight().inputId
+          ? physicalGamepad.getRightStickRight()
+          : physicalGamepad.getRightButtonRight(),
       ),
 
       //   To activate rumble, it can be any button
@@ -285,14 +278,13 @@ export const getVirtualGamepad =
     ];
   };
 
-export const getVirtualGamepads = (
-  systemHasAnalogStick: boolean,
-  controller: Sdl.Controller.Module,
-) => {
-  const gamepads = controller.devices.toSorted(sortSteamDeckLast);
+export const getVirtualGamepads = (systemHasAnalogStick: boolean) => {
+  const gamepads = sdl.controller.devices;
+  const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
+
   const virtualGamepads =
     gamepads.length > 0
-      ? gamepads.map(getVirtualGamepad(systemHasAnalogStick))
+      ? gamepads.map(getVirtualGamepad(systemHasAnalogStick, playerIndexArray))
       : getKeyboard();
   log("debug", "gamepads", gamepads.length);
 
@@ -312,8 +304,6 @@ const getSharedAresOptionParams: OptionParamFunction = ({
   },
   hasAnalogStick,
 }) => {
-  const controller = sdl.controller;
-
   const hotkeyFullscreen = [
     "--setting",
     `Hotkey/ToggleFullscreen=${getKeyboardKey("F2")}`,
@@ -327,7 +317,7 @@ const getSharedAresOptionParams: OptionParamFunction = ({
     ...hotkeySave,
     ...hotkeyLoad,
     ...inputSDL,
-    ...getVirtualGamepads(hasAnalogStick, controller),
+    ...getVirtualGamepads(hasAnalogStick),
     "--no-file-prompt",
   ];
   if (fullscreen) {
