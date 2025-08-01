@@ -18,7 +18,7 @@ import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js"
 import type { ApplicationId } from "../../applicationId.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import { envPaths } from "../../../envPaths.server.js";
-import { getPlayIndexArray } from "../../../../types/gamepad.js";
+import { getPlayerIndexArray } from "../../../../types/gamepad.js";
 
 const flatpakId = "net.pcsx2.PCSX2";
 const applicationId: ApplicationId = "pcsx2";
@@ -80,7 +80,7 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
 
 export const getVirtualGamepads = () => {
   const gamepads = sdl.joystick.devices;
-  const playerIndexArray = getPlayIndexArray(gamepads);
+  const playerIndexArray = getPlayerIndexArray(gamepads);
 
   const virtualGamepads =
     gamepads.length > 0

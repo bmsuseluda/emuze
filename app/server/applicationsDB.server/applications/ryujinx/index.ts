@@ -16,7 +16,7 @@ import { keyboardConfig } from "./keyboardConfig.js";
 import type { ApplicationId } from "../../applicationId.js";
 import {
   getNameIndex,
-  getPlayIndexArray,
+  getPlayerIndexArray,
   isGamecubeController,
 } from "../../../../types/gamepad.js";
 
@@ -194,7 +194,7 @@ const createInputConfig =
 const replaceConfig = (switchRomsPath: string) => {
   const controllerIds: { name: string }[] = [];
   const gamepads = sdl.joystick.devices;
-  const playerIndexArray = getPlayIndexArray(gamepads);
+  const playerIndexArray = getPlayerIndexArray(gamepads);
   const inputConfigs =
     gamepads.length > 0
       ? gamepads.map(createInputConfig(controllerIds, playerIndexArray))

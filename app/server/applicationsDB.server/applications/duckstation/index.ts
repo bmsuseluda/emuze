@@ -18,7 +18,7 @@ import { defaultSettings } from "./defaultSettings.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import { envPaths } from "../../../envPaths.server.js";
-import { getPlayIndexArray } from "../../../../types/gamepad.js";
+import { getPlayerIndexArray } from "../../../../types/gamepad.js";
 
 const flatpakId = "org.duckstation.DuckStation";
 const applicationId: ApplicationId = "duckstation";
@@ -78,7 +78,7 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
 
 export const getVirtualGamepads = () => {
   const gamepads = sdl.joystick.devices;
-  const playerIndexArray = getPlayIndexArray(gamepads);
+  const playerIndexArray = getPlayerIndexArray(gamepads);
 
   const virtualGamepads =
     gamepads.length > 0

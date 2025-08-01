@@ -165,7 +165,7 @@ export const isAnalog = (
   sdlButtonId: SdlButtonId,
 ) => mappingObject[sdlButtonId]?.startsWith("a");
 
-export const getPlayIndexArray = (gamepads: Sdl.Joystick.Device[]) => {
+export const getPlayerIndexArray = (gamepads: Sdl.Joystick.Device[]) => {
   let playerIndex = 0;
   const playerIndexArray: number[] = [];
 

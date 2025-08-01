@@ -4,7 +4,7 @@ import {
   gamepadPs3,
   gamepadPs4,
   getNameIndex,
-  getPlayIndexArray,
+  getPlayerIndexArray,
   steamDeck,
 } from "../gamepad.js";
 
@@ -24,7 +24,7 @@ describe("getNameIndex", () => {
 describe("getPlayerIndexArray", () => {
   it("Should return the last index as playerIndex for steamd deck", () => {
     expect(
-      getPlayIndexArray([
+      getPlayerIndexArray([
         convertToJoystick(steamDeck),
         convertToJoystick(gamepadPs4),
         convertToJoystick(gamepadPs4),
@@ -35,7 +35,7 @@ describe("getPlayerIndexArray", () => {
 
   it("Should return the indexes untouched if there is no steam deck", () => {
     expect(
-      getPlayIndexArray([
+      getPlayerIndexArray([
         convertToJoystick(gamepadPs3),
         convertToJoystick(gamepadPs4),
         convertToJoystick(gamepadPs4),
