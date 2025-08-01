@@ -131,6 +131,30 @@ export class PhysicalGamepad {
     inputId: getButtonIndex(this.mappingObject, "rightstick"),
   });
 
+  getRightButtonUp = (): PhysicalGamepadButton => ({
+    deviceId: this.deviceId,
+    groupId: "Button",
+    inputId: getButtonIndex(this.mappingObject, "-righty"),
+  });
+
+  getRightButtonDown = (): PhysicalGamepadButton => ({
+    deviceId: this.deviceId,
+    groupId: "Button",
+    inputId: getButtonIndex(this.mappingObject, "+righty"),
+  });
+
+  getRightButtonLeft = (): PhysicalGamepadButton => ({
+    deviceId: this.deviceId,
+    groupId: "Button",
+    inputId: getButtonIndex(this.mappingObject, "-rightx"),
+  });
+
+  getRightButtonRight = (): PhysicalGamepadButton => ({
+    deviceId: this.deviceId,
+    groupId: "Button",
+    inputId: getButtonIndex(this.mappingObject, "+rightx"),
+  });
+
   getBack = (): PhysicalGamepadButton => ({
     deviceId: this.deviceId,
     groupId: "Button",

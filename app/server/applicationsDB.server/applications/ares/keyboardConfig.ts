@@ -19,7 +19,6 @@ export const scancodes = {
   I: 43,
   L: 46,
   O: 49,
-  "0": 16,
   "8": 24,
   "9": 25,
   X: 58,

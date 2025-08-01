@@ -8,6 +8,8 @@ import { getCategoryDataByName } from "./categoriesDB.server/index.js";
 import { FileDataCache } from "./FileDataCache.server.js";
 import type { CategoryImportData } from "./importCategory.server.js";
 import { importCategory } from "./importCategory.server.js";
+import { setImportIsRunning } from "./importIsRunning.server.js";
+import { readCategory } from "./categoryDataCache.server.js";
 
 export const paths = {
   categories: "data/categories.json",
@@ -32,6 +34,7 @@ export const invalidateCategoriesDataCache = () => {
 };
 
 export const importCategories = async () => {
+  setImportIsRunning(true);
   const generalData = readGeneral();
 
   if (generalData?.categoriesPath) {
@@ -59,6 +62,13 @@ export const importCategories = async () => {
     for (const categoryImportData of categoryImportDataList) {
       await importCategory(categoryImportData);
     }
-    writeCategories(categoryImportDataList);
+
+    writeCategories(
+      categoryImportDataList.filter(
+        ({ categoryDbData }) =>
+          readCategory(categoryDbData.id)?.entries?.length || 0 > 0,
+      ),
+    );
+    setImportIsRunning(false);
   }
 };

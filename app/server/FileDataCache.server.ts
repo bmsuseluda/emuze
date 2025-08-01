@@ -1,4 +1,8 @@
-import { readFileHome, writeFileHome } from "./readWriteData.server.js";
+import {
+  readFileHome,
+  removeFileHome,
+  writeFileHome,
+} from "./readWriteData.server.js";
 
 // TODO: create npm package
 export class FileDataCache<Content> {
@@ -44,6 +48,11 @@ export class MultipleFileDataCache<Content> {
   writeFile(content: Content, filePath: string) {
     writeFileHome(content, filePath);
     this.content[filePath] = content;
+  }
+
+  removeCategory(filePath: string) {
+    removeFileHome(filePath);
+    this.content[filePath] = null;
   }
 
   invalidateCache() {

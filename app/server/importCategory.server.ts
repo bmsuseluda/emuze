@@ -13,10 +13,13 @@ import { applications } from "./applicationsDB.server/index.js";
 import { readGeneral } from "./settings.server.js";
 import { readFilenames } from "./readWriteData.server.js";
 import { fetchMetaDataFromDB } from "./igdb.server.js";
-import { readCategory, writeCategory } from "./categoryDataCache.server.js";
+import {
+  readCategory,
+  removeCategory,
+  writeCategory,
+} from "./categoryDataCache.server.js";
 import { sortCaseInsensitive } from "./sortCaseInsensitive.server.js";
 import { log } from "./debug.server.js";
-import { setImportIsRunning } from "./importIsRunning.server.js";
 
 const sortEntries = (a: Entry, b: Entry) => sortCaseInsensitive(a.name, b.name);
 
@@ -243,7 +246,6 @@ export const createCategoryDataWithMetaData = async (
 export const importCategory = async (
   categoryImportData: CategoryImportData,
 ) => {
-  setImportIsRunning(true);
   log("debug", `importCategory start ${categoryImportData.categoryDbData.id}`);
   const startTime = new Date().getTime();
   const result = await createCategoryDataWithMetaData(
@@ -255,6 +257,9 @@ export const importCategory = async (
     `importCategory complete ${categoryImportData.categoryDbData.id} ${endTime - startTime}ms`,
   );
 
-  writeCategory(result);
-  setImportIsRunning(false);
+  if (result.entries?.length || 0 > 0) {
+    writeCategory(result);
+  } else {
+    removeCategory(result);
+  }
 };

@@ -87,3 +87,5 @@ test("import all", async ({ page, libraryPage, settingsPage }) => {
 
   await libraryPage.goToSystemViaClick(playstationSystemName, "Gex");
 });
+
+// TODO: open system without roms and import -> first page will be opened

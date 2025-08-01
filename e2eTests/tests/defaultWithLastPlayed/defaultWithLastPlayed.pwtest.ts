@@ -9,13 +9,17 @@ const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 
 test.describe.configure({ mode: "serial" });
 
-test.beforeAll(async () => {
+const resetFiles = () => {
   fs.removeSync(configFolderPath);
   fs.copySync(nodepath.join(e2ePath, "config"), configFolderPath);
   fs.copySync(
     nodepath.join(__dirname, "lastPlayed.json"),
     nodepath.join(configFolderPath, ".emuze", "data", "lastPlayed.json"),
   );
+};
+
+test.beforeAll(async () => {
+  resetFiles();
 });
 
 test.beforeEach(async ({ libraryPage }) => {
@@ -97,11 +101,36 @@ test("import all", async ({ page, libraryPage, settingsPage }) => {
   await libraryPage.goToSystemViaClick(playstationSystemName);
 });
 
+test("import all with cleanup", async ({ page, libraryPage, settingsPage }) => {
+  resetFiles();
+  await libraryPage.goto(testName);
+  await libraryPage.expectIsLastPlayed();
+
+  const pspSystemName = "Sony PSP";
+  const pspLink = page.getByRole("link", {
+    name: pspSystemName,
+  });
+  const pspGame = "Little Big Planet";
+
+  await expect(pspLink).toBeVisible();
+  await expect(page.getByRole("radio", { name: pspGame })).toBeVisible();
+
+  await settingsPage.openSettingsViaClick(true);
+  await libraryPage.press("i");
+  await settingsPage.closeSettingsViaClick(true);
+
+  await libraryPage.expectIsLastPlayed();
+
+  await expect(pspLink).not.toBeVisible();
+  await expect(page.getByRole("radio", { name: pspGame })).not.toBeVisible();
+});
+
+// TODO: open system without roms and import -> last played will be opened and roms from this systems are removed from last played
+
 test("game versions", async ({ libraryPage }) => {
   await libraryPage.expectIsLastPlayed();
   await libraryPage.press("ArrowRight");
-  await libraryPage.press("ArrowRight");
-  await libraryPage.expectGameFocused("Gex");
+  await libraryPage.expectGameFocused("Super Mario Land");
   await libraryPage.press("Enter");
 
   await libraryPage.gameVersionsPage.testGameVersionsPage();

@@ -14,8 +14,11 @@ import sdl from "@kmamal/sdl";
 import { emulatorsDirectory } from "../../../homeDirectory.server.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import type { ApplicationId } from "../../applicationId.js";
-import { isGamecubeController } from "../../../../types/gamepad.js";
-import { sortGamecubeLast } from "../../sortGamepads.js";
+import {
+  getNameIndex,
+  getPlayerIndexArray,
+  isGamecubeController,
+} from "../../../../types/gamepad.js";
 
 const applicationId: ApplicationId = "ryujinx";
 const flatpakId = "org.ryujinx.Ryujinx";
@@ -122,25 +125,26 @@ const splitStringByIndices = (str: string, indices: number[]): string[] => {
 };
 
 export const getControllerIdWithIndex = (
-  controllerIds: string[],
+  controllerIds: { name: string }[],
   controllerIdWithoutIndex: string,
 ) => {
-  let index = 0;
-  let controllerId = `${index}-${controllerIdWithoutIndex}`;
-  while (controllerIds.includes(controllerId)) {
-    controllerId = `${++index}-${controllerIdWithoutIndex}`;
-  }
+  const controllerIdIndex = getNameIndex(
+    controllerIdWithoutIndex,
+    controllerIds.length,
+    controllerIds,
+  );
+  const controllerId = `${controllerIdIndex}-${controllerIdWithoutIndex}`;
 
-  controllerIds.push(controllerId);
+  controllerIds.push({ name: controllerIdWithoutIndex });
 
   return controllerId;
 };
 
 export const createControllerId = (
-  controllerIds: string[],
-  sdlGuiId: string,
+  controllerIds: { name: string }[],
+  sdlGuid: string,
 ) => {
-  const mapping = splitStringByIndices(sdlGuiId, [2, 4, 6, 8, 10, 12, 16, 20]);
+  const mapping = splitStringByIndices(sdlGuid, [2, 4, 6, 8, 10, 12, 16, 20]);
   const controllerIdWithoutIndex = `${mapping[0].padStart(8, "0")}-${mapping[5]}${mapping[4]}-${mapping[6]}-${mapping[7]}-${mapping[8]}`;
   return getControllerIdWithIndex(controllerIds, controllerIdWithoutIndex);
 };
@@ -170,7 +174,7 @@ const createDeviceSpecificInputConfig = (controllerName: string) => {
 };
 
 const createInputConfig =
-  (controllerIds: string[]) =>
+  (controllerIds: { name: string }[], playerIndexArray: number[]) =>
   (controller: Sdl.Joystick.Device, index: number): InputConfig => {
     log("debug", "gamepad", {
       index,
@@ -183,17 +187,17 @@ const createInputConfig =
       ...createDeviceSpecificInputConfig(controller.name!),
       id: gamepadId,
       controller_type: createControllerType(),
-      player_index: `Player${index + 1}`,
+      player_index: `Player${playerIndexArray[index] + 1}`,
     };
   };
 
 const replaceConfig = (switchRomsPath: string) => {
-  const controllerIds: string[] = [];
+  const controllerIds: { name: string }[] = [];
   const gamepads = sdl.joystick.devices;
-  const gamepadsSorted = gamepads.toSorted(sortGamecubeLast);
-  const inputConfig =
-    gamepadsSorted.length > 0
-      ? gamepadsSorted.map(createInputConfig(controllerIds))
+  const playerIndexArray = getPlayerIndexArray(gamepads);
+  const inputConfigs =
+    gamepads.length > 0
+      ? gamepads.map(createInputConfig(controllerIds, playerIndexArray))
       : [keyboardConfig];
 
   const oldConfig = readConfigFile(configFilePath);
@@ -211,7 +215,7 @@ const replaceConfig = (switchRomsPath: string) => {
     },
     game_dirs: [switchRomsPath],
     autoload_dirs: [switchRomsPath],
-    input_config: inputConfig,
+    input_config: inputConfigs,
   };
   writeConfig(configFilePath, JSON.stringify(newConfig));
 };

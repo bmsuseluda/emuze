@@ -29,5 +29,12 @@
     },
     "systemId": "sonyplaystation",
     "lastPlayed": 1724936954414
+  },
+  {
+    "id": "littlebigplanet4",
+    "name": "Little Big Planet",
+    "path": "Little Big Planet.chd",
+    "systemId": "sonypsp",
+    "lastPlayed": 1724935954414
   }
 ]

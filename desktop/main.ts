@@ -72,7 +72,8 @@ app.on("ready", async () => {
     .then((result) => {
       if (result) {
         log("info", "check for updates", {
-          version: result?.updateInfo.version,
+          version: result.updateInfo.version,
+          updateAvailable: result.isUpdateAvailable,
         });
       }
     })
@@ -81,6 +82,15 @@ app.on("ready", async () => {
     });
   autoUpdater.on("error", (error, message) => {
     log("error", "check for updates", error, message);
+  });
+  autoUpdater.on("download-progress", (info) => {
+    log("debug", "update download progress", info);
+  });
+  autoUpdater.on("update-downloaded", ({ downloadedFile }) => {
+    log("debug", "update downloaded", downloadedFile);
+  });
+  autoUpdater.on("appimage-filename-updated", (path) => {
+    log("debug", "update appimage filename updated", path);
   });
 
   const appearance = readAppearance();

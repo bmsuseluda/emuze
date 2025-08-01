@@ -1,5 +1,5 @@
 import nodepath from "node:path";
-import { TestName } from "../ports.js";
+import type { TestName } from "../ports.js";
 
 import { fileURLToPath } from "node:url";
 

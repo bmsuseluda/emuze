@@ -4,6 +4,7 @@ import {
   mkdirSync,
   readdirSync,
   readFileSync,
+  rmSync,
   writeFileSync,
 } from "node:fs";
 import { log } from "./debug.server.js";
@@ -88,4 +89,15 @@ export const writeFile = (object: unknown, path: string) => {
 export const writeFileHome = (object: unknown, path: string) => {
   const pathInHome = nodepath.join(homeDirectory, path);
   writeFile(object, pathInHome);
+};
+
+export const removeFile = (path: string) => {
+  if (existsSync(path)) {
+    rmSync(path, { force: true });
+  }
+};
+
+export const removeFileHome = (path: string) => {
+  const pathInHome = nodepath.join(homeDirectory, path);
+  removeFile(pathInHome);
 };

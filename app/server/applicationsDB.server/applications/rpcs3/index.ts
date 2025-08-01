@@ -30,6 +30,8 @@ import type {
 import { globalDefaultInputConfigFileReset } from "./config.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import { isSteamOs } from "../../../operationsystem.server.js";
+import { getNameIndex } from "../../../../types/gamepad.js";
+import { sortSteamDeckLast } from "../../sortGamepads.js";
 
 const flatpakId = "net.rpcs3.RPCS3";
 const applicationId: ApplicationId = "rpcs3";
@@ -253,30 +255,6 @@ const readGlobalDefaultInputConfigFile = () =>
     getGlobalDefaultInputConfigFilePath(),
   ) as GlobalDefaultInputConfigFile;
 
-/**
- * check all devices until sdlIndex for name. count how much and return accordingly
- *
- * @readonly number starts with 1
- */
-export const getNameIndex = (
-  name: string,
-  sdlIndex: number,
-  devices: Sdl.Joystick.Device[] | Sdl.Controller.Device[],
-) => {
-  if (devices.length === 1) {
-    return 1;
-  }
-
-  let nameCount = 0;
-  for (let index = 0; index < sdlIndex; index++) {
-    if (devices[index].name === name) {
-      nameCount++;
-    }
-  }
-
-  return nameCount + 1;
-};
-
 export const getVirtualGamepad = (
   name: string,
   index: number,
@@ -284,7 +262,7 @@ export const getVirtualGamepad = (
 ): PlayerInput => {
   return {
     Handler: "SDL",
-    Device: `${name} ${getNameIndex(name, index, devices)}`,
+    Device: `${name} ${getNameIndex(name, index, devices) + 1}`,
     Config: {
       "Left Stick Left": "LS X-",
       "Left Stick Down": "LS Y-",
@@ -383,20 +361,20 @@ export const getVirtualGamepad = (
 };
 
 export const getVirtualGamepads = (): GlobalDefaultInputConfigFile => {
-  const gamepads = isSteamOs() ? sdl.joystick.devices : sdl.controller.devices;
+  const gamepads = (
+    isSteamOs() ? sdl.joystick.devices : sdl.controller.devices
+  ).toSorted(sortSteamDeckLast);
   if (gamepads.length > 0) {
-    let playerIndex = 0;
     return gamepads.reduce<GlobalDefaultInputConfigFile>(
       (accumulator, currentDevice, index) => {
         if (currentDevice.name) {
           log("debug", "gamepad", { index, currentDevice });
 
-          accumulator[`Player ${playerIndex + 1} Input`] = getVirtualGamepad(
+          accumulator[`Player ${index + 1} Input`] = getVirtualGamepad(
             currentDevice.name,
             index,
             gamepads,
           );
-          playerIndex++;
         }
         return accumulator;
       },

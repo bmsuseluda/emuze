@@ -53,14 +53,22 @@ class GamepadManager {
 
     const devices = sdl.controller.devices;
     if (devices.length > 0) {
-      devices.forEach((device) => {
-        this.registerEventsForDevice(device);
+      devices.forEach((device, index) => {
+        this.registerEventsForDevice(device, index);
       });
     }
   }
 
-  private registerEventsForDevice(device: Sdl.Controller.Device) {
-    log("debug", "registerEvents", device);
+  private registerEventsForDevice(
+    device: Sdl.Controller.Device,
+    index?: number,
+  ) {
+    log(
+      "debug",
+      "registerEvents",
+      device,
+      index ? sdl.joystick.devices[index].name : "",
+    );
 
     try {
       const controller = sdl.controller.openDevice(device);

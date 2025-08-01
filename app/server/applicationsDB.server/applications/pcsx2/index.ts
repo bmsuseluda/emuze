@@ -18,6 +18,7 @@ import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js"
 import type { ApplicationId } from "../../applicationId.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import { envPaths } from "../../../envPaths.server.js";
+import { getPlayerIndexArray } from "../../../../types/gamepad.js";
 
 const flatpakId = "net.pcsx2.PCSX2";
 const applicationId: ApplicationId = "pcsx2";
@@ -28,61 +29,63 @@ const bundledPathLinux = nodepath.join(
 const bundledPathWindows = nodepath.join(applicationId, "pcsx2-qt.exe");
 const configFileName = "PCSX2.ini";
 
-export const getVirtualGamepad = (
-  sdlDevice: Sdl.Joystick.Device,
-  index: number,
-) => {
-  log("debug", "gamepad", { index, sdlDevice });
+export const getVirtualGamepad =
+  (playerIndexArray: number[]) =>
+  (sdlDevice: Sdl.Joystick.Device, sdlIndex: number) => {
+    log("debug", "gamepad", { sdlIndex, sdlDevice });
 
-  return [
-    `[Pad${index + 1}]`,
-    "Type = DualShock2",
-    "InvertL = 0",
-    "InvertR = 0",
-    "Deadzone = 0",
-    "AxisScale = 1.33",
-    "LargeMotorScale = 1",
-    "SmallMotorScale = 1",
-    "ButtonDeadzone = 0",
-    "PressureModifier = 0.5",
-    `Up = SDL-${index}/DPadUp`,
-    `Right = SDL-${index}/DPadRight`,
-    `Down = SDL-${index}/DPadDown`,
-    `Left = SDL-${index}/DPadLeft`,
-    `Triangle = SDL-${index}/Y`,
-    `Circle = SDL-${index}/B`,
-    `Cross = SDL-${index}/A`,
-    `Square = SDL-${index}/X`,
-    `Select = SDL-${index}/Back`,
-    `Start = SDL-${index}/Start`,
-    `L1 = SDL-${index}/LeftShoulder`,
-    `R1 = SDL-${index}/RightShoulder`,
-    `L2 = SDL-${index}/+LeftTrigger`,
-    `R2 = SDL-${index}/+RightTrigger`,
-    `L3 = SDL-${index}/LeftStick`,
-    `R3 = SDL-${index}/RightStick`,
-    `LLeft = SDL-${index}/-LeftX`,
-    `LRight = SDL-${index}/+LeftX`,
-    `LDown = SDL-${index}/+LeftY`,
-    `LUp = SDL-${index}/-LeftY`,
-    `RLeft = SDL-${index}/-RightX`,
-    `RRight = SDL-${index}/+RightX`,
-    `RDown = SDL-${index}/+RightY`,
-    `RUp = SDL-${index}/-RightY`,
-    "",
-    "",
-    "",
-  ].join(EOL);
-};
+    return [
+      `[Pad${playerIndexArray[sdlIndex] + 1}]`,
+      "Type = DualShock2",
+      "InvertL = 0",
+      "InvertR = 0",
+      "Deadzone = 0",
+      "AxisScale = 1.33",
+      "LargeMotorScale = 1",
+      "SmallMotorScale = 1",
+      "ButtonDeadzone = 0",
+      "PressureModifier = 0.5",
+      `Up = SDL-${sdlIndex}/DPadUp`,
+      `Right = SDL-${sdlIndex}/DPadRight`,
+      `Down = SDL-${sdlIndex}/DPadDown`,
+      `Left = SDL-${sdlIndex}/DPadLeft`,
+      `Triangle = SDL-${sdlIndex}/Y`,
+      `Circle = SDL-${sdlIndex}/B`,
+      `Cross = SDL-${sdlIndex}/A`,
+      `Square = SDL-${sdlIndex}/X`,
+      `Select = SDL-${sdlIndex}/Back`,
+      `Start = SDL-${sdlIndex}/Start`,
+      `L1 = SDL-${sdlIndex}/LeftShoulder`,
+      `R1 = SDL-${sdlIndex}/RightShoulder`,
+      `L2 = SDL-${sdlIndex}/+LeftTrigger`,
+      `R2 = SDL-${sdlIndex}/+RightTrigger`,
+      `L3 = SDL-${sdlIndex}/LeftStick`,
+      `R3 = SDL-${sdlIndex}/RightStick`,
+      `LLeft = SDL-${sdlIndex}/-LeftX`,
+      `LRight = SDL-${sdlIndex}/+LeftX`,
+      `LDown = SDL-${sdlIndex}/+LeftY`,
+      `LUp = SDL-${sdlIndex}/-LeftY`,
+      `RLeft = SDL-${sdlIndex}/-RightX`,
+      `RRight = SDL-${sdlIndex}/+RightX`,
+      `RDown = SDL-${sdlIndex}/+RightY`,
+      `RUp = SDL-${sdlIndex}/-RightY`,
+      "",
+      "",
+      "",
+    ].join(EOL);
+  };
 
 const getVirtualGamepadReset = (gamepadIndex: number) =>
   [`[Pad${gamepadIndex + 1}]`, "Type = None", "", "", ""].join(EOL);
 
 export const getVirtualGamepads = () => {
   const gamepads = sdl.joystick.devices;
+  const playerIndexArray = getPlayerIndexArray(gamepads);
 
   const virtualGamepads =
-    gamepads.length > 0 ? gamepads.map(getVirtualGamepad) : [keyboardConfig];
+    gamepads.length > 0
+      ? gamepads.map(getVirtualGamepad(playerIndexArray))
+      : [keyboardConfig];
 
   return [
     ...virtualGamepads,

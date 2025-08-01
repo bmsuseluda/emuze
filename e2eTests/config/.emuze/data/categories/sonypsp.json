@@ -1,0 +1,11 @@
+{
+  "id": "sonypsp",
+  "name": "Sony PSP",
+  "entries": [
+    {
+      "id": "littlebigplanet0",
+      "name": "Little Big Planet",
+      "path": "Little Big Planet.chd"
+    }
+  ]
+}

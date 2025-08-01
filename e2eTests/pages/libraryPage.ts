@@ -49,10 +49,11 @@ export class LibraryPage {
       this.page.getByRole("heading", { name: systemName }),
     ).not.toBeVisible();
 
-    gameName &&
-      (await expect(
+    if (gameName) {
+      await expect(
         this.page.getByRole("radio", { name: gameName }),
-      ).not.toBeVisible());
+      ).not.toBeVisible();
+    }
 
     await link.click();
 
@@ -69,10 +70,11 @@ export class LibraryPage {
     ).toBeVisible();
     await expect(link).toBeVisible();
 
-    gameName &&
-      (await expect(
+    if (gameName) {
+      await expect(
         this.page.getByRole("radio", { name: gameName }),
-      ).toBeVisible());
+      ).toBeVisible();
+    }
   }
 
   async expectGameFocused(gameName: string) {

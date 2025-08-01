@@ -51,8 +51,8 @@ describe("duckstation", () => {
       const settings = [main, pad1, pad2, pad3, pad4, hotkeys];
       expect(replaceGamepadConfig(settings)).toStrictEqual([
         main,
-        pad1Mapped,
         pad2Mapped,
+        pad1Mapped,
         getUnusedPad(3),
         getUnusedPad(4),
         getUnusedPad(5),

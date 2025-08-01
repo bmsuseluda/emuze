@@ -34,7 +34,7 @@ export const loader = ({ params }: DataFunctionArgs) => {
   const categoryData = readCategory(category as SystemId);
 
   if (!categoryData?.name) {
-    return redirect("/settings");
+    return redirect("/categories");
   }
 
   const { alwaysGameNames } = readAppearance();

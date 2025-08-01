@@ -39,10 +39,12 @@ export type ButtonId =
   | "rightStickLeft"
   | "rightStickRight";
 
-export const keyboardMapping: Omit<
-  Record<ButtonId, Sdl.Keyboard.ScancodeNames>,
+export type EmuzeButtonId = Exclude<
+  ButtonId,
   "guide" | "paddle1" | "paddle2" | "paddle3" | "paddle4"
-> = {
+>;
+
+export const keyboardMapping = {
   dpadUp: "T",
   dpadDown: "G",
   dpadLeft: "F",
@@ -67,10 +69,30 @@ export const keyboardMapping: Omit<
   rightStickDown: "DOWN",
   rightStickLeft: "LEFT",
   rightStickRight: "RIGHT",
-};
+} satisfies Record<EmuzeButtonId, Sdl.Keyboard.ScancodeNames>;
 
 export const getGamepadButtonEventName = (buttonId: ButtonId) =>
   `gamepadonbutton${buttonId.toLowerCase()}press`;
+
+/**
+ * check all devices until sdlIndex (current index) for name. count how much and return accordingly
+ *
+ * @return number starts with 0
+ */
+export const getNameIndex = (
+  name: string,
+  sdlIndex: number,
+  devices: { name: string | null }[],
+) => {
+  let nameCount = 0;
+  for (let index = 0; index < sdlIndex; index++) {
+    if (devices[index].name === name) {
+      nameCount++;
+    }
+  }
+
+  return nameCount;
+};
 
 const xinputControllerTypes: Sdl.Controller.ControllerType[] = [
   "xbox360",
@@ -93,6 +115,16 @@ export const isDinputController = (
 export const isGamecubeController = (controllerName: string) =>
   controllerName.toLowerCase().includes("gamecube");
 
+export const isSteamDeckController = ({
+  guid,
+  vendor,
+  product,
+  name,
+}: Sdl.Joystick.Device | Sdl.Controller.Device) =>
+  guid === steamDeck.guid ||
+  (vendor === steamDeck.vendor && product === steamDeck.product) ||
+  !!name?.startsWith("Steam Deck");
+
 export type SdlButtonId =
   | "a"
   | "b"
@@ -114,7 +146,11 @@ export type SdlButtonId =
   | "leftx"
   | "lefty"
   | "rightx"
-  | "righty";
+  | "righty"
+  | "+rightx"
+  | "+righty"
+  | "-rightx"
+  | "-righty";
 
 export type SdlButtonMapping = Partial<Record<SdlButtonId, string>>;
 
@@ -128,6 +164,22 @@ export const isAnalog = (
   mappingObject: SdlButtonMapping,
   sdlButtonId: SdlButtonId,
 ) => mappingObject[sdlButtonId]?.startsWith("a");
+
+export const getPlayerIndexArray = (gamepads: Sdl.Joystick.Device[]) => {
+  let playerIndex = 0;
+  const playerIndexArray: number[] = [];
+
+  gamepads.forEach((gamepad) => {
+    if (isSteamDeckController(gamepad)) {
+      playerIndexArray.push(gamepads.length - 1);
+    } else {
+      playerIndexArray.push(playerIndex);
+      playerIndex++;
+    }
+  });
+
+  return playerIndexArray;
+};
 
 /**
  *
@@ -168,7 +220,7 @@ export const steamDeck = {
   path: "/dev/input/event6",
   guid: "030079f6de280000ff11000001000000",
   vendor: 10462,
-  product: 4607,
+  product: 4613,
   version: 1,
   player: 0,
   mapping:
@@ -180,7 +232,7 @@ export const gamepadPs4 = {
   type: "ps4",
   name: "Playstation 4 Controller",
   path: "/dev/input/event6",
-  guid: "030079f6de280000ff11000001000000",
+  guid: "030000004c050000c405000000010000",
   vendor: 1356,
   product: 1476,
   version: 1,
