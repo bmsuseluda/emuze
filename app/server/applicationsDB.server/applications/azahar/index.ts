@@ -19,7 +19,7 @@ import { importElectron } from "../../../importElectron.server.js";
 import { commandLineOptions } from "../../../commandLine.server.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { isWindows } from "../../../operationsystem.server.js";
-import { sortSteamDeckLast } from "../../sortGamepads.js";
+import { isSteamDeckController } from "../../../../types/gamepad.js";
 
 const flatpakId = "io.github.lime3ds.Lime3DS";
 const applicationId: ApplicationId = "azahar";
@@ -164,10 +164,26 @@ export const getVirtualGamepad = (
   ];
 };
 
+const getGamepad = () => {
+  const gamepads = sdl.joystick.devices;
+
+  if (gamepads.length === 1) {
+    return gamepads[0];
+  }
+
+  if (gamepads.length > 1) {
+    if (isSteamDeckController(gamepads[0])) {
+      return gamepads[1];
+    } else {
+      return gamepads[0];
+    }
+  }
+  return null;
+};
+
 export const replaceGamepadConfig: SectionReplacement = (sections) => {
-  const gamepads = sdl.joystick.devices.toSorted(sortSteamDeckLast);
-  const virtualGamepad =
-    gamepads.length > 0 ? getVirtualGamepad(gamepads[0]) : keyboardConfig;
+  const gamepad = getGamepad();
+  const virtualGamepad = gamepad ? getVirtualGamepad(gamepad) : keyboardConfig;
 
   return replaceSection(sections, "[Controls]", virtualGamepad);
 };
