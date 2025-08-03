@@ -19,12 +19,12 @@ import type { ApplicationId } from "../../applicationId.js";
 import { emulatorsDirectory } from "../../../homeDirectory.server.js";
 import {
   getNameIndex,
+  getPlayerIndexArray,
   isGamecubeController,
 } from "../../../../types/gamepad.js";
 import { defaultDolphinSettings } from "./defaultDolphinSettings.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import { isSteamOs } from "../../../operationsystem.server.js";
-import { sortSteamDeckLast } from "../../sortGamepads.js";
 
 const flatpakId = "org.DolphinEmu.dolphin-emu";
 const applicationId: ApplicationId = "dolphin";
@@ -51,7 +51,10 @@ const hotkeysConfigFileName = nodepath.join(
 );
 
 export const getVirtualGamepad =
-  (devices: Sdl.Joystick.Device[] | Sdl.Controller.Device[]) =>
+  (
+    devices: Sdl.Joystick.Device[] | Sdl.Controller.Device[],
+    playerIndexArray: number[],
+  ) =>
   (controller: Sdl.Joystick.Device | Sdl.Controller.Device, index: number) => {
     log("debug", "gamepad", { index, controller });
 
@@ -61,7 +64,7 @@ export const getVirtualGamepad =
     const gamecubeController = isGamecubeController(deviceName);
 
     return [
-      `[GCPad${index + 1}]`,
+      `[GCPad${playerIndexArray[index] + 1}]`,
       `Device = SDL/${nameIndex}/${deviceName}`,
       `Buttons/A = ${gamecubeController ? "`Button S`" : "`Button E`"}`,
       `Buttons/B = ${gamecubeController ? "`Button W`" : "`Button S`"}`,
@@ -100,13 +103,12 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
   ].join(EOL);
 
 export const getVirtualGamepads = () => {
-  const gamepads = (
-    isSteamOs() ? sdl.joystick.devices : sdl.controller.devices
-  ).toSorted(sortSteamDeckLast);
+  const gamepads = isSteamOs() ? sdl.joystick.devices : sdl.controller.devices;
+  const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
 
   const virtualGamepads =
     gamepads.length > 0
-      ? gamepads.map(getVirtualGamepad(gamepads))
+      ? gamepads.map(getVirtualGamepad(gamepads, playerIndexArray))
       : [keyboardConfig];
 
   return [

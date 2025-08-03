@@ -30,8 +30,10 @@ import type {
 import { globalDefaultInputConfigFileReset } from "./config.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import { isSteamOs } from "../../../operationsystem.server.js";
-import { getNameIndex } from "../../../../types/gamepad.js";
-import { sortSteamDeckLast } from "../../sortGamepads.js";
+import {
+  getNameIndex,
+  getPlayerIndexArray,
+} from "../../../../types/gamepad.js";
 
 const flatpakId = "net.rpcs3.RPCS3";
 const applicationId: ApplicationId = "rpcs3";
@@ -361,20 +363,17 @@ export const getVirtualGamepad = (
 };
 
 export const getVirtualGamepads = (): GlobalDefaultInputConfigFile => {
-  const gamepads = (
-    isSteamOs() ? sdl.joystick.devices : sdl.controller.devices
-  ).toSorted(sortSteamDeckLast);
+  const gamepads = isSteamOs() ? sdl.joystick.devices : sdl.controller.devices;
+  const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
+
   if (gamepads.length > 0) {
     return gamepads.reduce<GlobalDefaultInputConfigFile>(
       (accumulator, currentDevice, index) => {
         if (currentDevice.name) {
           log("debug", "gamepad", { index, currentDevice });
 
-          accumulator[`Player ${index + 1} Input`] = getVirtualGamepad(
-            currentDevice.name,
-            index,
-            gamepads,
-          );
+          accumulator[`Player ${playerIndexArray[index] + 1} Input`] =
+            getVirtualGamepad(currentDevice.name, index, gamepads);
         }
         return accumulator;
       },
