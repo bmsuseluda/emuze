@@ -120,10 +120,20 @@ export const isSteamDeckController = ({
   vendor,
   product,
   name,
-}: Sdl.Joystick.Device | Sdl.Controller.Device) =>
+}: Sdl.Joystick.Device) =>
   guid === steamDeck.guid ||
   (vendor === steamDeck.vendor && product === steamDeck.product) ||
   !!name?.startsWith("Steam Deck");
+
+export const isN64Controller = ({
+  guid,
+  vendor,
+  product,
+  name,
+}: Sdl.Joystick.Device) =>
+  guid === gamepadN64.guid ||
+  (vendor === gamepadN64.vendor && product === gamepadN64.product) ||
+  !!name?.includes("N64");
 
 export type SdlButtonId =
   | "a"
@@ -225,6 +235,20 @@ export const steamDeck = {
   player: 0,
   mapping:
     "030079f6de280000ff11000001000000,Steam Virtual Gamepad,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b8,leftshoulder:b4,leftstick:b9,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
+} satisfies Sdl.Controller.Device;
+
+export const gamepadN64 = {
+  id: 0,
+  name: "NSO N64 Controller",
+  path: "/dev/input/event27",
+  type: null,
+  guid: "05001c5e7e0500001920000001800000",
+  vendor: 1406,
+  product: 8217,
+  version: 32769,
+  player: 0,
+  mapping:
+    "05001c5e7e0500001920000001800000,NSO N64 Controller,+rightx:b2,+righty:b3,-rightx:b4,-righty:b10,a:b0,b:b1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b6,lefttrigger:b8,leftx:a0,lefty:a1,misc1:b5,rightshoulder:b7,righttrigger:b9,start:b11,platform:Linux,crc:5e1c,",
 } satisfies Sdl.Controller.Device;
 
 export const gamepadPs4 = {

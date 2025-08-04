@@ -21,6 +21,7 @@ import type { SdlButtonMapping } from "../../../../types/gamepad.js";
 import {
   createSdlMappingObject,
   getPlayerIndexArray,
+  isN64Controller,
 } from "../../../../types/gamepad.js";
 import { commandLineOptions } from "../../../commandLine.server.js";
 
@@ -163,7 +164,12 @@ export const getVirtualGamepad =
     const deviceId = createDeviceId(sdlDevice);
     const physicalGamepad = new PhysicalGamepad(deviceId, mappingObject);
 
-    log("debug", "gamepad", { index, sdlDevice, deviceId });
+    log(
+      "debug",
+      "gamepad",
+      { index, sdlDevice, deviceId },
+      sdl.joystick.devices[index].name,
+    );
 
     return [
       ...getVirtualGamepadDpad(
@@ -216,7 +222,9 @@ export const getVirtualGamepad =
       ),
       ...getVirtualGamepadButton(
         { gamepadIndex: virtualGamepadIndex, buttonId: "R-Trigger" },
-        physicalGamepad.getRightTrigger(),
+        isN64Controller(sdl.joystick.devices[index])
+          ? physicalGamepad.getLeftTrigger()
+          : physicalGamepad.getRightTrigger(),
       ),
 
       ...getVirtualGamepadButton(
