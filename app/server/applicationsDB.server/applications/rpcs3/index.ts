@@ -29,7 +29,7 @@ import type {
 } from "./config.js";
 import { globalDefaultInputConfigFileReset } from "./config.js";
 import { keyboardConfig } from "./keyboardConfig.js";
-import { isSteamOs } from "../../../operationsystem.server.js";
+import { isSteamOs, isWindows } from "../../../operationsystem.server.js";
 import {
   getNameIndex,
   getPlayerIndexArray,
@@ -41,6 +41,8 @@ const bundledPathLinux = nodepath.join(
   applicationId,
   `${applicationId}.AppImage`,
 );
+const getWindowsConfigFolder = () =>
+  nodepath.join(process.env.APPDIR || "", "emulators", applicationId);
 const bundledPathWindows = nodepath.join(applicationId, "rpcs3.exe");
 const guiConfigFileName = "CurrentSettings.ini";
 const activeInputConfigFileName = "active_input_configurations.yml";
@@ -150,7 +152,15 @@ const readGuiConfigFile = (filePath: string) => {
 
 const { config } = envPaths("rpcs3", { suffix: "" });
 export const getGuiConfigFilePath = () => {
-  return nodepath.join(config, "GuiConfigs", guiConfigFileName);
+  if (isWindows()) {
+    return nodepath.join(
+      getWindowsConfigFolder(),
+      "GuiConfigs",
+      guiConfigFileName,
+    );
+  } else {
+    return nodepath.join(config, "GuiConfigs", guiConfigFileName);
+  }
 };
 
 const replaceMetaConfig: SectionReplacement = (sections) =>
@@ -205,7 +215,13 @@ export const replaceGuiConfigFile = (ps3RomsPath: string) => {
   writeConfig(filePath, fileContentNew);
 };
 
-const getVfsConfigFilePath = () => nodepath.join(config, vfsConfigFileName);
+const getVfsConfigFilePath = () => {
+  if (isWindows()) {
+    return nodepath.join(getWindowsConfigFolder(), vfsConfigFileName);
+  } else {
+    return nodepath.join(config, vfsConfigFileName);
+  }
+};
 const readVfsConfigFile = () =>
   readYmlConfigFile(getVfsConfigFilePath()) as VfsConfigFile;
 
@@ -227,7 +243,15 @@ const replaceVfsConfigFile = (ps3RomsPath: string) => {
 };
 
 const getActiveInputConfigFilePath = () => {
-  return nodepath.join(config, "input_configs", activeInputConfigFileName);
+  if (isWindows()) {
+    return nodepath.join(
+      getWindowsConfigFolder(),
+      "input_configs",
+      activeInputConfigFileName,
+    );
+  } else {
+    return nodepath.join(config, "input_configs", activeInputConfigFileName);
+  }
 };
 const readActiveInputConfigFile = () =>
   readYmlConfigFile(getActiveInputConfigFilePath()) as ActiveInputConfigFile;

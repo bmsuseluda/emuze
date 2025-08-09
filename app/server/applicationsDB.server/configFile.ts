@@ -57,7 +57,7 @@ export const replaceSection = (
   paramsToSet: ParamToReplace[],
 ) => {
   const sectionIndex = sections.findIndex((section) =>
-    section.startsWith(sectionName),
+    section.includes(sectionName),
   );
 
   if (sectionIndex !== -1) {

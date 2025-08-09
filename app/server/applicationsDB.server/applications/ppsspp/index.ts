@@ -17,6 +17,7 @@ import { defaultControlsSettings } from "./defaultControlsSettings.js";
 import type { Sdl } from "@kmamal/sdl";
 import type { EmuzeButtonId } from "../../../../types/gamepad.js";
 import { keyboardMapping } from "../../../../types/gamepad.js";
+import { isWindows } from "../../../operationsystem.server.js";
 
 const flatpakId = "org.ppsspp.PPSSPP";
 const applicationId: ApplicationId = "ppsspp";
@@ -24,13 +25,25 @@ const bundledPathLinux = nodepath.join(
   applicationId,
   `${applicationId}.AppImage`,
 );
+const getWindowsConfigFolder = () =>
+  nodepath.join(process.env.APPDIR || "", "emulators", applicationId);
 const bundledPathWindows = nodepath.join(applicationId, "PPSSPPWindows64.exe");
 
 const { config } = envPaths("ppsspp", { suffix: "" });
 
 const ppssppConfigFileName = "ppsspp.ini";
 export const getPpssppConfigFilePath = () => {
-  return nodepath.join(config, "PSP", "SYSTEM", ppssppConfigFileName);
+  if (isWindows()) {
+    return nodepath.join(
+      getWindowsConfigFolder(),
+      "memstick",
+      "PSP",
+      "SYSTEM",
+      ppssppConfigFileName,
+    );
+  } else {
+    return nodepath.join(config, "PSP", "SYSTEM", ppssppConfigFileName);
+  }
 };
 
 const readPpssppConfigFile = (filePath: string) => {
@@ -47,10 +60,18 @@ const readPpssppConfigFile = (filePath: string) => {
   }
 };
 
+const getSectionPrefix = () => {
+  if (isWindows()) {
+    return "";
+  } else {
+    return "﻿";
+  }
+};
+
 export const replaceGeneralConfig =
   (pspRomsPath: string): SectionReplacement =>
   (sections) =>
-    replaceSection(sections, "﻿[General]", [
+    replaceSection(sections, `${getSectionPrefix()}[General]`, [
       { keyValue: `FirstRun = False` },
       { keyValue: `CurrentDirectory = ${pspRomsPath}` },
       { keyValue: `CheckForNewVersion = False` },
@@ -73,6 +94,7 @@ export const replacePpssppConfigFile = (pspRomsPath: string) => {
 const keyboardId = 1;
 const controller1id = 10;
 const controller2id = 11;
+const controller360idWindows = 20;
 
 type Scancode = keyof typeof scancodes;
 export const scancodes = {
@@ -147,10 +169,11 @@ const getMappingString = (buttonId: PpssppButtonId) =>
     getKeyboardKeyForGamepadButton(buttonId),
     getButtonId(controller1id, buttonId),
     getButtonId(controller2id, buttonId),
+    getButtonId(controller360idWindows, buttonId),
   ].join(",");
 
 export const replaceControlMappingConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "﻿[ControlMapping]", [
+  replaceSection(sections, `${getSectionPrefix()}[ControlMapping]`, [
     {
       keyValue: `Up = ${getMappingString("dpadUp")}`,
     },
@@ -223,7 +246,17 @@ const readControlsConfigFile = (filePath: string) => {
 
 const controlsConfigFileName = "controls.ini";
 export const getControlsConfigFilePath = () => {
-  return nodepath.join(config, "PSP", "SYSTEM", controlsConfigFileName);
+  if (isWindows()) {
+    return nodepath.join(
+      getWindowsConfigFolder(),
+      "memstick",
+      "PSP",
+      "SYSTEM",
+      controlsConfigFileName,
+    );
+  } else {
+    return nodepath.join(config, "PSP", "SYSTEM", controlsConfigFileName);
+  }
 };
 
 export const replaceControlsConfigFile = () => {
