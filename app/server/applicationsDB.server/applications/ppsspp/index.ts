@@ -137,7 +137,7 @@ type PpssppButtonId = Exclude<
   | "rightStick"
 >;
 
-const buttonMapping: Record<PpssppButtonId, number> = {
+const buttonMappingSdl: Record<PpssppButtonId, number> = {
   dpadUp: 19,
   dpadDown: 20,
   dpadLeft: 21,
@@ -158,8 +158,32 @@ const buttonMapping: Record<PpssppButtonId, number> = {
   rightTrigger: 0,
 };
 
-const getButtonId = (controllerId: number, buttonId: PpssppButtonId) =>
-  `${controllerId}-${buttonMapping[buttonId]}`;
+const buttonMappingXinput: Record<PpssppButtonId, number> = {
+  dpadUp: 19,
+  dpadDown: 20,
+  dpadLeft: 21,
+  dpadRight: 22,
+  b: 97,
+  a: 96,
+  x: 99,
+  y: 100,
+  start: 108,
+  back: 109,
+  leftShoulder: 102,
+  rightShoulder: 103,
+  leftStickUp: 4002,
+  leftStickDown: 4003,
+  leftStickLeft: 4001,
+  leftStickRight: 4000,
+  leftTrigger: 4034,
+  rightTrigger: 0,
+};
+
+const getButtonId = (
+  controllerId: number,
+  buttonId: PpssppButtonId,
+  buttonMapping: Record<PpssppButtonId, number> = buttonMappingSdl,
+) => `${controllerId}-${buttonMapping[buttonId]}`;
 
 const getKeyboardKeyForGamepadButton = (buttonId: PpssppButtonId) =>
   getKeyboardKey(keyboardMapping[buttonId]);
@@ -169,7 +193,7 @@ const getMappingString = (buttonId: PpssppButtonId) =>
     getKeyboardKeyForGamepadButton(buttonId),
     getButtonId(controller1id, buttonId),
     getButtonId(controller2id, buttonId),
-    getButtonId(controller360idWindows, buttonId),
+    getButtonId(controller360idWindows, buttonId, buttonMappingXinput),
   ].join(",");
 
 export const replaceControlMappingConfig: SectionReplacement = (sections) =>
