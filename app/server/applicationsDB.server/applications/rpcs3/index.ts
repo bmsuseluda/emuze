@@ -29,7 +29,7 @@ import type {
 } from "./config.js";
 import { globalDefaultInputConfigFileReset } from "./config.js";
 import { keyboardConfig } from "./keyboardConfig.js";
-import { isSteamOs } from "../../../operationsystem.server.js";
+import { isSteamOs, isWindows } from "../../../operationsystem.server.js";
 import {
   getNameIndex,
   getPlayerIndexArray,
@@ -41,6 +41,8 @@ const bundledPathLinux = nodepath.join(
   applicationId,
   `${applicationId}.AppImage`,
 );
+const getWindowsConfigFolder = () =>
+  nodepath.join(process.env.APPDIR || "", "emulators", applicationId);
 const bundledPathWindows = nodepath.join(applicationId, "rpcs3.exe");
 const guiConfigFileName = "CurrentSettings.ini";
 const activeInputConfigFileName = "active_input_configurations.yml";
@@ -150,7 +152,15 @@ const readGuiConfigFile = (filePath: string) => {
 
 const { config } = envPaths("rpcs3", { suffix: "" });
 export const getGuiConfigFilePath = () => {
-  return nodepath.join(config, "GuiConfigs", guiConfigFileName);
+  if (isWindows()) {
+    return nodepath.join(
+      getWindowsConfigFolder(),
+      "GuiConfigs",
+      guiConfigFileName,
+    );
+  } else {
+    return nodepath.join(config, "GuiConfigs", guiConfigFileName);
+  }
 };
 
 const replaceMetaConfig: SectionReplacement = (sections) =>
@@ -177,7 +187,7 @@ const replaceFileSystemConfig =
   (sections) =>
     replaceSection(sections, "[FileSystem]", [
       {
-        keyValue: `emulator_dir_list=, ${ps3RomsPath}`,
+        keyValue: `emulator_dir_list=${ps3RomsPath}`,
       },
       { keyValue: "dev_bdvd_list=$(EmulatorDir)dev_bdvd/" },
       { keyValue: "dev_flash2_list=$(EmulatorDir)dev_flash2/" },
@@ -205,7 +215,13 @@ export const replaceGuiConfigFile = (ps3RomsPath: string) => {
   writeConfig(filePath, fileContentNew);
 };
 
-const getVfsConfigFilePath = () => nodepath.join(config, vfsConfigFileName);
+const getVfsConfigFilePath = () => {
+  if (isWindows()) {
+    return nodepath.join(getWindowsConfigFolder(), "config", vfsConfigFileName);
+  } else {
+    return nodepath.join(config, vfsConfigFileName);
+  }
+};
 const readVfsConfigFile = () =>
   readYmlConfigFile(getVfsConfigFilePath()) as VfsConfigFile;
 
@@ -227,7 +243,16 @@ const replaceVfsConfigFile = (ps3RomsPath: string) => {
 };
 
 const getActiveInputConfigFilePath = () => {
-  return nodepath.join(config, "input_configs", activeInputConfigFileName);
+  if (isWindows()) {
+    return nodepath.join(
+      getWindowsConfigFolder(),
+      "config",
+      "input_configs",
+      activeInputConfigFileName,
+    );
+  } else {
+    return nodepath.join(config, "input_configs", activeInputConfigFileName);
+  }
 };
 const readActiveInputConfigFile = () =>
   readYmlConfigFile(getActiveInputConfigFilePath()) as ActiveInputConfigFile;
@@ -245,12 +270,22 @@ const replaceActiveInputConfigFile = () => {
 };
 
 const getGlobalDefaultInputConfigFilePath = () => {
-  return nodepath.join(
-    config,
-    "input_configs",
-    "global",
-    globalDefaultInputConfigFileName,
-  );
+  if (isWindows()) {
+    return nodepath.join(
+      getWindowsConfigFolder(),
+      "config",
+      "input_configs",
+      "global",
+      globalDefaultInputConfigFileName,
+    );
+  } else {
+    return nodepath.join(
+      config,
+      "input_configs",
+      "global",
+      globalDefaultInputConfigFileName,
+    );
+  }
 };
 const readGlobalDefaultInputConfigFile = () =>
   readYmlConfigFile(
@@ -363,7 +398,8 @@ export const getVirtualGamepad = (
 };
 
 export const getVirtualGamepads = (): GlobalDefaultInputConfigFile => {
-  const gamepads = isSteamOs() ? sdl.joystick.devices : sdl.controller.devices;
+  const gamepads =
+    isSteamOs() || isWindows() ? sdl.joystick.devices : sdl.controller.devices;
   const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
 
   if (gamepads.length > 0) {
@@ -412,8 +448,11 @@ export const rpcs3: Application = {
     },
     categoryData,
   }) => {
-    const ps3RomsPath = nodepath.join(categoriesPath, categoryData.name);
-    const ps3RomsPathWithTrailingSeparator = `${ps3RomsPath}${ps3RomsPath.endsWith(nodepath.sep) ? "" : nodepath.sep}`;
+    const ps3RomsPath = nodepath.posix
+      .join(categoriesPath.replace(/\\/g, "/"), categoryData.name)
+      .normalize();
+    const ps3RomsPathWithTrailingSeparator = `${ps3RomsPath}${ps3RomsPath.endsWith(nodepath.posix.sep) ? "" : nodepath.posix.sep}`;
+    log("debug", "rpcs3", "ps3RomsPath", ps3RomsPathWithTrailingSeparator);
     replaceGuiConfigFile(ps3RomsPathWithTrailingSeparator);
     replaceVfsConfigFile(ps3RomsPathWithTrailingSeparator);
     replaceActiveInputConfigFile();

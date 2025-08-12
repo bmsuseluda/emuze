@@ -24,7 +24,7 @@ import {
 } from "../../../../types/gamepad.js";
 import { defaultDolphinSettings } from "./defaultDolphinSettings.js";
 import { keyboardConfig } from "./keyboardConfig.js";
-import { isSteamOs } from "../../../operationsystem.server.js";
+import { isSteamOs, isWindows } from "../../../operationsystem.server.js";
 
 const flatpakId = "org.DolphinEmu.dolphin-emu";
 const applicationId: ApplicationId = "dolphin";
@@ -103,7 +103,8 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
   ].join(EOL);
 
 export const getVirtualGamepads = () => {
-  const gamepads = isSteamOs() ? sdl.joystick.devices : sdl.controller.devices;
+  const gamepads =
+    isSteamOs() || isWindows() ? sdl.joystick.devices : sdl.controller.devices;
   const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
 
   const virtualGamepads =
