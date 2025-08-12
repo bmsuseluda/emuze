@@ -168,12 +168,17 @@ export const getButtonIndex = (
   mappingObject: SdlButtonMapping,
   buttonId: SdlButtonId,
 ): string | undefined =>
-  mappingObject[buttonId]?.replace("b", "").replace("a", "");
+  mappingObject[buttonId]
+    ?.replace("b", "")
+    .replace("a", "")
+    .replace("~", "")
+    .replace("+", "")
+    .replace("-", "");
 
 export const isAnalog = (
   mappingObject: SdlButtonMapping,
   sdlButtonId: SdlButtonId,
-) => mappingObject[sdlButtonId]?.startsWith("a");
+) => mappingObject[sdlButtonId]?.includes("a");
 
 export const getPlayerIndexArray = (gamepads: Sdl.Joystick.Device[]) => {
   let playerIndex = 0;

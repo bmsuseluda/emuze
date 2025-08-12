@@ -1,5 +1,8 @@
-import type { PhysicalGamepadButton } from "./types.js";
-import type { SdlButtonMapping } from "../../../../types/gamepad.js";
+import type { GamepadQualifier, PhysicalGamepadButton } from "./types.js";
+import type {
+  SdlButtonId,
+  SdlButtonMapping,
+} from "../../../../types/gamepad.js";
 import { getButtonIndex, isAnalog } from "../../../../types/gamepad.js";
 
 export class PhysicalGamepad {
@@ -10,6 +13,41 @@ export class PhysicalGamepad {
     this.deviceId = deviceId;
     this.mappingObject = mappingObject;
   }
+
+  getQualifierFromMapping = (
+    mappingObject: SdlButtonMapping,
+    sdlButtonId: SdlButtonId,
+  ): GamepadQualifier | undefined => {
+    const buttonMapping = mappingObject[sdlButtonId];
+
+    if (buttonMapping?.startsWith("+")) {
+      return "Hi";
+    }
+    if (buttonMapping?.startsWith("-")) {
+      return "Lo";
+    }
+    if (isAnalog(mappingObject, sdlButtonId)) {
+      return "Hi";
+    }
+    return undefined;
+  };
+
+  createButton = (
+    sdlButtonId: SdlButtonId,
+    qualifier?: GamepadQualifier,
+  ): PhysicalGamepadButton => {
+    const analog = isAnalog(this.mappingObject, sdlButtonId);
+    const mappedQualifier =
+      qualifier ||
+      this.getQualifierFromMapping(this.mappingObject, sdlButtonId);
+
+    return {
+      deviceId: this.deviceId,
+      groupId: analog ? "Axis" : "Button",
+      inputId: getButtonIndex(this.mappingObject, sdlButtonId),
+      qualifier: mappedQualifier,
+    };
+  };
 
   getDpadHatUp = (): PhysicalGamepadButton => ({
     deviceId: this.deviceId,
@@ -39,187 +77,68 @@ export class PhysicalGamepad {
     qualifier: "Hi",
   });
 
-  getDpadUp = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "dpup"),
-  });
+  getLeftStickUp = (): PhysicalGamepadButton =>
+    this.createButton("lefty", "Lo");
 
-  getDpadDown = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "dpdown"),
-  });
+  getLeftStickDown = (): PhysicalGamepadButton =>
+    this.createButton("lefty", "Hi");
 
-  getDpadLeft = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "dpleft"),
-  });
+  getLeftStickLeft = (): PhysicalGamepadButton =>
+    this.createButton("leftx", "Lo");
 
-  getDpadRight = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "dpright"),
-  });
+  getLeftStickRight = (): PhysicalGamepadButton =>
+    this.createButton("leftx", "Hi");
 
-  getLeftStickUp = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Axis",
-    inputId: getButtonIndex(this.mappingObject, "lefty"),
-    qualifier: "Lo",
-  });
+  getLeftStickClick = (): PhysicalGamepadButton =>
+    this.createButton("leftstick");
 
-  getLeftStickDown = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Axis",
-    inputId: getButtonIndex(this.mappingObject, "lefty"),
-    qualifier: "Hi",
-  });
+  getRightStickUp = (): PhysicalGamepadButton =>
+    this.createButton("righty", "Lo");
 
-  getLeftStickLeft = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Axis",
-    inputId: getButtonIndex(this.mappingObject, "leftx"),
-    qualifier: "Lo",
-  });
+  getRightStickDown = (): PhysicalGamepadButton =>
+    this.createButton("righty", "Hi");
 
-  getLeftStickRight = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Axis",
-    inputId: getButtonIndex(this.mappingObject, "leftx"),
-    qualifier: "Hi",
-  });
+  getRightStickLeft = (): PhysicalGamepadButton =>
+    this.createButton("rightx", "Lo");
 
-  getLeftStickClick = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "leftstick"),
-  });
+  getRightStickRight = (): PhysicalGamepadButton =>
+    this.createButton("rightx", "Hi");
 
-  getRightStickUp = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Axis",
-    inputId: getButtonIndex(this.mappingObject, "righty"),
-    qualifier: "Lo",
-  });
+  getRightStickClick = (): PhysicalGamepadButton =>
+    this.createButton("rightstick");
 
-  getRightStickDown = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Axis",
-    inputId: getButtonIndex(this.mappingObject, "righty"),
-    qualifier: "Hi",
-  });
+  getRightButtonUp = (): PhysicalGamepadButton => this.createButton("-righty");
 
-  getRightStickLeft = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Axis",
-    inputId: getButtonIndex(this.mappingObject, "rightx"),
-    qualifier: "Lo",
-  });
+  getRightButtonDown = (): PhysicalGamepadButton =>
+    this.createButton("+righty");
 
-  getRightStickRight = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Axis",
-    inputId: getButtonIndex(this.mappingObject, "rightx"),
-    qualifier: "Hi",
-  });
+  getRightButtonLeft = (): PhysicalGamepadButton =>
+    this.createButton("-rightx");
 
-  getRightStickClick = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "rightstick"),
-  });
+  getRightButtonRight = (): PhysicalGamepadButton =>
+    this.createButton("+rightx");
 
-  getRightButtonUp = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "-righty"),
-  });
+  getBack = (): PhysicalGamepadButton => this.createButton("back");
 
-  getRightButtonDown = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "+righty"),
-  });
+  getStart = (): PhysicalGamepadButton => this.createButton("start");
 
-  getRightButtonLeft = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "-rightx"),
-  });
+  getA = (): PhysicalGamepadButton => this.createButton("a");
 
-  getRightButtonRight = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "+rightx"),
-  });
+  getB = (): PhysicalGamepadButton => this.createButton("b");
 
-  getBack = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "back"),
-  });
+  getX = (): PhysicalGamepadButton => this.createButton("x");
 
-  getStart = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "start"),
-  });
+  getY = (): PhysicalGamepadButton => this.createButton("y");
 
-  getA = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "a"),
-  });
+  getLeftShoulder = (): PhysicalGamepadButton =>
+    this.createButton("leftshoulder");
 
-  getB = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "b"),
-  });
+  getRightShoulder = (): PhysicalGamepadButton =>
+    this.createButton("rightshoulder");
 
-  getX = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "x"),
-  });
+  getLeftTrigger = (): PhysicalGamepadButton =>
+    this.createButton("lefttrigger");
 
-  getY = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "y"),
-  });
-
-  getLeftShoulder = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "leftshoulder"),
-  });
-
-  getRightShoulder = (): PhysicalGamepadButton => ({
-    deviceId: this.deviceId,
-    groupId: "Button",
-    inputId: getButtonIndex(this.mappingObject, "rightshoulder"),
-  });
-
-  getLeftTrigger = (): PhysicalGamepadButton => {
-    const analog = isAnalog(this.mappingObject, "lefttrigger");
-    return {
-      deviceId: this.deviceId,
-      groupId: analog ? "Axis" : "Button",
-      inputId: getButtonIndex(this.mappingObject, "lefttrigger"),
-      qualifier: analog ? "Hi" : undefined,
-    };
-  };
-
-  getRightTrigger = (): PhysicalGamepadButton => {
-    const analog = isAnalog(this.mappingObject, "righttrigger");
-    return {
-      deviceId: this.deviceId,
-      groupId: analog ? "Axis" : "Button",
-      inputId: getButtonIndex(this.mappingObject, "righttrigger"),
-      qualifier: analog ? "Hi" : undefined,
-    };
-  };
+  getRightTrigger = (): PhysicalGamepadButton =>
+    this.createButton("righttrigger");
 }
