@@ -14,7 +14,7 @@ const resultPath = nodepath.join(
 
 const fetchSdlMappings = () => {
   const url =
-    "https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt";
+    "https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/refs/heads/master/gamecontrollerdb.txt";
   fetch(url).then((result) => {
     result.text().then((text) => {
       const mappings = text

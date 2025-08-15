@@ -96,9 +96,9 @@ This is the folder where your emulators are installed. It is only necessary on W
 
 ```
 emulators
-|-> ppsspp_win
+|-> mame
 |---> ...
-|---> PPSSPPWindows64.exe
+|---> mame.exe
 |---> ...
 |-> mednafen-1.32.1-win64
 |---> ...
@@ -150,11 +150,11 @@ If you use your Steam Deck on an external Monitor or TV I recommend switching to
 
 ### Roms Folder
 
-The Roms need to be grouped by their System. E.g. `Final Fantasy VII.chd` needs to be stored in a folder `Playstation`.
+The Roms need to be grouped by their System. E.g. `Final Fantasy VII.chd` needs to be stored in a folder `PlayStation`.
 
 ```
 roms
-|-> Playstation
+|-> PlayStation
 |---> Tekken 2.chd
 |---> Crash Bandicoot.chd
 |---> Final Fantasy VII.chd
