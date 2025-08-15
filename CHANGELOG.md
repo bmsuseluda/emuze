@@ -2,7 +2,7 @@
 
 ## 0.56.0
 
-In this release i fully reworked the gamepad integration in emuze. In the past i used the Web Gamepad Api implementation of Chromium. Sadly i faced a lot of bugs and limitations with this implementation. Therefore i looked for an alternative for a while and finally decided for SDL which is used by most emulators too these days. With this a lot more gamepads are supported and i could close all controller related bugs i had stumbled upon. On top of it the implementation is a lot simpler and more straight forward.
+In this release i fully reworked the gamepad integration in emuze. In the past i used the Web Gamepad Api implementation of Chromium. Sadly i faced a lot of bugs and limitations with this implementation. Therefore i looked for an alternative for a while and finally decided for SDL which is used by most emulators too these days. With this a lot more gamepads are supported and i could close all controller related bugs i had stumbled upon. On top of it the implementation is a lot simpler and more straight forward. A big thank you to [kmamal](https://github.com/kmamal) for providing sdl bindings for NodeJS: [SDL](https://github.com/kmamal/node-sdl).
 
 Besides this i bundled and pre configured PPSSPP and RPCS3.
 26 of the 33 supported systems are pre configured and 23 of them are bundled now🥳
