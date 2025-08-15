@@ -2,10 +2,9 @@
 
 ## 0.56.0
 
-This release is all about gamepad controls. In the past i used the Web Gamepad Api to provide
+In this release i fully reworked the gamepad integration in emuze. In the past i used the Web Gamepad Api implementation of Chromium. Sadly i faced a lot of bugs and limitations with this implementation. Therefore i looked for an alternative for a while and finally decided for SDL which is used by most emulators too these days. With this a lot more gamepads are supported and i could close all controller related bugs i had stumbled upon. On top of it the implementation is a lot simpler and more straight forward.
 
-
-
+Besides this i bundled and pre configured PPSSPP and RPCS3.
 26 of the 33 supported systems are pre configured and 23 of them are bundled now🥳
 
 Please let me know what you think of it in the [emuze discord](https://discord.gg/tCzK7kc6Y4).
@@ -17,8 +16,8 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - pre configure PPSSPP
 - map keyboard if no controller is connected on PPSSPP
 - to play docked with your Steam Deck the Steam Deck Controls will be configured as the last controller in all pre configured emulators
-- buttons on Nintendo controllers in emuze are now switched, so `a` confirms and triggers an action and `b` cancels  and goes back
-  - therefore closing a game with a nintendo gamepad will be done with `select + a`
+- buttons on Nintendo controllers in emuze are now switched, so `a` confirms and triggers an action and `b` cancels and goes back
+  - therefore closing a game with a nintendo controller will be done with `select + a`
 - set ares as the default emulator for PC Engine SuperGrafx
 
 ### 💫 Updates / Bundles
@@ -330,7 +329,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 
 ### 💥 Features
 - add support for ScummVM
-- add support for Playstation 3
+- add support for PlayStation 3
 - add alpha support for dos (based on a [whitelist](https://github.com/bmsuseluda/emuze/blob/main/app/server/nameMappings/dos.json) for now)
 
 ### 🪲 Bug Fixes
