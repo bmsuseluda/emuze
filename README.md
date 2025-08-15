@@ -3,19 +3,21 @@
 </p>
 
 
-💥 [Features](#-features) | 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) | 🚀 [Getting Started](#-getting-started) | 🪄 [Metadata](#-metadata) | 🚑️ [Support](#%EF%B8%8F-support)
+💥 [Features](#-features) | 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) | 🚀 [Getting Started](#-getting-started) | 🚑️ [Support](#%EF%B8%8F-support)
 
-My main goal for emuze is to have a emulation launcher that is as fast and simple as possible. With this you don't have to configure every emulator and fine tune metadata of your roms.
-If your roms are named correctly, a click on the import button should import your emulators and roms altogether and therefore no configuration is necessary.
+emuze is a emulation frontend designed to simplify your retro gaming experience.
+It automates the configuration of each emulator, including seamless gamepad integration and automatic import of games along with their metadata. With its console-like interface and intuitive controls, emuze lets you focus on enjoying your retro games, just like you would on a gaming console.
+
+It is not there yet for every system and emulator, please have a look at 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) for more details.
 
 ## 💥 Features
 
-- ⚡️ Fast and responsive UI
-- 🚂 Import all your emulators and roms with a click of a button
-- 🪄 Fetches Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
-- 🎮️ Gamepad support
+- ⚡️ Intuitive console-like interface
+- 🚂 Import all your roms with a click of a button
+- 🪄 Provides Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
+- 🎮️ Seamless gamepad integration for most emulators
+- 📦️ Bundles most emulators
 - 💻️ Windows, Linux and Steam Deck support
-- 🔧 Can install missing emulators (Linux only)
 - 💫 Updates itself
 
 <br>
@@ -33,51 +35,92 @@ The following systems are supported:
 
 | System | Emulator | Pre Configured | Bundled | BIOS needed |
 | ------ | -------- | -------------- | ------- | ----------- |
-| Sega Master System | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
-| Sega Game Gear | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
-| Sega Mega Drive | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
-| Sega 32X | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | Yes | 
-| Sega CD | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | Yes | 
-| Sega Saturn | [Mednafen](https://mednafen.github.io/) | Yes | No | Yes | 
-| Sega Dreamcast | [Flycast](https://github.com/flyinghead/flycast) | No | No | No | 
-| Nintendo Entertainment System | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
-| Super Nintendo Entertainment System | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
-| Nintendo Game Boy | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
-| Nintendo Game Boy Color | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
-| Nintendo Game Boy Advance | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | Yes | 
-| Nintendo DS | [MelonDS](https://github.com/melonDS-emu/melonDS) | No | No | No | 
-| Nintendo 3DS | [Azahar](https://github.com/azahar-emu/azahar) | Yes | Yes | No | 
-| Nintendo 64 | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
-| Nintendo Gamecube | [Dolphin](https://github.com/dolphin-emu/dolphin) | Yes | Yes | No | 
-| Nintendo Wii | [Dolphin](https://github.com/dolphin-emu/dolphin) | Yes | Yes | No | 
-| Nintendo Wii U | [Cemu](https://github.com/cemu-project/Cemu) | No | No | Yes | 
-| Nintendo Switch | [Ryujinx](https://git.ryujinx.app/ryubing/ryujinx) | Yes | Yes | Yes | 
-| Sony PlayStation | [DuckStation (Legacy)](https://github.com/stenzek/duckstation) | Yes | Yes | Yes | 
-| Sony PlayStation 2 | [PCSX2](https://github.com/PCSX2/pcsx2) | Yes | Yes | Yes | 
-| Sony PlayStation 3 | [RPCS3](https://github.com/RPCS3/rpcs3) | No | No | Yes | 
-| Sony PlayStation Portable | [PPSSPP](https://github.com/hrydgard/ppsspp) | No | No | No | 
-| PC Engine | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | No | 
-| PC Engine CD | [Mednafen](https://mednafen.github.io/) | Yes | No | Yes | 
-| PC Engine SuperGrafx | [Mednafen](https://mednafen.github.io/) | Yes | No | Yes | 
-| Arcade | [Mame](https://github.com/mamedev/mame) | No | No | No | 
-| Neo Geo | [Mame](https://github.com/mamedev/mame) | No | No | No | 
-| Neo Geo CD | [Mame](https://github.com/mamedev/mame) | No | No | No | 
-| Neo Geo Pocket | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | Yes | 
-| Neo Geo Pocket Color | [ares](https://github.com/ares-emulator/ares) | Yes | Yes | Yes | 
-| Scumm | [ScummVM](https://github.com/scummvm/scummvm) | Yes | No | No | 
-| Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json)) | [DOSBox-Staging](https://github.com/dosbox-staging/dosbox-staging) | No | No | No | 
+| Sega Master System | [ares](https://github.com/ares-emulator/ares) | Yes | v145 | No | 
+| Sega Game Gear | [ares](https://github.com/ares-emulator/ares) | Yes | v145 | No | 
+| Sega Mega Drive | [ares](https://github.com/ares-emulator/ares) | Yes | v145 | No | 
+| Sega 32X | [ares](https://github.com/ares-emulator/ares) | Yes | v145 | Yes | 
+| Sega CD | [ares](https://github.com/ares-emulator/ares) | Yes | v145 | Yes | 
+| Sega Saturn | [Mednafen](https://mednafen.github.io/) | Yes | - | Yes | 
+| Sega Dreamcast | [Flycast](https://github.com/flyinghead/flycast) | No | - | No | 
+| Nintendo Entertainment System | [ares](https://github.com/ares-emulator/ares) | Yes | v145 | No | 
+| Super Nintendo Entertainment System | [ares](https://github.com/ares-emulator/ares) | Yes | v145 | No | 
+| Nintendo Game Boy | [ares](https://github.com/ares-emulator/ares) | Yes | v145 | No | 
+| Nintendo Game Boy Color | [ares](https://github.com/ares-emulator/ares) | Yes | v145 | No | 
+| Nintendo Game Boy Advance | [ares](https://github.com/ares-emulator/ares) | Yes | v145 | Yes | 
+| Nintendo DS | [MelonDS](https://github.com/melonDS-emu/melonDS) | No | - | No | 
+| Nintendo 3DS | [Azahar](https://github.com/azahar-emu/azahar) | Yes | v2122.1 | No | 
+| Nintendo 64 | [ares](https://github.com/ares-emulator/ares) | Yes | v145 | No | 
+| Nintendo Gamecube | [Dolphin](https://github.com/dolphin-emu/dolphin) | Yes | v2506a | No | 
+| Nintendo Wii | [Dolphin](https://github.com/dolphin-emu/dolphin) | Yes | v2506a | No | 
+| Nintendo Wii U | [Cemu](https://github.com/cemu-project/Cemu) | No | - | Yes | 
+| Nintendo Switch | [Ryujinx](https://git.ryujinx.app/ryubing/ryujinx) | Yes | v1.3.2 | Yes | 
+| Sony PlayStation | [DuckStation (Legacy)](https://github.com/stenzek/duckstation) | Yes | v0.1-7371 | Yes | 
+| Sony PlayStation 2 | [PCSX2](https://github.com/PCSX2/pcsx2) | Yes | v2.4.0 | Yes | 
+| Sony PlayStation 3 | [RPCS3](https://github.com/RPCS3/rpcs3) | Yes | v0.0.37 | Yes | 
+| Sony PlayStation Portable | [PPSSPP](https://github.com/hrydgard/ppsspp) | Yes | v1.19.3 | No | 
+| PC Engine | [ares](https://github.com/ares-emulator/ares) | Yes | v145 | No | 
+| PC Engine CD | [Mednafen](https://mednafen.github.io/) | Yes | - | Yes | 
+| PC Engine SuperGrafx | [ares](https://github.com/ares-emulator/ares) | Yes | v145 | Yes | 
+| Arcade | [Mame](https://github.com/mamedev/mame) | No | - | No | 
+| Neo Geo | [Mame](https://github.com/mamedev/mame) | No | - | No | 
+| Neo Geo CD | [Mame](https://github.com/mamedev/mame) | No | - | No | 
+| Neo Geo Pocket | [ares](https://github.com/ares-emulator/ares) | Yes | v145 | Yes | 
+| Neo Geo Pocket Color | [ares](https://github.com/ares-emulator/ares) | Yes | v145 | Yes | 
+| Scumm | [ScummVM](https://github.com/scummvm/scummvm) | Yes | - | No | 
+| Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json)) | [DOSBox-Staging](https://github.com/dosbox-staging/dosbox-staging) | No | - | No | 
 
 > [!IMPORTANT]  
 > ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
 
 ### Pre Configured
 If a System is pre configured, all connected gamepads will be configured for the specific Emulator.
+If there are no gamepads connected, the keyboard will be configured instead.
 
-The following Hotkeys are set:
-- Open Emulator Menu (if supported from emulator): F2
-- Save State: F1
-- Load State: F3
-- Fullscreen: F11
+<details>
+  <summary>Keyboard Mapping</summary>
+
+<br>
+
+| Button | Key |
+| ------ | --- |
+| dpadUp | T | 
+| dpadDown | G | 
+| dpadLeft | F | 
+| dpadRight | H | 
+| a | J | 
+| b | K | 
+| x | U | 
+| y | I | 
+| back | BACKSPACE | 
+| start | RETURN | 
+| leftStick | X | 
+| rightStick | RSHIFT | 
+| leftShoulder | L | 
+| rightShoulder | O | 
+| leftTrigger | 8 | 
+| rightTrigger | 9 | 
+| leftStickUp | W | 
+| leftStickDown | S | 
+| leftStickLeft | A | 
+| leftStickRight | D | 
+| rightStickUp | UP | 
+| rightStickDown | DOWN | 
+| rightStickLeft | LEFT | 
+| rightStickRight | RIGHT | 
+
+</details>
+<br>
+
+The following Hotkeys are set as well:
+- Open Emulator Menu (if supported from emulator): `F2`
+- Save State: `F1`
+- Load State: `F3`
+- Fullscreen: `F11`
+
+You can close a game via
+- Xbox: `back + a`
+- PlayStation: `select + x`
+- Nintendo: `select + a`
 
 ### Bundled
 If a system is bundled, the respective emulator is provided with emuze in a specific version. Therefore you do not need to provide the emulator on your own.
@@ -89,7 +132,7 @@ Some emulators need a BIOS or firmware to run. Please check the documentation of
 
 ### Windows
 
-[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.55.0/emuze-Setup-0.55.0.exe) the latest Version of emuze and install it.
+[Download](https://github.com/bmsuseluda/emuze/releases/download/v0.56.0/emuze-Setup-0.56.0.exe) the latest Version of emuze and install it.
 
 If you start emuze for the first time, it asks for the following folders to work:
 
@@ -104,9 +147,9 @@ This is the folder where your emulators are installed. It is only necessary on W
 
 ```
 emulators
-|-> ppsspp_win
+|-> mame
 |---> ...
-|---> PPSSPPWindows64.exe
+|---> mame.exe
 |---> ...
 |-> mednafen-1.32.1-win64
 |---> ...
@@ -116,10 +159,10 @@ emulators
 
 ### Linux
 
-For now emuze is only released as an AppImage. Your Linux distribution needs to support Flatpaks.
-All emulators, not bundled, need to be installed via flatpak but emuze can do this for you.
+For now emuze is only released as an AppImage.
+All emulators, not bundled, need to be installed via flatpak.
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.55.0/emuze-0.55.0.AppImage) the latest Version of emuze
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.56.0/emuze-0.56.0.AppImage) the latest Version of emuze
 
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
@@ -129,7 +172,7 @@ All emulators, not bundled, need to be installed via flatpak but emuze can do th
 For now emuze is only released as an AppImage.
 
 1) Switch to Desktop
-2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.55.0/emuze-0.55.0.AppImage) the latest Version of emuze
+2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.56.0/emuze-0.56.0.AppImage) the latest Version of emuze
 
 3) Mark the AppImage as executable and start emuze
 4) Choose the [folder where your Roms are located](#roms-folder)
@@ -140,8 +183,11 @@ For now emuze is only released as an AppImage.
 
 There is a Steam Input Profile with the name `emuze`, which has some Hotkeys pre configured on the back pedals of the Steam Deck.
 
-> [!IMPORTANT]
-> Steam Input can result in gamepads not being able to be used correctly in some emulators. Therefore, I recommend disabling Steam Input for all gamepads except the Steam Deck controller.
+- `L4`: Save State
+- `L5`: Load State
+- `R4`: Open Emulator Menu (if supported from emulator) or Fullscreen
+- `R5`: Left Mouse Click
+- `Right Trackpad`: Mouse
 
 #### SteamGridDB
 
@@ -153,11 +199,11 @@ If you use your Steam Deck on an external Monitor or TV I recommend switching to
 
 ### Roms Folder
 
-The Roms need to be grouped by their System. E.g. `Final Fantasy VII.chd` needs to be stored in a folder `Playstation`.
+The Roms need to be grouped by their System. E.g. `Final Fantasy VII.chd` needs to be stored in a folder `PlayStation`.
 
 ```
 roms
-|-> Playstation
+|-> PlayStation
 |---> Tekken 2.chd
 |---> Crash Bandicoot.chd
 |---> Final Fantasy VII.chd
@@ -167,31 +213,6 @@ roms
 |---> Terranigma.sfc
 |---> ...
 ```
-
-## 🪄 Metadata
-
-Metadata provides additional information about your games, e.g.
-- Cover art
-- Description
-- Genre
-- ...
-
-> [!NOTE]
-> Right now, emuze only fetches Cover art for your games.
-
-Metadata will be fetched from [igdb](https://www.igdb.com). emuze crawls the name and alternative name of a game filtered by the specific system.
-The Search is case-insensitive.
-
-> [!TIP]
-> [igdb](https://www.igdb.com) is a community driven open source database for game information. If there is something missing or wrong, please help and correct it there.
-
-### Games with multiple Discs
-
-If you have a game with multiple discs, like `Final Fantasy VII`, the file name for the first disc would be `Final Fantasy VII (Disc 1).chd`.
-
-### Games with multiple Versions (e.g. Regions)
-
-If you have multiple versions of a game you can specify them in brackets, e.g. the file name for the japanese version of `Castlevania` would be `Castlevania (J).nes`.
 
 ## 🔧 Commandline Options
 
