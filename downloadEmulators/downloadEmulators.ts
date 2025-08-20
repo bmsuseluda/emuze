@@ -27,6 +27,7 @@ export const emulatorVersions = {
   azahar: "2122.1",
   dolphin: "2506a",
   duckstation: "0.1-7371",
+  flycast: "2.5",
   pcsx2: "2.4.0",
   ppsspp: "1.19.3",
   rpcs3: "0.0.37",
@@ -42,13 +43,17 @@ const emulatorDownloads = {
     Linux: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions["azahar"]}/Azahar-Enhanced-${emulatorVersions["azahar"]}-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/azahar-emu/azahar/releases/download/${emulatorVersions["azahar"]}/azahar-${emulatorVersions["azahar"]}-windows-msys2.zip`,
   },
+  dolphin: {
+    Linux: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions["dolphin"]}%402025-07-23_1753271407/Dolphin_Emulator-${emulatorVersions["dolphin"]}-anylinux.dwarfs-x86_64.AppImage`,
+    Windows: `https://dl.dolphin-emu.org/releases/${emulatorVersions["dolphin"]}/dolphin-${emulatorVersions["dolphin"]}-x64.7z`,
+  },
   duckstation: {
     Linux: `https://github.com/stenzek/duckstation/releases/download/v${emulatorVersions["duckstation"]}/DuckStation-x64.AppImage`,
     Windows: `https://github.com/stenzek/duckstation/releases/download/v${emulatorVersions["duckstation"]}/duckstation-windows-x64-release.zip`,
   },
-  dolphin: {
-    Linux: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions["dolphin"]}%402025-07-23_1753271407/Dolphin_Emulator-${emulatorVersions["dolphin"]}-anylinux.dwarfs-x86_64.AppImage`,
-    Windows: `https://dl.dolphin-emu.org/releases/${emulatorVersions["dolphin"]}/dolphin-${emulatorVersions["dolphin"]}-x64.7z`,
+  flycast: {
+    Linux: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions["flycast"]}/flycast-x86_64.AppImage`,
+    Windows: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions["flycast"]}/flycast-win64-${emulatorVersions["flycast"]}.zip`,
   },
   pcsx2: {
     Linux: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions["pcsx2"]}/pcsx2-v${emulatorVersions["pcsx2"]}-linux-appimage-x64-Qt.AppImage`,

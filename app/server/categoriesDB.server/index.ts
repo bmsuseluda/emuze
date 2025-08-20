@@ -1,6 +1,5 @@
 import {
   cemu,
-  flycast,
   lime3ds,
   melonds,
   mgba,
@@ -40,6 +39,7 @@ import {
   isLime3dsFor3ds,
 } from "../applicationsDB.server/applications/azahar/index.js";
 import { ppsspp } from "../applicationsDB.server/applications/ppsspp/index.js";
+import { flycast } from "../applicationsDB.server/applications/flycast/index.js";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",
