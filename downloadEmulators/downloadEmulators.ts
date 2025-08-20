@@ -32,6 +32,7 @@ export const emulatorVersions = {
   ppsspp: "1.19.3",
   rpcs3: "0.0.37",
   ryujinx: "1.3.2",
+  xemu: "0.8.96",
 } satisfies Partial<Record<ApplicationId, string>>;
 
 const emulatorDownloads = {
@@ -70,6 +71,10 @@ const emulatorDownloads = {
   ryujinx: {
     Linux: `https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/${emulatorVersions["ryujinx"]}/ryujinx-${emulatorVersions["ryujinx"]}-x64.AppImage`,
     Windows: `https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/${emulatorVersions["ryujinx"]}/ryujinx-${emulatorVersions["ryujinx"]}-win_x64.zip`,
+  },
+  xemu: {
+    Linux: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions["xemu"]}/xemu-v${emulatorVersions["xemu"]}-x86_64.AppImage`,
+    Windows: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions["xemu"]}/xemu-win-x86_64-release.zip`,
   },
 } satisfies Partial<EmulatorDownloads>;
 
