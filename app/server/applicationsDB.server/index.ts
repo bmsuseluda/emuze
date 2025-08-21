@@ -23,11 +23,12 @@ import {
 } from "./applications/mednafen/index.js";
 import { azahar } from "./applications/azahar/index.js";
 import { ppsspp } from "./applications/ppsspp/index.js";
+import { flycast } from "./applications/flycast/index.js";
 
 export const lime3ds: Application = {
   id: "lime3ds",
   name: "Lime3DS",
-  fileExtensions: [".cci"],
+  fileExtensions: [".3ds"],
   flatpakId: "io.github.lime3ds.Lime3DS",
 };
 
@@ -100,25 +101,6 @@ export const mgba: Application = {
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("--fullscreen");
-    }
-    return optionParams;
-  },
-};
-
-export const flycast: Application = {
-  id: "flycast",
-  name: "Flycast",
-  fileExtensions: [".cue", ".chd", ".gdi", ".cdi"],
-  flatpakId: "org.flycast.Flycast",
-  createOptionParams: ({
-    settings: {
-      appearance: { fullscreen },
-    },
-  }) => {
-    const optionParams = [];
-    if (fullscreen) {
-      optionParams.push("--config");
-      optionParams.push("window:fullscreen=yes");
     }
     return optionParams;
   },

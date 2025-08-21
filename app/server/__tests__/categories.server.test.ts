@@ -19,9 +19,9 @@ import {
 } from "../__testData__/category.js";
 import { general } from "../__testData__/general.js";
 import { fetchMetaDataFromDB } from "../igdb.server.js";
-import { lime3ds } from "../applicationsDB.server/index.js";
 import { mednafen } from "../applicationsDB.server/applications/mednafen/index.js";
 import { entriesPath } from "../categoryDataCache.server.js";
+import { azahar } from "../applicationsDB.server/applications/azahar/index.js";
 
 vi.mock("@kmamal/sdl");
 vi.mock("../readWriteData.server");
@@ -62,7 +62,7 @@ describe("categories.server", () => {
       when(readFilenames, { times: 1 })
         .calledWith({
           path: createCategoryPath(nintendo3ds.name),
-          fileExtensions: lime3ds.fileExtensions,
+          fileExtensions: azahar.fileExtensions,
         })
         .thenReturn([
           createAbsoluteEntryPath(nintendo3ds.name, metroidsamusreturns.path),

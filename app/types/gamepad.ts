@@ -181,16 +181,16 @@ export const isAnalog = (
 ) => mappingObject[sdlButtonId]?.includes("a");
 
 export const getPlayerIndexArray = (gamepads: Sdl.Joystick.Device[]) => {
-  let playerIndex = 0;
   const playerIndexArray: number[] = [];
 
+  const gamepadsSorted = gamepads
+    .toSorted(sortGamecubeLast)
+    .toSorted(sortSteamDeckLast);
+
   gamepads.forEach((gamepad) => {
-    if (isSteamDeckController(gamepad)) {
-      playerIndexArray.push(gamepads.length - 1);
-    } else {
-      playerIndexArray.push(playerIndex);
-      playerIndex++;
-    }
+    playerIndexArray.push(
+      gamepadsSorted.findIndex((gamepadSorted) => gamepad === gamepadSorted),
+    );
   });
 
   return playerIndexArray;
@@ -304,3 +304,35 @@ export const convertToJoystick = (
   ...controller,
   type: "gamecontroller",
 });
+
+export const sortLast = <T>(
+  a: T,
+  b: T,
+  shouldBeLast: (element: T) => boolean,
+) => {
+  const aShouldBeLast = shouldBeLast(a);
+  const bShouldBeLast = shouldBeLast(b);
+  if (aShouldBeLast === bShouldBeLast) {
+    return 0;
+  }
+  if (!aShouldBeLast && bShouldBeLast) {
+    return -1;
+  }
+  return 1;
+};
+
+/**
+ * If one of the gamepads is the Steam Deck, it should be positioned last.
+ */
+export const sortSteamDeckLast = (
+  a: Sdl.Joystick.Device,
+  b: Sdl.Joystick.Device,
+) => sortLast(a, b, isSteamDeckController);
+
+/**
+ * If one of the gamepads is a GameCube Controller, it should be positioned last.
+ */
+export const sortGamecubeLast = (
+  a: Sdl.Joystick.Device,
+  b: Sdl.Joystick.Device,
+) => sortLast(a.name!, b.name!, isGamecubeController);
