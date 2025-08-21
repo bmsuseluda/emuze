@@ -11,6 +11,7 @@ import {
   readdirSync,
   renameSync,
   rmSync,
+  statSync,
 } from "node:fs";
 import _7z from "7zip-min";
 import { moveSync } from "fs-extra/esm";
@@ -134,12 +135,12 @@ const downloadAndExtract7z = (
   downloadFile(url, zipFilePath, () => {
     _7z.unpack(zipFilePath, outputFolder, (error) => {
       if (!error) {
+        rmSync(zipFilePath, { recursive: true, force: true });
+        removeRootFolderIfNecessary(outputFolder);
         if (!existsSync(fileToCheck)) {
           console.error(`${fileToCheck} does not exist`);
           process.exit(1);
         }
-        rmSync(zipFilePath, { recursive: true, force: true });
-        removeRootFolderIfNecessary(outputFolder);
         console.log(`${url} extracted`);
       }
     });
@@ -191,17 +192,20 @@ const removeRootFolderIfNecessary = (folder: string) => {
   const files = readdirSync(folder);
 
   if (files.length === 1) {
-    const tempFolder = join(folder, "..", `${basename(folder)}TempFolder`);
+    const fileStats = statSync(join(folder, files[0]));
+    if (fileStats.isDirectory()) {
+      const tempFolder = join(folder, "..", `${basename(folder)}TempFolder`);
 
-    // rename target folder to temp folder
-    renameSync(folder, tempFolder);
+      // rename target folder to temp folder
+      renameSync(folder, tempFolder);
 
-    // move and rename root folder to target folder
-    const rootFolder = join(tempFolder, files[0]);
-    moveSync(rootFolder, folder);
+      // move and rename root folder to target folder
+      const rootFolder = join(tempFolder, files[0]);
+      moveSync(rootFolder, folder);
 
-    // remove temp folder
-    rmSync(tempFolder, { recursive: true, force: true });
+      // remove temp folder
+      rmSync(tempFolder, { recursive: true, force: true });
+    }
   }
 };
 
@@ -230,6 +234,8 @@ const downloadAndExtract = (
           console.log(`Download of ${url} complete`);
           console.log(`${url} extracted`);
 
+          removeRootFolderIfNecessary(outputFolder);
+
           if (!existsSync(fileToCheck)) {
             console.error(`${fileToCheck} does not exist`);
             process.exit(1);
@@ -238,7 +244,6 @@ const downloadAndExtract = (
           console.error(`Error during extraction: ${err}`);
           process.exit(1);
         }
-        removeRootFolderIfNecessary(outputFolder);
       });
     })
     .on("error", (err) => {
