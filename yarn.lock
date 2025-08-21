@@ -19,12 +19,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"7zip-min@npm:1.4.5":
-  version: 1.4.5
-  resolution: "7zip-min@npm:1.4.5"
+"7zip-min@npm:2.1.0":
+  version: 2.1.0
+  resolution: "7zip-min@npm:2.1.0"
   dependencies:
     7zip-bin: "npm:5.1.1"
-  checksum: 10/963a45c8a72d4e0f0980ebe2792dc22982b0af88c3c35271a2a6dc6ea7ad517adc5e21abea476019c6607580cf77c17ab01492505fd911476570736536de8ece
+  checksum: 10/37cbdf5b36bb2291ec5643cb5075814370ec8d3064f91cac82317699b2cecfea8050ac1e7d280a8a3bb37955deb14af7d8bcc2a2e655ee3e393ac6404e389fd6
   languageName: node
   linkType: hard
 
@@ -8360,7 +8360,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "emuze@workspace:."
   dependencies:
-    7zip-min: "npm:1.4.5"
+    7zip-min: "npm:2.1.0"
     "@commitlint/cli": "npm:19.8.1"
     "@commitlint/config-conventional": "npm:19.8.1"
     "@kmamal/sdl": "npm:^0.11.12"

@@ -134,12 +134,13 @@ const downloadAndExtract7z = (
   downloadFile(url, zipFilePath, () => {
     _7z.unpack(zipFilePath, outputFolder, (error) => {
       if (!error) {
+        if (!existsSync(fileToCheck)) {
+          console.error(`${fileToCheck} does not exist`);
+          process.exit(1);
+        }
         rmSync(zipFilePath, { recursive: true, force: true });
         removeRootFolderIfNecessary(outputFolder);
         console.log(`${url} extracted`);
-      } else if (!existsSync(fileToCheck)) {
-        console.error(`${fileToCheck} does not exist`);
-        process.exit(1);
       }
     });
   });
@@ -228,7 +229,6 @@ const downloadAndExtract = (
           });
           console.log(`Download of ${url} complete`);
           console.log(`${url} extracted`);
-          removeRootFolderIfNecessary(outputFolder);
 
           if (!existsSync(fileToCheck)) {
             console.error(`${fileToCheck} does not exist`);
@@ -238,6 +238,7 @@ const downloadAndExtract = (
           console.error(`Error during extraction: ${err}`);
           process.exit(1);
         }
+        removeRootFolderIfNecessary(outputFolder);
       });
     })
     .on("error", (err) => {
