@@ -340,9 +340,8 @@ export const scumm: Category = {
 
 export const xbox: Category = {
   id: "xbox",
-  names: ["XBOX", "Microsoft XBOX"],
-  // TODO: find out igdb id
-  igdbPlatformIds: [],
+  names: ["Microsoft XBOX", "XBOX"],
+  igdbPlatformIds: [11],
   application: xemu,
   hasAnalogStick: true,
 };

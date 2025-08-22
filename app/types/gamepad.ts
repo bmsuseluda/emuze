@@ -336,3 +336,6 @@ export const sortGamecubeLast = (
   a: Sdl.Joystick.Device,
   b: Sdl.Joystick.Device,
 ) => sortLast(a.name!, b.name!, isGamecubeController);
+
+export const removeVendorFromGuid = (guid: string): string =>
+  guid.substring(0, 4) + "0000" + guid.substring(8);
