@@ -1,3 +1,5 @@
+import type { EmuzeButtonId } from "../../../../types/gamepad.js";
+
 export type AresButtonId =
   | "Pad.Up"
   | "Pad.Down"
@@ -24,6 +26,33 @@ export type AresButtonId =
   | "R-Left"
   | "R-Right"
   | "Rumble";
+
+export const aresButtonIds = {
+  dpadUp: "Pad.Up",
+  dpadDown: "Pad.Down",
+  dpadLeft: "Pad.Left",
+  dpadRight: "Pad.Right",
+  back: "Select",
+  start: "Start",
+  a: "A..South",
+  b: "B..East",
+  x: "X..West",
+  y: "Y..North",
+  leftShoulder: "L-Bumper",
+  rightShoulder: "R-Bumper",
+  leftTrigger: "L-Trigger",
+  rightTrigger: "R-Trigger",
+  leftStick: "L-Stick..Click",
+  rightStick: "R-Stick..Click",
+  leftStickUp: "L-Up",
+  leftStickDown: "L-Down",
+  leftStickLeft: "L-Left",
+  leftStickRight: "L-Right",
+  rightStickUp: "R-Up",
+  rightStickDown: "R-Down",
+  rightStickLeft: "R-Left",
+  rightStickRight: "R-Right",
+} satisfies Partial<Record<EmuzeButtonId, AresButtonId>>;
 
 export type GamepadGroupId = "Axis" | "HAT" | "Button";
 export type GamepadQualifier = "Hi" | "Lo";

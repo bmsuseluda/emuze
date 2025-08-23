@@ -67,15 +67,17 @@ const readKeyboardConfigFile = (filePath: string) => {
 };
 
 const getKeyboardButtonMappings = (): ParamToReplace[] =>
-  Object.entries(flycastButtonIds).map(([buttonId, { id, bindIndex }]) => {
-    const sdlScancodeName: Sdl.Keyboard.ScancodeNames =
-      keyboardMapping[buttonId as EmuzeButtonId];
-    const sdlScancode = sdl.keyboard.SCANCODE[sdlScancodeName];
+  Object.entries(flycastButtonIds).map(
+    ([sdlBttonId, { id: flycastButtonId, bindIndex }]) => {
+      const sdlScancodeName: Sdl.Keyboard.ScancodeNames =
+        keyboardMapping[sdlBttonId as EmuzeButtonId];
+      const sdlScancode = sdl.keyboard.SCANCODE[sdlScancodeName];
 
-    return {
-      keyValue: `bind${bindIndex} = ${sdlScancode}:${id}`,
-    };
-  });
+      return {
+        keyValue: `bind${bindIndex} = ${sdlScancode}:${flycastButtonId}`,
+      };
+    },
+  );
 
 const replaceKeyboardDigitalConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[digital]", [

@@ -117,21 +117,18 @@ const xemuButtonIds = {
 } satisfies Partial<Record<EmuzeButtonId, string>>;
 
 const getKeyboardButtonMappings = (): ParamToReplace[] =>
-  Object.entries(xemuButtonIds).map(([buttonId, id]) => {
+  Object.entries(xemuButtonIds).map(([sdlButtonId, xemuButtonId]) => {
     const sdlScancodeName: Sdl.Keyboard.ScancodeNames =
-      keyboardMapping[buttonId as EmuzeButtonId];
+      keyboardMapping[sdlButtonId as EmuzeButtonId];
     const sdlScancode = sdl.keyboard.SCANCODE[sdlScancodeName];
 
     return {
-      keyValue: `${id} = ${sdlScancode}`,
+      keyValue: `${xemuButtonId} = ${sdlScancode}`,
     };
   });
 
 const replaceKeyboardControllerConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[input.keyboard_controller_scancode_map]", [
-    {
-      keyValue: `a = 20`,
-    },
     ...getKeyboardButtonMappings(),
   ]);
 

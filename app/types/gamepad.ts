@@ -71,6 +71,14 @@ export const keyboardMapping = {
   rightStickRight: "RIGHT",
 } satisfies Record<EmuzeButtonId, Sdl.Keyboard.ScancodeNames>;
 
+export const keyboardMappingNintendo = {
+  ...keyboardMapping,
+  a: keyboardMapping.b,
+  b: keyboardMapping.a,
+  x: keyboardMapping.y,
+  y: keyboardMapping.x,
+} satisfies Record<EmuzeButtonId, Sdl.Keyboard.ScancodeNames>;
+
 export const getGamepadButtonEventName = (buttonId: ButtonId) =>
   `gamepadonbutton${buttonId.toLowerCase()}press`;
 

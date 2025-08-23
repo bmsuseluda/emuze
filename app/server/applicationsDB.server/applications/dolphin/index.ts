@@ -25,6 +25,7 @@ import {
 import { defaultDolphinSettings } from "./defaultDolphinSettings.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import { isSteamOs, isWindows } from "../../../operationsystem.server.js";
+import type { DolphinButtonId } from "./types.js";
 
 const flatpakId = "org.DolphinEmu.dolphin-emu";
 const applicationId: ApplicationId = "dolphin";
@@ -50,6 +51,32 @@ const hotkeysConfigFileName = nodepath.join(
   "Hotkeys.ini",
 );
 
+const getDolphinButtonIds = (isGamecubeController: boolean) =>
+  ({
+    "Buttons/A": `${isGamecubeController ? "`Button S`" : "`Button E`"}`,
+    "Buttons/B": `${isGamecubeController ? "`Button W`" : "`Button S`"}`,
+    "Buttons/X": `${isGamecubeController ? "`Button E`" : "`Button N`"}`,
+    "Buttons/Y": `${isGamecubeController ? "`Button N`" : "`Button W` | `Shoulder L`"}`,
+    "Buttons/Z": `\`Shoulder R\``,
+    "Buttons/Start": `Start`,
+    "Main Stick/Up": `\`Left Y+\``,
+    "Main Stick/Down": `\`Left Y-\``,
+    "Main Stick/Left": `\`Left X-\``,
+    "Main Stick/Right": `\`Left X+\``,
+    "C-Stick/Up": `\`Right Y+\``,
+    "C-Stick/Down": `\`Right Y-\``,
+    "C-Stick/Left": `\`Right X-\``,
+    "C-Stick/Right": `\`Right X+\``,
+    "Triggers/L": `\`Trigger L\``,
+    "Triggers/R": `\`Trigger R\``,
+    "D-Pad/Up": `\`Pad N\``,
+    "D-Pad/Down": `\`Pad S\``,
+    "D-Pad/Left": `\`Pad W\``,
+    "D-Pad/Right": `\`Pad E\``,
+    "Triggers/L-Analog": `\`Trigger L\``,
+    "Triggers/R-Analog": `\`Trigger R\``,
+  }) satisfies Partial<Record<DolphinButtonId, string>>;
+
 export const getVirtualGamepad =
   (
     devices: Sdl.Joystick.Device[] | Sdl.Controller.Device[],
@@ -62,36 +89,18 @@ export const getVirtualGamepad =
     const nameIndex = getNameIndex(deviceName, index, devices);
 
     const gamecubeController = isGamecubeController(deviceName);
+    const dolphinButtonIds = Object.entries(
+      getDolphinButtonIds(gamecubeController),
+    ).map(([key, value]) => `${key} = ${value}`);
 
     return [
       `[GCPad${playerIndexArray[index] + 1}]`,
       `Device = SDL/${nameIndex}/${deviceName}`,
-      `Buttons/A = ${gamecubeController ? "`Button S`" : "`Button E`"}`,
-      `Buttons/B = ${gamecubeController ? "`Button W`" : "`Button S`"}`,
-      `Buttons/X = ${gamecubeController ? "`Button E`" : "`Button N`"}`,
-      `Buttons/Y = ${gamecubeController ? "`Button N`" : "`Button W` | `Shoulder L`"}`,
-      `Buttons/Z = \`Shoulder R\``,
-      `Buttons/Start = Start`,
-      `Main Stick/Up = \`Left Y+\``,
-      `Main Stick/Down = \`Left Y-\``,
-      `Main Stick/Left = \`Left X-\``,
-      `Main Stick/Right = \`Left X+\``,
+      ...dolphinButtonIds,
       `Main Stick/Modifier = \`Thumb L\``,
       `Main Stick/Calibration = 100.00 141.42 100.00 141.42 100.00 141.42 100.00 141.42`,
-      `C-Stick/Up = \`Right Y+\``,
-      `C-Stick/Down = \`Right Y-\``,
-      `C-Stick/Left = \`Right X-\``,
-      `C-Stick/Right = \`Right X+\``,
       `C-Stick/Modifier = \`Thumb R\``,
       `C-Stick/Calibration = 100.00 141.42 100.00 141.42 100.00 141.42 100.00 141.42`,
-      `Triggers/L = \`Trigger L\``,
-      `Triggers/R = \`Trigger R\``,
-      `D-Pad/Up = \`Pad N\``,
-      `D-Pad/Down = \`Pad S\``,
-      `D-Pad/Left = \`Pad W\``,
-      `D-Pad/Right = \`Pad E\``,
-      `Triggers/L-Analog = \`Trigger L\``,
-      `Triggers/R-Analog = \`Trigger R\``,
       `Rumble/Motor = \`Motor L\` | \`Motor R\``,
     ].join(EOL);
   };
