@@ -222,7 +222,7 @@ Usage: emuze [options]
 Options:
   --help             Show help
   --fullscreen       Start the app in fullscreen mode
-  --debug-emuze      Activates verbose logging to /home/runner/.local/share/emuze/emuze.log
+  --debug-emuze      Activates verbose logging to /home/.local/share/emuze/emuze.log
   --rmg              Activates the less accurate Rosalies Mupen GUI (RMG) emulator to play N64
   --mgba             Activates the mgba emulator to play Game Boy
   --lime3ds          Activates the lime3DS emulator to play 3DS
