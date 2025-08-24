@@ -12,49 +12,54 @@ export interface ParamToReplace {
 /**
  * Removes old params if they should be set with the new params
  * Disables a param if the keybinding should be used for another param
- *
- * @param params
- * @param paramsToReplace
  */
 export const replaceParams = (
   params: string[],
   paramsToReplace: ParamToReplace[],
-) => [
-  ...params.reduce<string[]>((accumulator, param) => {
-    const [id, value] = param.split("=");
-    if (
-      id.trim().length > 0 &&
-      !paramsToReplace.find((paramToReplace) =>
-        paramToReplace.keyValue.startsWith(id + "="),
-      )
-    ) {
-      if (
-        paramsToReplace.find(
-          (paramToReplace) =>
-            value &&
-            paramToReplace.keyValue.includes(value) &&
-            paramToReplace.disableParamWithSameValue,
-        )
-      ) {
-        // Disable the param if it is used for another keybinding
-        accumulator.push(id + "=");
-      } else {
-        accumulator.push(param);
-      }
-    }
+  removeOtherParams: boolean = false,
+) => {
+  const otherParams = removeOtherParams
+    ? [params[0]]
+    : params.reduce<string[]>((accumulator, param) => {
+        const [id, value] = param.split("=");
+        if (
+          id.trim().length > 0 &&
+          !paramsToReplace.find((paramToReplace) =>
+            paramToReplace.keyValue.startsWith(id + "="),
+          )
+        ) {
+          if (
+            paramsToReplace.find(
+              (paramToReplace) =>
+                value &&
+                paramToReplace.keyValue.includes(value) &&
+                paramToReplace.disableParamWithSameValue,
+            )
+          ) {
+            // Disable the param if it is used for another keybinding
+            accumulator.push(id + "=");
+          } else {
+            accumulator.push(param);
+          }
+        }
 
-    return accumulator;
-  }, []),
-  ...paramsToReplace.map(({ keyValue }) => keyValue),
-  "",
-  "",
-  "",
-];
+        return accumulator;
+      }, []);
+
+  return [
+    ...otherParams,
+    ...paramsToReplace.map(({ keyValue }) => keyValue),
+    "",
+    "",
+    "",
+  ];
+};
 
 export const replaceSection = (
   sections: string[],
   sectionName: string,
   paramsToSet: ParamToReplace[],
+  removeOtherParams?: boolean,
 ) => {
   const sectionIndex = sections.findIndex((section) =>
     section.includes(sectionName),
@@ -62,7 +67,11 @@ export const replaceSection = (
 
   if (sectionIndex !== -1) {
     const sectionRows = sections[sectionIndex].split(EOL);
-    const mergedSectionRows = replaceParams(sectionRows, paramsToSet);
+    const mergedSectionRows = replaceParams(
+      sectionRows,
+      paramsToSet,
+      removeOtherParams,
+    );
     sections.splice(sectionIndex, 1, mergedSectionRows.join(EOL));
     return sections;
   }

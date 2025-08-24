@@ -24,6 +24,7 @@ import {
 import { azahar } from "./applications/azahar/index.js";
 import { ppsspp } from "./applications/ppsspp/index.js";
 import { flycast } from "./applications/flycast/index.js";
+import { xemu } from "./applications/xemu/index.js";
 
 export const lime3ds: Application = {
   id: "lime3ds",
@@ -135,4 +136,5 @@ export const applications = {
   flycast,
   dosboxstaging,
   scummvm,
+  xemu,
 } satisfies Record<string, Application>;

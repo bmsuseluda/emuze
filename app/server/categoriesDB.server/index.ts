@@ -40,6 +40,7 @@ import {
 } from "../applicationsDB.server/applications/azahar/index.js";
 import { ppsspp } from "../applicationsDB.server/applications/ppsspp/index.js";
 import { flycast } from "../applicationsDB.server/applications/flycast/index.js";
+import { xemu } from "../applicationsDB.server/applications/xemu/index.js";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",
@@ -337,6 +338,14 @@ export const scumm: Category = {
   hasAnalogStick: true,
 };
 
+export const xbox: Category = {
+  id: "xbox",
+  names: ["Microsoft XBOX", "XBOX"],
+  igdbPlatformIds: [11],
+  application: xemu,
+  hasAnalogStick: true,
+};
+
 /**
  * This is not a real Category, it is just for convenience part of the categories.
  */
@@ -382,6 +391,7 @@ export const categories = {
   neogeopocketcolor,
   scumm,
   dos,
+  xbox,
   lastPlayed,
 } satisfies Record<SystemId, Category>;
 

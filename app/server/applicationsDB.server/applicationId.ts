@@ -26,4 +26,5 @@ export type ApplicationId =
   | "mgba"
   | "flycast"
   | "dosboxstaging"
-  | "scummvm";
+  | "scummvm"
+  | "xemu";

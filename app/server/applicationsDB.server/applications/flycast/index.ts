@@ -19,6 +19,7 @@ import {
   keyboardMapping,
   type EmuzeButtonId,
 } from "../../../../types/gamepad.js";
+import { isWindows } from "../../../operationsystem.server.js";
 
 const flatpakId = "org.flycast.Flycast";
 const applicationId: ApplicationId = "flycast";
@@ -48,9 +49,17 @@ const flycastButtonIds = {
   start: { id: "btn_start", bindIndex: 14 },
 } satisfies Partial<Record<EmuzeButtonId, { id: string; bindIndex: number }>>;
 
+const getWindowsConfigFolder = () =>
+  nodepath.join(process.env.APPDIR || "", "emulators", applicationId);
+
 const keyboardConfigFileName = "SDL_Keyboard.cfg";
-export const getKeyboardConfigFilePath = () =>
-  nodepath.join(config, "mappings", keyboardConfigFileName);
+export const getKeyboardConfigFilePath = () =>{
+  if (isWindows()) {
+    return nodepath.join(getWindowsConfigFolder(), "mappings", keyboardConfigFileName);
+  } else {
+    return nodepath.join(config, "mappings", keyboardConfigFileName);
+  }
+};
 
 const readKeyboardConfigFile = (filePath: string) => {
   try {
@@ -67,15 +76,17 @@ const readKeyboardConfigFile = (filePath: string) => {
 };
 
 const getKeyboardButtonMappings = (): ParamToReplace[] =>
-  Object.entries(flycastButtonIds).map(([buttonId, { id, bindIndex }]) => {
-    const sdlScancodeName: Sdl.Keyboard.ScancodeNames =
-      keyboardMapping[buttonId as EmuzeButtonId];
-    const sdlScancode = sdl.keyboard.SCANCODE[sdlScancodeName];
+  Object.entries(flycastButtonIds).map(
+    ([sdlBttonId, { id: flycastButtonId, bindIndex }]) => {
+      const sdlScancodeName: Sdl.Keyboard.ScancodeNames =
+        keyboardMapping[sdlBttonId as EmuzeButtonId];
+      const sdlScancode = sdl.keyboard.SCANCODE[sdlScancodeName];
 
-    return {
-      keyValue: `bind${bindIndex} = ${sdlScancode}:${id}`,
-    };
-  });
+      return {
+        keyValue: `bind${bindIndex} = ${sdlScancode}:${flycastButtonId}`,
+      };
+    },
+  );
 
 const replaceKeyboardDigitalConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[digital]", [
