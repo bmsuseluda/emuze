@@ -19,6 +19,7 @@ import {
   keyboardMapping,
   type EmuzeButtonId,
 } from "../../../../types/gamepad.js";
+import { isWindows } from "../../../operationsystem.server.js";
 
 const flatpakId = "org.flycast.Flycast";
 const applicationId: ApplicationId = "flycast";
@@ -48,9 +49,17 @@ const flycastButtonIds = {
   start: { id: "btn_start", bindIndex: 14 },
 } satisfies Partial<Record<EmuzeButtonId, { id: string; bindIndex: number }>>;
 
+const getWindowsConfigFolder = () =>
+  nodepath.join(process.env.APPDIR || "", "emulators", applicationId);
+
 const keyboardConfigFileName = "SDL_Keyboard.cfg";
-export const getKeyboardConfigFilePath = () =>
-  nodepath.join(config, "mappings", keyboardConfigFileName);
+export const getKeyboardConfigFilePath = () =>{
+  if (isWindows()) {
+    return nodepath.join(getWindowsConfigFolder(), "mappings", keyboardConfigFileName);
+  } else {
+    return nodepath.join(config, "mappings", keyboardConfigFileName);
+  }
+};
 
 const readKeyboardConfigFile = (filePath: string) => {
   try {

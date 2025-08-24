@@ -13,13 +13,14 @@ import {
   splitConfigBySection,
   writeConfig,
 } from "../../configFile.js";
-import { EOL } from "node:os";
+import { EOL, homedir } from "node:os";
 import type { EmuzeButtonId } from "../../../../types/gamepad.js";
 import {
   getPlayerIndexArray,
   keyboardMapping,
   removeVendorFromGuid,
 } from "../../../../types/gamepad.js";
+import { isWindows } from "../../../operationsystem.server.js";
 
 const flatpakId = "app.xemu.xemu";
 const applicationId: ApplicationId = "xemu";
@@ -32,8 +33,13 @@ const bundledPathWindows = nodepath.join(applicationId, "xemu.exe");
 const { data } = envPaths("xemu", { suffix: "" });
 
 const configFileName = "xemu.toml";
-export const getConfigFilePath = () =>
-  nodepath.join(data, "xemu", configFileName);
+export const getConfigFilePath = () =>{
+  if (isWindows()) {
+    return nodepath.join(homedir(), "AppData", "Roaming", "xemu", "xemu", configFileName);
+  } else {
+    return nodepath.join(data, "xemu", configFileName);
+  }
+  };
 
 const readConfigFile = (filePath: string) => {
   try {
