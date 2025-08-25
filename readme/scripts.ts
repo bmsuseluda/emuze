@@ -25,6 +25,7 @@ const preConfigured: ApplicationId[] = [
   "scummvm",
   "rpcs3",
   "ryujinx",
+  "xemu",
 ];
 
 const bundled: Partial<Record<ApplicationId, string>> = {
@@ -43,6 +44,7 @@ const bundled: Partial<Record<ApplicationId, string>> = {
   ppsspp: emulatorVersions["ppsspp"],
   rpcs3: emulatorVersions["rpcs3"],
   ryujinx: emulatorVersions["ryujinx"],
+  xemu: emulatorVersions["xemu"],
 };
 
 const biosNeeded: SystemId[] = [

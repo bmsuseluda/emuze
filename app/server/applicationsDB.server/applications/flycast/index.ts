@@ -53,9 +53,13 @@ const getWindowsConfigFolder = () =>
   nodepath.join(process.env.APPDIR || "", "emulators", applicationId);
 
 const keyboardConfigFileName = "SDL_Keyboard.cfg";
-export const getKeyboardConfigFilePath = () =>{
+export const getKeyboardConfigFilePath = () => {
   if (isWindows()) {
-    return nodepath.join(getWindowsConfigFolder(), "mappings", keyboardConfigFileName);
+    return nodepath.join(
+      getWindowsConfigFolder(),
+      "mappings",
+      keyboardConfigFileName,
+    );
   } else {
     return nodepath.join(config, "mappings", keyboardConfigFileName);
   }
@@ -118,11 +122,18 @@ const replaceKeyboardConfigFile = () => {
 };
 
 const getJoystickBindIndices = () => {
+  log("debug", "flycast", "joysticks", sdl.joystick.devices);
   const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
 
   return playerIndexArray.flatMap((playerIndex, sdlIndex) => [
-    "--config",
-    `input:maple_sdl_joystick_${sdlIndex}=${playerIndex}`,
+    // set order of gamepads
+    ...["--config", `input:maple_sdl_joystick_${sdlIndex}=${playerIndex}`],
+    // map to Sega Controller
+    ...["--config", `input:device${sdlIndex + 1}=0`],
+    // set VMU
+    ...["--config", `input:device${sdlIndex + 1}.1=1`],
+    // set rumble
+    ...["--config", `input:device${sdlIndex + 1}.2=3`],
   ]);
 };
 

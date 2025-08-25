@@ -33,13 +33,20 @@ const bundledPathWindows = nodepath.join(applicationId, "xemu.exe");
 const { data } = envPaths("xemu", { suffix: "" });
 
 const configFileName = "xemu.toml";
-export const getConfigFilePath = () =>{
+export const getConfigFilePath = () => {
   if (isWindows()) {
-    return nodepath.join(homedir(), "AppData", "Roaming", "xemu", "xemu", configFileName);
+    return nodepath.join(
+      homedir(),
+      "AppData",
+      "Roaming",
+      "xemu",
+      "xemu",
+      configFileName,
+    );
   } else {
     return nodepath.join(data, "xemu", configFileName);
   }
-  };
+};
 
 const readConfigFile = (filePath: string) => {
   try {
@@ -62,6 +69,11 @@ const keyboardConfig: ParamToReplace[] = [
 
 const replaceGeneralConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[general]", [{ keyValue: "show_welcome = false" }]);
+
+const replaceGeneralUpdatesConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[general.updates]", [
+    { keyValue: "check = false" },
+  ]);
 
 export const getVirtualGamepad =
   (playerIndexArray: number[]) =>
@@ -89,12 +101,11 @@ const replaceInputBindingsConfig: SectionReplacement = (sections) => {
   return replaceSection(
     sections,
     "[input.bindings]",
-    [...virtualGamepads],
+    [...virtualGamepads, { keyValue: `guide = ${sdl.keyboard.SCANCODE.F2}` }],
     true,
   );
 };
 
-// TODO: what is the guide button in xemu?
 const xemuButtonIds = {
   dpadUp: "dpad_up",
   dpadLeft: "dpad_left",
@@ -147,6 +158,7 @@ const replaceConfigFile = () => {
   const fileContentNew = chainSectionReplacements(
     sections,
     replaceGeneralConfig,
+    replaceGeneralUpdatesConfig,
     replaceInputBindingsConfig,
     replaceKeyboardControllerConfig,
   ).join(EOL);
@@ -157,7 +169,7 @@ const replaceConfigFile = () => {
 export const xemu: Application = {
   id: applicationId,
   name: "xemu",
-  fileExtensions: [".iso"],
+  fileExtensions: [".iso", ".xiso"],
   flatpakId,
   omitAbsoluteEntryPathAsLastParam: true,
   createOptionParams: ({
