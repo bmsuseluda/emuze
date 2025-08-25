@@ -22,6 +22,7 @@ import Gamegear from "../Icons/Gamegear.js";
 import Neogeopocket from "../Icons/Neogeopocket.js";
 import type { SystemId } from "../../server/categoriesDB.server/systemId.js";
 import { AiFillClockCircle } from "react-icons/ai";
+import { BsXbox } from "react-icons/bs";
 
 export const icons: Record<SystemId, IconType> = {
   lastPlayed: AiFillClockCircle,
@@ -70,6 +71,7 @@ export const icons: Record<SystemId, IconType> = {
   segacd: SiSega,
   // TODO: use https://thenounproject.com/icon/game-controller-193793/
   segasaturn: SiSega,
+  xbox: BsXbox,
 };
 
 interface Props {

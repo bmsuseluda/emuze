@@ -3,10 +3,12 @@ import {
   convertToJoystick,
   eightBitDoPro2,
   gamecubeAdapter,
+  gamepadN64,
   gamepadPs3,
   gamepadPs4,
   getNameIndex,
   getPlayerIndexArray,
+  removeVendorFromGuid,
   sortSteamDeckLast,
   steamDeck,
 } from "../gamepad.js";
@@ -78,5 +80,51 @@ describe("sortGamepads", () => {
     ];
 
     expect(gamepads.sort(sortSteamDeckLast)).toStrictEqual(sortedGamepads);
+  });
+});
+
+describe("removeVendorFromGuid", () => {
+  const testCases = [
+    {
+      name: "8BitDo Pro 2 Controller",
+      input: eightBitDoPro2.guid,
+      expected: "050000005e040000e002000003090000",
+    },
+    {
+      name: "Steam Deck",
+      input: steamDeck.guid,
+      expected: "03000000de280000ff11000001000000",
+    },
+    {
+      name: "PS4 Controller",
+      input: gamepadPs4.guid,
+      expected: "030000004c050000c405000000010000",
+    },
+    {
+      name: "PS3 Controller",
+      input: gamepadPs3.guid,
+      expected: "030000004c0500006802000011810000",
+    },
+    {
+      name: "GameCube Adapter",
+      input: gamecubeAdapter.guid,
+      expected: "03000000790000004318000010010000",
+    },
+    {
+      name: "N64 Controller",
+      input: gamepadN64.guid,
+      expected: "050000007e0500001920000001800000",
+    },
+    {
+      name: "Already normalized GUID",
+      input: "050000005e040000e002000003090000",
+      expected: "050000005e040000e002000003090000",
+    },
+  ];
+
+  testCases.forEach(({ name, input, expected }) => {
+    it(`should replace vendor ID with '0000' for ${name}`, () => {
+      expect(removeVendorFromGuid(input)).toBe(expected);
+    });
   });
 });

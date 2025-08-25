@@ -32,4 +32,5 @@ export type SystemId =
   | "neogeopocket"
   | "neogeopocketcolor"
   | "scumm"
-  | "dos";
+  | "dos"
+  | "xbox";

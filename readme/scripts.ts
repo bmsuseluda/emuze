@@ -25,6 +25,7 @@ const preConfigured: ApplicationId[] = [
   "scummvm",
   "rpcs3",
   "ryujinx",
+  "xemu",
 ];
 
 const bundled: Partial<Record<ApplicationId, string>> = {
@@ -43,6 +44,7 @@ const bundled: Partial<Record<ApplicationId, string>> = {
   ppsspp: emulatorVersions["ppsspp"],
   rpcs3: emulatorVersions["rpcs3"],
   ryujinx: emulatorVersions["ryujinx"],
+  xemu: emulatorVersions["xemu"],
 };
 
 const biosNeeded: SystemId[] = [
@@ -59,6 +61,7 @@ const biosNeeded: SystemId[] = [
   "nintendogameboyadvance",
   "nintendowiiu",
   "nintendoswitch",
+  "xbox",
 ];
 
 const homepages: Record<ApplicationId, string> = {
@@ -90,6 +93,7 @@ const homepages: Record<ApplicationId, string> = {
   rpcs3: "https://github.com/RPCS3/rpcs3",
   ryujinx: "https://git.ryujinx.app/ryubing/ryujinx",
   scummvm: "https://github.com/scummvm/scummvm",
+  xemu: "https://github.com/xemu-project/xemu",
 };
 
 const nameOverwrites: Partial<Record<SystemId, string>> = {

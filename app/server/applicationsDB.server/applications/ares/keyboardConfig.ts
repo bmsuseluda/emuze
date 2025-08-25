@@ -1,6 +1,8 @@
-import type { AresButtonId } from "./types.js";
+import { aresButtonIds, type AresButtonId } from "./types.js";
 import { isWindows } from "../../../operationsystem.server.js";
 import type { Sdl } from "@kmamal/sdl";
+import type { EmuzeButtonId } from "../../../../types/gamepad.js";
+import { keyboardMapping } from "../../../../types/gamepad.js";
 
 type Scancode = keyof typeof scancodes;
 export const scancodes = {
@@ -56,29 +58,10 @@ const getVirtualKeyboardKey = (
   return [];
 };
 
-export const getKeyboard = () => [
-  ...getVirtualKeyboardKey("Pad.Up", "T"),
-  ...getVirtualKeyboardKey("Pad.Down", "G"),
-  ...getVirtualKeyboardKey("Pad.Left", "F"),
-  ...getVirtualKeyboardKey("Pad.Right", "H"),
-  ...getVirtualKeyboardKey("Select", "BACKSPACE"),
-  ...getVirtualKeyboardKey("Start", "RETURN"),
-  ...getVirtualKeyboardKey("A..South", "J"),
-  ...getVirtualKeyboardKey("B..East", "K"),
-  ...getVirtualKeyboardKey("X..West", "U"),
-  ...getVirtualKeyboardKey("Y..North", "I"),
-  ...getVirtualKeyboardKey("L-Bumper", "L"),
-  ...getVirtualKeyboardKey("R-Bumper", "O"),
-  ...getVirtualKeyboardKey("L-Trigger", "8"),
-  ...getVirtualKeyboardKey("R-Trigger", "9"),
-  ...getVirtualKeyboardKey("L-Stick..Click", "X"),
-  ...getVirtualKeyboardKey("R-Stick..Click", "RSHIFT"),
-  ...getVirtualKeyboardKey("L-Up", "W"),
-  ...getVirtualKeyboardKey("L-Down", "S"),
-  ...getVirtualKeyboardKey("L-Left", "A"),
-  ...getVirtualKeyboardKey("L-Right", "D"),
-  ...getVirtualKeyboardKey("R-Up", "UP"),
-  ...getVirtualKeyboardKey("R-Down", "DOWN"),
-  ...getVirtualKeyboardKey("R-Left", "LEFT"),
-  ...getVirtualKeyboardKey("R-Right", "RIGHT"),
-];
+export const getKeyboard = () =>
+  Object.entries(aresButtonIds).map(([sdlButtonId, aresButtonId]) =>
+    getVirtualKeyboardKey(
+      aresButtonId,
+      keyboardMapping[sdlButtonId as EmuzeButtonId],
+    ),
+  );
