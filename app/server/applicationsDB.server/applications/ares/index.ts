@@ -24,6 +24,7 @@ import {
   isN64Controller,
 } from "../../../../types/gamepad.js";
 import { commandLineOptions } from "../../../commandLine.server.js";
+import { getJoystickFromController } from "../../../gamepad.server.js";
 
 const applicationId: ApplicationId = "ares";
 const bundledPathLinux = nodepath.join(
@@ -163,13 +164,9 @@ export const getVirtualGamepad =
     const mappingObject = createSdlMappingObject(sdlDevice.mapping!);
     const deviceId = createDeviceId(sdlDevice);
     const physicalGamepad = new PhysicalGamepad(deviceId, mappingObject);
+    const joystick = getJoystickFromController(sdlDevice)!;
 
-    log(
-      "debug",
-      "gamepad",
-      { index, sdlDevice, deviceId },
-      sdl.joystick.devices[index].name,
-    );
+    log("debug", "gamepad", { index, sdlDevice, deviceId }, joystick.name);
 
     return [
       ...getVirtualGamepadDpad(
@@ -222,7 +219,7 @@ export const getVirtualGamepad =
       ),
       ...getVirtualGamepadButton(
         { gamepadIndex: virtualGamepadIndex, buttonId: "R-Trigger" },
-        isN64Controller(sdl.joystick.devices[index])
+        isN64Controller(joystick)
           ? physicalGamepad.getLeftTrigger()
           : physicalGamepad.getRightTrigger(),
       ),

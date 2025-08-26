@@ -2544,7 +2544,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@kmamal/sdl@npm:^0.11.12":
+"@kmamal/sdl@npm:0.11.12":
   version: 0.11.12
   resolution: "@kmamal/sdl@npm:0.11.12"
   dependencies:
@@ -4596,6 +4596,15 @@ __metadata:
   version: 4.0.1
   resolution: "@types/http-cache-semantics@npm:4.0.1"
   checksum: 10/d059bf8a15d5163cc60da51ba00d17620507f968d0b792cd55f62043016344a5f0e1aa94fa411089d41114035fcd0ea656f968bda7eabb6663a97787e3445a1c
+  languageName: node
+  linkType: hard
+
+"@types/is-ci@npm:3.0.4":
+  version: 3.0.4
+  resolution: "@types/is-ci@npm:3.0.4"
+  dependencies:
+    ci-info: "npm:^3.1.0"
+  checksum: 10/5cb58dd3b64830bf2ce577017f554139cd35e3250a3feb3c2d5e5a2cb261cca909cf68faab6f31dde0c054719c7b360dd0f46d3a83a05b1e78453a9872d056c5
   languageName: node
   linkType: hard
 
@@ -6783,10 +6792,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ci-info@npm:^3.2.0":
+"ci-info@npm:^3.1.0, ci-info@npm:^3.2.0":
   version: 3.9.0
   resolution: "ci-info@npm:3.9.0"
   checksum: 10/75bc67902b4d1c7b435497adeb91598f6d52a3389398e44294f6601b20cfef32cf2176f7be0eb961d9e085bb333a8a5cae121cb22f81cf238ae7f58eb80e9397
+  languageName: node
+  linkType: hard
+
+"ci-info@npm:^4.1.0":
+  version: 4.3.0
+  resolution: "ci-info@npm:4.3.0"
+  checksum: 10/01e359032a34782fa2503530dd350c3ffaecede7d9ea0b120efa2ddda4c8dc80d8c2566caf1ea2287c739fad2bf277c65f70063a21f31f66203b889039c70eea
   languageName: node
   linkType: hard
 
@@ -8363,7 +8379,7 @@ __metadata:
     7zip-min: "npm:2.1.0"
     "@commitlint/cli": "npm:19.8.1"
     "@commitlint/config-conventional": "npm:19.8.1"
-    "@kmamal/sdl": "npm:^0.11.12"
+    "@kmamal/sdl": "npm:0.11.12"
     "@pandacss/dev": "npm:1.0.1"
     "@playwright/test": "npm:1.54.2"
     "@radix-ui/react-checkbox": "npm:1.3.3"
@@ -8385,6 +8401,7 @@ __metadata:
     "@types/decompress": "npm:4.2.7"
     "@types/follow-redirects": "npm:1.14.4"
     "@types/fs-extra": "npm:11.0.4"
+    "@types/is-ci": "npm:3.0.4"
     "@types/json-server": "npm:0.14.8"
     "@types/lodash.debounce": "npm:4.0.9"
     "@types/node": "npm:20.17.24"
@@ -8415,6 +8432,7 @@ __metadata:
     fs-extra: "npm:11.3.1"
     happy-dom: "npm:17.6.3"
     husky: "npm:9.1.7"
+    is-ci: "npm:4.1.0"
     isbot: "npm:5.1.29"
     json-server: "npm:0.17.4"
     lint-staged: "npm:15.5.2"
@@ -11553,6 +11571,17 @@ __metadata:
   version: 1.2.4
   resolution: "is-callable@npm:1.2.4"
   checksum: 10/4e3d8c08208475e74a4108a9dc44dbcb74978782e38a1d1b55388342a4824685765d95917622efa2ca1483f7c4dbec631dd979cbb3ebd239f57a75c83a46d99f
+  languageName: node
+  linkType: hard
+
+"is-ci@npm:4.1.0":
+  version: 4.1.0
+  resolution: "is-ci@npm:4.1.0"
+  dependencies:
+    ci-info: "npm:^4.1.0"
+  bin:
+    is-ci: bin.js
+  checksum: 10/f63a9e951262b9f4ccea73f47743efb1bfe87de84b5352dc02966c90bf61c2a9e9426a43ef53fdd18bd5f33616015b97bb5ae89251fb0f573e6cf7a01d036295
   languageName: node
   linkType: hard
 

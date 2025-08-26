@@ -1,3 +1,4 @@
+import isCi from "is-ci";
 import { getLogFilePath } from "./log.server.js";
 
 export const commandLineOptions = {
@@ -8,7 +9,7 @@ export const commandLineOptions = {
   },
   debugEmuze: {
     id: "debug-emuze",
-    description: `Activates verbose logging to ${getLogFilePath()}`,
+    description: `Activates verbose logging to ${isCi ? "/home/.local/share/emuze/emuze.log" : getLogFilePath()}`,
   },
   rmgN64: {
     id: "rmg",

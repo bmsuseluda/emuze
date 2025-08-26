@@ -1,4 +1,5 @@
 import {
+  filterGameNameFromFileName,
   readEntries,
   readEntriesWithMetaData,
 } from "../importCategory.server.js";
@@ -57,7 +58,7 @@ vi.mock("../getExpiresOn.server.ts", () => {
   };
 });
 
-describe("categories.server", () => {
+describe("importCategory.server", () => {
   beforeEach(() => {
     vi.resetAllMocks();
   });
@@ -341,6 +342,29 @@ describe("categories.server", () => {
         categoriesDB.sonyplaystation.id,
         addIndex([finalfantasy7disc1, hugo]),
       );
+    });
+  });
+
+  describe("filterGameNameFromFileName", () => {
+    [
+      { filename: "Halo.iso", gamename: "Halo" },
+      { filename: "Halo 2.xiso.iso", gamename: "Halo 2" },
+      { filename: "Monkey Island.tar.gz", gamename: "Monkey Island" },
+      { filename: "Super Mario Bros..nes", gamename: "Super Mario Bros." },
+      { filename: "dsd . sdfs.nes", gamename: "dsd . sdfs" },
+      { filename: "dsd_._sdfs.nes", gamename: "dsd_._sdfs" },
+      {
+        filename: "Clockwork Knight/Clockwork Knight.cue",
+        gamename: "Clockwork Knight",
+      },
+      {
+        filename: "Scumm/Beneath a Steel Sky",
+        gamename: "Beneath a Steel Sky",
+      },
+    ].forEach(({ filename, gamename }) => {
+      it(`should return gamename ${gamename} for filename ${filename}`, () => {
+        expect(filterGameNameFromFileName(filename)).toBe(gamename);
+      });
     });
   });
 });

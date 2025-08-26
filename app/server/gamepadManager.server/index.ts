@@ -7,6 +7,7 @@ import {
   gamepadPs4,
   type GamepadType,
 } from "../../types/gamepad.js";
+import { getJoystickFromController } from "../gamepad.server.js";
 
 type ButtonUpEventFunction = (
   event: sdl.Events.Controller.ButtonUp,
@@ -58,26 +59,19 @@ class GamepadManager {
 
     const devices = sdl.controller.devices;
     if (devices.length > 0) {
-      devices.forEach((device, index) => {
-        this.registerEventsForDevice(device, index);
+      devices.forEach((device) => {
+        this.registerEventsForDevice(device);
       });
     }
   }
 
-  private registerEventsForDevice(
-    device: Sdl.Controller.Device,
-    index?: number,
-  ) {
-    log(
-      "debug",
-      "registerEvents",
-      device,
-      index ? sdl.joystick.devices[index].name : "",
-    );
+  private registerEventsForDevice(device: Sdl.Controller.Device) {
+    const joystick = getJoystickFromController(device);
+    log("debug", "registerEvents", device, joystick?.name);
 
     try {
       const controller = sdl.controller.openDevice(device);
-      const gamepadType = this.getGamepadType(device);
+      const gamepadType = this.getGamepadType(device, joystick);
 
       controller.on("buttonUp", (event) => {
         Object.values(this.buttonUpEvents).forEach((eventFunction) => {
@@ -125,13 +119,12 @@ class GamepadManager {
     }
   }
 
-  getGamepadType = ({
-    type,
-    vendor,
-    product,
-  }: Sdl.Controller.Device): GamepadType => {
-    if (type) {
-      switch (type) {
+  getGamepadType = (
+    controller: Sdl.Controller.Device,
+    joystick?: Sdl.Joystick.Device,
+  ): GamepadType => {
+    if (controller.type) {
+      switch (controller.type) {
         case "ps3":
         case "ps4":
         case "ps5": {
@@ -147,6 +140,8 @@ class GamepadManager {
           return "XBox";
       }
     }
+
+    const { vendor, product } = joystick || controller;
 
     switch (vendor) {
       case 1406: {
