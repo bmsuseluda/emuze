@@ -26,10 +26,8 @@ import { BsXbox } from "react-icons/bs";
 
 export const icons: Record<SystemId, IconType> = {
   lastPlayed: AiFillClockCircle,
-  // TODO: use https://thenounproject.com/icon/game-controller-193591/
   nintendoentertainmentsystem: MdVideogameAsset,
   supernintendo: FaGamepad,
-  // TODO: use https://thenounproject.com/icon/game-controller-193588/
   nintendo64: SvgNintendo64,
   nintendogameboy: SvgGameboy,
   nintendogameboycolor: SvgGameboy,
@@ -38,7 +36,6 @@ export const icons: Record<SystemId, IconType> = {
   nintendowii: SiWii,
   nintendowiiu: SiWiiu,
   nintendoswitch: SiNintendoswitch,
-  // TODO: use seperate
   nintendods: SiNintendo3Ds,
   nintendo3ds: SiNintendo3Ds,
   sonyplaystation: IoLogoPlaystation,
@@ -47,7 +44,6 @@ export const icons: Record<SystemId, IconType> = {
   sonypsp: SvgPsp,
   arcade: SiApplearcade,
   neogeo: SiApplearcade,
-  // TODO: use https://thenounproject.com/icon/neo-geo-221035/
   neogeocd: SiApplearcade,
   neogeopocket: Neogeopocket,
   neogeopocketcolor: Neogeopocket,
@@ -59,17 +55,12 @@ export const icons: Record<SystemId, IconType> = {
   pcengine: MdVideogameAsset,
   pcenginecd: MdVideogameAsset,
   pcenginesupergrafx: MdVideogameAsset,
-  // TODO: use https://thenounproject.com/icon/game-controller-193791/
   segamastersystem: SiSega,
-  // TODO: use https://thenounproject.com/icon/sega-gamegear-206897/
   segagamegear: Gamegear,
-  // TODO: use https://thenounproject.com/icon/game-controller-193792/
   segamegadrive: SiSega,
-  // TODO: use https://thenounproject.com/icon/game-controller-193792/
   sega32x: SiSega,
-  // TODO: use https://thenounproject.com/icon/game-controller-193792/
   segacd: SiSega,
-  // TODO: use https://thenounproject.com/icon/game-controller-193793/
+  segamegald: SiSega,
   segasaturn: SiSega,
   xbox: BsXbox,
 };
