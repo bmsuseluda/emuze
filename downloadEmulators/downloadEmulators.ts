@@ -24,8 +24,8 @@ type OperatingSystem = "Windows" | "Linux";
 type EmulatorDownloads = Record<ApplicationId, Record<OperatingSystem, string>>;
 
 export const emulatorVersions = {
-  ares: "145",
-  azahar: "2122.1",
+  ares: "146",
+  azahar: "2123.1",
   dolphin: "2506a",
   duckstation: "0.1-7371",
   flycast: "2.5",
@@ -38,15 +38,15 @@ export const emulatorVersions = {
 
 const emulatorDownloads = {
   ares: {
-    Linux: `https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v${emulatorVersions["ares"]}%402025-07-09_1752099468/ares-v${emulatorVersions["ares"]}-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v${emulatorVersions["ares"]}%402025-08-26_1756238563/ares-v${emulatorVersions["ares"]}-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/ares-emulator/ares/releases/download/v${emulatorVersions["ares"]}/ares-windows-x64.zip`,
   },
   azahar: {
-    Linux: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions["azahar"]}/Azahar-Enhanced-${emulatorVersions["azahar"]}-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions["azahar"]}%402025-08-23_1755946836/Azahar-Enhanced-${emulatorVersions["azahar"]}-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/azahar-emu/azahar/releases/download/${emulatorVersions["azahar"]}/azahar-${emulatorVersions["azahar"]}-windows-msys2.zip`,
   },
   dolphin: {
-    Linux: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions["dolphin"]}%402025-07-23_1753271407/Dolphin_Emulator-${emulatorVersions["dolphin"]}-anylinux.dwarfs-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions["dolphin"]}%402025-08-25_1756159991/Dolphin_Emulator-${emulatorVersions["dolphin"]}-anylinux.dwarfs-x86_64.AppImage`,
     Windows: `https://dl.dolphin-emu.org/releases/${emulatorVersions["dolphin"]}/dolphin-${emulatorVersions["dolphin"]}-x64.7z`,
   },
   duckstation: {
