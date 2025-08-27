@@ -122,8 +122,8 @@ const replaceKeyboardConfigFile = () => {
 };
 
 const getJoystickBindIndices = () => {
-  log("debug", "flycast", "joysticks", sdl.joystick.devices);
   const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
+  log("debug", "flycast", "joysticks", sdl.joystick.devices, playerIndexArray);
 
   return playerIndexArray.flatMap((playerIndex, sdlIndex) => [
     // set order of gamepads

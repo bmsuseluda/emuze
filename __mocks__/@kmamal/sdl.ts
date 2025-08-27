@@ -4,32 +4,33 @@ import { gamepadPs4, steamDeck } from "../../app/types/gamepad.js";
 
 const devices: Sdl.Controller.Device[] = [steamDeck, gamepadPs4];
 
+const on = (
+  _: string,
+  onEvent: (event: { button: string; device: Sdl.Controller.Device }) => void,
+) => {
+  onEvent({ button: "a", device: steamDeck });
+};
+
 const sdlMock = {
   controller: {
     devices,
     openDevice: () => {
       return {
-        on: (_: string, onEvent: (event: { button: string }) => void) => {
-          onEvent({ button: "a" });
-        },
+        on,
         buttons: {
           back: false,
         },
         close: () => {},
       };
     },
-    on: (_: string, onEvent: (event: { button: string }) => void) => {
-      onEvent({ button: "a" });
-    },
+    on,
     addMappings: () => {},
   },
   joystick: {
     devices,
     openDevice: () => {
       return {
-        on: (_: string, onEvent: (event: { button: string }) => void) => {
-          onEvent({ button: "a" });
-        },
+        on,
         buttons: {
           back: false,
         },

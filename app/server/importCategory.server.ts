@@ -95,12 +95,30 @@ const createEntry = ({
   return entry;
 };
 
-const filterGameNameFromFileName = (fileName: string) => {
+const alphanumericOnly = /^[a-zA-Z0-9]+$/;
+
+const isFileExtension = (fileName: string) => {
+  const fileExtension = nodepath.extname(fileName).replaceAll(".", "");
+  return alphanumericOnly.test(fileExtension);
+};
+
+const removeFileExtension = (fileName: string) => {
   const extension = nodepath.extname(fileName);
-  return extension.length > 0
+  return isFileExtension(fileName)
     ? nodepath.basename(fileName).split(extension)[0]
     : nodepath.basename(fileName);
 };
+
+const removeFileExtensions = (fileName: string) => {
+  let fileNameWithoutExtensions = removeFileExtension(fileName);
+  while (isFileExtension(fileNameWithoutExtensions)) {
+    fileNameWithoutExtensions = removeFileExtension(fileNameWithoutExtensions);
+  }
+
+  return fileNameWithoutExtensions;
+};
+
+export const filterGameNameFromFileName = removeFileExtensions;
 
 const removeAdditionalInfo = (gameName: string) => gameName.split(" (")[0];
 
