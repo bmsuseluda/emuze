@@ -400,6 +400,16 @@ export const aresSegaCd: Application = {
   ],
 };
 
+export const aresSegaMegaLd: Application = {
+  ...ares,
+  id: "aresSegaMegaLd",
+  fileExtensions: [".mmi"],
+  createOptionParams: (props) => [
+    ...getSharedAresOptionParams(props),
+    ...["--system", "Mega LD"],
+  ],
+};
+
 export const aresSega32x: Application = {
   ...ares,
   id: "aresSega32x",

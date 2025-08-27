@@ -12,6 +12,7 @@ import {
   aresMegaDrive,
   aresSega32x,
   aresSegaCd,
+  aresSegaMegaLd,
   aresSuperGrafx,
   aresSuperNintendo,
   isMgbaForGameBoy,
@@ -129,6 +130,19 @@ export const segacd: Category = {
   names: ["Sega CD", "Mega CD", "Sega Mega CD"],
   igdbPlatformIds: [78],
   application: aresSegaCd,
+  hasAnalogStick: false,
+};
+
+export const segamegald: Category = {
+  id: "segamegald",
+  names: [
+    "Mega LD",
+    "Sega Mega LD",
+    "LaserActive Mega LD",
+    "Pioneer LaserActive Mega LD",
+  ],
+  igdbPlatformIds: [487],
+  application: aresSegaMegaLd,
   hasAnalogStick: false,
 };
 
@@ -363,6 +377,7 @@ export const categories = {
   segamegadrive,
   sega32x,
   segacd,
+  segamegald,
   segasaturn,
   segadreamcast,
   nintendoentertainmentsystem,

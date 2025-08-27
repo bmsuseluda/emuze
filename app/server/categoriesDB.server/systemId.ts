@@ -24,6 +24,7 @@ export type SystemId =
   | "segamegadrive"
   | "sega32x"
   | "segacd"
+  | "segamegald"
   | "segasaturn"
   | "segadreamcast"
   | "arcade"

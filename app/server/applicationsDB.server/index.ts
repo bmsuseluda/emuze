@@ -9,6 +9,7 @@ import {
   aresMegaDrive,
   aresSega32x,
   aresSegaCd,
+  aresSegaMegaLd,
   aresSuperGrafx,
   aresSuperNintendo,
 } from "./applications/ares/index.js";
@@ -129,6 +130,7 @@ export const applications = {
   aresSuperNintendo,
   aresMegaDrive,
   aresSegaCd,
+  aresSegaMegaLd,
   aresSega32x,
   aresSuperGrafx,
   rosaliesMupenGui,

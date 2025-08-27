@@ -20,6 +20,7 @@ export type ApplicationId =
   | "aresSuperNintendo"
   | "aresMegaDrive"
   | "aresSegaCd"
+  | "aresSegaMegaLd"
   | "aresSega32x"
   | "aresSuperGrafx"
   | "rosaliesMupenGui"
