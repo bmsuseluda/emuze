@@ -26,30 +26,13 @@ import { azahar } from "./applications/azahar/index.js";
 import { ppsspp } from "./applications/ppsspp/index.js";
 import { flycast } from "./applications/flycast/index.js";
 import { xemu } from "./applications/xemu/index.js";
+import { melonds } from "./applications/melonds/index.js";
 
 export const lime3ds: Application = {
   id: "lime3ds",
   name: "Lime3DS",
   fileExtensions: [".3ds"],
   flatpakId: "io.github.lime3ds.Lime3DS",
-};
-
-export const melonds: Application = {
-  id: "melonds",
-  name: "MelonDS",
-  fileExtensions: [".nds"],
-  flatpakId: "net.kuribo64.melonDS",
-  createOptionParams: ({
-    settings: {
-      appearance: { fullscreen },
-    },
-  }) => {
-    const optionParams = [];
-    if (fullscreen) {
-      optionParams.push("--fullscreen");
-    }
-    return optionParams;
-  },
 };
 
 export const cemu: Application = {

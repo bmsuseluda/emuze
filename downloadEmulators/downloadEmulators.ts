@@ -29,6 +29,7 @@ export const emulatorVersions = {
   dolphin: "2506a",
   duckstation: "0.1-7371",
   flycast: "2.5",
+  melonds: "1.0",
   pcsx2: "2.4.0",
   ppsspp: "1.19.3",
   rpcs3: "0.0.37",
@@ -56,6 +57,10 @@ const emulatorDownloads = {
   flycast: {
     Linux: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions["flycast"]}/flycast-x86_64.AppImage`,
     Windows: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions["flycast"]}/flycast-win64-${emulatorVersions["flycast"]}.zip`,
+  },
+  melonds: {
+    Linux: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions["melonds"]}/melonDS-appimage-x86_64.zip`,
+    Windows: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions["melonds"]}/melonDS-windows-x86_64.zip`,
   },
   pcsx2: {
     Linux: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions["pcsx2"]}/pcsx2-v${emulatorVersions["pcsx2"]}-linux-appimage-x64-Qt.AppImage`,
