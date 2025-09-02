@@ -77,6 +77,30 @@ export class PhysicalGamepad {
     qualifier: "Hi",
   });
 
+  getDpadUp = (): PhysicalGamepadButton => ({
+    deviceId: this.deviceId,
+    groupId: "Button",
+    inputId: getButtonIndex(this.mappingObject, "dpup"),
+  });
+
+  getDpadDown = (): PhysicalGamepadButton => ({
+    deviceId: this.deviceId,
+    groupId: "Button",
+    inputId: getButtonIndex(this.mappingObject, "dpdown"),
+  });
+
+  getDpadLeft = (): PhysicalGamepadButton => ({
+    deviceId: this.deviceId,
+    groupId: "Button",
+    inputId: getButtonIndex(this.mappingObject, "dpleft"),
+  });
+
+  getDpadRight = (): PhysicalGamepadButton => ({
+    deviceId: this.deviceId,
+    groupId: "Button",
+    inputId: getButtonIndex(this.mappingObject, "dpright"),
+  });
+
   getLeftStickUp = (): PhysicalGamepadButton =>
     this.createButton("lefty", "Lo");
 

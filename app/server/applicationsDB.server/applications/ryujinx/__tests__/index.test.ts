@@ -13,10 +13,10 @@ describe("ryujinx", () => {
         "0-00000003-28de-0000-ff11-000001000000",
       );
       expect(createControllerId(controllerIds, gamepadPs3.guid)).toBe(
-        "0-00000003-054c-0000-6802-000011810000",
+        "0-00000005-054c-0000-6802-000000800000",
       );
       expect(createControllerId(controllerIds, gamepadPs3.guid)).toBe(
-        "1-00000003-054c-0000-6802-000011810000",
+        "1-00000005-054c-0000-6802-000000800000",
       );
       expect(createControllerId(controllerIds, steamDeck.guid)).toBe(
         "1-00000003-28de-0000-ff11-000001000000",

@@ -203,7 +203,7 @@ export const replaceConfigSections = (n3dsRomsPath: string) => {
 export const azahar: Application = {
   id: applicationId,
   name: "Azahar",
-  fileExtensions: [".cci"],
+  fileExtensions: [".cci", ".zcia", ".zcci", ".z3dsx", ".zcxi"],
   flatpakId,
   createOptionParams: ({
     settings: {

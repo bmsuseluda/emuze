@@ -8440,6 +8440,7 @@ __metadata:
     madge: "npm:8.0.0"
     mime: "npm:4.0.7"
     mmarkdown: "npm:1.0.0"
+    node-hid: "npm:^3.2.0"
     prettier: "npm:3.6.2"
     prop-types: "npm:15.8.1"
     react: "npm:19.1.1"
@@ -13721,6 +13722,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-addon-api@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "node-addon-api@npm:3.2.1"
+  dependencies:
+    node-gyp: "npm:latest"
+  checksum: 10/681b52dfa3e15b0a8e5cf283cc0d8cd5fd2a57c559ae670fcfd20544cbb32f75de7648674110defcd17ab2c76ebef630aa7d2d2f930bc7a8cc439b20fe233518
+  languageName: node
+  linkType: hard
+
 "node-api-version@npm:^0.2.0":
   version: 0.2.1
   resolution: "node-api-version@npm:0.2.1"
@@ -13763,6 +13773,19 @@ __metadata:
   bin:
     node-gyp: bin/node-gyp.js
   checksum: 10/7a9f184dda7bd53970ac52e138b091b417505bef5be0a7d9a902137a55246afaebbae1263a0545b6d7d94af131bcd49ac99f18db0b801c5b4c627dd291c08a7f
+  languageName: node
+  linkType: hard
+
+"node-hid@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "node-hid@npm:3.2.0"
+  dependencies:
+    node-addon-api: "npm:^3.2.1"
+    node-gyp: "npm:latest"
+    pkg-prebuilds: "npm:^1.0.0"
+  bin:
+    hid-showdevices: src/show-devices.js
+  checksum: 10/c3315767976ca320dd6a7e98b569f3a72b77483e69ec5067588dd83841ca20278bb735bfab8bb752511afcac50460495623c91669f94e3c5ac9e2faf3946f14f
   languageName: node
   linkType: hard
 
@@ -14623,6 +14646,18 @@ __metadata:
   version: 2.0.4
   resolution: "pinkie@npm:2.0.4"
   checksum: 10/11d207257a044d1047c3755374d36d84dda883a44d030fe98216bf0ea97da05a5c9d64e82495387edeb9ee4f52c455bca97cdb97629932be65e6f54b29f5aec8
+  languageName: node
+  linkType: hard
+
+"pkg-prebuilds@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "pkg-prebuilds@npm:1.0.0"
+  dependencies:
+    yargs: "npm:^17.7.2"
+  bin:
+    pkg-prebuilds-copy: bin/copy.mjs
+    pkg-prebuilds-verify: bin/verify.mjs
+  checksum: 10/219e0ef0d3b8f010900bfcf23e6ebb31774b0b375a3be3b3c6d0dcefb7a388747d4987bdbb9b9c388b89f2b570846b5df696f93d7f5e36a652658edc8d118aab
   languageName: node
   linkType: hard
 

@@ -18,6 +18,9 @@ export default defineConfig({
       "react-use",
     ],
   },
-  optimizeDeps: { exclude: ["@kmamal/sdl"], include: ["react-use"] },
+  optimizeDeps: {
+    exclude: ["@kmamal/sdl", "node - hid"],
+    include: ["react-use"],
+  },
   plugins: [devtoolsJson(), reactRouter()],
 });

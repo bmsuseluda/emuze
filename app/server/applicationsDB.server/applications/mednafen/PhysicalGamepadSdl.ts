@@ -6,6 +6,7 @@ import {
   createSdlMappingObject,
   getButtonIndex,
   isAnalog,
+  isDpadHat,
 } from "../../../../types/gamepad.js";
 import type { PhysicalGamepadInterface } from "./PhysicalGamepad.js";
 
@@ -36,13 +37,15 @@ export class PhysicalGamepadSdl implements PhysicalGamepadInterface {
     dpadId: number,
     axisPositive: boolean,
   ) => {
-    const buttonIndex = getButtonIndex(this.mappingObject, sdlButtonId);
-
-    if (buttonIndex) {
-      return `joystick ${this.deviceId} abs_${dpadId}${axisPositive ? "+" : "-"}`;
+    if (isDpadHat(this.mappingObject, sdlButtonId)) {
+      const buttonIndex = getButtonIndex(this.mappingObject, sdlButtonId);
+      if (buttonIndex) {
+        return `joystick ${this.deviceId} abs_${dpadId}${axisPositive ? "+" : "-"}`;
+      }
+      return null;
+    } else {
+      return this.createButtonString(sdlButtonId);
     }
-
-    return null;
   };
 
   private createButtonString = (sdlButtonId: SdlButtonId) => {

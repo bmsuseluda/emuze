@@ -1,7 +1,6 @@
 import {
   cemu,
   lime3ds,
-  melonds,
   mgba,
   rosaliesMupenGui,
 } from "../applicationsDB.server/index.js";
@@ -42,6 +41,7 @@ import {
 import { ppsspp } from "../applicationsDB.server/applications/ppsspp/index.js";
 import { flycast } from "../applicationsDB.server/applications/flycast/index.js";
 import { xemu } from "../applicationsDB.server/applications/xemu/index.js";
+import { melonds } from "../applicationsDB.server/applications/melonds/index.js";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",
