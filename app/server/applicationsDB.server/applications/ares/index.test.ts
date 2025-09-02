@@ -10,17 +10,17 @@ vi.mock("@kmamal/sdl");
 describe("ares", () => {
   describe("createDeviceId", () => {
     it("Should create a device id for the Steam Deck internal controls (id 0)", () => {
-      const result = createDeviceId(steamDeck);
+      const result = createDeviceId(steamDeck, 0);
       expect(result).toBe("0x128de1205");
     });
 
     it("Should create a device id for the DualShock 4  (id 1)", () => {
-      const result = createDeviceId(gamepadPs4);
+      const result = createDeviceId(gamepadPs4, 1);
       expect(result).toBe("0x2054c05c4");
     });
 
     it("Should create a device id for the DualShock 3  (id 2)", () => {
-      const result = createDeviceId(gamepadPs3);
+      const result = createDeviceId(gamepadPs3, 2);
       expect(result).toBe("0x3054c0268");
     });
   });

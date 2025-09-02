@@ -188,6 +188,11 @@ export const isAnalog = (
   sdlButtonId: SdlButtonId,
 ) => mappingObject[sdlButtonId]?.includes("a");
 
+export const isDpadHat = (
+  mappingObject: SdlButtonMapping,
+  sdlButtonId: SdlButtonId,
+) => mappingObject[sdlButtonId]?.includes("h");
+
 export const getPlayerIndexArray = (gamepads: Sdl.Joystick.Device[]) => {
   const playerIndexArray: number[] = [];
 
@@ -220,7 +225,7 @@ export const createSdlMappingObject = (sdlMapping: string) =>
     }, {});
 
 export const eightBitDoPro2 = {
-  id: 0,
+  id: 2,
   type: "xboxOne",
   name: "Xbox One Wireless Controller",
   path: "/dev/input/event19",
@@ -280,16 +285,16 @@ export const gamepadPs4 = {
 
 export const gamepadPs3 = {
   id: 2,
+  name: "PS3 Controller",
+  path: "/dev/input/event28",
   type: "ps3",
-  name: "Playstation 3 Controller",
-  path: "/dev/input/event7",
-  guid: "0300afd34c0500006802000011810000",
+  guid: "0500f9d24c0500006802000000800000",
   vendor: 1356,
   product: 616,
-  version: 1,
-  player: 2,
+  version: 32768,
+  player: 0,
   mapping:
-    "0300afd34c0500006802000011810000,PS3 Controller,platform:Windows,a:b1,b:b2,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b4,leftstick:b10,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b11,righttrigger:a4,rightx:a2,righty:a5,start:b9,x:b0,y:b3,",
+    "0500f9d24c0500006802000000800000,PS3 Controller,a:b0,b:b1,back:b8,dpdown:b14,dpleft:b15,dpright:b16,dpup:b13,guide:b10,leftshoulder:b4,leftstick:b11,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b12,righttrigger:a5,rightx:a3,righty:a4,start:b9,x:b3,y:b2,platform:Linux,",
 } satisfies Sdl.Controller.Device;
 
 export const gamecubeAdapter = {

@@ -5,19 +5,28 @@ import sdl from "@kmamal/sdl";
 
 import { checkFlatpakIsInstalled } from "../../checkEmulatorIsInstalled.js";
 import { flatpakId, flatpakOptionParams } from "./definitions.js";
+import { getJoystickFromController } from "../../../gamepad.server.js";
+import { getDeviceNameFromHid } from "../../../getDeviceNameFromHid.js";
 
 export interface GamepadID {
   id: string;
   name: string;
+  nameIndex: number;
 }
 
-const extractGamepadIDs = (logOutput: string): GamepadID[] =>
+/**
+ * ID: 0x0005045e02e009030008000a00000000 - 8BitDo Pro 2
+ *
+ * @param logOutput
+ * @returns
+ */
+export const extractGamepadIDs = (logOutput: string): GamepadID[] =>
   logOutput
     .split("\n")
     .filter((line) => {
       return line.replace("'", "").trim().startsWith("ID: ");
     })
-    .map((line) => {
+    .map((line): GamepadID => {
       const [id, name] = line
         .replace("'", "")
         .trim()
@@ -27,6 +36,7 @@ const extractGamepadIDs = (logOutput: string): GamepadID[] =>
       return {
         id,
         name,
+        nameIndex: Number(id.at(-1)) || 0,
       };
     });
 
@@ -64,21 +74,37 @@ export const getGamepads = (applicationPath?: string) => {
   return [];
 };
 
+// TODO: check if hid works for steam input as well
 export const findSdlGamepad = (gamepadId: GamepadID, index: number) => {
   const gamepads = sdl.controller.devices;
-  const joysticks = sdl.joystick.devices;
 
-  const sdlGamepad = gamepads.find((gamepad, index) => {
-    const joystick = joysticks[index];
-    log("debug", "findSdlGamepad", gamepadId, gamepad, joystick);
+  const sdlGamepads = gamepads.filter((gamepad) => {
+    const joystick = getJoystickFromController(gamepad)!;
+    const nameFromHid = getDeviceNameFromHid(joystick) || "";
+    log(
+      "debug",
+      "findSdlGamepad",
+      `mednafen gamepadId: ${gamepadId.id}`,
+      `mednafen gamepadName: ${gamepadId.name}`,
+      `hid: ${nameFromHid}`,
+      `joystick: ${joystick.name}`,
+      `controller: ${gamepad.name}`,
+    );
 
-    return (
-      gamepad.name.toLowerCase().replaceAll(" ", "") ===
-        gamepadId.name.toLowerCase().replaceAll(" ", "") ||
-      joystick.name?.toLowerCase().replaceAll(" ", "") ===
-        gamepadId.name.toLowerCase().replaceAll(" ", "")
+    return !![nameFromHid, joystick.name, gamepad.name].find(
+      (name) =>
+        name &&
+        gamepadId.name
+          .toLowerCase()
+          .replaceAll(" ", "")
+          .startsWith(name.toLowerCase().replaceAll(" ", "")),
     );
   });
 
-  return sdlGamepad || gamepads.at(index);
+  const sdlGamepad =
+    sdlGamepads.at(gamepadId.nameIndex) ||
+    sdlGamepads.at(0) ||
+    gamepads.at(index);
+
+  return sdlGamepad;
 };

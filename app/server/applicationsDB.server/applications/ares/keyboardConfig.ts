@@ -1,8 +1,35 @@
-import { aresButtonIds, type AresButtonId } from "./types.js";
+import type { AresButtonId } from "./types.js";
 import { isWindows } from "../../../operationsystem.server.js";
 import type { Sdl } from "@kmamal/sdl";
 import type { EmuzeButtonId } from "../../../../types/gamepad.js";
 import { keyboardMapping } from "../../../../types/gamepad.js";
+
+export const aresButtonIds = {
+  dpadUp: "Pad.Up",
+  dpadDown: "Pad.Down",
+  dpadLeft: "Pad.Left",
+  dpadRight: "Pad.Right",
+  back: "Select",
+  start: "Start",
+  a: "A..South",
+  b: "B..East",
+  x: "X..West",
+  y: "Y..North",
+  leftShoulder: "L-Bumper",
+  rightShoulder: "R-Bumper",
+  leftTrigger: "L-Trigger",
+  rightTrigger: "R-Trigger",
+  leftStick: "L-Stick..Click",
+  rightStick: "R-Stick..Click",
+  leftStickUp: "L-Up",
+  leftStickDown: "L-Down",
+  leftStickLeft: "L-Left",
+  leftStickRight: "L-Right",
+  rightStickUp: "R-Up",
+  rightStickDown: "R-Down",
+  rightStickLeft: "R-Left",
+  rightStickRight: "R-Right",
+} satisfies Partial<Record<EmuzeButtonId, AresButtonId>>;
 
 type Scancode = keyof typeof scancodes;
 export const scancodes = {

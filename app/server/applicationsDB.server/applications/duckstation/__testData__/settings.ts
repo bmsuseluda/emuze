@@ -239,7 +239,7 @@ RUp = Keyboard/T
 
 `;
 
-export const pad1Mapped = `[Pad1]
+export const ps4Mapped = `[Pad1]
 Type = AnalogController
 Up = SDL-1/DPadUp
 Right = SDL-1/DPadRight
@@ -302,7 +302,7 @@ RUp = Keyboard/T
 
 `;
 
-export const pad2Mapped = `[Pad2]
+export const steamDeckMapped = `[Pad4]
 Type = AnalogController
 Up = SDL-0/DPadUp
 Right = SDL-0/DPadRight
@@ -365,6 +365,39 @@ RUp = Keyboard/T
 
 `;
 
+export const eightbitdoMapped = `[Pad2]
+Type = AnalogController
+Up = SDL-2/DPadUp
+Right = SDL-2/DPadRight
+Down = SDL-2/DPadDown
+Left = SDL-2/DPadLeft
+Triangle = SDL-2/Y
+Circle = SDL-2/B
+Cross = SDL-2/A
+Square = SDL-2/X
+Select = SDL-2/Back
+Start = SDL-2/Start
+L1 = SDL-2/LeftShoulder
+R1 = SDL-2/RightShoulder
+L2 = SDL-2/+LeftTrigger
+R2 = SDL-2/+RightTrigger
+L3 = SDL-2/LeftStick
+R3 = SDL-2/RightStick
+LLeft = SDL-2/-LeftX
+LRight = SDL-2/+LeftX
+LDown = SDL-2/+LeftY
+LUp = SDL-2/-LeftY
+RLeft = SDL-2/-RightX
+RRight = SDL-2/+RightX
+RDown = SDL-2/+RightY
+RUp = SDL-2/-RightY
+Analog = SDL-2/Guide
+SmallMotor = SDL-2/SmallMotor
+LargeMotor = SDL-2/LargeMotor
+
+
+`;
+
 export const pad4 = `[Pad4]
 Type = AnalogController
 Up = SDL-3/DPadUp
@@ -391,6 +424,39 @@ RLeft = Keyboard/F
 RRight = Keyboard/H
 RDown = Keyboard/G
 RUp = Keyboard/T
+
+
+`;
+
+export const eightbitdo2Mapped = `[Pad3]
+Type = AnalogController
+Up = SDL-3/DPadUp
+Right = SDL-3/DPadRight
+Down = SDL-3/DPadDown
+Left = SDL-3/DPadLeft
+Triangle = SDL-3/Y
+Circle = SDL-3/B
+Cross = SDL-3/A
+Square = SDL-3/X
+Select = SDL-3/Back
+Start = SDL-3/Start
+L1 = SDL-3/LeftShoulder
+R1 = SDL-3/RightShoulder
+L2 = SDL-3/+LeftTrigger
+R2 = SDL-3/+RightTrigger
+L3 = SDL-3/LeftStick
+R3 = SDL-3/RightStick
+LLeft = SDL-3/-LeftX
+LRight = SDL-3/+LeftX
+LDown = SDL-3/+LeftY
+LUp = SDL-3/-LeftY
+RLeft = SDL-3/-RightX
+RRight = SDL-3/+RightX
+RDown = SDL-3/+RightY
+RUp = SDL-3/-RightY
+Analog = SDL-3/Guide
+SmallMotor = SDL-3/SmallMotor
+LargeMotor = SDL-3/LargeMotor
 
 
 `;

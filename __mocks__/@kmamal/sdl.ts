@@ -1,8 +1,17 @@
 import type { Sdl } from "@kmamal/sdl";
 import { scancodes } from "../../app/server/applicationsDB.server/applications/ares/keyboardConfig.js";
-import { gamepadPs4, steamDeck } from "../../app/types/gamepad.js";
+import {
+  gamepadPs4,
+  steamDeck,
+  eightBitDoPro2,
+} from "../../app/types/gamepad.js";
 
-const devices: Sdl.Controller.Device[] = [steamDeck, gamepadPs4];
+const devices: Sdl.Controller.Device[] = [
+  steamDeck,
+  gamepadPs4,
+  eightBitDoPro2,
+  { ...eightBitDoPro2, id: 3 },
+];
 
 const on = (
   _: string,

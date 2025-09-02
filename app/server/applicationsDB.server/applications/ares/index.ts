@@ -21,6 +21,7 @@ import type { SdlButtonMapping } from "../../../../types/gamepad.js";
 import {
   createSdlMappingObject,
   getPlayerIndexArray,
+  isDpadHat,
   isN64Controller,
 } from "../../../../types/gamepad.js";
 import { commandLineOptions } from "../../../commandLine.server.js";
@@ -87,28 +88,55 @@ const getVirtualGamepadDpad = (
 ) => {
   log("debug", "mappingObject", mappingObject);
   if (mappingObject.dpup) {
-    return [
-      ...getVirtualGamepadButton(
-        { gamepadIndex, buttonId: "Pad.Left" },
-        physicalGamepad.getDpadHatLeft(),
-        !systemHasAnalogStick ? physicalGamepad.getLeftStickLeft() : null,
-      ),
-      ...getVirtualGamepadButton(
-        { gamepadIndex, buttonId: "Pad.Right" },
-        physicalGamepad.getDpadHatRight(),
-        !systemHasAnalogStick ? physicalGamepad.getLeftStickRight() : null,
-      ),
-      ...getVirtualGamepadButton(
-        { gamepadIndex, buttonId: "Pad.Up" },
-        physicalGamepad.getDpadHatUp(),
-        !systemHasAnalogStick ? physicalGamepad.getLeftStickUp() : null,
-      ),
-      ...getVirtualGamepadButton(
-        { gamepadIndex, buttonId: "Pad.Down" },
-        physicalGamepad.getDpadHatDown(),
-        !systemHasAnalogStick ? physicalGamepad.getLeftStickDown() : null,
-      ),
-    ];
+    if (isDpadHat(mappingObject, "dpup")) {
+      //     hat
+      return [
+        ...getVirtualGamepadButton(
+          { gamepadIndex, buttonId: "Pad.Left" },
+          physicalGamepad.getDpadHatLeft(),
+          !systemHasAnalogStick ? physicalGamepad.getLeftStickLeft() : null,
+        ),
+        ...getVirtualGamepadButton(
+          { gamepadIndex, buttonId: "Pad.Right" },
+          physicalGamepad.getDpadHatRight(),
+          !systemHasAnalogStick ? physicalGamepad.getLeftStickRight() : null,
+        ),
+        ...getVirtualGamepadButton(
+          { gamepadIndex, buttonId: "Pad.Up" },
+          physicalGamepad.getDpadHatUp(),
+          !systemHasAnalogStick ? physicalGamepad.getLeftStickUp() : null,
+        ),
+        ...getVirtualGamepadButton(
+          { gamepadIndex, buttonId: "Pad.Down" },
+          physicalGamepad.getDpadHatDown(),
+          !systemHasAnalogStick ? physicalGamepad.getLeftStickDown() : null,
+        ),
+      ];
+    } else {
+      //     button
+      return [
+        ...getVirtualGamepadButton(
+          { gamepadIndex, buttonId: "Pad.Left" },
+          physicalGamepad.getDpadLeft(),
+          !systemHasAnalogStick ? physicalGamepad.getLeftStickLeft() : null,
+        ),
+        ...getVirtualGamepadButton(
+          { gamepadIndex, buttonId: "Pad.Right" },
+          physicalGamepad.getDpadRight(),
+          !systemHasAnalogStick ? physicalGamepad.getLeftStickRight() : null,
+        ),
+        ...getVirtualGamepadButton(
+          { gamepadIndex, buttonId: "Pad.Up" },
+          physicalGamepad.getDpadUp(),
+          !systemHasAnalogStick ? physicalGamepad.getLeftStickUp() : null,
+        ),
+        ...getVirtualGamepadButton(
+          { gamepadIndex, buttonId: "Pad.Down" },
+          physicalGamepad.getDpadDown(),
+          !systemHasAnalogStick ? physicalGamepad.getLeftStickDown() : null,
+        ),
+      ];
+    }
   } else {
     //   map left stick to dpad
     return [
@@ -148,12 +176,11 @@ const getIndexForDeviceId = (index: number) => `${index + 1}`;
  * vendor = 28de (hex value, needs to be padded with "0" on start to 4 characters, to 3 characters if deviceIndex is set)
  * product = 11ff (hex value, needs to be padded with "0" on start to 4 characters)
  */
-export const createDeviceId = ({
-  vendor,
-  product,
-  id,
-}: Sdl.Controller.Device) => {
-  const deviceIdIndex = getIndexForDeviceId(id);
+export const createDeviceId = (
+  { vendor, product }: Sdl.Controller.Device,
+  index: number,
+) => {
+  const deviceIdIndex = getIndexForDeviceId(index);
   return `0x${deviceIdIndex}${vendor?.toString(16).padStart(deviceIdIndex.length > 0 ? 4 : 3, "0")}${product?.toString(16).padStart(4, "0")}`;
 };
 
@@ -162,7 +189,7 @@ export const getVirtualGamepad =
   (sdlDevice: Sdl.Controller.Device, index: number) => {
     const virtualGamepadIndex = playerIndexArray[index];
     const mappingObject = createSdlMappingObject(sdlDevice.mapping!);
-    const deviceId = createDeviceId(sdlDevice);
+    const deviceId = createDeviceId(sdlDevice, index);
     const physicalGamepad = new PhysicalGamepad(deviceId, mappingObject);
     const joystick = getJoystickFromController(sdlDevice)!;
 
