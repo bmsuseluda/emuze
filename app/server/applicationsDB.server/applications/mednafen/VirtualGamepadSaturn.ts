@@ -1,10 +1,12 @@
+import sdl from "@kmamal/sdl";
 import type { GamepadID } from "./initGamepadIDs.js";
-import { findSdlGamepad, getGamepads } from "./initGamepadIDs.js";
+import { findSdlGamepad } from "./initGamepadIDs.js";
 import { log } from "../../../debug.server.js";
 import { VirtualGamepad } from "./VirtualGamepad.js";
 import { getKeyboardKey } from "./keyboardConfig.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { getPhysicalGamepad } from "./getPhysicalGamepad.js";
+import { getPlayerIndexArray } from "../../../../types/gamepad.js";
 
 type MednafenButtonIdSaturn =
   | "up"
@@ -85,52 +87,61 @@ export const getKeyboardSaturn = () => {
   ];
 };
 
-export const getVirtualGamepadSaturn = (
-  gamepadID: GamepadID,
-  index: number,
-) => {
-  const sdlGamepad = findSdlGamepad(gamepadID, index);
+export const getVirtualGamepadSaturn =
+  (playerIndexArray: number[]) => (gamepadID: GamepadID, index: number) => {
+    const sdlGamepad = findSdlGamepad(gamepadID, index);
 
-  if (sdlGamepad) {
-    log("debug", "gamepad", gamepadID, sdlGamepad);
-    const { initialize, createButtonMapping } =
-      new VirtualGamepad<MednafenButtonIdSaturn>(index, system, gamepadType);
-    const physicalGamepad = getPhysicalGamepad(sdlGamepad, gamepadID);
+    if (sdlGamepad) {
+      log("debug", "gamepad", gamepadID, sdlGamepad);
+      const { initialize, createButtonMapping } =
+        new VirtualGamepad<MednafenButtonIdSaturn>(
+          playerIndexArray[index],
+          system,
+          gamepadType,
+        );
+      const physicalGamepad = getPhysicalGamepad(sdlGamepad, gamepadID);
 
-    return [
-      ...initialize(),
-      ...createButtonMapping("up", physicalGamepad.getDpadUp()),
-      ...createButtonMapping("down", physicalGamepad.getDpadDown()),
-      ...createButtonMapping("left", physicalGamepad.getDpadLeft()),
-      ...createButtonMapping("right", physicalGamepad.getDpadRight()),
-      ...createButtonMapping("analog_up", physicalGamepad.getLeftStickUp()),
-      ...createButtonMapping("analog_down", physicalGamepad.getLeftStickDown()),
-      ...createButtonMapping("analog_left", physicalGamepad.getLeftStickLeft()),
-      ...createButtonMapping(
-        "analog_right",
-        physicalGamepad.getLeftStickRight(),
-      ),
-      ...createButtonMapping("a", physicalGamepad.getA()),
-      ...createButtonMapping("b", physicalGamepad.getB()),
-      ...createButtonMapping("c", physicalGamepad.getRightShoulder()),
-      ...createButtonMapping("x", physicalGamepad.getX()),
-      ...createButtonMapping("y", physicalGamepad.getY()),
-      ...createButtonMapping("z", physicalGamepad.getLeftShoulder()),
-      ...createButtonMapping("ls", physicalGamepad.getLeftTrigger()),
-      ...createButtonMapping("rs", physicalGamepad.getRightTrigger()),
-      ...createButtonMapping("mode", physicalGamepad.getBack()),
-      ...createButtonMapping("start", physicalGamepad.getStart()),
-    ];
-  }
+      return [
+        ...initialize(),
+        ...createButtonMapping("up", physicalGamepad.getDpadUp()),
+        ...createButtonMapping("down", physicalGamepad.getDpadDown()),
+        ...createButtonMapping("left", physicalGamepad.getDpadLeft()),
+        ...createButtonMapping("right", physicalGamepad.getDpadRight()),
+        ...createButtonMapping("analog_up", physicalGamepad.getLeftStickUp()),
+        ...createButtonMapping(
+          "analog_down",
+          physicalGamepad.getLeftStickDown(),
+        ),
+        ...createButtonMapping(
+          "analog_left",
+          physicalGamepad.getLeftStickLeft(),
+        ),
+        ...createButtonMapping(
+          "analog_right",
+          physicalGamepad.getLeftStickRight(),
+        ),
+        ...createButtonMapping("a", physicalGamepad.getA()),
+        ...createButtonMapping("b", physicalGamepad.getB()),
+        ...createButtonMapping("c", physicalGamepad.getRightShoulder()),
+        ...createButtonMapping("x", physicalGamepad.getX()),
+        ...createButtonMapping("y", physicalGamepad.getY()),
+        ...createButtonMapping("z", physicalGamepad.getLeftShoulder()),
+        ...createButtonMapping("ls", physicalGamepad.getLeftTrigger()),
+        ...createButtonMapping("rs", physicalGamepad.getRightTrigger()),
+        ...createButtonMapping("mode", physicalGamepad.getBack()),
+        ...createButtonMapping("start", physicalGamepad.getStart()),
+      ];
+    }
 
-  return [];
-};
+    return [];
+  };
 
-export const getVirtualGamepadsSaturn = (applicationPath?: string) => {
-  const gamepads = getGamepads(applicationPath);
+export const getVirtualGamepadsSaturn = (gamepads: GamepadID[]) => {
+  const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
+
   const virtualGamepads =
     gamepads.length > 0
-      ? gamepads.map(getVirtualGamepadSaturn)
+      ? gamepads.map(getVirtualGamepadSaturn(playerIndexArray))
       : getKeyboardSaturn();
   log("debug", "gamepads", gamepads.length);
 

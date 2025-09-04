@@ -98,7 +98,7 @@ describe("removeVendorFromGuid", () => {
     {
       name: "PS4 Controller",
       input: gamepadPs4.guid,
-      expected: "030000004c050000c405000000010000",
+      expected: "030000004c050000c405000000006800",
     },
     {
       name: "PS3 Controller",

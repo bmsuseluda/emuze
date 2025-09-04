@@ -2,11 +2,13 @@ import { isWindows } from "../../../operationsystem.server.js";
 import { log } from "../../../debug.server.js";
 import { spawnSync } from "node:child_process";
 import sdl from "@kmamal/sdl";
+import type { Sdl } from "@kmamal/sdl";
 
 import { checkFlatpakIsInstalled } from "../../checkEmulatorIsInstalled.js";
 import { flatpakId, flatpakOptionParams } from "./definitions.js";
 import { getJoystickFromController } from "../../../gamepad.server.js";
 import { getDeviceNameFromHid } from "../../../getDeviceNameFromHid.js";
+import { isSteamDeckController } from "../../../../types/gamepad.js";
 
 export interface GamepadID {
   id: string;
@@ -74,13 +76,22 @@ export const getGamepads = (applicationPath?: string) => {
   return [];
 };
 
-// TODO: check if hid works for steam input as well
+const getAlternativeNames = (joystick: Sdl.Joystick.Device): string[] => {
+  if (isSteamDeckController(joystick)) {
+    return ["Microsoft X-Box 360 pad"];
+  }
+
+  return [];
+};
+
 export const findSdlGamepad = (gamepadId: GamepadID, index: number) => {
   const gamepads = sdl.controller.devices;
 
   const sdlGamepads = gamepads.filter((gamepad) => {
     const joystick = getJoystickFromController(gamepad)!;
     const nameFromHid = getDeviceNameFromHid(joystick) || "";
+    const alternativeNames = getAlternativeNames(joystick);
+
     log(
       "debug",
       "findSdlGamepad",
@@ -91,7 +102,12 @@ export const findSdlGamepad = (gamepadId: GamepadID, index: number) => {
       `controller: ${gamepad.name}`,
     );
 
-    return !![nameFromHid, joystick.name, gamepad.name].find(
+    return !![
+      ...alternativeNames,
+      nameFromHid,
+      joystick.name,
+      gamepad.name,
+    ].find(
       (name) =>
         name &&
         gamepadId.name

@@ -6,6 +6,7 @@ import { getVirtualGamepadsPcEngine } from "./VirtualGamepadPcEngine.js";
 import { getKeyboardKey } from "./keyboardConfig.js";
 import { flatpakId, flatpakOptionParams } from "./definitions.js";
 import { log } from "../../../debug.server.js";
+import { getGamepads } from "./initGamepadIDs.js";
 
 const getSharedMednafenOptionParams: OptionParamFunction = ({
   settings: {
@@ -71,9 +72,8 @@ export const mednafenSaturn: Application = {
   ...mednafen,
   id: "mednafenSaturn",
   createOptionParams: (props) => {
-    const virtualGamepadsSaturn = getVirtualGamepadsSaturn(
-      props.applicationPath,
-    );
+    const gamepads = getGamepads(props.applicationPath);
+    const virtualGamepadsSaturn = getVirtualGamepadsSaturn(gamepads);
     log("debug", "createOptionParams", virtualGamepadsSaturn);
     return [...mednafen.createOptionParams!(props), ...virtualGamepadsSaturn];
   },
@@ -83,9 +83,8 @@ export const mednafenPcEngineCD: Application = {
   ...mednafen,
   id: "mednafenPcEngineCD",
   createOptionParams: (props) => {
-    const virtualGamepadsPcEngine = getVirtualGamepadsPcEngine(
-      props.applicationPath,
-    );
+    const gamepads = getGamepads(props.applicationPath);
+    const virtualGamepadsPcEngine = getVirtualGamepadsPcEngine(gamepads);
     log("debug", "createOptionParams", virtualGamepadsPcEngine);
     return [
       ...["-pce.cddavolume", "100"], // music

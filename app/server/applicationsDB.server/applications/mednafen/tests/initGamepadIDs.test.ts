@@ -1,4 +1,4 @@
-import { eightBitDoPro2 } from "../../../../../types/gamepad.js";
+import { eightBitDoPro2, steamDeck } from "../../../../../types/gamepad.js";
 import type { GamepadID } from "../initGamepadIDs.js";
 import { extractGamepadIDs, findSdlGamepad } from "../initGamepadIDs.js";
 
@@ -47,6 +47,19 @@ describe("initGamepadIDs", () => {
       );
 
       expect(result).toBe(eightBitDoPro2);
+    });
+
+    it("Should return the steam deck controller through alternative name", () => {
+      const result = findSdlGamepad(
+        {
+          id: "0x000328de11ff00010008000b00000000",
+          name: "Microsoft X-Box 360 pad 0",
+          nameIndex: 0,
+        },
+        1,
+      );
+
+      expect(result).toBe(steamDeck);
     });
 
     it("Should return the appropriate sdl device if there are multiple one of the same type", () => {
