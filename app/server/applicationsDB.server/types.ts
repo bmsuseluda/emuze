@@ -68,7 +68,6 @@ export interface Application {
   defineEnvironmentVariables?: EnvironmentVariableFunction;
   createOptionParams?: OptionParamFunction;
   flatpakId: string;
-  flatpakOptionParams?: string[];
   findEntryName?: FindEntryNameFunction;
   excludeFiles?: ExcludeFilesFunction;
   bundledPathLinux?: string;

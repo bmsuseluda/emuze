@@ -4,7 +4,12 @@ import nodepath from "node:path";
 import { getVirtualGamepadsSaturn } from "./VirtualGamepadSaturn.js";
 import { getVirtualGamepadsPcEngine } from "./VirtualGamepadPcEngine.js";
 import { getKeyboardKey } from "./keyboardConfig.js";
-import { flatpakId, flatpakOptionParams } from "./definitions.js";
+import {
+  applicationId,
+  bundledPathLinux,
+  bundledPathWindows,
+  flatpakId,
+} from "./definitions.js";
 import { log } from "../../../debug.server.js";
 import { getGamepads } from "./initGamepadIDs.js";
 
@@ -48,31 +53,32 @@ const getSharedMednafenOptionParams: OptionParamFunction = ({
 };
 
 export const mednafen: Application = {
-  id: "mednafen",
+  id: applicationId,
   name: "Mednafen",
-  fileExtensions: [".cue", ".pce", ".nes", ".sms", ".gg"],
+  fileExtensions: [".cue", ".pce"],
   flatpakId,
-  flatpakOptionParams,
-  executable: "mednafen.exe",
-  defineEnvironmentVariables: ({ applicationPath }) => {
+  defineEnvironmentVariables: () => {
     const environmentVariables = {};
-    if (isWindows() && applicationPath) {
+    if (isWindows()) {
       return {
         ...environmentVariables,
-        MEDNAFEN_HOME: nodepath.dirname(applicationPath),
+        MEDNAFEN_HOME: nodepath.dirname(nodepath.join(process.env.APPDIR || "",
+      "emulators",bundledPathWindows)),
         MEDNAFEN_NOPOPUPS: 1,
       };
     }
     return environmentVariables;
   },
   createOptionParams: getSharedMednafenOptionParams,
+  bundledPathLinux,
+  bundledPathWindows,
 };
 
 export const mednafenSaturn: Application = {
   ...mednafen,
   id: "mednafenSaturn",
   createOptionParams: (props) => {
-    const gamepads = getGamepads(props.applicationPath);
+    const gamepads = getGamepads();
     const virtualGamepadsSaturn = getVirtualGamepadsSaturn(gamepads);
     log("debug", "createOptionParams", virtualGamepadsSaturn);
     return [...mednafen.createOptionParams!(props), ...virtualGamepadsSaturn];
@@ -83,7 +89,7 @@ export const mednafenPcEngineCD: Application = {
   ...mednafen,
   id: "mednafenPcEngineCD",
   createOptionParams: (props) => {
-    const gamepads = getGamepads(props.applicationPath);
+    const gamepads = getGamepads();
     const virtualGamepadsPcEngine = getVirtualGamepadsPcEngine(gamepads);
     log("debug", "createOptionParams", virtualGamepadsPcEngine);
     return [

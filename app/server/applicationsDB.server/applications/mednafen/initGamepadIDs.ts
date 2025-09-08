@@ -1,16 +1,19 @@
+import nodepath from "node:path";
 import { isWindows } from "../../../operationsystem.server.js";
 import { log } from "../../../debug.server.js";
 import { spawnSync } from "node:child_process";
 import sdl from "@kmamal/sdl";
 import type { Sdl } from "@kmamal/sdl";
 
-import { checkFlatpakIsInstalled } from "../../checkEmulatorIsInstalled.js";
-import { flatpakId, flatpakOptionParams } from "./definitions.js";
 import { getJoystickFromController } from "../../../gamepad.server.js";
 import { getDeviceNameFromHid } from "../../../getDeviceNameFromHid.js";
-import { isSteamDeckController } from "../../../../types/gamepad.js";
+import {
+  getPlayerIndexArray,
+  isSteamDeckController,
+} from "../../../../types/gamepad.js";
+import { bundledPathLinux, bundledPathWindows } from "./definitions.js";
 
-export interface GamepadID {
+export interface MednafenGamepadID {
   id: string;
   name: string;
   nameIndex: number;
@@ -22,13 +25,13 @@ export interface GamepadID {
  * @param logOutput
  * @returns
  */
-export const extractGamepadIDs = (logOutput: string): GamepadID[] =>
+export const extractGamepadIDs = (logOutput: string): MednafenGamepadID[] =>
   logOutput
     .split("\n")
     .filter((line) => {
       return line.replace("'", "").trim().startsWith("ID: ");
     })
-    .map((line): GamepadID => {
+    .map((line): MednafenGamepadID => {
       const [id, name] = line
         .replace("'", "")
         .trim()
@@ -51,24 +54,20 @@ const executeWithLogs = (applicationPath: string, args: string[]): string => {
   return result.stdout || "";
 };
 
-export const getGamepads = (applicationPath?: string) => {
+export const getGamepads = (): MednafenGamepadID[] => {
   if (sdl.controller.devices.length > 0) {
+    const bundledPathBase = nodepath.join(
+      process.env.APPDIR || "",
+      "emulators",
+    );
+    const bundledPath = nodepath.join(
+      bundledPathBase,
+      isWindows() ? bundledPathWindows : bundledPathLinux,
+    );
     try {
-      if (isWindows() && applicationPath) {
-        const output = executeWithLogs(applicationPath, ["wrong"]);
-        log("debug", "result", output);
-        return extractGamepadIDs(output);
-      } else {
-        if (checkFlatpakIsInstalled(flatpakId)) {
-          const output = executeWithLogs("flatpak", [
-            "run",
-            ...flatpakOptionParams,
-            flatpakId,
-            "wrong",
-          ]);
-          return extractGamepadIDs(output);
-        }
-      }
+      const output = executeWithLogs(nodepath.join(bundledPath), ["wrong"]);
+      log("debug", "result", output);
+      return extractGamepadIDs(output);
     } catch (e) {
       log("debug", "result in catch", e);
     }
@@ -84,19 +83,69 @@ const getAlternativeNames = (joystick: Sdl.Joystick.Device): string[] => {
   return [];
 };
 
-export const findSdlGamepad = (gamepadId: GamepadID, index: number) => {
+export interface MappedGamepad {
+  sdlController: Sdl.Controller.Device;
+  mednafenGamepadId: MednafenGamepadID;
+}
+
+export interface MappedGamepadWithPlayerIndex extends MappedGamepad {
+  playerIndex: number;
+}
+
+export const getMappedGamepads = (
+  mednafenGamepadIds: MednafenGamepadID[],
+): MappedGamepadWithPlayerIndex[] => {
+  const mappedGamepads: MappedGamepad[] = [];
+
+  mednafenGamepadIds.forEach((mednafenGamepadId) => {
+    const mappedGamepad = getMappedGamepad(mednafenGamepadId);
+    if (mappedGamepad) {
+      mappedGamepads.push(mappedGamepad);
+    }
+  });
+
+  const mappedJoysticks = mappedGamepads.map(
+    ({ sdlController }) => getJoystickFromController(sdlController)!,
+  );
+  const playerIndexArray = getPlayerIndexArray(mappedJoysticks);
+
+  const mappedGamepadsWithPlayerIndex =
+    mappedGamepads.map<MappedGamepadWithPlayerIndex>(
+      (mappedGamepad, index) => ({
+        ...mappedGamepad,
+        playerIndex: playerIndexArray[index],
+      }),
+    );
+
+  return mappedGamepadsWithPlayerIndex;
+};
+
+/**
+ *
+ * steam deck 1
+ * steam deck 2
+ * wireless controller
+ */
+export const getMappedGamepad = (
+  mednafenGamepadId: MednafenGamepadID,
+): MappedGamepad | null => {
   const gamepads = sdl.controller.devices;
 
-  const sdlGamepads = gamepads.filter((gamepad) => {
+  log(
+    "debug",
+    "findSdlGamepad",
+    `mednafen gamepadId: ${mednafenGamepadId.id}`,
+    `mednafen gamepadName: ${mednafenGamepadId.name}`,
+  );
+
+  const sdlControllers = gamepads.filter((gamepad) => {
     const joystick = getJoystickFromController(gamepad)!;
     const nameFromHid = getDeviceNameFromHid(joystick) || "";
     const alternativeNames = getAlternativeNames(joystick);
 
     log(
       "debug",
-      "findSdlGamepad",
-      `mednafen gamepadId: ${gamepadId.id}`,
-      `mednafen gamepadName: ${gamepadId.name}`,
+      "findSdlGamepad filter",
       `hid: ${nameFromHid}`,
       `joystick: ${joystick.name}`,
       `controller: ${gamepad.name}`,
@@ -110,17 +159,18 @@ export const findSdlGamepad = (gamepadId: GamepadID, index: number) => {
     ].find(
       (name) =>
         name &&
-        gamepadId.name
+        mednafenGamepadId.name
           .toLowerCase()
           .replaceAll(" ", "")
           .startsWith(name.toLowerCase().replaceAll(" ", "")),
     );
   });
 
-  const sdlGamepad =
-    sdlGamepads.at(gamepadId.nameIndex) ||
-    sdlGamepads.at(0) ||
-    gamepads.at(index);
+  const sdlController = sdlControllers.at(mednafenGamepadId.nameIndex);
 
-  return sdlGamepad;
+  if (sdlController) {
+    return { mednafenGamepadId, sdlController };
+  }
+
+  return null;
 };

@@ -4,6 +4,7 @@ import {
   eightBitDoPro2SecondDevice,
   gamepadPs4,
   steamDeck,
+  steamDeckSteamInputCopy,
 } from "./testData.js";
 
 vi.mock("@kmamal/sdl");
@@ -14,6 +15,7 @@ describe("VirtualGamepadSaturn", () => {
     it("Should map gamepads", () => {
       const result = getVirtualGamepadsSaturn([
         steamDeck,
+        steamDeckSteamInputCopy,
         gamepadPs4,
         eightBitDoPro2,
         eightBitDoPro2SecondDevice,
@@ -31,6 +33,26 @@ describe("VirtualGamepadSaturn", () => {
       );
       expect(ps4DpadUpIndex).toBeGreaterThan(-1);
       expect(result.at(ps4DpadUpIndex + 1)).toContain(gamepadPs4.id);
+
+      const eightBitDoDpadUpIndex = result.findIndex(
+        (line) => line === "-ss.input.port2.3dpad.up",
+      );
+      expect(eightBitDoDpadUpIndex).toBeGreaterThan(-1);
+      expect(result.at(eightBitDoDpadUpIndex + 1)).toContain(eightBitDoPro2.id);
+
+      const eightBitDoSecondDeviceDpadUpIndex = result.findIndex(
+        (line) => line === "-ss.input.port3.3dpad.up",
+      );
+      expect(eightBitDoSecondDeviceDpadUpIndex).toBeGreaterThan(-1);
+      expect(result.at(eightBitDoSecondDeviceDpadUpIndex + 1)).toContain(
+        eightBitDoPro2SecondDevice.id,
+      );
+
+      const disabledDevice = result.findIndex(
+        (line) => line === "-ss.input.port5.3dpad.up",
+      );
+      expect(disabledDevice).toBeGreaterThan(-1);
+      expect(result.at(disabledDevice + 1)).toBe(" ");
     });
   });
 });

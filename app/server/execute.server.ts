@@ -103,7 +103,6 @@ const executeBundledApplication = async ({
 };
 
 const executeApplicationOnLinux = async ({
-  applicationFlatpakOptionParams,
   applicationFlatpakId,
   absoluteEntryPath,
   optionParams,
@@ -111,7 +110,6 @@ const executeApplicationOnLinux = async ({
   categoriesPath,
   applicationName,
 }: {
-  applicationFlatpakOptionParams?: string[];
   applicationFlatpakId: string;
   absoluteEntryPath: string;
   optionParams: string[];
@@ -121,9 +119,6 @@ const executeApplicationOnLinux = async ({
 }) => {
   if (checkFlatpakIsInstalled(applicationFlatpakId)) {
     const params = ["run", `--filesystem=${categoriesPath}`];
-    if (applicationFlatpakOptionParams) {
-      params.push(...applicationFlatpakOptionParams);
-    }
     params.push(applicationFlatpakId);
     params.push(...optionParams);
 
@@ -219,12 +214,8 @@ export const startGame = async (
     );
 
     if (existsSync(absoluteEntryPath)) {
-      const {
-        defineEnvironmentVariables,
-        createOptionParams,
-        flatpakId,
-        flatpakOptionParams,
-      } = applicationData;
+      const { defineEnvironmentVariables, createOptionParams, flatpakId } =
+        applicationData;
 
       const environmentVariables = (applicationPath?: string) => {
         if (defineEnvironmentVariables) {
@@ -283,7 +274,6 @@ export const startGame = async (
             });
           } else {
             await executeApplicationOnLinux({
-              applicationFlatpakOptionParams: flatpakOptionParams,
               applicationFlatpakId: flatpakId,
               absoluteEntryPath,
               optionParams: optionParams(),

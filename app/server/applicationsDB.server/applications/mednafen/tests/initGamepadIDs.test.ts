@@ -1,6 +1,6 @@
 import { eightBitDoPro2, steamDeck } from "../../../../../types/gamepad.js";
-import type { GamepadID } from "../initGamepadIDs.js";
-import { extractGamepadIDs, findSdlGamepad } from "../initGamepadIDs.js";
+import type { MappedGamepad, MednafenGamepadID } from "../initGamepadIDs.js";
+import { extractGamepadIDs, getMappedGamepad } from "../initGamepadIDs.js";
 
 vi.mock("@kmamal/sdl");
 vi.mock("node-hid");
@@ -13,7 +13,7 @@ describe("initGamepadIDs", () => {
   ID: 0x0005045e02e009030008000a00000000 - 8BitDo Pro 2
   ID: 0x0005045e02e009030008000a00000001 - 8BitDo Pro 2 2`;
 
-      const expected: GamepadID[] = [
+      const expected: MednafenGamepadID[] = [
         {
           id: "0x0005054c026880000006001100000000",
           name: "PLAYSTATION(R)3 Controller",
@@ -35,44 +35,53 @@ describe("initGamepadIDs", () => {
     });
   });
 
-  describe("findSdlGamepad", () => {
+  describe("getMappedGamepad", () => {
     it("Should return the appropriate sdl device", () => {
-      const result = findSdlGamepad(
-        {
-          id: "0x0005045e02e009030008000a00000000",
-          name: "8BitDo Pro 2",
-          nameIndex: 0,
-        },
-        0,
-      );
+      const mednafenGamepadId: MednafenGamepadID = {
+        id: "0x0005045e02e009030008000a00000000",
+        name: "8BitDo Pro 2",
+        nameIndex: 0,
+      };
+      const result = getMappedGamepad(mednafenGamepadId);
 
-      expect(result).toBe(eightBitDoPro2);
+      const expected: MappedGamepad = {
+        sdlController: eightBitDoPro2,
+        mednafenGamepadId,
+      };
+
+      expect(result).toStrictEqual(expected);
     });
 
     it("Should return the steam deck controller through alternative name", () => {
-      const result = findSdlGamepad(
-        {
-          id: "0x000328de11ff00010008000b00000000",
-          name: "Microsoft X-Box 360 pad 0",
-          nameIndex: 0,
-        },
-        1,
-      );
+      const mednafenGamepadId: MednafenGamepadID = {
+        id: "0x000328de11ff00010008000b00000000",
+        name: "Microsoft X-Box 360 pad 0",
+        nameIndex: 0,
+      };
+      const result = getMappedGamepad(mednafenGamepadId);
 
-      expect(result).toBe(steamDeck);
+      const expected: MappedGamepad = {
+        sdlController: steamDeck,
+        mednafenGamepadId,
+      };
+
+      expect(result).toStrictEqual(expected);
     });
 
     it("Should return the appropriate sdl device if there are multiple one of the same type", () => {
-      const result = findSdlGamepad(
-        {
-          id: "0x0005045e02e009030008000a00000000",
-          name: "8BitDo Pro 2 2",
-          nameIndex: 1,
-        },
-        0,
-      );
+      const mednafenGamepadId: MednafenGamepadID = {
+        id: "0x0005045e02e009030008000a00000001",
+        name: "8BitDo Pro 2 2",
+        nameIndex: 1,
+      };
+      const result = getMappedGamepad(mednafenGamepadId);
 
-      expect(result).toStrictEqual({ ...eightBitDoPro2, id: 3 });
+      const expected: MappedGamepad = {
+        sdlController: { ...eightBitDoPro2, id: 3 },
+        mednafenGamepadId,
+      };
+
+      expect(result).toStrictEqual(expected);
     });
   });
 });

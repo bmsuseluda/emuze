@@ -251,7 +251,7 @@ export const steamDeck = {
   path: "/dev/input/event6",
   guid: "030079f6de280000ff11000001000000",
   vendor: 10462,
-  product: 4613,
+  product: 4613, // 4607
   version: 1,
   player: 0,
   mapping:
