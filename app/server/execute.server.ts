@@ -28,6 +28,7 @@ import {
   unregisterCloseGameOnKeyboardEvent,
 } from "./closeGame.server.js";
 import { setGameIsRunningChildProcess } from "./gameIsRunning.server.js";
+import { bundledEmulatorsPathBase } from "./bundledEmulatorsPath.server.js";
 
 type ExecFileCallback = (
   error: ExecFileException | null,
@@ -97,7 +98,7 @@ const executeBundledApplication = async ({
     params.push(absoluteEntryPath);
   }
   return executeApplication(
-    nodepath.join(process.env.APPDIR || "", "emulators", bundledPath),
+    nodepath.join(bundledEmulatorsPathBase, bundledPath),
     params,
   );
 };

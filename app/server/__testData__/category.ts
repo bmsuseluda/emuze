@@ -69,12 +69,6 @@ export const pcenginecd = {
   entries: addIndex([cotton, gateofthunder]),
 } satisfies Category;
 
-export const pcenginecdLinux = {
-  id: "pcenginecd",
-  name: "PC Engine CD",
-  entries: addIndex([cotton, gateofthunder]),
-} satisfies Category;
-
 export const monkeyIsland: Entry = {
   id: "thesecretofmonkeyisland",
   name: "The Secret of Monkey Island",

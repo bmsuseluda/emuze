@@ -11,7 +11,7 @@ import type { Config, InputConfig } from "./config.js";
 import { defaultConfig, defaultInputConfig } from "./config.js";
 import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
-import { emulatorsDirectory } from "../../../homeDirectory.server.js";
+import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import type { ApplicationId } from "../../applicationId.js";
 import {
@@ -27,7 +27,7 @@ const bundledPathLinux = nodepath.join(
   `${applicationId}.AppImage`,
 );
 const bundledPathWindows = nodepath.join(applicationId, "Ryujinx.exe");
-const configFolderPath = nodepath.join(emulatorsDirectory, applicationId);
+const configFolderPath = nodepath.join(emulatorsConfigDirectory, applicationId);
 const configFileName = "Config.json";
 const configFilePath = nodepath.join(configFolderPath, configFileName);
 

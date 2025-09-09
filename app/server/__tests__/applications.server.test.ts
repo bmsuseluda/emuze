@@ -2,7 +2,7 @@ import {
   findExecutable,
   getInstalledApplicationForCategoryOnWindows,
 } from "../applications.server.js";
-import { applicationsPath, pcsx2 } from "../__testData__/applications.js";
+import { applicationsPath, mameNeoGeo } from "../__testData__/applications.js";
 import * as categoriesFromDB from "../categoriesDB.server/index.js";
 import { readFilenames } from "../readWriteData.server.js";
 
@@ -95,15 +95,15 @@ describe("applications.server", () => {
 
   describe("getInstalledApplicationForCategoryOnWindows", () => {
     it("Should return application if installed", () => {
-      const application = categoriesFromDB.sonyplaystation2.application;
-      vi.mocked(readFilenames).mockReturnValueOnce([pcsx2.path]);
+      const application = categoriesFromDB.neogeo.application;
+      vi.mocked(readFilenames).mockReturnValueOnce([mameNeoGeo.path]);
 
       const result = getInstalledApplicationForCategoryOnWindows(
         application,
         applicationsPath,
       );
 
-      expect(result).toStrictEqual({ ...application, path: pcsx2.path });
+      expect(result).toStrictEqual({ ...application, path: mameNeoGeo.path });
     });
 
     it("Should return undefined if application is not installed", () => {

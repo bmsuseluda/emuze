@@ -18,6 +18,7 @@ import type { Sdl } from "@kmamal/sdl";
 import type { EmuzeButtonId } from "../../../../types/gamepad.js";
 import { keyboardMapping } from "../../../../types/gamepad.js";
 import { isWindows } from "../../../operationsystem.server.js";
+import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 
 const flatpakId = "org.ppsspp.PPSSPP";
 const applicationId: ApplicationId = "ppsspp";
@@ -26,7 +27,7 @@ const bundledPathLinux = nodepath.join(
   `${applicationId}.AppImage`,
 );
 const getWindowsConfigFolder = () =>
-  nodepath.join(process.env.APPDIR || "", "emulators", applicationId);
+  nodepath.join(bundledEmulatorsPathBase, applicationId);
 const bundledPathWindows = nodepath.join(applicationId, "PPSSPPWindows64.exe");
 
 const { config } = envPaths("ppsspp", { suffix: "" });

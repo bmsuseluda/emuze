@@ -34,6 +34,7 @@ import {
   getNameIndex,
   getPlayerIndexArray,
 } from "../../../../types/gamepad.js";
+import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 
 const flatpakId = "net.rpcs3.RPCS3";
 const applicationId: ApplicationId = "rpcs3";
@@ -42,7 +43,7 @@ const bundledPathLinux = nodepath.join(
   `${applicationId}.AppImage`,
 );
 const getWindowsConfigFolder = () =>
-  nodepath.join(process.env.APPDIR || "", "emulators", applicationId);
+  nodepath.join(bundledEmulatorsPathBase, applicationId);
 const bundledPathWindows = nodepath.join(applicationId, "rpcs3.exe");
 const guiConfigFileName = "CurrentSettings.ini";
 const activeInputConfigFileName = "active_input_configurations.yml";

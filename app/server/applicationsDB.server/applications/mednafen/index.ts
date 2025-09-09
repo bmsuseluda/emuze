@@ -12,6 +12,7 @@ import {
 } from "./definitions.js";
 import { log } from "../../../debug.server.js";
 import { getGamepads } from "./initGamepadIDs.js";
+import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 
 const getSharedMednafenOptionParams: OptionParamFunction = ({
   settings: {
@@ -37,7 +38,7 @@ const getSharedMednafenOptionParams: OptionParamFunction = ({
   const soundDevice = !isWindows()
     ? ["-sound.device", "sexyal-literal-default"]
     : [];
-  const setFullscreen = fullscreen ? ["-video.fs", "1"] : [];
+  const setFullscreen = fullscreen ? ["-video.fs", "1"] : ["-video.fs", "0"];
 
   return [
     ...hotkeyHelp,
@@ -55,17 +56,16 @@ const getSharedMednafenOptionParams: OptionParamFunction = ({
 export const mednafen: Application = {
   id: applicationId,
   name: "Mednafen",
-  fileExtensions: [".cue", ".pce"],
+  fileExtensions: [".cue"],
   flatpakId,
   defineEnvironmentVariables: () => {
-    const environmentVariables = {};
+    const environmentVariables: Record<string, string> = {};
+
     if (isWindows()) {
-      return {
-        ...environmentVariables,
-        MEDNAFEN_HOME: nodepath.dirname(nodepath.join(process.env.APPDIR || "",
-      "emulators",bundledPathWindows)),
-        MEDNAFEN_NOPOPUPS: 1,
-      };
+      environmentVariables.MEDNAFEN_HOME = nodepath.dirname(
+        nodepath.join(bundledEmulatorsPathBase, bundledPathWindows),
+      );
+      environmentVariables.MEDNAFEN_NOPOPUPS = "1";
     }
     return environmentVariables;
   },

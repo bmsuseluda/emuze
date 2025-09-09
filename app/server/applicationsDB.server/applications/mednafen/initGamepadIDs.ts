@@ -12,6 +12,7 @@ import {
   isSteamDeckController,
 } from "../../../../types/gamepad.js";
 import { bundledPathLinux, bundledPathWindows } from "./definitions.js";
+import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 
 export interface MednafenGamepadID {
   id: string;
@@ -56,12 +57,8 @@ const executeWithLogs = (applicationPath: string, args: string[]): string => {
 
 export const getGamepads = (): MednafenGamepadID[] => {
   if (sdl.controller.devices.length > 0) {
-    const bundledPathBase = nodepath.join(
-      process.env.APPDIR || "",
-      "emulators",
-    );
     const bundledPath = nodepath.join(
-      bundledPathBase,
+      bundledEmulatorsPathBase,
       isWindows() ? bundledPathWindows : bundledPathLinux,
     );
     try {
