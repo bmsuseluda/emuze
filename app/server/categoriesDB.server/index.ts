@@ -1,9 +1,3 @@
-import {
-  cemu,
-  lime3ds,
-  mgba,
-  rosaliesMupenGui,
-} from "../applicationsDB.server/index.js";
 import { rpcs3 } from "../applicationsDB.server/applications/rpcs3/index.js";
 import {
   ares,
@@ -14,8 +8,6 @@ import {
   aresSegaMegaLd,
   aresSuperGrafx,
   aresSuperNintendo,
-  isMgbaForGameBoy,
-  isRmgForN64,
 } from "../applicationsDB.server/applications/ares/index.js";
 import {
   mame,
@@ -34,14 +26,12 @@ import {
   mednafenPcEngineCD,
   mednafenSaturn,
 } from "../applicationsDB.server/applications/mednafen/index.js";
-import {
-  azahar,
-  isLime3dsFor3ds,
-} from "../applicationsDB.server/applications/azahar/index.js";
+import { azahar } from "../applicationsDB.server/applications/azahar/index.js";
 import { ppsspp } from "../applicationsDB.server/applications/ppsspp/index.js";
 import { flycast } from "../applicationsDB.server/applications/flycast/index.js";
 import { xemu } from "../applicationsDB.server/applications/xemu/index.js";
 import { melonds } from "../applicationsDB.server/applications/melonds/index.js";
+import { cemu } from "../applicationsDB.server/applications/cemu/index.js";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",
@@ -180,7 +170,7 @@ export const nintendo3ds: Category = {
   id: "nintendo3ds",
   names: ["Nintendo 3DS", "3DS"],
   igdbPlatformIds: [37, /** New Nintendo 3DS */ 137],
-  application: isLime3dsFor3ds() ? lime3ds : azahar,
+  application: azahar,
   hasAnalogStick: true,
 };
 
@@ -236,7 +226,7 @@ export const nintendo64: Category = {
   id: "nintendo64",
   names: ["Nintendo 64", "N64"],
   igdbPlatformIds: [4],
-  application: isRmgForN64() ? rosaliesMupenGui : ares,
+  application: ares,
   hasAnalogStick: true,
 };
 
@@ -244,7 +234,7 @@ export const nintendogameboy: Category = {
   id: "nintendogameboy",
   names: ["Nintendo Game Boy", "Game Boy", "GB"],
   igdbPlatformIds: [33],
-  application: isMgbaForGameBoy() ? mgba : aresGameBoyColor,
+  application: aresGameBoyColor,
   hasAnalogStick: false,
 };
 
@@ -252,7 +242,7 @@ export const nintendogameboycolor: Category = {
   id: "nintendogameboycolor",
   names: ["Nintendo Game Boy Color", "Game Boy Color", "GBC"],
   igdbPlatformIds: [22],
-  application: isMgbaForGameBoy() ? mgba : aresGameBoyColor,
+  application: aresGameBoyColor,
   hasAnalogStick: false,
 };
 
@@ -260,7 +250,7 @@ export const nintendogameboyadvance: Category = {
   id: "nintendogameboyadvance",
   names: ["Nintendo Game Boy Advance", "Game Boy Advance", "GBA"],
   igdbPlatformIds: [24],
-  application: isMgbaForGameBoy() ? mgba : ares,
+  application: ares,
   hasAnalogStick: false,
 };
 

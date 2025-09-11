@@ -73,22 +73,17 @@ You can close a game via
 If a system is bundled, the respective emulator is provided with emuze in a specific version. Therefore you do not need to provide the emulator on your own.
 
 ### BIOS needed
-Some emulators need a BIOS or firmware to run. Please check the documentation of an emulator for more information.
+Some emulators need a BIOS or firmware to run. Please check the documentation of the respective emulator for more information.
 
 ## 🚀 Getting started
 
-### Windows
+### 🪟 Windows
 
 ```mmd
-return scripts.getWindowsDownloadLink()
+return scripts.getWindowsDownloadLink('1) ')
 ```
-
-If you start emuze for the first time, it asks for the following folders to work:
-
-- [Emulators folder (Windows only)](#emulators-folder-windows-only)
-- [Roms folder](#roms-folder)
-
-You can change the folders in the settings.
+2) Choose the [folder where your Roms are located](#roms-folder)
+3) Optionally choose the [folder where your Emulators are located](#emulators-folder-windows-only)
 
 #### Emulators Folder (Windows only)
 
@@ -96,20 +91,19 @@ This is the folder where your emulators are installed. It is only necessary on W
 
 ```
 emulators
-|-> mame
+|-> scummvm
 |---> ...
-|---> mame.exe
+|---> scummvm.exe
 |---> ...
-|-> mednafen-1.32.1-win64
+|-> dosbox-staging
 |---> ...
-|---> mednafen.exe
+|---> dosbox.exe
 |---> ...
 ```
 
-### Linux
+### 🐧 Linux
 
 For now emuze is only released as an AppImage.
-All emulators, not bundled, need to be installed via flatpak.
 
 ```mmd
 return scripts.getLinuxDownloadLink('1) ')
@@ -117,7 +111,10 @@ return scripts.getLinuxDownloadLink('1) ')
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
 
-### Steam Deck in Game mode
+> [!INFO]  
+> All emulators, not bundled, need to be installed via flatpak.
+
+### 🎮️ Steam Deck in Game mode
 
 For now emuze is only released as an AppImage.
 

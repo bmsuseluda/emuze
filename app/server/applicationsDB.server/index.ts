@@ -27,76 +27,13 @@ import { ppsspp } from "./applications/ppsspp/index.js";
 import { flycast } from "./applications/flycast/index.js";
 import { xemu } from "./applications/xemu/index.js";
 import { melonds } from "./applications/melonds/index.js";
-
-export const lime3ds: Application = {
-  id: "lime3ds",
-  name: "Lime3DS",
-  fileExtensions: [".3ds"],
-  flatpakId: "io.github.lime3ds.Lime3DS",
-};
-
-export const cemu: Application = {
-  id: "cemu",
-  name: "Cemu",
-  fileExtensions: [".wud", ".wux", ".wua", ".rpx"],
-  flatpakId: "info.cemu.Cemu",
-  createOptionParams: ({
-    settings: {
-      appearance: { fullscreen },
-    },
-  }) => {
-    const optionParams = [];
-    if (fullscreen) {
-      optionParams.push("-f");
-    }
-    optionParams.push("-g");
-    return optionParams;
-  },
-};
-
-export const rosaliesMupenGui: Application = {
-  id: "rosaliesMupenGui",
-  name: "Rosalie's Mupen GUI",
-  executable: "rmg.exe",
-  fileExtensions: [".z64", ".n64", ".v64"],
-  flatpakId: "com.github.Rosalie241.RMG",
-  createOptionParams: ({
-    settings: {
-      appearance: { fullscreen },
-    },
-  }) => {
-    const optionParams = [];
-    if (fullscreen) {
-      optionParams.push("--fullscreen");
-    }
-    return optionParams;
-  },
-};
-
-export const mgba: Application = {
-  id: "mgba",
-  name: "mgba",
-  fileExtensions: [".gb", ".gbc", ".gba"],
-  flatpakId: "io.mgba.mGBA",
-  createOptionParams: ({
-    settings: {
-      appearance: { fullscreen },
-    },
-  }) => {
-    const optionParams = [];
-    if (fullscreen) {
-      optionParams.push("--fullscreen");
-    }
-    return optionParams;
-  },
-};
+import { cemu } from "./applications/cemu/index.js";
 
 export const applications = {
   duckstation,
   pcsx2,
   rpcs3,
   ppsspp,
-  lime3ds,
   azahar,
   melonds,
   dolphin,
@@ -116,8 +53,6 @@ export const applications = {
   aresSegaMegaLd,
   aresSega32x,
   aresSuperGrafx,
-  rosaliesMupenGui,
-  mgba,
   flycast,
   dosboxstaging,
   scummvm,

@@ -9,7 +9,6 @@ import type { FocusElement } from "../types/focusElement.js";
 import { useCallback, useEffect, useMemo } from "react";
 import { Dialog } from "../components/Dialog/index.js";
 import { useImportButton } from "../containers/ImportButton/useImportButton.js";
-import { useInstallEmulatorsButton } from "../containers/InstallEmulatorsButton/useInstallEmulatorsButton.js";
 import {
   useDirectionalInputRight,
   useInputBack,
@@ -80,7 +79,6 @@ export default function Index() {
   useInputBack(handleCloseOnFocus);
   useInputSettings(handleClose);
   useImportButton(isInFocus, "importAll");
-  useInstallEmulatorsButton(isInFocus);
 
   // TODO: think about if this should be a callback from useGamepadsOnSidebar
   const onLinkClick = useCallback(() => {

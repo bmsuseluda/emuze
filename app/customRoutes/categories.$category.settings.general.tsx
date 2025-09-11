@@ -24,17 +24,12 @@ import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
 import type { Result } from "../hooks/useGamepadsOnGrid/index.js";
 import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid/index.js";
-import { installMissingApplicationsOnLinux } from "../server/installApplications.server.js";
 import fs from "node:fs";
 import { log } from "../server/debug.server.js";
 import type { Category } from "../types/jsonFiles/category.js";
 import { readLastPlayed } from "../server/lastPlayed.server.js";
 import type { SystemId } from "../server/categoriesDB.server/systemId.js";
 import { ImportButton } from "../containers/ImportButton/index.js";
-import {
-  InstallEmulatorsButton,
-  installMissingApplicationsActionId,
-} from "../containers/InstallEmulatorsButton/index.js";
 import type { ImportButtonId } from "../containers/ImportButton/importButtonId.js";
 import {
   useInputBack,
@@ -51,9 +46,6 @@ export const loader = () => {
 
   const errors: Errors = {};
 
-  if (general.applicationsPath?.length) {
-    validateApplicationsPath(errors, general.applicationsPath);
-  }
   if (general.categoriesPath?.length) {
     validateCategoriesPath(errors, general.categoriesPath);
   }
@@ -67,27 +59,10 @@ const actionIds = {
   chooseApplicationsPath: "chooseApplicationsPath",
   chooseCategoriesPath: "chooseCategoriesPath",
   import: importButtonId,
-  installMissingApplications: installMissingApplicationsActionId,
 };
 
 type Errors = {
-  applicationsPath?: string;
   categoriesPath?: string;
-};
-
-const validateApplicationsPath = (
-  errors: Errors,
-  applicationsPath?: string,
-) => {
-  if (isWindows()) {
-    const errorApplicationsPath = validatePath(
-      applicationsPathLabel,
-      applicationsPath,
-    );
-    if (errorApplicationsPath) {
-      errors.applicationsPath = errorApplicationsPath;
-    }
-  }
 };
 
 const validateCategoriesPath = (errors: Errors, categoriesPath?: string) => {
@@ -127,7 +102,7 @@ const validatePath = (label: string, path?: string) => {
 };
 
 const categoriesPathLabel = "Roms Path";
-const applicationsPathLabel = "Emulators Path";
+const applicationsPathLabel = "Emulators Path (Optional)";
 
 type ActionReturn = {
   applicationsPath?: string;
@@ -164,7 +139,6 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     if (_actionId === actionIds.import) {
       const errors: Errors = {};
 
-      validateApplicationsPath(errors, applicationsPath);
       validateCategoriesPath(errors, categoriesPath);
 
       if (Object.keys(errors).length > 0) {
@@ -213,10 +187,6 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
         applicationsPath,
         categoriesPath,
       };
-    }
-
-    if (_actionId === actionIds.installMissingApplications) {
-      await installMissingApplicationsOnLinux();
     }
 
     if (_actionId === actionIds.chooseApplicationsPath) {
@@ -354,21 +324,6 @@ export default function General() {
           <ListActionBarLayout.ListActionBarContainer
             list={
               <FormBox ref={entryListRef}>
-                {defaultData.isWindows && (
-                  <li>
-                    <FileDialogInputField
-                      id="applicationsPath"
-                      label={applicationsPathLabel}
-                      defaultValue={defaultData?.applicationsPath}
-                      newValue={newData?.applicationsPath}
-                      defaultError={defaultData.errors.applicationsPath}
-                      newError={newData?.errors?.applicationsPath}
-                      actionId={actionIds.chooseApplicationsPath}
-                      openDialogButtonRef={entriesRefCallback(0)}
-                      onOpenFileDialog={onOpenFileDialog}
-                    />
-                  </li>
-                )}
                 <li>
                   <FileDialogInputField
                     id="categoriesPath"
@@ -378,12 +333,23 @@ export default function General() {
                     defaultError={defaultData.errors.categoriesPath}
                     newError={newData?.errors?.categoriesPath}
                     actionId={actionIds.chooseCategoriesPath}
-                    openDialogButtonRef={entriesRefCallback(
-                      defaultData.isWindows ? 1 : 0,
-                    )}
+                    openDialogButtonRef={entriesRefCallback(0)}
                     onOpenFileDialog={onOpenFileDialog}
                   />
                 </li>
+                {defaultData.isWindows && (
+                  <li>
+                    <FileDialogInputField
+                      id="applicationsPath"
+                      label={applicationsPathLabel}
+                      defaultValue={defaultData?.applicationsPath}
+                      newValue={newData?.applicationsPath}
+                      actionId={actionIds.chooseApplicationsPath}
+                      openDialogButtonRef={entriesRefCallback(1)}
+                      onOpenFileDialog={onOpenFileDialog}
+                    />
+                  </li>
+                )}
               </FormBox>
             }
             actions={
@@ -391,11 +357,6 @@ export default function General() {
                 <ImportButton isInFocus={isInFocus} id={actionIds.import}>
                   Import all
                 </ImportButton>
-
-                {!defaultData.isWindows &&
-                  defaultData.categories.length > 0 && (
-                    <InstallEmulatorsButton isInFocus={isInFocus} />
-                  )}
               </>
             }
           />

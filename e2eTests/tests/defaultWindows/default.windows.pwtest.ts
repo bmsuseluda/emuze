@@ -46,9 +46,6 @@ test("Should switch to another system via key down", async ({
 
 test("Should open settings via mouse", async ({ page, settingsPage }) => {
   await settingsPage.openSettingsViaClick();
-  await expect(
-    settingsPage.generalPage.installEmulatorsButton,
-  ).not.toBeVisible();
 
   await expect(page).toHaveScreenshot();
 

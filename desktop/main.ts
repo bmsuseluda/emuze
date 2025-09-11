@@ -1,4 +1,4 @@
-import { homedir, platform } from "node:os";
+import { platform } from "node:os";
 import { app, BrowserWindow, globalShortcut, ipcMain, shell } from "electron";
 import nodepath from "node:path";
 import * as dotenv from "dotenv";
@@ -12,9 +12,7 @@ import {
   commandLineOptions,
   commandLineOptionsString,
 } from "../app/server/commandLine.server.js";
-import { cpSync, existsSync, rmSync } from "node:fs";
 import { initReactRouter } from "./initReactRouter.js";
-import { homeDirectory } from "../app/server/homeDirectory.server.js";
 import { fileURLToPath } from "node:url";
 
 const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
@@ -37,27 +35,7 @@ const showHelp = () => {
 app.commandLine.appendSwitch("lang", "en-US");
 app.commandLine.appendSwitch("enable-features", "GlobalShortcutsPortal");
 
-/**
- * Migration from old home directory to new one.
- *
- * TODO: remove this in one of the next releases
- */
-const moveHomeDirectory = () => {
-  const oldHomeDirectory = nodepath.join(homedir(), ".emuze");
-
-  if (existsSync(oldHomeDirectory)) {
-    cpSync(oldHomeDirectory, homeDirectory, {
-      recursive: true,
-      force: true,
-      preserveTimestamps: true,
-    });
-    rmSync(oldHomeDirectory, { recursive: true, force: true });
-  }
-};
-
 app.on("ready", async () => {
-  moveHomeDirectory();
-
   if (app.commandLine.hasSwitch(commandLineOptions.help.id)) {
     showHelp();
     return;

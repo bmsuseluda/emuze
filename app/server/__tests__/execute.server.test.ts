@@ -1,16 +1,13 @@
 import type { ChildProcess } from "node:child_process";
-import { execFile, execFileSync, spawnSync } from "node:child_process";
+import { execFile, spawnSync } from "node:child_process";
 import nodepath from "node:path";
 
 import type { Category } from "../../types/jsonFiles/category.js";
-import { applications as applicationsDB } from "../applicationsDB.server/index.js";
 import { readAppearance, readGeneral } from "../settings.server.js";
 
 import { existsSync } from "node:fs";
-import { mameNeoGeo } from "../__testData__/applications.js";
 import {
   createAbsoluteEntryPath,
-  neogeo,
   pcenginecd,
 } from "../__testData__/category.js";
 import { general } from "../__testData__/general.js";
@@ -19,7 +16,6 @@ import { startGame } from "../execute.server.js";
 import { readFilenames } from "../readWriteData.server.js";
 import { bundledEmulatorsPathBase } from "../bundledEmulatorsPath.server.js";
 import { mednafen } from "../applicationsDB.server/applications/mednafen/index.js";
-import { when } from "vitest-when";
 
 vi.mock("@kmamal/sdl");
 vi.mock("node:child_process");
@@ -32,10 +28,6 @@ vi.mock("../lastPlayed.server");
 const getFirstEntry = (
   category: Category & Required<Pick<Category, "entries">>,
 ) => category.entries[0];
-
-const flatpakAppList = Object.values(applicationsDB)
-  .map(({ flatpakId }) => flatpakId)
-  .join(" ");
 
 describe("execute.server", () => {
   const env = process.env;
@@ -88,33 +80,6 @@ describe("execute.server", () => {
           mednafenPath,
           expect.arrayContaining([
             createAbsoluteEntryPath(pcenginecd.name, entry.path),
-          ]),
-          {
-            encoding: "utf8",
-          },
-          expect.anything(),
-        );
-      });
-
-      it("Should add optional params", async () => {
-        vi.mocked(existsSync).mockReturnValueOnce(true);
-        vi.mocked(readCategory).mockReturnValueOnce(neogeo);
-        const entryDirname = "F:/games/Emulation/roms/Neo Geo";
-        vi.mocked(readFilenames).mockReturnValue([mameNeoGeo.path]);
-        const entry = getFirstEntry(neogeo);
-
-        await startGame(neogeo.id, entry);
-
-        expect(execFile).toHaveBeenCalledWith(
-          mameNeoGeo.path,
-          expect.arrayContaining([
-            "-rompath",
-            entryDirname,
-            "-cfg_directory",
-            nodepath.join(entryDirname, "cfg"),
-            "-nvram_directory",
-            nodepath.join(entryDirname, "nvram"),
-            createAbsoluteEntryPath(neogeo.name, entry.path),
           ]),
           {
             encoding: "utf8",
@@ -184,39 +149,6 @@ describe("execute.server", () => {
           mednafenPath,
           expect.arrayContaining([
             createAbsoluteEntryPath(pcenginecd.name, entry.path),
-          ]),
-          {
-            encoding: "utf8",
-          },
-          expect.anything(),
-        );
-      });
-
-      it("Should add optional params", async () => {
-        when(execFileSync)
-          .calledWith("flatpak", ["list", "--app"], {
-            encoding: "utf8",
-          })
-          .thenReturn(flatpakAppList);
-        vi.mocked(readCategory).mockReturnValueOnce(neogeo);
-        const entryDirname = "F:/games/Emulation/roms/Neo Geo";
-        const entry = getFirstEntry(neogeo);
-
-        await startGame(neogeo.id, entry);
-
-        expect(execFile).toHaveBeenCalledWith(
-          "flatpak",
-          expect.arrayContaining([
-            "run",
-            "--filesystem=F:/games/Emulation/roms",
-            applicationsDB.mame.flatpakId,
-            "-rompath",
-            entryDirname,
-            "-cfg_directory",
-            nodepath.join(entryDirname, "cfg"),
-            "-nvram_directory",
-            nodepath.join(entryDirname, "nvram"),
-            createAbsoluteEntryPath(neogeo.name, entry.path),
           ]),
           {
             encoding: "utf8",
