@@ -120,6 +120,9 @@ export const isDinputController = (
   controllerType: Sdl.Controller.ControllerType | null,
 ) => dinputControllerTypes.includes(controllerType);
 
+export const isPs4Controller = ({ type }: Sdl.Controller.Device) =>
+  type === "ps4";
+
 export const isGamecubeController = (controllerName: string) =>
   controllerName.toLowerCase().includes("gamecube");
 
@@ -244,11 +247,11 @@ export const eightBitDoPro2 = {
 export const steamDeck = {
   id: 0,
   type: "virtual",
-  name: "Microsoft X-Box 360 pad 0",
+  name: "Steam Virtual Gamepad",
   path: "/dev/input/event6",
   guid: "030079f6de280000ff11000001000000",
   vendor: 10462,
-  product: 4613,
+  product: 4613, // 4607
   version: 1,
   player: 0,
   mapping:
@@ -271,16 +274,16 @@ export const gamepadN64 = {
 
 export const gamepadPs4 = {
   id: 1,
+  name: "PS4 Controller",
+  path: "/dev/hidraw4",
   type: "ps4",
-  name: "Playstation 4 Controller",
-  path: "/dev/input/event6",
-  guid: "030000004c050000c405000000010000",
+  guid: "03008fe54c050000c405000000006800",
   vendor: 1356,
   product: 1476,
-  version: 1,
+  version: null,
   player: 1,
   mapping:
-    "030000004c050000c405000000010000,PS4 Controller,platform:Windows,a:b1,b:b2,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b4,leftstick:b10,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b11,righttrigger:a4,rightx:a2,righty:a5,start:b9,x:b0,y:b3,",
+    "03008fe54c050000c405000000006800,*,a:b0,b:b1,back:b4,dpdown:b12,dpleft:b13,dpright:b14,dpup:b11,guide:b5,leftshoulder:b9,leftstick:b7,lefttrigger:a4,leftx:a0,lefty:a1,rightshoulder:b10,rightstick:b8,righttrigger:a5,rightx:a2,righty:a3,start:b6,x:b2,y:b3,touchpad:b15,crc:e58f,",
 } satisfies Sdl.Controller.Device;
 
 export const gamepadPs3 = {

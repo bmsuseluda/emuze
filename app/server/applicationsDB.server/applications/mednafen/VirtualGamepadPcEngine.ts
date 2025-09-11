@@ -1,5 +1,8 @@
-import type { GamepadID } from "./initGamepadIDs.js";
-import { findSdlGamepad, getGamepads } from "./initGamepadIDs.js";
+import type {
+  MappedGamepadWithPlayerIndex,
+  MednafenGamepadID,
+} from "./initGamepadIDs.js";
+import { getMappedGamepads } from "./initGamepadIDs.js";
 import { log } from "../../../debug.server.js";
 import { VirtualGamepad } from "./VirtualGamepad.js";
 import { getKeyboardKey } from "./keyboardConfig.js";
@@ -71,64 +74,62 @@ export const getKeyboardPcEngine = () => {
   ];
 };
 
-export const getVirtualGamepadPcEngine = (
-  gamepadID: GamepadID,
-  index: number,
-) => {
-  const sdlGamepad = findSdlGamepad(gamepadID, index);
+export const getVirtualGamepadPcEngine = ({
+  mednafenGamepadId,
+  playerIndex,
+  sdlController,
+}: MappedGamepadWithPlayerIndex) => {
+  log("debug", "gamepad", mednafenGamepadId, sdlController, playerIndex);
+  const { initialize, createButtonMapping, disableButtonMapping } =
+    new VirtualGamepad<MednafenButtonIdPcEngine>(playerIndex, system);
+  const physicalGamepad = getPhysicalGamepad(sdlController, mednafenGamepadId);
 
-  if (sdlGamepad) {
-    log("debug", "gamepad", gamepadID, sdlGamepad);
-    const { initialize, createButtonMapping, disableButtonMapping } =
-      new VirtualGamepad<MednafenButtonIdPcEngine>(index, system);
-    const physicalGamepad = getPhysicalGamepad(sdlGamepad, gamepadID);
-
-    return [
-      ...initialize(),
-      ...createButtonMapping(
-        "up",
-        physicalGamepad.getDpadUp(),
-        physicalGamepad.getLeftStickUp(),
-      ),
-      ...createButtonMapping(
-        "down",
-        physicalGamepad.getDpadDown(),
-        physicalGamepad.getLeftStickDown(),
-      ),
-      ...createButtonMapping(
-        "left",
-        physicalGamepad.getDpadLeft(),
-        physicalGamepad.getLeftStickLeft(),
-      ),
-      ...createButtonMapping(
-        "right",
-        physicalGamepad.getDpadRight(),
-        physicalGamepad.getLeftStickRight(),
-      ),
-      ...createButtonMapping("i", physicalGamepad.getB()),
-      ...createButtonMapping("ii", physicalGamepad.getA()),
-      ...disableButtonMapping("iii"),
-      ...disableButtonMapping("iv"),
-      ...disableButtonMapping("v"),
-      ...disableButtonMapping("vi"),
-      ...createButtonMapping("rapid_i", physicalGamepad.getY()),
-      ...createButtonMapping("rapid_ii", physicalGamepad.getX()),
-      ...disableButtonMapping("mode_select"),
-      ...createButtonMapping("select", physicalGamepad.getBack()),
-      ...createButtonMapping("run", physicalGamepad.getStart()),
-    ];
-  }
-
-  return [];
+  return [
+    ...initialize(),
+    ...createButtonMapping(
+      "up",
+      physicalGamepad.getDpadUp(),
+      physicalGamepad.getLeftStickUp(),
+    ),
+    ...createButtonMapping(
+      "down",
+      physicalGamepad.getDpadDown(),
+      physicalGamepad.getLeftStickDown(),
+    ),
+    ...createButtonMapping(
+      "left",
+      physicalGamepad.getDpadLeft(),
+      physicalGamepad.getLeftStickLeft(),
+    ),
+    ...createButtonMapping(
+      "right",
+      physicalGamepad.getDpadRight(),
+      physicalGamepad.getLeftStickRight(),
+    ),
+    ...createButtonMapping("i", physicalGamepad.getB()),
+    ...createButtonMapping("ii", physicalGamepad.getA()),
+    ...disableButtonMapping("iii"),
+    ...disableButtonMapping("iv"),
+    ...disableButtonMapping("v"),
+    ...disableButtonMapping("vi"),
+    ...createButtonMapping("rapid_i", physicalGamepad.getY()),
+    ...createButtonMapping("rapid_ii", physicalGamepad.getX()),
+    ...disableButtonMapping("mode_select"),
+    ...createButtonMapping("select", physicalGamepad.getBack()),
+    ...createButtonMapping("run", physicalGamepad.getStart()),
+  ];
 };
 
-export const getVirtualGamepadsPcEngine = (applicationPath?: string) => {
-  const gamepads = getGamepads(applicationPath);
+export const getVirtualGamepadsPcEngine = (
+  mednafenGamepadIds: MednafenGamepadID[],
+) => {
+  const mappedGamepads = getMappedGamepads(mednafenGamepadIds);
+
   const virtualGamepads =
-    gamepads.length > 0
-      ? gamepads.map(getVirtualGamepadPcEngine)
+    mappedGamepads.length > 0
+      ? mappedGamepads.map(getVirtualGamepadPcEngine)
       : getKeyboardPcEngine();
-  log("debug", "gamepads", gamepads.length);
+  log("debug", "gamepads", mappedGamepads.length);
 
   return [
     ...virtualGamepads.flat(),

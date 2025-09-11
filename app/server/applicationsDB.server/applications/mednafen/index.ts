@@ -4,8 +4,15 @@ import nodepath from "node:path";
 import { getVirtualGamepadsSaturn } from "./VirtualGamepadSaturn.js";
 import { getVirtualGamepadsPcEngine } from "./VirtualGamepadPcEngine.js";
 import { getKeyboardKey } from "./keyboardConfig.js";
-import { flatpakId, flatpakOptionParams } from "./definitions.js";
+import {
+  applicationId,
+  bundledPathLinux,
+  bundledPathWindows,
+  flatpakId,
+} from "./definitions.js";
 import { log } from "../../../debug.server.js";
+import { getGamepads } from "./initGamepadIDs.js";
+import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 
 const getSharedMednafenOptionParams: OptionParamFunction = ({
   settings: {
@@ -31,7 +38,7 @@ const getSharedMednafenOptionParams: OptionParamFunction = ({
   const soundDevice = !isWindows()
     ? ["-sound.device", "sexyal-literal-default"]
     : [];
-  const setFullscreen = fullscreen ? ["-video.fs", "1"] : [];
+  const setFullscreen = fullscreen ? ["-video.fs", "1"] : ["-video.fs", "0"];
 
   return [
     ...hotkeyHelp,
@@ -47,33 +54,32 @@ const getSharedMednafenOptionParams: OptionParamFunction = ({
 };
 
 export const mednafen: Application = {
-  id: "mednafen",
+  id: applicationId,
   name: "Mednafen",
-  fileExtensions: [".cue", ".pce", ".nes", ".sms", ".gg"],
+  fileExtensions: [".cue"],
   flatpakId,
-  flatpakOptionParams,
-  executable: "mednafen.exe",
-  defineEnvironmentVariables: ({ applicationPath }) => {
-    const environmentVariables = {};
-    if (isWindows() && applicationPath) {
-      return {
-        ...environmentVariables,
-        MEDNAFEN_HOME: nodepath.dirname(applicationPath),
-        MEDNAFEN_NOPOPUPS: 1,
-      };
+  defineEnvironmentVariables: () => {
+    const environmentVariables: Record<string, string> = {};
+
+    if (isWindows()) {
+      environmentVariables.MEDNAFEN_HOME = nodepath.dirname(
+        nodepath.join(bundledEmulatorsPathBase, bundledPathWindows),
+      );
+      environmentVariables.MEDNAFEN_NOPOPUPS = "1";
     }
     return environmentVariables;
   },
   createOptionParams: getSharedMednafenOptionParams,
+  bundledPathLinux,
+  bundledPathWindows,
 };
 
 export const mednafenSaturn: Application = {
   ...mednafen,
   id: "mednafenSaturn",
   createOptionParams: (props) => {
-    const virtualGamepadsSaturn = getVirtualGamepadsSaturn(
-      props.applicationPath,
-    );
+    const gamepads = getGamepads();
+    const virtualGamepadsSaturn = getVirtualGamepadsSaturn(gamepads);
     log("debug", "createOptionParams", virtualGamepadsSaturn);
     return [...mednafen.createOptionParams!(props), ...virtualGamepadsSaturn];
   },
@@ -83,9 +89,8 @@ export const mednafenPcEngineCD: Application = {
   ...mednafen,
   id: "mednafenPcEngineCD",
   createOptionParams: (props) => {
-    const virtualGamepadsPcEngine = getVirtualGamepadsPcEngine(
-      props.applicationPath,
-    );
+    const gamepads = getGamepads();
+    const virtualGamepadsPcEngine = getVirtualGamepadsPcEngine(gamepads);
     log("debug", "createOptionParams", virtualGamepadsPcEngine);
     return [
       ...["-pce.cddavolume", "100"], // music

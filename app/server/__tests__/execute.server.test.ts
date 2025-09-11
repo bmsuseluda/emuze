@@ -7,19 +7,19 @@ import { applications as applicationsDB } from "../applicationsDB.server/index.j
 import { readAppearance, readGeneral } from "../settings.server.js";
 
 import { existsSync } from "node:fs";
-import { when } from "vitest-when";
-import { mameNeoGeo, mednafen } from "../__testData__/applications.js";
+import { mameNeoGeo } from "../__testData__/applications.js";
 import {
   createAbsoluteEntryPath,
   neogeo,
   pcenginecd,
-  pcenginecdLinux,
 } from "../__testData__/category.js";
 import { general } from "../__testData__/general.js";
-import { updateFlatpakAppList } from "../applicationsDB.server/checkEmulatorIsInstalled.js";
 import { readCategory } from "../categoryDataCache.server.js";
 import { startGame } from "../execute.server.js";
 import { readFilenames } from "../readWriteData.server.js";
+import { bundledEmulatorsPathBase } from "../bundledEmulatorsPath.server.js";
+import { mednafen } from "../applicationsDB.server/applications/mednafen/index.js";
+import { when } from "vitest-when";
 
 vi.mock("@kmamal/sdl");
 vi.mock("node:child_process");
@@ -66,21 +66,26 @@ describe("execute.server", () => {
         });
       });
 
+      const mednafenPath = nodepath.join(
+        bundledEmulatorsPathBase,
+        mednafen.bundledPathWindows!,
+      );
+
       it("Should execute the entry with the defined application of the category", async () => {
         vi.mocked(existsSync).mockReturnValueOnce(true);
         vi.mocked(readCategory).mockReturnValueOnce(pcenginecd);
-        vi.mocked(readFilenames).mockReturnValue([mednafen.path]);
+
         const entry = getFirstEntry(pcenginecd);
 
         await startGame(pcenginecd.id, entry);
 
         expect(spawnSync).toHaveBeenCalledWith(
-          mednafen.path,
+          mednafenPath,
           ["wrong"],
           expect.anything(),
         );
         expect(execFile).toHaveBeenCalledWith(
-          mednafen.path,
+          mednafenPath,
           expect.arrayContaining([
             createAbsoluteEntryPath(pcenginecd.name, entry.path),
           ]),
@@ -121,18 +126,18 @@ describe("execute.server", () => {
       it("Should add environment variables", async () => {
         vi.mocked(existsSync).mockReturnValueOnce(true);
         vi.mocked(readCategory).mockReturnValueOnce(pcenginecd);
-        vi.mocked(readFilenames).mockReturnValue([mednafen.path]);
+        vi.mocked(readFilenames).mockReturnValue([mednafenPath]);
         const entry = getFirstEntry(pcenginecd);
 
         await startGame(pcenginecd.id, entry);
 
         expect(spawnSync).toHaveBeenCalledWith(
-          mednafen.path,
+          mednafenPath,
           ["wrong"],
           expect.anything(),
         );
         expect(execFile).toHaveBeenCalledWith(
-          mednafen.path,
+          mednafenPath,
           expect.arrayContaining([
             createAbsoluteEntryPath(pcenginecd.name, entry.path),
           ]),
@@ -141,18 +146,7 @@ describe("execute.server", () => {
           },
           expect.anything(),
         );
-        expect(process.env.MEDNAFEN_HOME).toBe(nodepath.dirname(mednafen.path));
-      });
-
-      it("Should not execute if emulator is not installed", async () => {
-        vi.mocked(existsSync).mockReturnValueOnce(false);
-        vi.mocked(readCategory).mockReturnValueOnce(pcenginecd);
-        vi.mocked(readFilenames).mockReturnValue([mednafen.path]);
-        const entry = getFirstEntry(pcenginecd);
-
-        await expect(startGame(pcenginecd.id, entry)).rejects.toThrowError();
-
-        expect(execFile).not.toHaveBeenCalled();
+        expect(process.env.MEDNAFEN_HOME).toBe(nodepath.dirname(mednafenPath));
       });
     });
 
@@ -168,35 +162,28 @@ describe("execute.server", () => {
         vi.mocked(existsSync).mockReturnValueOnce(true);
       });
 
-      it("Should execute the entry with the defined application of the category", async () => {
-        when(execFileSync)
-          .calledWith("flatpak", ["list", "--app"], {
-            encoding: "utf8",
-          })
-          .thenReturn(flatpakAppList);
-        vi.mocked(readCategory).mockReturnValueOnce(pcenginecdLinux);
-        const entry = getFirstEntry(pcenginecdLinux);
+      const mednafenPath = nodepath.join(
+        bundledEmulatorsPathBase,
+        mednafen.bundledPathLinux!,
+      );
 
-        await startGame(pcenginecdLinux.id, entry);
+      it("Should execute the entry with the defined application of the category", async () => {
+        vi.mocked(existsSync).mockReturnValueOnce(true);
+        vi.mocked(readCategory).mockReturnValueOnce(pcenginecd);
+
+        const entry = getFirstEntry(pcenginecd);
+
+        await startGame(pcenginecd.id, entry);
 
         expect(spawnSync).toHaveBeenCalledWith(
-          "flatpak",
-          [
-            "run",
-            "--command=mednafen",
-            applicationsDB.mednafen.flatpakId,
-            "wrong",
-          ],
+          mednafenPath,
+          ["wrong"],
           expect.anything(),
         );
         expect(execFile).toHaveBeenCalledWith(
-          "flatpak",
+          mednafenPath,
           expect.arrayContaining([
-            "run",
-            "--filesystem=F:/games/Emulation/roms",
-            "--command=mednafen",
-            applicationsDB.mednafen.flatpakId,
-            createAbsoluteEntryPath(pcenginecdLinux.name, entry.path),
+            createAbsoluteEntryPath(pcenginecd.name, entry.path),
           ]),
           {
             encoding: "utf8",
@@ -236,23 +223,6 @@ describe("execute.server", () => {
           },
           expect.anything(),
         );
-      });
-
-      it("Should not execute if emulator is not installed", async () => {
-        when(execFileSync)
-          .calledWith("flatpak", ["list", "--app"], {
-            encoding: "utf8",
-          })
-          .thenReturn("");
-        updateFlatpakAppList();
-        vi.mocked(readCategory).mockReturnValueOnce(pcenginecdLinux);
-        const entry = getFirstEntry(pcenginecdLinux);
-
-        await expect(
-          startGame(pcenginecdLinux.id, entry),
-        ).rejects.toThrowError();
-
-        expect(execFile).not.toHaveBeenCalled();
       });
     });
   });

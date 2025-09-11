@@ -28,6 +28,7 @@ import {
   unregisterCloseGameOnKeyboardEvent,
 } from "./closeGame.server.js";
 import { setGameIsRunningChildProcess } from "./gameIsRunning.server.js";
+import { bundledEmulatorsPathBase } from "./bundledEmulatorsPath.server.js";
 
 type ExecFileCallback = (
   error: ExecFileException | null,
@@ -97,13 +98,12 @@ const executeBundledApplication = async ({
     params.push(absoluteEntryPath);
   }
   return executeApplication(
-    nodepath.join(process.env.APPDIR || "", "emulators", bundledPath),
+    nodepath.join(bundledEmulatorsPathBase, bundledPath),
     params,
   );
 };
 
 const executeApplicationOnLinux = async ({
-  applicationFlatpakOptionParams,
   applicationFlatpakId,
   absoluteEntryPath,
   optionParams,
@@ -111,7 +111,6 @@ const executeApplicationOnLinux = async ({
   categoriesPath,
   applicationName,
 }: {
-  applicationFlatpakOptionParams?: string[];
   applicationFlatpakId: string;
   absoluteEntryPath: string;
   optionParams: string[];
@@ -121,9 +120,6 @@ const executeApplicationOnLinux = async ({
 }) => {
   if (checkFlatpakIsInstalled(applicationFlatpakId)) {
     const params = ["run", `--filesystem=${categoriesPath}`];
-    if (applicationFlatpakOptionParams) {
-      params.push(...applicationFlatpakOptionParams);
-    }
     params.push(applicationFlatpakId);
     params.push(...optionParams);
 
@@ -219,12 +215,8 @@ export const startGame = async (
     );
 
     if (existsSync(absoluteEntryPath)) {
-      const {
-        defineEnvironmentVariables,
-        createOptionParams,
-        flatpakId,
-        flatpakOptionParams,
-      } = applicationData;
+      const { defineEnvironmentVariables, createOptionParams, flatpakId } =
+        applicationData;
 
       const environmentVariables = (applicationPath?: string) => {
         if (defineEnvironmentVariables) {
@@ -283,7 +275,6 @@ export const startGame = async (
             });
           } else {
             await executeApplicationOnLinux({
-              applicationFlatpakOptionParams: flatpakOptionParams,
               applicationFlatpakId: flatpakId,
               absoluteEntryPath,
               optionParams: optionParams(),

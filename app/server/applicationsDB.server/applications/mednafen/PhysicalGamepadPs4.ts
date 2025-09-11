@@ -5,7 +5,6 @@ import type {
 import {
   createSdlMappingObject,
   getButtonIndex,
-  isAnalog,
 } from "../../../../types/gamepad.js";
 import type { PhysicalGamepadInterface } from "./PhysicalGamepad.js";
 
@@ -35,7 +34,7 @@ const sdlDinputAxesMapping = {
   righttrigger: 5,
 } satisfies Partial<Record<SdlButtonId, number>>;
 
-export class PhysicalGamepadDinput implements PhysicalGamepadInterface {
+export class PhysicalGamepadPs4 implements PhysicalGamepadInterface {
   deviceId: string;
   mappingObject: SdlButtonMapping;
 
@@ -93,14 +92,8 @@ export class PhysicalGamepadDinput implements PhysicalGamepadInterface {
   getY = () => this.createButtonString("y");
   getStart = () => this.createButtonString("start");
   getBack = () => this.createButtonString("back");
-  getLeftTrigger = () =>
-    isAnalog(this.mappingObject, "lefttrigger")
-      ? this.createAbsString("lefttrigger", "-+")
-      : this.createButtonString("lefttrigger");
-  getRightTrigger = () =>
-    isAnalog(this.mappingObject, "righttrigger")
-      ? this.createAbsString("righttrigger", "-+")
-      : this.createButtonString("righttrigger");
+  getLeftTrigger = () => this.createButtonString("lefttrigger");
+  getRightTrigger = () => this.createButtonString("righttrigger");
   getLeftShoulder = () => this.createButtonString("leftshoulder");
   getRightShoulder = () => this.createButtonString("rightshoulder");
   getLeftStickUp = () => this.createAbsString("lefty", "-");

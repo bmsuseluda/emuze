@@ -20,6 +20,7 @@ import {
   type EmuzeButtonId,
 } from "../../../../types/gamepad.js";
 import { isWindows } from "../../../operationsystem.server.js";
+import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 
 const flatpakId = "org.flycast.Flycast";
 const applicationId: ApplicationId = "flycast";
@@ -50,7 +51,7 @@ const flycastButtonIds = {
 } satisfies Partial<Record<EmuzeButtonId, { id: string; bindIndex: number }>>;
 
 const getWindowsConfigFolder = () =>
-  nodepath.join(process.env.APPDIR || "", "emulators", applicationId);
+  nodepath.join(bundledEmulatorsPathBase, applicationId);
 
 const keyboardConfigFileName = "SDL_Keyboard.cfg";
 export const getKeyboardConfigFilePath = () => {

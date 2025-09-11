@@ -7,4 +7,7 @@ export const homeDirectory = process.env.EMUZE_CONFIG_PATH
   ? nodepath.join(process.env.EMUZE_CONFIG_PATH, ".emuze")
   : data;
 
-export const emulatorsDirectory = nodepath.join(homeDirectory, "emulators");
+export const emulatorsConfigDirectory = nodepath.join(
+  homeDirectory,
+  "emulators",
+);

@@ -29,6 +29,7 @@ export const emulatorVersions = {
   dolphin: "2506a",
   duckstation: "0.1-7371",
   flycast: "2.5",
+  mednafen: "1.32.1",
   melonds: "1.0",
   pcsx2: "2.4.0",
   ppsspp: "1.19.3",
@@ -39,48 +40,52 @@ export const emulatorVersions = {
 
 const emulatorDownloads = {
   ares: {
-    Linux: `https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v${emulatorVersions["ares"]}%402025-08-26_1756238563/ares-v${emulatorVersions["ares"]}-anylinux-x86_64.AppImage`,
-    Windows: `https://github.com/ares-emulator/ares/releases/download/v${emulatorVersions["ares"]}/ares-windows-x64.zip`,
+    Linux: `https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v${emulatorVersions.ares}%402025-08-26_1756238563/ares-v${emulatorVersions.ares}-anylinux-x86_64.AppImage`,
+    Windows: `https://github.com/ares-emulator/ares/releases/download/v${emulatorVersions.ares}/ares-windows-x64.zip`,
   },
   azahar: {
-    Linux: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions["azahar"]}%402025-08-23_1755946836/Azahar-Enhanced-${emulatorVersions["azahar"]}-anylinux-x86_64.AppImage`,
-    Windows: `https://github.com/azahar-emu/azahar/releases/download/${emulatorVersions["azahar"]}/azahar-${emulatorVersions["azahar"]}-windows-msys2.zip`,
+    Linux: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions.azahar}%402025-08-23_1755946836/Azahar-Enhanced-${emulatorVersions.azahar}-anylinux-x86_64.AppImage`,
+    Windows: `https://github.com/azahar-emu/azahar/releases/download/${emulatorVersions.azahar}/azahar-${emulatorVersions.azahar}-windows-msys2.zip`,
   },
   dolphin: {
-    Linux: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions["dolphin"]}%402025-08-25_1756159991/Dolphin_Emulator-${emulatorVersions["dolphin"]}-anylinux.dwarfs-x86_64.AppImage`,
-    Windows: `https://dl.dolphin-emu.org/releases/${emulatorVersions["dolphin"]}/dolphin-${emulatorVersions["dolphin"]}-x64.7z`,
+    Linux: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions.dolphin}%402025-08-25_1756159991/Dolphin_Emulator-${emulatorVersions.dolphin}-anylinux.dwarfs-x86_64.AppImage`,
+    Windows: `https://dl.dolphin-emu.org/releases/${emulatorVersions.dolphin}/dolphin-${emulatorVersions.dolphin}-x64.7z`,
   },
   duckstation: {
-    Linux: `https://github.com/stenzek/duckstation/releases/download/v${emulatorVersions["duckstation"]}/DuckStation-x64.AppImage`,
-    Windows: `https://github.com/stenzek/duckstation/releases/download/v${emulatorVersions["duckstation"]}/duckstation-windows-x64-release.zip`,
+    Linux: `https://github.com/stenzek/duckstation/releases/download/v${emulatorVersions.duckstation}/DuckStation-x64.AppImage`,
+    Windows: `https://github.com/stenzek/duckstation/releases/download/v${emulatorVersions.duckstation}/duckstation-windows-x64-release.zip`,
   },
   flycast: {
-    Linux: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions["flycast"]}/flycast-x86_64.AppImage`,
-    Windows: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions["flycast"]}/flycast-win64-${emulatorVersions["flycast"]}.zip`,
+    Linux: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-x86_64.AppImage`,
+    Windows: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-win64-${emulatorVersions.flycast}.zip`,
+  },
+  mednafen: {
+    Linux: `https://github.com/pkgforge-dev/mednafen-appimage/releases/download/${emulatorVersions.mednafen}%402025-09-08_1757361413/mednafen-${emulatorVersions.mednafen}-anylinux-x86_64.AppImage`,
+    Windows: `https://mednafen.github.io/releases/files/mednafen-${emulatorVersions.mednafen}-win64.zip`,
   },
   melonds: {
-    Linux: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions["melonds"]}/melonDS-appimage-x86_64.zip`,
-    Windows: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions["melonds"]}/melonDS-windows-x86_64.zip`,
+    Linux: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions.melonds}/melonDS-appimage-x86_64.zip`,
+    Windows: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions.melonds}/melonDS-windows-x86_64.zip`,
   },
   pcsx2: {
-    Linux: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions["pcsx2"]}/pcsx2-v${emulatorVersions["pcsx2"]}-linux-appimage-x64-Qt.AppImage`,
-    Windows: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions["pcsx2"]}/pcsx2-v${emulatorVersions["pcsx2"]}-windows-x64-Qt.7z`,
+    Linux: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions.pcsx2}/pcsx2-v${emulatorVersions.pcsx2}-linux-appimage-x64-Qt.AppImage`,
+    Windows: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions.pcsx2}/pcsx2-v${emulatorVersions.pcsx2}-windows-x64-Qt.7z`,
   },
   ppsspp: {
-    Linux: `https://github.com/hrydgard/ppsspp/releases/download/v${emulatorVersions["ppsspp"]}/PPSSPP-v${emulatorVersions["ppsspp"]}-anylinux-x86_64.AppImage`,
-    Windows: `https://www.ppsspp.org/files/${emulatorVersions["ppsspp"].replaceAll(".", "_")}/ppsspp_win.zip`,
+    Linux: `https://github.com/hrydgard/ppsspp/releases/download/v${emulatorVersions.ppsspp}/PPSSPP-v${emulatorVersions.ppsspp}-anylinux-x86_64.AppImage`,
+    Windows: `https://www.ppsspp.org/files/${emulatorVersions.ppsspp.replaceAll(".", "_")}/ppsspp_win.zip`,
   },
   rpcs3: {
-    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-b90bacba4870534dfc501a51119b5913337a5e95/rpcs3-v${emulatorVersions["rpcs3"]}-18087-b90bacba_linux64.AppImage`,
-    Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-9c93ec0bc31bbc94ca4dce2a76ceea80da6f6554/rpcs3-v${emulatorVersions["rpcs3"]}-18022-9c93ec0b_win64_msvc.7z`,
+    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-b90bacba4870534dfc501a51119b5913337a5e95/rpcs3-v${emulatorVersions.rpcs3}-18087-b90bacba_linux64.AppImage`,
+    Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-9c93ec0bc31bbc94ca4dce2a76ceea80da6f6554/rpcs3-v${emulatorVersions.rpcs3}-18022-9c93ec0b_win64_msvc.7z`,
   },
   ryujinx: {
-    Linux: `https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/${emulatorVersions["ryujinx"]}/ryujinx-${emulatorVersions["ryujinx"]}-x64.AppImage`,
-    Windows: `https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/${emulatorVersions["ryujinx"]}/ryujinx-${emulatorVersions["ryujinx"]}-win_x64.zip`,
+    Linux: `https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-x64.AppImage`,
+    Windows: `https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-win_x64.zip`,
   },
   xemu: {
-    Linux: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions["xemu"]}/xemu-v${emulatorVersions["xemu"]}-x86_64.AppImage`,
-    Windows: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions["xemu"]}/xemu-win-x86_64-release.zip`,
+    Linux: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-v${emulatorVersions.xemu}-x86_64.AppImage`,
+    Windows: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-win-x86_64-release.zip`,
   },
 } satisfies Partial<EmulatorDownloads>;
 
