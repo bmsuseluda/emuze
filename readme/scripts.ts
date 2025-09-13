@@ -42,6 +42,9 @@ const bundled: Partial<Record<ApplicationId, string>> = {
   dolphin: emulatorVersions.dolphin,
   duckstation: emulatorVersions.duckstation,
   flycast: emulatorVersions.flycast,
+  mame: emulatorVersions.mame,
+  mameNeoGeo: emulatorVersions.mame,
+  mameNeoGeoCD: emulatorVersions.mame,
   mednafen: emulatorVersions.mednafen,
   mednafenPcEngineCD: emulatorVersions.mednafen,
   mednafenSaturn: emulatorVersions.mednafen,
@@ -84,7 +87,6 @@ const homepages: Record<ApplicationId, string> = {
   dosboxstaging: "https://github.com/dosbox-staging/dosbox-staging",
   duckstation: "https://github.com/stenzek/duckstation",
   flycast: "https://github.com/flyinghead/flycast",
-  lime3ds: "https://github.com/Lime3DS/Lime3DS",
   azahar: "https://github.com/azahar-emu/azahar",
   mame: "https://github.com/mamedev/mame",
   mameNeoGeo: "https://github.com/mamedev/mame",
@@ -93,10 +95,8 @@ const homepages: Record<ApplicationId, string> = {
   mednafenSaturn: "https://mednafen.github.io/",
   mednafenPcEngineCD: "https://mednafen.github.io/",
   melonds: "https://github.com/melonDS-emu/melonDS",
-  mgba: "https://github.com/mgba-emu/mgba",
   pcsx2: "https://github.com/PCSX2/pcsx2",
   ppsspp: "https://github.com/hrydgard/ppsspp",
-  rosaliesMupenGui: "https://github.com/Rosalie241/RMG",
   rpcs3: "https://github.com/RPCS3/rpcs3",
   ryujinx: "https://git.ryujinx.app/ryubing/ryujinx",
   scummvm: "https://github.com/scummvm/scummvm",
@@ -139,10 +139,10 @@ const linuxDownloadFileName = `emuze-${process.env.npm_package_version}.AppImage
 const getDownloadLink = (fileName: string) =>
   `https://github.com/bmsuseluda/emuze/releases/download/v${process.env.npm_package_version}/${fileName}`;
 
-export const getWindowsDownloadLink = () =>
-  `[Download](${getDownloadLink(
+export const getWindowsDownloadLink = (prefix?: string) =>
+  `${prefix}[Download](${getDownloadLink(
     windowsDownloadFileName,
-  )}) the latest Version of emuze and install it.`;
+  )}) the latest Version of emuze and install it`;
 
 export const getLinuxDownloadLink = (prefix?: string) =>
   `${prefix}[Download](${getDownloadLink(

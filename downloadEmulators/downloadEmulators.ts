@@ -17,6 +17,7 @@ import _7z from "7zip-min";
 import { moveSync } from "fs-extra/esm";
 
 import { fileURLToPath } from "node:url";
+import { spawnSync } from "node:child_process";
 
 const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 
@@ -29,6 +30,7 @@ export const emulatorVersions = {
   dolphin: "2506a",
   duckstation: "0.1-7371",
   flycast: "2.5",
+  mame: "0.280",
   mednafen: "1.32.1",
   melonds: "1.0",
   pcsx2: "2.4.0",
@@ -58,6 +60,10 @@ const emulatorDownloads = {
   flycast: {
     Linux: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-x86_64.AppImage`,
     Windows: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-win64-${emulatorVersions.flycast}.zip`,
+  },
+  mame: {
+    Linux: `https://github.com/pkgforge-dev/MAME-AppImage/releases/download/${emulatorVersions.mame}-1%402025-09-11_1757570953/MAME-${emulatorVersions.mame}-1-anylinux-x86_64.AppImage`,
+    Windows: `https://github.com/mamedev/mame/releases/download/mame0280/mame0280b_64bit.exe`,
   },
   mednafen: {
     Linux: `https://github.com/pkgforge-dev/mednafen-appimage/releases/download/${emulatorVersions.mednafen}%402025-09-08_1757361413/mednafen-${emulatorVersions.mednafen}-anylinux-x86_64.AppImage`,
@@ -119,17 +125,11 @@ const downloadEmulator = (
     if (downloadLink.toLowerCase().endsWith(".appimage")) {
       downloadAppImage(downloadLink, bundledPath);
     } else if (downloadLink.toLowerCase().endsWith(".7z")) {
-      downloadAndExtract7z(
-        downloadLink,
-        join(emulatorsFolderPath, emulatorId),
-        bundledPath,
-      );
+      downloadAndExtract7z(downloadLink, emulatorFolderPath, bundledPath);
+    } else if (downloadLink.toLowerCase().endsWith(".exe")) {
+      downloadExe(downloadLink, emulatorFolderPath, bundledPath);
     } else {
-      downloadAndExtract(
-        downloadLink,
-        join(emulatorsFolderPath, emulatorId),
-        bundledPath,
-      );
+      downloadAndExtract(downloadLink, emulatorFolderPath, bundledPath);
     }
   }
 };
@@ -200,6 +200,40 @@ const downloadFile = (
 const downloadAppImage = (url: string, fileToCheck: string) => {
   downloadFile(url, fileToCheck, () => {
     makeFileExecutableLinux(fileToCheck);
+  });
+};
+
+const executeWithLogs = (applicationPath: string, args: string[]): string => {
+  const result = spawnSync(applicationPath, args, {
+    stdio: ["inherit", "pipe", "inherit"],
+    shell: true,
+    encoding: "utf8",
+  });
+
+  return result.stdout || "";
+};
+
+const downloadExe = (
+  url: string,
+  outputFolder: string,
+  fileToCheck: string,
+) => {
+  const exeFilePath = join(outputFolder, url.split("/").at(-1) || "");
+
+  downloadFile(url, exeFilePath, () => {
+    setTimeout(() => {
+      const output = executeWithLogs("start", ["/b", "/wait", exeFilePath, `-o"${outputFolder}"`, "-y"]);
+      console.log(output);
+      console.log(outputFolder);
+      console.log(exeFilePath);
+      console.log(fileToCheck);
+      rmSync(exeFilePath, { recursive: true, force: true });
+      if (!existsSync(fileToCheck)) {
+        console.error(`${fileToCheck} does not exist`);
+        process.exit(1);
+      }
+      console.log(`${url} extracted`);
+    }, 2000);
   });
 };
 

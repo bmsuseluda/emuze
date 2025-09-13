@@ -15,8 +15,6 @@ import {
 } from "../../configFile.js";
 import fs from "node:fs";
 import { defaultSettings } from "./defaultSettings.js";
-import { importElectron } from "../../../importElectron.server.js";
-import { commandLineOptions } from "../../../commandLine.server.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { isWindows } from "../../../operationsystem.server.js";
 import { isSteamDeckController } from "../../../../types/gamepad.js";
@@ -223,13 +221,4 @@ export const azahar: Application = {
   },
   bundledPathLinux,
   bundledPathWindows,
-};
-
-export const isLime3dsFor3ds = () => {
-  const electron = importElectron();
-
-  return (
-    electron?.app?.commandLine.hasSwitch(commandLineOptions.lime3ds.id) ||
-    process.env.EMUZE_LIME3DS === "true"
-  );
 };

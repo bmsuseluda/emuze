@@ -59,7 +59,9 @@ export const mednafen: Application = {
   fileExtensions: [".cue"],
   flatpakId,
   defineEnvironmentVariables: () => {
-    const environmentVariables: Record<string, string> = {};
+    const environmentVariables: Record<string, string> = {
+      SDL_ENABLE_SCREEN_KEYBOARD: "0",
+    };
 
     if (isWindows()) {
       environmentVariables.MEDNAFEN_HOME = nodepath.dirname(

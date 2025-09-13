@@ -15,7 +15,6 @@ import {
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import type { ApplicationId } from "../../applicationId.js";
 import nodepath from "node:path";
-import { importElectron } from "../../../importElectron.server.js";
 import { getKeyboard, getKeyboardKey } from "./keyboardConfig.js";
 import type { SdlButtonMapping } from "../../../../types/gamepad.js";
 import {
@@ -24,7 +23,6 @@ import {
   isDpadHat,
   isN64Controller,
 } from "../../../../types/gamepad.js";
-import { commandLineOptions } from "../../../commandLine.server.js";
 import { getJoystickFromController } from "../../../gamepad.server.js";
 
 const applicationId: ApplicationId = "ares";
@@ -455,22 +453,4 @@ export const aresSuperGrafx: Application = {
     ...getSharedAresOptionParams(props),
     ...["--system", "SuperGrafx"],
   ],
-};
-
-export const isRmgForN64 = () => {
-  const electron = importElectron();
-
-  return (
-    electron?.app?.commandLine.hasSwitch(commandLineOptions.rmgN64.id) ||
-    process.env.EMUZE_RMG_N64 === "true"
-  );
-};
-
-export const isMgbaForGameBoy = () => {
-  const electron = importElectron();
-
-  return (
-    electron?.app?.commandLine.hasSwitch(commandLineOptions.mgba.id) ||
-    process.env.EMUZE_MGBA === "true"
-  );
 };

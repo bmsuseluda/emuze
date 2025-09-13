@@ -45,7 +45,6 @@
     "e2e:serveRemix:initialWindows": "tsx e2eTests/tests/initialWindows/start.ts",
     "e2e:serveRemix:defaultWindows": "tsx e2eTests/tests/defaultWindows/start.ts",
     "e2e:serveRemix:defaultWithLastPlayed": "tsx e2eTests/tests/defaultWithLastPlayed/start.ts",
-    "e2e:serveRemix:wrongEmulatorsPathWindows": "tsx e2eTests/tests/wrongEmulatorsPathWindows/start.ts",
     "e2e:serveRemix:wrongRomsPath": "tsx e2eTests/tests/wrongRomsPath/start.ts",
     "e2e:serveRemix:wrongRomsPathWindows": "tsx e2eTests/tests/wrongRomsPathWindows/start.ts",
     "e2e:playwright": "playwright test --ui",

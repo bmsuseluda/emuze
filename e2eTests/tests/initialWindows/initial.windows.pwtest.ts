@@ -23,18 +23,12 @@ test("Should show initial config page", async ({ page, settingsPage }) => {
     settingsPage.generalPage.romsPathRequiredError,
   ).not.toBeVisible();
   await expect(settingsPage.generalPage.emulatorsPath).toBeVisible();
-  await expect(
-    settingsPage.generalPage.emulatorsPathRequiredError,
-  ).not.toBeVisible();
 
   await expect(page).toHaveScreenshot();
 
-  await test.step("Should prevent from submitting without emulators path and roms path", async () => {
+  await test.step("Should prevent from submitting without roms path", async () => {
     await settingsPage.generalPage.importAllButton.click();
     await expect(settingsPage.generalPage.romsPathRequiredError).toBeVisible();
-    await expect(
-      settingsPage.generalPage.emulatorsPathRequiredError,
-    ).toBeVisible();
 
     await expect(
       settingsPage.generalPage.page.getByRole("group", { name: "Roms Path" }),

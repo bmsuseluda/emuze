@@ -6,6 +6,12 @@ import type {
 import { findGameNameById } from "../../nameMappings/findGameNameById.js";
 import mameGames from "./nameMapping/mame.json" with { type: "json" };
 import nodepath from "node:path";
+import type { ApplicationId } from "../../applicationId.js";
+
+const flatpakId = "org.mamedev.MAME";
+const applicationId: ApplicationId = "mame";
+const bundledPathLinux = nodepath.join(applicationId, `mame.AppImage`);
+const bundledPathWindows = nodepath.join(applicationId, "mame.exe");
 
 const findMameArcadeGameName: FindEntryNameFunction = ({ entry: { name } }) =>
   findGameNameById(name, mameGames, "mame");
@@ -32,13 +38,17 @@ const getSharedMameOptionParams: OptionParamFunction = ({
 };
 
 export const mame: Application = {
-  id: "mame",
-  name: "Mame",
-  executable: "mame.exe",
-  fileExtensions: [".zip", ".chd"],
-  flatpakId: "org.mamedev.MAME",
+  id: applicationId,
+  name: "MAME",
+  fileExtensions: [".zip", ".chd", ".cue"],
+  flatpakId,
+  defineEnvironmentVariables: () => ({
+    SDL_ENABLE_SCREEN_KEYBOARD: "0",
+  }),
   createOptionParams: getSharedMameOptionParams,
   findEntryName: findMameArcadeGameName,
+  bundledPathLinux,
+  bundledPathWindows,
 };
 
 export const mameNeoGeo: Application = {

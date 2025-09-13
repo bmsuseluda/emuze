@@ -9,9 +9,7 @@ export class SettingsGeneralPage {
   readonly romsPathRequiredError: Locator;
   readonly emulatorsPath: Locator;
   readonly emulatorsPathNotExistError: Locator;
-  readonly emulatorsPathRequiredError: Locator;
   readonly importAllButton: Locator;
-  readonly installEmulatorsButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -25,12 +23,6 @@ export class SettingsGeneralPage {
     this.emulatorsPathNotExistError = page.getByText(
       "The Emulators Path does not exist",
     );
-    this.emulatorsPathRequiredError = page.getByText(
-      "The Emulators Path is missing",
-    );
     this.importAllButton = page.getByRole("button", { name: "Import all" });
-    this.installEmulatorsButton = page.getByRole("button", {
-      name: "Install Emulators",
-    });
   }
 }
