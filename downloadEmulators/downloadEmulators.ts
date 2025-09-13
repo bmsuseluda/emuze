@@ -206,6 +206,7 @@ const downloadAppImage = (url: string, fileToCheck: string) => {
 const executeWithLogs = (applicationPath: string, args: string[]): string => {
   const result = spawnSync(applicationPath, args, {
     stdio: ["inherit", "pipe", "inherit"],
+    shell: true,
     encoding: "utf8",
   });
 
@@ -220,13 +221,19 @@ const downloadExe = (
   const exeFilePath = join(outputFolder, url.split("/").at(-1) || "");
 
   downloadFile(url, exeFilePath, () => {
-    executeWithLogs(exeFilePath, ["/s", `/D=${outputFolder}`]);
-    rmSync(exeFilePath, { recursive: true, force: true });
-    if (!existsSync(fileToCheck)) {
-      console.error(`${fileToCheck} does not exist`);
-      process.exit(1);
-    }
-    console.log(`${url} extracted`);
+    setTimeout(() => {
+      const output = executeWithLogs("start", ["/b", "/wait", exeFilePath, `-o"${outputFolder}"`, "-y"]);
+      console.log(output);
+      console.log(outputFolder);
+      console.log(exeFilePath);
+      console.log(fileToCheck);
+      rmSync(exeFilePath, { recursive: true, force: true });
+      if (!existsSync(fileToCheck)) {
+        console.error(`${fileToCheck} does not exist`);
+        process.exit(1);
+      }
+      console.log(`${url} extracted`);
+    }, 2000);
   });
 };
 
