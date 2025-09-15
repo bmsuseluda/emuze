@@ -53,13 +53,13 @@ export const mame: Application = {
 
 export const mameNeoGeo: Application = {
   ...mame,
-  id: "mameNeoGeo",
+  fileExtensions: [".zip"],
   excludeFiles: () => ["neogeo.zip"],
 };
 
 export const mameNeoGeoCD: Application = {
   ...mame,
-  id: "mameNeoGeoCD",
+  fileExtensions: [".chd", ".cue"],
   createOptionParams: (props) => [
     ...getSharedMameOptionParams(props),
     "neocdz",

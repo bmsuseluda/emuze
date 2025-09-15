@@ -4,12 +4,11 @@ import { getCategoryDataByName } from "./categoriesDB.server/index.js";
 import type { SystemId } from "./categoriesDB.server/systemId.js";
 import nodepath from "node:path";
 import type {
+  Application,
   ExcludeFilesFunction,
   FindEntryNameFunction,
 } from "./applicationsDB.server/types.js";
 import { convertToId } from "./convertToId.server.js";
-import type { ApplicationId } from "./applicationsDB.server/applicationId.js";
-import { applications } from "./applicationsDB.server/index.js";
 import { readGeneral } from "./settings.server.js";
 import { readFilenames } from "./readWriteData.server.js";
 import { fetchMetaDataFromDB } from "./igdb.server.js";
@@ -142,19 +141,18 @@ const addAsGameVersion = (lastEntry: Entry, { metaData, ...entry }: Entry) => {
 
 export const readEntries = ({
   categoryName,
-  applicationId,
+  application,
   oldEntries,
 }: {
   categoryName: string;
-  applicationId: ApplicationId;
+  application: Application;
   oldEntries?: Entry[];
 }) => {
-  const applicationDbData = applications[applicationId];
   const generalData = readGeneral();
 
-  if (applicationDbData && generalData?.categoriesPath) {
+  if (application && generalData?.categoriesPath) {
     const { findEntryName, excludeFiles, fileExtensions, entryAsDirectory } =
-      applicationDbData;
+      application;
 
     const categoriesPath = generalData.categoriesPath;
     const categoryPath = nodepath.join(categoriesPath, categoryName);
@@ -227,12 +225,12 @@ export const createCategoryData = ({
   categoryDbData,
   categoryFolderBaseName,
 }: CategoryImportData): Category => {
-  const { id } = categoryDbData;
+  const { id, application } = categoryDbData;
   const oldCategoryData = readCategory(id);
 
   const entries = readEntries({
     categoryName: categoryFolderBaseName,
-    applicationId: categoryDbData.application.id,
+    application,
     oldEntries: oldCategoryData?.entries,
   });
 

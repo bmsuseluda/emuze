@@ -1,8 +1,15 @@
 import { rpcs3 } from "../applicationsDB.server/applications/rpcs3/index.js";
 import {
-  ares,
+  aresGameBoyAdvance,
   aresGameBoyColor,
+  aresGameGear,
+  aresMasterSystem,
   aresMegaDrive,
+  aresNeoGeoPocket,
+  aresNeoGeoPocketColor,
+  aresNES,
+  aresNintendo64,
+  aresPcEngine,
   aresSega32x,
   aresSegaCd,
   aresSegaMegaLd,
@@ -74,15 +81,15 @@ export const segamastersystem: Category = {
   id: "segamastersystem",
   names: ["Sega Master System", "Master System", "SMS"],
   igdbPlatformIds: [64],
-  application: ares,
+  application: aresMasterSystem,
   hasAnalogStick: false,
 };
 
 export const segagamegear: Category = {
   id: "segagamegear",
-  names: ["Sega Game Gear", "Game Gear", "GameGear"],
+  names: ["Sega Game Gear", "Game Gear", "GameGear", "gg", "sgg"],
   igdbPlatformIds: [35],
-  application: ares,
+  application: aresGameGear,
   hasAnalogStick: false,
 };
 
@@ -94,6 +101,7 @@ export const segamegadrive: Category = {
     "Sega Megadrive",
     "Sega Genesis",
     "Genesis",
+    "smd",
   ],
   igdbPlatformIds: [29],
   application: aresMegaDrive,
@@ -117,7 +125,7 @@ export const sega32x: Category = {
 
 export const segacd: Category = {
   id: "segacd",
-  names: ["Sega CD", "Mega CD", "Sega Mega CD"],
+  names: ["Sega CD", "Mega CD", "Sega Mega CD", "smcd"],
   igdbPlatformIds: [78],
   application: aresSegaCd,
   hasAnalogStick: false,
@@ -138,7 +146,7 @@ export const segamegald: Category = {
 
 export const segadreamcast: Category = {
   id: "segadreamcast",
-  names: ["Sega Dreamcast", "Dreamcast"],
+  names: ["Sega Dreamcast", "Dreamcast", "dc"],
   igdbPlatformIds: [23],
   application: flycast,
   hasAnalogStick: true,
@@ -152,6 +160,7 @@ export const supernintendo: Category = {
     "SNES",
     "Super Famicom",
     "Super Family Computer",
+    "sfc",
   ],
   igdbPlatformIds: [19, /** Super Famicom */ 58],
   application: aresSuperNintendo,
@@ -160,7 +169,7 @@ export const supernintendo: Category = {
 
 export const nintendods: Category = {
   id: "nintendods",
-  names: ["Nintendo DS", "DS"],
+  names: ["Nintendo DS", "DS", "nds"],
   igdbPlatformIds: [20],
   application: melonds,
   hasAnalogStick: false,
@@ -168,7 +177,7 @@ export const nintendods: Category = {
 
 export const nintendo3ds: Category = {
   id: "nintendo3ds",
-  names: ["Nintendo 3DS", "3DS"],
+  names: ["Nintendo 3DS", "3DS", "n3ds"],
   igdbPlatformIds: [37, /** New Nintendo 3DS */ 137],
   application: azahar,
   hasAnalogStick: true,
@@ -176,7 +185,7 @@ export const nintendo3ds: Category = {
 
 export const nintendogamecube: Category = {
   id: "nintendogamecube",
-  names: ["Nintendo Gamecube", "Gamecube"],
+  names: ["Nintendo Gamecube", "Gamecube", "ngc", "gc"],
   igdbPlatformIds: [21],
   application: dolphin,
   hasAnalogStick: true,
@@ -216,9 +225,15 @@ export const nintendoswitch: Category = {
 
 export const nintendoentertainmentsystem: Category = {
   id: "nintendoentertainmentsystem",
-  names: ["Nintendo Entertainment System", "NES", "Famicom", "Family Computer"],
+  names: [
+    "Nintendo Entertainment System",
+    "NES",
+    "Famicom",
+    "Family Computer",
+    "fc",
+  ],
   igdbPlatformIds: [18, /** Famicom Disc System */ 51, /** Famicom */ 99],
-  application: ares,
+  application: aresNES,
   hasAnalogStick: false,
 };
 
@@ -226,7 +241,7 @@ export const nintendo64: Category = {
   id: "nintendo64",
   names: ["Nintendo 64", "N64"],
   igdbPlatformIds: [4],
-  application: ares,
+  application: aresNintendo64,
   hasAnalogStick: true,
 };
 
@@ -250,13 +265,13 @@ export const nintendogameboyadvance: Category = {
   id: "nintendogameboyadvance",
   names: ["Nintendo Game Boy Advance", "Game Boy Advance", "GBA"],
   igdbPlatformIds: [24],
-  application: ares,
+  application: aresGameBoyAdvance,
   hasAnalogStick: false,
 };
 
 export const segasaturn: Category = {
   id: "segasaturn",
-  names: ["Sega Saturn", "Saturn"],
+  names: ["Sega Saturn", "Saturn", "ss"],
   igdbPlatformIds: [32],
   application: mednafenSaturn,
   hasAnalogStick: true,
@@ -272,15 +287,16 @@ export const pcengine: Category = {
     "TurboGrafx 16",
     "Turbo Grafx 16",
     "CoreGrafx",
+    "pce",
   ],
   igdbPlatformIds: [86],
-  application: ares,
+  application: aresPcEngine,
   hasAnalogStick: false,
 };
 
 export const pcenginecd: Category = {
   id: "pcenginecd",
-  names: ["PC Engine CD", "TurboGrafx-CD", "TurboGrafx CD"],
+  names: ["PC Engine CD", "TurboGrafx-CD", "TurboGrafx CD", "pcecd"],
   igdbPlatformIds: [150],
   application: mednafenPcEngineCD,
   hasAnalogStick: false,
@@ -288,7 +304,7 @@ export const pcenginecd: Category = {
 
 export const pcenginesupergrafx: Category = {
   id: "pcenginesupergrafx",
-  names: ["PC Engine SuperGrafx", "SuperGrafx", "Super Grafx"],
+  names: ["PC Engine SuperGrafx", "SuperGrafx", "Super Grafx", "pcfx"],
   igdbPlatformIds: [128],
   application: aresSuperGrafx,
   hasAnalogStick: false,
@@ -296,7 +312,15 @@ export const pcenginesupergrafx: Category = {
 
 export const neogeo: Category = {
   id: "neogeo",
-  names: ["Neo Geo", "Neo Geo AES", "Neo Geo MVS", "NeoGeo"],
+  names: [
+    "Neo Geo",
+    "Neo Geo AES",
+    "Neo Geo MVS",
+    "NeoGeo",
+    "ng",
+    "aes",
+    "mvs",
+  ],
   igdbPlatformIds: [79, 80],
   application: mameNeoGeo,
   hasAnalogStick: false,
@@ -304,7 +328,7 @@ export const neogeo: Category = {
 
 export const neogeocd: Category = {
   id: "neogeocd",
-  names: ["Neo Geo CD", "NeoGeo CD"],
+  names: ["Neo Geo CD", "NeoGeo CD", "ngcd"],
   igdbPlatformIds: [136],
   application: mameNeoGeoCD,
   hasAnalogStick: false,
@@ -312,17 +336,17 @@ export const neogeocd: Category = {
 
 export const neogeopocket: Category = {
   id: "neogeopocket",
-  names: ["Neo Geo Pocket", "NeoGeo Pocket"],
+  names: ["Neo Geo Pocket", "NeoGeo Pocket", "ngp"],
   igdbPlatformIds: [119],
-  application: ares,
+  application: aresNeoGeoPocket,
   hasAnalogStick: false,
 };
 
 export const neogeopocketcolor: Category = {
   id: "neogeopocketcolor",
-  names: ["Neo Geo Pocket Color", "NeoGeo Pocket Color"],
+  names: ["Neo Geo Pocket Color", "NeoGeo Pocket Color", "ngpc"],
   igdbPlatformIds: [120],
-  application: ares,
+  application: aresNeoGeoPocketColor,
   hasAnalogStick: false,
 };
 
@@ -357,7 +381,7 @@ export const lastPlayed: Category = {
   id: "lastPlayed",
   names: ["Last Played"],
   igdbPlatformIds: [],
-  application: ares,
+  application: aresPcEngine,
   hasAnalogStick: true,
 };
 

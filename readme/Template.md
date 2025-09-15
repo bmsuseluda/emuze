@@ -42,7 +42,12 @@ return scripts.createSystemsTable()
 > ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
 
 ### Pre Configured
-If a System is pre configured, all connected gamepads will be configured for the specific Emulator.
+If a System is pre configured means the following:
+
+#### Gamepad Mapping
+All connected gamepads will be configured for the specific Emulator and should just work without further tinkering.
+
+#### Keyboard Mapping
 If there are no gamepads connected, the keyboard will be configured instead.
 
 <details>
@@ -58,22 +63,43 @@ return scripts.createKeyboardMapping()
 </details>
 <br>
 
-The following Hotkeys are set as well:
+#### Hotkeys
+The following Hotkeys are set:
 - Open Emulator Menu (if supported from emulator): `F2`
 - Save State: `F1`
 - Load State: `F3`
 - Fullscreen: `F11`
 
+#### Close a Game
 You can close a game via
 - Xbox: `back + a`
 - PlayStation: `select + x`
 - Nintendo: `select + a`
+
+#### Steam Deck sorted last
+If you have gamepads connected with your Steam Deck the Steam Deck Controls will be configured as the last gamepad. This is done to use the Steam Deck on a TV. If you have other PC Handhelds where this feature would come in handy, please let me know.
 
 ### Bundled
 If a system is bundled, the respective emulator is provided with emuze in a specific version. Therefore you do not need to provide the emulator on your own.
 
 ### BIOS needed
 Some emulators need a BIOS or firmware to run. Please check the documentation of the respective emulator for more information.
+
+### Supported System Names and file extensions
+In general emuze should just detect your systems and games. If not please check the supported system names and file extensions:
+
+<details>
+  <summary>System Names and file extensions</summary>
+
+<br>
+
+| System | System Names | File extensions |
+| ------ | ------------ | --------------- |
+```mmd
+return scripts.createSystemsTableExpert()
+```
+</details>
+<br>
 
 ## 🚀 Getting started
 
@@ -103,8 +129,6 @@ emulators
 
 ### 🐧 Linux
 
-For now emuze is only released as an AppImage.
-
 ```mmd
 return scripts.getLinuxDownloadLink('1) ')
 ```
@@ -115,8 +139,6 @@ return scripts.getLinuxDownloadLink('1) ')
 > All emulators, not bundled, need to be installed via flatpak.
 
 ### 🎮️ Steam Deck in Game mode
-
-For now emuze is only released as an AppImage.
 
 1) Switch to Desktop
 ```mmd

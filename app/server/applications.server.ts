@@ -4,7 +4,6 @@ import type {
   Application as ApplicationDB,
   InstalledApplicationWindows,
 } from "./applicationsDB.server/types.js";
-import { applications as applicationsDB } from "./applicationsDB.server/index.js";
 import { readFilenames } from "./readWriteData.server.js";
 import type { ApplicationId } from "./applicationsDB.server/applicationId.js";
 
@@ -14,15 +13,15 @@ export const paths = {
 
 export const findExecutable = (
   path: string,
-  id: ApplicationId,
+  applicationFromDB: ApplicationDB,
 ): string | null => {
-  const configuredExecutable = applicationsDB[id].executable;
+  const configuredExecutable = applicationFromDB.executable;
   const executables = readFilenames({ path, fileExtensions: [".exe"] }).filter(
     (filename) => {
       const basename = nodepath.basename(filename).toLowerCase();
       return (
         basename === configuredExecutable?.toLowerCase() ||
-        basename.includes(id)
+        basename.includes(applicationFromDB.id)
       );
     },
   );
@@ -38,13 +37,14 @@ const applicationPathsWindows: Partial<Record<ApplicationId, string>> = {};
 
 const getApplicationPathWindows = (
   applicationsPath: string,
-  applicationId: ApplicationId,
+  applicationFromDB: ApplicationDB,
 ): string | undefined => {
+  const applicationId = applicationFromDB.id;
   if (applicationPathsWindows[applicationId]) {
     return applicationPathsWindows[applicationId];
   }
 
-  const path = findExecutable(applicationsPath, applicationId);
+  const path = findExecutable(applicationsPath, applicationFromDB);
   if (path) {
     applicationPathsWindows[applicationId] = path;
   }
@@ -56,10 +56,7 @@ export const getInstalledApplicationForCategoryOnWindows = (
   applicationFromDB: ApplicationDB,
   applicationsPath: string,
 ): InstalledApplicationWindows | undefined => {
-  const path = getApplicationPathWindows(
-    applicationsPath,
-    applicationFromDB.id,
-  );
+  const path = getApplicationPathWindows(applicationsPath, applicationFromDB);
   if (path) {
     return { ...applicationFromDB, path };
   }

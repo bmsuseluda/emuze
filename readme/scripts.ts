@@ -7,20 +7,11 @@ import { keyboardMapping } from "../app/types/gamepad.js";
 
 const preConfigured: ApplicationId[] = [
   "ares",
-  "aresMegaDrive",
-  "aresSega32x",
-  "aresSegaCd",
-  "aresSegaMegaLd",
-  "aresSuperGrafx",
-  "aresGameBoyColor",
-  "aresSuperNintendo",
   "azahar",
   "dolphin",
   "duckstation",
   "flycast",
   "mednafen",
-  "mednafenPcEngineCD",
-  "mednafenSaturn",
   "pcsx2",
   "ppsspp",
   "scummvm",
@@ -31,23 +22,12 @@ const preConfigured: ApplicationId[] = [
 
 const bundled: Partial<Record<ApplicationId, string>> = {
   ares: emulatorVersions.ares,
-  aresMegaDrive: emulatorVersions.ares,
-  aresSega32x: emulatorVersions.ares,
-  aresSegaCd: emulatorVersions.ares,
-  aresSegaMegaLd: emulatorVersions.ares,
-  aresSuperGrafx: emulatorVersions.ares,
-  aresGameBoyColor: emulatorVersions.ares,
-  aresSuperNintendo: emulatorVersions.ares,
   azahar: emulatorVersions.azahar,
   dolphin: emulatorVersions.dolphin,
   duckstation: emulatorVersions.duckstation,
   flycast: emulatorVersions.flycast,
   mame: emulatorVersions.mame,
-  mameNeoGeo: emulatorVersions.mame,
-  mameNeoGeoCD: emulatorVersions.mame,
   mednafen: emulatorVersions.mednafen,
-  mednafenPcEngineCD: emulatorVersions.mednafen,
-  mednafenSaturn: emulatorVersions.mednafen,
   pcsx2: emulatorVersions.pcsx2,
   ppsspp: emulatorVersions.ppsspp,
   rpcs3: emulatorVersions.rpcs3,
@@ -75,13 +55,6 @@ const biosNeeded: SystemId[] = [
 
 const homepages: Record<ApplicationId, string> = {
   ares: "https://github.com/ares-emulator/ares",
-  aresMegaDrive: "https://github.com/ares-emulator/ares",
-  aresSega32x: "https://github.com/ares-emulator/ares",
-  aresSegaCd: "https://github.com/ares-emulator/ares",
-  aresSegaMegaLd: "https://github.com/ares-emulator/ares",
-  aresSuperGrafx: "https://github.com/ares-emulator/ares",
-  aresGameBoyColor: "https://github.com/ares-emulator/ares",
-  aresSuperNintendo: "https://github.com/ares-emulator/ares",
   cemu: "https://github.com/cemu-project/Cemu",
   dolphin: "https://github.com/dolphin-emu/dolphin",
   dosboxstaging: "https://github.com/dosbox-staging/dosbox-staging",
@@ -89,11 +62,7 @@ const homepages: Record<ApplicationId, string> = {
   flycast: "https://github.com/flyinghead/flycast",
   azahar: "https://github.com/azahar-emu/azahar",
   mame: "https://github.com/mamedev/mame",
-  mameNeoGeo: "https://github.com/mamedev/mame",
-  mameNeoGeoCD: "https://github.com/mamedev/mame",
   mednafen: "https://mednafen.github.io/",
-  mednafenSaturn: "https://mednafen.github.io/",
-  mednafenPcEngineCD: "https://mednafen.github.io/",
   melonds: "https://github.com/melonDS-emu/melonDS",
   pcsx2: "https://github.com/PCSX2/pcsx2",
   ppsspp: "https://github.com/hrydgard/ppsspp",
@@ -124,6 +93,24 @@ export const createSystemsTable = () =>
       const isBiosNeeded = biosNeeded.includes(category.id) ? "Yes" : "No";
 
       return `| ${systemName} | ${emulatorName} | ${isPreConfigured} | ${isBundled} | ${isBiosNeeded} | `;
+    })
+    .filter(Boolean)
+    .join("\n");
+
+export const createSystemsTableExpert = () =>
+  Object.values(categories)
+    .map((category) => {
+      if (category.id === "lastPlayed") {
+        return null;
+      }
+      const systemName = category.names[0];
+      const systemNames = category.names.join(", ");
+      const fileExtensions = category.application.fileExtensions
+        ?.map((fileExtension) => `\`${fileExtension}\``)
+        .join(", ");
+      const entryAsDirectory = category.application.entryAsDirectory;
+
+      return `| ${systemName} | ${systemNames} | ${entryAsDirectory ? "Folder" : fileExtensions} | `;
     })
     .filter(Boolean)
     .join("\n");

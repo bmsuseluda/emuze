@@ -2,7 +2,7 @@ import type { ApplicationId } from "../app/server/applicationsDB.server/applicat
 import nodepath, { basename, join } from "node:path";
 import followRedirects from "follow-redirects";
 import decompress from "decompress";
-import { applications } from "../app/server/applicationsDB.server/index.js";
+import { applications } from "./applications.js";
 import {
   chmodSync,
   createWriteStream,
@@ -222,7 +222,13 @@ const downloadExe = (
 
   downloadFile(url, exeFilePath, () => {
     setTimeout(() => {
-      const output = executeWithLogs("start", ["/b", "/wait", exeFilePath, `-o"${outputFolder}"`, "-y"]);
+      const output = executeWithLogs("start", [
+        "/b",
+        "/wait",
+        exeFilePath,
+        `-o"${outputFolder}"`,
+        "-y",
+      ]);
       console.log(output);
       console.log(outputFolder);
       console.log(exeFilePath);
