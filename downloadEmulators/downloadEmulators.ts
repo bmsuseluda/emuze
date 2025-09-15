@@ -54,8 +54,8 @@ const emulatorDownloads = {
     Windows: `https://dl.dolphin-emu.org/releases/${emulatorVersions.dolphin}/dolphin-${emulatorVersions.dolphin}-x64.7z`,
   },
   duckstation: {
-    Linux: `https://github.com/stenzek/duckstation/releases/download/v${emulatorVersions.duckstation}/DuckStation-x64.AppImage`,
-    Windows: `https://github.com/stenzek/duckstation/releases/download/v${emulatorVersions.duckstation}/duckstation-windows-x64-release.zip`,
+    Linux: `https://github.com/Kyuyrii/Duckstation-GPL3/releases/download/v${emulatorVersions.duckstation}/DuckStation-x64.AppImage`,
+    Windows: `https://github.com/Kyuyrii/Duckstation-GPL3/releases/download/v${emulatorVersions.duckstation}/duckstation-windows-x64-release.zip`,
   },
   flycast: {
     Linux: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-x86_64.AppImage`,
