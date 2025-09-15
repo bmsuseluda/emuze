@@ -56,10 +56,10 @@ export const getKeyboardPcEngine = () => {
   const { createButtonMapping, disableButtonMapping } =
     new VirtualGamepad<MednafenButtonIdPcEngine>(0, system);
   return [
-    ...createButtonMapping("up", getKeyboardKey("W")),
-    ...createButtonMapping("down", getKeyboardKey("S")),
-    ...createButtonMapping("left", getKeyboardKey("A")),
-    ...createButtonMapping("right", getKeyboardKey("D")),
+    ...createButtonMapping("up", getKeyboardKey("W"), getKeyboardKey("T")),
+    ...createButtonMapping("down", getKeyboardKey("S"), getKeyboardKey("G")),
+    ...createButtonMapping("left", getKeyboardKey("A"), getKeyboardKey("F")),
+    ...createButtonMapping("right", getKeyboardKey("D"), getKeyboardKey("H")),
     ...createButtonMapping("i", getKeyboardKey("K")),
     ...createButtonMapping("ii", getKeyboardKey("J")),
     ...disableButtonMapping("iii"),

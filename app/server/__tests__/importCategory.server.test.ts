@@ -76,7 +76,7 @@ describe("importCategory.server", () => {
 
       const result = readEntries({
         categoryName: neogeo.name,
-        applicationId: mameNeoGeo.id,
+        application: mameNeoGeo,
       });
 
       expect(result).toStrictEqual(expectedResult);
@@ -107,7 +107,7 @@ describe("importCategory.server", () => {
 
       const result = readEntries({
         categoryName: playstation.name,
-        applicationId: duckstation.id,
+        application: duckstation,
         oldEntries,
       });
 
@@ -147,7 +147,7 @@ describe("importCategory.server", () => {
 
       const result = readEntries({
         categoryName: playstation.name,
-        applicationId: duckstation.id,
+        application: duckstation,
         oldEntries,
       });
 
@@ -165,7 +165,7 @@ describe("importCategory.server", () => {
 
       const result = readEntries({
         categoryName: playstation.name,
-        applicationId: duckstation.id,
+        application: duckstation,
         oldEntries,
       });
 
@@ -204,7 +204,7 @@ describe("importCategory.server", () => {
 
       const result = readEntries({
         categoryName: playstation.name,
-        applicationId: duckstation.id,
+        application: duckstation,
         oldEntries,
       });
 
@@ -231,7 +231,7 @@ describe("importCategory.server", () => {
 
       const result = readEntries({
         categoryName: playstation3.name,
-        applicationId: rpcs3.id,
+        application: rpcs3,
         oldEntries,
       });
 
@@ -262,7 +262,7 @@ describe("importCategory.server", () => {
 
       const result = readEntries({
         categoryName: dos.name,
-        applicationId: dosboxstaging.id,
+        application: dosboxstaging,
         oldEntries,
       });
 

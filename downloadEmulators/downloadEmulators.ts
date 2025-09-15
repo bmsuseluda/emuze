@@ -2,7 +2,7 @@ import type { ApplicationId } from "../app/server/applicationsDB.server/applicat
 import nodepath, { basename, join } from "node:path";
 import followRedirects from "follow-redirects";
 import decompress from "decompress";
-import { applications } from "../app/server/applicationsDB.server/index.js";
+import { applications } from "./applications.js";
 import {
   chmodSync,
   createWriteStream,
@@ -54,8 +54,8 @@ const emulatorDownloads = {
     Windows: `https://dl.dolphin-emu.org/releases/${emulatorVersions.dolphin}/dolphin-${emulatorVersions.dolphin}-x64.7z`,
   },
   duckstation: {
-    Linux: `https://github.com/stenzek/duckstation/releases/download/v${emulatorVersions.duckstation}/DuckStation-x64.AppImage`,
-    Windows: `https://github.com/stenzek/duckstation/releases/download/v${emulatorVersions.duckstation}/duckstation-windows-x64-release.zip`,
+    Linux: `https://github.com/Kyuyrii/Duckstation-GPL3/releases/download/v${emulatorVersions.duckstation}/DuckStation-x64.AppImage`,
+    Windows: `https://github.com/Kyuyrii/Duckstation-GPL3/releases/download/v${emulatorVersions.duckstation}/duckstation-windows-x64-release.zip`,
   },
   flycast: {
     Linux: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-x86_64.AppImage`,
@@ -222,7 +222,13 @@ const downloadExe = (
 
   downloadFile(url, exeFilePath, () => {
     setTimeout(() => {
-      const output = executeWithLogs("start", ["/b", "/wait", exeFilePath, `-o"${outputFolder}"`, "-y"]);
+      const output = executeWithLogs("start", [
+        "/b",
+        "/wait",
+        exeFilePath,
+        `-o"${outputFolder}"`,
+        "-y",
+      ]);
       console.log(output);
       console.log(outputFolder);
       console.log(exeFilePath);

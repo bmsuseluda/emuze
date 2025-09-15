@@ -191,6 +191,29 @@ export const isAnalog = (
   sdlButtonId: SdlButtonId,
 ) => mappingObject[sdlButtonId]?.includes("a");
 
+type AxisValue = "+" | "-" | "-+" | undefined;
+
+export const getAxis = (
+  mappingObject: SdlButtonMapping,
+  sdlButtonId: SdlButtonId,
+): AxisValue => {
+  const mapping = mappingObject[sdlButtonId];
+
+  if (mapping) {
+    if (mapping.includes("-") && mapping.includes("+")) {
+      return "-+";
+    }
+    if (mapping.includes("-")) {
+      return "-";
+    }
+    if (mapping.includes("+")) {
+      return "+";
+    }
+  }
+
+  return undefined;
+};
+
 export const isDpadHat = (
   mappingObject: SdlButtonMapping,
   sdlButtonId: SdlButtonId,
@@ -312,6 +335,20 @@ export const gamecubeAdapter = {
   player: 5,
   mapping:
     "0300767a790000004318000010010000,Mayflash GameCube Adapter,a:b1,b:b0,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b7,righttrigger:a4,rightx:a5,righty:a2,start:b9,x:b2,y:b3,platform:Linux,",
+} satisfies Sdl.Controller.Device;
+
+export const nsoNes = {
+  id: 6,
+  name: "NSO NES Controller",
+  path: "/dev/input/event27",
+  type: null,
+  guid: "0500a7a57e0500000720000001800000",
+  vendor: 1406,
+  product: 8199,
+  version: 32769,
+  player: 0,
+  mapping:
+    "0500a7a57e0500000720000001800000,NSO NES Controller,a:b0,b:b1,back:b4,start:b5,leftshoulder:b2,rightshoulder:b3,dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,platform:Linux,",
 } satisfies Sdl.Controller.Device;
 
 export const convertToJoystick = (

@@ -56,7 +56,7 @@ const getSharedMednafenOptionParams: OptionParamFunction = ({
 export const mednafen: Application = {
   id: applicationId,
   name: "Mednafen",
-  fileExtensions: [".cue"],
+  fileExtensions: [".cue", ".zip"],
   flatpakId,
   defineEnvironmentVariables: () => {
     const environmentVariables: Record<string, string> = {
@@ -78,23 +78,26 @@ export const mednafen: Application = {
 
 export const mednafenSaturn: Application = {
   ...mednafen,
-  id: "mednafenSaturn",
   createOptionParams: (props) => {
     const gamepads = getGamepads();
     const virtualGamepadsSaturn = getVirtualGamepadsSaturn(gamepads);
     log("debug", "createOptionParams", virtualGamepadsSaturn);
-    return [...mednafen.createOptionParams!(props), ...virtualGamepadsSaturn];
+    return [
+      ...["-force_module", "ss"],
+      ...mednafen.createOptionParams!(props),
+      ...virtualGamepadsSaturn,
+    ];
   },
 };
 
 export const mednafenPcEngineCD: Application = {
   ...mednafen,
-  id: "mednafenPcEngineCD",
   createOptionParams: (props) => {
     const gamepads = getGamepads();
     const virtualGamepadsPcEngine = getVirtualGamepadsPcEngine(gamepads);
     log("debug", "createOptionParams", virtualGamepadsPcEngine);
     return [
+      ...["-force_module", "pce"],
       ...["-pce.cddavolume", "100"], // music
       ...["-pce.cdpsgvolume", "50"], // shooting
       ...["-pce.adpcmvolume", "50"], // explosions
