@@ -72,9 +72,17 @@ export const getGamepads = (): MednafenGamepadID[] => {
   return [];
 };
 
-const getAlternativeNames = (joystick: Sdl.Joystick.Device): string[] => {
-  if (isSteamDeckController(joystick)) {
-    return ["Microsoft X-Box 360 pad"];
+const steamInputHandle = "Microsoft X-Box 360 pad";
+
+const getAlternativeNames = (
+  controller: Sdl.Controller.Device,
+  joystick: Sdl.Joystick.Device,
+): string[] => {
+  if (
+    isSteamDeckController(joystick) ||
+    sdl.controller.openDevice(controller).steamHandle
+  ) {
+    return [steamInputHandle];
   }
 
   return [];
@@ -89,13 +97,36 @@ export interface MappedGamepadWithPlayerIndex extends MappedGamepad {
   playerIndex: number;
 }
 
+const sortMednafenGamepadIDs = (a: MednafenGamepadID, b: MednafenGamepadID) => {
+  if (
+    a.name.startsWith(steamInputHandle) &&
+    b.name.startsWith(steamInputHandle)
+  ) {
+    if (a.name.charAt(-1) < b.name.charAt(-1)) {
+      return -1;
+    }
+    return 1;
+  }
+
+  if (
+    a.name.startsWith(steamInputHandle) &&
+    !b.name.startsWith(steamInputHandle)
+  ) {
+    return -1;
+  }
+
+  return 1;
+};
+
 export const getMappedGamepads = (
   mednafenGamepadIds: MednafenGamepadID[],
 ): MappedGamepadWithPlayerIndex[] => {
   const mappedGamepads: MappedGamepad[] = [];
+  const gamepadsSdl = [...sdl.controller.devices];
+  mednafenGamepadIds.sort(sortMednafenGamepadIDs);
 
   mednafenGamepadIds.forEach((mednafenGamepadId) => {
-    const mappedGamepad = getMappedGamepad(mednafenGamepadId);
+    const mappedGamepad = getMappedGamepad(mednafenGamepadId, gamepadsSdl);
     if (mappedGamepad) {
       mappedGamepads.push(mappedGamepad);
     }
@@ -117,17 +148,10 @@ export const getMappedGamepads = (
   return mappedGamepadsWithPlayerIndex;
 };
 
-/**
- *
- * steam deck 1
- * steam deck 2
- * wireless controller
- */
 export const getMappedGamepad = (
   mednafenGamepadId: MednafenGamepadID,
+  gamepads: Sdl.Controller.Device[],
 ): MappedGamepad | null => {
-  const gamepads = sdl.controller.devices;
-
   log(
     "debug",
     "findSdlGamepad",
@@ -135,10 +159,10 @@ export const getMappedGamepad = (
     `mednafen gamepadName: ${mednafenGamepadId.name}`,
   );
 
-  const sdlControllers = gamepads.filter((gamepad) => {
+  const sdlControllerIndex = gamepads.findIndex((gamepad) => {
     const joystick = getJoystickFromController(gamepad)!;
     const nameFromHid = getDeviceNameFromHid(joystick) || "";
-    const alternativeNames = getAlternativeNames(joystick);
+    const alternativeNames = getAlternativeNames(gamepad, joystick);
 
     log(
       "debug",
@@ -146,6 +170,7 @@ export const getMappedGamepad = (
       `hid: ${nameFromHid}`,
       `joystick: ${joystick.name}`,
       `controller: ${gamepad.name}`,
+      `steamHandle: ${sdl.controller.openDevice(gamepad).steamHandle}`,
     );
 
     return !![
@@ -163,9 +188,9 @@ export const getMappedGamepad = (
     );
   });
 
-  const sdlController = sdlControllers.at(mednafenGamepadId.nameIndex);
-
-  if (sdlController) {
+  if (sdlControllerIndex >= 0) {
+    const sdlController = gamepads[sdlControllerIndex];
+    gamepads.splice(sdlControllerIndex, 1);
     return { mednafenGamepadId, sdlController };
   }
 
