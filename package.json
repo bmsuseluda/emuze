@@ -151,6 +151,6 @@
   },
   "exports": "./buildDesktop/desktop/main.js",
   "main": "buildDesktop/desktop/main.js",
-  "packageManager": "yarn@4.10.0+sha512.8dd111dbb1658cf17089636e5bf490795958158755f36cb75c5a2db0bda6be4d84b95447753627f3330d1457cb6f7e8c1e466eaed959073c82be0242c2cd41e7",
+  "packageManager": "yarn@4.10.1",
   "type": "module"
 }

@@ -10,6 +10,7 @@ import { getDeviceNameFromHid } from "../../../getDeviceNameFromHid.js";
 import {
   getPlayerIndexArray,
   isSteamDeckController,
+  isXinputController,
 } from "../../../../types/gamepad.js";
 import { bundledPathLinux, bundledPathWindows } from "./definitions.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
@@ -55,6 +56,16 @@ const executeWithLogs = (applicationPath: string, args: string[]): string => {
   return result.stdout || "";
 };
 
+export const isSteamHandle = (
+  controller: Sdl.Controller.Device,
+): boolean | null => {
+  try {
+    return !!sdl.controller.openDevice(controller).steamHandle;
+  } catch {
+    return null;
+  }
+};
+
 export const getGamepads = (): MednafenGamepadID[] => {
   if (sdl.controller.devices.length > 0) {
     const bundledPath = nodepath.join(
@@ -78,11 +89,12 @@ const getAlternativeNames = (
   controller: Sdl.Controller.Device,
   joystick: Sdl.Joystick.Device,
 ): string[] => {
-  if (
-    isSteamDeckController(joystick) ||
-    sdl.controller.openDevice(controller).steamHandle
-  ) {
+  if (isSteamDeckController(joystick) || isSteamHandle(controller)) {
     return [steamInputHandle];
+  }
+
+  if (isWindows() && isXinputController(controller.type)) {
+    return ["xinput"];
   }
 
   return [];
@@ -170,7 +182,7 @@ export const getMappedGamepad = (
       `hid: ${nameFromHid}`,
       `joystick: ${joystick.name}`,
       `controller: ${gamepad.name}`,
-      `steamHandle: ${sdl.controller.openDevice(gamepad).steamHandle}`,
+      `steamHandle: ${isSteamHandle(gamepad)}`,
     );
 
     return !![
