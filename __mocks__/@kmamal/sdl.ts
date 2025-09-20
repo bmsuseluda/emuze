@@ -6,7 +6,7 @@ import {
   eightBitDoPro2,
 } from "../../app/types/gamepad.js";
 
-const devices: Sdl.Controller.Device[] = [
+export const devices: Sdl.Controller.Device[] = [
   steamDeck,
   gamepadPs4,
   eightBitDoPro2,
@@ -23,12 +23,13 @@ const on = (
 const sdlMock = {
   controller: {
     devices,
-    openDevice: () => {
+    openDevice: (controller: Sdl.Controller.Device) => {
       return {
         on,
         buttons: {
           back: false,
         },
+        steamHandle: controller === eightBitDoPro2 ? 123 : null,
         close: () => {},
       };
     },

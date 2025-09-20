@@ -175,10 +175,10 @@ const getIndexForDeviceId = (index: number) => `${index + 1}`;
  * product = 11ff (hex value, needs to be padded with "0" on start to 4 characters)
  */
 export const createDeviceId = (
-  { vendor, product }: Sdl.Controller.Device,
+  { vendor, product, player }: Sdl.Controller.Device,
   index: number,
 ) => {
-  const deviceIdIndex = getIndexForDeviceId(index);
+  const deviceIdIndex = getIndexForDeviceId(player || index);
   return `0x${deviceIdIndex}${vendor?.toString(16).padStart(deviceIdIndex.length > 0 ? 4 : 3, "0")}${product?.toString(16).padStart(4, "0")}`;
 };
 
@@ -191,7 +191,7 @@ export const getVirtualGamepad =
     const physicalGamepad = new PhysicalGamepad(deviceId, mappingObject);
     const joystick = getJoystickFromController(sdlDevice)!;
 
-    log("debug", "gamepad", { index, sdlDevice, deviceId }, joystick.name);
+    log("debug", "gamepad", { index, sdlDevice, deviceId }, joystick);
 
     return [
       ...getVirtualGamepadDpad(

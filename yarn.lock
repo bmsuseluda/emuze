@@ -2544,12 +2544,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@kmamal/sdl@npm:0.11.12":
-  version: 0.11.12
-  resolution: "@kmamal/sdl@npm:0.11.12"
+"@kmamal/sdl@npm:0.11.13":
+  version: 0.11.13
+  resolution: "@kmamal/sdl@npm:0.11.13"
   dependencies:
     tar: "npm:^7.4.3"
-  checksum: 10/e2e8f9338a5227b53783db7da7fb874d18b34b109a4d7c0b388c4ed4d85a1babf64964b8b61b37b0210271f77604b8432f8e21b4991b32a7221c3d2da558080c
+  checksum: 10/5f00907cec933e1c8475bf28f6a93b828bfd7cc15e30ce79869385b67e220e327d34e47d664e8129a20210d9b143b349769dc46cadec8c40593c0292643374bf
   languageName: node
   linkType: hard
 
@@ -6411,13 +6411,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"builder-util-runtime@npm:9.3.3":
-  version: 9.3.3
-  resolution: "builder-util-runtime@npm:9.3.3"
+"builder-util-runtime@npm:9.4.0":
+  version: 9.4.0
+  resolution: "builder-util-runtime@npm:9.4.0"
   dependencies:
     debug: "npm:^4.3.4"
     sax: "npm:^1.2.4"
-  checksum: 10/35d27ff10e7d529ada92dbf67f13284302ffe9f233daa358c7c50d50c748c6aa827359c716736423fe685ad9415949759b7ad47013b349d4f423a4d602364dec
+  checksum: 10/20fb7321b50639c018d898b32bd8ce30ea4ad7ed2fc3c0c4fc4211b552d4dbb301f3efa82fc11b0281529840955cb5fb91c0562dab18975c8f0eb804c73d1454
   languageName: node
   linkType: hard
 
@@ -8322,11 +8322,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-updater@npm:6.6.7":
-  version: 6.6.7
-  resolution: "electron-updater@npm:6.6.7"
+"electron-updater@npm:6.6.8":
+  version: 6.6.8
+  resolution: "electron-updater@npm:6.6.8"
   dependencies:
-    builder-util-runtime: "npm:9.3.3"
+    builder-util-runtime: "npm:9.4.0"
     fs-extra: "npm:^10.1.0"
     js-yaml: "npm:^4.1.0"
     lazy-val: "npm:^1.0.5"
@@ -8334,20 +8334,20 @@ __metadata:
     lodash.isequal: "npm:^4.5.0"
     semver: "npm:^7.6.3"
     tiny-typed-emitter: "npm:^2.1.0"
-  checksum: 10/1bac97d970912a9f7a6c60fb282a4982f5b51c35e8d982a7a0e71fca8ccfb52abd676dd2b368a276afe968c5662c85e5c3ca1b69c63768ec38afefd29edf9330
+  checksum: 10/24e057c6915c981dda4463986858d3829d3b7717373a8008cf53cc42364ad08dda7536df81f2db3ef775b9812a748f8f85bae589ad04cb48cf2631802999decb
   languageName: node
   linkType: hard
 
-"electron@npm:37.3.0":
-  version: 37.3.0
-  resolution: "electron@npm:37.3.0"
+"electron@npm:38.1.2":
+  version: 38.1.2
+  resolution: "electron@npm:38.1.2"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^22.7.7"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 10/bc0983454dfa01bcf94f5badf38052af8f2df3cc73bcc2db6e9ad309fb87ad77e80ecd09ddcdf44207c64326f156f3f98df428d3c3f54ee56d6d4bedfed7b37b
+  checksum: 10/41a2d7bd467fc80cbc0a556dc094ab2365c403329227581463315b037b86d3f398d5aa94a40dd293d98370b20ca756ca420f65b873dbe503049d74a71dbae21b
   languageName: node
   linkType: hard
 
@@ -8379,7 +8379,7 @@ __metadata:
     7zip-min: "npm:2.1.0"
     "@commitlint/cli": "npm:19.8.1"
     "@commitlint/config-conventional": "npm:19.8.1"
-    "@kmamal/sdl": "npm:0.11.12"
+    "@kmamal/sdl": "npm:0.11.13"
     "@pandacss/dev": "npm:1.0.1"
     "@playwright/test": "npm:1.54.2"
     "@radix-ui/react-checkbox": "npm:1.3.3"
@@ -8417,9 +8417,9 @@ __metadata:
     decompress: "npm:4.2.1"
     del-cli: "npm:5.1.0"
     dotenv: "npm:16.6.1"
-    electron: "npm:37.3.0"
+    electron: "npm:38.1.2"
     electron-builder: "npm:26.0.12"
-    electron-updater: "npm:6.6.7"
+    electron-updater: "npm:6.6.8"
     eslint: "npm:8.57.1"
     eslint-plugin-deprecation: "npm:3.0.0"
     eslint-plugin-import: "npm:2.31.0"
@@ -8456,7 +8456,7 @@ __metadata:
     typescript: "npm:5.9.2"
     typescript-eslint: "npm:7.18.0"
     utility-types: "npm:3.11.0"
-    vite: "npm:7.1.2"
+    vite: "npm:7.1.6"
     vite-plugin-devtools-json: "npm:0.4.1"
     vitest: "npm:3.2.4"
     vitest-when: "npm:0.7.0"
@@ -9942,7 +9942,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fdir@npm:^6.4.5, fdir@npm:^6.4.6":
+"fdir@npm:^6.4.5":
   version: 6.4.6
   resolution: "fdir@npm:6.4.6"
   peerDependencies:
@@ -9951,6 +9951,18 @@ __metadata:
     picomatch:
       optional: true
   checksum: 10/c186ba387e7b75ccf874a098d9bc5fe0af0e9c52fc56f8eac8e80aa4edb65532684bf2bf769894ff90f53bf221d6136692052d31f07a9952807acae6cbe7ee50
+  languageName: node
+  linkType: hard
+
+"fdir@npm:^6.5.0":
+  version: 6.5.0
+  resolution: "fdir@npm:6.5.0"
+  peerDependencies:
+    picomatch: ^3 || ^4
+  peerDependenciesMeta:
+    picomatch:
+      optional: true
+  checksum: 10/14ca1c9f0a0e8f4f2e9bf4e8551065a164a09545dae548c12a18d238b72e51e5a7b39bd8e5494b56463a0877672d0a6c1ef62c6fa0677db1b0c847773be939b1
   languageName: node
   linkType: hard
 
@@ -17593,6 +17605,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tinyglobby@npm:^0.2.15":
+  version: 0.2.15
+  resolution: "tinyglobby@npm:0.2.15"
+  dependencies:
+    fdir: "npm:^6.5.0"
+    picomatch: "npm:^4.0.3"
+  checksum: 10/d72bd826a8b0fa5fa3929e7fe5ba48fceb2ae495df3a231b6c5408cd7d8c00b58ab5a9c2a76ba56a62ee9b5e083626f1f33599734bed1ffc4b792406408f0ca2
+  languageName: node
+  linkType: hard
+
 "tinypool@npm:^1.1.1":
   version: 1.1.1
   resolution: "tinypool@npm:1.1.1"
@@ -18496,17 +18518,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:7.1.2":
-  version: 7.1.2
-  resolution: "vite@npm:7.1.2"
+"vite@npm:7.1.6":
+  version: 7.1.6
+  resolution: "vite@npm:7.1.6"
   dependencies:
     esbuild: "npm:^0.25.0"
-    fdir: "npm:^6.4.6"
+    fdir: "npm:^6.5.0"
     fsevents: "npm:~2.3.3"
     picomatch: "npm:^4.0.3"
     postcss: "npm:^8.5.6"
     rollup: "npm:^4.43.0"
-    tinyglobby: "npm:^0.2.14"
+    tinyglobby: "npm:^0.2.15"
   peerDependencies:
     "@types/node": ^20.19.0 || >=22.12.0
     jiti: ">=1.21.0"
@@ -18547,7 +18569,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10/942188896db181bd5f95c576303eb617cd08580eb129d0223bc87a8ed9b8dc0d60d8487c077fd9a01087c55600af132c5fc677e51b4b48a4a54a376056969edb
+  checksum: 10/b0bb7c5b4d3fbaf7e34f17e9103bac7a380d9de076343ba9b81f5fafc07982aef19d7d5a701faf8c8571c75a7ab2920bfeb41cc70b84ae22dd6db79f92ad6d1b
   languageName: node
   linkType: hard
 
