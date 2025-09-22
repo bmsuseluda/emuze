@@ -1,5 +1,6 @@
 import { execFileSync } from "node:child_process";
 import { rmSync } from "node:fs";
+import { convertToChd } from "./convertToChd.js";
 
 const dumpCdAndConvert = (name: string) => {
   console.log("start dumping cd and creating bin and toc file", name);
@@ -21,12 +22,7 @@ const dumpCdAndConvert = (name: string) => {
     encoding: "utf8",
   });
 
-  console.log("creating chd file");
-  execFileSync(
-    "chdman",
-    ["createcd", ...["-i", `${name}.cue`], ...["-o", `${name}.chd`]],
-    { stdio: "inherit", encoding: "utf8" },
-  );
+  convertToChd(`${name}.cue`);
 
   console.log("removing files");
   rmSync(`${name}.toc`);

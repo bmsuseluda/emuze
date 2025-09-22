@@ -18,8 +18,6 @@ import { fileURLToPath } from "node:url";
 const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 const { autoUpdater } = electronUpdater;
 
-process.env.SDL_JOYSTICK_HIDAPI = "1";
-process.env.SDL_JOYSTICK_HIDAPI_PS4 = "0";
 dotenv.config();
 
 const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {

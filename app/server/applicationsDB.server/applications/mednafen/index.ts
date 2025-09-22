@@ -61,8 +61,6 @@ export const mednafen: Application = {
   defineEnvironmentVariables: () => {
     const environmentVariables: Record<string, string> = {
       SDL_ENABLE_SCREEN_KEYBOARD: "0",
-      SDL_JOYSTICK_HIDAPI: "1",
-      SDL_JOYSTICK_HIDAPI_PS4: "0",
     };
 
     if (isWindows()) {

@@ -33,6 +33,7 @@
     "downloadEmulators:linux": "tsx ./downloadEmulators/downloadEmulatorsLinux.ts",
     "dumpGame:cd": "tsx dumpGames/dumpCdAndConvert.ts",
     "dumpGame:dvd": "tsx dumpGames/dumpDvdAndConvert.ts",
+    "convertAllToChd": "tsx dumpGames/convertAllToChd.ts",
     "fetchMetaData:prepareNameMappings": "tsx fetchMetaData/prepareNameMappings.ts",
     "fetchMetaData": "yarn fetchMetaData:prepareNameMappings && tsx fetchMetaData/fetchMetaDataForAllSystems.ts",
     "app:dir": "yarn build && electron-builder --dir --config electron-builder.config.js",

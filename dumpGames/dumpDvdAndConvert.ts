@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import { rmSync } from "node:fs";
 import { EOL } from "node:os";
+import { convertToChd } from "./convertToChd.js";
 
 const dumpDvdAndConvert = (name: string) => {
   console.log("start dumping dvd and analysing isosize", name);
@@ -29,12 +30,7 @@ const dumpDvdAndConvert = (name: string) => {
     { stdio: "inherit" },
   );
 
-  console.log("creating chd file");
-  execFileSync(
-    "chdman",
-    ["createcd", ...["-i", `${name}.iso`], ...["-o", `${name}.chd`]],
-    { stdio: "inherit", encoding: "utf8" },
-  );
+  convertToChd(`${name}.iso`);
 
   console.log("removing files");
   rmSync(`${name}.iso`);

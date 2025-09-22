@@ -22,6 +22,7 @@ import {
   getPlayerIndexArray,
   isDpadHat,
   isN64Controller,
+  isPs4Controller,
 } from "../../../../types/gamepad.js";
 import { getJoystickFromController } from "../../../gamepad.server.js";
 
@@ -83,10 +84,11 @@ const getVirtualGamepadDpad = (
   mappingObject: SdlButtonMapping,
   physicalGamepad: PhysicalGamepad,
   systemHasAnalogStick: boolean,
+  controller: Sdl.Controller.Device,
 ) => {
   log("debug", "mappingObject", mappingObject);
   if (mappingObject.dpup) {
-    if (isDpadHat(mappingObject, "dpup")) {
+    if (isDpadHat(mappingObject, "dpup") || isPs4Controller(controller)) {
       //     hat
       return [
         ...getVirtualGamepadButton(
@@ -199,6 +201,7 @@ export const getVirtualGamepad =
         mappingObject,
         physicalGamepad,
         systemHasAnalogStick,
+        sdlDevice,
       ),
 
       ...getVirtualGamepadButton(

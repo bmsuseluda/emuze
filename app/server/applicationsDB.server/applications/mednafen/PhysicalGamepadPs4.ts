@@ -2,10 +2,7 @@ import type {
   SdlButtonId,
   SdlButtonMapping,
 } from "../../../../types/gamepad.js";
-import {
-  createSdlMappingObject,
-  getButtonIndex,
-} from "../../../../types/gamepad.js";
+import { createSdlMappingObject } from "../../../../types/gamepad.js";
 import type { PhysicalGamepadInterface } from "./PhysicalGamepad.js";
 
 const sdlDinputButtonMapping = {
@@ -44,48 +41,26 @@ export class PhysicalGamepadPs4 implements PhysicalGamepadInterface {
   }
 
   private createDpadString = (
-    sdlButtonId: SdlButtonId,
-    dpadId: number,
+    sdlButtonId: keyof typeof sdlDinputButtonMapping,
     axisPositive: boolean,
-  ) => {
-    const buttonIndex = getButtonIndex(this.mappingObject, sdlButtonId);
-
-    if (buttonIndex) {
-      return `joystick ${this.deviceId} abs_${dpadId}${axisPositive ? "+" : "-"}`;
-    }
-
-    return null;
-  };
+  ) =>
+    `joystick ${this.deviceId} abs_${sdlDinputButtonMapping[sdlButtonId]}${axisPositive ? "+" : "-"}`;
 
   private createAbsString = (
     sdlButtonId: keyof typeof sdlDinputAxesMapping,
     axis: "+" | "-" | "-+",
-  ) => {
-    const buttonIndex = getButtonIndex(this.mappingObject, sdlButtonId);
-
-    if (buttonIndex) {
-      return `joystick ${this.deviceId} abs_${sdlDinputAxesMapping[sdlButtonId]}${axis}`;
-    }
-
-    return null;
-  };
+  ) =>
+    `joystick ${this.deviceId} abs_${sdlDinputAxesMapping[sdlButtonId]}${axis}`;
 
   private createButtonString = (
     sdlButtonId: keyof typeof sdlDinputButtonMapping,
-  ) => {
-    const buttonIndex = getButtonIndex(this.mappingObject, sdlButtonId);
+  ) =>
+    `joystick ${this.deviceId} button_${sdlDinputButtonMapping[sdlButtonId]}`;
 
-    if (buttonIndex) {
-      return `joystick ${this.deviceId} button_${sdlDinputButtonMapping[sdlButtonId]}`;
-    }
-
-    return null;
-  };
-
-  getDpadUp = () => this.createDpadString("dpup", 7, false);
-  getDpadDown = () => this.createDpadString("dpdown", 7, true);
-  getDpadLeft = () => this.createDpadString("dpleft", 6, false);
-  getDpadRight = () => this.createDpadString("dpright", 6, true);
+  getDpadUp = () => this.createDpadString("dpup", false);
+  getDpadDown = () => this.createDpadString("dpdown", true);
+  getDpadLeft = () => this.createDpadString("dpleft", false);
+  getDpadRight = () => this.createDpadString("dpright", true);
   getA = () => this.createButtonString("a");
   getB = () => this.createButtonString("b");
   getX = () => this.createButtonString("x");
