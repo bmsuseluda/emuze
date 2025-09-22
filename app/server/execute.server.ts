@@ -242,7 +242,10 @@ export const startGame = async (
           : [];
 
       try {
-        if (isWindows() && generalData.applicationsPath) {
+        if (
+          isWindows() &&
+          (applicationData.bundledPathWindows || generalData.applicationsPath)
+        ) {
           if (applicationData.bundledPathWindows) {
             environmentVariables();
             await executeBundledApplication({
@@ -252,7 +255,7 @@ export const startGame = async (
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
             });
-          } else {
+          } else if (generalData.applicationsPath) {
             await executeApplicationOnWindows({
               applicationData,
               applicationsPath: generalData.applicationsPath,
