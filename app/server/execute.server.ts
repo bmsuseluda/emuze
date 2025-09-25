@@ -29,6 +29,11 @@ import {
 } from "./closeGame.server.js";
 import { setGameIsRunningChildProcess } from "./gameIsRunning.server.js";
 import { bundledEmulatorsPathBase } from "./bundledEmulatorsPath.server.js";
+import {
+  createEmuzeFolderIfNotExist,
+  syncFromEmulatorFolderToEmuzeFolder,
+  syncFromEmuzeFolderToEmulatorFolder,
+} from "./syncSettings.server.js";
 
 type ExecFileCallback = (
   error: ExecFileException | null,
@@ -215,8 +220,16 @@ export const startGame = async (
     );
 
     if (existsSync(absoluteEntryPath)) {
-      const { defineEnvironmentVariables, createOptionParams, flatpakId } =
-        applicationData;
+      const {
+        defineEnvironmentVariables,
+        createOptionParams,
+        flatpakId,
+        configFile,
+        id,
+        bundledPath,
+      } = applicationData;
+
+      createEmuzeFolderIfNotExist(id, configFile);
 
       const environmentVariables = (applicationPath?: string) => {
         if (defineEnvironmentVariables) {
@@ -241,21 +254,20 @@ export const startGame = async (
             })
           : [];
 
+      syncFromEmuzeFolderToEmulatorFolder(id, configFile);
+
       try {
-        if (
-          isWindows() &&
-          (applicationData.bundledPathWindows || generalData.applicationsPath)
-        ) {
-          if (applicationData.bundledPathWindows) {
-            environmentVariables();
-            await executeBundledApplication({
-              bundledPath: applicationData.bundledPathWindows,
-              absoluteEntryPath,
-              optionParams: optionParams(),
-              omitAbsoluteEntryPathAsLastParam:
-                applicationData.omitAbsoluteEntryPathAsLastParam,
-            });
-          } else if (generalData.applicationsPath) {
+        if (bundledPath) {
+          environmentVariables();
+          await executeBundledApplication({
+            bundledPath,
+            absoluteEntryPath,
+            optionParams: optionParams(),
+            omitAbsoluteEntryPathAsLastParam:
+              applicationData.omitAbsoluteEntryPathAsLastParam,
+          });
+        } else {
+          if (isWindows() && generalData.applicationsPath) {
             await executeApplicationOnWindows({
               applicationData,
               applicationsPath: generalData.applicationsPath,
@@ -265,18 +277,8 @@ export const startGame = async (
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
             });
-          }
-        } else {
-          environmentVariables();
-          if (applicationData.bundledPathLinux) {
-            await executeBundledApplication({
-              bundledPath: applicationData.bundledPathLinux,
-              absoluteEntryPath,
-              optionParams: optionParams(),
-              omitAbsoluteEntryPathAsLastParam:
-                applicationData.omitAbsoluteEntryPathAsLastParam,
-            });
           } else {
+            environmentVariables();
             await executeApplicationOnLinux({
               applicationFlatpakId: flatpakId,
               absoluteEntryPath,
@@ -289,6 +291,7 @@ export const startGame = async (
           }
         }
 
+        syncFromEmulatorFolderToEmuzeFolder(id, configFile);
         addToLastPlayedCached(parentEntryData || entryData, systemId);
       } catch (error) {
         log("error", "executeApplication", error);

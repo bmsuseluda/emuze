@@ -22,11 +22,9 @@ import { getPlayerIndexArray } from "../../../../types/gamepad.js";
 
 const flatpakId = "net.pcsx2.PCSX2";
 const applicationId: ApplicationId = "pcsx2";
-const bundledPathLinux = nodepath.join(
-  applicationId,
-  `${applicationId}.AppImage`,
-);
-const bundledPathWindows = nodepath.join(applicationId, "pcsx2-qt.exe");
+const bundledPath = isWindows()
+  ? nodepath.join(applicationId, "pcsx2-qt.exe")
+  : nodepath.join(applicationId, `${applicationId}.AppImage`);
 const configFileName = "PCSX2.ini";
 
 export const getVirtualGamepad =
@@ -239,6 +237,5 @@ export const pcsx2: Application = {
     }
     return optionParams;
   },
-  bundledPathLinux,
-  bundledPathWindows,
+  bundledPath,
 };

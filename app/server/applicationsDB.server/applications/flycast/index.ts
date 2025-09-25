@@ -21,16 +21,13 @@ import {
 } from "../../../../types/gamepad.js";
 import { isWindows } from "../../../operationsystem.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
+import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 
 const flatpakId = "org.flycast.Flycast";
 const applicationId: ApplicationId = "flycast";
-const bundledPathLinux = nodepath.join(
-  applicationId,
-  `${applicationId}.AppImage`,
-);
-const bundledPathWindows = nodepath.join(applicationId, "flycast.exe");
-
-const { config } = envPaths("flycast", { suffix: "" });
+const bundledPath = isWindows()
+  ? nodepath.join(applicationId, "flycast.exe")
+  : nodepath.join(applicationId, `${applicationId}.AppImage`);
 
 const flycastButtonIds = {
   leftStickUp: { id: "btn_analog_up", bindIndex: 13 },
@@ -50,21 +47,17 @@ const flycastButtonIds = {
   start: { id: "btn_start", bindIndex: 14 },
 } satisfies Partial<Record<EmuzeButtonId, { id: string; bindIndex: number }>>;
 
-const getWindowsConfigFolder = () =>
-  nodepath.join(bundledEmulatorsPathBase, applicationId);
-
 const keyboardConfigFileName = "SDL_Keyboard.cfg";
-export const getKeyboardConfigFilePath = () => {
-  if (isWindows()) {
-    return nodepath.join(
-      getWindowsConfigFolder(),
-      "mappings",
-      keyboardConfigFileName,
-    );
-  } else {
-    return nodepath.join(config, "mappings", keyboardConfigFileName);
-  }
-};
+const keyboardConfigPathRelative = nodepath.join(
+  "mappings",
+  keyboardConfigFileName,
+);
+export const getKeyboardConfigFilePath = () =>
+  nodepath.join(
+    emulatorsConfigDirectory,
+    applicationId,
+    keyboardConfigPathRelative,
+  );
 
 const readKeyboardConfigFile = (filePath: string) => {
   try {
@@ -138,11 +131,27 @@ const getJoystickBindIndices = () => {
   ]);
 };
 
+const getConfigFileBasePath = () => {
+  const windowsConfigFolder = nodepath.join(
+    bundledEmulatorsPathBase,
+    applicationId,
+  );
+  const { config } = envPaths("flycast", { suffix: "" });
+
+  return isWindows()
+    ? nodepath.join(windowsConfigFolder)
+    : nodepath.join(config);
+};
+
 export const flycast: Application = {
   id: applicationId,
   name: "Flycast",
   fileExtensions: [".cue", ".chd", ".gdi", ".cdi"],
   flatpakId,
+  configFile: {
+    basePath: getConfigFileBasePath(),
+    files: ["emu.cfg", keyboardConfigPathRelative],
+  },
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
@@ -170,6 +179,5 @@ export const flycast: Application = {
     }
     return optionParams;
   },
-  bundledPathLinux,
-  bundledPathWindows,
+  bundledPath,
 };

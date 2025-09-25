@@ -5,7 +5,7 @@ import type {
 import { getMappedGamepads } from "./initGamepadIDs.js";
 import { log } from "../../../debug.server.js";
 import { VirtualGamepad } from "./VirtualGamepad.js";
-import { getKeyboardKey } from "./keyboardConfig.js";
+import { getKeyboardMapping } from "./keyboardConfig.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { getPhysicalGamepad } from "./getPhysicalGamepad.js";
 
@@ -53,24 +53,41 @@ export const getVirtualGamepadReset = (index: number) => {
 };
 
 export const getKeyboardPcEngine = () => {
-  const { createButtonMapping, disableButtonMapping } =
+  const { initialize, createButtonMapping, disableButtonMapping } =
     new VirtualGamepad<MednafenButtonIdPcEngine>(0, system);
   return [
-    ...createButtonMapping("up", getKeyboardKey("W"), getKeyboardKey("T")),
-    ...createButtonMapping("down", getKeyboardKey("S"), getKeyboardKey("G")),
-    ...createButtonMapping("left", getKeyboardKey("A"), getKeyboardKey("F")),
-    ...createButtonMapping("right", getKeyboardKey("D"), getKeyboardKey("H")),
-    ...createButtonMapping("i", getKeyboardKey("K")),
-    ...createButtonMapping("ii", getKeyboardKey("J")),
+    ...initialize(),
+    ...createButtonMapping(
+      "up",
+      getKeyboardMapping("dpadUp"),
+      getKeyboardMapping("leftStickUp"),
+    ),
+    ...createButtonMapping(
+      "down",
+      getKeyboardMapping("dpadDown"),
+      getKeyboardMapping("leftStickDown"),
+    ),
+    ...createButtonMapping(
+      "left",
+      getKeyboardMapping("dpadLeft"),
+      getKeyboardMapping("leftStickLeft"),
+    ),
+    ...createButtonMapping(
+      "right",
+      getKeyboardMapping("dpadRight"),
+      getKeyboardMapping("leftStickRight"),
+    ),
+    ...createButtonMapping("i", getKeyboardMapping("b")),
+    ...createButtonMapping("ii", getKeyboardMapping("a")),
     ...disableButtonMapping("iii"),
     ...disableButtonMapping("iv"),
     ...disableButtonMapping("v"),
     ...disableButtonMapping("vi"),
-    ...createButtonMapping("rapid_i", getKeyboardKey("I")),
-    ...createButtonMapping("rapid_ii", getKeyboardKey("U")),
+    ...createButtonMapping("rapid_i", getKeyboardMapping("y")),
+    ...createButtonMapping("rapid_ii", getKeyboardMapping("x")),
     ...disableButtonMapping("mode_select"),
-    ...createButtonMapping("select", getKeyboardKey("BACKSPACE")),
-    ...createButtonMapping("run", getKeyboardKey("RETURN")),
+    ...createButtonMapping("select", getKeyboardMapping("back")),
+    ...createButtonMapping("run", getKeyboardMapping("start")),
   ];
 };
 

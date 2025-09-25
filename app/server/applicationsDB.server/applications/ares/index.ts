@@ -25,13 +25,12 @@ import {
   isPs4Controller,
 } from "../../../../types/gamepad.js";
 import { getJoystickFromController } from "../../../gamepad.server.js";
+import { isWindows } from "../../../operationsystem.server.js";
 
 const applicationId: ApplicationId = "ares";
-const bundledPathLinux = nodepath.join(
-  applicationId,
-  `${applicationId}.AppImage`,
-);
-const bundledPathWindows = nodepath.join(applicationId, "ares.exe");
+const bundledPath = isWindows()
+  ? nodepath.join(applicationId, "ares.exe")
+  : nodepath.join(applicationId, `${applicationId}.AppImage`);
 
 const gamepadGroupId: Record<GamepadGroupId, number> = {
   Axis: 0,
@@ -173,7 +172,7 @@ const getIndexForDeviceId = (index: number) => `${index + 1}`;
  *
  * ? = 0x (is always the same)
  * deviceIndex = 1 (index + 1)
- * vendor = 28de (hex value, needs to be padded with "0" on start to 4 characters, to 3 characters if deviceIndex is set)
+ * vendor = 28de (hex value, needs to be padded with "0" on start to 4 characters)
  * product = 11ff (hex value, needs to be padded with "0" on start to 4 characters)
  */
 export const createDeviceId = (
@@ -181,7 +180,7 @@ export const createDeviceId = (
   index: number,
 ) => {
   const deviceIdIndex = getIndexForDeviceId(player || index);
-  return `0x${deviceIdIndex}${vendor?.toString(16).padStart(deviceIdIndex.length > 0 ? 4 : 3, "0")}${product?.toString(16).padStart(4, "0")}`;
+  return `0x${deviceIdIndex}${vendor?.toString(16).padStart(4, "0")}${product?.toString(16).padStart(4, "0")}`;
 };
 
 export const getVirtualGamepad =
@@ -365,8 +364,7 @@ export const ares: Application = {
   fileExtensions: [],
   flatpakId: "dev.ares.ares",
   createOptionParams: getSharedAresOptionParams,
-  bundledPathLinux,
-  bundledPathWindows,
+  bundledPath,
 };
 
 export const aresGameBoyColor: Application = {

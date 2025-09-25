@@ -19,33 +19,33 @@ import type { EmuzeButtonId } from "../../../../types/gamepad.js";
 import { keyboardMapping } from "../../../../types/gamepad.js";
 import { isWindows } from "../../../operationsystem.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
+import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 
 const flatpakId = "org.ppsspp.PPSSPP";
 const applicationId: ApplicationId = "ppsspp";
-const bundledPathLinux = nodepath.join(
-  applicationId,
-  `${applicationId}.AppImage`,
-);
-const getWindowsConfigFolder = () =>
-  nodepath.join(bundledEmulatorsPathBase, applicationId);
-const bundledPathWindows = nodepath.join(applicationId, "PPSSPPWindows64.exe");
-
-const { config } = envPaths("ppsspp", { suffix: "" });
+const bundledPath = isWindows()
+  ? nodepath.join(applicationId, "PPSSPPWindows64.exe")
+  : nodepath.join(applicationId, `${applicationId}.AppImage`);
 
 const ppssppConfigFileName = "ppsspp.ini";
-export const getPpssppConfigFilePath = () => {
-  if (isWindows()) {
-    return nodepath.join(
-      getWindowsConfigFolder(),
-      "memstick",
-      "PSP",
-      "SYSTEM",
-      ppssppConfigFileName,
-    );
-  } else {
-    return nodepath.join(config, "PSP", "SYSTEM", ppssppConfigFileName);
-  }
-};
+const ppssppConfigPathRelative = isWindows()
+  ? nodepath.join("memstick", "PSP", "SYSTEM", ppssppConfigFileName)
+  : nodepath.join("PSP", "SYSTEM", ppssppConfigFileName);
+
+const getConfigFilePath = (configFilePathRelative: string) =>
+  nodepath.join(
+    emulatorsConfigDirectory,
+    applicationId,
+    configFilePathRelative,
+  );
+export const getPpssppConfigFilePath = () =>
+  getConfigFilePath(ppssppConfigPathRelative);
+const controlsConfigFileName = "controls.ini";
+const controlsConfigPathRelative = isWindows()
+  ? nodepath.join("memstick", "PSP", "SYSTEM", controlsConfigFileName)
+  : nodepath.join("PSP", "SYSTEM", controlsConfigFileName);
+export const getControlsConfigFilePath = () =>
+  getConfigFilePath(controlsConfigPathRelative);
 
 const readPpssppConfigFile = (filePath: string) => {
   try {
@@ -269,21 +269,6 @@ const readControlsConfigFile = (filePath: string) => {
   }
 };
 
-const controlsConfigFileName = "controls.ini";
-export const getControlsConfigFilePath = () => {
-  if (isWindows()) {
-    return nodepath.join(
-      getWindowsConfigFolder(),
-      "memstick",
-      "PSP",
-      "SYSTEM",
-      controlsConfigFileName,
-    );
-  } else {
-    return nodepath.join(config, "PSP", "SYSTEM", controlsConfigFileName);
-  }
-};
-
 export const replaceControlsConfigFile = () => {
   const filePath = getControlsConfigFilePath();
   const fileContent = readControlsConfigFile(filePath);
@@ -298,11 +283,35 @@ export const replaceControlsConfigFile = () => {
   writeConfig(filePath, fileContentNew);
 };
 
+const getConfigFileBasePath = () => {
+  const windowsConfigFolder = nodepath.join(
+    bundledEmulatorsPathBase,
+    applicationId,
+  );
+  const { config } = envPaths("ppsspp", { suffix: "" });
+
+  return isWindows()
+    ? nodepath.join(windowsConfigFolder)
+    : nodepath.join(config);
+};
+
 export const ppsspp: Application = {
   id: applicationId,
   name: "PPSSPP",
   fileExtensions: [".chd", ".cso", ".iso"],
   flatpakId,
+  configFile: {
+    basePath: getConfigFileBasePath(),
+    files: [
+      // TODO: check if on windows it is always memstick folder
+      nodepath.join("PSP", "Cheats"),
+      nodepath.join("PSP", "GAME"),
+      nodepath.join("PSP", "PPSSPP_STATE"),
+      nodepath.join("PSP", "SAVEDATA"),
+      ppssppConfigPathRelative,
+      controlsConfigPathRelative,
+    ],
+  },
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
@@ -321,6 +330,5 @@ export const ppsspp: Application = {
     optionParams.push("--pause-menu-exit");
     return optionParams;
   },
-  bundledPathLinux,
-  bundledPathWindows,
+  bundledPath,
 };

@@ -19,14 +19,14 @@ import {
   getPlayerIndexArray,
   isGamecubeController,
 } from "../../../../types/gamepad.js";
+import { isWindows } from "../../../operationsystem.server.js";
 
 const applicationId: ApplicationId = "ryujinx";
 const flatpakId = "org.ryujinx.Ryujinx";
-const bundledPathLinux = nodepath.join(
-  applicationId,
-  `${applicationId}.AppImage`,
-);
-const bundledPathWindows = nodepath.join(applicationId, "Ryujinx.exe");
+const bundledPath = isWindows()
+  ? nodepath.join(applicationId, "Ryujinx.exe")
+  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
 const configFolderPath = nodepath.join(emulatorsConfigDirectory, applicationId);
 const configFileName = "Config.json";
 const configFilePath = nodepath.join(configFolderPath, configFileName);
@@ -245,6 +245,5 @@ export const ryujinx: Application = {
   },
   excludeFiles,
   findEntryName,
-  bundledPathLinux,
-  bundledPathWindows,
+  bundledPath,
 };

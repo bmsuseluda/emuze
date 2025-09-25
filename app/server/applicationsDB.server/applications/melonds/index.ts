@@ -31,11 +31,9 @@ import { replaceKeyboardConfig } from "./keyboardConfig.js";
 
 const flatpakId = "net.kuribo64.melonDS";
 const applicationId: ApplicationId = "melonds";
-const bundledPathLinux = nodepath.join(
-  applicationId,
-  `melonDS-x86_64.AppImage`,
-);
-const bundledPathWindows = nodepath.join(applicationId, "melonDS.exe");
+const bundledPath = isWindows()
+  ? nodepath.join(applicationId, "melonDS.exe")
+  : nodepath.join(applicationId, "melonDS-x86_64.AppImage");
 
 const { config } = envPaths("melonDS", { suffix: "" });
 
@@ -203,6 +201,5 @@ export const melonds: Application = {
     }
     return optionParams;
   },
-  bundledPathLinux,
-  bundledPathWindows,
+  bundledPath,
 };

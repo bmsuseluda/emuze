@@ -18,6 +18,7 @@ import { moveSync } from "fs-extra/esm";
 
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
+import { isWindows } from "../app/server/operationsystem.server.js";
 
 const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 
@@ -107,12 +108,8 @@ const makeFileExecutableLinux = (filePath: string) => {
   }
 };
 
-const downloadEmulator = (
-  emulatorId: ApplicationId,
-  downloadLink: string,
-  os: OperatingSystem,
-) => {
-  const bundledPathRelative = applications[emulatorId][`bundledPath${os}`]!;
+const downloadEmulator = (emulatorId: ApplicationId, downloadLink: string) => {
+  const bundledPathRelative = applications[emulatorId].bundledPath!;
   const bundledPath = join(emulatorsFolderPath, bundledPathRelative);
   const bundledPathExists = existsSync(bundledPath);
 
@@ -134,9 +131,12 @@ const downloadEmulator = (
   }
 };
 
-export const downloadEmulators = (os: OperatingSystem) => {
+export const downloadEmulators = () => {
   Object.entries(emulatorDownloads).forEach(([emulatorId, downloadLink]) => {
-    downloadEmulator(emulatorId as ApplicationId, downloadLink[os], os);
+    downloadEmulator(
+      emulatorId as ApplicationId,
+      downloadLink[isWindows() ? "Windows" : "Linux"],
+    );
   });
 };
 
@@ -306,3 +306,5 @@ const downloadAndExtract = (
       process.exit(1);
     });
 };
+
+downloadEmulators();

@@ -23,11 +23,9 @@ import type { AzaharButtonId } from "./types.js";
 
 const flatpakId = "io.github.lime3ds.Lime3DS";
 const applicationId: ApplicationId = "azahar";
-const bundledPathLinux = nodepath.join(
-  applicationId,
-  `${applicationId}.AppImage`,
-);
-const bundledPathWindows = nodepath.join(applicationId, "azahar.exe");
+const bundledPath = isWindows()
+  ? nodepath.join(applicationId, "azahar.exe")
+  : nodepath.join(applicationId, `${applicationId}.AppImage`);
 
 const configFileName = "qt-config.ini";
 
@@ -219,6 +217,5 @@ export const azahar: Application = {
     }
     return optionParams;
   },
-  bundledPathLinux,
-  bundledPathWindows,
+  bundledPath,
 };

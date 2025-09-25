@@ -24,11 +24,9 @@ import { isWindows } from "../../../operationsystem.server.js";
 
 const flatpakId = "app.xemu.xemu";
 const applicationId: ApplicationId = "xemu";
-const bundledPathLinux = nodepath.join(
-  applicationId,
-  `${applicationId}.AppImage`,
-);
-const bundledPathWindows = nodepath.join(applicationId, "xemu.exe");
+const bundledPath = isWindows()
+  ? nodepath.join(applicationId, "xemu.exe")
+  : nodepath.join(applicationId, `${applicationId}.AppImage`);
 
 const { data } = envPaths("xemu", { suffix: "" });
 
@@ -187,6 +185,5 @@ export const xemu: Application = {
     optionParams.push(...["-dvd_path", absoluteEntryPath]);
     return optionParams;
   },
-  bundledPathLinux,
-  bundledPathWindows,
+  bundledPath,
 };

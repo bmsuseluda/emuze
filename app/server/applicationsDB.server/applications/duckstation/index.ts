@@ -22,14 +22,9 @@ import { getPlayerIndexArray } from "../../../../types/gamepad.js";
 
 const flatpakId = "org.duckstation.DuckStation";
 const applicationId: ApplicationId = "duckstation";
-const bundledPathLinux = nodepath.join(
-  applicationId,
-  `${applicationId}.AppImage`,
-);
-const bundledPathWindows = nodepath.join(
-  applicationId,
-  "duckstation-qt-x64-ReleaseLTCG.exe",
-);
+const bundledPath = isWindows()
+  ? nodepath.join(applicationId, "duckstation-qt-x64-ReleaseLTCG.exe")
+  : nodepath.join(applicationId, `${applicationId}.AppImage`);
 const configFileName = "settings.ini";
 
 export const getVirtualGamepad =
@@ -233,6 +228,5 @@ export const duckstation: Application = {
     }
     return optionParams;
   },
-  bundledPathLinux,
-  bundledPathWindows,
+  bundledPath,
 };

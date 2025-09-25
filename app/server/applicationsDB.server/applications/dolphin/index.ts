@@ -29,11 +29,10 @@ import type { DolphinButtonId } from "./types.js";
 
 const flatpakId = "org.DolphinEmu.dolphin-emu";
 const applicationId: ApplicationId = "dolphin";
-const bundledPathLinux = nodepath.join(
-  applicationId,
-  `${applicationId}.AppImage`,
-);
-const bundledPathWindows = nodepath.join(applicationId, "Dolphin.exe");
+const bundledPath = isWindows()
+  ? nodepath.join(applicationId, "Dolphin.exe")
+  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
 const configFolderPath = nodepath.join(emulatorsConfigDirectory, applicationId);
 const dolphinConfigFileName = nodepath.join(
   configFolderPath,
@@ -254,6 +253,5 @@ export const dolphin: Application = {
 
     return optionParams;
   },
-  bundledPathLinux,
-  bundledPathWindows,
+  bundledPath,
 };

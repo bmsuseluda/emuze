@@ -1,5 +1,6 @@
 import nodepath from "node:path";
 import {
+  cpSync,
   existsSync,
   mkdirSync,
   readdirSync,
@@ -100,4 +101,15 @@ export const removeFile = (path: string) => {
 export const removeFileHome = (path: string) => {
   const pathInHome = nodepath.join(homeDirectory, path);
   removeFile(pathInHome);
+};
+
+export const copy = (source: string, destination: string) => {
+  if (existsSync(source)) {
+    rmSync(destination, { recursive: true, force: true });
+    cpSync(source, destination, {
+      recursive: true,
+      force: true,
+      preserveTimestamps: true,
+    });
+  }
 };
