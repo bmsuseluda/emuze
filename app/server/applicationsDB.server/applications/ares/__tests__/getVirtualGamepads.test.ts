@@ -1,9 +1,9 @@
-import { createDeviceId, getVirtualGamepad } from "./index.js";
+import { createDeviceId, getVirtualGamepad } from "../getVirtualGamepads.js";
 import {
   gamepadPs3,
   gamepadPs4,
   steamDeck,
-} from "../../../../types/gamepad.js";
+} from "../../../../../types/gamepad.js";
 
 vi.mock("@kmamal/sdl");
 
