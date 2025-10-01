@@ -49,14 +49,17 @@ const getSharedMednafenOptionParams: OptionParamFunction = ({
   ];
 };
 
+const getConfigFileBasePath = () =>
+  isWindows()
+    ? nodepath.join(bundledEmulatorsPathBase, applicationId)
+    : nodepath.join(homedir(), `.${applicationId}`);
+
 export const mednafen: Application = {
   id: applicationId,
   name: "Mednafen",
   fileExtensions: [".cue", ".zip"],
   configFile: {
-    basePath: isWindows()
-      ? nodepath.join(bundledEmulatorsPathBase, applicationId)
-      : nodepath.join(homedir(), `.${applicationId}`),
+    basePath: getConfigFileBasePath(),
     files: ["mednafen.cfg", "cheats", "firmware", "sav"],
   },
   flatpakId,

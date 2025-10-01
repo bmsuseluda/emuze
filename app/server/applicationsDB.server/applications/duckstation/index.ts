@@ -1,7 +1,4 @@
 import type { Application } from "../../types.js";
-import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
-import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { log } from "../../../debug.server.js";
 import fs from "node:fs";
 import { EOL, homedir } from "node:os";
@@ -16,79 +13,17 @@ import {
 import nodepath from "node:path";
 import { defaultSettings } from "./defaultSettings.js";
 import type { ApplicationId } from "../../applicationId.js";
-import { keyboardConfig } from "./keyboardConfig.js";
 import { envPaths } from "../../../envPaths.server.js";
-import { getPlayerIndexArray } from "../../../../types/gamepad.js";
+import { getVirtualGamepads } from "./getVirtualGamepads.js";
+import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 
 const flatpakId = "org.duckstation.DuckStation";
 const applicationId: ApplicationId = "duckstation";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "duckstation-qt-x64-ReleaseLTCG.exe")
   : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
 const configFileName = "settings.ini";
-
-export const getVirtualGamepad =
-  (playerIndexArray: number[]) =>
-  (sdlDevice: Sdl.Joystick.Device, sdlIndex: number) => {
-    log("debug", "gamepad", { sdlIndex, sdlDevice });
-
-    return [
-      `[Pad${playerIndexArray[sdlIndex] + 1}]`,
-      `Type = AnalogController`,
-      `Up = SDL-${sdlIndex}/DPadUp`,
-      `Right = SDL-${sdlIndex}/DPadRight`,
-      `Down = SDL-${sdlIndex}/DPadDown`,
-      `Left = SDL-${sdlIndex}/DPadLeft`,
-      `Triangle = SDL-${sdlIndex}/Y`,
-      `Circle = SDL-${sdlIndex}/B`,
-      `Cross = SDL-${sdlIndex}/A`,
-      `Square = SDL-${sdlIndex}/X`,
-      `Select = SDL-${sdlIndex}/Back`,
-      `Start = SDL-${sdlIndex}/Start`,
-      `L1 = SDL-${sdlIndex}/LeftShoulder`,
-      `R1 = SDL-${sdlIndex}/RightShoulder`,
-      `L2 = SDL-${sdlIndex}/+LeftTrigger`,
-      `R2 = SDL-${sdlIndex}/+RightTrigger`,
-      `L3 = SDL-${sdlIndex}/LeftStick`,
-      `R3 = SDL-${sdlIndex}/RightStick`,
-      `LLeft = SDL-${sdlIndex}/-LeftX`,
-      `LRight = SDL-${sdlIndex}/+LeftX`,
-      `LDown = SDL-${sdlIndex}/+LeftY`,
-      `LUp = SDL-${sdlIndex}/-LeftY`,
-      `RLeft = SDL-${sdlIndex}/-RightX`,
-      `RRight = SDL-${sdlIndex}/+RightX`,
-      `RDown = SDL-${sdlIndex}/+RightY`,
-      `RUp = SDL-${sdlIndex}/-RightY`,
-      `Analog = SDL-${sdlIndex}/Guide`,
-      `SmallMotor = SDL-${sdlIndex}/SmallMotor`,
-      `LargeMotor = SDL-${sdlIndex}/LargeMotor`,
-      "",
-      "",
-      "",
-    ].join(EOL);
-  };
-
-const getVirtualGamepadReset = (gamepadIndex: number) =>
-  [`[Pad${gamepadIndex + 1}]`, "Type = None", "", "", ""].join(EOL);
-
-export const getVirtualGamepads = () => {
-  const gamepads = sdl.joystick.devices;
-  const playerIndexArray = getPlayerIndexArray(gamepads);
-
-  const virtualGamepads =
-    gamepads.length > 0
-      ? gamepads.map(getVirtualGamepad(playerIndexArray))
-      : [keyboardConfig];
-
-  return [
-    ...virtualGamepads,
-    ...resetUnusedVirtualGamepads(
-      8,
-      virtualGamepads.length,
-      getVirtualGamepadReset,
-    ),
-  ];
-};
 
 export const replaceGamepadConfig: SectionReplacement = (sections) => {
   const virtualGamepads = getVirtualGamepads();
@@ -161,15 +96,8 @@ export const replaceControllerPortsConfig: SectionReplacement = (sections) =>
     { keyValue: "MultitapMode = Port1Only" },
   ]);
 
-const { data } = envPaths("duckstation", { suffix: "" });
-
-export const getConfigFilePath = (configFileName: string) => {
-  if (isWindows()) {
-    return nodepath.join(homedir(), "Documents", "DuckStation", configFileName);
-  } else {
-    return nodepath.join(data, configFileName);
-  }
-};
+const getConfigFilePath = () =>
+  nodepath.join(emulatorsConfigDirectory, applicationId, configFileName);
 
 const readConfigFile = (filePath: string) => {
   try {
@@ -186,7 +114,7 @@ const readConfigFile = (filePath: string) => {
 };
 
 export const replaceConfigSections = async (psxRomsPath: string) => {
-  const filePath = getConfigFilePath(configFileName);
+  const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
 
   const sections = splitConfigBySection(fileContent);
@@ -205,11 +133,32 @@ export const replaceConfigSections = async (psxRomsPath: string) => {
   writeConfig(filePath, fileContentNew);
 };
 
+const getConfigFileBasePath = () => {
+  if (isWindows()) {
+    return nodepath.join(homedir(), "Documents", "DuckStation");
+  } else {
+    const { data } = envPaths("duckstation", { suffix: "" });
+    return nodepath.join(data);
+  }
+};
+
 export const duckstation: Application = {
   id: applicationId,
   name: "DuckStation (Legacy)",
   fileExtensions: [".chd", ".cue"],
   flatpakId,
+  configFile: {
+    basePath: getConfigFileBasePath(),
+    files: [
+      configFileName,
+      "bios",
+      "cheats",
+      "gamesettings",
+      "inputprofiles",
+      "memcards",
+      "savstates",
+    ],
+  },
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
