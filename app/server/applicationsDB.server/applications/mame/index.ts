@@ -7,11 +7,13 @@ import { findGameNameById } from "../../nameMappings/findGameNameById.js";
 import mameGames from "./nameMapping/mame.json" with { type: "json" };
 import nodepath from "node:path";
 import type { ApplicationId } from "../../applicationId.js";
+import { isWindows } from "../../../operationsystem.server.js";
 
 const flatpakId = "org.mamedev.MAME";
 const applicationId: ApplicationId = "mame";
-const bundledPathLinux = nodepath.join(applicationId, `mame.AppImage`);
-const bundledPathWindows = nodepath.join(applicationId, "mame.exe");
+const bundledPath = isWindows()
+  ? nodepath.join(applicationId, "mame.exe")
+  : nodepath.join(applicationId, `${applicationId}.AppImage`);
 
 const findMameArcadeGameName: FindEntryNameFunction = ({ entry: { name } }) =>
   findGameNameById(name, mameGames, "mame");
@@ -47,8 +49,7 @@ export const mame: Application = {
   }),
   createOptionParams: getSharedMameOptionParams,
   findEntryName: findMameArcadeGameName,
-  bundledPathLinux,
-  bundledPathWindows,
+  bundledPath,
 };
 
 export const mameNeoGeo: Application = {

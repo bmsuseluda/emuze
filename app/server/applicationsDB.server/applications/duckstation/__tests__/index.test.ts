@@ -1,4 +1,4 @@
-import { splitConfigBySection } from "../../configFile.js";
+import { splitConfigBySection } from "../../../configFile.js";
 import {
   controllerPorts,
   getUnusedPad,
@@ -16,8 +16,8 @@ import {
   eightbitdo2Mapped,
   settings,
   settingsArray,
-} from "./__testData__/settings.js";
-import { replaceGamepadConfig, replaceHotkeyConfig } from "./index.js";
+} from "../__testData__/settings.js";
+import { replaceGamepadConfig, replaceHotkeyConfig } from "../index.js";
 
 vi.mock("@kmamal/sdl");
 

@@ -1,101 +1,26 @@
-import type {
-  Application,
-  ExcludeFilesFunction,
-  FindEntryNameFunction,
-} from "../../types.js";
+import type { Application } from "../../types.js";
 import nodepath from "node:path";
 import { writeConfig } from "../../configFile.js";
 import fs from "node:fs";
 import { log } from "../../../debug.server.js";
-import type { Config, InputConfig } from "./config.js";
-import { defaultConfig, defaultInputConfig } from "./config.js";
-import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
+import type { Config } from "./config.js";
+import { defaultConfig } from "./config.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
-import { keyboardConfig } from "./keyboardConfig.js";
 import type { ApplicationId } from "../../applicationId.js";
-import {
-  getNameIndex,
-  getPlayerIndexArray,
-  isGamecubeController,
-} from "../../../../types/gamepad.js";
+import { isWindows } from "../../../operationsystem.server.js";
+import { findEntryName } from "./findEntryName.js";
+import { excludeFiles } from "./excludeFiles.js";
+import { getVirtualGamepads } from "./getVirtualGamepads.js";
 
 const applicationId: ApplicationId = "ryujinx";
 const flatpakId = "org.ryujinx.Ryujinx";
-const bundledPathLinux = nodepath.join(
-  applicationId,
-  `${applicationId}.AppImage`,
-);
-const bundledPathWindows = nodepath.join(applicationId, "Ryujinx.exe");
+const bundledPath = isWindows()
+  ? nodepath.join(applicationId, "Ryujinx.exe")
+  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
 const configFolderPath = nodepath.join(emulatorsConfigDirectory, applicationId);
 const configFileName = "Config.json";
 const configFilePath = nodepath.join(configFolderPath, configFileName);
-
-/**
- * Excludes
- * - Updates
- * - DLCs
- * - digital files if physical files exist
- */
-export const excludeFiles: ExcludeFilesFunction = (filePaths) =>
-  filePaths.filter(
-    (filePath) =>
-      filePath.includes("[UPD]") ||
-      filePath.includes("[DLC]") ||
-      (filePath.includes("[BASE]") &&
-        !!filePaths.find(
-          (otheFilePath) =>
-            otheFilePath.startsWith(
-              filePath.split("[")[0].replace(versionNumberRegExp, "").trim(),
-            ) && otheFilePath.endsWith(".xci"),
-        )),
-  );
-
-const versionNumberRegExp = /\d{1,3}(\.\d{1,10}){1,2}/;
-
-const stringsToReplace: {
-  stringToReplace: string | RegExp;
-  replaceWith: string;
-}[] = [
-  { stringToReplace: "ACA NEOGEO", replaceWith: "ACA NEO GEO -" },
-  { stringToReplace: "Arcade Archives", replaceWith: "Arcade Archives -" },
-  {
-    stringToReplace: "Johnny Turbo's Arcade",
-    replaceWith: "Johnny Turbo's Arcade -",
-  },
-  {
-    stringToReplace: "Bad Dudes",
-    replaceWith: "Johnny Turbo's Arcade - Bad Dudes",
-  },
-  {
-    stringToReplace: "SEGA AGES",
-    replaceWith: "SEGA AGES -",
-  },
-  {
-    stringToReplace: "SUPERBEAT XONiC EX",
-    replaceWith: "SUPERBEAT - XONiC EX",
-  },
-  {
-    stringToReplace: "Picross S MEGA DRIVE",
-    replaceWith: "Picross S: Mega Drive",
-  },
-  { stringToReplace: versionNumberRegExp, replaceWith: "" },
-];
-
-/**
- * Normalize the name from filename.
- * - Removes Brackets []
- * - Removes Version numbers
- */
-export const findEntryName: FindEntryNameFunction = ({ entry }) =>
-  stringsToReplace
-    .reduce(
-      (name, { stringToReplace, replaceWith }) =>
-        name.replace(stringToReplace, replaceWith),
-      entry.name,
-    )
-    .split("[")[0]
-    .trim();
 
 const readConfigFile = (filePath: string) => {
   try {
@@ -111,96 +36,9 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
-const splitStringByIndices = (str: string, indices: number[]): string[] => {
-  const result: string[] = [];
-  let start = 0;
-
-  indices.forEach((index) => {
-    result.push(str.slice(start, index));
-    start = index;
-  });
-
-  result.push(str.slice(start));
-  return result;
-};
-
-export const getControllerIdWithIndex = (
-  controllerIds: { name: string }[],
-  controllerIdWithoutIndex: string,
-) => {
-  const controllerIdIndex = getNameIndex(
-    controllerIdWithoutIndex,
-    controllerIds.length,
-    controllerIds,
-  );
-  const controllerId = `${controllerIdIndex}-${controllerIdWithoutIndex}`;
-
-  controllerIds.push({ name: controllerIdWithoutIndex });
-
-  return controllerId;
-};
-
-export const createControllerId = (
-  controllerIds: { name: string }[],
-  sdlGuid: string,
-) => {
-  const mapping = splitStringByIndices(sdlGuid, [2, 4, 6, 8, 10, 12, 16, 20]);
-  const controllerIdWithoutIndex = `${mapping[0].padStart(8, "0")}-${mapping[5]}${mapping[4]}-${mapping[6]}-${mapping[7]}-${mapping[8]}`;
-  return getControllerIdWithIndex(controllerIds, controllerIdWithoutIndex);
-};
-
-/**
- * TODO: Check joycons
- */
-const createControllerType = () => {
-  return "ProController";
-};
-
-const createDeviceSpecificInputConfig = (controllerName: string) => {
-  if (isGamecubeController(controllerName)) {
-    return {
-      ...defaultInputConfig,
-      right_joycon: {
-        ...defaultInputConfig.right_joycon,
-        button_x: "X",
-        button_b: "B",
-        button_y: "Y",
-        button_a: "A",
-      },
-    };
-  }
-
-  return defaultInputConfig;
-};
-
-const createInputConfig =
-  (controllerIds: { name: string }[], playerIndexArray: number[]) =>
-  (controller: Sdl.Joystick.Device, index: number): InputConfig => {
-    log("debug", "gamepad", {
-      index,
-      controller,
-    });
-
-    const gamepadId = createControllerId(controllerIds, controller.guid!);
-
-    return {
-      ...createDeviceSpecificInputConfig(controller.name!),
-      id: gamepadId,
-      controller_type: createControllerType(),
-      player_index: `Player${playerIndexArray[index] + 1}`,
-    };
-  };
-
 const replaceConfig = (switchRomsPath: string) => {
-  const controllerIds: { name: string }[] = [];
-  const gamepads = sdl.joystick.devices;
-  const playerIndexArray = getPlayerIndexArray(gamepads);
-  const inputConfigs =
-    gamepads.length > 0
-      ? gamepads.map(createInputConfig(controllerIds, playerIndexArray))
-      : [keyboardConfig];
-
   const oldConfig = readConfigFile(configFilePath);
+  const virtualGamepads = getVirtualGamepads();
 
   const newConfig: Config = {
     ...oldConfig,
@@ -215,7 +53,7 @@ const replaceConfig = (switchRomsPath: string) => {
     },
     game_dirs: [switchRomsPath],
     autoload_dirs: [switchRomsPath],
-    input_config: inputConfigs,
+    input_config: virtualGamepads,
   };
   writeConfig(configFilePath, JSON.stringify(newConfig));
 };
@@ -245,6 +83,5 @@ export const ryujinx: Application = {
   },
   excludeFiles,
   findEntryName,
-  bundledPathLinux,
-  bundledPathWindows,
+  bundledPath,
 };

@@ -195,10 +195,20 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
         typeof applicationsPath === "string" ? applicationsPath : undefined,
       );
       if (newApplicationsPath) {
-        return {
+        const errors: Errors = {};
+        validateCategoriesPath(errors, newApplicationsPath);
+        if (Object.keys(errors).length > 0) {
+          return { errors };
+        }
+
+        const fields: General = {
           applicationsPath: newApplicationsPath,
           categoriesPath,
         };
+
+        writeGeneral(fields);
+
+        return fields;
       }
     }
 

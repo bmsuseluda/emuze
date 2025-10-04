@@ -1,6 +1,20 @@
-import { eightBitDoPro2, steamDeck } from "../../../../../types/gamepad.js";
-import type { MappedGamepad, MednafenGamepadID } from "../initGamepadIDs.js";
-import { extractGamepadIDs, getMappedGamepad } from "../initGamepadIDs.js";
+import { devices } from "../../../../../../__mocks__/@kmamal/sdl.js";
+import {
+  eightBitDoPro2,
+  gamepadPs4,
+  steamDeck,
+} from "../../../../../types/gamepad.js";
+import * as mednafenGamepadTestData from "./testData.js";
+import type {
+  MappedGamepad,
+  MappedGamepadWithPlayerIndex,
+  MednafenGamepadID,
+} from "../initGamepadIDs.js";
+import {
+  extractGamepadIDs,
+  getMappedGamepad,
+  getMappedGamepads,
+} from "../initGamepadIDs.js";
 
 vi.mock("@kmamal/sdl");
 vi.mock("node-hid");
@@ -42,7 +56,7 @@ describe("initGamepadIDs", () => {
         name: "8BitDo Pro 2",
         nameIndex: 0,
       };
-      const result = getMappedGamepad(mednafenGamepadId);
+      const result = getMappedGamepad(mednafenGamepadId, [...devices]);
 
       const expected: MappedGamepad = {
         sdlController: eightBitDoPro2,
@@ -58,7 +72,7 @@ describe("initGamepadIDs", () => {
         name: "Microsoft X-Box 360 pad 0",
         nameIndex: 0,
       };
-      const result = getMappedGamepad(mednafenGamepadId);
+      const result = getMappedGamepad(mednafenGamepadId, [...devices]);
 
       const expected: MappedGamepad = {
         sdlController: steamDeck,
@@ -67,19 +81,70 @@ describe("initGamepadIDs", () => {
 
       expect(result).toStrictEqual(expected);
     });
+  });
 
-    it("Should return the appropriate sdl device if there are multiple one of the same type", () => {
-      const mednafenGamepadId: MednafenGamepadID = {
-        id: "0x0005045e02e009030008000a00000001",
-        name: "8BitDo Pro 2 2",
-        nameIndex: 1,
-      };
-      const result = getMappedGamepad(mednafenGamepadId);
+  describe("getMappedGamepads", () => {
+    it("Should map the gamepads", () => {
+      const mednafenGamepadIds: MednafenGamepadID[] = [
+        mednafenGamepadTestData.steamDeck,
+        mednafenGamepadTestData.eightBitDoPro2,
+        mednafenGamepadTestData.eightBitDoPro2SecondDevice,
+      ];
+      const result = getMappedGamepads(mednafenGamepadIds);
 
-      const expected: MappedGamepad = {
-        sdlController: { ...eightBitDoPro2, id: 3 },
-        mednafenGamepadId,
-      };
+      const expected: MappedGamepadWithPlayerIndex[] = [
+        {
+          sdlController: steamDeck,
+          mednafenGamepadId: mednafenGamepadTestData.steamDeck,
+          playerIndex: 2,
+        },
+        {
+          sdlController: eightBitDoPro2,
+          mednafenGamepadId: mednafenGamepadTestData.eightBitDoPro2,
+          playerIndex: 0,
+        },
+        {
+          sdlController: { ...eightBitDoPro2, id: 3 },
+          mednafenGamepadId: mednafenGamepadTestData.eightBitDoPro2SecondDevice,
+          playerIndex: 1,
+        },
+      ];
+
+      expect(result).toStrictEqual(expected);
+    });
+
+    it("Should map the gamepads with steam input", () => {
+      const mednafenGamepadIds: MednafenGamepadID[] = [
+        mednafenGamepadTestData.steamDeck,
+        mednafenGamepadTestData.gamepadPs4,
+        mednafenGamepadTestData.eightBitDoPro2,
+        mednafenGamepadTestData.steamDeckSteamInputCopy,
+        mednafenGamepadTestData.eightBitDoPro2SecondDevice,
+      ];
+      const result = getMappedGamepads(mednafenGamepadIds);
+
+      const expected: MappedGamepadWithPlayerIndex[] = [
+        {
+          sdlController: steamDeck,
+          mednafenGamepadId: mednafenGamepadTestData.steamDeck,
+          playerIndex: 3,
+        },
+        {
+          sdlController: eightBitDoPro2,
+          mednafenGamepadId: mednafenGamepadTestData.steamDeckSteamInputCopy,
+          playerIndex: 0,
+        },
+        {
+          sdlController: gamepadPs4,
+          mednafenGamepadId: mednafenGamepadTestData.gamepadPs4,
+          playerIndex: 1,
+        },
+        {
+          sdlController: { ...eightBitDoPro2, id: 3 },
+          mednafenGamepadId: mednafenGamepadTestData.eightBitDoPro2,
+          playerIndex: 2,
+        },
+      ];
 
       expect(result).toStrictEqual(expected);
     });

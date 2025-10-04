@@ -4,15 +4,11 @@ import nodepath from "node:path";
 import { getVirtualGamepadsSaturn } from "./VirtualGamepadSaturn.js";
 import { getVirtualGamepadsPcEngine } from "./VirtualGamepadPcEngine.js";
 import { getKeyboardKey } from "./keyboardConfig.js";
-import {
-  applicationId,
-  bundledPathLinux,
-  bundledPathWindows,
-  flatpakId,
-} from "./definitions.js";
+import { applicationId, bundledPath, flatpakId } from "./definitions.js";
 import { log } from "../../../debug.server.js";
 import { getGamepads } from "./initGamepadIDs.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
+import { homedir } from "node:os";
 
 const getSharedMednafenOptionParams: OptionParamFunction = ({
   settings: {
@@ -53,10 +49,19 @@ const getSharedMednafenOptionParams: OptionParamFunction = ({
   ];
 };
 
+const getConfigFileBasePath = () =>
+  isWindows()
+    ? nodepath.join(bundledEmulatorsPathBase, applicationId)
+    : nodepath.join(homedir(), `.${applicationId}`);
+
 export const mednafen: Application = {
   id: applicationId,
   name: "Mednafen",
   fileExtensions: [".cue", ".zip"],
+  configFile: {
+    basePath: getConfigFileBasePath(),
+    files: ["mednafen.cfg", "cheats", "firmware", "sav"],
+  },
   flatpakId,
   defineEnvironmentVariables: () => {
     const environmentVariables: Record<string, string> = {
@@ -65,15 +70,14 @@ export const mednafen: Application = {
 
     if (isWindows()) {
       environmentVariables.MEDNAFEN_HOME = nodepath.dirname(
-        nodepath.join(bundledEmulatorsPathBase, bundledPathWindows),
+        nodepath.join(bundledEmulatorsPathBase, bundledPath),
       );
       environmentVariables.MEDNAFEN_NOPOPUPS = "1";
     }
     return environmentVariables;
   },
   createOptionParams: getSharedMednafenOptionParams,
-  bundledPathLinux,
-  bundledPathWindows,
+  bundledPath,
 };
 
 export const mednafenSaturn: Application = {

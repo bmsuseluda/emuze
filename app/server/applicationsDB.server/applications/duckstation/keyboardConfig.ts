@@ -1,30 +1,78 @@
-export const keyboardConfig = `[Pad1]
-Type = AnalogController
-Up = Keyboard/T
-Left = Keyboard/F
-Right = Keyboard/H
-Down = Keyboard/G
-LUp = Keyboard/W
-LLeft = Keyboard/A
-LRight = Keyboard/D
-LDown = Keyboard/S
-Cross = Keyboard/J
-Circle = Keyboard/K
-Square = Keyboard/U
-Triangle = Keyboard/I
-L2 = Keyboard/8
-R2 = Keyboard/9
-L1 = Keyboard/L
-R1 = Keyboard/O
-Select = Keyboard/Backspace
-Start = Keyboard/Return
-L3 = Keyboard/X
-R3 = Keyboard/Shift
-RUp = Keyboard/Up
-RLeft = Keyboard/Left
-RRight = Keyboard/Right
-RDown = Keyboard/Down
-Analog = Keyboard/Q
+import { EOL } from "node:os";
+import {
+  keyboardMapping,
+  type EmuzeButtonId,
+} from "../../../../types/gamepad.js";
+import type { DuckStationButtonId } from "./types.js";
+import type { Sdl } from "@kmamal/sdl";
 
+export const scancodes = {
+  T: "T",
+  G: "G",
+  F: "F",
+  H: "H",
+  BACKSPACE: "Backspace",
+  RETURN: "Return",
+  J: "J",
+  K: "K",
+  U: "U",
+  I: "I",
+  L: "L",
+  O: "O",
+  "8": "8",
+  "9": "9",
+  X: "X",
+  Y: "Y",
+  P: "P",
+  E: "E",
+  V: "V",
+  RSHIFT: "Shift",
+  W: "W",
+  A: "A",
+  S: "S",
+  D: "D",
+  UP: "Up",
+  DOWN: "Down",
+  LEFT: "Left",
+  RIGHT: "Right",
+} satisfies Partial<Record<Sdl.Keyboard.ScancodeNames, string>>;
 
-`;
+const duckstationButtonIds = {
+  dpadUp: "Up",
+  dpadDown: "Down",
+  dpadLeft: "Left",
+  dpadRight: "Right",
+  leftStickUp: "LUp",
+  leftStickDown: "LDown",
+  leftStickLeft: "LLeft",
+  leftStickRight: "LRight",
+  a: "Cross",
+  b: "Circle",
+  x: "Square",
+  y: "Triangle",
+  leftShoulder: "L1",
+  rightShoulder: "R1",
+  leftTrigger: "L2",
+  rightTrigger: "R2",
+  back: "Select",
+  start: "Start",
+  leftStick: "L3",
+  rightStick: "R3",
+  rightStickUp: "RUp",
+  rightStickDown: "RDown",
+  rightStickLeft: "RLeft",
+  rightStickRight: "RRight",
+} satisfies Record<EmuzeButtonId, DuckStationButtonId>;
+
+export const keyboardConfig = [
+  "[Pad1]",
+  "Type = AnalogController",
+  ...Object.entries(duckstationButtonIds).map(
+    ([sdlButtonId, duckstationButtonId]) =>
+      `${duckstationButtonId} = Keyboard/${scancodes[keyboardMapping[sdlButtonId as EmuzeButtonId]]}`,
+  ),
+  "Analog = Keyboard/Q",
+  "",
+  "",
+  "",
+].join(EOL);

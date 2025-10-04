@@ -3,8 +3,11 @@ import type { MednafenGamepadID } from "./initGamepadIDs.js";
 import { isWindows } from "../../../operationsystem.server.js";
 import { PhysicalGamepadXinput } from "./PhysicalGamepadXinput.js";
 import { PhysicalGamepadSdl } from "./PhysicalGamepadSdl.js";
+import {
+  isPs4Controller,
+  isXinputController,
+} from "../../../../types/gamepad.js";
 import { PhysicalGamepadPs4 } from "./PhysicalGamepadPs4.js";
-import { isPs4Controller } from "../../../../types/gamepad.js";
 
 export const getPhysicalGamepad = (
   sdlGamepad: Sdl.Controller.Device,
@@ -15,7 +18,7 @@ export const getPhysicalGamepad = (
     return new PhysicalGamepadPs4(gamepadID.id, sdlGamepad.mapping!);
   }
 
-  if (isWindows()) {
+  if (isWindows() && isXinputController(sdlGamepad.type)) {
     return new PhysicalGamepadXinput(gamepadID.id, sdlGamepad.mapping!);
   }
 

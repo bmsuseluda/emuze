@@ -1,12 +1,10 @@
 import type { Application } from "../../types.js";
 import type { ApplicationId } from "../../applicationId.js";
 import nodepath from "node:path";
-import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
 import { log } from "../../../debug.server.js";
 import { EOL } from "node:os";
-import { getKeyboardDebugMapping, keyboardConfig } from "./keyboardConfig.js";
-import type { ParamToReplace, SectionReplacement } from "../../configFile.js";
+import { keyboardConfig } from "./keyboardConfig.js";
+import type { SectionReplacement } from "../../configFile.js";
 import {
   chainSectionReplacements,
   replaceSection,
@@ -17,105 +15,20 @@ import fs from "node:fs";
 import { defaultSettings } from "./defaultSettings.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { isWindows } from "../../../operationsystem.server.js";
-import { isSteamDeckController } from "../../../../types/gamepad.js";
 import { disableSetting, getSetting } from "./getSettings.js";
-import type { AzaharButtonId } from "./types.js";
+import { getGamepad, getVirtualGamepad } from "./getVirtualGamepad.js";
+import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 
 const flatpakId = "io.github.lime3ds.Lime3DS";
 const applicationId: ApplicationId = "azahar";
-const bundledPathLinux = nodepath.join(
-  applicationId,
-  `${applicationId}.AppImage`,
-);
-const bundledPathWindows = nodepath.join(applicationId, "azahar.exe");
+const bundledPath = isWindows()
+  ? nodepath.join(applicationId, "azahar.exe")
+  : nodepath.join(applicationId, `${applicationId}.AppImage`);
 
 const configFileName = "qt-config.ini";
 
-const azaharButtonIds = {
-  button_a: 1,
-  button_b: 0,
-  button_x: 3,
-  button_y: 2,
-  button_l: 4,
-  button_r: 5,
-  button_select: 6,
-  button_start: 7,
-} satisfies Partial<Record<AzaharButtonId, number>>;
-
-const getGamepadButtonMapping = (
-  azaharButtonId: AzaharButtonId,
-  button: number,
-  guid: string,
-): ParamToReplace[] =>
-  getSetting(
-    `profiles\\1\\${azaharButtonId}`,
-    `button:${button},engine:sdl,guid:${guid},port:0`,
-  );
-
-const getGamepadDpadButtonMapping = (
-  direction: "up" | "down" | "left" | "right",
-  guid: string,
-): ParamToReplace[] =>
-  getSetting(
-    `profiles\\1\\button_${direction}`,
-    `direction:${direction},engine:sdl,guid:${guid},hat:0,port:0`,
-  );
-
-const getGamepadButtonMappings = (guid: string): ParamToReplace[] =>
-  Object.entries(azaharButtonIds).flatMap(([azaharButtonId, button]) =>
-    getGamepadButtonMapping(azaharButtonId as AzaharButtonId, button, guid),
-  );
-
-export const getVirtualGamepad = (
-  sdlDevice: Sdl.Joystick.Device,
-): ParamToReplace[] => {
-  log("debug", "gamepad", { sdlDevice });
-
-  const guid = sdlDevice.guid!;
-
-  return [
-    ...getSetting("profile", 0),
-    ...getGamepadButtonMappings(guid),
-    ...getGamepadDpadButtonMapping("up", guid),
-    ...getGamepadDpadButtonMapping("down", guid),
-    ...getGamepadDpadButtonMapping("left", guid),
-    ...getGamepadDpadButtonMapping("right", guid),
-    ...getSetting(
-      "profiles\\1\\button_zl",
-      `axis:2,engine:sdl,guid:${guid},port:0`,
-    ),
-    ...getSetting(
-      "profiles\\1\\button_zr",
-      `axis:5,engine:sdl,guid:${guid},port:0`,
-    ),
-    ...getSetting(
-      "profiles\\1\\circle_pad",
-      `axis_x:0,axis_y:1,deadzone:0.100000,engine:sdl,guid:${guid},port:0`,
-    ),
-    ...getSetting(
-      "profiles\\1\\c_stick",
-      `axis_x:3,axis_y:4,deadzone:0.100000,engine:sdl,guid:${guid},port:0`,
-    ),
-    ...getKeyboardDebugMapping(),
-  ];
-};
-
-const getGamepad = () => {
-  const gamepads = sdl.joystick.devices;
-
-  if (gamepads.length === 1) {
-    return gamepads[0];
-  }
-
-  if (gamepads.length > 1) {
-    if (isSteamDeckController(gamepads[0])) {
-      return gamepads[1];
-    } else {
-      return gamepads[0];
-    }
-  }
-  return null;
-};
+const getConfigFilePath = () =>
+  nodepath.join(emulatorsConfigDirectory, applicationId, configFileName);
 
 export const replaceGamepadConfig: SectionReplacement = (sections) => {
   const gamepad = getGamepad();
@@ -172,18 +85,8 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
-export const getConfigFilePath = (configFileName: string) => {
-  if (isWindows()) {
-    const { config } = envPaths("Azahar", { suffix: "" });
-    return nodepath.join(config, configFileName);
-  } else {
-    const { config } = envPaths("azahar", { suffix: "emu" });
-    return nodepath.join(config, configFileName);
-  }
-};
-
 export const replaceConfigSections = (n3dsRomsPath: string) => {
-  const filePath = getConfigFilePath(configFileName);
+  const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
 
   const sections = splitConfigBySection(fileContent);
@@ -198,11 +101,25 @@ export const replaceConfigSections = (n3dsRomsPath: string) => {
   writeConfig(filePath, fileContentNew);
 };
 
+const getConfigFileBasePath = () => {
+  if (isWindows()) {
+    const { config } = envPaths("Azahar", { suffix: "" });
+    return nodepath.join(config);
+  } else {
+    const { config } = envPaths("azahar", { suffix: "emu" });
+    return nodepath.join(config);
+  }
+};
+
 export const azahar: Application = {
   id: applicationId,
   name: "Azahar",
   fileExtensions: [".cci", ".zcia", ".zcci", ".z3dsx", ".zcxi"],
   flatpakId,
+  configFile: {
+    basePath: getConfigFileBasePath(),
+    files: [configFileName],
+  },
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
@@ -219,6 +136,5 @@ export const azahar: Application = {
     }
     return optionParams;
   },
-  bundledPathLinux,
-  bundledPathWindows,
+  bundledPath,
 };

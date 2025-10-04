@@ -58,18 +58,24 @@ export type FindEntryNameFunction = ({
 
 export type ExcludeFilesFunction = (filePaths: string[]) => string[];
 
+export interface ConfigFile {
+  basePath: string;
+  /** file paths relative to the basePath */
+  files: string[];
+}
+
 export interface Application {
   id: ApplicationId;
   name: string;
   executable?: `${string}.exe`;
   fileExtensions?: `${string}.${string}`[];
   entryAsDirectory?: boolean;
+  configFile?: ConfigFile;
   omitAbsoluteEntryPathAsLastParam?: boolean;
   defineEnvironmentVariables?: EnvironmentVariableFunction;
   createOptionParams?: OptionParamFunction;
   flatpakId: string;
   findEntryName?: FindEntryNameFunction;
   excludeFiles?: ExcludeFilesFunction;
-  bundledPathLinux?: string;
-  bundledPathWindows?: string;
+  bundledPath?: string;
 }
