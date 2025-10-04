@@ -12,13 +12,10 @@ import {
 } from "../../configFile.js";
 import { log } from "../../../debug.server.js";
 import { defaultSettings } from "./defaultSettings.js";
-import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
-import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import type { ApplicationId } from "../../applicationId.js";
-import { keyboardConfig } from "./keyboardConfig.js";
 import { envPaths } from "../../../envPaths.server.js";
-import { getPlayerIndexArray } from "../../../../types/gamepad.js";
+import { getVirtualGamepads } from "./getVirtualGamepads.js";
+import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 
 const flatpakId = "net.pcsx2.PCSX2";
 const applicationId: ApplicationId = "pcsx2";
@@ -26,74 +23,7 @@ const bundledPath = isWindows()
   ? nodepath.join(applicationId, "pcsx2-qt.exe")
   : nodepath.join(applicationId, `${applicationId}.AppImage`);
 const configFileName = "PCSX2.ini";
-
-export const getVirtualGamepad =
-  (playerIndexArray: number[]) =>
-  (sdlDevice: Sdl.Joystick.Device, sdlIndex: number) => {
-    log("debug", "gamepad", { sdlIndex, sdlDevice });
-
-    return [
-      `[Pad${playerIndexArray[sdlIndex] + 1}]`,
-      "Type = DualShock2",
-      "InvertL = 0",
-      "InvertR = 0",
-      "Deadzone = 0",
-      "AxisScale = 1.33",
-      "LargeMotorScale = 1",
-      "SmallMotorScale = 1",
-      "ButtonDeadzone = 0",
-      "PressureModifier = 0.5",
-      `Up = SDL-${sdlIndex}/DPadUp`,
-      `Right = SDL-${sdlIndex}/DPadRight`,
-      `Down = SDL-${sdlIndex}/DPadDown`,
-      `Left = SDL-${sdlIndex}/DPadLeft`,
-      `Triangle = SDL-${sdlIndex}/Y`,
-      `Circle = SDL-${sdlIndex}/B`,
-      `Cross = SDL-${sdlIndex}/A`,
-      `Square = SDL-${sdlIndex}/X`,
-      `Select = SDL-${sdlIndex}/Back`,
-      `Start = SDL-${sdlIndex}/Start`,
-      `L1 = SDL-${sdlIndex}/LeftShoulder`,
-      `R1 = SDL-${sdlIndex}/RightShoulder`,
-      `L2 = SDL-${sdlIndex}/+LeftTrigger`,
-      `R2 = SDL-${sdlIndex}/+RightTrigger`,
-      `L3 = SDL-${sdlIndex}/LeftStick`,
-      `R3 = SDL-${sdlIndex}/RightStick`,
-      `LLeft = SDL-${sdlIndex}/-LeftX`,
-      `LRight = SDL-${sdlIndex}/+LeftX`,
-      `LDown = SDL-${sdlIndex}/+LeftY`,
-      `LUp = SDL-${sdlIndex}/-LeftY`,
-      `RLeft = SDL-${sdlIndex}/-RightX`,
-      `RRight = SDL-${sdlIndex}/+RightX`,
-      `RDown = SDL-${sdlIndex}/+RightY`,
-      `RUp = SDL-${sdlIndex}/-RightY`,
-      "",
-      "",
-      "",
-    ].join(EOL);
-  };
-
-const getVirtualGamepadReset = (gamepadIndex: number) =>
-  [`[Pad${gamepadIndex + 1}]`, "Type = None", "", "", ""].join(EOL);
-
-export const getVirtualGamepads = () => {
-  const gamepads = sdl.joystick.devices;
-  const playerIndexArray = getPlayerIndexArray(gamepads);
-
-  const virtualGamepads =
-    gamepads.length > 0
-      ? gamepads.map(getVirtualGamepad(playerIndexArray))
-      : [keyboardConfig];
-
-  return [
-    ...virtualGamepads,
-    ...resetUnusedVirtualGamepads(
-      8,
-      virtualGamepads.length,
-      getVirtualGamepadReset,
-    ),
-  ];
-};
+const configFilePathRelative = nodepath.join("inis", configFileName);
 
 export const replaceGamepadConfig: SectionReplacement = (sections) => {
   const virtualGamepads = getVirtualGamepads();
@@ -178,24 +108,15 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
-const { config } = envPaths("PCSX2", { suffix: "" });
-
-export const getConfigFilePath = (configFileName: string) => {
-  if (isWindows()) {
-    return nodepath.join(
-      homedir(),
-      "Documents",
-      "PCSX2",
-      "inis",
-      configFileName,
-    );
-  } else {
-    return nodepath.join(config, "inis", configFileName);
-  }
-};
+const getConfigFilePath = () =>
+  nodepath.join(
+    emulatorsConfigDirectory,
+    applicationId,
+    configFilePathRelative,
+  );
 
 export const replaceConfigSections = (ps2RomsPath: string) => {
-  const filePath = getConfigFilePath(configFileName);
+  const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
 
   const sections = splitConfigBySection(fileContent);
@@ -214,11 +135,34 @@ export const replaceConfigSections = (ps2RomsPath: string) => {
   writeConfig(filePath, fileContentNew);
 };
 
+const getConfigFileBasePath = () => {
+  if (isWindows()) {
+    return nodepath.join(homedir(), "Documents", "PCSX2");
+  } else {
+    const { config } = envPaths("PCSX2", { suffix: "" });
+    return nodepath.join(config);
+  }
+};
+
 export const pcsx2: Application = {
   id: applicationId,
   name: "PCSX2",
   fileExtensions: [".chd", ".iso"],
   flatpakId,
+  configFile: {
+    basePath: getConfigFileBasePath(),
+    files: [
+      configFilePathRelative,
+      "bios",
+      "cheats",
+      "gamesettings",
+      "inputprofiles",
+      "logs",
+      "memcards",
+      "savstates",
+      "sstates",
+    ],
+  },
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
