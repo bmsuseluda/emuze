@@ -63,8 +63,8 @@ const emulatorDownloads = {
     Windows: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-win64-${emulatorVersions.flycast}.zip`,
   },
   mame: {
-    Linux: `https://github.com/pkgforge-dev/MAME-AppImage/releases/download/${emulatorVersions.mame}-1%402025-09-11_1757570953/MAME-${emulatorVersions.mame}-1-anylinux-x86_64.AppImage`,
-    Windows: `https://github.com/mamedev/mame/releases/download/mame0280/mame0280b_64bit.exe`,
+    Linux: `https://github.com/pkgforge-dev/MAME-AppImage/releases/download/0.280-1%402025-10-01_1759304576/MAME-0.281-1-anylinux-x86_64.AppImage`,
+    Windows: `https://github.com/mamedev/mame/releases/download/mame0281/mame0281b_x64.exe`,
   },
   mednafen: {
     Linux: `https://github.com/pkgforge-dev/mednafen-appimage/releases/download/${emulatorVersions.mednafen}%402025-09-08_1757361413/mednafen-${emulatorVersions.mednafen}-anylinux-x86_64.AppImage`,
