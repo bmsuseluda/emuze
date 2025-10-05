@@ -27,18 +27,18 @@ type EmulatorDownloads = Record<ApplicationId, Record<OperatingSystem, string>>;
 
 export const emulatorVersions = {
   ares: "146",
-  azahar: "2123.1",
-  dolphin: "2506a",
+  azahar: "2123.2",
+  dolphin: "2509",
   duckstation: "0.1-7371",
   flycast: "2.5",
-  mame: "0.280",
+  mame: "0.281",
   mednafen: "1.32.1",
   melonds: "1.0",
   pcsx2: "2.4.0",
   ppsspp: "1.19.3",
-  rpcs3: "0.0.37",
+  rpcs3: "0.0.38",
   ryujinx: "1.3.2",
-  xemu: "0.8.96",
+  xemu: "0.8.106",
 } satisfies Partial<Record<ApplicationId, string>>;
 
 const emulatorDownloads = {
@@ -83,8 +83,8 @@ const emulatorDownloads = {
     Windows: `https://www.ppsspp.org/files/${emulatorVersions.ppsspp.replaceAll(".", "_")}/ppsspp_win.zip`,
   },
   rpcs3: {
-    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-b90bacba4870534dfc501a51119b5913337a5e95/rpcs3-v${emulatorVersions.rpcs3}-18087-b90bacba_linux64.AppImage`,
-    Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-9c93ec0bc31bbc94ca4dce2a76ceea80da6f6554/rpcs3-v${emulatorVersions.rpcs3}-18022-9c93ec0b_win64_msvc.7z`,
+    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-48bf30aa2d82e18933ddac2464a1007082e7351a/rpcs3-v${emulatorVersions.rpcs3}-18178-48bf30aa_linux64.AppImage`,
+    Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-48bf30aa2d82e18933ddac2464a1007082e7351a/rpcs3-v${emulatorVersions.rpcs3}-18178-48bf30aa_win64_msvc.7z`,
   },
   ryujinx: {
     Linux: `https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-x64.AppImage`,
