@@ -47,7 +47,7 @@ const emulatorDownloads = {
     Windows: `https://github.com/ares-emulator/ares/releases/download/v${emulatorVersions.ares}/ares-windows-x64.zip`,
   },
   azahar: {
-    Linux: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions.azahar}%402025-08-23_1755946836/Azahar-Enhanced-${emulatorVersions.azahar}-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions.azahar}%402025-10-01_1759305782/Azahar-Enhanced-${emulatorVersions.azahar}-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/azahar-emu/azahar/releases/download/${emulatorVersions.azahar}/azahar-${emulatorVersions.azahar}-windows-msys2.zip`,
   },
   dolphin: {
