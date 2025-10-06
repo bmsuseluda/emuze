@@ -42,7 +42,7 @@ import { cemu } from "../applicationsDB.server/applications/cemu/index.js";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",
-  names: ["Sony PlayStation", "playstation", "psx", "ps1", "psone"],
+  names: ["Sony PlayStation", "PlayStation", "psx", "ps1", "psone"],
   igdbPlatformIds: [7],
   application: duckstation,
   hasAnalogStick: true,
@@ -50,7 +50,7 @@ export const sonyplaystation: Category = {
 
 export const sonyplaystation2: Category = {
   id: "sonyplaystation2",
-  names: ["Sony PlayStation 2", "playstation 2", "ps2"],
+  names: ["Sony PlayStation 2", "PlayStation 2", "ps2"],
   igdbPlatformIds: [8],
   application: pcsx2,
   hasAnalogStick: true,
@@ -58,7 +58,7 @@ export const sonyplaystation2: Category = {
 
 export const sonyplaystation3: Category = {
   id: "sonyplaystation3",
-  names: ["Sony PlayStation 3", "playstation 3", "ps3"],
+  names: ["Sony PlayStation 3", "PlayStation 3", "ps3"],
   igdbPlatformIds: [9],
   application: rpcs3,
   hasAnalogStick: true,
@@ -87,7 +87,7 @@ export const segamastersystem: Category = {
 
 export const segagamegear: Category = {
   id: "segagamegear",
-  names: ["Sega Game Gear", "Game Gear", "GameGear", "gg", "sgg"],
+  names: ["Sega Game Gear", "Game Gear", "gg", "sgg"],
   igdbPlatformIds: [35],
   application: aresGameGear,
   hasAnalogStick: false,
@@ -95,14 +95,7 @@ export const segagamegear: Category = {
 
 export const segamegadrive: Category = {
   id: "segamegadrive",
-  names: [
-    "Sega Mega Drive",
-    "Mega Drive",
-    "Sega Megadrive",
-    "Sega Genesis",
-    "Genesis",
-    "smd",
-  ],
+  names: ["Sega Mega Drive", "Mega Drive", "Sega Genesis", "Genesis", "smd"],
   igdbPlatformIds: [29],
   application: aresMegaDrive,
   hasAnalogStick: false,
@@ -138,6 +131,7 @@ export const segamegald: Category = {
     "Sega Mega LD",
     "LaserActive Mega LD",
     "Pioneer LaserActive Mega LD",
+    "Pioneer LaserActive Sega PAC",
   ],
   igdbPlatformIds: [487],
   application: aresSegaMegaLd,
@@ -209,7 +203,7 @@ export const nintendowii: Category = {
 
 export const nintendowiiu: Category = {
   id: "nintendowiiu",
-  names: ["Nintendo Wii U", "Wii U", "Nintendo WiiU", "WiiU"],
+  names: ["Nintendo Wii U", "Wii U"],
   igdbPlatformIds: [41],
   application: cemu,
   hasAnalogStick: true,
@@ -280,12 +274,11 @@ export const segasaturn: Category = {
 export const pcengine: Category = {
   id: "pcengine",
   names: [
+    "NEC PC Engine",
     "PC Engine",
-    "TurboGrafx-16",
-    "TurboGrafx",
     "Turbo Grafx",
-    "TurboGrafx 16",
     "Turbo Grafx 16",
+    "NEC Turbo Grafx 16",
     "CoreGrafx",
     "pce",
   ],
@@ -296,7 +289,13 @@ export const pcengine: Category = {
 
 export const pcenginecd: Category = {
   id: "pcenginecd",
-  names: ["PC Engine CD", "TurboGrafx-CD", "TurboGrafx CD", "pcecd"],
+  names: [
+    "NEC PC Engine CD",
+    "PC Engine CD",
+    "NEC Turbo Grafx CD",
+    "Turbo Grafx CD",
+    "pcecd",
+  ],
   igdbPlatformIds: [150],
   application: mednafenPcEngineCD,
   hasAnalogStick: false,
@@ -304,7 +303,13 @@ export const pcenginecd: Category = {
 
 export const pcenginesupergrafx: Category = {
   id: "pcenginesupergrafx",
-  names: ["PC Engine SuperGrafx", "SuperGrafx", "Super Grafx", "pcfx"],
+  names: [
+    "NEC PC Engine SuperGrafx",
+    "PC Engine SuperGrafx",
+    "NEC Super Grafx",
+    "Super Grafx",
+    "pcfx",
+  ],
   igdbPlatformIds: [128],
   application: aresSuperGrafx,
   hasAnalogStick: false,
@@ -313,10 +318,12 @@ export const pcenginesupergrafx: Category = {
 export const neogeo: Category = {
   id: "neogeo",
   names: [
+    "SNK Neo Geo",
     "Neo Geo",
+    "SNK Neo Geo AES",
     "Neo Geo AES",
+    "SNK Neo Geo MVS",
     "Neo Geo MVS",
-    "NeoGeo",
     "ng",
     "aes",
     "mvs",
@@ -328,7 +335,7 @@ export const neogeo: Category = {
 
 export const neogeocd: Category = {
   id: "neogeocd",
-  names: ["Neo Geo CD", "NeoGeo CD", "ngcd"],
+  names: ["SNK Neo Geo CD", "Neo Geo CD", "ngcd"],
   igdbPlatformIds: [136],
   application: mameNeoGeoCD,
   hasAnalogStick: false,
@@ -336,7 +343,7 @@ export const neogeocd: Category = {
 
 export const neogeopocket: Category = {
   id: "neogeopocket",
-  names: ["Neo Geo Pocket", "NeoGeo Pocket", "ngp"],
+  names: ["SNK Neo Geo Pocket", "Neo Geo Pocket", "ngp"],
   igdbPlatformIds: [119],
   application: aresNeoGeoPocket,
   hasAnalogStick: false,
@@ -344,7 +351,7 @@ export const neogeopocket: Category = {
 
 export const neogeopocketcolor: Category = {
   id: "neogeopocketcolor",
-  names: ["Neo Geo Pocket Color", "NeoGeo Pocket Color", "ngpc"],
+  names: ["SNK Neo Geo Pocket Color", "Neo Geo Pocket Color", "ngpc"],
   igdbPlatformIds: [120],
   application: aresNeoGeoPocketColor,
   hasAnalogStick: false,
@@ -352,7 +359,7 @@ export const neogeopocketcolor: Category = {
 
 export const dos: Category = {
   id: "dos",
-  names: ["DOS", "MS DOS", "Microsoft DOS"],
+  names: ["Microsoft DOS", "DOS", "MS DOS"],
   igdbPlatformIds: [13],
   application: dosboxstaging,
   hasAnalogStick: false,
@@ -360,7 +367,7 @@ export const dos: Category = {
 
 export const scumm: Category = {
   id: "scumm",
-  names: ["Scumm", "Scumm VM", "ScummVM"],
+  names: ["Scumm", "Scumm VM"],
   igdbPlatformIds: [/** PC */ 6, /** Dos */ 13],
   application: scummvm,
   hasAnalogStick: true,
@@ -424,10 +431,17 @@ export const categories = {
   lastPlayed,
 } satisfies Record<SystemId, Category>;
 
+const normalizeString = (a: string) =>
+  a
+    .toLowerCase()
+    .replaceAll(" ", "")
+    .replaceAll(/[`~!@#$%^&*()_|+\-=?;:'",.]/gi, "");
+
 export const getCategoryDataByName = (name: string) =>
   Object.values(categories).find(
     ({ names }) =>
       !!names.find(
-        (categoryName) => categoryName.toLowerCase() === name.toLowerCase(),
+        (categoryName) =>
+          normalizeString(categoryName) === normalizeString(name),
       ),
   );

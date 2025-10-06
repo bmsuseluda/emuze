@@ -98,6 +98,8 @@ In general emuze should just detect your systems and games. If not please check 
 ```mmd
 return scripts.createSystemsTableExpert()
 ```
+
+> [!INFO] Capitalization, special characters and white spaces do not matter in a System Name. E.g. `TurboGrafx-16` will be detected as well as `turbo grafx 16`.
 </details>
 <br>
 
