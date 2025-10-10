@@ -5,6 +5,7 @@ import { copy } from "./readWriteData.server.js";
 import { emulatorsConfigDirectory } from "./homeDirectory.server.js";
 import type { ApplicationId } from "./applicationsDB.server/applicationId.js";
 import { existsSync } from "node:fs";
+import { log } from "./debug.server.js";
 
 const getEmuzeFolder = (
   applicationId: ApplicationId,
@@ -38,6 +39,14 @@ export const syncFromEmuzeFolderToEmulatorFolder = (
         filePathRelative,
       );
 
+      log(
+        "debug",
+        "syncFromEmuzeFolderToEmulatorFolder",
+        applicationId,
+        source,
+        destination,
+      );
+
       copy(source, destination);
     });
   }
@@ -51,6 +60,14 @@ export const syncFromEmulatorFolderToEmuzeFolder = (
     configFile.files.forEach((filePathRelative) => {
       const source = getEmulatorFolder(configFile.basePath, filePathRelative);
       const destination = getEmuzeFolder(applicationId, filePathRelative);
+
+      log(
+        "debug",
+        "syncFromEmulatorFolderToEmuzeFolder",
+        applicationId,
+        source,
+        destination,
+      );
 
       copy(source, destination);
     });

@@ -120,6 +120,9 @@ export const isDinputController = (
   controllerType: Sdl.Controller.ControllerType | null,
 ) => dinputControllerTypes.includes(controllerType);
 
+export const isPs3Controller = ({ type }: Sdl.Controller.Device) =>
+  type === "ps3";
+
 export const isPs4Controller = ({ type }: Sdl.Controller.Device) =>
   type === "ps4";
 
@@ -235,6 +238,22 @@ export const getPlayerIndexArray = (gamepads: Sdl.Joystick.Device[]) => {
   return playerIndexArray;
 };
 
+export const getPlayerIdArray = (gamepads: Sdl.Joystick.Device[]) => {
+  const playerIdArray: number[] = [];
+
+  const gamepadsSorted = gamepads
+    .toSorted(sortGamecubeLast)
+    .toSorted(sortSteamDeckLast);
+
+  gamepads.forEach((gamepad) => {
+    playerIdArray.push(
+      gamepadsSorted.find((gamepadSorted) => gamepad === gamepadSorted)!.id,
+    );
+  });
+
+  return playerIdArray;
+};
+
 /**
  *
  * @param sdlMapping "030000004c050000c405000000010000,PS4 Controller,platform:Windows,a:b1,b:b2,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b4,leftstick:b10,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b11,righttrigger:a4,rightx:a2,righty:a5,start:b9,x:b0,y:b3,"
@@ -259,7 +278,7 @@ export const eightBitDoPro2 = {
   vendor: 1118,
   product: 736,
   version: 2307,
-  player: 0,
+  player: 2,
   mapping:
     "050095ac5e040000e002000003090000,Xbox One Wireless Controller,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b10,leftshoulder:b4,leftstick:b8,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b9,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,",
 } satisfies Sdl.Controller.Device;
@@ -304,7 +323,7 @@ export const gamepadPs4 = {
   vendor: 1356,
   product: 1476,
   version: 33024,
-  player: 0,
+  player: 1,
   mapping:
     "05009b514c050000c405000000810000,PS4 Controller,a:b0,b:b1,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b10,leftshoulder:b4,leftstick:b11,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b12,righttrigger:a5,rightx:a3,righty:a4,start:b9,x:b3,y:b2,platform:Linux,",
 } satisfies Sdl.Controller.Device;
