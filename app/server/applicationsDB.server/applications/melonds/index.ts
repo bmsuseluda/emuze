@@ -15,7 +15,7 @@ import {
 } from "../../configFile.js";
 import { defaultSettings } from "./defaultSettings.js";
 import { replaceKeyboardConfig } from "./keyboardConfig.js";
-import { getVirtualGamepad, getPlayerIndex } from "./getVirtualGamepad.js";
+import { getPlayerId, getVirtualGamepad } from "./getVirtualGamepad.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 
 const flatpakId = "net.kuribo64.melonDS";
@@ -23,8 +23,6 @@ const applicationId: ApplicationId = "melonds";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "melonDS.exe")
   : nodepath.join(applicationId, "melonDS-x86_64.AppImage");
-
-const { config } = envPaths("melonDS", { suffix: "" });
 
 const configFileName = "melonDS.toml";
 
@@ -49,9 +47,9 @@ const replaceJoystickConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Instance0.Joystick]", [...getVirtualGamepad()]);
 
 const replaceInstanceConfig: SectionReplacement = (sections) => {
-  const playerIndex = getPlayerIndex();
+  const playerId = getPlayerId();
   return replaceSection(sections, "[Instance0]", [
-    { keyValue: `JoystickID = ${playerIndex}` },
+    { keyValue: `JoystickID = ${playerId}` },
   ]);
 };
 
@@ -75,6 +73,7 @@ const getConfigFileBasePath = () => {
   if (isWindows()) {
     return nodepath.join(homedir(), "AppData", "Roaming", "melonDS");
   } else {
+    const { config } = envPaths("melonDS", { suffix: "" });
     return nodepath.join(config);
   }
 };

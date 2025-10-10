@@ -104,7 +104,7 @@ describe("initGamepadIDs", () => {
           playerIndex: 0,
         },
         {
-          sdlController: { ...eightBitDoPro2, id: 3 },
+          sdlController: { ...eightBitDoPro2, id: 3, player: 3 },
           mednafenGamepadId: mednafenGamepadTestData.eightBitDoPro2SecondDevice,
           playerIndex: 1,
         },
@@ -140,7 +140,7 @@ describe("initGamepadIDs", () => {
           playerIndex: 1,
         },
         {
-          sdlController: { ...eightBitDoPro2, id: 3 },
+          sdlController: { ...eightBitDoPro2, id: 3, player: 3 },
           mednafenGamepadId: mednafenGamepadTestData.eightBitDoPro2,
           playerIndex: 2,
         },

@@ -142,14 +142,14 @@ const executeApplicationOnWindows = async ({
   applicationData,
   applicationsPath,
   absoluteEntryPath,
-  optionParams,
+  getOptionParams,
   environmentVariables,
   omitAbsoluteEntryPathAsLastParam,
 }: {
   applicationData: Application;
   applicationsPath: string;
   absoluteEntryPath: string;
-  optionParams: (applicationsPath?: string) => string[] | Promise<string[]>;
+  getOptionParams: (applicationsPath?: string) => string[] | Promise<string[]>;
   environmentVariables: (applicationsPath?: string) => void;
   omitAbsoluteEntryPathAsLastParam?: boolean;
 }) => {
@@ -161,7 +161,11 @@ const executeApplicationOnWindows = async ({
   if (applicationPath) {
     environmentVariables(applicationPath);
     const params = [];
-    params.push(...(await optionParams(applicationPath)));
+    params.push(...(await getOptionParams(applicationPath)));
+    syncFromEmuzeFolderToEmulatorFolder(
+      applicationData.id,
+      applicationData.configFile,
+    );
 
     if (!omitAbsoluteEntryPathAsLastParam) {
       params.push(absoluteEntryPath);
@@ -242,7 +246,7 @@ export const startGame = async (
         }
       };
 
-      const optionParams = (applicationPath?: string) =>
+      const getOptionParams = (applicationPath?: string) =>
         createOptionParams
           ? createOptionParams({
               entryData,
@@ -254,15 +258,16 @@ export const startGame = async (
             })
           : [];
 
-      syncFromEmuzeFolderToEmulatorFolder(id, configFile);
-
       try {
         if (bundledPath) {
           environmentVariables();
+          const optionParams = getOptionParams();
+          syncFromEmuzeFolderToEmulatorFolder(id, configFile);
+
           await executeBundledApplication({
             bundledPath,
             absoluteEntryPath,
-            optionParams: optionParams(),
+            optionParams,
             omitAbsoluteEntryPathAsLastParam:
               applicationData.omitAbsoluteEntryPathAsLastParam,
           });
@@ -272,17 +277,20 @@ export const startGame = async (
               applicationData,
               applicationsPath: generalData.applicationsPath,
               absoluteEntryPath,
-              optionParams,
+              getOptionParams,
               environmentVariables,
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
             });
           } else {
             environmentVariables();
+            const optionParams = getOptionParams();
+            syncFromEmuzeFolderToEmulatorFolder(id, configFile);
+
             await executeApplicationOnLinux({
               applicationFlatpakId: flatpakId,
               absoluteEntryPath,
-              optionParams: optionParams(),
+              optionParams,
               omitAbsoluteEntryPathAsLastParam:
                 applicationData.omitAbsoluteEntryPathAsLastParam,
               categoriesPath: generalData.categoriesPath,

@@ -44,7 +44,7 @@ export const getVirtualGamepad =
       `[Pad${playerIndexArray[sdlIndex] + 1}]`,
       `Type = AnalogController`,
       ...Object.entries(buttonMapping).map(
-        ([key, value]) => `${key} = SDL-${sdlIndex}/${value}`,
+        ([key, value]) => `${key} = SDL-${sdlDevice.player}/${value}`,
       ),
       `SmallMotor = SDL-${sdlIndex}/SmallMotor`,
       `LargeMotor = SDL-${sdlIndex}/LargeMotor`,

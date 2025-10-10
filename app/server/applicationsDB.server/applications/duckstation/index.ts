@@ -113,7 +113,7 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
-export const replaceConfigSections = async (psxRomsPath: string) => {
+export const replaceConfigSections = (psxRomsPath: string) => {
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
 
