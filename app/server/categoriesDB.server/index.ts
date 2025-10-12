@@ -15,6 +15,7 @@ import {
   aresSegaMegaLd,
   aresSuperGrafx,
   aresSuperNintendo,
+  isRmgForN64,
 } from "../applicationsDB.server/applications/ares/index.js";
 import {
   mame,
@@ -39,6 +40,7 @@ import { flycast } from "../applicationsDB.server/applications/flycast/index.js"
 import { xemu } from "../applicationsDB.server/applications/xemu/index.js";
 import { melonds } from "../applicationsDB.server/applications/melonds/index.js";
 import { cemu } from "../applicationsDB.server/applications/cemu/index.js";
+import { rosaliesMupenGui } from "../applicationsDB.server/applications/rmg/index.js";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",
@@ -235,7 +237,7 @@ export const nintendo64: Category = {
   id: "nintendo64",
   names: ["Nintendo 64", "N64"],
   igdbPlatformIds: [4],
-  application: aresNintendo64,
+  application: isRmgForN64() ? rosaliesMupenGui : aresNintendo64,
   hasAnalogStick: true,
 };
 
