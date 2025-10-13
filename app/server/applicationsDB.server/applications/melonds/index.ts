@@ -4,7 +4,7 @@ import type { ApplicationId } from "../../applicationId.js";
 import type { Application } from "../../types.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { isWindows } from "../../../operationsystem.server.js";
-import { EOL, homedir } from "node:os";
+import { EOL } from "node:os";
 import { log } from "../../../debug.server.js";
 import type { SectionReplacement } from "../../configFile.js";
 import {
@@ -17,6 +17,7 @@ import { defaultSettings } from "./defaultSettings.js";
 import { replaceKeyboardConfig } from "./keyboardConfig.js";
 import { getPlayerId, getVirtualGamepad } from "./getVirtualGamepad.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
+import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 
 const flatpakId = "net.kuribo64.melonDS";
 const applicationId: ApplicationId = "melonds";
@@ -71,7 +72,7 @@ const replaceConfigFile = () => {
 
 const getConfigFileBasePath = () => {
   if (isWindows()) {
-    return nodepath.join(homedir(), "AppData", "Roaming", "melonDS");
+    return nodepath.join(bundledEmulatorsPathBase, applicationId);
   } else {
     const { config } = envPaths("melonDS", { suffix: "" });
     return nodepath.join(config);

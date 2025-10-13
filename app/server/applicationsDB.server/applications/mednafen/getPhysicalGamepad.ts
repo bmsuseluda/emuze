@@ -13,7 +13,6 @@ export const getPhysicalGamepad = (
   sdlGamepad: Sdl.Controller.Device,
   gamepadID: MednafenGamepadID,
 ) => {
-  // TODO: Check if this works on windows as well
   if (isPs4Controller(sdlGamepad)) {
     return new PhysicalGamepadPs4(gamepadID.id, sdlGamepad.mapping!);
   }
