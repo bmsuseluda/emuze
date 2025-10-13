@@ -80,7 +80,9 @@ You can close a game via
 If you have gamepads connected with your Steam Deck the Steam Deck Controls will be configured as the last gamepad. This is done to use the Steam Deck on a TV. If you have other PC Handhelds where this feature would come in handy, please let me know.
 
 ### Bundled
-If a system is bundled, the respective emulator is provided with emuze in a specific version. Therefore you do not need to provide the emulator on your own.
+If a system is bundled, the respective emulator is provided with emuze in a specific version.
+
+Config files of bundled emulators are stored in `~/.local/share/emuze/emulators/` on linux and `AppData\Local\emuze\Data\emulators\` on windows.
 
 ### BIOS needed
 Some emulators need a BIOS or firmware to run. Please check the documentation of the respective emulator for more information.
