@@ -258,7 +258,7 @@ export const getPlayerIdArray = (gamepads: Sdl.Joystick.Device[]) => {
  *
  * @param sdlMapping "030000004c050000c405000000010000,PS4 Controller,platform:Windows,a:b1,b:b2,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b4,leftstick:b10,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b11,righttrigger:a4,rightx:a2,righty:a5,start:b9,x:b0,y:b3,"
  */
-export const createSdlMappingObject = (sdlMapping: string) =>
+export const createSdlMappingObject = (sdlMapping: string): SdlButtonMapping =>
   sdlMapping
     .split(",")
     .reduce<SdlButtonMapping>((accumulator, currentValue) => {
@@ -317,15 +317,15 @@ export const gamepadN64 = {
 export const gamepadPs4 = {
   id: 1,
   name: "PS4 Controller",
-  path: "/dev/input/event25",
+  path: "/dev/hidraw1",
   type: "ps4",
-  guid: "05009b514c050000c405000000810000",
+  guid: "03008fe54c050000c405000000006800",
   vendor: 1356,
   product: 1476,
-  version: 33024,
+  version: null,
   player: 1,
   mapping:
-    "05009b514c050000c405000000810000,PS4 Controller,a:b0,b:b1,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b10,leftshoulder:b4,leftstick:b11,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b12,righttrigger:a5,rightx:a3,righty:a4,start:b9,x:b3,y:b2,platform:Linux,",
+    "03008fe54c050000c405000000006800,*,a:b0,b:b1,back:b4,dpdown:b12,dpleft:b13,dpright:b14,dpup:b11,guide:b5,leftshoulder:b9,leftstick:b7,lefttrigger:a4,leftx:a0,lefty:a1,rightshoulder:b10,rightstick:b8,righttrigger:a5,rightx:a2,righty:a3,start:b6,x:b2,y:b3,touchpad:b15,crc:e58f,",
 } satisfies Sdl.Controller.Device;
 
 export const gamepadPs3 = {

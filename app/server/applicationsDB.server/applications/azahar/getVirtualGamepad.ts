@@ -5,7 +5,18 @@ import type { ParamToReplace } from "../../configFile.js";
 import type { AzaharButtonId } from "./types.js";
 import { getKeyboardDebugMapping } from "./keyboardConfig.js";
 import sdl from "@kmamal/sdl";
-import { isSteamDeckController } from "../../../../types/gamepad.js";
+import type {
+  SdlButtonId,
+  SdlButtonMapping,
+} from "../../../../types/gamepad.js";
+import {
+  createSdlMappingObject,
+  getButtonIndex,
+  isAnalog,
+  isDpadHat,
+  isSteamDeckController,
+} from "../../../../types/gamepad.js";
+import { getControllerFromJoystick } from "../../../gamepad.server.js";
 
 export const getGamepad = () => {
   const gamepads = sdl.joystick.devices;
@@ -25,38 +36,60 @@ export const getGamepad = () => {
 };
 
 const azaharButtonIds = {
-  button_a: 1,
-  button_b: 0,
-  button_x: 3,
-  button_y: 2,
-  button_l: 4,
-  button_r: 5,
-  button_select: 6,
-  button_start: 7,
-} satisfies Partial<Record<AzaharButtonId, number>>;
+  button_up: "dpup",
+  button_down: "dpdown",
+  button_left: "dpleft",
+  button_right: "dpright",
+  button_a: "b",
+  button_b: "a",
+  button_x: "y",
+  button_y: "x",
+  button_l: "leftshoulder",
+  button_r: "rightshoulder",
+  button_zl: "lefttrigger",
+  button_zr: "righttrigger",
+  button_select: "back",
+  button_start: "start",
+} satisfies Partial<Record<AzaharButtonId, SdlButtonId>>;
 
 const getGamepadButtonMapping = (
-  azaharButtonId: AzaharButtonId,
-  button: number,
+  azaharButtonId: keyof typeof azaharButtonIds,
   guid: string,
-): ParamToReplace[] =>
-  getSetting(
+  mappingObject: SdlButtonMapping,
+): ParamToReplace[] => {
+  const sdlButtonId = azaharButtonIds[azaharButtonId];
+
+  if (isDpadHat(mappingObject, sdlButtonId)) {
+    const direction = azaharButtonId.split("_")[1];
+    return getSetting(
+      `profiles\\1\\${azaharButtonId}`,
+      `direction:${direction},engine:sdl,guid:${guid},hat:0,port:0`,
+    );
+  }
+
+  if (isAnalog(mappingObject, sdlButtonId)) {
+    return getSetting(
+      `profiles\\1\\${azaharButtonId}`,
+      `axis:${getButtonIndex(mappingObject, sdlButtonId)},engine:sdl,guid:${guid},port:0,threshold:0.5`,
+    );
+  }
+
+  return getSetting(
     `profiles\\1\\${azaharButtonId}`,
-    `button:${button},engine:sdl,guid:${guid},port:0`,
+    `button:${getButtonIndex(mappingObject, sdlButtonId)},engine:sdl,guid:${guid},port:0`,
   );
+};
 
-const getGamepadDpadButtonMapping = (
-  direction: "up" | "down" | "left" | "right",
+const getGamepadButtonMappings = (
   guid: string,
+  mappingObject: SdlButtonMapping,
 ): ParamToReplace[] =>
-  getSetting(
-    `profiles\\1\\button_${direction}`,
-    `direction:${direction},engine:sdl,guid:${guid},hat:0,port:0`,
-  );
-
-const getGamepadButtonMappings = (guid: string): ParamToReplace[] =>
-  Object.entries(azaharButtonIds).flatMap(([azaharButtonId, button]) =>
-    getGamepadButtonMapping(azaharButtonId as AzaharButtonId, button, guid),
+  Object.keys(azaharButtonIds).flatMap((azaharButtonId) =>
+    getGamepadButtonMapping(
+      azaharButtonId as keyof typeof azaharButtonIds,
+      guid,
+      mappingObject,
+    ),
   );
 
 export const getVirtualGamepad = (
@@ -65,29 +98,19 @@ export const getVirtualGamepad = (
   log("debug", "gamepad", { sdlDevice });
 
   const guid = sdlDevice.guid!;
+  const controller = getControllerFromJoystick(sdlDevice)!;
+  const mappingObject = createSdlMappingObject(controller.mapping!);
 
   return [
     ...getSetting("profile", 0),
-    ...getGamepadButtonMappings(guid),
-    ...getGamepadDpadButtonMapping("up", guid),
-    ...getGamepadDpadButtonMapping("down", guid),
-    ...getGamepadDpadButtonMapping("left", guid),
-    ...getGamepadDpadButtonMapping("right", guid),
-    ...getSetting(
-      "profiles\\1\\button_zl",
-      `axis:2,engine:sdl,guid:${guid},port:0`,
-    ),
-    ...getSetting(
-      "profiles\\1\\button_zr",
-      `axis:5,engine:sdl,guid:${guid},port:0`,
-    ),
+    ...getGamepadButtonMappings(guid, mappingObject),
     ...getSetting(
       "profiles\\1\\circle_pad",
-      `axis_x:0,axis_y:1,deadzone:0.100000,engine:sdl,guid:${guid},port:0`,
+      `axis_x:${getButtonIndex(mappingObject, "leftx")},axis_y:${getButtonIndex(mappingObject, "lefty")},deadzone:0.100000,engine:sdl,guid:${guid},port:0`,
     ),
     ...getSetting(
       "profiles\\1\\c_stick",
-      `axis_x:3,axis_y:4,deadzone:0.100000,engine:sdl,guid:${guid},port:0`,
+      `axis_x:${getButtonIndex(mappingObject, "rightx")},axis_${getButtonIndex(mappingObject, "righty")}:4,deadzone:0.100000,engine:sdl,guid:${guid},port:0`,
     ),
     ...getKeyboardDebugMapping(),
   ];
