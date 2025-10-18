@@ -1,5 +1,70 @@
 # Changelog
 
+## 0.57.0
+
+Starfox, Space Harrier, Panzer Dragoon... They look awesome, they sound awesome and the action is non stop and thrilling. I love those games, but always thought there are not enough of them. Shoot em up fans had the PC Engine and the Mega Drive. Fighting game fans had the NeoGeo, but Rail Shooter fans?
+Back then i did not know, but there was the [Pioneer LaserActive](https://en.wikipedia.org/wiki/LaserActive). A really interesting modular system which combines LaserDiscs with gaming. In particular there were 2 modules. One from NEC based on the PC Engine and one from Sega based on the Mega Drive / Genesis.
+These systems were packed with Rail Shooters and FMV games too. Sadly they were really rare and expensive and could not be emulated until last month when Roger Sanders aka Nemesis contributed his work to the multi system emulator [ares](https://github.com/ares-emulator/ares). You can read more about the rocky but fascinating ride Nemesis had to go in the following interviews:
+- [Written Interview from Read Only Memo](https://www.readonlymemo.com/this-is-the-first-the-16-year-odyssey-of-time-money-wrong-turns-and-frustration-it-took-to-finally-emulate-the-pioneer-laseractive/)
+- [Video Interview from Retro RGB](https://m.youtube.com/watch?v=-yGxV5E7tTw&t=18s&pp=2AESkAIB)
+
+Enough with the long introduction. MegaLD or the Sega Module of the LaserActive is now playable with emuze thanks to ares v146🙂
+If you love Rail Shooters like me you have to play `Pyramid Patrol`. So head over to archive.org, grab it and don't forget to thank Nemesis on the [ares Discord](https://discord.com/invite/gz2quhk2kv).
+
+The first feature request i got for emuze was support for the original XBOX. At the time i had no games nor Bios to do it properly. Some weeks ago a friend came in with his XBOX and i could have a deeper look at xemu. I have to say this emulator is great, high compatibility, really simple to configure and the ui is usable with a controller.
+
+Besides bundling and pre configuring melonDS and Flycast i created an AppImage for Mednafen. Thanks to [Samueru-sama](https://github.com/Samueru-sama) who created an AppImage for MAME. In general i have to thank the [Package Forge Dev Team](https://github.com/pkgforge-dev) who are providing AppImages that work on nearly every Linux distribution. Due to there efforts it was possible to bundle 5 more emulators but only add around 50mb on top of the last emuze AppImage.
+
+This is a big step towards version 1.0.
+30 of the 35 supported systems are pre configured and 32 of them are bundled now🥳
+
+Please let me know what you think of it in the [emuze discord](https://discord.gg/tCzK7kc6Y4).
+
+### 💥 Features
+- add new System `Microsoft XBOX`
+- add new System `Sega Mega LD` or `Pioneer LaserActive Sega PAC`
+- pre configure xemu
+- pre configure melonDS
+- pre configure Flycast
+- map keyboard if no controller is connected for xemu
+- map keyboard if no controller is connected for Flycast
+- reduce file size of emuze, even so multiple bundled emulators were added, thanks to the [Package Forge team](https://github.com/pkgforge-dev)
+- config files of bundled emulators are stored now in `~/.local/share/emuze/emulators/` on linux and `AppData\Local\emuze\Data\emulators\` on windows
+- document [supported system names and file extensions](https://github.com/bmsuseluda/emuze?tab=readme-ov-file#supported-system-names-and-file-extensions)
+- optimize system name detection: capitalization, special characters and white spaces do not matter anymore. E.g. `TurboGrafx-16` will be detected as well as `turbo grafx 16`.
+- support `.zip` for emulators that are compatible with
+- Emulators Path is now optional on windows
+
+### 💫 Updates / Bundles
+- bundle xemu v0.8.106
+- bundle Flycast v2.5
+- bundle melonDS v1.0
+- bundle Mednafen v1.32.1
+- bundle MAME v0.281
+- update bundled ares to v146
+- update bundled azahar to v2123.2
+- update bundled Dolphin to v2509
+- update bundled RPCS3 to v0.0.38
+
+### 🪲 Bug Fixes
+- MetaData could not be fetched for rom files with multiple file extensions
+- fixed dualshock 3 controller mapping for ares
+- fixed dualshock 4 controller dpad mapping for ares
+- to play docked with your Steam Deck the Steam Deck Controls will be configured as the last controller for Mednafen
+- fixed dinput controller mapping for Mednafen
+- fixed mapping of second device for Mednafen
+- fixed starting Mednafen in Window Mode (not fullscreen)
+- fixed 8bitdo sfc30 controller mapping for Mednafen
+- fixed duplicate inputs with Steam Input for Mednafen
+- fixed Updater not working on Steam Deck Game Mode
+- fixed keyboard mapping for Mednafen
+- fixed dinput controller mapping for azahar
+
+### ❗️ Breaking Changes
+- removed redundant emulators
+  - mgba
+  - lime3ds
+
 ## 0.56.0
 
 In this release i fully reworked the gamepad integration in emuze. In the past i used the Web Gamepad Api implementation of Chromium. Sadly i faced a lot of bugs and limitations with this implementation. Therefore i looked for an alternative for a while and finally decided for SDL which is used by most emulators too these days. With this a lot more gamepads are supported and i could close all controller related bugs i had stumbled upon. On top of it the implementation is a lot simpler and more straight forward. A big thank you to [kmamal](https://github.com/kmamal) for providing sdl bindings for NodeJS: [SDL](https://github.com/kmamal/node-sdl).
