@@ -26,9 +26,11 @@ const bundledPath = isWindows()
   : nodepath.join(applicationId, `${applicationId}.AppImage`);
 
 const ppssppConfigFileName = "ppsspp.ini";
-const ppssppConfigPathRelative = isWindows()
-  ? nodepath.join("memstick", "PSP", "SYSTEM", ppssppConfigFileName)
-  : nodepath.join("PSP", "SYSTEM", ppssppConfigFileName);
+const ppssppConfigPathRelative = nodepath.join(
+  "PSP",
+  "SYSTEM",
+  ppssppConfigFileName,
+);
 
 const getConfigFilePath = (configFilePathRelative: string) =>
   nodepath.join(
@@ -39,9 +41,11 @@ const getConfigFilePath = (configFilePathRelative: string) =>
 export const getPpssppConfigFilePath = () =>
   getConfigFilePath(ppssppConfigPathRelative);
 const controlsConfigFileName = "controls.ini";
-const controlsConfigPathRelative = isWindows()
-  ? nodepath.join("memstick", "PSP", "SYSTEM", controlsConfigFileName)
-  : nodepath.join("PSP", "SYSTEM", controlsConfigFileName);
+const controlsConfigPathRelative = nodepath.join(
+  "PSP",
+  "SYSTEM",
+  controlsConfigFileName,
+);
 export const getControlsConfigFilePath = () =>
   getConfigFilePath(controlsConfigPathRelative);
 
@@ -129,6 +133,7 @@ const getConfigFileBasePath = () => {
   const windowsConfigFolder = nodepath.join(
     bundledEmulatorsPathBase,
     applicationId,
+    "memstick",
   );
   const { config } = envPaths("ppsspp", { suffix: "" });
 
@@ -145,7 +150,6 @@ export const ppsspp: Application = {
   configFile: {
     basePath: getConfigFileBasePath(),
     files: [
-      // TODO: check if on windows it is always memstick folder
       nodepath.join("PSP", "Cheats"),
       nodepath.join("PSP", "GAME"),
       nodepath.join("PSP", "PPSSPP_STATE"),

@@ -13,5 +13,6 @@ export type ApplicationId =
   | "ares"
   | "flycast"
   | "dosboxstaging"
+  | "rosaliesMupenGui"
   | "scummvm"
   | "xemu";

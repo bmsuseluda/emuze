@@ -15,6 +15,7 @@ import { flycast } from "../app/server/applicationsDB.server/applications/flycas
 import { xemu } from "../app/server/applicationsDB.server/applications/xemu/index.js";
 import { melonds } from "../app/server/applicationsDB.server/applications/melonds/index.js";
 import { cemu } from "../app/server/applicationsDB.server/applications/cemu/index.js";
+import { rosaliesMupenGui } from "../app/server/applicationsDB.server/applications/rmg/index.js";
 
 export const applications = {
   duckstation,
@@ -31,6 +32,7 @@ export const applications = {
   ares,
   flycast,
   dosboxstaging,
+  rosaliesMupenGui,
   scummvm,
   xemu,
 } satisfies Record<string, Application>;

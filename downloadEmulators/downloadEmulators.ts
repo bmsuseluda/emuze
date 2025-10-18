@@ -37,13 +37,13 @@ export const emulatorVersions = {
   pcsx2: "2.4.0",
   ppsspp: "1.19.3",
   rpcs3: "0.0.38",
-  ryujinx: "1.3.2",
+  ryujinx: "1.3.3",
   xemu: "0.8.106",
 } satisfies Partial<Record<ApplicationId, string>>;
 
 const emulatorDownloads = {
   ares: {
-    Linux: `https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v${emulatorVersions.ares}%402025-08-26_1756238563/ares-v${emulatorVersions.ares}-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v${emulatorVersions.ares}%402025-10-10_1760076331/ares-v${emulatorVersions.ares}-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/ares-emulator/ares/releases/download/v${emulatorVersions.ares}/ares-windows-x64.zip`,
   },
   azahar: {
@@ -63,7 +63,7 @@ const emulatorDownloads = {
     Windows: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-win64-${emulatorVersions.flycast}.zip`,
   },
   mame: {
-    Linux: `https://github.com/pkgforge-dev/MAME-AppImage/releases/download/0.280-1%402025-10-01_1759304576/MAME-0.281-1-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/MAME-AppImage/releases/download/0.281-1%402025-10-08_1759937007/MAME-0.281-1-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/mamedev/mame/releases/download/mame0281/mame0281b_x64.exe`,
   },
   mednafen: {

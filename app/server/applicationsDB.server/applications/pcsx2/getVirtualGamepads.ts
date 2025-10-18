@@ -52,7 +52,7 @@ export const getVirtualGamepad =
       "ButtonDeadzone = 0",
       "PressureModifier = 0.5",
       ...Object.entries(buttonMapping).map(
-        ([key, value]) => `${key} = SDL-${sdlIndex}/${value}`,
+        ([key, value]) => `${key} = SDL-${sdlDevice.player}/${value}`,
       ),
       "",
       "",

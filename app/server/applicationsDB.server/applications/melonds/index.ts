@@ -4,7 +4,7 @@ import type { ApplicationId } from "../../applicationId.js";
 import type { Application } from "../../types.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { isWindows } from "../../../operationsystem.server.js";
-import { EOL, homedir } from "node:os";
+import { EOL } from "node:os";
 import { log } from "../../../debug.server.js";
 import type { SectionReplacement } from "../../configFile.js";
 import {
@@ -15,16 +15,15 @@ import {
 } from "../../configFile.js";
 import { defaultSettings } from "./defaultSettings.js";
 import { replaceKeyboardConfig } from "./keyboardConfig.js";
-import { getVirtualGamepad, getPlayerIndex } from "./getVirtualGamepad.js";
+import { getPlayerId, getVirtualGamepad } from "./getVirtualGamepad.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
+import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 
 const flatpakId = "net.kuribo64.melonDS";
 const applicationId: ApplicationId = "melonds";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "melonDS.exe")
   : nodepath.join(applicationId, "melonDS-x86_64.AppImage");
-
-const { config } = envPaths("melonDS", { suffix: "" });
 
 const configFileName = "melonDS.toml";
 
@@ -49,9 +48,9 @@ const replaceJoystickConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Instance0.Joystick]", [...getVirtualGamepad()]);
 
 const replaceInstanceConfig: SectionReplacement = (sections) => {
-  const playerIndex = getPlayerIndex();
+  const playerId = getPlayerId();
   return replaceSection(sections, "[Instance0]", [
-    { keyValue: `JoystickID = ${playerIndex}` },
+    { keyValue: `JoystickID = ${playerId}` },
   ]);
 };
 
@@ -73,8 +72,9 @@ const replaceConfigFile = () => {
 
 const getConfigFileBasePath = () => {
   if (isWindows()) {
-    return nodepath.join(homedir(), "AppData", "Roaming", "melonDS");
+    return nodepath.join(bundledEmulatorsPathBase, applicationId);
   } else {
+    const { config } = envPaths("melonDS", { suffix: "" });
     return nodepath.join(config);
   }
 };

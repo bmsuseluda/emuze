@@ -10,7 +10,7 @@ export const devices: Sdl.Controller.Device[] = [
   steamDeck,
   gamepadPs4,
   eightBitDoPro2,
-  { ...eightBitDoPro2, id: 3 },
+  { ...eightBitDoPro2, id: 3, player: 3 },
 ];
 
 const on = (

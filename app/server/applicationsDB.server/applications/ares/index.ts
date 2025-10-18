@@ -6,6 +6,8 @@ import { isWindows } from "../../../operationsystem.server.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
+import { importElectron } from "../../../importElectron.server.js";
+import { commandLineOptions } from "../../../commandLine.server.js";
 
 const applicationId: ApplicationId = "ares";
 const bundledPath = isWindows()
@@ -196,4 +198,13 @@ export const aresNeoGeoPocketColor: Application = {
     ...getSharedAresOptionParams(props),
     ...["--system", "Neo Geo Pocket Color"],
   ],
+};
+
+export const isRmgForN64 = () => {
+  const electron = importElectron();
+
+  return (
+    electron?.app?.commandLine.hasSwitch(commandLineOptions.rmgN64.id) ||
+    process.env.EMUZE_RMG_N64 === "true"
+  );
 };

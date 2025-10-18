@@ -68,6 +68,7 @@ const homepages: Record<ApplicationId, string> = {
   ppsspp: "https://github.com/hrydgard/ppsspp",
   rpcs3: "https://github.com/RPCS3/rpcs3",
   ryujinx: "https://git.ryujinx.app/ryubing/ryujinx",
+  rosaliesMupenGui: "https://github.com/Rosalie241/RMG",
   scummvm: "https://github.com/scummvm/scummvm",
   xemu: "https://github.com/xemu-project/xemu",
 };

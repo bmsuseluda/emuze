@@ -5,7 +5,7 @@ import {
   getPlayerIndexArray,
 } from "../../../../types/gamepad.js";
 import { log } from "../../../debug.server.js";
-import { isSteamOs, isWindows } from "../../../operationsystem.server.js";
+import { isSteamOs } from "../../../operationsystem.server.js";
 import type { GlobalDefaultInputConfigFile, PlayerInput } from "./config.js";
 import { globalDefaultInputConfigFileReset } from "./config.js";
 import { keyboardConfig } from "./keyboardConfig.js";
@@ -116,8 +116,7 @@ export const getVirtualGamepad = (
 };
 
 export const getVirtualGamepads = (): GlobalDefaultInputConfigFile => {
-  const gamepads =
-    isSteamOs() || isWindows() ? sdl.joystick.devices : sdl.controller.devices;
+  const gamepads = isSteamOs() ? sdl.joystick.devices : sdl.controller.devices;
   const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
 
   if (gamepads.length > 0) {

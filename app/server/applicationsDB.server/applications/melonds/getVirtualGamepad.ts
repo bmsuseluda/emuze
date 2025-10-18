@@ -7,6 +7,7 @@ import type {
 import {
   createSdlMappingObject,
   getButtonIndex,
+  getPlayerIdArray,
   getPlayerIndexArray,
   isDpadHat,
 } from "../../../../types/gamepad.js";
@@ -103,5 +104,5 @@ export const getVirtualGamepad = (): ParamToReplace[] => {
   return [];
 };
 
-export const getPlayerIndex = () =>
-  getPlayerIndexArray(sdl.joystick.devices).at(0) || 0;
+export const getPlayerId = () =>
+  getPlayerIdArray(sdl.joystick.devices).at(0) || 0;
