@@ -48,7 +48,7 @@ The following systems are supported:
 | Nintendo Game Boy | [ares](https://github.com/ares-emulator/ares) | Yes | v146 | No | 
 | Nintendo Game Boy Color | [ares](https://github.com/ares-emulator/ares) | Yes | v146 | No | 
 | Nintendo Game Boy Advance | [ares](https://github.com/ares-emulator/ares) | Yes | v146 | Yes | 
-| Nintendo DS | [melonDS](https://github.com/melonDS-emu/melonDS) | No | - | No | 
+| Nintendo DS | [melonDS](https://github.com/melonDS-emu/melonDS) | Yes | v1.0 | No | 
 | Nintendo 3DS | [Azahar](https://github.com/azahar-emu/azahar) | Yes | v2123.2 | No | 
 | Nintendo 64 | [ares](https://github.com/ares-emulator/ares) | Yes | v146 | No | 
 | Nintendo Gamecube | [Dolphin](https://github.com/dolphin-emu/dolphin) | Yes | v2509 | No | 
@@ -196,7 +196,7 @@ In general emuze should just detect your systems and games. If not please check 
 
 ### 🪟 Windows
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.56.0/emuze-Setup-0.56.0.exe) the latest Version of emuze and install it
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.57.0/emuze-Setup-0.57.0.exe) the latest Version of emuze and install it
 
 2) Choose the [folder where your Roms are located](#roms-folder)
 3) Optionally choose the [folder where your Emulators are located](#emulators-folder-windows-only)
@@ -219,7 +219,7 @@ emulators
 
 ### 🐧 Linux
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.56.0/emuze-0.56.0.AppImage) the latest Version of emuze
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.57.0/emuze-0.57.0.AppImage) the latest Version of emuze
 
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
@@ -230,7 +230,7 @@ emulators
 ### 🎮️ Steam Deck in Game mode
 
 1) Switch to Desktop
-2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.56.0/emuze-0.56.0.AppImage) the latest Version of emuze
+2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.57.0/emuze-0.57.0.AppImage) the latest Version of emuze
 
 3) Mark the AppImage as executable and start emuze
 4) Choose the [folder where your Roms are located](#roms-folder)
