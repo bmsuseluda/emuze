@@ -188,11 +188,9 @@ In general emuze should just detect your systems and games. If not please check 
 | Microsoft DOS | Microsoft DOS, DOS, MS DOS | `.exe`, `.bat` | 
 | Microsoft XBOX | Microsoft XBOX, XBOX | `.iso`, `.xiso` | 
 
+> [!INFO] Capitalization, special characters and white spaces do not matter in a System Name. E.g. `TurboGrafx-16` will be detected as well as `turbo grafx 16`.
 </details>
 <br>
-
-> [!NOTE]  
-> Capitalization, special characters and white spaces do not matter in a System Name. E.g. `TurboGrafx-16` will be detected as well as `turbo grafx 16`.
 
 ## 🚀 Getting started
 
@@ -226,7 +224,7 @@ emulators
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
 
-> [!NOTE]  
+> [!INFO]  
 > All emulators, not bundled, need to be installed via flatpak.
 
 ### 🎮️ Steam Deck in Game mode
@@ -285,7 +283,7 @@ Usage: emuze [options]
 Options:
   --help             Show help
   --fullscreen       Start the app in fullscreen mode
-  --debug-emuze      Activates verbose logging to /home/dennisludwig/.local/share/emuze/emuze.log
+  --debug-emuze      Activates verbose logging to /home/.local/share/emuze/emuze.log
   --rmg              Activates the less accurate Rosalies Mupen GUI (RMG) emulator to play N64
 ```
 
