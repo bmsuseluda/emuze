@@ -110,7 +110,7 @@ export const getVirtualGamepad = (
     ),
     ...getSetting(
       "profiles\\1\\c_stick",
-      `axis_x:${getButtonIndex(mappingObject, "rightx")},axis_${getButtonIndex(mappingObject, "righty")}:4,deadzone:0.100000,engine:sdl,guid:${guid},port:0`,
+      `axis_x:${getButtonIndex(mappingObject, "rightx")},axis_y:${getButtonIndex(mappingObject, "righty")},deadzone:0.100000,engine:sdl,guid:${guid},port:0`,
     ),
     ...getKeyboardDebugMapping(),
   ];
