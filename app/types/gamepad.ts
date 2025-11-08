@@ -370,6 +370,24 @@ export const nsoNes = {
     "0500a7a57e0500000720000001800000,NSO NES Controller,a:b0,b:b1,back:b4,start:b5,leftshoulder:b2,rightshoulder:b3,dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,platform:Linux,",
 } satisfies Sdl.Controller.Device;
 
+export const retroShooterReaper = {
+  id: 0,
+  name: "3AGAME 3A-3H Retro Shooter 1",
+  path: "/dev/input/event24",
+  type: null,
+  guid: "0300c31d830400005057000011010000",
+  vendor: 1155,
+  product: 22352,
+  version: 273,
+  player: null,
+} satisfies Sdl.Joystick.Device;
+
+export const isLightgunConnected = (joysticks: Sdl.Joystick.Device[]) =>
+  !!joysticks.find(
+    ({ name, vendor }) =>
+      name?.includes("Retro Shooter") && vendor === retroShooterReaper.vendor,
+  );
+
 export const convertToJoystick = (
   controller: Sdl.Controller.Device,
 ): Sdl.Joystick.Device => ({

@@ -16,6 +16,8 @@ import {
 import { EOL } from "node:os";
 import type {
   ActiveInputConfigFile,
+  ConfigFile,
+  GemMouseConfigFile,
   GlobalDefaultInputConfigFile,
   VfsConfigFile,
 } from "./config.js";
@@ -38,11 +40,31 @@ const guiConfigFileName = "CurrentSettings.ini";
 const vfsConfigFileName = "vfs.yml";
 const activeInputConfigFileName = "active_input_configurations.yml";
 const globalDefaultInputConfigFileName = "Default.yml";
+const rpcnConfigFileName = "rpcn.yml";
+const gemConfigFileName = "gem.yml";
+const gemMouseConfigFileName = "gem_mouse.yml";
+const gemRealConfigFileName = "gem_real.yml";
+const rawMouseConfigFileName = "raw_mouse.yml";
 
 const guiConfigPathRelative = nodepath.join("GuiConfigs", guiConfigFileName);
 const vfsConfigPathRelative = isWindows()
   ? nodepath.join("config", vfsConfigFileName)
   : nodepath.join(vfsConfigFileName);
+const rpcnConfigPathRelative = isWindows()
+  ? nodepath.join("config", rpcnConfigFileName)
+  : nodepath.join(rpcnConfigFileName);
+const gemConfigPathRelative = isWindows()
+  ? nodepath.join("config", gemConfigFileName)
+  : nodepath.join(gemConfigFileName);
+const gemMouseConfigPathRelative = isWindows()
+  ? nodepath.join("config", gemMouseConfigFileName)
+  : nodepath.join(gemMouseConfigFileName);
+const gemRealConfigPathRelative = isWindows()
+  ? nodepath.join("config", gemRealConfigFileName)
+  : nodepath.join(gemRealConfigFileName);
+const rawMouseConfigPathRelative = isWindows()
+  ? nodepath.join("config", rawMouseConfigFileName)
+  : nodepath.join(rawMouseConfigFileName);
 const activeInputConfigPathRelative = isWindows()
   ? nodepath.join("config", "input_configs", activeInputConfigFileName)
   : nodepath.join("input_configs", activeInputConfigFileName);
@@ -87,6 +109,9 @@ const getConfigFilePath = (configFilePathRelative: string) =>
 export const getGuiConfigFilePath = () =>
   getConfigFilePath(guiConfigPathRelative);
 const getVfsConfigFilePath = () => getConfigFilePath(vfsConfigPathRelative);
+const getGemMouseConfigFilePath = () =>
+  getConfigFilePath(gemMouseConfigPathRelative);
+const getConfigConfigFilePath = () => getConfigFilePath(gemConfigPathRelative);
 const getActiveInputConfigFilePath = () =>
   getConfigFilePath(activeInputConfigPathRelative);
 const getGlobalDefaultInputConfigFilePath = () =>
@@ -94,6 +119,10 @@ const getGlobalDefaultInputConfigFilePath = () =>
 
 const readVfsConfigFile = () =>
   readYmlConfigFile(getVfsConfigFilePath()) as VfsConfigFile;
+const readGemMouseConfigFile = () =>
+  readYmlConfigFile(getGemMouseConfigFilePath()) as GemMouseConfigFile;
+const readConfigFile = () =>
+  readYmlConfigFile(getConfigConfigFilePath()) as ConfigFile;
 
 const replaceMetaConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Meta]", [{ keyValue: "checkUpdateStart=false" }]);
@@ -149,7 +178,7 @@ export const replaceGuiConfigFile = (ps3RomsPath: string) => {
 
 const replaceVfsConfigFile = (ps3RomsPath: string) => {
   const fileContent = readVfsConfigFile();
-  const fileContentNew = {
+  const fileContentNew: VfsConfigFile = {
     ...fileContent,
     "$(EmulatorDir)": ps3RomsPath,
     "/dev_hdd0/": "$(EmulatorDir)dev_hdd0/",
@@ -164,12 +193,51 @@ const replaceVfsConfigFile = (ps3RomsPath: string) => {
   writeConfig(getVfsConfigFilePath(), YAML.stringify(fileContentNew));
 };
 
+const replaceGemMouseConfigFile = () => {
+  const fileContent = readGemMouseConfigFile();
+  const fileContentNew: GemMouseConfigFile = {
+    ...fileContent,
+    "Player 1": {
+      ...fileContent["Player 1"],
+      T: "Mouse Button 1",
+      Start: "Mouse Button 3",
+      Cross: "Mouse Button 3",
+      Select: "Mouse Button 7",
+      Triangle: "Mouse Button 8",
+      Circle: "Mouse Button 4",
+      Square: "Mouse Button 5",
+      Move: "Mouse Button 2",
+    },
+  };
+
+  writeConfig(getGemMouseConfigFilePath(), YAML.stringify(fileContentNew));
+};
+
+const replaceConfigFile = () => {
+  const fileContent = readConfigFile();
+  const fileContentNew: ConfigFile = {
+    ...fileContent,
+    "Input/Output": {
+      ...fileContent["Input/Output"],
+      Keyboard: "Basic",
+      Mouse: "Basic",
+      Camera: "Fake",
+      "Camera type": "PS Eye",
+      "Camera flip": "None",
+      "Camera ID": "Default",
+      Move: "Mouse",
+    },
+  };
+
+  writeConfig(getConfigConfigFilePath(), YAML.stringify(fileContentNew));
+};
+
 const readActiveInputConfigFile = () =>
   readYmlConfigFile(getActiveInputConfigFilePath()) as ActiveInputConfigFile;
 
 const replaceActiveInputConfigFile = () => {
   const fileContent = readActiveInputConfigFile();
-  const fileContentNew = {
+  const fileContentNew: ActiveInputConfigFile = {
     ...fileContent,
     "Active Configurations": {
       global: "Default",
@@ -188,7 +256,7 @@ const replaceGlobalDefaultInputConfigFile = () => {
   const virtualGamepads = getVirtualGamepads();
 
   const fileContent = readGlobalDefaultInputConfigFile();
-  const fileContentNew = {
+  const fileContentNew: GlobalDefaultInputConfigFile = {
     ...fileContent,
     ...virtualGamepads,
   };
@@ -224,9 +292,14 @@ export const rpcs3: Application = {
       vfsConfigPathRelative,
       activeInputConfigPathRelative,
       globalDefaultInputConfigPathRelative,
+      rpcnConfigPathRelative,
+      gemConfigPathRelative,
+      gemMouseConfigPathRelative,
+      gemRealConfigPathRelative,
+      rawMouseConfigPathRelative,
+      // TODO: check if patches and savestates are under config folder as well on windows
       "patches",
       "savestates",
-      "rpcn.yml",
     ],
   },
   createOptionParams: ({
@@ -243,6 +316,8 @@ export const rpcs3: Application = {
     log("debug", "rpcs3", "ps3RomsPath", ps3RomsPathWithTrailingSeparator);
     replaceGuiConfigFile(ps3RomsPathWithTrailingSeparator);
     replaceVfsConfigFile(ps3RomsPathWithTrailingSeparator);
+    replaceGemMouseConfigFile();
+    replaceConfigFile();
     replaceActiveInputConfigFile();
     replaceGlobalDefaultInputConfigFile();
 

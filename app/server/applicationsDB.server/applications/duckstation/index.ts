@@ -25,22 +25,24 @@ const bundledPath = isWindows()
 
 const configFileName = "settings.ini";
 
-export const replaceGamepadConfig: SectionReplacement = (sections) => {
-  const virtualGamepads = getVirtualGamepads();
-  if (sections.find((section) => section.startsWith("[Pad1]"))) {
-    return sections.reduce<string[]>((accumulator, section) => {
-      if (section.startsWith("[Pad1]")) {
-        accumulator.push(...virtualGamepads);
-      } else if (!section.startsWith("[Pad")) {
-        accumulator.push(section);
-      }
+export const replaceGamepadConfig =
+  (gameName: string): SectionReplacement =>
+  (sections) => {
+    const virtualGamepads = getVirtualGamepads(gameName);
+    if (sections.find((section) => section.startsWith("[Pad1]"))) {
+      return sections.reduce<string[]>((accumulator, section) => {
+        if (section.startsWith("[Pad1]")) {
+          accumulator.push(...virtualGamepads);
+        } else if (!section.startsWith("[Pad")) {
+          accumulator.push(section);
+        }
 
-      return accumulator;
-    }, []);
-  } else {
-    return [...sections, virtualGamepads.join(EOL)];
-  }
-};
+        return accumulator;
+      }, []);
+    } else {
+      return [...sections, virtualGamepads.join(EOL)];
+    }
+  };
 
 export const replaceHotkeyConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Hotkeys]", [
@@ -113,7 +115,10 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
-export const replaceConfigSections = (psxRomsPath: string) => {
+export const replaceConfigSections = (
+  psxRomsPath: string,
+  gameName: string,
+) => {
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
 
@@ -125,7 +130,7 @@ export const replaceConfigSections = (psxRomsPath: string) => {
     // replaceControllerPortsConfig,
     replaceMainConfig,
     replaceHotkeyConfig,
-    replaceGamepadConfig,
+    replaceGamepadConfig(gameName),
     replaceAutoUpdaterConfig,
     replaceGameListConfig(psxRomsPath),
   ).join(EOL);
@@ -165,9 +170,10 @@ export const duckstation: Application = {
       general: { categoriesPath },
     },
     categoryData,
+    entryData,
   }) => {
     const psxRomsPath = nodepath.join(categoriesPath, categoryData.name);
-    replaceConfigSections(psxRomsPath);
+    replaceConfigSections(psxRomsPath, entryData.name);
 
     const optionParams = [];
     if (fullscreen) {

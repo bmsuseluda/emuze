@@ -18,6 +18,43 @@ export interface VfsConfigFile {
   "/dev_usb***/": Record<string, Usb>;
 }
 
+/**
+ T: "Mouse Button 1";
+    Start: "Mouse Button 3";
+    Cross: "Mouse Button 3";
+    Select: "Mouse Button 7";
+    Triangle: "Mouse Button 8";
+    Circle: "Mouse Button 4";
+    Square: "Mouse Button 5";
+    Move: "Mouse Button 2";
+ */
+type MouseButton = `Mouse Button ${number}`;
+export interface GemMouseConfigFile {
+  "Player 1": {
+    T: MouseButton;
+    Start: MouseButton;
+    Cross: MouseButton;
+    Select: MouseButton;
+    Triangle: MouseButton;
+    Circle: MouseButton;
+    Square: MouseButton;
+    Move: MouseButton;
+  };
+}
+
+/** config.yml */
+export interface ConfigFile {
+  "Input/Output": {
+    Keyboard: "Basic";
+    Mouse: "Basic";
+    Camera: "Fake";
+    "Camera type": "PS Eye";
+    "Camera flip": "None";
+    "Camera ID": "Default";
+    Move: "Mouse";
+  };
+}
+
 export interface ActiveInputConfigFile {
   "Active Configurations": {
     global: string;

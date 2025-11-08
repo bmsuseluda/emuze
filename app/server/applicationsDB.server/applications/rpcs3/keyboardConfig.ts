@@ -1,9 +1,10 @@
 import {
-  playerInputReset,
+  globalDefaultInputConfigFileReset,
   type GlobalDefaultInputConfigFile,
 } from "./config.js";
 
 export const keyboardConfig: GlobalDefaultInputConfigFile = {
+  ...globalDefaultInputConfigFileReset,
   "Player 1 Input": {
     Handler: "Keyboard",
     Device: "Keyboard",
@@ -102,10 +103,4 @@ export const keyboardConfig: GlobalDefaultInputConfigFile = {
     },
     "Buddy Device": "",
   },
-  "Player 2 Input": playerInputReset,
-  "Player 3 Input": playerInputReset,
-  "Player 4 Input": playerInputReset,
-  "Player 5 Input": playerInputReset,
-  "Player 6 Input": playerInputReset,
-  "Player 7 Input": playerInputReset,
 };

@@ -2,7 +2,7 @@ import { categories } from "../app/server/categoriesDB.server/index.js";
 import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
 import type { SystemId } from "../app/server/categoriesDB.server/systemId.js";
 import { commandLineOptionsString } from "../app/server/commandLine.server.js";
-import { emulatorVersions } from "../downloadEmulators/downloadEmulators.js";
+import { emulatorVersions } from "../downloadEmulators/applications.js";
 import { keyboardMapping } from "../app/types/gamepad.js";
 
 const preConfigured: ApplicationId[] = [

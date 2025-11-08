@@ -152,8 +152,10 @@ app.on("ready", async () => {
   window.maximize();
   window.show();
 
-  if (fullscreen) {
-    setFullscreen(window, true);
+  // This is necessary because maximize does not work on gamescope on steamos
+  setFullscreen(window, true);
+  if (!fullscreen) {
+    setFullscreen(window, false);
   }
 });
 

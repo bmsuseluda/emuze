@@ -105,7 +105,6 @@ export const removeFileHome = (path: string) => {
 
 export const copy = (source: string, destination: string) => {
   if (existsSync(source)) {
-    rmSync(destination, { recursive: true, force: true });
     cpSync(source, destination, {
       recursive: true,
       force: true,

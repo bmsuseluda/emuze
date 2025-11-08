@@ -51,7 +51,7 @@ describe("duckstation", () => {
   describe("replaceGamepadConfig", () => {
     it("Should set the connected pads and reset the remaining", () => {
       const settings = [main, pad1, pad2, pad3, pad4, hotkeys];
-      expect(replaceGamepadConfig(settings)).toStrictEqual([
+      expect(replaceGamepadConfig("Tekken 3")(settings)).toStrictEqual([
         main,
         steamDeckMapped,
         ps4Mapped,

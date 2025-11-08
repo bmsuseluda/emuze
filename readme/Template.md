@@ -101,9 +101,11 @@ In general emuze should just detect your systems and games. If not please check 
 return scripts.createSystemsTableExpert()
 ```
 
-> [!INFO] Capitalization, special characters and white spaces do not matter in a System Name. E.g. `TurboGrafx-16` will be detected as well as `turbo grafx 16`.
 </details>
 <br>
+
+> [!NOTE]
+> Capitalization, special characters and white spaces do not matter in a System Name. E.g. `TurboGrafx-16` will be detected as well as `turbo grafx 16`.
 
 ## 🚀 Getting started
 
@@ -139,7 +141,7 @@ return scripts.getLinuxDownloadLink('1) ')
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
 
-> [!INFO]  
+> [!NOTE]  
 > All emulators, not bundled, need to be installed via flatpak.
 
 ### 🎮️ Steam Deck in Game mode
