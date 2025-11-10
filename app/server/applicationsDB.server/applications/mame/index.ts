@@ -14,6 +14,7 @@ import { XMLBuilder, XMLParser } from "fast-xml-parser";
 import { log } from "../../../debug.server.js";
 import { createPorts, type ConfigFile } from "./config.js";
 import { writeConfig } from "../../configFile.js";
+import { getVirtualGamepads } from "./getVirtualGamepads.js";
 
 const flatpakId = "org.mamedev.MAME";
 const applicationId: ApplicationId = "mame";
@@ -56,19 +57,33 @@ const readDefaultConfigFile = () =>
 
 const replaceDefaultConfigFile = () => {
   const fileContent = readDefaultConfigFile();
-  log("debug", "mame", "config file", fileContent);
+
   const fileContentNew: ConfigFile = {
     ...fileContent,
     mameconfig: {
-      ...fileContent.mameconfig,
+      ...fileContent?.mameconfig,
       system: {
-        ...fileContent.mameconfig.system,
+        ...fileContent?.mameconfig?.system,
         input: {
-          ...fileContent.mameconfig.system.input,
+          ...fileContent?.mameconfig?.system?.input,
           port: createPorts([
+            ["UI_MENU", "KEYCODE_F2"],
+            ["UI_HELP", "KEYCODE_TAB"],
+            ["UI_SAVE_STATE_QUICK", "KEYCODE_F1"],
+            ["UI_LOAD_STATE_QUICK", "KEYCODE_F3"],
+            ["TOGGLE_FULLSCREEN", "KEYCODE_F11"],
             ["POWER_ON", "NONE"],
             ["POWER_OFF", "NONE"],
-            ["UI_MENU", "KEYCODE_F2"],
+            ["SERVICE", "NONE"],
+            ["MEMORY_RESET", "NONE"],
+            ["UI_SAVE_STATE", "NONE"],
+            ["UI_LOAD_STATE", "NONE"],
+            ["UI_RESET_MACHINE", "NONE"],
+            ["UI_SOFT_RESET", "NONE"],
+            ["UI_TAPE_START", "NONE"],
+            ["UI_TAPE_STOP", "NONE"],
+            ["UI_AUDIT", "NONE"],
+            ...getVirtualGamepads(),
           ]),
         },
       },
@@ -90,19 +105,21 @@ const getSharedMameOptionParams: OptionParamFunction = ({
 }) => {
   replaceDefaultConfigFile();
 
+  // TODO: create cfg file for mame gameid and set service menu to none
+
   const entryDirname = nodepath.join(categoriesPath, name);
   const optionParams = [];
 
+  const configDirectory = nodepath.join(
+    emulatorsConfigDirectory,
+    applicationId,
+  );
+
   optionParams.push(
     ...["-rompath", entryDirname],
-    ...[
-      "-cfg_directory",
-      nodepath.join(emulatorsConfigDirectory, applicationId, "cfg"),
-    ],
-    ...[
-      "-nvram_directory",
-      nodepath.join(emulatorsConfigDirectory, applicationId, "nvram"),
-    ],
+    ...["-inipath", configDirectory],
+    ...["-cfg_directory", nodepath.join(configDirectory, "cfg")],
+    ...["-nvram_directory", nodepath.join(configDirectory, "nvram")],
     "-skip_gameinfo",
     fullscreen ? "-nowindow" : "-window",
   );
