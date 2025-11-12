@@ -11,6 +11,7 @@ const preConfigured: ApplicationId[] = [
   "dolphin",
   "duckstation",
   "flycast",
+  "mame",
   "mednafen",
   "melonds",
   "pcsx2",
@@ -38,20 +39,22 @@ const bundled: Partial<Record<ApplicationId, string>> = {
 };
 
 const biosNeeded: SystemId[] = [
-  "sonyplaystation",
-  "sonyplaystation2",
-  "sonyplaystation3",
-  "segacd",
-  "segamegald",
-  "sega32x",
-  "segasaturn",
+  "arcade",
   "pcenginecd",
   "pcenginesupergrafx",
+  "neogeo",
   "neogeopocket",
   "neogeopocketcolor",
   "nintendogameboyadvance",
   "nintendowiiu",
   "nintendoswitch",
+  "sega32x",
+  "segacd",
+  "segamegald",
+  "segasaturn",
+  "sonyplaystation",
+  "sonyplaystation2",
+  "sonyplaystation3",
   "xbox",
 ];
 

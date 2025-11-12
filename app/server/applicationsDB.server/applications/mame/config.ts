@@ -67,9 +67,21 @@ export interface ConfigFile {
   "?xml": { "@_version": "1.0" };
   mameconfig: {
     system: {
-      input: {
+      input?: {
         port: Port[];
       };
+      "@_name": "default";
     };
+    "@_version": "10";
   };
 }
+
+export const defaultConfig: ConfigFile = {
+  "?xml": { "@_version": "1.0" },
+  mameconfig: {
+    system: {
+      "@_name": "default",
+    },
+    "@_version": "10",
+  },
+};

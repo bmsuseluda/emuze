@@ -12,9 +12,9 @@ import { isWindows } from "../../../operationsystem.server.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { XMLBuilder, XMLParser } from "fast-xml-parser";
 import { log } from "../../../debug.server.js";
-import { createPorts, type ConfigFile } from "./config.js";
+import { createPorts, defaultConfig, type ConfigFile } from "./config.js";
 import { writeConfig } from "../../configFile.js";
-import { getVirtualGamepads } from "./getVirtualGamepads.js";
+import { mameDefaultConfig } from "./mameDefaultConfig.js";
 
 const flatpakId = "org.mamedev.MAME";
 const applicationId: ApplicationId = "mame";
@@ -23,6 +23,7 @@ const bundledPath = isWindows()
   : nodepath.join(applicationId, `${applicationId}.AppImage`);
 
 const defaultConfigFileName = "default.cfg";
+const mameConfigFileName = "mame.ini";
 
 const defaultConfigPathRelative = nodepath.join("cfg", defaultConfigFileName);
 
@@ -35,6 +36,7 @@ const getConfigFilePath = (configFilePathRelative: string) =>
 
 const getDefaultConfigFilePath = () =>
   getConfigFilePath(defaultConfigPathRelative);
+const getMameConfigFilePath = () => getConfigFilePath(mameConfigFileName);
 
 const findMameArcadeGameName: FindEntryNameFunction = ({ entry: { name } }) =>
   findGameNameById(name, mameGames, "mame");
@@ -48,7 +50,7 @@ const readXmlConfigFile = (filePath: string) => {
     return parser.parse(file);
   } catch (error) {
     log("debug", "mame", "config file can not be read.", filePath, error);
-    return {};
+    return defaultConfig;
   }
 };
 
@@ -68,13 +70,13 @@ const replaceDefaultConfigFile = () => {
           ...fileContent?.mameconfig?.system?.input,
           port: createPorts([
             ["UI_MENU", "KEYCODE_F2"],
-            ["UI_HELP", "KEYCODE_TAB"],
             ["UI_SAVE_STATE_QUICK", "KEYCODE_F1"],
             ["UI_LOAD_STATE_QUICK", "KEYCODE_F3"],
             ["TOGGLE_FULLSCREEN", "KEYCODE_F11"],
+            ["SERVICE", "JOYCODE_1_BUTTON2 JOYCODE_1_SELECT OR KEYCODE_TAB"],
+            ["UI_HELP", "NONE"],
             ["POWER_ON", "NONE"],
             ["POWER_OFF", "NONE"],
-            ["SERVICE", "NONE"],
             ["MEMORY_RESET", "NONE"],
             ["UI_SAVE_STATE", "NONE"],
             ["UI_LOAD_STATE", "NONE"],
@@ -83,7 +85,6 @@ const replaceDefaultConfigFile = () => {
             ["UI_TAPE_START", "NONE"],
             ["UI_TAPE_STOP", "NONE"],
             ["UI_AUDIT", "NONE"],
-            ...getVirtualGamepads(),
           ]),
         },
       },
@@ -96,6 +97,13 @@ const replaceDefaultConfigFile = () => {
   writeConfig(getDefaultConfigFilePath(), xmlContent);
 };
 
+const replaceMameConfigFile = () => {
+  const mameConfigFilePath = getMameConfigFilePath();
+  if (!fs.existsSync(mameConfigFilePath)) {
+    writeConfig(mameConfigFilePath, mameDefaultConfig);
+  }
+};
+
 const getSharedMameOptionParams: OptionParamFunction = ({
   categoryData: { name },
   settings: {
@@ -103,9 +111,8 @@ const getSharedMameOptionParams: OptionParamFunction = ({
     appearance: { fullscreen },
   },
 }) => {
+  replaceMameConfigFile();
   replaceDefaultConfigFile();
-
-  // TODO: create cfg file for mame gameid and set service menu to none
 
   const entryDirname = nodepath.join(categoriesPath, name);
   const optionParams = [];

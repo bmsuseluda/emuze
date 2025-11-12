@@ -1,12 +1,10 @@
 import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
 import { log } from "../../../debug.server.js";
 import type { EmuzeButtonId } from "../../../../types/gamepad.js";
-import { getPlayerIndexArray } from "../../../../types/gamepad.js";
 import type { PortConfig } from "./config.js";
-import { keyboardConfig } from "./keyboardConfig.js";
 import { mameButtonIds } from "./types.js";
 
+// TODO: should i map dial, paddle as well?
 const mameButtonMapping = {
   // TODO: Check if hat is correct on all controllers
   dpadUp: "HAT1UP",
@@ -15,10 +13,8 @@ const mameButtonMapping = {
   dpadRight: "HAT1RIGHT",
   leftStickUp: "YAXIS_UP_SWITCH",
   leftStickDown: "YAXIS_DOWN_SWITCH",
-  //   TODO: check real key
-  leftStickLeft: "YAXIS_UP_SWITCH",
-  //   TODO: check real key
-  leftStickRight: "JOYSTICKLEFT_RIGHT",
+  leftStickLeft: "XAXIS_LEFT_SWITCH",
+  leftStickRight: "XAXIS_RIGHT_SWITCH",
   a: "BUTTON1",
   b: "BUTTON2",
   x: "BUTTON3",
@@ -33,14 +29,10 @@ const mameButtonMapping = {
   start: "START",
   leftStick: "BUTTON7",
   rightStick: "BUTTON8",
-  //   TODO: check real key
-  rightStickUp: "JOYSTICKRIGHT_UP",
-  //   TODO: check real key
-  rightStickDown: "JOYSTICKRIGHT_DOWN",
-  //   TODO: check real key
-  rightStickLeft: "JOYSTICKRIGHT_LEFT",
-  //   TODO: check real key
-  rightStickRight: "JOYSTICKRIGHT_RIGHT",
+  rightStickUp: "RZAXIS_NEG_SWITCH",
+  rightStickDown: "RZAXIS_POS_SWITCH",
+  rightStickLeft: "ZAXIS_NEG_SWITCH",
+  rightStickRight: "ZAXIS_POS_SWITCH",
 } satisfies Record<EmuzeButtonId, string>;
 
 export const getVirtualGamepad =
@@ -59,12 +51,13 @@ export const getVirtualGamepad =
   };
 
 export const getVirtualGamepads = (): PortConfig[] => {
-  const gamepads = sdl.joystick.devices;
+  // const gamepads = sdl.joystick.devices;
 
-  if (gamepads.length > 0) {
-    const playerIndexArray = getPlayerIndexArray(gamepads);
-    return gamepads.flatMap(getVirtualGamepad(playerIndexArray));
-  }
+  // if (gamepads.length > 0) {
+  //   const playerIndexArray = getPlayerIndexArray(gamepads);
+  //   return gamepads.flatMap(getVirtualGamepad(playerIndexArray));
+  // }
 
-  return keyboardConfig;
+  // return keyboardConfig;
+  return [];
 };
