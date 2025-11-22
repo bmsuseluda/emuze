@@ -49,6 +49,7 @@ export const emulatorVersions = {
   melonds: "1.0",
   pcsx2: "2.4.0",
   ppsspp: "1.19.3",
+  rosaliesMupenGui: "0.8.8",
   rpcs3: "0.0.38",
   ryujinx: "1.3.3",
   xemu: "0.8.106",

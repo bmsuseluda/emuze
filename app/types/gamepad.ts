@@ -382,10 +382,14 @@ export const retroShooterReaper = {
   player: null,
 } satisfies Sdl.Joystick.Device;
 
+const lightgunNames = ["Retro Shooter", "Sinden", "GUN4IR"];
+
 export const isLightgunConnected = (joysticks: Sdl.Joystick.Device[]) =>
   !!joysticks.find(
-    ({ name, vendor }) =>
-      name?.includes("Retro Shooter") && vendor === retroShooterReaper.vendor,
+    ({ name }) =>
+      !!lightgunNames.find((lightgunName) =>
+        name?.toLowerCase().includes(lightgunName.toLowerCase()),
+      ),
   );
 
 export const convertToJoystick = (

@@ -86,7 +86,11 @@ export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[InputSources]", [
     { keyValue: "SDL = true" },
     { keyValue: "SDLControllerEnhancedMode = true" },
+    { keyValue: "RawInput = true" },
   ]);
+
+export const replaceUiConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[UI]", [{ keyValue: "EnableMouseMapping = true" }]);
 
 /**
  * TODO: Check which game is compatible with multitap
@@ -133,6 +137,7 @@ export const replaceConfigSections = (
     replaceGamepadConfig(gameName),
     replaceAutoUpdaterConfig,
     replaceGameListConfig(psxRomsPath),
+    replaceUiConfig,
   ).join(EOL);
 
   writeConfig(filePath, fileContentNew);

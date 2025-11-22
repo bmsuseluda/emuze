@@ -6,8 +6,6 @@ import { isWindows } from "../../../operationsystem.server.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
-import { importElectron } from "../../../importElectron.server.js";
-import { commandLineOptions } from "../../../commandLine.server.js";
 import { getMouse } from "./mouseConfig.js";
 
 const applicationId: ApplicationId = "ares";
@@ -28,12 +26,14 @@ const getSharedAresOptionParams: OptionParamFunction = ({
   const hotkeySave = ["--setting", `Hotkey/SaveState=${getKeyboardKey("F1")}`];
   const hotkeyLoad = ["--setting", `Hotkey/LoadState=${getKeyboardKey("F3")}`];
   const inputSDL = ["--setting", "Input/Driver=SDL"];
+  const autoSaveMemory = ["--setting", "General/AutoSaveMemory=true"];
 
   const optionParams = [
     ...hotkeyFullscreen,
     ...hotkeySave,
     ...hotkeyLoad,
     ...inputSDL,
+    ...autoSaveMemory,
     ...getVirtualGamepads(hasAnalogStick),
     ...getMouse(),
     "--no-file-prompt",
@@ -200,13 +200,4 @@ export const aresNeoGeoPocketColor: Application = {
     ...getSharedAresOptionParams(props),
     ...["--system", "Neo Geo Pocket Color"],
   ],
-};
-
-export const isRmgForN64 = () => {
-  const electron = importElectron();
-
-  return (
-    electron?.app?.commandLine.hasSwitch(commandLineOptions.rmgN64.id) ||
-    process.env.EMUZE_RMG_N64 === "true"
-  );
 };

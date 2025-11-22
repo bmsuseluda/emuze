@@ -3,7 +3,6 @@ import sdl from "@kmamal/sdl";
 import {
   getNameIndex,
   getPlayerIndexArray,
-  isLightgunConnected,
 } from "../../../../types/gamepad.js";
 import { log } from "../../../debug.server.js";
 import { isSteamOs } from "../../../operationsystem.server.js";
@@ -133,14 +132,6 @@ export const getVirtualGamepads = (): GlobalDefaultInputConfigFile => {
       },
       globalDefaultInputConfigFileReset,
     );
-  } else if (isLightgunConnected(sdl.joystick.devices)) {
-    return {
-      ...globalDefaultInputConfigFileReset,
-      "Player 1 Input": {
-        ...globalDefaultInputConfigFileReset["Player 1 Input"],
-        Handler: "SDL",
-      },
-    };
   }
 
   return keyboardConfig;

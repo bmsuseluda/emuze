@@ -16,6 +16,7 @@ It is not there yet for every system and emulator, please have a look at 🕹️
 - 🚂 Import all your roms with a click of a button
 - 🪄 Provides Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
 - 🎮️ Seamless gamepad integration for most emulators
+- 🔫 Experimental lightgun integration for some emulators
 - 📦️ Bundles most emulators
 - 💻️ Windows, Linux and Steam Deck support
 - 💫 Updates itself
