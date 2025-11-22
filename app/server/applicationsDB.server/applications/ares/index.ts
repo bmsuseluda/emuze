@@ -8,6 +8,7 @@ import { envPaths } from "../../../envPaths.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { importElectron } from "../../../importElectron.server.js";
 import { commandLineOptions } from "../../../commandLine.server.js";
+import { getMouse } from "./mouseConfig.js";
 
 const applicationId: ApplicationId = "ares";
 const bundledPath = isWindows()
@@ -34,6 +35,7 @@ const getSharedAresOptionParams: OptionParamFunction = ({
     ...hotkeyLoad,
     ...inputSDL,
     ...getVirtualGamepads(hasAnalogStick),
+    ...getMouse(),
     "--no-file-prompt",
   ];
   if (fullscreen) {

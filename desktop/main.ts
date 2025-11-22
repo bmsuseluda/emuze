@@ -155,6 +155,10 @@ app.on("ready", async () => {
   if (fullscreen) {
     setFullscreen(window, true);
   }
+
+  setTimeout(() => {
+    window.maximize();
+  }, 10);
 });
 
 app.on("will-quit", () => {

@@ -1,5 +1,8 @@
 import { EOL } from "node:os";
-import { getPlayerIndexArray } from "../../../../types/gamepad.js";
+import {
+  getPlayerIndexArray,
+  isLightgunConnected,
+} from "../../../../types/gamepad.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import type { Sdl } from "@kmamal/sdl";
@@ -54,17 +57,41 @@ export const getVirtualGamepad =
     ].join(EOL);
   };
 
+export const getLightgun = (gameName: string) => [
+  `[Pad1]`,
+  `Type = GunCon`,
+  `SmallMotor = SDL-0/SmallMotor`,
+  `LargeMotor = SDL-0/LargeMotor`,
+  `Trigger = Pointer-0/LeftButton`,
+  `ShootOffscreen = Keyboard/1`,
+  `A = Pointer-0/RightButton`,
+  `B = Keyboard/5`,
+  `XScale = ${gameName === "Time Crisis" ? "0.94" : "1"}`,
+  "",
+  "",
+  "",
+];
+
+const getVirtualGamepadConfig = (gameName: string): string[] => {
+  const gamepads = sdl.joystick.devices;
+
+  if (gamepads.length > 0) {
+    if (isLightgunConnected(gamepads)) {
+      return getLightgun(gameName);
+    }
+
+    const playerIndexArray = getPlayerIndexArray(gamepads);
+    return gamepads.map(getVirtualGamepad(playerIndexArray));
+  }
+
+  return [keyboardConfig];
+};
+
 const getVirtualGamepadReset = (gamepadIndex: number) =>
   [`[Pad${gamepadIndex + 1}]`, "Type = None", "", "", ""].join(EOL);
 
-export const getVirtualGamepads = () => {
-  const gamepads = sdl.joystick.devices;
-  const playerIndexArray = getPlayerIndexArray(gamepads);
-
-  const virtualGamepads =
-    gamepads.length > 0
-      ? gamepads.map(getVirtualGamepad(playerIndexArray))
-      : [keyboardConfig];
+export const getVirtualGamepads = (gameName: string) => {
+  const virtualGamepads = getVirtualGamepadConfig(gameName);
 
   return [
     ...virtualGamepads,

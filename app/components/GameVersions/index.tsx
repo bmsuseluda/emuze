@@ -41,7 +41,7 @@ const Label = styled("label", {
   },
 });
 
-const GameVerion = styled("input", {
+const GameVersion = styled("input", {
   base: {
     position: "absolute",
     top: 0,
@@ -130,7 +130,7 @@ export const GameVersions = ({
         return (
           <Wrapper key={id}>
             <Label onClick={handleClick} onDoubleClick={handleDoubleClick}>
-              <GameVerion
+              <GameVersion
                 type="radio"
                 name="gameVersion"
                 value={id}

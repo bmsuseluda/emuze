@@ -16,6 +16,7 @@ import { xemu } from "../app/server/applicationsDB.server/applications/xemu/inde
 import { melonds } from "../app/server/applicationsDB.server/applications/melonds/index.js";
 import { cemu } from "../app/server/applicationsDB.server/applications/cemu/index.js";
 import { rosaliesMupenGui } from "../app/server/applicationsDB.server/applications/rmg/index.js";
+import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
 
 export const applications = {
   duckstation,
@@ -36,3 +37,19 @@ export const applications = {
   scummvm,
   xemu,
 } satisfies Record<string, Application>;
+
+export const emulatorVersions = {
+  ares: "146",
+  azahar: "2123.2",
+  dolphin: "2509",
+  duckstation: "0.1-7371",
+  flycast: "2.5",
+  mame: "0.281",
+  mednafen: "1.32.1",
+  melonds: "1.0",
+  pcsx2: "2.4.0",
+  ppsspp: "1.19.3",
+  rpcs3: "0.0.38",
+  ryujinx: "1.3.3",
+  xemu: "0.8.106",
+} satisfies Partial<Record<ApplicationId, string>>;
