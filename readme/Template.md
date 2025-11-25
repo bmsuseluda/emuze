@@ -164,6 +164,7 @@ There is a Steam Input Profile with the name `emuze`, which has some Hotkeys pre
 - `L5`: Load State
 - `R4`: Open Emulator Menu (if supported from emulator) or Fullscreen
 - `R5`: Left Mouse Click
+- `Left Trackpad`: Scroll Wheel
 - `Right Trackpad`: Mouse
 
 > [!IMPORTANT]

@@ -6,6 +6,7 @@ import nodepath from "node:path";
 import type { SectionReplacement } from "../../configFile.js";
 import {
   chainSectionReplacements,
+  replaceGamepadConfigSection,
   replaceSection,
   splitConfigBySection,
   writeConfig,
@@ -25,21 +26,15 @@ const bundledPath = isWindows()
 const configFileName = "PCSX2.ini";
 const configFilePathRelative = nodepath.join("inis", configFileName);
 
-export const replaceGamepadConfig: SectionReplacement = (sections) => {
+export const replaceGamepadConfig = (): SectionReplacement => {
   const virtualGamepads = getVirtualGamepads();
-  if (sections.find((section) => section.startsWith("[Pad1]"))) {
-    return sections.reduce<string[]>((accumulator, section) => {
-      if (section.startsWith("[Pad1]")) {
-        accumulator.push(...virtualGamepads);
-      } else if (section.startsWith("[Pad]") || !section.startsWith("[Pad")) {
-        accumulator.push(section);
-      }
 
-      return accumulator;
-    }, []);
-  } else {
-    return [...sections, virtualGamepads.join(EOL)];
-  }
+  return replaceGamepadConfigSection(
+    virtualGamepads,
+    "[Pad1]",
+    (section: string) =>
+      section.startsWith("[Pad]") || !section.startsWith("[Pad"),
+  );
 };
 
 export const replaceHotkeyConfig: SectionReplacement = (sections) =>
@@ -127,7 +122,7 @@ export const replaceConfigSections = (ps2RomsPath: string) => {
     replaceInputSourcesConfig,
     // replacePadConfig,
     replaceHotkeyConfig,
-    replaceGamepadConfig,
+    replaceGamepadConfig(),
     replaceAutoUpdaterConfig,
     replaceGameListConfig(ps2RomsPath),
   ).join(EOL);

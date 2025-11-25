@@ -12,11 +12,13 @@ import { log } from "../../../debug.server.js";
 import type { SectionReplacement } from "../../configFile.js";
 import {
   chainSectionReplacements,
+  replaceGamepadConfigSection,
   replaceSection,
   splitConfigBySection,
   writeConfig,
 } from "../../configFile.js";
 import { EOL } from "node:os";
+import { getVirtualGamepads } from "./getVirtualGamepads.js";
 
 const flatpakId = "com.github.Rosalie241.RMG";
 const applicationId: ApplicationId = "rosaliesMupenGui";
@@ -68,6 +70,17 @@ export const replaceRomBrowserConfig =
       },
     ]);
 
+export const replaceGamepadConfig = (): SectionReplacement => {
+  const virtualGamepads = getVirtualGamepads();
+
+  return replaceGamepadConfigSection(
+    virtualGamepads,
+    "[Rosalie's Mupen GUI - Input Plugin Profile 0]",
+    (section: string) =>
+      !section.startsWith("[Rosalie's Mupen GUI - Input Plugin Profile"),
+  );
+};
+
 export const replaceConfigSections = (n64RomsPath: string) => {
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
@@ -77,6 +90,7 @@ export const replaceConfigSections = (n64RomsPath: string) => {
   const fileContentNew = chainSectionReplacements(
     sections,
     replaceMainConfig,
+    replaceGamepadConfig(),
     replaceKeyBindingsConfig,
     replaceRomBrowserConfig(n64RomsPath),
   ).join(EOL);
