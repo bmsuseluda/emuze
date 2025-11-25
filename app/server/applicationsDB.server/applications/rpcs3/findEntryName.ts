@@ -50,12 +50,39 @@ const digitalPhysicalMapping: Record<string, string> = {
   BCUS98472: "XCUS00003",
 };
 
+const sortPhysicalLast = (a: string, b: string) => {
+  const aNormalized = a.toLowerCase();
+  const bNormalized = b.toLowerCase();
+  if (
+    aNormalized.startsWith("games/") ||
+    aNormalized.startsWith("dev_hdd0/GAMES/")
+  ) {
+    return 1;
+  }
+  if (
+    bNormalized.startsWith("games/") ||
+    bNormalized.startsWith("dev_hdd0/GAMES/")
+  ) {
+    return -1;
+  }
+
+  if (aNormalized < bNormalized) {
+    return -1;
+  }
+  if (aNormalized > bNormalized) {
+    return 1;
+  }
+  return 0;
+};
+
 /**
  * Exclude files without serial and files that are just update files for physical games
+ * BCES00129
  */
 export const excludePlaystationFiles: ExcludeFilesFunction = (filepaths) => {
-  const filepathsTemp = [...filepaths];
-  return filepaths.filter((filepath) => {
+  const filePathsSorted = filepaths.toSorted(sortPhysicalLast);
+  const filepathsTemp = [...filePathsSorted];
+  return filePathsSorted.filter((filepath) => {
     const serial = findPlaystation3Serial(filepath);
 
     const foundExclude =

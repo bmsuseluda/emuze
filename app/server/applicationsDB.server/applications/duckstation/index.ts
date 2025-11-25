@@ -6,6 +6,7 @@ import { isWindows } from "../../../operationsystem.server.js";
 import type { SectionReplacement } from "../../configFile.js";
 import {
   chainSectionReplacements,
+  replaceGamepadConfigSection,
   replaceSection,
   splitConfigBySection,
   writeConfig,
@@ -25,24 +26,15 @@ const bundledPath = isWindows()
 
 const configFileName = "settings.ini";
 
-export const replaceGamepadConfig =
-  (gameName: string): SectionReplacement =>
-  (sections) => {
-    const virtualGamepads = getVirtualGamepads(gameName);
-    if (sections.find((section) => section.startsWith("[Pad1]"))) {
-      return sections.reduce<string[]>((accumulator, section) => {
-        if (section.startsWith("[Pad1]")) {
-          accumulator.push(...virtualGamepads);
-        } else if (!section.startsWith("[Pad")) {
-          accumulator.push(section);
-        }
+export const replaceGamepadConfig = (gameName: string): SectionReplacement => {
+  const virtualGamepads = getVirtualGamepads(gameName);
 
-        return accumulator;
-      }, []);
-    } else {
-      return [...sections, virtualGamepads.join(EOL)];
-    }
-  };
+  return replaceGamepadConfigSection(
+    virtualGamepads,
+    "[Pad1]",
+    (section: string) => !section.startsWith("[Pad"),
+  );
+};
 
 export const replaceHotkeyConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Hotkeys]", [
@@ -86,7 +78,11 @@ export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[InputSources]", [
     { keyValue: "SDL = true" },
     { keyValue: "SDLControllerEnhancedMode = true" },
+    { keyValue: "RawInput = true" },
   ]);
+
+export const replaceUiConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[UI]", [{ keyValue: "EnableMouseMapping = true" }]);
 
 /**
  * TODO: Check which game is compatible with multitap
@@ -133,6 +129,7 @@ export const replaceConfigSections = (
     replaceGamepadConfig(gameName),
     replaceAutoUpdaterConfig,
     replaceGameListConfig(psxRomsPath),
+    replaceUiConfig,
   ).join(EOL);
 
   writeConfig(filePath, fileContentNew);

@@ -16,6 +16,7 @@ It is not there yet for every system and emulator, please have a look at 🕹️
 - 🚂 Import all your roms with a click of a button
 - 🪄 Provides Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
 - 🎮️ Seamless gamepad integration for most emulators
+- 🔫 Experimental lightgun integration for some emulators
 - 📦️ Bundles most emulators
 - 💻️ Windows, Linux and Steam Deck support
 - 💫 Updates itself
@@ -163,6 +164,7 @@ There is a Steam Input Profile with the name `emuze`, which has some Hotkeys pre
 - `L5`: Load State
 - `R4`: Open Emulator Menu (if supported from emulator) or Fullscreen
 - `R5`: Left Mouse Click
+- `Left Trackpad`: Scroll Wheel
 - `Right Trackpad`: Mouse
 
 > [!IMPORTANT]

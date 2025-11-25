@@ -176,6 +176,94 @@ export type SdlButtonId =
   | "-rightx"
   | "-righty";
 
+export const emuzeToSdlButtonId: Record<
+  EmuzeButtonId,
+  { sdlButtonId: SdlButtonId; qualifier?: "+" | "-" }
+> = {
+  dpadUp: {
+    sdlButtonId: "dpup",
+  },
+  dpadDown: {
+    sdlButtonId: "dpdown",
+  },
+  dpadLeft: {
+    sdlButtonId: "dpleft",
+  },
+  dpadRight: {
+    sdlButtonId: "dpright",
+  },
+  a: {
+    sdlButtonId: "a",
+  },
+  b: {
+    sdlButtonId: "b",
+  },
+  x: {
+    sdlButtonId: "x",
+  },
+  y: {
+    sdlButtonId: "y",
+  },
+  back: {
+    sdlButtonId: "back",
+  },
+  start: {
+    sdlButtonId: "start",
+  },
+  leftStick: {
+    sdlButtonId: "leftstick",
+  },
+  rightStick: {
+    sdlButtonId: "rightstick",
+  },
+  leftShoulder: {
+    sdlButtonId: "leftshoulder",
+  },
+  rightShoulder: {
+    sdlButtonId: "rightshoulder",
+  },
+  leftTrigger: {
+    sdlButtonId: "lefttrigger",
+    qualifier: "+",
+  },
+  rightTrigger: {
+    sdlButtonId: "righttrigger",
+    qualifier: "+",
+  },
+  leftStickUp: {
+    sdlButtonId: "lefty",
+    qualifier: "-",
+  },
+  leftStickDown: {
+    sdlButtonId: "lefty",
+    qualifier: "+",
+  },
+  leftStickLeft: {
+    sdlButtonId: "leftx",
+    qualifier: "-",
+  },
+  leftStickRight: {
+    sdlButtonId: "leftx",
+    qualifier: "+",
+  },
+  rightStickUp: {
+    sdlButtonId: "righty",
+    qualifier: "-",
+  },
+  rightStickDown: {
+    sdlButtonId: "righty",
+    qualifier: "+",
+  },
+  rightStickLeft: {
+    sdlButtonId: "rightx",
+    qualifier: "-",
+  },
+  rightStickRight: {
+    sdlButtonId: "rightx",
+    qualifier: "+",
+  },
+};
+
 export type SdlButtonMapping = Partial<Record<SdlButtonId, string>>;
 
 export const getButtonIndex = (
@@ -382,10 +470,14 @@ export const retroShooterReaper = {
   player: null,
 } satisfies Sdl.Joystick.Device;
 
+const lightgunNames = ["Retro Shooter", "Sinden", "GUN4IR"];
+
 export const isLightgunConnected = (joysticks: Sdl.Joystick.Device[]) =>
   !!joysticks.find(
-    ({ name, vendor }) =>
-      name?.includes("Retro Shooter") && vendor === retroShooterReaper.vendor,
+    ({ name }) =>
+      !!lightgunNames.find((lightgunName) =>
+        name?.toLowerCase().includes(lightgunName.toLowerCase()),
+      ),
   );
 
 export const convertToJoystick = (

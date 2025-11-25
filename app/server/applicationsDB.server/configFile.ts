@@ -105,3 +105,25 @@ export const writeConfig = (filePath: string, content: string) => {
   }
   fs.writeFileSync(filePath, content, "utf8");
 };
+
+export const replaceGamepadConfigSection =
+  (
+    virtualGamepads: string[],
+    gamepadSectionName: string,
+    isNoGamepadSection: (section: string) => boolean,
+  ): SectionReplacement =>
+  (sections) => {
+    if (sections.find((section) => section.startsWith(gamepadSectionName))) {
+      return sections.reduce<string[]>((accumulator, section) => {
+        if (section.startsWith(gamepadSectionName)) {
+          accumulator.push(...virtualGamepads);
+        } else if (isNoGamepadSection(section)) {
+          accumulator.push(section);
+        }
+
+        return accumulator;
+      }, []);
+    } else {
+      return [...sections, virtualGamepads.join(EOL)];
+    }
+  };

@@ -1,5 +1,6 @@
 import {
   globalDefaultInputConfigFileReset,
+  playerInputReset,
   type GlobalDefaultInputConfigFile,
 } from "./config.js";
 
@@ -102,5 +103,9 @@ export const keyboardConfig: GlobalDefaultInputConfigFile = {
       "Product ID": 616,
     },
     "Buddy Device": "",
+  },
+  "Player 2 Input": {
+    ...playerInputReset,
+    Handler: "SDL",
   },
 };

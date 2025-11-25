@@ -57,15 +57,15 @@ export const getVirtualGamepad =
     ].join(EOL);
   };
 
-export const getLightgun = (gameName: string) => [
-  `[Pad1]`,
+export const getLightgun = (gameName: string, playerIndex: number) => [
+  `[Pad${playerIndex + 1}]`,
   `Type = GunCon`,
-  `SmallMotor = SDL-0/SmallMotor`,
-  `LargeMotor = SDL-0/LargeMotor`,
-  `Trigger = Pointer-0/LeftButton`,
-  `ShootOffscreen = Keyboard/1`,
-  `A = Pointer-0/RightButton`,
-  `B = Keyboard/5`,
+  `SmallMotor = SDL-${playerIndex}/SmallMotor`,
+  `LargeMotor = SDL-${playerIndex}/LargeMotor`,
+  `Trigger = Pointer-${playerIndex}/LeftButton`,
+  `ShootOffscreen = Keyboard/${1 + playerIndex}`,
+  `A = Pointer-${playerIndex}/RightButton`,
+  `B = Keyboard/${5 + playerIndex}`,
   `XScale = ${gameName === "Time Crisis" ? "0.94" : "1"}`,
   "",
   "",
@@ -77,7 +77,7 @@ const getVirtualGamepadConfig = (gameName: string): string[] => {
 
   if (gamepads.length > 0) {
     if (isLightgunConnected(gamepads)) {
-      return getLightgun(gameName);
+      return [...getLightgun(gameName, 0)];
     }
 
     const playerIndexArray = getPlayerIndexArray(gamepads);

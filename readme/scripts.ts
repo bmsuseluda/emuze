@@ -4,6 +4,9 @@ import type { SystemId } from "../app/server/categoriesDB.server/systemId.js";
 import { commandLineOptionsString } from "../app/server/commandLine.server.js";
 import { emulatorVersions } from "../downloadEmulators/applications.js";
 import { keyboardMapping } from "../app/types/gamepad.js";
+import type { Category } from "../app/server/categoriesDB.server/types.js";
+import type { Application } from "../app/server/applicationsDB.server/types.js";
+import { rosaliesMupenGui } from "../app/server/applicationsDB.server/applications/rmg/index.js";
 
 const preConfigured: ApplicationId[] = [
   "ares",
@@ -17,6 +20,7 @@ const preConfigured: ApplicationId[] = [
   "pcsx2",
   "ppsspp",
   "scummvm",
+  "rosaliesMupenGui",
   "rpcs3",
   "ryujinx",
   "xemu",
@@ -33,6 +37,7 @@ const bundled: Partial<Record<ApplicationId, string>> = {
   melonds: emulatorVersions.melonds,
   pcsx2: emulatorVersions.pcsx2,
   ppsspp: emulatorVersions.ppsspp,
+  rosaliesMupenGui: emulatorVersions.rosaliesMupenGui,
   rpcs3: emulatorVersions.rpcs3,
   ryujinx: emulatorVersions.ryujinx,
   xemu: emulatorVersions.xemu,
@@ -82,23 +87,39 @@ const nameOverwrites: Partial<Record<SystemId, string>> = {
   dos: "Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json))",
 };
 
+const createSystemsTableRow = (
+  category: Category,
+  alternativeApplication?: Application,
+) => {
+  const application = alternativeApplication || category.application;
+  const systemName = alternativeApplication
+    ? ""
+    : nameOverwrites[category.id] || category.names[0];
+  const emulatorName = `[${application.name}](${homepages[application.id]})`;
+  const isPreConfigured = preConfigured.includes(application.id) ? "Yes" : "No";
+  const isBundled = bundled[application.id]
+    ? `v${bundled[application.id]}`
+    : "-";
+  const isBiosNeeded = biosNeeded.includes(category.id) ? "Yes" : "No";
+
+  return `| ${systemName} | ${emulatorName} | ${isPreConfigured} | ${isBundled} | ${isBiosNeeded} | `;
+};
+
 export const createSystemsTable = () =>
   Object.values(categories)
     .map((category) => {
       if (category.id === "lastPlayed") {
         return null;
       }
-      const systemName = nameOverwrites[category.id] || category.names[0];
-      const emulatorName = `[${category.application.name}](${homepages[category.application.id]})`;
-      const isPreConfigured = preConfigured.includes(category.application.id)
-        ? "Yes"
-        : "No";
-      const isBundled = bundled[category.application.id]
-        ? `v${bundled[category.application.id]}`
-        : "-";
-      const isBiosNeeded = biosNeeded.includes(category.id) ? "Yes" : "No";
 
-      return `| ${systemName} | ${emulatorName} | ${isPreConfigured} | ${isBundled} | ${isBiosNeeded} | `;
+      if (category.id === "nintendo64") {
+        return [
+          createSystemsTableRow(category),
+          createSystemsTableRow(category, rosaliesMupenGui),
+        ].join("\n");
+      }
+
+      return createSystemsTableRow(category);
     })
     .filter(Boolean)
     .join("\n");

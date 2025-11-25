@@ -37,17 +37,20 @@ describe("applicationsDB.rpcs3", () => {
 
     it("Should return files that are just update files for physical games", () => {
       const filenames = [
+        "dev_hdd0/GAMES/BCES00129-[MOTORSTORM PACIFIC RIFT]/PS3_GAME/USRDIR/EBOOT.BIN",
         "dev_hdd0/game/BLES00441-MORTAL/USRDIR/EBOOT.BIN",
+        "games/BLES00635-[TEKKEN 6]/PS3_GAME/USRDIR/EBOOT.BIN",
         "dev_hdd0/game/BLES00635/USRDIR/EBOOT.BIN",
         "dev_hdd0/game/BLES01702/USRDIR/EBOOT.BIN",
+        "games/BLES00441-[Mortal Kombat vs DC Universe]/PS3_GAME/USRDIR/EBOOT.BIN",
         "dev_hdd0/game/NPUB30493/USRDIR/EBOOT.BIN",
         "dev_hdd0/game/NPUB30624/USRDIR/EBOOT.BIN",
-        "games/BLES00441-[Mortal Kombat vs DC Universe]/PS3_GAME/USRDIR/EBOOT.BIN",
-        "games/BLES00635-[TEKKEN 6]/PS3_GAME/USRDIR/EBOOT.BIN",
+        "dev_hdd0/game/BCES00129/USRDIR/EBOOT.BIN",
         "games/BLES01702-[TEKKEN TAG TOURNAMENT 2]/PS3_GAME/USRDIR/EBOOT.BIN",
       ];
 
       const filenamesToExclude = [
+        "dev_hdd0/game/BCES00129/USRDIR/EBOOT.BIN",
         "dev_hdd0/game/BLES00441-MORTAL/USRDIR/EBOOT.BIN",
         "dev_hdd0/game/BLES00635/USRDIR/EBOOT.BIN",
         "dev_hdd0/game/BLES01702/USRDIR/EBOOT.BIN",
