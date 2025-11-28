@@ -53,16 +53,10 @@ const digitalPhysicalMapping: Record<string, string> = {
 const sortPhysicalLast = (a: string, b: string) => {
   const aNormalized = a.toLowerCase();
   const bNormalized = b.toLowerCase();
-  if (
-    aNormalized.startsWith("games/") ||
-    aNormalized.startsWith("dev_hdd0/GAMES/")
-  ) {
+  if (aNormalized.startsWith("games")) {
     return 1;
   }
-  if (
-    bNormalized.startsWith("games/") ||
-    bNormalized.startsWith("dev_hdd0/GAMES/")
-  ) {
+  if (bNormalized.startsWith("games")) {
     return -1;
   }
 

@@ -283,7 +283,11 @@ export const rpcs3: Application = {
   id: applicationId,
   name: "RPCS3",
   flatpakId,
-  fileExtensions: ["EBOOT.BIN"],
+  searchFilesOnlyIn: [nodepath.join("dev_hdd0", "game"), "games"],
+  fileExtensions: [
+    nodepath.join("USRDIR", "EBOOT.BIN"),
+    nodepath.join("USRDIR", "CONTENT", "EBOOT.PBP"),
+  ],
   findEntryName: findPlaystation3GameName,
   configFile: {
     basePath: getConfigFileBasePath(),

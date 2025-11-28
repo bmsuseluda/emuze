@@ -25,7 +25,7 @@ export const readDirectorynames = (path: string) =>
     .filter((file) => file.isDirectory())
     .map(({ name }) => nodepath.join(path, name));
 
-export const readFilenames = ({
+export const readAllFilenames = ({
   path,
   fileExtensions,
   entryAsDirectory,
@@ -46,7 +46,7 @@ export const readFilenames = ({
       }
     } else {
       if (file.isDirectory()) {
-        readFilenames({
+        readAllFilenames({
           path: filePath,
           fileExtensions,
           entryAsDirectory,
@@ -66,6 +66,34 @@ export const readFilenames = ({
   });
 
   return filenames;
+};
+
+export const readFilenames = ({
+  path,
+  searchFilesOnlyIn,
+  fileExtensions,
+  entryAsDirectory,
+}: {
+  path: string;
+  searchFilesOnlyIn?: string[];
+  fileExtensions?: string[];
+  entryAsDirectory?: boolean;
+}) => {
+  if (searchFilesOnlyIn) {
+    return searchFilesOnlyIn.flatMap((allowedFolder) =>
+      readAllFilenames({
+        path: nodepath.join(path, allowedFolder),
+        fileExtensions,
+        entryAsDirectory,
+      }),
+    );
+  }
+
+  return readAllFilenames({
+    path,
+    fileExtensions,
+    entryAsDirectory,
+  });
 };
 
 export const readFileHome = <T>(path: string): T | null => {
