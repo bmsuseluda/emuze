@@ -68,7 +68,8 @@ export interface Application {
   id: ApplicationId;
   name: string;
   executable?: `${string}.exe`;
-  fileExtensions?: `${string}.${string}`[];
+  fileExtensions?: string[];
+  searchFilesOnlyIn?: string[];
   entryAsDirectory?: boolean;
   configFile?: ConfigFile;
   omitAbsoluteEntryPathAsLastParam?: boolean;

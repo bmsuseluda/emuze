@@ -487,6 +487,10 @@ export const convertToJoystick = (
   type: "gamecontroller",
 });
 
+export const isController = (
+  device: Sdl.Joystick.Device | Sdl.Controller.Device,
+): device is Sdl.Controller.Device => "mapping" in device;
+
 export const sortLast = <T>(
   a: T,
   b: T,

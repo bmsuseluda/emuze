@@ -181,7 +181,7 @@ export const playstation2 = {
 } satisfies Category;
 
 export const psallstarsDisc: Entry = {
-  id: "eboot",
+  id: "playstationall-starsbattleroyale",
   name: "PlayStation All-Stars Battle Royale",
   path: "dev_hdd0/GAMES/XCUS00003-[PlayStation AllStars Battle Royale]/PS3_GAME/USRDIR/EBOOT.BIN",
   metaData: {
@@ -192,7 +192,7 @@ export const psallstarsDisc: Entry = {
 };
 
 export const psallstarsManual: Entry = {
-  id: "eboot",
+  id: "playstationall-starsbattleroyale(manual)",
   name: "PlayStation All-Stars Battle Royale (Manual)",
   path: "dev_hdd0/game/NPUO70233/USRDIR/EBOOT.BIN",
   metaData: {
@@ -203,7 +203,7 @@ export const psallstarsManual: Entry = {
 };
 
 export const psallstarsDigital: Entry = {
-  id: "eboot",
+  id: "playstationall-starsbattleroyale",
   name: "PlayStation All-Stars Battle Royale",
   path: "dev_hdd0/game/BCUS98472/USRDIR/EBOOT.BIN",
   metaData: {
@@ -214,17 +214,17 @@ export const psallstarsDigital: Entry = {
 };
 
 export const psallstars: Entry = {
-  id: "eboot0",
+  id: "playstationall-starsbattleroyale0",
   name: "PlayStation All-Stars Battle Royale",
   path: "dev_hdd0/GAMES/XCUS00003-[PlayStation AllStars Battle Royale]/PS3_GAME/USRDIR/EBOOT.BIN",
   subEntries: [
     {
-      id: "eboot0",
+      id: "playstationall-starsbattleroyale0",
       name: "PlayStation All-Stars Battle Royale",
       path: "dev_hdd0/GAMES/XCUS00003-[PlayStation AllStars Battle Royale]/PS3_GAME/USRDIR/EBOOT.BIN",
     },
     {
-      id: "eboot1",
+      id: "playstationall-starsbattleroyale(manual)1",
       name: "PlayStation All-Stars Battle Royale (Manual)",
       path: "dev_hdd0/game/NPUO70233/USRDIR/EBOOT.BIN",
     },
@@ -273,13 +273,13 @@ export const commanderkeen4: Entry = {
 };
 
 export const doomPlutonium: Entry = {
-  id: "doom2",
+  id: "finaldoom(theplutoniaexperiment)",
   name: "Final Doom (The Plutonia Experiment)",
   path: "Final DOOM/Plutonia/DOOM2.EXE",
 };
 
 export const doomEvilution: Entry = {
-  id: "doom2",
+  id: "finaldoom(tnt:evilution)",
   name: "Final Doom (TNT: Evilution)",
   path: "Final DOOM/TNT/DOOM2.EXE",
 };
@@ -315,7 +315,7 @@ export const nes = {
 } satisfies Category;
 
 export const blazingstar: Entry = {
-  id: "blazstar",
+  id: "blazingstar",
   name: "blazstar",
   path: "blazstar.zip",
 };

@@ -9,6 +9,7 @@ import {
   getButtonIndex,
   getPlayerIndexArray,
   isAnalog,
+  isController,
 } from "../../../../types/gamepad.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { log } from "../../../debug.server.js";
@@ -17,6 +18,7 @@ import sdl from "@kmamal/sdl";
 import { keyboardConfig } from "./keyboardConfig.js";
 import type { ButtonDetailsFunction, RmgButtonId } from "./types.js";
 import { mapAndJoinEmuzeButtonIds, rmgButtonIds } from "./types.js";
+import { isSteamOs } from "../../../operationsystem.server.js";
 
 const getInputType =
   (mappingObject: SdlButtonMapping): ButtonDetailsFunction =>
@@ -65,28 +67,33 @@ export const getRmgButtonsMapping = (controller: Sdl.Controller.Device) => {
 
 export const getVirtualGamepad =
   (playerIndexArray: number[]) =>
-  (controller: Sdl.Joystick.Device, index: number) => {
+  (controller: Sdl.Joystick.Device | Sdl.Controller.Device, index: number) => {
     log("debug", "gamepad", { index, controller });
+    const { name, path } = controller;
 
-    const deviceName = controller.name!;
-    const devicePath = controller.path!;
+    if (name && path) {
+      const deviceSerial =
+        (isController(controller)
+          ? sdl.controller.openDevice(controller)
+          : sdl.joystick.openDevice(controller)
+        ).serialNumber || "";
 
-    return [
-      `[Rosalie's Mupen GUI - Input Plugin Profile ${playerIndexArray[index]}]`,
-      `PluggedIn = True`,
-      `DeviceName = "${deviceName}"`,
-      `DeviceType = 4`,
-      `DevicePath = "${devicePath}"`,
-      `DeviceSerial = ""`,
-      `Deadzone = 9`,
-      `Sensitivity = 100`,
-      `Pak = 0`,
-      `RemoveDuplicateMappings = True`,
-      `FilterEventsForButtons = True`,
-      `FilterEventsForAxis = True`,
-      // TODO: use when sdl3 is integrated
-      // ...getRmgButtonsMapping(controller),
-      `DpadUp_InputType = "0"
+      return [
+        `[Rosalie's Mupen GUI - Input Plugin Profile ${playerIndexArray[index]}]`,
+        `PluggedIn = True`,
+        `DeviceName = "${name}"`,
+        `DeviceType = 4`,
+        `DevicePath = "${path}"`,
+        `DeviceSerial = "${deviceSerial}"`,
+        `Deadzone = 9`,
+        `Sensitivity = 100`,
+        `Pak = 0`,
+        `RemoveDuplicateMappings = True`,
+        `FilterEventsForButtons = True`,
+        `FilterEventsForAxis = True`,
+        // TODO: use when sdl3 is integrated
+        // ...getRmgButtonsMapping(controller),
+        `DpadUp_InputType = "0"
 DpadUp_Name = "dpup"
 DpadUp_Data = "11"
 DpadUp_ExtraData = "0"
@@ -158,7 +165,10 @@ CButtonRight_InputType = "1"
 CButtonRight_Name = "rightx+"
 CButtonRight_Data = "2"
 CButtonRight_ExtraData = "1"`,
-    ].join(EOL);
+      ].join(EOL);
+    }
+
+    return "";
   };
 
 const getVirtualGamepadReset = (gamepadIndex: number) =>
@@ -172,8 +182,8 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
   ].join(EOL);
 
 export const getVirtualGamepads = () => {
-  const gamepads = sdl.joystick.devices;
-  const playerIndexArray = getPlayerIndexArray(gamepads);
+  const gamepads = isSteamOs() ? sdl.joystick.devices : sdl.controller.devices;
+  const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
 
   const virtualGamepads =
     gamepads.length > 0

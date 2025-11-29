@@ -43,6 +43,32 @@ interface EntryWithoutSubEntries extends Entry {
   subEntries?: never;
 }
 
+/**
+ * TODO: Remove after some releases
+ */
+const migrateToIdBasedOnFindEntryName = (
+  oldEntry: Entry,
+  filename: string,
+  index: number,
+  findEntryName?: FindEntryNameFunction,
+) => {
+  if (findEntryName) {
+    const idToCheck = convertToId(
+      filterGameNameFromFileName(filename),
+      0,
+    ).slice(0, -1);
+    if (oldEntry.id.startsWith(idToCheck)) {
+      log("debug", "migrateId", oldEntry);
+      return {
+        ...oldEntry,
+        id: convertToId(oldEntry.name, index),
+      };
+    }
+  }
+
+  return oldEntry;
+};
+
 const createEntry = ({
   filename,
   categoryPath,
@@ -67,7 +93,13 @@ const createEntry = ({
   const oldMetaData = oldData?.metaData;
 
   if (oldMetaData && oldMetaData.expiresOn > now) {
-    return { ...oldData, subEntries: undefined };
+    const migratedOldData = migrateToIdBasedOnFindEntryName(
+      oldData,
+      filename,
+      index,
+      findEntryName,
+    );
+    return { ...migratedOldData, subEntries: undefined };
   }
 
   const name = filterGameNameFromFileName(filename);
@@ -87,6 +119,7 @@ const createEntry = ({
     });
     return {
       ...entry,
+      id: convertToId(optimizedName, index),
       name: optimizedName,
     };
   }
@@ -151,13 +184,19 @@ export const readEntries = ({
   const generalData = readGeneral();
 
   if (application && generalData?.categoriesPath) {
-    const { findEntryName, excludeFiles, fileExtensions, entryAsDirectory } =
-      application;
+    const {
+      findEntryName,
+      excludeFiles,
+      searchFilesOnlyIn,
+      fileExtensions,
+      entryAsDirectory,
+    } = application;
 
     const categoriesPath = generalData.categoriesPath;
     const categoryPath = nodepath.join(categoriesPath, categoryName);
     const filenames = readFilenames({
       path: categoryPath,
+      searchFilesOnlyIn,
       fileExtensions,
       entryAsDirectory,
     });
