@@ -283,6 +283,7 @@ export const rpcs3: Application = {
   id: applicationId,
   name: "RPCS3",
   flatpakId,
+  omitAbsoluteEntryPathAsLastParam: true,
   searchFilesOnlyIn: [nodepath.join("dev_hdd0", "game"), "games"],
   fileExtensions: [
     nodepath.join("USRDIR", "EBOOT.BIN"),
@@ -312,6 +313,7 @@ export const rpcs3: Application = {
       general: { categoriesPath },
     },
     categoryData,
+    absoluteEntryPath,
   }) => {
     const ps3RomsPath = nodepath.posix
       .join(categoriesPath.replace(/\\/g, "/"), categoryData.name)
@@ -330,6 +332,9 @@ export const rpcs3: Application = {
       optionParams.push("--fullscreen");
       optionParams.push("--no-gui");
     }
+
+    const gameFolderPath = absoluteEntryPath.split("USRDIR")[0];
+    optionParams.push(gameFolderPath);
     return optionParams;
   },
   excludeFiles: excludePlaystationFiles,
