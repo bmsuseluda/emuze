@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+export const defaultConfigFull = `<?xml version="1.0" encoding="UTF-8"?>
 <content>
     <logflag>0</logflag>
     <advanced_ppc_logging>false</advanced_ppc_logging>
@@ -52,14 +52,12 @@
     </GameList>
     <RecentLaunchFiles/>
     <RecentNFCFiles/>
-    <GamePaths>
-        <Entry>/home/dennisludwig/Documents/Emulation/roms/Nintendo Wii U</Entry>
-    </GamePaths>
+    <GamePaths/>
     <GameCache/>
     <GraphicPack/>
     <Graphic>
         <api>1</api>
-        <device>8680417d000000000002000000000000</device>
+        <device>0</device>
         <VSync>0</VSync>
         <GX2DrawdoneSync>true</GX2DrawdoneSync>
         <UpscaleFilter>1</UpscaleFilter>
@@ -120,4 +118,4 @@
         <EmulateInfinityBase>false</EmulateInfinityBase>
         <EmulateDimensionsToypad>false</EmulateDimensionsToypad>
     </EmulatedUsbDevices>
-</content>
+</content>`;

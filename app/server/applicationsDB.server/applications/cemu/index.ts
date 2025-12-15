@@ -9,7 +9,8 @@ import { log } from "../../../debug.server.js";
 import { writeConfig } from "../../configFile.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { envPaths } from "../../../envPaths.server.js";
-import { defaultConfig, type ConfigFile } from "./config.js";
+import { type ConfigFile } from "./config.js";
+import { defaultConfigFull } from "./defaultConfigFull.js";
 
 const flatpakId = "info.cemu.Cemu";
 const applicationId: ApplicationId = "cemu";
@@ -32,15 +33,16 @@ const getDefaultConfigFilePath = () =>
   getConfigFilePath(defaultConfigPathRelative);
 
 const readXmlConfigFile = (filePath: string) => {
+  const parser = new XMLParser({
+    ignoreAttributes: false,
+  });
   try {
     const file = fs.readFileSync(filePath, "utf8");
-    const parser = new XMLParser({
-      ignoreAttributes: false,
-    });
     return parser.parse(file);
   } catch (error) {
     log("debug", "cemu", "config file can not be read.", filePath, error);
-    return defaultConfig;
+
+    return parser.parse(defaultConfigFull);
   }
 };
 
