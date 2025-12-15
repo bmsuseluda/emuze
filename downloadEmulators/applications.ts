@@ -43,6 +43,7 @@ export const emulatorVersions = {
   azahar: "2123.2",
   dolphin: "2509",
   duckstation: "0.1-7371",
+  cemu: "2.6",
   flycast: "2.5",
   mame: "0.281",
   mednafen: "1.32.1",

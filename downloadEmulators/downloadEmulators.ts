@@ -34,6 +34,10 @@ const emulatorDownloads = {
     Linux: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions.azahar}%402025-10-01_1759305782/Azahar-Enhanced-${emulatorVersions.azahar}-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/azahar-emu/azahar/releases/download/${emulatorVersions.azahar}/azahar-${emulatorVersions.azahar}-windows-msys2.zip`,
   },
+  cemu: {
+    Linux: `https://github.com/pkgforge-dev/Cemu-AppImage-Enhanced/releases/download/${emulatorVersions.cemu}-4%402025-12-01_1764576866/Cemu-${emulatorVersions.cemu}-4-anylinux-x86_64.AppImage`,
+    Windows: `https://github.com/cemu-project/Cemu/releases/download/v${emulatorVersions.cemu}/Cemu-${emulatorVersions.cemu}-x86_64.AppImage`,
+  },
   dolphin: {
     Linux: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions.dolphin}%402025-10-01_1759304685/Dolphin_Emulator-${emulatorVersions.dolphin}-anylinux.dwarfs-x86_64.AppImage`,
     Windows: `https://dl.dolphin-emu.org/releases/${emulatorVersions.dolphin}/dolphin-${emulatorVersions.dolphin}-x64.7z`,

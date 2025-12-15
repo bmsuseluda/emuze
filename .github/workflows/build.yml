@@ -19,6 +19,11 @@ jobs:
         run: yarn
       - name: Build
         run: yarn app:distLinux --publish=never
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name:  emuze-nightly.AppImage
+          path: 'dist/emuze-*.AppImage'
 
   build_windows:
     runs-on: windows-latest
@@ -32,3 +37,8 @@ jobs:
         run: yarn
       - name: Build
         run: yarn app:distWindows --publish=never
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name:  emuze-Setup-nightly.exe
+          path: 'dist/emuze-Setup-*.exe'

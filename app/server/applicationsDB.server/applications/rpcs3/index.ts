@@ -127,6 +127,12 @@ const readConfigFile = () =>
 const replaceMetaConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Meta]", [{ keyValue: "checkUpdateStart=false" }]);
 
+const replacePadNavigationConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[PadNavigation]", [
+    { keyValue: "allow_global_pad_input=true" },
+    { keyValue: "pad_input_enabled=true" },
+  ]);
+
 const replaceMainWindowConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[main_window]", [
     { keyValue: "confirmationBoxExitGame=false" },
@@ -136,10 +142,13 @@ const replaceMainWindowConfig: SectionReplacement = (sections) =>
 const replaceShortcutsConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Shortcuts]", [
     { keyValue: "game_window_savestate=F1", disableParamWithSameValue: true },
-    { keyValue: "gw_home_menu=F2", disableParamWithSameValue: true },
+    { keyValue: "gw_home_menu=F2" },
     {
       keyValue: "game_window_toggle_fullscreen=F11",
       disableParamWithSameValue: true,
+    },
+    {
+      keyValue: "game_window_toggle_recording=",
     },
   ]);
 
@@ -169,6 +178,7 @@ export const replaceGuiConfigFile = (ps3RomsPath: string) => {
     sections,
     replaceMetaConfig,
     replaceMainWindowConfig,
+    replacePadNavigationConfig,
     replaceShortcutsConfig,
     replaceFileSystemConfig(ps3RomsPath),
   ).join(EOL);
@@ -252,8 +262,8 @@ const readGlobalDefaultInputConfigFile = () =>
     getGlobalDefaultInputConfigFilePath(),
   ) as GlobalDefaultInputConfigFile;
 
-const replaceGlobalDefaultInputConfigFile = () => {
-  const virtualGamepads = getVirtualGamepads();
+const replaceGlobalDefaultInputConfigFile = (isPs1Classic: boolean) => {
+  const virtualGamepads = getVirtualGamepads(isPs1Classic);
 
   const fileContent = readGlobalDefaultInputConfigFile();
   const fileContentNew: GlobalDefaultInputConfigFile = {
@@ -319,13 +329,15 @@ export const rpcs3: Application = {
       .join(categoriesPath.replace(/\\/g, "/"), categoryData.name)
       .normalize();
     const ps3RomsPathWithTrailingSeparator = `${ps3RomsPath}${ps3RomsPath.endsWith(nodepath.posix.sep) ? "" : nodepath.posix.sep}`;
+    const isPs1Classic = absoluteEntryPath.endsWith("EBOOT.PBP");
     log("debug", "rpcs3", "ps3RomsPath", ps3RomsPathWithTrailingSeparator);
+
     replaceGuiConfigFile(ps3RomsPathWithTrailingSeparator);
     replaceVfsConfigFile(ps3RomsPathWithTrailingSeparator);
     replaceGemMouseConfigFile();
     replaceConfigFile();
     replaceActiveInputConfigFile();
-    replaceGlobalDefaultInputConfigFile();
+    replaceGlobalDefaultInputConfigFile(isPs1Classic);
 
     const optionParams = [];
     if (fullscreen) {
