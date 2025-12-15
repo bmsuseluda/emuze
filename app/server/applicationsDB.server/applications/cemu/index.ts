@@ -14,7 +14,7 @@ import { defaultConfig, type ConfigFile } from "./config.js";
 const flatpakId = "info.cemu.Cemu";
 const applicationId: ApplicationId = "cemu";
 const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "Cemu_2.6", "Cemu.exe")
+  ? nodepath.join(applicationId, "Cemu.exe")
   : nodepath.join(applicationId, `${applicationId}.AppImage`);
 
 const defaultConfigFileName = "settings.xml";
@@ -84,10 +84,10 @@ export const cemu: Application = {
   name: "Cemu",
   entryAsDirectory: true,
   flatpakId,
-  // configFile: {
-  //   basePath: getConfigFileBasePath(),
-  //   files: [defaultConfigPathRelative],
-  // },
+  configFile: {
+    basePath: getConfigFileBasePath(),
+    files: [defaultConfigPathRelative],
+  },
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
