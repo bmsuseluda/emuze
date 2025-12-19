@@ -9,8 +9,11 @@ import { log } from "../../../debug.server.js";
 import { writeConfig } from "../../configFile.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { envPaths } from "../../../envPaths.server.js";
-import { type ConfigFile } from "./config.js";
-import { defaultConfigFull } from "./defaultConfigFull.js";
+import type { ConfigFile } from "./config.js";
+import { defaultConfig } from "./defaultConfig.js";
+import { getVirtualGamepads } from "./getVirtualGamepads.js";
+import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
+import { removeFile } from "../../../readWriteData.server.js";
 
 const flatpakId = "info.cemu.Cemu";
 const applicationId: ApplicationId = "cemu";
@@ -21,6 +24,8 @@ const bundledPath = isWindows()
 const defaultConfigFileName = "settings.xml";
 
 const defaultConfigPathRelative = nodepath.join(defaultConfigFileName);
+const controllerConfigPathRelative = (index: number) =>
+  nodepath.join("controllerProfiles", `controller${index}.xml`);
 
 const getConfigFilePath = (configFilePathRelative: string) =>
   nodepath.join(
@@ -32,9 +37,13 @@ const getConfigFilePath = (configFilePathRelative: string) =>
 const getDefaultConfigFilePath = () =>
   getConfigFilePath(defaultConfigPathRelative);
 
-const readXmlConfigFile = (filePath: string) => {
+const getControllerConfigFilePath = (index: number) =>
+  getConfigFilePath(controllerConfigPathRelative(index));
+
+const readXmlConfigFile = (filePath: string, defaultConfig: string) => {
   const parser = new XMLParser({
     ignoreAttributes: false,
+    parseTagValue: false,
   });
   try {
     const file = fs.readFileSync(filePath, "utf8");
@@ -42,12 +51,12 @@ const readXmlConfigFile = (filePath: string) => {
   } catch (error) {
     log("debug", "cemu", "config file can not be read.", filePath, error);
 
-    return parser.parse(defaultConfigFull);
+    return parser.parse(defaultConfig);
   }
 };
 
 const readDefaultConfigFile = () =>
-  readXmlConfigFile(getDefaultConfigFilePath()) as ConfigFile;
+  readXmlConfigFile(getDefaultConfigFilePath(), defaultConfig) as ConfigFile;
 
 const replaceDefaultConfigFile = (wiiuRomsPath: string) => {
   const fileContent = readDefaultConfigFile();
@@ -69,6 +78,18 @@ const replaceDefaultConfigFile = (wiiuRomsPath: string) => {
   writeConfig(getDefaultConfigFilePath(), xmlContent);
 };
 
+const replaceControllerConfigFile = () => {
+  const fileContents = getVirtualGamepads();
+
+  fileContents.forEach(({ content, playerIndex }) => {
+    writeConfig(getControllerConfigFilePath(playerIndex), content);
+  });
+
+  resetUnusedVirtualGamepads(8, fileContents.length, (gamepadIndex) => {
+    removeFile(getControllerConfigFilePath(gamepadIndex));
+  });
+};
+
 const getConfigFileBasePath = () => {
   const windowsConfigFolder = nodepath.join(
     bundledEmulatorsPathBase,
@@ -88,7 +109,7 @@ export const cemu: Application = {
   flatpakId,
   configFile: {
     basePath: getConfigFileBasePath(),
-    files: [defaultConfigPathRelative],
+    files: [defaultConfigPathRelative, "controllerProfiles"],
   },
   createOptionParams: ({
     settings: {
@@ -100,6 +121,7 @@ export const cemu: Application = {
   }) => {
     const wiiuRomsPath = nodepath.join(categoriesPath, categoryData.name);
     replaceDefaultConfigFile(wiiuRomsPath);
+    replaceControllerConfigFile();
 
     const optionParams = [];
     if (fullscreen) {
@@ -111,6 +133,5 @@ export const cemu: Application = {
     optionParams.push("--game");
     return optionParams;
   },
-  excludeFiles: () => ["Games", "Saves", "Updates", "usr", "sys"],
   bundledPath,
 };

@@ -8,9 +8,13 @@ export interface ConfigFile {
   };
 }
 
-export const defaultConfig: ConfigFile = {
-  "?xml": { "@_version": "1.0", "@_encoding": "UTF-8" },
-  content: {
-    check_update: false,
-  },
-};
+export interface ControllerConfigFile {
+  "?xml": { "@_version": "1.0"; "@_encoding": "UTF-8" };
+  emulated_controller: {
+    controller: {
+      api: "SDLController" | "Keyboard";
+      uuid: "keyboard" | string;
+      display_name: string;
+    };
+  };
+}

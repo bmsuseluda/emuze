@@ -1,4 +1,4 @@
-export const defaultConfigFull = `<?xml version="1.0" encoding="UTF-8"?>
+export const defaultConfig = `<?xml version="1.0" encoding="UTF-8"?>
 <content>
     <logflag>0</logflag>
     <advanced_ppc_logging>false</advanced_ppc_logging>
@@ -56,8 +56,8 @@ export const defaultConfigFull = `<?xml version="1.0" encoding="UTF-8"?>
     <GameCache/>
     <GraphicPack/>
     <Graphic>
-        <api>1</api>
-        <device>0</device>
+        <api>0</api>
+        <device></device>
         <VSync>0</VSync>
         <GX2DrawdoneSync>true</GX2DrawdoneSync>
         <UpscaleFilter>1</UpscaleFilter>
