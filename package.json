@@ -36,8 +36,9 @@
     "fetchMetaData:prepareNameMappings": "tsx fetchMetaData/prepareNameMappings.ts",
     "fetchMetaData": "yarn fetchMetaData:prepareNameMappings && tsx fetchMetaData/fetchMetaDataForAllSystems.ts",
     "app:dir": "yarn build && electron-builder --dir --config electron-builder.config.js",
-    "app:distLinux": "yarn downloadEmulators && yarn build && electron-builder --linux --config electron-builder.config.js",
-    "app:distWindows": "yarn downloadEmulators && yarn build && electron-builder --win --config electron-builder.config.js",
+    "app:distBase": "yarn downloadEmulators && yarn build && electron-builder --config electron-builder.config.js",
+    "app:distLinux": "yarn app:distBase --linux",
+    "app:distWindows": "yarn app:distBase --windows",
     "storybook": "yarn clean && cross-env NODE_ENV=development yarn panda:codegen && storybook dev -p 6006 --no-open",
     "e2e": "yarn clean && cross-env NODE_ENV=production yarn panda:codegen && yarn build:remix && concurrently -c 'auto' --kill-others -P 'yarn:e2e:serveRemix:*' 'yarn:e2e:playwright {@}'",
     "e2e:serveRemix:default": "tsx e2eTests/tests/default/start.ts",
@@ -151,6 +152,6 @@
   },
   "exports": "./buildDesktop/desktop/main.js",
   "main": "buildDesktop/desktop/main.js",
-  "packageManager": "yarn@4.10.1",
+  "packageManager": "yarn@4.12.0",
   "type": "module"
 }

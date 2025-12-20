@@ -31,7 +31,7 @@ const filterFiles = (
     return filenames.filter(
       (filename) =>
         !filesToExclude.find((fileToExclude) =>
-          filename.toLowerCase().includes(fileToExclude.toLowerCase()),
+          filename.toLowerCase().endsWith(fileToExclude.toLowerCase()),
         ),
     );
   }

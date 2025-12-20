@@ -145,7 +145,7 @@ const getConfigFileBasePath = () => {
 export const ppsspp: Application = {
   id: applicationId,
   name: "PPSSPP",
-  fileExtensions: [".chd", ".cso", ".iso"],
+  fileExtensions: [".chd", ".cso", ".iso", ".pbp"],
   flatpakId,
   configFile: {
     basePath: getConfigFileBasePath(),
