@@ -1,6 +1,9 @@
+import type { X2jOptions } from "fast-xml-parser";
+import { XMLParser } from "fast-xml-parser";
 import fs from "node:fs";
 import nodepath from "node:path";
 import { EOL } from "os";
+import { log } from "../debug.server.js";
 
 type Param = `${string}=${string}`;
 
@@ -127,3 +130,23 @@ export const replaceGamepadConfigSection =
       return [...sections, virtualGamepads.join(EOL)];
     }
   };
+
+export const readXmlConfigFile = (
+  filePath: string,
+  defaultConfig: string,
+  parseOptions?: X2jOptions,
+) => {
+  const parser = new XMLParser({
+    ignoreAttributes: false,
+    parseTagValue: false,
+    ...(parseOptions || {}),
+  });
+  try {
+    const file = fs.readFileSync(filePath, "utf8");
+    return parser.parse(file);
+  } catch (error) {
+    log("debug", "config file can not be read.", filePath, error);
+
+    return parser.parse(defaultConfig);
+  }
+};

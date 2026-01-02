@@ -1,12 +1,11 @@
 import nodepath from "node:path";
-import fs from "node:fs";
 import type { Application } from "../../types.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { isWindows } from "../../../operationsystem.server.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
-import { XMLBuilder, XMLParser } from "fast-xml-parser";
+import { XMLBuilder } from "fast-xml-parser";
 import { log } from "../../../debug.server.js";
-import { writeConfig } from "../../configFile.js";
+import { readXmlConfigFile, writeConfig } from "../../configFile.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { envPaths } from "../../../envPaths.server.js";
 import type { ConfigFile } from "./config.js";
@@ -14,6 +13,7 @@ import { defaultConfig } from "./defaultConfig.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { removeFile } from "../../../readWriteData.server.js";
+import { findWiiUGameName } from "./findEntryName.js";
 
 const flatpakId = "info.cemu.Cemu";
 const applicationId: ApplicationId = "cemu";
@@ -39,21 +39,6 @@ const getDefaultConfigFilePath = () =>
 
 const getControllerConfigFilePath = (index: number) =>
   getConfigFilePath(controllerConfigPathRelative(index));
-
-const readXmlConfigFile = (filePath: string, defaultConfig: string) => {
-  const parser = new XMLParser({
-    ignoreAttributes: false,
-    parseTagValue: false,
-  });
-  try {
-    const file = fs.readFileSync(filePath, "utf8");
-    return parser.parse(file);
-  } catch (error) {
-    log("debug", "cemu", "config file can not be read.", filePath, error);
-
-    return parser.parse(defaultConfig);
-  }
-};
 
 const readDefaultConfigFile = () =>
   readXmlConfigFile(getDefaultConfigFilePath(), defaultConfig) as ConfigFile;
@@ -107,6 +92,7 @@ export const cemu: Application = {
   name: "Cemu",
   entryAsDirectory: true,
   flatpakId,
+  findEntryName: findWiiUGameName,
   configFile: {
     basePath: getConfigFileBasePath(),
     files: [defaultConfigPathRelative, "controllerProfiles"],

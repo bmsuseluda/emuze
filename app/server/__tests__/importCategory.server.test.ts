@@ -6,6 +6,7 @@ import {
 import { readFilenames } from "../readWriteData.server.js";
 import {
   addIndex,
+  bladerunner,
   blazingstar,
   createAbsoluteEntryPath,
   doomEvilution,
@@ -25,6 +26,7 @@ import {
   psallstarsDigital,
   psallstarsDisc,
   psallstarsManual,
+  scumm,
 } from "../__testData__/category.js";
 import type { Entry, MetaData } from "../../types/jsonFiles/category.js";
 import { general } from "../__testData__/general.js";
@@ -35,6 +37,7 @@ import { mameNeoGeo } from "../applicationsDB.server/applications/mame/index.js"
 import { duckstation } from "../applicationsDB.server/applications/duckstation/index.js";
 import { dosboxstaging } from "../applicationsDB.server/applications/dosbox/index.js";
 import { rpcs3 } from "../applicationsDB.server/applications/rpcs3/index.js";
+import { scummvm } from "../applicationsDB.server/applications/scummvm/index.js";
 
 vi.mock("@kmamal/sdl");
 vi.mock("../readWriteData.server");
@@ -268,6 +271,23 @@ describe("importCategory.server", () => {
 
       expect(result).toStrictEqual(expectedResult);
     });
+
+    it("Should read filenames for a system with entry as folder", () => {
+      vi.mocked(readFilenames).mockReturnValueOnce([
+        createAbsoluteEntryPath(scumm.name, bladerunner.path),
+      ]);
+
+      const expectedResult: Entry[] = [
+        { ...bladerunner, name: "bladerunner", id: `${bladerunner.id}0` },
+      ];
+
+      const result = readEntries({
+        categoryName: scumm.name,
+        application: scummvm,
+      });
+
+      expect(result).toStrictEqual(expectedResult);
+    });
   });
 
   describe("readEntriesWithMetaData", () => {
@@ -360,6 +380,10 @@ describe("importCategory.server", () => {
       {
         filename: "Scumm/Beneath a Steel Sky",
         gamename: "Beneath a Steel Sky",
+      },
+      {
+        filename: "Wii U/BAYONETTA 2 [AQUE0101]",
+        gamename: "BAYONETTA 2 [AQUE0101]",
       },
     ].forEach(({ filename, gamename }) => {
       it(`should return gamename ${gamename} for filename ${filename}`, () => {

@@ -5,7 +5,6 @@ import decompress from "decompress";
 import { applications, emulatorVersions } from "./applications.js";
 import {
   chmodSync,
-  createWriteStream,
   existsSync,
   mkdirSync,
   readdirSync,
@@ -19,6 +18,7 @@ import { moveSync } from "fs-extra/esm";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import { isWindows } from "../app/server/operationsystem.server.js";
+import { downloadFile } from "../app/server/downloadFile.server.js";
 
 const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 
@@ -139,60 +139,44 @@ const downloadAndExtract7z = (
 ) => {
   const zipFilePath = join(outputFolder, url.split("/").at(-1) || "");
 
-  downloadFile(url, zipFilePath, () => {
-    _7z.unpack(zipFilePath, outputFolder, (error) => {
-      if (!error) {
-        rmSync(zipFilePath, { recursive: true, force: true });
-        removeRootFolderIfNecessary(outputFolder);
-        if (!existsSync(fileToCheck)) {
-          console.error(`${fileToCheck} does not exist`);
-          process.exit(1);
+  downloadFile(
+    url,
+    zipFilePath,
+    () => {
+      _7z.unpack(zipFilePath, outputFolder, (error) => {
+        if (!error) {
+          rmSync(zipFilePath, { recursive: true, force: true });
+          removeRootFolderIfNecessary(outputFolder);
+          if (!existsSync(fileToCheck)) {
+            console.error(`${fileToCheck} does not exist`);
+            process.exit(1);
+          }
+          console.log(`${url} extracted`);
         }
-        console.log(`${url} extracted`);
-      }
-    });
-  });
-};
-
-const exitOnResponseCodeError = (url: string, statusCode?: number) => {
-  if (statusCode !== 200) {
-    console.error(`Failed to download ${url}. Status code: ${statusCode}`);
-    rmSync(emulatorsFolderPath, { recursive: true, force: true });
-    process.exit(1);
-  }
-};
-
-const downloadFile = (
-  url: string,
-  fileToCheck: string,
-  onFinish?: () => void,
-) => {
-  const file = createWriteStream(fileToCheck);
-  console.log(`Download of ${url} started`);
-
-  followRedirects.https
-    .get(url, (response) => {
-      exitOnResponseCodeError(url, response.statusCode);
-
-      response.pipe(file);
-
-      file.on("finish", () => {
-        file.close();
-
-        console.log(`Download of ${url} complete`);
-        onFinish?.();
       });
-    })
-    .on("error", (err) => {
-      console.error(`Error downloading the file: ${err.message}`);
-      process.exit(1);
-    });
+    },
+    () => {
+      exitOnResponseCodeError();
+    },
+  );
+};
+
+const exitOnResponseCodeError = () => {
+  rmSync(emulatorsFolderPath, { recursive: true, force: true });
+  process.exit(1);
 };
 
 const downloadAppImage = (url: string, fileToCheck: string) => {
-  downloadFile(url, fileToCheck, () => {
-    makeFileExecutableLinux(fileToCheck);
-  });
+  downloadFile(
+    url,
+    fileToCheck,
+    () => {
+      makeFileExecutableLinux(fileToCheck);
+    },
+    () => {
+      exitOnResponseCodeError();
+    },
+  );
 };
 
 const executeWithLogs = (applicationPath: string, args: string[]): string => {
@@ -212,27 +196,34 @@ const downloadExe = (
 ) => {
   const exeFilePath = join(outputFolder, url.split("/").at(-1) || "");
 
-  downloadFile(url, exeFilePath, () => {
-    setTimeout(() => {
-      const output = executeWithLogs("start", [
-        "/b",
-        "/wait",
-        exeFilePath,
-        `-o"${outputFolder}"`,
-        "-y",
-      ]);
-      console.log(output);
-      console.log(outputFolder);
-      console.log(exeFilePath);
-      console.log(fileToCheck);
-      rmSync(exeFilePath, { recursive: true, force: true });
-      if (!existsSync(fileToCheck)) {
-        console.error(`${fileToCheck} does not exist`);
-        process.exit(1);
-      }
-      console.log(`${url} extracted`);
-    }, 2000);
-  });
+  downloadFile(
+    url,
+    exeFilePath,
+    () => {
+      setTimeout(() => {
+        const output = executeWithLogs("start", [
+          "/b",
+          "/wait",
+          exeFilePath,
+          `-o"${outputFolder}"`,
+          "-y",
+        ]);
+        console.log(output);
+        console.log(outputFolder);
+        console.log(exeFilePath);
+        console.log(fileToCheck);
+        rmSync(exeFilePath, { recursive: true, force: true });
+        if (!existsSync(fileToCheck)) {
+          console.error(`${fileToCheck} does not exist`);
+          process.exit(1);
+        }
+        console.log(`${url} extracted`);
+      }, 2000);
+    },
+    () => {
+      exitOnResponseCodeError();
+    },
+  );
 };
 
 const removeRootFolderIfNecessary = (folder: string) => {
@@ -264,7 +255,15 @@ const downloadAndExtract = (
   console.log(`Download of ${url} started`);
   followRedirects.https
     .get(url, (response) => {
-      exitOnResponseCodeError(url, response.statusCode);
+      if (
+        typeof response.statusCode !== "undefined" &&
+        response.statusCode !== 200
+      ) {
+        console.error(
+          `Failed to download ${url}. Status code: ${response.statusCode}`,
+        );
+        exitOnResponseCodeError();
+      }
 
       const chunks: Buffer[] = [];
 
