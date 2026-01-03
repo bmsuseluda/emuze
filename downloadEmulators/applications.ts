@@ -39,7 +39,7 @@ export const applications = {
 } satisfies Record<string, Application>;
 
 export const emulatorVersions = {
-  ares: "146",
+  ares: "147",
   azahar: "2123.2",
   dolphin: "2509",
   duckstation: "0.1-7371",

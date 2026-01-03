@@ -27,7 +27,7 @@ type EmulatorDownloads = Record<ApplicationId, Record<OperatingSystem, string>>;
 
 const emulatorDownloads = {
   ares: {
-    Linux: `https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v${emulatorVersions.ares}%402025-10-10_1760076331/ares-v${emulatorVersions.ares}-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v${emulatorVersions.ares}%402026-01-01_1767253716/ares-v${emulatorVersions.ares}-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/ares-emulator/ares/releases/download/v${emulatorVersions.ares}/ares-windows-x64.zip`,
   },
   azahar: {

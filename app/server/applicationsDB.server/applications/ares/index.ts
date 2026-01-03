@@ -153,7 +153,7 @@ export const aresSegaMegaLd: Application = {
   fileExtensions: [".mmi"],
   createOptionParams: (props) => [
     ...getSharedAresOptionParams(props),
-    ...["--system", "Mega LD"],
+    ...["--system", "LaserActive (SEGA PAC)"],
   ],
 };
 
