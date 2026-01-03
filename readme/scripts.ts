@@ -11,6 +11,7 @@ import { rosaliesMupenGui } from "../app/server/applicationsDB.server/applicatio
 const preConfigured: ApplicationId[] = [
   "ares",
   "azahar",
+  "cemu",
   "dolphin",
   "duckstation",
   "flycast",
@@ -29,6 +30,7 @@ const preConfigured: ApplicationId[] = [
 const bundled: Partial<Record<ApplicationId, string>> = {
   ares: emulatorVersions.ares,
   azahar: emulatorVersions.azahar,
+  cemu: emulatorVersions.cemu,
   dolphin: emulatorVersions.dolphin,
   duckstation: emulatorVersions.duckstation,
   flycast: emulatorVersions.flycast,
