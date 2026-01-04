@@ -47,7 +47,7 @@ export const emulatorVersions = {
   flycast: "2.5",
   mame: "0.281",
   mednafen: "1.32.1",
-  melonds: "1.0",
+  melonds: "1.1",
   pcsx2: "2.4.0",
   ppsspp: "1.19.3",
   rosaliesMupenGui: "0.8.8",
