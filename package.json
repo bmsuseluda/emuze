@@ -28,6 +28,7 @@
     "import:mame": "tsx generateNameMappings/mame/index.ts",
     "import:cemu": "tsx generateNameMappings/cemu/index.ts",
     "import:scummvm": "tsx generateNameMappings/scummvm/index.ts",
+    "import:rpcs3": "tsx generateNameMappings/rpcs3/index.ts",
     "import:sdlMappings": "tsx fetchSdlMappings/index.ts",
     "convertSvgs": "svgr --svgo-config svgo.config.js --config-file .svgrrc.js ./svgs",
     "downloadEmulators": "tsx ./downloadEmulators/downloadEmulators.ts",

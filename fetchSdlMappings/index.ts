@@ -12,9 +12,10 @@ const resultPath = nodepath.join(
   "gamepadManager.server",
 );
 
+const url =
+  "https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/refs/heads/master/gamecontrollerdb.txt";
+
 const fetchSdlMappings = () => {
-  const url =
-    "https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/refs/heads/master/gamecontrollerdb.txt";
   fetch(url).then((result) => {
     result.text().then((text) => {
       const mappings = text
