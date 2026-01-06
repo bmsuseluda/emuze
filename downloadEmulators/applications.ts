@@ -48,7 +48,7 @@ export const emulatorVersions = {
   mame: "0.281",
   mednafen: "1.32.1",
   melonds: "1.1",
-  pcsx2: "2.6.0",
+  pcsx2: "2.6.1",
   ppsspp: "1.19.3",
   rosaliesMupenGui: "0.8.8",
   rpcs3: "0.0.38",

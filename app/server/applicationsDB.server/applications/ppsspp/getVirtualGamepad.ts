@@ -16,8 +16,10 @@ const buttonMappingSdl: Record<PpssppButtonId, number> = {
   y: 188,
   start: 197,
   back: 196,
-  leftShoulder: 194,
-  rightShoulder: 195,
+  // This works with ps3, steam deck controller and 8bitdo pro 2
+  leftShoulder: 193,
+  // This works with ps3, steam deck controller and 8bitdo pro 2
+  rightShoulder: 192,
   leftStickUp: 4003,
   leftStickDown: 4002,
   leftStickLeft: 4001,
@@ -115,7 +117,7 @@ export const getVirtualGamepad = (): ParamToReplace[] => [
     keyValue: `An.Right = ${getMappingString("leftStickRight")}`,
   },
   {
-    keyValue: `Pause = ${getKeyboardKey("F2")},${getButtonId(controller1id, "leftTrigger")}, ${getButtonId(controller2id, "leftTrigger")}`,
+    keyValue: `Pause = ${getKeyboardKey("F2")},${getButtonId(controller1id, "leftTrigger")},${getButtonId(controller2id, "leftTrigger")},${getButtonId(controller360idWindows, "leftTrigger", buttonMappingXinput)}`,
   },
   { keyValue: `Save State = ${getKeyboardKey("F1")}` },
   { keyValue: `Load State = ${getKeyboardKey("F3")}` },

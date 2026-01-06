@@ -92,6 +92,8 @@ const filterNewData = (
             "Wing Commander IV",
             "Wing Commander IV: The Price of Freedom",
           )
+          .replace("SuperLite1500シ", "SuperLite 1500 シ")
+          .replace("SuperLite1500 Series", "SuperLite 1500 Series")
           .replace("full game", "")
           .replaceAll("®", "")
           .replaceAll("™", "")
