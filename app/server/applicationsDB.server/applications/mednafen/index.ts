@@ -9,6 +9,7 @@ import { log } from "../../../debug.server.js";
 import { getGamepads } from "./initGamepadIDs.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { homedir } from "node:os";
+import { normalizeString } from "../../../igdb.server.js";
 
 const getSharedMednafenOptionParams: OptionParamFunction = ({
   settings: {
@@ -80,6 +81,25 @@ export const mednafen: Application = {
   bundledPath,
 };
 
+const hiresGames = [
+  "Dead or Alive",
+  "DecAthlete",
+  "Fighting Vipers",
+  "Fighters Megamix",
+  "Last Bronx",
+  "Virtua Fighter 2",
+  "Winter Heat",
+].map(normalizeString);
+
+const fixInterlacingSaturn = (gameName: string) => {
+  const gameNameNormalized = normalizeString(gameName);
+  if (hiresGames.includes(gameNameNormalized)) {
+    return [...["-video.deinterlacer", "bob_offset"]];
+  }
+
+  return [];
+};
+
 export const mednafenSaturn: Application = {
   ...mednafen,
   createOptionParams: (props) => {
@@ -88,6 +108,7 @@ export const mednafenSaturn: Application = {
     log("debug", "createOptionParams", virtualGamepadsSaturn);
     return [
       ...["-force_module", "ss"],
+      ...fixInterlacingSaturn(props.entryData.name),
       ...mednafen.createOptionParams!(props),
       ...virtualGamepadsSaturn,
     ];

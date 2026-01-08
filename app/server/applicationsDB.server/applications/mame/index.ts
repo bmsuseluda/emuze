@@ -15,6 +15,7 @@ import { log } from "../../../debug.server.js";
 import { createPorts, defaultConfig, type ConfigFile } from "./config.js";
 import { writeConfig } from "../../configFile.js";
 import { mameDefaultConfig } from "./mameDefaultConfig.js";
+import type { SystemId } from "../../../categoriesDB.server/systemId.js";
 
 const flatpakId = "org.mamedev.MAME";
 const applicationId: ApplicationId = "mame";
@@ -57,7 +58,7 @@ const readXmlConfigFile = (filePath: string) => {
 const readDefaultConfigFile = () =>
   readXmlConfigFile(getDefaultConfigFilePath()) as ConfigFile;
 
-const replaceDefaultConfigFile = () => {
+const replaceDefaultConfigFile = (systemId: SystemId) => {
   const fileContent = readDefaultConfigFile();
 
   const fileContentNew: ConfigFile = {
@@ -74,6 +75,10 @@ const replaceDefaultConfigFile = () => {
             ["UI_LOAD_STATE_QUICK", "KEYCODE_F3"],
             ["TOGGLE_FULLSCREEN", "KEYCODE_F11"],
             ["SERVICE", "JOYCODE_1_BUTTON2 JOYCODE_1_SELECT OR KEYCODE_TAB"],
+            [
+              "UI_FAST_FORWARD",
+              systemId === "neogeocd" ? "JOYCODE_1_SLIDER1_NEG_SWITCH" : "NONE",
+            ],
             ["UI_HELP", "NONE"],
             ["POWER_ON", "NONE"],
             ["POWER_OFF", "NONE"],
@@ -105,14 +110,14 @@ const replaceMameConfigFile = () => {
 };
 
 const getSharedMameOptionParams: OptionParamFunction = ({
-  categoryData: { name },
+  categoryData: { id, name },
   settings: {
     general: { categoriesPath },
     appearance: { fullscreen },
   },
 }) => {
   replaceMameConfigFile();
-  replaceDefaultConfigFile();
+  replaceDefaultConfigFile(id);
 
   const entryDirname = nodepath.join(categoriesPath, name);
   const optionParams = [];
