@@ -92,6 +92,7 @@ export default function Index() {
       open={true}
       onClose={handleClose}
       size={collapseSidebar ? "small" : "medium"}
+      maxHeight="small"
     >
       <SidebarMainLayout>
         <SidebarMainLayout.Sidebar

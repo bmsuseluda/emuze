@@ -1,6 +1,6 @@
-import { VscChromeClose } from "react-icons/vsc";
 import type { ReactNode } from "react";
 import { styled } from "../../../styled-system/jsx/index.js";
+import { VscChromeClose } from "react-icons/vsc";
 
 const DialogOverlay = styled("div", {
   base: {
@@ -24,9 +24,9 @@ const DialogContent = styled("div", {
     borderWidth: "0.2rem",
 
     width: "55rem",
+    maxWidth: "90vw",
     transition: "max-width 0.5s ease-in-out",
     height: "60vh",
-    maxHeight: "90vh",
     animation: "scaleUp 150ms",
     overflow: "clip",
     "&:focus": { outline: "none" },
@@ -43,6 +43,14 @@ const DialogContent = styled("div", {
       dynamic: {
         width: "fit-content",
         height: "fit-content",
+      },
+    },
+    maxHeight: {
+      small: {
+        maxHeight: "30rem",
+      },
+      medium: {
+        maxHeight: "90vh",
       },
     },
     variant: {
@@ -66,6 +74,7 @@ const IconButton = styled("button", {
     top: 10,
     right: 10,
     cursor: "pointer",
+    opacity: 0,
   },
 });
 
@@ -79,8 +88,8 @@ interface Props {
   open: boolean;
   onClose: (event?: DialogCloseEvent) => void;
   closable?: boolean;
-  showCloseIcon?: boolean;
   size?: "small" | "medium" | "dynamic";
+  maxHeight?: "small" | "medium";
   variant?: "default" | "accent";
 }
 
@@ -88,18 +97,13 @@ export const Dialog = ({
   children,
   open,
   onClose,
-  closable = true,
-  showCloseIcon = true,
   size = "medium",
+  maxHeight = "medium",
   variant = "default",
 }: Props) => {
   const handleClose = (event?: DialogCloseEvent) => {
     event?.stopPropagation();
-    if (closable) {
-      onClose(event);
-    } else {
-      event?.preventDefault();
-    }
+    onClose(event);
   };
 
   if (open) {
@@ -110,14 +114,13 @@ export const Dialog = ({
             event.stopPropagation();
           }}
           size={size}
+          maxHeight={maxHeight}
           variant={variant}
         >
           {children}
-          {closable && showCloseIcon && (
-            <IconButton aria-label="Close Modal" onClick={handleClose}>
-              <VscChromeClose />
-            </IconButton>
-          )}
+          <IconButton aria-label="Close Modal" onClick={handleClose}>
+            <VscChromeClose />
+          </IconButton>
         </DialogContent>
       </DialogOverlay>
     );

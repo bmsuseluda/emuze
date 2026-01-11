@@ -26,7 +26,7 @@ export const ErrorDialog = ({
   onClose,
   listRef,
 }: Props) => (
-  <Dialog open={true} onClose={onClose} variant="accent" size="small">
+  <Dialog open={true} onClose={onClose} variant="accent" size="dynamic">
     <SidebarMainLayout>
       <SidebarMainLayout.Main>
         <ListActionBarLayout
@@ -41,6 +41,7 @@ export const ErrorDialog = ({
             listRef={listRef}
             scrollSmooth
             list={<Stacktrace>{stacktrace}</Stacktrace>}
+            dynamicHeight
           />
         </ListActionBarLayout>
       </SidebarMainLayout.Main>

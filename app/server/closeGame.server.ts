@@ -11,7 +11,6 @@ const killChildProcess = () => {
   log("debug", "kill process");
 
   // signal needs to kill a process without an error message and settings done in the emulator need to be saved
-  // SIGQUIT works for RMG but ppsspp throws error
   // https://man7.org/linux/man-pages/man7/signal.7.html
   if (isGameRunning() && gameIsRunningChildProcess?.pid) {
     kill(gameIsRunningChildProcess.pid, "SIGHUP" as NodeJS.Signals, (err) => {
