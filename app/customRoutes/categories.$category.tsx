@@ -15,7 +15,6 @@ import { Typography } from "../components/Typography/index.js";
 import type { DataFunctionArgs } from "../context.js";
 import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
 import fs from "node:fs";
-import nodepath from "node:path";
 import type { SystemId } from "../server/categoriesDB.server/systemId.js";
 import { log } from "../server/debug.server.js";
 import { ImportButton } from "../containers/ImportButton/index.js";
@@ -62,7 +61,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     if (
       !general?.categoriesPath ||
       !categoryData?.name ||
-      !fs.existsSync(nodepath.join(general.categoriesPath, categoryData.name))
+      !fs.existsSync(general.categoriesPath)
     ) {
       return redirect("settings");
     }

@@ -17,7 +17,15 @@ export const useGamepadsOnSidebar = (
 
   const selectLink = useCallback((index: number) => {
     const currentLink = categoryLinksRefs.current.at(index);
-    if (currentLink && document.activeElement !== currentLink) {
+
+    if (!currentLink) {
+      categoryLinksRefs.current = categoryLinksRefs.current.filter(Boolean);
+      if (index < categoryLinksRefs.current.length) {
+        selectLink(index);
+      } else {
+        selectLink(0);
+      }
+    } else if (document.activeElement !== currentLink) {
       currentLink.focus();
       currentLink.click();
     }

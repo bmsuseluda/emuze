@@ -311,7 +311,7 @@ export const startGame = async (
     } else {
       setErrorDialog(
         `Launch failed`,
-        `${entryData.path} does not exist anymore`,
+        `"${entryData.path}" does not exist anymore`,
       );
       throw new Error();
     }

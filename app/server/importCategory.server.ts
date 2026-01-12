@@ -312,7 +312,7 @@ export const importCategory = async (
     `importCategory complete ${categoryImportData.categoryDbData.id} ${endTime - startTime}ms`,
   );
 
-  if (result.entries?.length || 0 > 0) {
+  if ((result.entries?.length || 0) > 0) {
     writeCategory(result);
   } else {
     removeCategory(result);
