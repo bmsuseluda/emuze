@@ -28,11 +28,13 @@ export const useDirectionalInputRight = (onRight: () => void) => {
 export const useInputConfirmation = (onConfirmation: () => void) => {
   useGamepadButtonPressEvent("a", onConfirmation);
   useKeyboardEvent("Enter", onConfirmation);
+  useKeyboardEvent("1", onConfirmation);
 };
 
 export const useInputBack = (onBack: () => void) => {
   useGamepadButtonPressEvent("b", onBack);
   useKeyboardEvent("Backspace", onBack);
+  useKeyboardEvent("5", onBack);
 };
 
 export const useInputSettings = (onSettings: () => void) => {
