@@ -130,6 +130,13 @@ test("import all with cleanup", async ({ page, libraryPage }) => {
   await libraryPage.expectIsInitialSystem();
 
   await expect(pspLink).not.toBeVisible();
+
+  // after removing a system check if keyboard arrow up to last system and down to first system works
+  await libraryPage.press("Backspace");
+  await libraryPage.press("ArrowUp");
+  await libraryPage.expectIsSystem("Super Nintendo Entertainment System");
+  await libraryPage.press("ArrowDown");
+  await libraryPage.expectIsInitialSystem();
 });
 
 test("game versions", async ({ libraryPage }) => {
