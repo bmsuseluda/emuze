@@ -12,23 +12,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   args: {
+    iconSize: "medium",
     children: (
       <>
         <IoMdRefresh />
         <Typography>Im next to a icon</Typography>
       </>
     ),
-  },
-};
-
-export const Rotate: Story = {
-  args: {
-    children: (
-      <>
-        <IoMdRefresh />
-        <Typography>Im next to a icon</Typography>
-      </>
-    ),
-    rotate: true,
   },
 };

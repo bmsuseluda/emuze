@@ -26,7 +26,7 @@ export const Default: Story = {
   },
   render: () => {
     const setingsIcons = Object.keys(icons).map((id) => (
-      <IconChildrenWrapper key={id}>
+      <IconChildrenWrapper iconSize="medium" key={id}>
         <SettingsIcon id={id as keyof typeof icons} />
         <Typography>{id}</Typography>
       </IconChildrenWrapper>

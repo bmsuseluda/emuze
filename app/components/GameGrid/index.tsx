@@ -49,7 +49,7 @@ const IntersectionIndicator = styled("div", {
   base: {
     position: "absolute",
     right: 0,
-    bottom: "1px",
+    bottom: "0.0625rem",
     zIndex: 0,
     minHeight: "320px",
   },

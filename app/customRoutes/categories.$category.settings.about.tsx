@@ -1,9 +1,7 @@
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
-import { IconChildrenWrapper } from "../components/IconChildrenWrapper/index.js";
 import { SettingsIcon } from "../components/SettingsIcon/index.js";
 import { FaDiscord, FaGithub } from "react-icons/fa";
 import { CgNotes } from "react-icons/cg";
-import { Typography } from "../components/Typography/index.js";
 import { styled } from "../../styled-system/jsx/index.js";
 import { Logo } from "../components/Logo/index.js";
 import { Link } from "../components/Link/index.js";
@@ -62,6 +60,7 @@ export const Properties = styled("div", {
     gridTemplateColumns: "1fr 1fr",
     rowGap: "0.2rem",
     columnGap: "1rem",
+    fontSize: "small",
   },
 });
 
@@ -85,7 +84,7 @@ export const Links = styled("ul", {
   base: {
     display: "flex",
     flexDirection: "column",
-    gap: "1",
+    gap: "0.95rem",
   },
 });
 
@@ -139,12 +138,10 @@ export default function About() {
   return (
     <>
       <ListActionBarLayout
-        headline={
-          <IconChildrenWrapper>
-            <SettingsIcon id="about" />
-            <Typography ellipsis>About</Typography>
-          </IconChildrenWrapper>
-        }
+        headline={{
+          title: "About",
+          icon: <SettingsIcon id="about" />,
+        }}
       >
         <ListActionBarLayout.ListActionBarContainer
           list={

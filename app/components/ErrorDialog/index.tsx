@@ -1,6 +1,4 @@
 import { Dialog } from "../Dialog/index.js";
-import { IconChildrenWrapper } from "../IconChildrenWrapper/index.js";
-import { Typography } from "../Typography/index.js";
 import { MdErrorOutline } from "react-icons/md";
 import { ListActionBarLayout } from "../layouts/ListActionBarLayout/index.js";
 import { SidebarMainLayout } from "../layouts/SidebarMainLayout/index.js";
@@ -10,6 +8,7 @@ import { styled } from "../../../styled-system/jsx/index.js";
 const Stacktrace = styled("p", {
   base: {
     whiteSpace: "pre-wrap",
+    fontSize: "small",
   },
 });
 
@@ -30,12 +29,10 @@ export const ErrorDialog = ({
     <SidebarMainLayout>
       <SidebarMainLayout.Main>
         <ListActionBarLayout
-          headline={
-            <IconChildrenWrapper>
-              <MdErrorOutline />
-              <Typography ellipsis>{title}</Typography>
-            </IconChildrenWrapper>
-          }
+          headline={{
+            title,
+            icon: <MdErrorOutline />,
+          }}
         >
           <ListActionBarLayout.ListActionBarContainer
             listRef={listRef}

@@ -1,7 +1,7 @@
 import { Outlet, redirect, useLoaderData } from "react-router";
 import { readCategories } from "../server/categories.server.js";
 import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout/index.js";
-import { Link } from "../containers/Link/index.js";
+import { SidebarNavigationLink } from "../containers/SidebarNavigationLink/index.js";
 import { Header } from "../containers/Header/index.js";
 import { SystemIcon } from "../components/SystemIcon/index.js";
 import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar/index.js";
@@ -117,7 +117,7 @@ export default function Categories() {
       >
         {categoryLinks.map(({ id, name, to }, index) => (
           <li key={to}>
-            <Link
+            <SidebarNavigationLink
               to={to}
               icon={<SystemIcon id={id} />}
               aria-label={name}
@@ -126,7 +126,7 @@ export default function Categories() {
               isFocused={isInFocus}
             >
               {collapseSidebar ? undefined : <Name>{name}</Name>}
-            </Link>
+            </SidebarNavigationLink>
           </li>
         ))}
       </SidebarMainLayout.Sidebar>

@@ -40,11 +40,11 @@ const Label = styled("label", {
     borderRadius: "1",
     overflow: "clip",
 
-    margin: "4px",
-    outlineWidth: "4px",
+    margin: "0.25rem",
+    outlineWidth: "0.25rem",
     outlineStyle: "solid",
     outlineColor: "transparent",
-    outlineOffset: "4px",
+    outlineOffset: "0.25rem",
     transition: "outline-color 0.1s ease-in-out",
 
     "&:has(*:checked)": {
@@ -101,8 +101,9 @@ const IconWrapper = styled("div", {
     borderRadius: "50%",
 
     "& > svg": {
-      width: "1em",
-      height: "1em",
+      width: "iconSmall",
+      height: "auto",
+      aspectRatio: "1",
       verticalAlign: "middle",
     },
   },
@@ -135,7 +136,7 @@ const Name = styled("div", {
     padding: "0 0.8rem 0.4rem",
     backgroundColor: "transparentBackgroundColor",
     fontWeight: 400,
-    fontSize: "80%",
+    fontSize: "extraSmall",
     lineHeight: "1.3rem",
   },
 });

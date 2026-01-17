@@ -22,6 +22,7 @@ import styles from "./index.css?url";
 import { styled } from "../styled-system/jsx/index.js";
 import { readGeneral } from "./server/settings.server.js";
 import { GamepadProvider } from "./provider/GamepadProvider/index.js";
+import { useFullscreen } from "./hooks/useFullscreen/index.js";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
@@ -40,19 +41,19 @@ export default function App() {
 
   return (
     <Document>
-      <Layout>
-        <FocusProvider
-          focusDefault={focusDefault}
-          focusHistoryDefault={focusHistoryDefault}
-        >
-          <GamepadProvider>
-            <FullscreenProvider fullscreenDefault={fullscreen}>
+      <FullscreenProvider fullscreenDefault={fullscreen}>
+        <Layout>
+          <FocusProvider
+            focusDefault={focusDefault}
+            focusHistoryDefault={focusHistoryDefault}
+          >
+            <GamepadProvider>
               <Titlebar />
               <Outlet />
-            </FullscreenProvider>
-          </GamepadProvider>
-        </FocusProvider>
-      </Layout>
+            </GamepadProvider>
+          </FocusProvider>
+        </Layout>
+      </FullscreenProvider>
     </Document>
   );
 }
@@ -118,9 +119,22 @@ const Wrapper = styled("div", {
     display: "flex",
     flexFlow: "column",
     backgroundColor: "backgroundColor",
+    overflow: "inherit",
+  },
+  variants: {
+    fullscreen: {
+      true: {
+        borderRadius: 0,
+      },
+      false: {
+        borderRadius: "9px",
+      },
+    },
   },
 });
 
 function Layout({ children }: { children: ReactNode }) {
-  return <Wrapper>{children}</Wrapper>;
+  const fullscreen = useFullscreen();
+
+  return <Wrapper fullscreen={fullscreen}>{children}</Wrapper>;
 }

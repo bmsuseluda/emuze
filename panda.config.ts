@@ -1,17 +1,21 @@
 import { defineConfig, defineGlobalStyles, defineUtility } from "@pandacss/dev";
 
 const globalCss = defineGlobalStyles({
+  html: {
+    fontSize: "100%",
+    overflow: "hidden",
+  },
   body: {
     margin: 0,
     padding: 0,
 
     fontWeight: 400,
     fontFamily: "quicksandLight",
-    fontSize: "130%",
 
     userSelect: "none",
 
     interpolateSize: "allow-keywords",
+    overflow: "inherit",
   },
 });
 
@@ -137,7 +141,7 @@ export default defineConfig({
     tokens: {
       spacing: {
         outlinePadding: { value: "1rem" },
-        1: { value: "0.8rem" },
+        1: { value: "0.75rem" },
         2: { value: "2rem" },
         3: { value: "3rem" },
         4: { value: "5rem" },
@@ -151,23 +155,34 @@ export default defineConfig({
         4: { value: "4rem" },
         5: { value: "5rem" },
         scrollMask: { value: "1.5rem" },
+        iconExtraSmall: { value: "1rem" },
+        iconSmall: { value: "1.25rem" },
+        iconMedium: { value: "1.5rem" },
+        iconLarge: { value: "2.5rem" },
+      },
+      fontSizes: {
+        extraSmall: { value: "1.125rem" },
+        small: { value: "1.25rem" },
+        medium: { value: "1.5rem" },
+        large: { value: "2rem" },
+        extraLarge: { value: "4rem" },
       },
       borders: {
         2: {
-          value: "2px solid black",
+          value: "0.125rem solid black",
         },
         3: {
-          value: "4px solid black",
+          value: "0.25rem solid black",
         },
       },
       borderWidths: {
-        1: { value: "1px" },
-        2: { value: "2px" },
-        3: { value: "4px" },
+        1: { value: "0.0625rem" },
+        2: { value: "0.125rem" },
+        3: { value: "0.25rem" },
       },
       radii: {
-        outline: { value: "0.1rem" },
-        1: { value: "0.8rem" },
+        outline: { value: "0.125rem" },
+        1: { value: "0.75rem" },
       },
       fonts: {
         quicksandLight: {

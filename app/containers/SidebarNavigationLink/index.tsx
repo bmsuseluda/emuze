@@ -13,7 +13,7 @@ const StyledNavLink = styled(NavLink, {
   base: {
     textDecoration: "none",
     color: "color",
-    fontSize: "90%",
+    fontSize: "small",
     fontWeight: 500,
 
     "&:focus": {
@@ -27,11 +27,6 @@ const LinkSpan = styled(IconChildrenWrapper, {
     width: "100%",
     boxSizing: "border-box",
     padding: "1rem",
-
-    "& > svg": {
-      minHeight: "max(25px, 1.2em)",
-      minWidth: "max(25px, 1.2em)",
-    },
   },
 
   variants: {
@@ -67,13 +62,20 @@ const LinkSpan = styled(IconChildrenWrapper, {
   ],
 });
 
-export const Link = ({ to, children, icon, isFocused, ...rest }: Props) => (
+export const SidebarNavigationLink = ({
+  to,
+  children,
+  icon,
+  isFocused,
+  ...rest
+}: Props) => (
   <StyledNavLink to={to} prefetch="intent" draggable={false} {...rest}>
     {({ isActive }) => (
       <LinkSpan
         active={isActive}
         focused={isFocused}
         circle={!!icon && !children}
+        iconSize="medium"
       >
         {icon}
         {children}

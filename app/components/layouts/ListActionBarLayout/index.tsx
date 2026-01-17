@@ -2,11 +2,16 @@ import { Headline } from "../../Headline/index.js";
 import type { ComponentRef, ForwardedRef, ReactNode } from "react";
 import { useCallback, useRef } from "react";
 import { styled } from "../../../../styled-system/jsx/index.js";
+import { IconChildrenWrapper } from "../../IconChildrenWrapper/index.js";
+import { Typography } from "../../Typography/index.js";
 
 type paddingLeft = "none" | "small" | "medium" | "large";
 
 interface Props {
-  headline?: ReactNode;
+  headline?: {
+    title: string;
+    icon?: ReactNode;
+  };
   paddingLeft?: paddingLeft;
   children: ReactNode;
 }
@@ -36,7 +41,7 @@ const HeadlineWrapper = styled("div", {
         paddingLeft: "1.5rem",
       },
       large: {
-        paddingLeft: "calc(1.5rem + 4px)",
+        paddingLeft: "calc(1.5rem + 0.25rem)",
       },
     },
   },
@@ -193,7 +198,16 @@ export const ListActionBarLayout = ({
   <Layout>
     {headline && (
       <HeadlineWrapper paddingLeft={paddingLeft}>
-        <Headline>{headline}</Headline>
+        <Headline>
+          {headline.icon ? (
+            <IconChildrenWrapper iconSize="large">
+              {headline.icon}
+              <Typography ellipsis>{headline.title}</Typography>
+            </IconChildrenWrapper>
+          ) : (
+            headline.title
+          )}
+        </Headline>
       </HeadlineWrapper>
     )}
     <Wrapper>{children}</Wrapper>

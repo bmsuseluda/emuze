@@ -19,7 +19,7 @@ const getColoredDiv = (color: string) => (
       width: "18px",
       height: "18px",
       borderRadius: "50%",
-      border: "1px solid black",
+      border: "0.0625rem solid black",
       backgroundColor: color,
     }}
   />

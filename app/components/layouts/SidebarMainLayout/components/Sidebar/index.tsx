@@ -59,7 +59,7 @@ const StyledUl = styled(Ul, {
 
 interface Props {
   header?: ReactNode;
-  headline?: ReactNode;
+  headline?: string;
   children?: ReactNode;
   actions?: ReactNode;
   collapse?: boolean;
@@ -80,7 +80,7 @@ export const Sidebar = ({
       </HeaderWrapper>
     )}
     <ListActionBarLayout
-      headline={collapse ? undefined : headline}
+      headline={headline && !collapse ? { title: headline } : undefined}
       paddingLeft="small"
     >
       <ListActionBarLayout.ListActionBarContainer

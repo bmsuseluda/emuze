@@ -18,7 +18,7 @@ const StyledHeader = styled("header", {
 
     "& > img": {
       aspectRatio: "auto",
-      width: "2.5em",
+      width: "3.2rem",
     },
   },
 });
@@ -30,7 +30,7 @@ export const Headline = styled("h1", {
     margin: 0,
     padding: 0,
     fontWeight: 400,
-    fontSize: "4rem",
+    fontSize: "extraLarge",
     fontFamily: "annieUseYourTelescope",
     whiteSpace: "nowrap",
 

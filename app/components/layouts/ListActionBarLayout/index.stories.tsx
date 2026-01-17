@@ -28,7 +28,7 @@ export const ManyElements: Story = {
     </Wrapper>
   ),
   args: {
-    headline: "Persons",
+    headline: { title: "Persons" },
     children: (
       <>
         <form>
@@ -85,7 +85,7 @@ export const OneElement: Story = {
     </Wrapper>
   ),
   args: {
-    headline: "Persons",
+    headline: { title: "Persons" },
     children: (
       <>
         <form>
@@ -118,7 +118,7 @@ export const ZeroElement: Story = {
     </Wrapper>
   ),
   args: {
-    headline: "Persons",
+    headline: { title: "Persons" },
     children: (
       <>
         <form>

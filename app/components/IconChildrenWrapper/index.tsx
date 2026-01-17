@@ -11,17 +11,31 @@ const Wrapper = styled("span", {
     color: "color",
 
     "& > svg": {
-      minHeight: "max(20px, 1.2em)",
-      minWidth: "max(20px, 1.2em)",
+      width: "iconSmall",
+      minWidth: "iconSmall",
+      height: "auto",
+      aspectRatio: "1",
       verticalAlign: "middle",
     },
   },
-
   variants: {
-    rotate: {
-      true: {
+    iconSize: {
+      small: {
         "& > svg": {
-          animation: "spin 2s linear infinite",
+          width: "iconSmall",
+          minWidth: "iconSmall",
+        },
+      },
+      medium: {
+        "& > svg": {
+          width: "iconMedium",
+          minWidth: "iconMedium",
+        },
+      },
+      large: {
+        "& > svg": {
+          width: "iconLarge",
+          minWidth: "iconLarge",
         },
       },
     },
@@ -30,15 +44,9 @@ const Wrapper = styled("span", {
 
 interface Props {
   children: ReactNode;
-  rotate?: boolean;
+  iconSize: "small" | "medium" | "large";
 }
 
-export const IconChildrenWrapper = ({
-  children,
-  rotate = false,
-  ...rest
-}: Props) => (
-  <Wrapper rotate={rotate} {...rest}>
-    {children}
-  </Wrapper>
+export const IconChildrenWrapper = ({ children, ...rest }: Props) => (
+  <Wrapper {...rest}>{children}</Wrapper>
 );
