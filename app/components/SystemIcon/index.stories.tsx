@@ -15,7 +15,7 @@ type Story = StoryObj<typeof meta>;
 const Wrapper = styled("div", {
   base: {
     display: "flex",
-    gap: "10px",
+    gap: "0.625rem",
     flexDirection: "column",
   },
 });

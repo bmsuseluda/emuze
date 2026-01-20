@@ -17,8 +17,9 @@ const StyledHeader = styled("header", {
     gap: "0.5rem",
 
     "& > img": {
-      aspectRatio: "auto",
-      width: "3.2rem",
+      aspectRatio: 1,
+      width: "3.1875rem",
+      height: "auto",
     },
   },
 });

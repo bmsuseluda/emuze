@@ -16,8 +16,8 @@ const StoryWrapper = styled("div", {
 const getColoredDiv = (color: string) => (
   <div
     style={{
-      width: "18px",
-      height: "18px",
+      width: "1rem",
+      height: "1rem",
       borderRadius: "50%",
       border: "0.0625rem solid black",
       backgroundColor: color,

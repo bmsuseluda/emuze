@@ -5,7 +5,7 @@ export const Image = styled("img", {
   base: {
     aspectRatio: "auto",
     width: "45%",
-    minWidth: "200px",
+    minWidth: "200",
   },
 });
 

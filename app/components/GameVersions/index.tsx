@@ -31,9 +31,7 @@ const Label = styled("label", {
     fontSize: "small",
 
     borderRadius: "1",
-    outlineWidth: "0.15rem",
-    outlineStyle: "solid",
-    outlineColor: "transparent",
+    outline: "outlineInitial",
     transition: "outline-color 0.1s ease-in-out",
 
     "&:has(*:checked)": {

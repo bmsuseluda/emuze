@@ -7,7 +7,7 @@ const Wrapper = styled("div", {
     position: "fixed",
     top: 0,
     left: 0,
-    height: "40px",
+    height: "2.5rem",
     width: "100%",
     display: "flex",
     justifyContent: "space-between",
@@ -31,7 +31,7 @@ const Buttons = styled("div", {
 // TODO: replace with real settings button
 const FakeSettingsButton = styled("div", {
   base: {
-    padding: "23px",
+    padding: "1.4375rem",
   },
 });
 

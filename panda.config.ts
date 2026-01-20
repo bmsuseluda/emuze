@@ -2,8 +2,15 @@ import { defineConfig, defineGlobalStyles, defineUtility } from "@pandacss/dev";
 
 const globalCss = defineGlobalStyles({
   html: {
-    fontSize: "100%",
     overflow: "hidden",
+    fontSize: "100%",
+
+    "@media (min-width: 2560px)": {
+      fontSize: "150%",
+    },
+    "@media (min-width: 3300px)": {
+      fontSize: "175%",
+    },
   },
   body: {
     margin: 0,
@@ -137,16 +144,30 @@ export default defineConfig({
           },
         },
       },
+      spacing: {
+        outlinePadding: { value: "1rem" },
+        // If you change this value, change it in customRoutes/categories.$category.tsx as well
+        scrollPadding: { value: "50% 0" },
+      },
+      sizes: {
+        scrollMask: { value: "1.5rem" },
+        iconExtraSmall: { value: "{sizes.1}" },
+        iconSmall: { value: "1.25rem" },
+        iconMedium: { value: "1.5rem" },
+        iconLarge: { value: "2.5rem" },
+      },
+      shadows: {
+        dialog: {
+          value: "0 0 1.25rem 0.625rem black",
+        },
+      },
     },
     tokens: {
       spacing: {
-        outlinePadding: { value: "1rem" },
         1: { value: "0.75rem" },
         2: { value: "2rem" },
         3: { value: "3rem" },
         4: { value: "5rem" },
-        // If you change this value, change it in customRoutes/categories.$category.tsx as well
-        scrollPadding: { value: "50% 0" },
       },
       sizes: {
         1: { value: "1rem" },
@@ -154,11 +175,8 @@ export default defineConfig({
         3: { value: "3rem" },
         4: { value: "4rem" },
         5: { value: "5rem" },
-        scrollMask: { value: "1.5rem" },
-        iconExtraSmall: { value: "1rem" },
-        iconSmall: { value: "1.25rem" },
-        iconMedium: { value: "1.5rem" },
-        iconLarge: { value: "2.5rem" },
+        200: { value: "12.5rem" },
+        300: { value: "18.75rem" },
       },
       fontSizes: {
         extraSmall: { value: "1.125rem" },
@@ -173,6 +191,9 @@ export default defineConfig({
         },
         3: {
           value: "0.25rem solid black",
+        },
+        outlineInitial: {
+          value: "0.125rem solid transparent",
         },
       },
       borderWidths: {

@@ -58,7 +58,7 @@ export const Properties = styled("div", {
   base: {
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
-    rowGap: "0.2rem",
+    rowGap: "0.1875rem",
     columnGap: "1rem",
     fontSize: "small",
   },
@@ -84,7 +84,7 @@ export const Links = styled("ul", {
   base: {
     display: "flex",
     flexDirection: "column",
-    gap: "0.95rem",
+    gap: "0.9375rem",
   },
 });
 

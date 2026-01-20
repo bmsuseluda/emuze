@@ -12,10 +12,10 @@ const Wrapper = styled("span", {
 
     "& > svg": {
       width: "iconSmall",
-      minWidth: "iconSmall",
       height: "auto",
       aspectRatio: "1",
       verticalAlign: "middle",
+      flexShrink: 0,
     },
   },
   variants: {
@@ -23,19 +23,16 @@ const Wrapper = styled("span", {
       small: {
         "& > svg": {
           width: "iconSmall",
-          minWidth: "iconSmall",
         },
       },
       medium: {
         "& > svg": {
           width: "iconMedium",
-          minWidth: "iconMedium",
         },
       },
       large: {
         "& > svg": {
           width: "iconLarge",
-          minWidth: "iconLarge",
         },
       },
     },
