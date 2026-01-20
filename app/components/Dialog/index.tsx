@@ -19,9 +19,9 @@ const DialogContent = styled("div", {
   base: {
     backgroundColor: "sidebarBackgroundColor",
     color: "color",
-    boxShadow: "0px 0px 20px 10px black",
+    boxShadow: "dialog",
     borderRounded: true,
-    borderWidth: "0.2rem",
+    borderWidth: "3",
 
     width: "55rem",
     maxWidth: "90vw",
@@ -35,10 +35,10 @@ const DialogContent = styled("div", {
   variants: {
     size: {
       small: {
-        maxWidth: "min(700px, 90vw)",
+        maxWidth: "min(43.75rem, 90vw)",
       },
       medium: {
-        maxWidth: "min(900px, 90vw)",
+        maxWidth: "min(56.25rem, 90vw)",
       },
       dynamic: {
         width: "fit-content",
@@ -64,7 +64,8 @@ const DialogContent = styled("div", {
   },
 });
 
-const IconButton = styled("button", {
+/** Is invisible. Is used to trigger closing programatically */
+const CloseButton = styled("button", {
   base: {
     borderRadius: "100%",
     height: 25,
@@ -118,9 +119,9 @@ export const Dialog = ({
           variant={variant}
         >
           {children}
-          <IconButton aria-label="Close Modal" onClick={handleClose}>
+          <CloseButton aria-label="Close Modal" onClick={handleClose}>
             <VscChromeClose />
-          </IconButton>
+          </CloseButton>
         </DialogContent>
       </DialogOverlay>
     );

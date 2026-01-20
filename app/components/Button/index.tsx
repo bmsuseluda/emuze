@@ -12,7 +12,7 @@ export const StyledButton = styled("button", {
     borderColor: "sidebarBackgroundColor",
     borderWidth: 2,
     fontFamily: "[inherit]",
-    fontSize: "[80%]",
+    fontSize: "extraSmall",
     padding: "[0.5rem 1rem]",
     cursor: "pointer",
     textDecoration: "[none]",
@@ -36,9 +36,9 @@ export interface Props extends ComponentProps<typeof StyledButton> {
   icon?: ReactNode;
 }
 
-export const Button = ({ children, loading = false, icon, ...rest }: Props) => (
+export const Button = ({ children, icon, ...rest }: Props) => (
   <StyledButton {...rest}>
-    <IconChildrenWrapper rotate={loading}>
+    <IconChildrenWrapper iconSize="small">
       {icon}
       {children && <Typography>{children}</Typography>}
     </IconChildrenWrapper>

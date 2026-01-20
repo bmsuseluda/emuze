@@ -12,7 +12,7 @@ const List = styled("ul", {
   base: {
     display: "flex",
     flexDirection: "column",
-    margin: "4px",
+    margin: "0.25rem",
     gap: 1,
   },
 });
@@ -28,11 +28,10 @@ const Label = styled("label", {
     display: "block",
     padding: "1",
     color: "color",
+    fontSize: "small",
 
     borderRadius: "1",
-    outlineWidth: "2px",
-    outlineStyle: "solid",
-    outlineColor: "transparent",
+    outline: "outlineInitial",
     transition: "outline-color 0.1s ease-in-out",
 
     "&:has(*:checked)": {

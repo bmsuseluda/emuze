@@ -18,7 +18,7 @@ const Input = styled("input", {
     width: "100%",
     boxSizing: "border-box",
     fontFamily: "inherit",
-    fontSize: "90%",
+    fontSize: "extraSmall",
     fontWeight: 400,
 
     "&:focus": {
@@ -55,7 +55,8 @@ const IconButton = styled("button", {
     },
 
     "& > svg": {
-      width: "1.3rem",
+      width: "iconMedium",
+      height: "auto",
       aspectRatio: "1",
       verticalAlign: "middle",
       flexShrink: "0",
@@ -69,13 +70,7 @@ const Error = styled("div", {
     display: "flex",
     gap: "0.5rem",
     flexWrap: "nowrap",
-    fontSize: "90%",
-
-    "& > svg": {
-      width: "1.3rem",
-      aspectRatio: "1",
-      verticalAlign: "middle",
-    },
+    fontSize: "small",
   },
 });
 
@@ -85,6 +80,13 @@ const ErrorIcon = styled("div", {
     display: "flex",
     alignItems: "center",
     flexShrink: "0",
+
+    "& > svg": {
+      width: "iconMedium",
+      height: "auto",
+      aspectRatio: "1",
+      verticalAlign: "middle",
+    },
   },
 });
 

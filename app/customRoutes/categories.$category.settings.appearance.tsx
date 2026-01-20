@@ -6,7 +6,6 @@ import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/i
 import { readAppearance, writeAppearance } from "../server/settings.server.js";
 import { Checkbox } from "../components/Checkbox/index.js";
 import type { Appearance } from "../types/jsonFiles/settings/appearance.js";
-import { IconChildrenWrapper } from "../components/IconChildrenWrapper/index.js";
 import { SettingsIcon } from "../components/SettingsIcon/index.js";
 import { useFullscreen } from "../hooks/useFullscreen/index.js";
 import { CheckboxLabel } from "../components/CheckboxLabel/index.js";
@@ -20,7 +19,6 @@ import {
   useInputBack,
   useInputConfirmation,
 } from "../hooks/useDirectionalInput/index.js";
-import { Typography } from "../components/Typography/index.js";
 import { FormRow } from "../components/FormRow/index.js";
 
 export const loader = () => {
@@ -136,12 +134,10 @@ export default function Appearance() {
 
   return (
     <ListActionBarLayout
-      headline={
-        <IconChildrenWrapper>
-          <SettingsIcon id="appearance" />
-          <Typography ellipsis>Appearance</Typography>
-        </IconChildrenWrapper>
-      }
+      headline={{
+        title: "Appearance",
+        icon: <SettingsIcon id="appearance" />,
+      }}
     >
       <Form method="POST">
         <ListActionBarLayout.ListActionBarContainer

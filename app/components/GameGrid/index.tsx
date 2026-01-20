@@ -25,23 +25,12 @@ interface Props extends ComponentPropsWithoutRef<"ul"> {
   onExecute: () => void;
 }
 
-const Container = styled("div", {
-  base: {
-    containerType: "inline-size",
-    containerName: "gameGrid",
-  },
-});
-
 const List = styled(Ul, {
   base: {
     position: "relative",
     display: "grid",
     gap: "1",
-    gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-
-    "@container gameGrid (inline-size > 1440px)": {
-      gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-    },
+    gridTemplateColumns: "repeat(auto-fill, minmax(12.5rem, 1fr))",
   },
 });
 
@@ -49,9 +38,9 @@ const IntersectionIndicator = styled("div", {
   base: {
     position: "absolute",
     right: 0,
-    bottom: "1px",
+    bottom: "0.0625rem",
     zIndex: 0,
-    minHeight: "320px",
+    minHeight: "20rem",
   },
 });
 
@@ -130,41 +119,37 @@ export const GameGrid = ({
   useInputBack(handleBack);
 
   return (
-    <Container>
-      <List ref={entryListRef}>
-        {games.map((game, index) => {
-          const { id, name, metaData } = game;
-          // TODO: think about if this should be a callback from useGamepadsOnGrid
-          const handleClick = () => {
-            onGameClick();
-            selectedEntry.current = entriesRefs.current[index];
-            updatePosition();
-          };
-          const handleDoubleClick = () => {
-            onExecute();
-          };
+    <List ref={entryListRef}>
+      {games.map((game, index) => {
+        const { id, name, metaData } = game;
+        // TODO: think about if this should be a callback from useGamepadsOnGrid
+        const handleClick = () => {
+          onGameClick();
+          selectedEntry.current = entriesRefs.current[index];
+          updatePosition();
+        };
+        const handleDoubleClick = () => {
+          onExecute();
+        };
 
-          return (
-            <Game
-              id={id}
-              name={name}
-              icon={
-                isEntryWithSystem(game) ? (
-                  <SystemIcon id={game.systemId} />
-                ) : null
-              }
-              imageUrl={metaData?.imageUrl}
-              alwaysGameName={alwaysGameNames}
-              onClick={handleClick}
-              onDoubleClick={handleDoubleClick}
-              ref={entriesRefCallback(index)}
-              key={id}
-              isInFocus={isEnabled.current && isInFocus}
-            />
-          );
-        })}
-        <IntersectionIndicator ref={inViewRef} />
-      </List>
-    </Container>
+        return (
+          <Game
+            id={id}
+            name={name}
+            icon={
+              isEntryWithSystem(game) ? <SystemIcon id={game.systemId} /> : null
+            }
+            imageUrl={metaData?.imageUrl}
+            alwaysGameName={alwaysGameNames}
+            onClick={handleClick}
+            onDoubleClick={handleDoubleClick}
+            ref={entriesRefCallback(index)}
+            key={id}
+            isInFocus={isEnabled.current && isInFocus}
+          />
+        );
+      })}
+      <IntersectionIndicator ref={inViewRef} />
+    </List>
   );
 };

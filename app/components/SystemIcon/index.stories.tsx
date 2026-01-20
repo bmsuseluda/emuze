@@ -15,7 +15,7 @@ type Story = StoryObj<typeof meta>;
 const Wrapper = styled("div", {
   base: {
     display: "flex",
-    gap: "10px",
+    gap: "0.625rem",
     flexDirection: "column",
   },
 });
@@ -26,7 +26,7 @@ export const Default: Story = {
   },
   render: () => {
     const systemIcons = Object.keys(icons).map((id) => (
-      <IconChildrenWrapper key={id}>
+      <IconChildrenWrapper iconSize="medium" key={id}>
         <SystemIcon id={id as keyof typeof icons} />
         <Typography>{id}</Typography>
       </IconChildrenWrapper>
