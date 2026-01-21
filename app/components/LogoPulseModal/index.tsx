@@ -23,8 +23,9 @@ const Overlay = styled("div", {
 
 const Logo = styled("img", {
   base: {
-    aspectRatio: "auto",
-    width: "12em",
+    aspectRatio: "1",
+    width: "16rem",
+    height: "auto",
     animation: "pulse 2s cubic-bezier(.45,.05,.55,.95) infinite",
   },
 });

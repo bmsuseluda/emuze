@@ -17,6 +17,7 @@ const getSharedAresOptionParams: OptionParamFunction = ({
   settings: {
     appearance: { fullscreen },
   },
+  categoryData: { id },
   hasAnalogStick,
 }) => {
   const hotkeyFullscreen = [
@@ -34,7 +35,7 @@ const getSharedAresOptionParams: OptionParamFunction = ({
     ...hotkeyLoad,
     ...inputSDL,
     ...autoSaveMemory,
-    ...getVirtualGamepads(hasAnalogStick),
+    ...getVirtualGamepads(id, hasAnalogStick),
     ...getMouse(),
     "--no-file-prompt",
   ];

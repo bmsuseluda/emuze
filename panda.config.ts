@@ -3,14 +3,7 @@ import { defineConfig, defineGlobalStyles, defineUtility } from "@pandacss/dev";
 const globalCss = defineGlobalStyles({
   html: {
     overflow: "hidden",
-    fontSize: "100%",
-
-    "@media (min-width: 2560px)": {
-      fontSize: "150%",
-    },
-    "@media (min-width: 3300px)": {
-      fontSize: "175%",
-    },
+    fontSize: "max(100%, calc((100vw / 1920px)* 100%))",
   },
   body: {
     margin: 0,
