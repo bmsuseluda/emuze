@@ -28,7 +28,7 @@ export interface VfsConfigFile {
     Square: "Mouse Button 5";
     Move: "Mouse Button 2";
  */
-type MouseButton = `Mouse Button ${number}`;
+type MouseButton = `Mouse Button ${number}` | "";
 export interface GemMouseConfigFile {
   "Player 1": {
     T: MouseButton;
@@ -39,7 +39,28 @@ export interface GemMouseConfigFile {
     Circle: MouseButton;
     Square: MouseButton;
     Move: MouseButton;
+    Combo: MouseButton;
+    "Combo Start": MouseButton;
+    "Combo Select": MouseButton;
+    "Combo Triangle": MouseButton;
+    "Combo Circle": MouseButton;
+    "Combo Cross": MouseButton;
+    "Combo Square": MouseButton;
+    "Combo Move": MouseButton;
+    "Combo T": MouseButton;
   };
+}
+
+type ConfigMouse = "Mouse Left" | "Mouse Right" | "Mouse Middle" | number | "";
+export interface ConfigMouseConfigFile {
+  "Button 1": ConfigMouse;
+  "Button 2": ConfigMouse;
+  "Button 3": ConfigMouse;
+  "Button 4": ConfigMouse;
+  "Button 5": ConfigMouse;
+  "Button 6": ConfigMouse;
+  "Button 7": ConfigMouse;
+  "Button 8": ConfigMouse;
 }
 
 /** config.yml */
