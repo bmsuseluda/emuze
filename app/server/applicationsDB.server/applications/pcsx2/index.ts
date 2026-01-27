@@ -17,6 +17,7 @@ import type { ApplicationId } from "../../applicationId.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
+import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const flatpakId = "net.pcsx2.PCSX2";
 const applicationId: ApplicationId = "pcsx2";
@@ -144,6 +145,7 @@ export const pcsx2: Application = {
   name: "PCSX2",
   fileExtensions: [".chd", ".iso"],
   flatpakId,
+  defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {
     basePath: getConfigFileBasePath(),
     files: [

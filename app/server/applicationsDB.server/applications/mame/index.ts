@@ -16,6 +16,7 @@ import { createPorts, defaultConfig, type ConfigFile } from "./config.js";
 import { writeConfig } from "../../configFile.js";
 import { mameDefaultConfig } from "./mameDefaultConfig.js";
 import type { SystemId } from "../../../categoriesDB.server/systemId.js";
+import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const flatpakId = "org.mamedev.MAME";
 const applicationId: ApplicationId = "mame";
@@ -146,6 +147,7 @@ export const mame: Application = {
   flatpakId,
   defineEnvironmentVariables: () => ({
     SDL_ENABLE_SCREEN_KEYBOARD: "0",
+    ...sdlGameControllerConfig,
   }),
   createOptionParams: getSharedMameOptionParams,
   findEntryName: findMameArcadeGameName,

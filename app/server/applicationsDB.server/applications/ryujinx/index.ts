@@ -11,6 +11,7 @@ import { isWindows } from "../../../operationsystem.server.js";
 import { findEntryName } from "./findEntryName.js";
 import { excludeFiles } from "./excludeFiles.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
+import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const applicationId: ApplicationId = "ryujinx";
 const flatpakId = "org.ryujinx.Ryujinx";
@@ -63,6 +64,7 @@ export const ryujinx: Application = {
   name: "Ryujinx",
   fileExtensions: [".xci", ".nsp"],
   flatpakId,
+  defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
