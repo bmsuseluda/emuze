@@ -13,18 +13,6 @@ const StoryWrapper = styled("div", {
   },
 });
 
-const getColoredDiv = (color: string) => (
-  <div
-    style={{
-      width: "1rem",
-      height: "1rem",
-      borderRadius: "50%",
-      border: "0.0625rem solid black",
-      backgroundColor: color,
-    }}
-  />
-);
-
 const themes = ["red"];
 const modes = ["dark", "light"];
 
@@ -61,7 +49,6 @@ const preview: Preview = {
         items: themes.map((themeName) => ({
           value: themeName,
           title: themeName,
-          right: getColoredDiv(themeName === "red" ? "red" : "white"),
         })),
       },
     },
@@ -73,7 +60,6 @@ const preview: Preview = {
         items: modes.map((modeName) => ({
           value: modeName,
           title: modeName,
-          right: getColoredDiv(modeName === "dark" ? "black" : "white"),
         })),
       },
     },
