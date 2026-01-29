@@ -11,6 +11,7 @@ pacman -Syu --noconfirm  \
             nss          \
             at-spi2-core \
             nodejs-lts-jod \
+            npm \
           
 
 
