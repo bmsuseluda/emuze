@@ -33,7 +33,8 @@ yarn app:distLinux --publish=never
 yarn shrinkBundleSize
 
 mkdir -p ./AppDir/bin
+mkdir -p ./AppDir/share/emuze
+mv -v  dist/squashfs-root/emulators ./AppDir/share/emuze
+cp -v  dist/squashfs-root/emuze.png ./AppDir/.DirIcon
+cp -v  dist/squashfs-root/emuze.desktop ./AppDir
 cp -rv dist/squashfs-root/* ./AppDir/bin/
-cp -v  AppDir/bin/emuze.png ./AppDir/.DirIcon
-cp -v  AppDir/bin/emuze.desktop ./AppDir
-find ./AppDir/bin/locales -type f ! -name 'en-US.pak' -delete 2>/dev/null || true
