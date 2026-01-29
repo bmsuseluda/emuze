@@ -2,37 +2,49 @@ name: Build
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build_linux:
-    runs-on: ubuntu-latest
+    name: "${{ matrix.name }} (${{ matrix.arch }})"
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      matrix:
+        include:
+          - runs-on: ubuntu-latest
+            name: Build AppImage
+            arch: x86_64
+    container: ghcr.io/pkgforge-dev/archlinux:latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.x'
-      - name: Install dependencies
-        run: yarn
-      - name: Build
-        run: yarn app:distLinux --publish=never
+      - uses: actions/checkout@v5
+      - name: Set version
+        run: |
+          RUN=${{ github.run_number }}
+          MAJOR=$((RUN / 100))
+          MINOR=$(printf "%02d" $((RUN % 100)))
+          echo "VERSION=beta-${MAJOR}.${MINOR}" >> $GITHUB_ENV
+      - name: Preparing Container
+        uses: pkgforge-dev/anylinux-setup-action@8872fabe63f9a00b35e25b2f46da62a05afc9a7d # v1      -
+      - name: Install Dependencies
+        run: /bin/sh ./.github/scripts/get-dependencies.sh
+      - name: Make AppImage
+        run: /bin/sh ./.github/scripts/make-appimage.sh
       - name: Upload artifact
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
-          name:  emuze-nightly.AppImage
-          path: 'dist/emuze-*.AppImage'
+          name: AppImage-${{ matrix.arch }}
+          path: dist
 
   build_windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: "22.x"
       - name: Install dependencies
         run: yarn
       - name: Build
@@ -40,5 +52,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4.6.2
         with:
-          name:  emuze-Setup-nightly.exe
-          path: 'dist/emuze*.exe'
+          name: emuze-Setup-nightly.exe
+          path: "dist/emuze*.exe"

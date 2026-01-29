@@ -31,6 +31,7 @@
     "import:sdlMappings": "tsx fetchSdlMappings/index.ts",
     "convertSvgs": "svgr --svgo-config svgo.config.js --config-file .svgrrc.js ./svgs",
     "downloadEmulators": "tsx ./downloadEmulators/downloadEmulators.ts",
+    "shrinkBundleSize": "tsx ./downloadEmulators/shrinkBundleSize.ts",
     "dumpGame:cd": "tsx dumpGames/dumpCdAndConvert.ts",
     "dumpGame:dvd": "tsx dumpGames/dumpDvdAndConvert.ts",
     "convertAllToChd": "tsx dumpGames/convertAllToChd.ts",
