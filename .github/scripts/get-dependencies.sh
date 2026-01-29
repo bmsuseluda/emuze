@@ -24,7 +24,8 @@ get-debloated-pkgs --add-common --prefer-nano
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
           . "$HOME/.nvm/nvm.sh"
-          nvm install
+          nvm install 22
+          nvm use
           node -v
           npm install -g corepack
           yarn
