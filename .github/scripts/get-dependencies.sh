@@ -24,10 +24,7 @@ get-debloated-pkgs --add-common --prefer-nano
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
           . "$HOME/.nvm/nvm.sh"
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
           nvm install 22
-          nvm use
           node -v
           npm -v
           npm install -g corepack
@@ -40,3 +37,4 @@ mkdir -p ./AppDir/bin
 cp -rv dist/squashfs-root/* ./AppDir/bin/
 cp -v  AppDir/bin/emuze.png ./AppDir/.DirIcon
 cp -v  AppDir/bin/emuze.desktop ./AppDir
+find ./AppDir/bin/locales -type f ! -name 'en-US.pak' -delete 2>/dev/null || true
