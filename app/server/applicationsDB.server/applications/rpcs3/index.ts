@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import sdl from "@kmamal/sdl";
 import YAML from "yaml";
 import type { Application } from "../../types.js";
 import nodepath from "node:path";
@@ -31,6 +32,7 @@ import {
 } from "./findEntryName.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
+import { isLightgunConnected } from "../../../../types/gamepad.js";
 
 const flatpakId = "net.rpcs3.RPCS3";
 const applicationId: ApplicationId = "rpcs3";
@@ -377,7 +379,7 @@ export const rpcs3: Application = {
     replaceGlobalDefaultInputConfigFile(isPs1Classic);
 
     const optionParams = [];
-    if (fullscreen) {
+    if (fullscreen && !isLightgunConnected(sdl.joystick.devices)) {
       optionParams.push("--fullscreen");
       optionParams.push("--no-gui");
     }

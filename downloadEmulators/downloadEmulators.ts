@@ -75,15 +75,15 @@ const emulatorDownloads = {
     Windows: `https://github.com/Rosalie241/RMG/releases/download/v${emulatorVersions.rosaliesMupenGui}/RMG-Portable-Windows64-v${emulatorVersions.rosaliesMupenGui}.zip`,
   },
   rpcs3: {
-    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-3e49c32c9c59b2bdf6bb29ec7d1e44074ffad4e5/rpcs3-v0.0.39-18708-3e49c32c_linux64.AppImage`,
-    Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-5a9083e4fc0bfb73b09c4c436d8f5e78f8c2702a/rpcs3-v${emulatorVersions.rpcs3}-18397-5a9083e4_win64_msvc.7z`,
+    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-086ab3cb37dc8e993ad72480047bd0739cd832d5/rpcs3-v${emulatorVersions.rpcs3}-18743-086ab3cb_linux64.AppImage`,
+    Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-086ab3cb37dc8e993ad72480047bd0739cd832d5/rpcs3-v${emulatorVersions.rpcs3}-18743-086ab3cb_win64_msvc.7z`,
   },
   ryujinx: {
     Linux: `https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-x64.AppImage`,
     Windows: `https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-win_x64.zip`,
   },
   xemu: {
-    Linux: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-v${emulatorVersions.xemu}-x86_64.AppImage`,
+    Linux: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-${emulatorVersions.xemu}-x86_64.AppImage`,
     Windows: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-win-x86_64-release.zip`,
   },
 } satisfies Partial<EmulatorDownloads>;
