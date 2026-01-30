@@ -254,7 +254,7 @@ emuze relies on the following external data:
 | [SDL_GameControllerDB](https://github.com/mdqinc/SDL_GameControllerDB) | is used to add missing sdl controller mappings |
 | [Annie Use Your Telescope Font](https://fonts.google.com/specimen/Annie+Use+Your+Telescope) | is used for the emuze logo |
 | [Quicksand Font](https://fonts.google.com/specimen/Quicksand) | is used for all the text |
-| [React Icons](https://react-icons.github.io/react-icons/) | is used for several System-Icons |
+| [React Icons](https://react-icons.github.io/react-icons/) | is used for several System Icons |
 | [Xbox Series Button Icons and Controls](https://zacksly.itch.io/xbox-series-button-icons-and-controls) | is used for the Button Icons |
 
 > [!IMPORTANT]  
