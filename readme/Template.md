@@ -3,7 +3,7 @@
 </p>
 
 
-💥 [Features](#-features) | 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) | 🚀 [Getting Started](#-getting-started) | 🚑️ [Support](#%EF%B8%8F-support)
+💥 [Features](#-features) | 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) | 🚀 [Getting Started](#-getting-started) | 🔫 [Lightgun Support](#-lightgun-support) | 📃 [External Data](#-external-data) | 🚑️ [Support](#%EF%B8%8F-support)
 
 emuze is an emulation frontend designed to simplify your retro gaming experience.
 It automates the configuration of each emulator, including seamless gamepad integration and automatic import of games along with their metadata. With its console-like interface and intuitive controls, emuze lets you focus on enjoying your retro games, just like you would on a gaming console.
@@ -151,10 +151,10 @@ return scripts.getLinuxDownloadLink('1) ')
 ```mmd
 return scripts.getLinuxDownloadLink('2) ')
 ```
-3) Mark the AppImage as executable and start emuze
-4) Choose the [folder where your Roms are located](#roms-folder)
-5) Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze`
-6) Switch to Game Mode
+3) Mark the AppImage as executable
+4) Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze`
+5) Switch to Game Mode and start emuze
+6) Choose the [folder where your Roms are located](#roms-folder)
 
 #### Steam Input Profile
 
