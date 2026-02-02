@@ -40,15 +40,15 @@ export const applications = {
 
 export const emulatorVersions = {
   ares: "147",
-  azahar: "2123.2",
+  azahar: "2124.2",
   dolphin: "2512",
   duckstation: "0.1-7371",
   cemu: "2.6",
   flycast: "2.6",
-  mame: "0.281",
+  mame: "0.285",
   mednafen: "1.32.1",
   melonds: "1.1",
-  pcsx2: "2.6.1",
+  pcsx2: "2.6.3",
   ppsspp: "1.19.3",
   rosaliesMupenGui: "0.8.8",
   rpcs3: "0.0.39",

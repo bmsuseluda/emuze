@@ -31,7 +31,7 @@ const emulatorDownloads = {
     Windows: `https://github.com/ares-emulator/ares/releases/download/v${emulatorVersions.ares}/ares-windows-x64.zip`,
   },
   azahar: {
-    Linux: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions.azahar}%402025-10-01_1759305782/Azahar-Enhanced-${emulatorVersions.azahar}-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions.azahar}%402026-01-29_1769674356/Azahar-Enhanced-${emulatorVersions.azahar}-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/azahar-emu/azahar/releases/download/${emulatorVersions.azahar}/azahar-${emulatorVersions.azahar}-windows-msys2.zip`,
   },
   cemu: {
@@ -51,8 +51,8 @@ const emulatorDownloads = {
     Windows: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-win64-${emulatorVersions.flycast}.zip`,
   },
   mame: {
-    Linux: `https://github.com/pkgforge-dev/MAME-AppImage/releases/download/0.281-1%402025-10-08_1759937007/MAME-0.281-1-anylinux-x86_64.AppImage`,
-    Windows: `https://github.com/mamedev/mame/releases/download/mame0281/mame0281b_x64.exe`,
+    Linux: `https://github.com/pkgforge-dev/MAME-AppImage/releases/download/0.285-2%402026-02-01_1769943193/MAME-0.285-2-anylinux-x86_64.AppImage`,
+    Windows: `https://github.com/mamedev/mame/releases/download/mame0285/mame0285b_x64.exe`,
   },
   mednafen: {
     Linux: `https://github.com/pkgforge-dev/mednafen-appimage/releases/download/${emulatorVersions.mednafen}%402025-09-08_1757361413/mednafen-${emulatorVersions.mednafen}-anylinux-x86_64.AppImage`,
