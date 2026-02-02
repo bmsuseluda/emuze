@@ -33,8 +33,7 @@ yarn app:distLinux --publish=never
 yarn shrinkBundleSize
 
 mkdir -p ./AppDir/bin
-mkdir -p ./AppDir/share/emuze
-mv -v  dist/squashfs-root/emulators ./AppDir/share/emuze
-cp -v  dist/squashfs-root/emuze.png ./AppDir/.DirIcon
-cp -v  dist/squashfs-root/emuze.desktop ./AppDir
-cp -rv dist/squashfs-root/* ./AppDir/bin/
+mv -v  dist/linux-unpacked/emulators dist
+cp -v  .github/scripts/.DirIcon ./AppDir
+cp -v  .github/scripts/emuze.desktop ./AppDir
+cp -rv dist/linux-unpacked/* ./AppDir/bin/

@@ -2,7 +2,6 @@ import nodepath from "node:path";
 import { execFileSync } from "child_process";
 
 import { fileURLToPath } from "node:url";
-import { getVersion } from "../app/server/packagejson.server.js";
 import {
   readFilenames,
   removeFile,
@@ -47,15 +46,9 @@ const shrinkEmulatorSize = (appImagePath: string) => {
 };
 
 const shrinkBundleSize = () => {
-  const emuzeAppimagePath = nodepath.join(
-    distFolderPath,
-    `emuze-${getVersion()}.AppImage`,
-  );
-  extractAppImage(emuzeAppimagePath);
-
   const emulatorsPath = nodepath.join(
     distFolderPath,
-    "squashfs-root",
+    "linux-unpacked",
     "emulators",
   );
 
