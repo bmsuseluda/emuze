@@ -13,10 +13,6 @@ export ANYLINUX_LIB=1
 # Deploy dependencies
 quick-sharun \
              ./AppDir/bin/*  
-             
-# Additional changes can be done in between here
-
-mv -v  dist/emulators ./AppDir/bin
 
 # Turn AppDir into AppImage
 quick-sharun --make-appimage

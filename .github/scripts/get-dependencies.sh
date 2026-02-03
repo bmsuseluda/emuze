@@ -28,7 +28,7 @@ yarn app:dirLinux
 yarn shrinkBundleSize
 
 mkdir -p ./AppDir/bin
-mv -v  dist/linux-unpacked/emulators dist
+mv -v  dist/linux-unpacked/emulators ./AppDir
 cp -v  .github/scripts/.DirIcon ./AppDir
 cp -v  .github/scripts/emuze.desktop ./AppDir
 cp -rv dist/linux-unpacked/* ./AppDir/bin/
