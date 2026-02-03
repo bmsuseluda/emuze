@@ -27,11 +27,11 @@ type EmulatorDownloads = Record<ApplicationId, Record<OperatingSystem, string>>;
 
 const emulatorDownloads = {
   ares: {
-    Linux: `https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v${emulatorVersions.ares}%402025-10-10_1760076331/ares-v${emulatorVersions.ares}-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v${emulatorVersions.ares}%402026-01-01_1767253716/ares-v${emulatorVersions.ares}-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/ares-emulator/ares/releases/download/v${emulatorVersions.ares}/ares-windows-x64.zip`,
   },
   azahar: {
-    Linux: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions.azahar}%402025-10-01_1759305782/Azahar-Enhanced-${emulatorVersions.azahar}-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions.azahar}%402026-01-29_1769674356/Azahar-Enhanced-${emulatorVersions.azahar}-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/azahar-emu/azahar/releases/download/${emulatorVersions.azahar}/azahar-${emulatorVersions.azahar}-windows-msys2.zip`,
   },
   cemu: {
@@ -39,7 +39,7 @@ const emulatorDownloads = {
     Windows: `https://github.com/cemu-project/Cemu/releases/download/v${emulatorVersions.cemu}/Cemu-${emulatorVersions.cemu}-x86_64.AppImage`,
   },
   dolphin: {
-    Linux: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions.dolphin}%402025-10-01_1759304685/Dolphin_Emulator-${emulatorVersions.dolphin}-anylinux.dwarfs-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions.dolphin}%402026-01-01_1767256227/Dolphin_Emulator-${emulatorVersions.dolphin}-anylinux.dwarfs-x86_64.AppImage`,
     Windows: `https://dl.dolphin-emu.org/releases/${emulatorVersions.dolphin}/dolphin-${emulatorVersions.dolphin}-x64.7z`,
   },
   duckstation: {
@@ -51,16 +51,16 @@ const emulatorDownloads = {
     Windows: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-win64-${emulatorVersions.flycast}.zip`,
   },
   mame: {
-    Linux: `https://github.com/pkgforge-dev/MAME-AppImage/releases/download/0.281-1%402025-10-08_1759937007/MAME-0.281-1-anylinux-x86_64.AppImage`,
-    Windows: `https://github.com/mamedev/mame/releases/download/mame0281/mame0281b_x64.exe`,
+    Linux: `https://github.com/pkgforge-dev/MAME-AppImage/releases/download/0.285-2%402026-02-01_1769943193/MAME-0.285-2-anylinux-x86_64.AppImage`,
+    Windows: `https://github.com/mamedev/mame/releases/download/mame0285/mame0285b_x64.exe`,
   },
   mednafen: {
     Linux: `https://github.com/pkgforge-dev/mednafen-appimage/releases/download/${emulatorVersions.mednafen}%402025-09-08_1757361413/mednafen-${emulatorVersions.mednafen}-anylinux-x86_64.AppImage`,
     Windows: `https://mednafen.github.io/releases/files/mednafen-${emulatorVersions.mednafen}-win64.zip`,
   },
   melonds: {
-    Linux: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions.melonds}/melonDS-appimage-x86_64.zip`,
-    Windows: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions.melonds}/melonDS-windows-x86_64.zip`,
+    Linux: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions.melonds}/melonDS-${emulatorVersions.melonds}-appimage-x86_64.zip`,
+    Windows: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions.melonds}/melonDS-${emulatorVersions.melonds}-windows-x86_64.zip`,
   },
   pcsx2: {
     Linux: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions.pcsx2}/pcsx2-v${emulatorVersions.pcsx2}-linux-appimage-x64-Qt.AppImage`,
@@ -75,15 +75,15 @@ const emulatorDownloads = {
     Windows: `https://github.com/Rosalie241/RMG/releases/download/v${emulatorVersions.rosaliesMupenGui}/RMG-Portable-Windows64-v${emulatorVersions.rosaliesMupenGui}.zip`,
   },
   rpcs3: {
-    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-5a9083e4fc0bfb73b09c4c436d8f5e78f8c2702a/rpcs3-v${emulatorVersions.rpcs3}-18397-5a9083e4_linux64.AppImage`,
-    Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-5a9083e4fc0bfb73b09c4c436d8f5e78f8c2702a/rpcs3-v${emulatorVersions.rpcs3}-18397-5a9083e4_win64_msvc.7z`,
+    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-086ab3cb37dc8e993ad72480047bd0739cd832d5/rpcs3-v${emulatorVersions.rpcs3}-18743-086ab3cb_linux64.AppImage`,
+    Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-086ab3cb37dc8e993ad72480047bd0739cd832d5/rpcs3-v${emulatorVersions.rpcs3}-18743-086ab3cb_win64_msvc.7z`,
   },
   ryujinx: {
     Linux: `https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-x64.AppImage`,
     Windows: `https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-win_x64.zip`,
   },
   xemu: {
-    Linux: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-v${emulatorVersions.xemu}-x86_64.AppImage`,
+    Linux: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-${emulatorVersions.xemu}-x86_64.AppImage`,
     Windows: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-win-x86_64-release.zip`,
   },
 } satisfies Partial<EmulatorDownloads>;

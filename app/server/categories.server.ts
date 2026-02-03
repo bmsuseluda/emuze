@@ -9,7 +9,7 @@ import { FileDataCache } from "./FileDataCache.server.js";
 import type { CategoryImportData } from "./importCategory.server.js";
 import { importCategory } from "./importCategory.server.js";
 import { setImportIsRunning } from "./importIsRunning.server.js";
-import { readCategory } from "./categoryDataCache.server.js";
+import { readCategory, removeCategory } from "./categoryDataCache.server.js";
 
 export const paths = {
   categories: "data/categories.json",
@@ -31,6 +31,21 @@ const writeCategories = (categoryImportDataList: CategoryImportData[]) => {
 };
 export const invalidateCategoriesDataCache = () => {
   categoriesDataCache.invalidateCache();
+};
+
+export const cleanupRemovedCategories = (
+  categoriesNew: CategoryImportData[],
+) => {
+  const categoriesOld = readCategories();
+
+  const removedCategories = categoriesOld.filter(
+    ({ id }) =>
+      !categoriesNew.find(({ categoryDbData }) => categoryDbData.id === id),
+  );
+
+  removedCategories.forEach((category) => {
+    removeCategory(category);
+  });
 };
 
 export const importCategories = async () => {
@@ -59,6 +74,8 @@ export const importCategories = async () => {
       return result;
     }, []);
 
+    cleanupRemovedCategories(categoryImportDataList);
+
     for (const categoryImportData of categoryImportDataList) {
       await importCategory(categoryImportData);
     }
@@ -66,7 +83,7 @@ export const importCategories = async () => {
     writeCategories(
       categoryImportDataList.filter(
         ({ categoryDbData }) =>
-          readCategory(categoryDbData.id)?.entries?.length || 0 > 0,
+          (readCategory(categoryDbData.id)?.entries?.length || 0) > 0,
       ),
     );
     setImportIsRunning(false);

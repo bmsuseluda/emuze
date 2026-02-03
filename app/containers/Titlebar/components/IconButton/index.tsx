@@ -24,20 +24,21 @@ const Button = styled("button", {
   base: {
     margin: 0,
     paddingTop: "1",
-    paddingRight: "15px",
+    paddingRight: "0.9375rem",
     paddingBottom: "1",
-    paddingLeft: "15px",
-    lineHeight: "16px",
-    blockSize: "16px",
+    paddingLeft: "0.9375rem",
+    lineHeight: "1rem",
+    blockSize: "1rem",
     backgroundColor: "transparent",
     border: "none",
     color: "color",
     boxSizing: "content-box",
 
     "& svg": {
-      width: "16px",
-      height: "16px",
+      width: "iconExtraSmall",
+      height: "auto",
       verticalAlign: "middle",
+      aspectRatio: 1,
     },
 
     "&:hover": {

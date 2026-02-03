@@ -10,8 +10,16 @@ const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
 
 const nameMappings: [SystemId, string][] = [
   [
+    "arcade",
+    "../app/server/applicationsDB.server/applications/mame/nameMapping/mame.json",
+  ],
+  [
     "dos",
     "../app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json",
+  ],
+  [
+    "nintendowiiu",
+    "../app/server/applicationsDB.server/applications/cemu/nameMapping/cemu.json",
   ],
   [
     "scumm",
@@ -20,10 +28,6 @@ const nameMappings: [SystemId, string][] = [
   [
     "sonyplaystation3",
     "../app/server/applicationsDB.server/applications/rpcs3/nameMapping/ps3.json",
-  ],
-  [
-    "arcade",
-    "../app/server/applicationsDB.server/applications/mame/nameMapping/mame.json",
   ],
 ];
 const getNameMapping = async (path: string) => {

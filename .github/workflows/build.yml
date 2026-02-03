@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build_linux:
@@ -14,7 +14,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: "24.x"
       - name: Install dependencies
         run: yarn
       - name: Build
@@ -22,8 +22,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4.6.2
         with:
-          name:  emuze-nightly.AppImage
-          path: 'dist/emuze-*.AppImage'
+          name: emuze-nightly.AppImage
+          path: "dist/emuze-*.AppImage"
 
   build_windows:
     runs-on: windows-latest
@@ -32,7 +32,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: "24.x"
       - name: Install dependencies
         run: yarn
       - name: Build
@@ -40,5 +40,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4.6.2
         with:
-          name:  emuze-Setup-nightly.exe
-          path: 'dist/emuze*.exe'
+          name: emuze-Setup-nightly.exe
+          path: "dist/emuze*.exe"

@@ -17,6 +17,7 @@ import { isWindows } from "../../../operationsystem.server.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { getKeyboardButtonMappings } from "./keyboardConfig.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
+import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const flatpakId = "app.xemu.xemu";
 const applicationId: ApplicationId = "xemu";
@@ -98,6 +99,7 @@ export const xemu: Application = {
   name: "xemu",
   fileExtensions: [".iso", ".xiso"],
   flatpakId,
+  defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   omitAbsoluteEntryPathAsLastParam: true,
   configFile: {
     basePath: getConfigFileBasePath(),

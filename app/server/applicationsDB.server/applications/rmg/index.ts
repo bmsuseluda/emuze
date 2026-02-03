@@ -19,6 +19,7 @@ import {
 } from "../../configFile.js";
 import { EOL } from "node:os";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
+import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const flatpakId = "com.github.Rosalie241.RMG";
 const applicationId: ApplicationId = "rosaliesMupenGui";
@@ -115,6 +116,7 @@ export const rosaliesMupenGui: Application = {
   name: "Rosalie's Mupen GUI",
   fileExtensions: [".z64", ".n64", ".v64"],
   flatpakId,
+  defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {
     basePath: getConfigFileBasePath(),
     files: [

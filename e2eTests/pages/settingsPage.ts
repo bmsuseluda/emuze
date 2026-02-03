@@ -83,9 +83,9 @@ export class SettingsPage {
   }
 
   async expectIsSubPage(subPageName: string) {
-    const link = this.page.getByRole("link", {
-      name: subPageName,
-    });
+    // const link = this.page.getByRole("link", {
+    //   name: subPageName,
+    // });
     await expect(
       this.page.getByRole("heading", { name: subPageName }),
     ).toBeVisible();

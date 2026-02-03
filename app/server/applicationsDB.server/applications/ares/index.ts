@@ -17,6 +17,7 @@ const getSharedAresOptionParams: OptionParamFunction = ({
   settings: {
     appearance: { fullscreen },
   },
+  categoryData: { id },
   hasAnalogStick,
 }) => {
   const hotkeyFullscreen = [
@@ -34,7 +35,7 @@ const getSharedAresOptionParams: OptionParamFunction = ({
     ...hotkeyLoad,
     ...inputSDL,
     ...autoSaveMemory,
-    ...getVirtualGamepads(hasAnalogStick),
+    ...getVirtualGamepads(id, hasAnalogStick),
     ...getMouse(),
     "--no-file-prompt",
   ];
@@ -153,7 +154,7 @@ export const aresSegaMegaLd: Application = {
   fileExtensions: [".mmi"],
   createOptionParams: (props) => [
     ...getSharedAresOptionParams(props),
-    ...["--system", "Mega LD"],
+    ...["--system", "LaserActive (SEGA PAC)"],
   ],
 };
 

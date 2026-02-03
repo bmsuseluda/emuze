@@ -18,6 +18,7 @@ import { replaceKeyboardConfig } from "./keyboardConfig.js";
 import { getPlayerId, getVirtualGamepad } from "./getVirtualGamepad.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
+import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const flatpakId = "net.kuribo64.melonDS";
 const applicationId: ApplicationId = "melonds";
@@ -84,6 +85,7 @@ export const melonds: Application = {
   name: "melonDS",
   fileExtensions: [".nds"],
   flatpakId,
+  defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {
     basePath: getConfigFileBasePath(),
     files: [configFileName],

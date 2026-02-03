@@ -12,7 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   render: (args) => (
-    <div style={{ width: "300px" }}>
+    <div style={{ width: "18.75rem" }}>
       <FormRow {...args} />
     </div>
   ),

@@ -17,6 +17,7 @@ import type { ApplicationId } from "../../applicationId.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
+import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const flatpakId = "org.duckstation.DuckStation";
 const applicationId: ApplicationId = "duckstation";
@@ -149,6 +150,7 @@ export const duckstation: Application = {
   name: "DuckStation (Legacy)",
   fileExtensions: [".chd", ".cue"],
   flatpakId,
+  defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {
     basePath: getConfigFileBasePath(),
     files: [

@@ -1,6 +1,6 @@
 import { Outlet, useLoaderData, useLocation, useNavigate } from "react-router";
 import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout/index.js";
-import { Link } from "../containers/Link/index.js";
+import { SidebarNavigationLink } from "../containers/SidebarNavigationLink/index.js";
 import { categories, readAppearance } from "../server/settings.server.js";
 import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar/index.js";
 import { SettingsIcon } from "../components/SettingsIcon/index.js";
@@ -89,9 +89,10 @@ export default function Index() {
 
   return (
     <Dialog
-      open={true}
+      open
       onClose={handleClose}
       size={collapseSidebar ? "small" : "medium"}
+      maxHeight="small"
     >
       <SidebarMainLayout>
         <SidebarMainLayout.Sidebar
@@ -100,7 +101,7 @@ export default function Index() {
         >
           {categories.map(({ id, name }, index) => (
             <li key={id}>
-              <Link
+              <SidebarNavigationLink
                 to={id}
                 icon={<SettingsIcon id={id} />}
                 aria-label={name}
@@ -109,7 +110,7 @@ export default function Index() {
                 isFocused={isInFocus}
               >
                 {collapseSidebar ? undefined : name}
-              </Link>
+              </SidebarNavigationLink>
             </li>
           ))}
         </SidebarMainLayout.Sidebar>

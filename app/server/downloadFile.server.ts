@@ -9,7 +9,7 @@ export const downloadFile = (
   onError?: () => void,
 ) => {
   const file = createWriteStream(fileToCheck);
-  log("debug", `Download of ${url} started`);
+  console.log(`Download of ${url} started`);
 
   return followRedirects.https
     .get(url, (response) => {
@@ -28,7 +28,7 @@ export const downloadFile = (
       file.on("finish", () => {
         file.close();
 
-        log("debug", `Download of ${url} complete`);
+        console.log(`Download of ${url} complete`);
         onFinish?.();
       });
     })

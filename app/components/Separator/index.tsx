@@ -4,7 +4,7 @@ const Line = styled("span", {
   base: {
     borderBottomStyle: "solid",
     borderBottomColor: "color",
-    borderBottomWidth: "1px",
+    borderBottomWidth: "0.0625rem",
   },
 });
 

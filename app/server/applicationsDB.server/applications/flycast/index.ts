@@ -18,6 +18,7 @@ import { isWindows } from "../../../operationsystem.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { getKeyboardButtonMappings } from "./keyboardConfig.js";
+import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const flatpakId = "org.flycast.Flycast";
 const applicationId: ApplicationId = "flycast";
@@ -113,6 +114,7 @@ export const flycast: Application = {
   name: "Flycast",
   fileExtensions: [".cue", ".chd", ".gdi", ".cdi"],
   flatpakId,
+  defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {
     basePath: getConfigFileBasePath(),
     files: ["emu.cfg", keyboardConfigPathRelative],

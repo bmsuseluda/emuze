@@ -10,11 +10,10 @@ export const CheckboxLabel = styled(LabelPrimitive.Root, {
     margin: 0,
     width: "fit-content",
     outlineRounded: true,
-    outlineWidth: "2px",
-    outlineStyle: "solid",
+    outline: "outlineInitial",
     outlineOffset: 1,
-    outlineColor: "transparent",
     color: "color",
+    fontSize: "small",
 
     "&:hover": {
       cursor: "pointer",

@@ -134,6 +134,7 @@ export const segamegald: Category = {
     "Mega LD",
     "Sega Mega LD",
     "LaserActive Mega LD",
+    "LaserActive Sega PAC",
     "Pioneer LaserActive Mega LD",
     "Pioneer LaserActive Sega PAC",
   ],

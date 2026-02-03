@@ -3,7 +3,7 @@
 </p>
 
 
-💥 [Features](#-features) | 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) | 🚀 [Getting Started](#-getting-started) | 🚑️ [Support](#%EF%B8%8F-support)
+💥 [Features](#-features) | 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) | 🚀 [Getting Started](#-getting-started) | 🔫 [Lightgun Support](#-lightgun-support) | 📃 [External Data](#-external-data) | 🚑️ [Support](#%EF%B8%8F-support)
 
 emuze is an emulation frontend designed to simplify your retro gaming experience.
 It automates the configuration of each emulator, including seamless gamepad integration and automatic import of games along with their metadata. With its console-like interface and intuitive controls, emuze lets you focus on enjoying your retro games, just like you would on a gaming console.
@@ -16,7 +16,7 @@ It is not there yet for every system and emulator, please have a look at 🕹️
 - 🚂 Import all your roms with a click of a button
 - 🪄 Provides Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
 - 🎮️ Seamless gamepad integration for most emulators
-- 🔫 Experimental lightgun integration for some emulators
+- 🔫 Basic lightgun integration for some emulators
 - 📦️ Bundles most emulators
 - 💻️ Windows, Linux and Steam Deck support
 - 💫 Updates itself
@@ -151,10 +151,10 @@ return scripts.getLinuxDownloadLink('1) ')
 ```mmd
 return scripts.getLinuxDownloadLink('2) ')
 ```
-3) Mark the AppImage as executable and start emuze
-4) Choose the [folder where your Roms are located](#roms-folder)
-5) Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze`
-6) Switch to Game Mode
+3) Mark the AppImage as executable
+4) Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze`
+5) Switch to Game Mode and start emuze
+6) Choose the [folder where your Roms are located](#roms-folder)
 
 #### Steam Input Profile
 
@@ -194,6 +194,71 @@ roms
 |---> Terranigma.sfc
 |---> ...
 ```
+## 🔫 Lightgun Support
+
+emuze provides basic Lightgun support. Only the Retro Shooter Reaper is tested but others should work too.
+
+You can navigate emuze with the pointer and confirm with the Trigger or use the stick and the Buttons on the side:
+
+- `Button 1 (Keyboard 1)`: confirm
+- `Button 2 (Keyboard 5)`: go back
+
+The connected Lightgun will be configured automatically for the following systems:
+
+### PlayStation
+
+emuze configures the connected Lightgun as a GunCon.
+
+### PlayStation 3
+
+emuze configures the connected Lightgun as a PS Move Controller.
+
+<details>
+  <summary>PS Move Controller Mapping</summary>
+
+<br>
+
+| PS Move Button | Lightgun Button |
+| ------ | --- |
+| T        | Trigger (Mouse Button 1) |
+| Start    | Reload Button (Mouse Button 3) |
+| Select   | Button 2 (Keyboard 5) |
+| Move     | Alternate Reload Button (Mouse Button 2) |
+| Combo    | Button 1 (Keyboard 1) |
+| Triangle | Button 1 + Button 2 |
+| Circle   | Button 1 + Alternate Reload Button |
+| Cross    | Button 1 + Trigger |
+| Square   | Button 1 + Reload Button |
+
+</details>
+<br>
+
+> [!IMPORTANT]
+> The Lightgun only works in window mode. Therefore emuze deactivates fullscreen mode for PlayStation 3 games if the Lightgun is connected.
+
+### Steam Deck
+
+The Lightgun can be used with a Steam Deck too, but you have to switch to Desktop Mode and start emuze there.
+
+## 📃 External Data
+
+emuze relies on the following external data:
+
+| Data | Usecase |
+| ------ | --- |
+| [igdb](https://www.igdb.com) | is used to provide Metadata for your games |
+| [MAME](https://github.com/mamedev/mame) xml list (`mame -listxml`) | is used to map MAME IDs to game names |
+| [ScummVM](https://github.com/scummvm/scummvm) games list (`scummvm --list-games`) | is used to map ScummVM IDs to game names |
+| [nus-info](https://github.com/DanTheMan827/nus-info) | is used to map WiiU Title IDs to game names |
+| [SerialStation](https://serialstation.com/) | is used to map PlayStation 3 Title IDs to game names |
+| [SDL_GameControllerDB](https://github.com/mdqinc/SDL_GameControllerDB) | is used to add missing sdl controller mappings |
+| [Annie Use Your Telescope Font](https://fonts.google.com/specimen/Annie+Use+Your+Telescope) | is used for the emuze logo |
+| [Quicksand Font](https://fonts.google.com/specimen/Quicksand) | is used for all the text |
+| [React Icons](https://react-icons.github.io/react-icons/) | is used for several System Icons |
+| [Xbox Series Button Icons and Controls](https://zacksly.itch.io/xbox-series-button-icons-and-controls) | is used for the Button Icons |
+
+> [!IMPORTANT]  
+> ❤️ Many thanks to all the creators. Your work is a huge help.
 
 ## 🔧 Commandline Options
 

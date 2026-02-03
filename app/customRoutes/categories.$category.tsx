@@ -5,17 +5,14 @@ import { startGame } from "../server/execute.server.js";
 import { importCategories } from "../server/categories.server.js";
 import { GameGridDynamic } from "../components/GameGrid/index.js";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
-import { IconChildrenWrapper } from "../components/IconChildrenWrapper/index.js";
 import { SystemIcon } from "../components/SystemIcon/index.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
 import { readAppearance, readGeneral } from "../server/settings.server.js";
 import { SettingsLink } from "../containers/SettingsLink/index.js";
-import { Typography } from "../components/Typography/index.js";
 import type { DataFunctionArgs } from "../context.js";
 import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
 import fs from "node:fs";
-import nodepath from "node:path";
 import type { SystemId } from "../server/categoriesDB.server/systemId.js";
 import { log } from "../server/debug.server.js";
 import { ImportButton } from "../containers/ImportButton/index.js";
@@ -62,7 +59,7 @@ export const action: ActionFunction = async ({ request, params }) => {
     if (
       !general?.categoriesPath ||
       !categoryData?.name ||
-      !fs.existsSync(nodepath.join(general.categoriesPath, categoryData.name))
+      !fs.existsSync(general.categoriesPath)
     ) {
       return redirect("settings");
     }
@@ -157,12 +154,10 @@ export default function Category() {
     <>
       <ListActionBarLayout
         key={id}
-        headline={
-          <IconChildrenWrapper>
-            <SystemIcon id={id} />
-            <Typography ellipsis>{name}</Typography>
-          </IconChildrenWrapper>
-        }
+        headline={{
+          title: name,
+          icon: <SystemIcon id={id} />,
+        }}
         paddingLeft="large"
       >
         <Form method="POST">
