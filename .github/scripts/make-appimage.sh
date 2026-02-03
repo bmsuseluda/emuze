@@ -3,7 +3,7 @@
 set -eu
 
 ARCH=$(uname -m)
-VERSION="${VERSION:-beta-0.1}"
+VERSION="${VERSION}"
 export ARCH VERSION
 export OUTPATH=./dist
 export ADD_HOOKS="self-updater.bg.hook:fix-namespaces.hook"

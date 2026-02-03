@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build_linux:
@@ -24,7 +24,7 @@ jobs:
           RUN=${{ github.run_number }}
           MAJOR=$((RUN / 100))
           MINOR=$(printf "%02d" $((RUN % 100)))
-          echo "VERSION=beta-${MAJOR}.${MINOR}" >> $GITHUB_ENV
+          echo "VERSION=${MAJOR}.${MINOR}" >> $GITHUB_ENV
       - name: Preparing Container
         uses: pkgforge-dev/anylinux-setup-action@8872fabe63f9a00b35e25b2f46da62a05afc9a7d # v1      -
       - name: Install Dependencies
@@ -34,8 +34,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
-          name: AppImage-${{ matrix.arch }}
-          path: dist
+          name: emuze-nightly.AppImage
+          path: "dist/emuze*.AppImage"
 
   build_windows:
     runs-on: windows-latest
