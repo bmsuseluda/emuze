@@ -29,9 +29,11 @@ export ARGV0=$0
 
 if [ -f "$HERE"/AppDir/AppRun ]; then
   export APPDIR="$HERE"/AppDir
+  export SHARUN_DIR="$HERE"/AppDir
   exec "$HERE"/AppDir/AppRun "$@"
 else
   export APPDIR="$HERE"/AppDir/squashfs-root
+  export SHARUN_DIR="$HERE"/AppDir/squashfs-root
   exec "$HERE"/squashfs-root/AppRun "$@"
 fi`;
 
