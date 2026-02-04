@@ -25,6 +25,7 @@ export type PortType =
   | "UI_TAPE_STOP"
   | "TOGGLE_FULLSCREEN"
   | "UI_AUDIT"
+  | "UI_FAST_FORWARD"
   | `P${number}_JOYSTICK_UP`
   | `P${number}_JOYSTICK_LEFT`
   | `P${number}_JOYSTICK_RIGHT`
@@ -47,6 +48,7 @@ export type PortType =
   | `P${number}_BUTTON15`
   | `P${number}_START`
   | `P${number}_SELECT`
+  | `P${number}_SLIDER1_NEG_SWITCH`
   | `P${number}_JOYSTICKRIGHT_UP`
   | `P${number}_JOYSTICKRIGHT_LEFT`
   | `P${number}_JOYSTICKRIGHT_RIGHT`

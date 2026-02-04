@@ -4,12 +4,10 @@ import { Form, Outlet, redirect, useLoaderData } from "react-router";
 import { startGame } from "../server/execute.server.js";
 import { GameGridDynamic } from "../components/GameGrid/index.js";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
-import { IconChildrenWrapper } from "../components/IconChildrenWrapper/index.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
 import { readAppearance, readGeneral } from "../server/settings.server.js";
 import { SettingsLink } from "../containers/SettingsLink/index.js";
-import { Typography } from "../components/Typography/index.js";
 import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
 import { log } from "../server/debug.server.js";
 import { readLastPlayed } from "../server/lastPlayed.server.js";
@@ -112,12 +110,10 @@ export default function LastPlayed() {
   return (
     <>
       <ListActionBarLayout
-        headline={
-          <IconChildrenWrapper>
-            <SystemIcon id="lastPlayed" />
-            <Typography ellipsis>Last Played</Typography>
-          </IconChildrenWrapper>
-        }
+        headline={{
+          title: "Last Played",
+          icon: <SystemIcon id="lastPlayed" />,
+        }}
       >
         <Form method="POST">
           <ListActionBarLayout.ListActionBarContainer

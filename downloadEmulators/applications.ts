@@ -39,19 +39,19 @@ export const applications = {
 } satisfies Record<string, Application>;
 
 export const emulatorVersions = {
-  ares: "146",
-  azahar: "2123.2",
-  dolphin: "2509",
+  ares: "147",
+  azahar: "2124.2",
+  dolphin: "2512",
   duckstation: "0.1-7371",
   cemu: "2.6",
-  flycast: "2.5",
-  mame: "0.281",
+  flycast: "2.6",
+  mame: "0.285",
   mednafen: "1.32.1",
-  melonds: "1.0",
-  pcsx2: "2.4.0",
+  melonds: "1.1",
+  pcsx2: "2.6.3",
   ppsspp: "1.19.3",
   rosaliesMupenGui: "0.8.8",
-  rpcs3: "0.0.38",
+  rpcs3: "0.0.39",
   ryujinx: "1.3.3",
-  xemu: "0.8.106",
+  xemu: "0.8.133",
 } satisfies Partial<Record<ApplicationId, string>>;

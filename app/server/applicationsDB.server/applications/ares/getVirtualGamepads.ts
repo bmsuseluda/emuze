@@ -21,6 +21,7 @@ import type {
   PhysicalGamepadButton,
   VirtualGamepad,
 } from "./types.js";
+import type { SystemId } from "../../../categoriesDB.server/systemId.js";
 
 const gamepadGroupId: Record<GamepadGroupId, number> = {
   Axis: 0,
@@ -174,7 +175,11 @@ export const createDeviceId = (
 };
 
 export const getVirtualGamepad =
-  (systemHasAnalogStick: boolean, playerIndexArray: number[]) =>
+  (
+    systemId: SystemId,
+    systemHasAnalogStick: boolean,
+    playerIndexArray: number[],
+  ) =>
   (sdlDevice: Sdl.Controller.Device, index: number) => {
     const virtualGamepadIndex = playerIndexArray[index];
     const mappingObject = createSdlMappingObject(sdlDevice.mapping!);
@@ -239,6 +244,7 @@ export const getVirtualGamepad =
         isN64Controller(joystick)
           ? physicalGamepad.getLeftTrigger()
           : physicalGamepad.getRightTrigger(),
+        systemId === "nintendo64" ? physicalGamepad.getLeftTrigger() : null,
       ),
 
       ...getVirtualGamepadButton(
@@ -278,12 +284,14 @@ export const getVirtualGamepad =
         physicalGamepad.getRightStickDown().inputId
           ? physicalGamepad.getRightStickDown()
           : physicalGamepad.getRightButtonDown(),
+        systemId === "nintendo64" ? physicalGamepad.getB() : null,
       ),
       ...getVirtualGamepadButton(
         { gamepadIndex: virtualGamepadIndex, buttonId: "R-Left" },
         physicalGamepad.getRightStickLeft().inputId
           ? physicalGamepad.getRightStickLeft()
           : physicalGamepad.getRightButtonLeft(),
+        systemId === "nintendo64" ? physicalGamepad.getY() : null,
       ),
       ...getVirtualGamepadButton(
         { gamepadIndex: virtualGamepadIndex, buttonId: "R-Right" },
@@ -300,13 +308,18 @@ export const getVirtualGamepad =
     ];
   };
 
-export const getVirtualGamepads = (systemHasAnalogStick: boolean) => {
+export const getVirtualGamepads = (
+  systemId: SystemId,
+  systemHasAnalogStick: boolean,
+) => {
   const gamepads = sdl.controller.devices;
   const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
 
   const virtualGamepads =
     gamepads.length > 0
-      ? gamepads.map(getVirtualGamepad(systemHasAnalogStick, playerIndexArray))
+      ? gamepads.map(
+          getVirtualGamepad(systemId, systemHasAnalogStick, playerIndexArray),
+        )
       : getKeyboard();
   log("debug", "gamepads", gamepads.length);
 

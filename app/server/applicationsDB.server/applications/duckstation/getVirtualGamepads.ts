@@ -9,6 +9,7 @@ import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
 import { log } from "../../../debug.server.js";
 import type { DuckStationButtonId } from "./types.js";
+import { normalizeString } from "../../../igdb.server.js";
 
 const buttonMapping = {
   Up: "DPadUp",
@@ -57,6 +58,19 @@ export const getVirtualGamepad =
     ].join(EOL);
   };
 
+const gameSpecificXscaleValues: Record<string, string> = {
+  [normalizeString("Time Crisis")]: "0.94",
+};
+
+const getXscale = (gameName: string) => {
+  const xscaleDefault = "1";
+  const gameNameNormalized = normalizeString(gameName);
+
+  const xscaleGameSpecific = gameSpecificXscaleValues[gameNameNormalized];
+
+  return xscaleGameSpecific || xscaleDefault;
+};
+
 export const getLightgun = (gameName: string, playerIndex: number) => [
   `[Pad${playerIndex + 1}]`,
   `Type = GunCon`,
@@ -66,7 +80,7 @@ export const getLightgun = (gameName: string, playerIndex: number) => [
   `ShootOffscreen = Keyboard/${1 + playerIndex}`,
   `A = Pointer-${playerIndex}/RightButton`,
   `B = Keyboard/${5 + playerIndex}`,
-  `XScale = ${gameName === "Time Crisis" ? "0.94" : "1"}`,
+  `XScale = ${getXscale(gameName)}`,
   "",
   "",
   "",

@@ -1,6 +1,6 @@
-import { VscChromeClose } from "react-icons/vsc";
 import type { ReactNode } from "react";
 import { styled } from "../../../styled-system/jsx/index.js";
+import { VscChromeClose } from "react-icons/vsc";
 
 const DialogOverlay = styled("div", {
   base: {
@@ -19,14 +19,14 @@ const DialogContent = styled("div", {
   base: {
     backgroundColor: "sidebarBackgroundColor",
     color: "color",
-    boxShadow: "0px 0px 20px 10px black",
+    boxShadow: "dialog",
     borderRounded: true,
-    borderWidth: "0.2rem",
+    borderWidth: "3",
 
     width: "55rem",
+    maxWidth: "90vw",
     transition: "max-width 0.5s ease-in-out",
     height: "60vh",
-    maxHeight: "90vh",
     animation: "scaleUp 150ms",
     overflow: "clip",
     "&:focus": { outline: "none" },
@@ -35,14 +35,22 @@ const DialogContent = styled("div", {
   variants: {
     size: {
       small: {
-        maxWidth: "min(700px, 90vw)",
+        maxWidth: "min(43.75rem, 90vw)",
       },
       medium: {
-        maxWidth: "min(900px, 90vw)",
+        maxWidth: "min(56.25rem, 90vw)",
       },
       dynamic: {
         width: "fit-content",
         height: "fit-content",
+      },
+    },
+    maxHeight: {
+      small: {
+        maxHeight: "30rem",
+      },
+      medium: {
+        maxHeight: "90vh",
       },
     },
     variant: {
@@ -56,7 +64,8 @@ const DialogContent = styled("div", {
   },
 });
 
-const IconButton = styled("button", {
+/** Is invisible. Is used to trigger closing programatically */
+const CloseButton = styled("button", {
   base: {
     borderRadius: "100%",
     height: 25,
@@ -66,6 +75,7 @@ const IconButton = styled("button", {
     top: 10,
     right: 10,
     cursor: "pointer",
+    opacity: 0,
   },
 });
 
@@ -79,8 +89,8 @@ interface Props {
   open: boolean;
   onClose: (event?: DialogCloseEvent) => void;
   closable?: boolean;
-  showCloseIcon?: boolean;
   size?: "small" | "medium" | "dynamic";
+  maxHeight?: "small" | "medium";
   variant?: "default" | "accent";
 }
 
@@ -88,18 +98,13 @@ export const Dialog = ({
   children,
   open,
   onClose,
-  closable = true,
-  showCloseIcon = true,
   size = "medium",
+  maxHeight = "medium",
   variant = "default",
 }: Props) => {
   const handleClose = (event?: DialogCloseEvent) => {
     event?.stopPropagation();
-    if (closable) {
-      onClose(event);
-    } else {
-      event?.preventDefault();
-    }
+    onClose(event);
   };
 
   if (open) {
@@ -110,14 +115,13 @@ export const Dialog = ({
             event.stopPropagation();
           }}
           size={size}
+          maxHeight={maxHeight}
           variant={variant}
         >
           {children}
-          {closable && showCloseIcon && (
-            <IconButton aria-label="Close Modal" onClick={handleClose}>
-              <VscChromeClose />
-            </IconButton>
-          )}
+          <CloseButton aria-label="Close Modal" onClick={handleClose}>
+            <VscChromeClose />
+          </CloseButton>
         </DialogContent>
       </DialogOverlay>
     );

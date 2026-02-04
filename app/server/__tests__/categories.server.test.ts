@@ -59,6 +59,7 @@ describe("categories.server", () => {
         "unknown category",
         createCategoryPath(pcenginecd.name),
       ]);
+      vi.mocked(readFileHome).mockReturnValueOnce([]);
       when(readFilenames, { times: 1 })
         .calledWith({
           path: createCategoryPath(nintendo3ds.name),

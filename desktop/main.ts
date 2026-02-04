@@ -82,6 +82,7 @@ app.on("ready", async () => {
   const window = new BrowserWindow({
     show: false,
     frame: false,
+    transparent: true,
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,

@@ -18,7 +18,6 @@ import { openFolderDialog } from "../server/openDialog.server.js";
 import { readGeneral, writeGeneral } from "../server/settings.server.js";
 import type { General } from "../types/jsonFiles/settings/general.js";
 import { isWindows } from "../server/operationsystem.server.js";
-import { IconChildrenWrapper } from "../components/IconChildrenWrapper/index.js";
 import { SettingsIcon } from "../components/SettingsIcon/index.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
@@ -36,7 +35,6 @@ import {
   useInputConfirmation,
 } from "../hooks/useDirectionalInput/index.js";
 import { FileDialogInputField } from "../containers/FileDialogTextInput/index.js";
-import { Typography } from "../components/Typography/index.js";
 import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction/index.js";
 import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
 
@@ -323,12 +321,10 @@ export default function General() {
   return (
     <>
       <ListActionBarLayout
-        headline={
-          <IconChildrenWrapper>
-            <SettingsIcon id="general" />
-            <Typography ellipsis>General</Typography>
-          </IconChildrenWrapper>
-        }
+        headline={{
+          title: "General",
+          icon: <SettingsIcon id="general" />,
+        }}
       >
         <Form method="POST">
           <ListActionBarLayout.ListActionBarContainer

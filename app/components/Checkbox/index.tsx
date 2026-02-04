@@ -36,7 +36,7 @@ const StyledIndicator = styled(CheckboxPrimitive.Indicator, {
     color: "color",
     width: "100%",
     height: "100%",
-    padding: "2px",
+    padding: "0.125rem",
     boxSizing: "border-box",
   },
 });

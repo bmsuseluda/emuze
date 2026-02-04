@@ -14,6 +14,7 @@ import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { removeFile } from "../../../readWriteData.server.js";
 import { findWiiUGameName } from "./findEntryName.js";
+import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const flatpakId = "info.cemu.Cemu";
 const applicationId: ApplicationId = "cemu";
@@ -91,6 +92,7 @@ export const cemu: Application = {
   id: applicationId,
   name: "Cemu",
   entryAsDirectory: true,
+  defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   flatpakId,
   findEntryName: findWiiUGameName,
   configFile: {

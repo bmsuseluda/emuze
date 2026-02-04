@@ -40,7 +40,7 @@ export const CloseDialog = ({
   entryListRef,
   entriesRefCallback,
 }: Props) => (
-  <Dialog open={open} onClose={onCancel} size="dynamic" showCloseIcon={false}>
+  <Dialog open={open} onClose={onCancel} size="dynamic">
     <Content>
       <Headline>Close emuze?</Headline>
       <ButtonRow ref={entryListRef}>

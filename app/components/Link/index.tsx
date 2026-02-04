@@ -13,12 +13,11 @@ const StyledLink = styled("a", {
     display: "inline-block",
     boxSizing: "border-box",
     outlineRounded: true,
-    outlineWidth: "2px",
-    outlineStyle: "solid",
-    outlineColor: "transparent",
+    outline: "outlineInitial",
     outlineOffset: "0.5rem",
     color: "color",
     width: "fit-content",
+    fontSize: "small",
 
     "&:hover": {
       cursor: "pointer",
@@ -33,7 +32,7 @@ const StyledLink = styled("a", {
 export const Link = ({ href, children, icon: Icon, ...rest }: Props) => {
   return (
     <StyledLink href={href} target="_blank" {...rest}>
-      <IconChildrenWrapper>
+      <IconChildrenWrapper iconSize="medium">
         <Icon />
         {children}
       </IconChildrenWrapper>

@@ -103,7 +103,7 @@ test("import all", async ({ page, libraryPage, settingsPage }) => {
   await libraryPage.goToSystemViaClick(playstationSystemName, "Gex");
 });
 
-test("import all with cleanup", async ({ page, libraryPage, settingsPage }) => {
+test("import all with cleanup", async ({ page, libraryPage }) => {
   resetFiles();
   await libraryPage.goto(testName);
 
@@ -115,14 +115,28 @@ test("import all with cleanup", async ({ page, libraryPage, settingsPage }) => {
   await libraryPage.goToSystemViaClick(pspSystemName, "Little Big Planet");
   await libraryPage.press("ArrowRight");
   await libraryPage.expectGameFocused("Little Big Planet");
+  await libraryPage.press("Enter");
 
-  await settingsPage.openSettingsViaClick(true);
+  await expect(
+    libraryPage.page.getByText(
+      `"Little Big Planet.chd" does not exist anymore`,
+    ),
+  ).toBeVisible();
+  await expect(page).toHaveScreenshot();
+  await libraryPage.press("Backspace");
+
   await libraryPage.press("i");
-  await settingsPage.closeSettingsViaClick(true);
 
   await libraryPage.expectIsInitialSystem();
 
   await expect(pspLink).not.toBeVisible();
+
+  // after removing a system check if keyboard arrow up to last system and down to first system works
+  await libraryPage.press("Backspace");
+  await libraryPage.press("ArrowUp");
+  await libraryPage.expectIsSystem("Super Nintendo Entertainment System");
+  await libraryPage.press("ArrowDown");
+  await libraryPage.expectIsInitialSystem();
 });
 
 test("game versions", async ({ libraryPage }) => {

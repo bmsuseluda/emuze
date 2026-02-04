@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import sdl from "@kmamal/sdl";
 import YAML from "yaml";
 import type { Application } from "../../types.js";
 import nodepath from "node:path";
@@ -16,7 +17,8 @@ import {
 import { EOL } from "node:os";
 import type {
   ActiveInputConfigFile,
-  ConfigFile,
+  ConfigFile as GemConfigFile,
+  ConfigMouseConfigFile,
   GemMouseConfigFile,
   GlobalDefaultInputConfigFile,
   VfsConfigFile,
@@ -29,6 +31,8 @@ import {
   findPlaystation3GameName,
 } from "./findEntryName.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
+import { sdlGameControllerConfig } from "../../environmentVariables.js";
+import { isLightgunConnected } from "../../../../types/gamepad.js";
 
 const flatpakId = "net.rpcs3.RPCS3";
 const applicationId: ApplicationId = "rpcs3";
@@ -45,6 +49,7 @@ const gemConfigFileName = "gem.yml";
 const gemMouseConfigFileName = "gem_mouse.yml";
 const gemRealConfigFileName = "gem_real.yml";
 const rawMouseConfigFileName = "raw_mouse.yml";
+const configMouseConfigFileName = "config_mouse.yml";
 
 const guiConfigPathRelative = nodepath.join("GuiConfigs", guiConfigFileName);
 const vfsConfigPathRelative = isWindows()
@@ -65,6 +70,9 @@ const gemRealConfigPathRelative = isWindows()
 const rawMouseConfigPathRelative = isWindows()
   ? nodepath.join("config", rawMouseConfigFileName)
   : nodepath.join(rawMouseConfigFileName);
+const configMouseConfigPathRelative = isWindows()
+  ? nodepath.join("config", configMouseConfigFileName)
+  : nodepath.join(configMouseConfigFileName);
 const activeInputConfigPathRelative = isWindows()
   ? nodepath.join("config", "input_configs", activeInputConfigFileName)
   : nodepath.join("input_configs", activeInputConfigFileName);
@@ -111,7 +119,9 @@ export const getGuiConfigFilePath = () =>
 const getVfsConfigFilePath = () => getConfigFilePath(vfsConfigPathRelative);
 const getGemMouseConfigFilePath = () =>
   getConfigFilePath(gemMouseConfigPathRelative);
-const getConfigConfigFilePath = () => getConfigFilePath(gemConfigPathRelative);
+const getConfigMouseConfigFilePath = () =>
+  getConfigFilePath(configMouseConfigPathRelative);
+const getGemConfigFilePath = () => getConfigFilePath(gemConfigPathRelative);
 const getActiveInputConfigFilePath = () =>
   getConfigFilePath(activeInputConfigPathRelative);
 const getGlobalDefaultInputConfigFilePath = () =>
@@ -121,8 +131,10 @@ const readVfsConfigFile = () =>
   readYmlConfigFile(getVfsConfigFilePath()) as VfsConfigFile;
 const readGemMouseConfigFile = () =>
   readYmlConfigFile(getGemMouseConfigFilePath()) as GemMouseConfigFile;
-const readConfigFile = () =>
-  readYmlConfigFile(getConfigConfigFilePath()) as ConfigFile;
+const readConfigMouseConfigFile = () =>
+  readYmlConfigFile(getConfigMouseConfigFilePath()) as ConfigMouseConfigFile;
+const readGemConfigFile = () =>
+  readYmlConfigFile(getGemConfigFilePath()) as GemConfigFile;
 
 const replaceMetaConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Meta]", [{ keyValue: "checkUpdateStart=false" }]);
@@ -211,21 +223,45 @@ const replaceGemMouseConfigFile = () => {
       ...fileContent["Player 1"],
       T: "Mouse Button 1",
       Start: "Mouse Button 3",
-      Cross: "Mouse Button 3",
       Select: "Mouse Button 7",
-      Triangle: "Mouse Button 8",
-      Circle: "Mouse Button 4",
-      Square: "Mouse Button 5",
+      Triangle: "",
+      Circle: "",
+      Cross: "",
+      Square: "",
       Move: "Mouse Button 2",
+      Combo: "Mouse Button 6",
+      "Combo Triangle": "Mouse Button 7",
+      "Combo Circle": "Mouse Button 2",
+      "Combo Cross": "Mouse Button 1",
+      "Combo Square": "Mouse Button 3",
+      "Combo Move": "",
+      "Combo T": "",
     },
   };
 
   writeConfig(getGemMouseConfigFilePath(), YAML.stringify(fileContentNew));
 };
 
-const replaceConfigFile = () => {
-  const fileContent = readConfigFile();
-  const fileContentNew: ConfigFile = {
+const replaceConfigMouseConfigFile = () => {
+  const fileContent = readConfigMouseConfigFile();
+  const fileContentNew: ConfigMouseConfigFile = {
+    ...fileContent,
+    "Button 1": "Mouse Left",
+    "Button 2": "Mouse Right",
+    "Button 3": "Mouse Middle",
+    "Button 4": "",
+    "Button 5": "",
+    "Button 6": 1,
+    "Button 7": 5,
+    "Button 8": "",
+  };
+
+  writeConfig(getConfigMouseConfigFilePath(), YAML.stringify(fileContentNew));
+};
+
+const replaceGemConfigFile = () => {
+  const fileContent = readGemConfigFile();
+  const fileContentNew: GemConfigFile = {
     ...fileContent,
     "Input/Output": {
       ...fileContent["Input/Output"],
@@ -239,7 +275,7 @@ const replaceConfigFile = () => {
     },
   };
 
-  writeConfig(getConfigConfigFilePath(), YAML.stringify(fileContentNew));
+  writeConfig(getGemConfigFilePath(), YAML.stringify(fileContentNew));
 };
 
 const readActiveInputConfigFile = () =>
@@ -293,6 +329,7 @@ export const rpcs3: Application = {
   id: applicationId,
   name: "RPCS3",
   flatpakId,
+  defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   omitAbsoluteEntryPathAsLastParam: true,
   searchFilesOnlyIn: [nodepath.join("dev_hdd0", "game"), "games"],
   fileExtensions: [
@@ -312,6 +349,7 @@ export const rpcs3: Application = {
       gemMouseConfigPathRelative,
       gemRealConfigPathRelative,
       rawMouseConfigPathRelative,
+      configMouseConfigPathRelative,
       // TODO: check if patches and savestates are under config folder as well on windows
       "patches",
       "savestates",
@@ -335,12 +373,13 @@ export const rpcs3: Application = {
     replaceGuiConfigFile(ps3RomsPathWithTrailingSeparator);
     replaceVfsConfigFile(ps3RomsPathWithTrailingSeparator);
     replaceGemMouseConfigFile();
-    replaceConfigFile();
+    replaceConfigMouseConfigFile();
+    replaceGemConfigFile();
     replaceActiveInputConfigFile();
     replaceGlobalDefaultInputConfigFile(isPs1Classic);
 
     const optionParams = [];
-    if (fullscreen) {
+    if (fullscreen && !isLightgunConnected(sdl.joystick.devices)) {
       optionParams.push("--fullscreen");
       optionParams.push("--no-gui");
     }

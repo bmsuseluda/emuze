@@ -23,9 +23,9 @@ import { readLastPlayed } from "../server/lastPlayed.server.js";
 import type { Entry } from "../types/jsonFiles/category.js";
 import { useInputSettings } from "../hooks/useDirectionalInput/index.js";
 import { GameVersions } from "../components/GameVersions/index.js";
-import { GameDialog } from "../components/GameDialog/index.js";
 import { readCategory } from "../server/categoryDataCache.server.js";
 import { useLaunchButton } from "../hooks/useLaunchButton/index.js";
+import { Dialog } from "../components/Dialog/index.js";
 
 const getGameData = (category: SystemId, gameId: string) => {
   let systemId: SystemId | undefined;
@@ -191,7 +191,7 @@ export default function Index() {
   const { id, subEntries } = gameData;
 
   return (
-    <GameDialog onClose={handleClose}>
+    <Dialog size="dynamic" open onClose={handleClose}>
       <SidebarMainLayout>
         <SidebarMainLayout.Main dynamicWidth>
           <ListActionBarLayout>
@@ -226,6 +226,6 @@ export default function Index() {
         </SidebarMainLayout.Main>
       </SidebarMainLayout>
       <Outlet />
-    </GameDialog>
+    </Dialog>
   );
 }

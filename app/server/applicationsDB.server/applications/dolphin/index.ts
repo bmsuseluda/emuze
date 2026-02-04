@@ -19,6 +19,7 @@ import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { defaultDolphinSettings } from "./defaultDolphinSettings.js";
 import { isWindows } from "../../../operationsystem.server.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
+import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const flatpakId = "org.DolphinEmu.dolphin-emu";
 const applicationId: ApplicationId = "dolphin";
@@ -143,6 +144,7 @@ export const dolphin: Application = {
   name: "Dolphin",
   fileExtensions: [".iso", ".rvz"],
   flatpakId,
+  defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },

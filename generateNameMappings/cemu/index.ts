@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, rmSync } from "node:fs";
 import { downloadFile } from "../../app/server/downloadFile.server.js";
 import nodepath from "node:path";
 import { writeFile } from "../../app/server/readWriteData.server.js";
@@ -16,7 +16,14 @@ const resultPath = nodepath.join(
   "nameMapping",
 );
 
+const tempFolderPath = nodepath.join(__dirname, "temp");
+
+const deleteTempFolder = () => {
+  rmSync(tempFolderPath, { recursive: true, force: true });
+};
+
 const exitOnResponseCodeError = () => {
+  deleteTempFolder();
   process.exit(1);
 };
 
@@ -66,8 +73,6 @@ interface TitleNameEntry {
 
 type TitleNames = Record<TitleId, TitleNameEntry>;
 
-const tempFolderPath = nodepath.join(__dirname, "temp");
-
 const getTitleName = (titleNames: TitleNames, titleId: string) => {
   if (titleId in titleNames) {
     const titleNamesForId = titleNames[titleId];
@@ -110,6 +115,7 @@ const importCemuNameMappings = async () => {
       }, {});
 
     writeFile(extractedGames, nodepath.join(resultPath, "cemu.json"));
+    deleteTempFolder();
   });
 };
 

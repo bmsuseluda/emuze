@@ -1,3 +1,4 @@
+import type { Dirent } from "node:fs";
 import { readdirSync } from "node:fs";
 import { when } from "vitest-when";
 import nodepath from "node:path";
@@ -22,13 +23,13 @@ import { mednafen } from "../applicationsDB.server/applications/mednafen/index.j
 vi.mock("@kmamal/sdl");
 vi.mock("node:fs");
 
-class SimpleDirent {
-  name: string;
+class SimpleDirent<Name extends string> {
+  name: Name;
   directory: boolean;
   path: string;
   parentPath = "";
 
-  constructor(name: string, directory: boolean) {
+  constructor(name: Name, directory: boolean) {
     this.name = name;
     this.directory = directory;
     this.path = name;
@@ -77,7 +78,7 @@ describe("readWriteData.server", () => {
         new SimpleDirent("Gate of Thunder.CUE", false),
         new SimpleDirent("game without file extension", false),
         new SimpleDirent("game with unsupported file extension.wasd", false),
-      ]);
+      ] as unknown as Dirent<Buffer<ArrayBufferLike>>[]);
 
       expect(
         readFilenames({
@@ -93,20 +94,20 @@ describe("readWriteData.server", () => {
     it("Should return filenames with supported filenames from subfolders", () => {
       when(readdirSync, { times: 1 })
         .calledWith(createCategoryPath(playstation.name), {
-          encoding: "utf8",
+          encoding: "utf8" as "buffer",
           withFileTypes: true,
         })
         .thenReturn([
           new SimpleDirent("Hugo", true),
           new SimpleDirent("Hugo 2.chd", false),
           new SimpleDirent("game with unsupported file extension.wasd", false),
-        ]);
+        ] as unknown as Dirent<Buffer<ArrayBufferLike>>[]);
 
       when(readdirSync, { times: 1 })
         .calledWith(
           nodepath.join(createCategoryPath(playstation.name), "Hugo"),
           {
-            encoding: "utf8",
+            encoding: "utf8" as "buffer",
             withFileTypes: true,
           },
         )
@@ -114,7 +115,7 @@ describe("readWriteData.server", () => {
           new SimpleDirent("Hugo.chd", false),
           new SimpleDirent("game without file extension", false),
           new SimpleDirent("game with unsupported file extension.wasd", false),
-        ]);
+        ] as unknown as Dirent<Buffer<ArrayBufferLike>>[]);
 
       expect(
         readFilenames({
@@ -133,7 +134,7 @@ describe("readWriteData.server", () => {
         new SimpleDirent(monkeyIsland.path, true),
         new SimpleDirent(bladerunner.path, true),
         new SimpleDirent("favorite games.txt", false),
-      ]);
+      ] as unknown as Dirent<Buffer<ArrayBufferLike>>[]);
 
       expect(
         readFilenames({
@@ -153,7 +154,7 @@ describe("readWriteData.server", () => {
         new SimpleDirent("Hugo", true),
         new SimpleDirent("Hugo 2.chd", false),
         new SimpleDirent("game with unsupported file extension.wasd", false),
-      ]);
+      ] as unknown as Dirent<Buffer<ArrayBufferLike>>[]);
 
       expect(
         readDirectorynames(createCategoryPath(playstation.name)),

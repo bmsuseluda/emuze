@@ -7,15 +7,15 @@ const Link = styled(RemixLink, {
   base: {
     position: "fixed",
     top: 0,
-    right: "140px",
+    right: "8.75rem",
 
     margin: 0,
     paddingTop: "1",
-    paddingRight: "15px",
+    paddingRight: "0.9375rem",
     paddingBottom: "1",
-    paddingLeft: "15px",
-    lineHeight: "16px",
-    blockSize: "16px",
+    paddingLeft: "0.9375rem",
+    lineHeight: "1rem",
+    blockSize: "1rem",
     backgroundColor: "transparent",
     border: "none",
     color: "color",
@@ -23,8 +23,10 @@ const Link = styled(RemixLink, {
     cursor: "inherit",
 
     "& svg": {
-      width: "16px",
-      height: "16px",
+      width: "iconExtraSmall",
+      height: "auto",
+      verticalAlign: "middle",
+      aspectRatio: 1,
     },
 
     "&:hover": {

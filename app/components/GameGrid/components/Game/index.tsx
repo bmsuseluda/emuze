@@ -21,8 +21,8 @@ interface Props extends ComponentProps<typeof Input> {
 const Wrapper = styled("li", {
   base: {
     position: "relative",
-    minWidth: "200px",
-    maxWidth: "300px",
+    minWidth: "200",
+    maxWidth: "300",
     transition: "0.1s ease-in-out",
     opacity: "1",
 
@@ -40,11 +40,11 @@ const Label = styled("label", {
     borderRadius: "1",
     overflow: "clip",
 
-    margin: "4px",
-    outlineWidth: "4px",
+    margin: "0.25rem",
+    outlineWidth: "0.25rem",
     outlineStyle: "solid",
     outlineColor: "transparent",
-    outlineOffset: "4px",
+    outlineOffset: "0.25rem",
     transition: "outline-color 0.1s ease-in-out",
 
     "&:has(*:checked)": {
@@ -95,14 +95,15 @@ const IconWrapper = styled("div", {
     top: 0,
     right: 0,
     userSelect: "none",
-    padding: "0.4em",
-    margin: "0.3em",
+    padding: "0.375rem",
+    margin: "0.25rem",
     backgroundColor: "transparentBackgroundColor",
     borderRadius: "50%",
 
     "& > svg": {
-      width: "1em",
-      height: "1em",
+      width: "iconSmall",
+      height: "auto",
+      aspectRatio: "1",
       verticalAlign: "middle",
     },
   },
@@ -128,15 +129,15 @@ const Name = styled("div", {
 
     color: "color",
     position: "absolute",
-    bottom: "-1px",
+    bottom: "-0.0625rem",
     left: 0,
     right: 0,
     userSelect: "none",
-    padding: "0 0.8rem 0.4rem",
+    padding: "0 0.75rem 0.375rem",
     backgroundColor: "transparentBackgroundColor",
     fontWeight: 400,
-    fontSize: "80%",
-    lineHeight: "1.3rem",
+    fontSize: "extraSmall",
+    lineHeight: "1.25rem",
   },
 });
 
