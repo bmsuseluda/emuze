@@ -1,5 +1,7 @@
 import { defineConfig, defineGlobalStyles, defineUtility } from "@pandacss/dev";
 
+// TODO: round
+// TODO: use calc of base value instead of
 const globalCss = defineGlobalStyles({
   html: {
     overflow: "hidden",

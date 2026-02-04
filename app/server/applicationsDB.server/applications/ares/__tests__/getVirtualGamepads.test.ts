@@ -27,9 +27,11 @@ describe("ares", () => {
 
   describe("getVirtualGamepad", () => {
     it("Should position the Steam Deck controls on first position if there are no other gamepads connected", () => {
-      const result = getVirtualGamepad("nintendoentertainmentsystem", true, [
-        0,
-      ])(steamDeck, 0);
+      const result = getVirtualGamepad(
+        "nintendoentertainmentsystem",
+        true,
+        [0],
+      )(steamDeck, 0);
 
       expect(result.at(1)).toContain("VirtualPad1");
       expect(result.at(1)).toContain("0x128de1205");
