@@ -246,7 +246,7 @@ emuze relies on the following external data:
 
 | Data | Usecase |
 | ------ | --- |
-| [igdb](https://www.igdb.com) | is used to provide Metadata for your games |
+| [IGDB](https://www.igdb.com) | is used to provide Metadata for your games |
 | [MAME](https://github.com/mamedev/mame) xml list (`mame -listxml`) | is used to map MAME IDs to game names |
 | [ScummVM](https://github.com/scummvm/scummvm) games list (`scummvm --list-games`) | is used to map ScummVM IDs to game names |
 | [nus-info](https://github.com/DanTheMan827/nus-info) | is used to map WiiU Title IDs to game names |

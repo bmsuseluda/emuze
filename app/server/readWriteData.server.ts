@@ -122,7 +122,7 @@ export const writeFileHome = (object: unknown, path: string) => {
 
 export const removeFile = (path: string) => {
   if (existsSync(path)) {
-    rmSync(path, { force: true });
+    rmSync(path, { force: true, recursive: true });
   }
 };
 
@@ -133,6 +133,7 @@ export const removeFileHome = (path: string) => {
 
 export const copy = (source: string, destination: string) => {
   if (existsSync(source)) {
+    removeFile(destination);
     cpSync(source, destination, {
       recursive: true,
       force: true,

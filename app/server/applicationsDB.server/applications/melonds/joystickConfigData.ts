@@ -11,7 +11,7 @@ L =  4
 R =  5
 Select =  6
 Start =  7
-HK_SwapScreens = 35782655`;
+HK_SwapScreens = 9`;
 
 export const ps3 = `[Instance0.Joystick]
 Up =  13

@@ -96,8 +96,8 @@ export const defaultConfig = `<?xml version="1.0" encoding="UTF-8"?>
         <TVVolume>50</TVVolume>
         <PadVolume>0</PadVolume>
         <InputVolume>50</InputVolume>
-        <TVDevice></TVDevice>
-        <PadDevice></PadDevice>
+        <TVDevice>default</TVDevice>
+        <PadDevice>default</PadDevice>
         <InputDevice></InputDevice>
     </Audio>
     <Account>

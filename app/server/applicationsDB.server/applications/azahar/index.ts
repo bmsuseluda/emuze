@@ -115,7 +115,7 @@ const getConfigFileBasePath = () => {
 export const azahar: Application = {
   id: applicationId,
   name: "Azahar",
-  fileExtensions: [".cci", ".zcia", ".zcci", ".z3dsx", ".zcxi"],
+  fileExtensions: [".cci", ".zcia", ".zcci", ".z3dsx", ".zcxi", ".3ds"],
   flatpakId,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {

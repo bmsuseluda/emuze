@@ -384,7 +384,9 @@ export const rpcs3: Application = {
       optionParams.push("--no-gui");
     }
 
-    const gameFolderPath = absoluteEntryPath.split("USRDIR")[0];
+    const gameFolderPath = fs.realpathSync(
+      absoluteEntryPath.split("USRDIR")[0],
+    );
     optionParams.push(gameFolderPath);
     return optionParams;
   },

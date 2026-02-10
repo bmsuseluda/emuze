@@ -11,13 +11,11 @@ import {
   getNameIndex,
   getPlayerIndexArray,
 } from "../../../../types/gamepad.js";
+import { getJoystickFromController } from "../../../gamepad.server.js";
 
 const getVirtualGamepad =
   (playerIndexArray: number[], devices: Sdl.Controller.Device[]) =>
-  (
-    { name, guid }: Sdl.Controller.Device,
-    index: number,
-  ): VirtualGamepadFile => {
+  (controller: Sdl.Controller.Device, index: number): VirtualGamepadFile => {
     const parser = new XMLParser({
       ignoreAttributes: false,
       parseTagValue: false,
@@ -25,6 +23,8 @@ const getVirtualGamepad =
     const defaultControllerConfig = parser.parse(
       index === 0 ? defaultGamepadConfig : defaultProControllerConfig,
     );
+    const { guid } = getJoystickFromController(controller)!;
+    const { name } = controller;
 
     const controllerConfig: ControllerConfigFile = {
       ...defaultControllerConfig,
