@@ -28,6 +28,7 @@ const melonDsButtonMapping = {
   Start: "start",
   L: "leftshoulder",
   R: "rightshoulder",
+  HK_SwapScreens: "rightstick",
 } satisfies Record<MelonDsButtonId, SdlButtonId>;
 
 const getMelonDsDpadHatMapping = (melonDsButtonId: MelonDsButtonId) => {
@@ -95,8 +96,7 @@ export const getVirtualGamepad = (): ParamToReplace[] => {
         getButtonMapping(mappingObject, "R"),
         getButtonMapping(mappingObject, "Select"),
         getButtonMapping(mappingObject, "Start"),
-        // TODO: how to set this?
-        { keyValue: `HK_SwapScreens = 35782655` },
+        getButtonMapping(mappingObject, "HK_SwapScreens"),
       ];
     }
   }

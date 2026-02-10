@@ -31,11 +31,11 @@ const emulatorDownloads = {
     Windows: `https://github.com/ares-emulator/ares/releases/download/v${emulatorVersions.ares}/ares-windows-x64.zip`,
   },
   azahar: {
-    Linux: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions.azahar}%402026-01-29_1769674356/Azahar-Enhanced-${emulatorVersions.azahar}-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions.azahar}%402026-02-04_1770182195/Azahar-${emulatorVersions.azahar}-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/azahar-emu/azahar/releases/download/${emulatorVersions.azahar}/azahar-${emulatorVersions.azahar}-windows-msys2.zip`,
   },
   cemu: {
-    Linux: `https://github.com/pkgforge-dev/Cemu-AppImage-Enhanced/releases/download/${emulatorVersions.cemu}-4%402025-12-01_1764576866/Cemu-${emulatorVersions.cemu}-4-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/cemu-project/Cemu/releases/download/v${emulatorVersions.cemu}/Cemu-${emulatorVersions.cemu}-x86_64.AppImage`,
     Windows: `https://github.com/cemu-project/Cemu/releases/download/v${emulatorVersions.cemu}/Cemu-${emulatorVersions.cemu}-x86_64.AppImage`,
   },
   dolphin: {
@@ -75,8 +75,8 @@ const emulatorDownloads = {
     Windows: `https://github.com/Rosalie241/RMG/releases/download/v${emulatorVersions.rosaliesMupenGui}/RMG-Portable-Windows64-v${emulatorVersions.rosaliesMupenGui}.zip`,
   },
   rpcs3: {
-    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-086ab3cb37dc8e993ad72480047bd0739cd832d5/rpcs3-v${emulatorVersions.rpcs3}-18743-086ab3cb_linux64.AppImage`,
-    Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-086ab3cb37dc8e993ad72480047bd0739cd832d5/rpcs3-v${emulatorVersions.rpcs3}-18743-086ab3cb_win64_msvc.7z`,
+    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-93dbdead24e1474a94c59fffc1f6cfb25abe488b/rpcs3-v${emulatorVersions.rpcs3}-18763-93dbdead_linux64.AppImage`,
+    Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-93dbdead24e1474a94c59fffc1f6cfb25abe488b/rpcs3-v${emulatorVersions.rpcs3}-18763-93dbdead_win64_msvc.7z`,
   },
   ryujinx: {
     Linux: `https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-x64.AppImage`,

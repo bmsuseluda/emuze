@@ -10,4 +10,5 @@ export type MelonDsButtonId =
   | "Select"
   | "Start"
   | "L"
-  | "R";
+  | "R"
+  | "HK_SwapScreens";

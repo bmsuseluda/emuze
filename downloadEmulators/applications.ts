@@ -40,7 +40,7 @@ export const applications = {
 
 export const emulatorVersions = {
   ares: "147",
-  azahar: "2124.2",
+  azahar: "2124.3",
   dolphin: "2512",
   duckstation: "0.1-7371",
   cemu: "2.6",
