@@ -29,6 +29,18 @@ const bundledPath = isWindows()
 
 const configFileName = "mupen64plus.cfg";
 
+const configPathRelative = isWindows()
+  ? nodepath.join("config", configFileName)
+  : nodepath.join(configFileName);
+
+const savestatesPathRelative = isWindows()
+  ? nodepath.join("config", "Save", "State")
+  : nodepath.join("savstates");
+
+const memcardsPathRelative = isWindows()
+  ? nodepath.join("config", "Save", "Game")
+  : nodepath.join("memcards");
+
 const getConfigFilePath = () =>
   nodepath.join(emulatorsConfigDirectory, applicationId, configFileName);
 
@@ -120,13 +132,10 @@ export const rosaliesMupenGui: Application = {
   configFile: {
     basePath: getConfigFileBasePath(),
     files: [
-      configFileName,
-      "bios",
-      "cheats",
+      configPathRelative,
+      savestatesPathRelative,
+      memcardsPathRelative,
       "gamesettings",
-      "inputprofiles",
-      "memcards",
-      "savstates",
     ],
   },
   createOptionParams: ({
