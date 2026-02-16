@@ -42,7 +42,7 @@ const memcardsPathRelative = isWindows()
   : nodepath.join("memcards");
 
 const getConfigFilePath = () =>
-  nodepath.join(emulatorsConfigDirectory, applicationId, configFileName);
+  nodepath.join(emulatorsConfigDirectory, applicationId, configPathRelative);
 
 const readConfigFile = (filePath: string) => {
   try {

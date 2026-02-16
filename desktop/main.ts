@@ -29,7 +29,7 @@ dotenv.config();
 
 const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
   if (fullscreen && window.isMaximized()) {
-    window.restore();
+    window.unmaximize();
   }
 
   window.setFullScreen(fullscreen);
@@ -99,7 +99,7 @@ app.on("ready", async () => {
   const window = new BrowserWindow({
     show: false,
     frame: false,
-    transparent: true,
+    transparent: platform() !== "win32",
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
