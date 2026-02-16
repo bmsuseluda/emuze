@@ -19,6 +19,7 @@ import { keyboardConfig } from "./keyboardConfig.js";
 import type { ButtonDetailsFunction, RmgButtonId } from "./types.js";
 import { mapAndJoinEmuzeButtonIds, rmgButtonIds } from "./types.js";
 import { isSteamOs } from "../../../operationsystem.server.js";
+import { normalizeNewLines } from "../../configFile.js";
 
 const getInputType =
   (mappingObject: SdlButtonMapping): ButtonDetailsFunction =>
@@ -93,7 +94,7 @@ export const getVirtualGamepad =
         `FilterEventsForAxis = True`,
         // TODO: use when sdl3 is integrated
         // ...getRmgButtonsMapping(controller),
-        `DpadUp_InputType = "0"
+        normalizeNewLines(`DpadUp_InputType = "0"
 DpadUp_Name = "dpup"
 DpadUp_Data = "11"
 DpadUp_ExtraData = "0"
@@ -164,7 +165,7 @@ CButtonLeft_ExtraData = "0;0"
 CButtonRight_InputType = "1"
 CButtonRight_Name = "rightx+"
 CButtonRight_Data = "2"
-CButtonRight_ExtraData = "1"`,
+CButtonRight_ExtraData = "1"`),
       ].join(EOL);
     }
 

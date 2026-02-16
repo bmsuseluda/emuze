@@ -1,5 +1,12 @@
 import { platform } from "node:os";
-import { app, BrowserWindow, globalShortcut, ipcMain, shell } from "electron";
+import {
+  app,
+  BrowserWindow,
+  globalShortcut,
+  ipcMain,
+  shell,
+  screen,
+} from "electron";
 import nodepath from "node:path";
 import * as dotenv from "dotenv";
 import electronUpdater from "electron-updater";
@@ -21,10 +28,18 @@ const { autoUpdater } = electronUpdater;
 dotenv.config();
 
 const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
+  if (fullscreen && window.isMaximized()) {
+    window.restore();
+  }
+
   window.setFullScreen(fullscreen);
   window.webContents.send("fullscreen", fullscreen);
   const appearance = readAppearance(true);
   writeAppearance({ ...appearance, fullscreen });
+
+  if (!fullscreen) {
+    window.maximize();
+  }
 };
 
 const showHelp = () => {
@@ -79,6 +94,8 @@ app.on("ready", async () => {
   // TODO: Check how to set context for react router with fullscreen
   const url = await initReactRouter();
 
+  const { height, width } = screen.getPrimaryDisplay().workAreaSize;
+
   const window = new BrowserWindow({
     show: false,
     frame: false,
@@ -95,8 +112,10 @@ app.on("ready", async () => {
       platform() === "win32"
         ? nodepath.join(__dirname, "..", "public", "icon.ico")
         : nodepath.join(__dirname, "..", "public", "icons", "icon96x96.png"),
-    minWidth: 650,
-    minHeight: 600,
+    minWidth: 800,
+    minHeight: 800,
+    width,
+    height,
   });
 
   ipcMain.handle("isFullscreen", () => window.isFullScreen());
@@ -150,16 +169,15 @@ app.on("ready", async () => {
   });
 
   await window.loadURL(url);
-  window.maximize();
+  if (!fullscreen) {
+    window.maximize();
+  }
+
   window.show();
 
   if (fullscreen) {
     setFullscreen(window, true);
   }
-
-  setTimeout(() => {
-    window.maximize();
-  }, 10);
 });
 
 app.on("will-quit", () => {
