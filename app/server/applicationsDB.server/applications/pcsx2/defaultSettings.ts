@@ -1,4 +1,6 @@
-export const defaultSettings = `[UI]
+import { normalizeNewLines } from "../../configFile.js";
+
+export const defaultSettings = normalizeNewLines(`[UI]
 SettingsVersion = 1
 InhibitScreensaver = true
 ConfirmShutdown = false
@@ -581,4 +583,4 @@ Type = None
 
 
 [AutoUpdater]
-CheckAtStartup = false`;
+CheckAtStartup = false`);

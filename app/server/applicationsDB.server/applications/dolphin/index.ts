@@ -12,7 +12,6 @@ import { log } from "../../../debug.server.js";
 import nodepath from "node:path";
 import sdl from "@kmamal/sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
-import { defaultGamepadSettings } from "./defaultGamepadSettings.js";
 import { defaultHotkeys } from "./defaultHotkeys.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
@@ -57,12 +56,10 @@ const readConfigFile = (filePath: string, fallback: string) => {
   }
 };
 
-export const replaceGamepadConfigFile = () =>
-  replaceConfigSections(
-    gamepadConfigFileName,
-    defaultGamepadSettings,
-    replaceGamepadConfigSections,
-  );
+export const replaceGamepadConfigFile = () => {
+  const fileContentNew = getVirtualGamepads().join(EOL);
+  writeConfig(gamepadConfigFileName, fileContentNew);
+};
 
 export const replaceHotkeysSection: SectionReplacement = (sections) =>
   replaceSection(sections, "[Hotkeys]", [

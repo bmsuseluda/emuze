@@ -1,4 +1,6 @@
-export const defaultGamepadSettings = `[GCPad1]
+import { normalizeNewLines } from "../../configFile.js";
+
+export const defaultGamepadSettings = normalizeNewLines(`[GCPad1]
 Device = SDL/0/Steam Deck Controller
 Buttons/A = \`Button E\`
 Buttons/B = \`Button S\`
@@ -49,4 +51,4 @@ Triggers/R-Analog = \`Full Axis 5+\`
 [GCPad3]
 Device = XInput2/0/Virtual core pointer
 [GCPad4]
-Device = XInput2/0/Virtual core pointer`;
+Device = XInput2/0/Virtual core pointer`);
