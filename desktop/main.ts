@@ -178,6 +178,12 @@ app.on("ready", async () => {
   if (fullscreen) {
     setFullscreen(window, true);
   }
+
+  window.on("show", () => {
+    setTimeout(() => {
+      window.focus();
+    }, 50);
+  });
 });
 
 app.on("will-quit", () => {

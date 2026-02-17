@@ -128,7 +128,10 @@ export const rosaliesMupenGui: Application = {
   name: "Rosalie's Mupen GUI",
   fileExtensions: [".z64", ".n64", ".v64"],
   flatpakId,
-  defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
+  defineEnvironmentVariables: () => ({
+    ...sdlGameControllerConfig,
+    SDL_JOYSTICK_RAWINPUT: "0",
+  }),
   configFile: {
     basePath: getConfigFileBasePath(),
     files: [

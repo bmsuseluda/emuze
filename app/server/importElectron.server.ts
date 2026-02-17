@@ -14,3 +14,10 @@ export const importElectron = (): typeof CrossProcessExports => {
   }
   return CrossProcessExports; // doesn't work on remix:dev (vite-dev-server)
 };
+
+export const getElectronWindow = () => {
+  const electron = importElectron();
+  const window = electron?.BrowserWindow?.getAllWindows().at(0);
+
+  return window;
+};

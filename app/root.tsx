@@ -135,7 +135,13 @@ const Wrapper = styled("div", {
   },
 });
 
-function Layout({ children, isWindows }: { children: ReactNode, isWindows: boolean }) {
+function Layout({
+  children,
+  isWindows,
+}: {
+  children: ReactNode;
+  isWindows: boolean;
+}) {
   const fullscreen = useFullscreen();
 
   return <Wrapper fullscreen={fullscreen || isWindows}>{children}</Wrapper>;
