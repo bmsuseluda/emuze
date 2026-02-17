@@ -42,6 +42,7 @@ export const replaceGamepadConfigSections: SectionReplacement = (sections) => [
   getVirtualGamepads().join(EOL),
 ];
 
+// TODO: extract to configFile.ts
 const readConfigFile = (filePath: string, fallback: string) => {
   try {
     return fs.readFileSync(filePath, "utf8");
@@ -107,6 +108,7 @@ export const getSiDeviceConfigs = (): string[] => {
   return siDevices;
 };
 
+// TODO: extract to configFile.ts
 export const replaceConfigSections = (
   filePath: string,
   fallback: string,

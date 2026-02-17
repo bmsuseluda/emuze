@@ -4,7 +4,7 @@ import {
   getPlayerIndexArray,
   isGamecubeController,
 } from "../../../../types/gamepad.js";
-import { isSteamOs, isWindows } from "../../../operationsystem.server.js";
+import { isSteamOs } from "../../../operationsystem.server.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import { log } from "../../../debug.server.js";
@@ -73,8 +73,7 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
   ].join(EOL);
 
 export const getVirtualGamepads = () => {
-  const gamepads =
-    isSteamOs() || isWindows() ? sdl.joystick.devices : sdl.controller.devices;
+  const gamepads = isSteamOs() ? sdl.joystick.devices : sdl.controller.devices;
   const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
 
   const virtualGamepads =
@@ -84,6 +83,10 @@ export const getVirtualGamepads = () => {
 
   return [
     ...virtualGamepads,
-    ...resetUnusedVirtualGamepads(4, gamepads.length, getVirtualGamepadReset),
+    ...resetUnusedVirtualGamepads(
+      4,
+      virtualGamepads.length,
+      getVirtualGamepadReset,
+    ),
   ];
 };
