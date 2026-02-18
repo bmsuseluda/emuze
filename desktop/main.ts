@@ -182,7 +182,8 @@ app.on("ready", async () => {
   window.on("show", () => {
     setTimeout(() => {
       window.focus();
-    }, 50);
+      window.focusOnWebView();
+    }, 100);
   });
 });
 

@@ -130,7 +130,6 @@ export const rosaliesMupenGui: Application = {
   flatpakId,
   defineEnvironmentVariables: () => ({
     ...sdlGameControllerConfig,
-    SDL_JOYSTICK_RAWINPUT: "0",
   }),
   configFile: {
     basePath: getConfigFileBasePath(),

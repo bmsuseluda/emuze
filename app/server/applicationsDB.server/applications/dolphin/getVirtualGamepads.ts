@@ -1,6 +1,5 @@
 import { EOL } from "node:os";
 import {
-  getNameIndex,
   getPlayerIndexArray,
   isGamecubeController,
 } from "../../../../types/gamepad.js";
@@ -11,6 +10,7 @@ import { log } from "../../../debug.server.js";
 import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
 import type { DolphinButtonId } from "./types.js";
+import { getGamepadName, getSdlNameIndex } from "../../../gamepad.server.js";
 
 const getDolphinButtonIds = (isGamecubeController: boolean) =>
   ({
@@ -46,8 +46,8 @@ export const getVirtualGamepad =
   (controller: Sdl.Joystick.Device | Sdl.Controller.Device, index: number) => {
     log("debug", "gamepad", { index, controller });
 
-    const deviceName = controller.name!;
-    const nameIndex = getNameIndex(deviceName, index, devices);
+    const deviceName = getGamepadName(controller);
+    const nameIndex = getSdlNameIndex(deviceName, index, devices);
 
     const gamecubeController = isGamecubeController(deviceName);
     const dolphinButtonIds = Object.entries(

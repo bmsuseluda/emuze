@@ -21,3 +21,8 @@ export const getElectronWindow = () => {
 
   return window;
 };
+
+export const setFocusOnElectronWindow = () => {
+  getElectronWindow()?.focus();
+  getElectronWindow()?.focusOnWebView();
+};
