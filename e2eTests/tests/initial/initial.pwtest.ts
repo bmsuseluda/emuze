@@ -39,6 +39,9 @@ test("Should import all", async ({ page, libraryPage, settingsPage }) => {
   await settingsPage.generalPage.importAllButton.click();
   await expect(libraryPage.loadingModal).toBeVisible();
   await expect(libraryPage.loadingModal).not.toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: libraryPage.initialSystem }),
+  ).toBeVisible();
 
   await libraryPage.press("Escape");
   await libraryPage.expectIsInitialSystem();

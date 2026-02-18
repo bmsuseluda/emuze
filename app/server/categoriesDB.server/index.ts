@@ -184,7 +184,7 @@ export const nintendo3ds: Category = {
 
 export const nintendogamecube: Category = {
   id: "nintendogamecube",
-  names: ["Nintendo Gamecube", "Gamecube", "ngc", "gc"],
+  names: ["Nintendo GameCube", "GameCube", "ngc", "gc"],
   igdbPlatformIds: [21],
   application: dolphin,
   hasAnalogStick: true,
