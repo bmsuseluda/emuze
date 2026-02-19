@@ -354,7 +354,7 @@ Usage: emuze [options]
 Options:
   --help             Show help
   --fullscreen       Start the app in fullscreen mode
-  --debug-emuze      Activates verbose logging to /home/dennisludwig/.local/share/emuze/emuze.log
+  --debug-emuze      Activates verbose logging to /home/.local/share/emuze/emuze.log
   --rmg              Activates the less accurate but more performant Rosalies Mupen GUI (RMG) emulator to play N64
 ```
 
