@@ -1,16 +1,16 @@
 import { EOL } from "node:os";
 import {
-  getNameIndex,
   getPlayerIndexArray,
   isGamecubeController,
 } from "../../../../types/gamepad.js";
-import { isSteamOs, isWindows } from "../../../operationsystem.server.js";
+import { isSteamOs } from "../../../operationsystem.server.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import { log } from "../../../debug.server.js";
 import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
 import type { DolphinButtonId } from "./types.js";
+import { getGamepadName, getSdlNameIndex } from "../../../gamepad.server.js";
 
 const getDolphinButtonIds = (isGamecubeController: boolean) =>
   ({
@@ -46,8 +46,8 @@ export const getVirtualGamepad =
   (controller: Sdl.Joystick.Device | Sdl.Controller.Device, index: number) => {
     log("debug", "gamepad", { index, controller });
 
-    const deviceName = controller.name!;
-    const nameIndex = getNameIndex(deviceName, index, devices);
+    const deviceName = getGamepadName(controller);
+    const nameIndex = getSdlNameIndex(deviceName, index, devices);
 
     const gamecubeController = isGamecubeController(deviceName);
     const dolphinButtonIds = Object.entries(
@@ -73,8 +73,7 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
   ].join(EOL);
 
 export const getVirtualGamepads = () => {
-  const gamepads =
-    isSteamOs() || isWindows() ? sdl.joystick.devices : sdl.controller.devices;
+  const gamepads = isSteamOs() ? sdl.joystick.devices : sdl.controller.devices;
   const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
 
   const virtualGamepads =
@@ -84,6 +83,10 @@ export const getVirtualGamepads = () => {
 
   return [
     ...virtualGamepads,
-    ...resetUnusedVirtualGamepads(4, gamepads.length, getVirtualGamepadReset),
+    ...resetUnusedVirtualGamepads(
+      4,
+      virtualGamepads.length,
+      getVirtualGamepadReset,
+    ),
   ];
 };

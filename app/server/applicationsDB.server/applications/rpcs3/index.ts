@@ -350,7 +350,6 @@ export const rpcs3: Application = {
       gemRealConfigPathRelative,
       rawMouseConfigPathRelative,
       configMouseConfigPathRelative,
-      // TODO: check if patches and savestates are under config folder as well on windows
       "patches",
       "savestates",
     ],

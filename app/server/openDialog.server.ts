@@ -1,4 +1,7 @@
-import { importElectron } from "./importElectron.server.js";
+import {
+  importElectron,
+  setFocusOnElectronWindow,
+} from "./importElectron.server.js";
 
 let fileDialogIsOpen = false;
 export const isFileDialogOpen = () => fileDialogIsOpen;
@@ -13,6 +16,7 @@ export const openFolderDialog = async (title: string, defaultPath?: string) => {
       properties: ["openDirectory"],
     });
     fileDialogIsOpen = false;
+    setFocusOnElectronWindow();
 
     return directory ? directory[0] : undefined;
   }

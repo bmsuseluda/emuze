@@ -36,7 +36,7 @@ const emulatorDownloads = {
   },
   cemu: {
     Linux: `https://github.com/cemu-project/Cemu/releases/download/v${emulatorVersions.cemu}/Cemu-${emulatorVersions.cemu}-x86_64.AppImage`,
-    Windows: `https://github.com/cemu-project/Cemu/releases/download/v${emulatorVersions.cemu}/Cemu-${emulatorVersions.cemu}-x86_64.AppImage`,
+    Windows: `https://github.com/cemu-project/Cemu/releases/download/v${emulatorVersions.cemu}/cemu-${emulatorVersions.cemu}-windows-x64.zip`,
   },
   dolphin: {
     Linux: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions.dolphin}%402026-01-01_1767256227/Dolphin_Emulator-${emulatorVersions.dolphin}-anylinux.dwarfs-x86_64.AppImage`,

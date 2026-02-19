@@ -5,6 +5,8 @@ import {
 } from "../../../../types/gamepad.js";
 import type { DolphinButtonId } from "./types.js";
 import { capitalizeFirst } from "../../../capitalizeFirst.server.js";
+import { normalizeNewLines } from "../../configFile.js";
+import { isWindows } from "../../../operationsystem.server.js";
 
 export const dolphinButtonIds = {
   dpadUp: "D-Pad/Up",
@@ -35,10 +37,14 @@ const getKeyboardButtonMappings = (): string[] =>
       `${dolphinButtonId} = ${capitalizeFirst(keyboardMappingNintendo[sdlButtonId as EmuzeButtonId])}`,
   );
 
-export const keyboardConfig = `[GCPad1]
-Device = XInput2/0/Virtual core pointer
+const keyboardDevice = isWindows()
+  ? "DInput/0/Keyboard Mouse"
+  : "XInput2/0/Virtual core pointer";
+
+export const keyboardConfig = normalizeNewLines(`[GCPad1]
+Device = ${keyboardDevice}
 ${getKeyboardButtonMappings().join(EOL)}
 Main Stick/Modifier = \`Shift\`
 Main Stick/Calibration = 100.00 141.42 100.00 141.42 100.00 141.42 100.00 141.42
 C-Stick/Modifier = \`Ctrl\`
-C-Stick/Calibration = 100.00 141.42 100.00 141.42 100.00 141.42 100.00 141.42`;
+C-Stick/Calibration = 100.00 141.42 100.00 141.42 100.00 141.42 100.00 141.42`);

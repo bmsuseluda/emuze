@@ -1,4 +1,7 @@
-export const defaultConfig = `<?xml version="1.0" encoding="UTF-8"?>
+import { normalizeNewLines } from "../../configFile.js";
+
+export const defaultConfig =
+  normalizeNewLines(`<?xml version="1.0" encoding="UTF-8"?>
 <content>
     <logflag>0</logflag>
     <advanced_ppc_logging>false</advanced_ppc_logging>
@@ -118,4 +121,4 @@ export const defaultConfig = `<?xml version="1.0" encoding="UTF-8"?>
         <EmulateInfinityBase>false</EmulateInfinityBase>
         <EmulateDimensionsToypad>false</EmulateDimensionsToypad>
     </EmulatedUsbDevices>
-</content>`;
+</content>`);

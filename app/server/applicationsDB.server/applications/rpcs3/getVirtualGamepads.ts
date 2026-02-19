@@ -1,14 +1,12 @@
 import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
-import {
-  getNameIndex,
-  getPlayerIndexArray,
-} from "../../../../types/gamepad.js";
+import { getPlayerIndexArray } from "../../../../types/gamepad.js";
 import { log } from "../../../debug.server.js";
 import { isSteamOs } from "../../../operationsystem.server.js";
 import type { GlobalDefaultInputConfigFile, PlayerInput } from "./config.js";
 import { globalDefaultInputConfigFileReset } from "./config.js";
 import { keyboardConfig } from "./keyboardConfig.js";
+import { getGamepadName, getSdlNameIndex } from "../../../gamepad.server.js";
 
 export const getVirtualGamepad =
   (isPs1Classic: boolean) =>
@@ -22,7 +20,7 @@ export const getVirtualGamepad =
 
     return {
       Handler: "SDL",
-      Device: `${name} ${getNameIndex(name, index, devices) + 1}`,
+      Device: `${name} ${getSdlNameIndex(name, index, devices) + 1}`,
       Config: {
         "Left Stick Left": "LS X-",
         "Left Stick Down": "LS Y-",
@@ -135,7 +133,7 @@ export const getVirtualGamepads = (
 
           accumulator[`Player ${playerIndexArray[index] + 1} Input`] =
             getVirtualGamepad(isPs1Classic)(
-              currentDevice.name,
+              getGamepadName(currentDevice),
               index,
               gamepads,
             );

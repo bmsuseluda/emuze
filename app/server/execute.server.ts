@@ -34,6 +34,7 @@ import {
   syncFromEmulatorFolderToEmuzeFolder,
   syncFromEmuzeFolderToEmulatorFolder,
 } from "./syncSettings.server.js";
+import { setFocusOnElectronWindow } from "./importElectron.server.js";
 
 type ExecFileCallback = (
   error: ExecFileException | null,
@@ -80,6 +81,7 @@ const executeApplication = (file: string, args: string[]) => {
       setTimeout(() => {
         setGameIsRunningChildProcess();
         resolve();
+        setFocusOnElectronWindow();
       }, 1000);
     });
   });

@@ -97,7 +97,7 @@ export const cemu: Application = {
   findEntryName: findWiiUGameName,
   configFile: {
     basePath: getConfigFileBasePath(),
-    files: [defaultConfigPathRelative, "controllerProfiles"],
+    files: [defaultConfigPathRelative, "controllerProfiles", "gameProfiles"],
   },
   createOptionParams: ({
     settings: {

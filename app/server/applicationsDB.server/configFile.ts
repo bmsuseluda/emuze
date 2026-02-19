@@ -58,6 +58,12 @@ export const replaceParams = (
   ];
 };
 
+const newLineRegEx = /\r?\n/;
+
+const splitByNewLine = (text: string) => text.split(newLineRegEx);
+export const normalizeNewLines = (text: string) =>
+  text.replaceAll(new RegExp(newLineRegEx, "g"), EOL);
+
 export const replaceSection = (
   sections: string[],
   sectionName: string,
@@ -69,7 +75,7 @@ export const replaceSection = (
   );
 
   if (sectionIndex !== -1) {
-    const sectionRows = sections[sectionIndex].split(EOL);
+    const sectionRows = splitByNewLine(sections[sectionIndex]);
     const mergedSectionRows = replaceParams(
       sectionRows,
       paramsToSet,
@@ -99,8 +105,9 @@ export const chainSectionReplacements = (
 /**
  * Split by new line characters that are followed by a section header (e.g. [Pad1])
  */
-export const splitConfigBySection = (config: string) =>
-  config.split(new RegExp(`${EOL}(?=\\[[^]+])`));
+export const splitConfigBySection = (config: string) => {
+  return config.split(new RegExp(`${newLineRegEx.source}(?=\\[[^]+\\])`));
+};
 
 export const writeConfig = (filePath: string, content: string) => {
   if (!fs.existsSync(filePath)) {

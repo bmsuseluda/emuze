@@ -4,13 +4,12 @@ import type { ButtonId, GamepadData } from "../types/gamepad.js";
 import type { AxisMotionEventFunction } from "./gamepadManager.server/index.js";
 import { gamepadManager } from "./gamepadManager.server/index.js";
 import { isGameRunning } from "./gameIsRunning.server.js";
-import { importElectron } from "./importElectron.server.js";
+import { getElectronWindow } from "./importElectron.server.js";
 import { isImportRunning } from "./importIsRunning.server.js";
 import { isFileDialogOpen } from "./openDialog.server.js";
 
 const isGamepadNavigationAllowed = () => {
-  const electron = importElectron();
-  const window = electron?.BrowserWindow.getFocusedWindow();
+  const window = getElectronWindow();
 
   return (
     window?.isFocused() &&

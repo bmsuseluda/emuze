@@ -1,4 +1,6 @@
-export const main = `[Main]
+import { normalizeNewLines } from "../../../configFile.js";
+
+export const main = normalizeNewLines(`[Main]
 SettingsVersion = 3
 EmulationSpeed = 1,000000
 FastForwardSpeed = 0,000000
@@ -26,16 +28,16 @@ RunaheadFrameCount = 0
 EnableDiscordPresence = false
 
 
-`;
+`);
 
-export const console = `[Console]
+export const console = normalizeNewLines(`[Console]
 Region = Auto
 Enable8MBRAM = false
 
 
-`;
+`);
 
-export const cpu = `[CPU]
+export const cpu = normalizeNewLines(`[CPU]
 ExecutionMode = Recompiler
 OverclockEnable = false
 OverclockNumerator = 1
@@ -46,9 +48,9 @@ RecompilerICache = false
 FastmemMode = MMap
 
 
-`;
+`);
 
-export const gpu = `[GPU]
+export const gpu = normalizeNewLines(`[GPU]
 Renderer = OpenGL
 Adapter = 
 ResolutionScale = 1
@@ -78,9 +80,9 @@ PGXPDepthBuffer = false
 PGXPDepthClearThreshold = 1228800,000000
 
 
-`;
+`);
 
-export const display = `[Display]
+export const display = normalizeNewLines(`[Display]
 CropMode = Overscan
 ActiveStartOffset = 0
 ActiveEndOffset = 0
@@ -110,9 +112,9 @@ MaxFPS = 0,000000
 OSDScale = 100,000000
 
 
-`;
+`);
 
-export const cdrom = `[CDROM]
+export const cdrom = normalizeNewLines(`[CDROM]
 ReadaheadSectors = 8
 RegionCheck = false
 LoadImageToRAM = false
@@ -122,9 +124,9 @@ ReadSpeedup = 1
 SeekSpeedup = 1
 
 
-`;
+`);
 
-export const audio = `[Audio]
+export const audio = normalizeNewLines(`[Audio]
 Backend = Cubeb
 Driver =
 StretchMode = TimeStretch
@@ -136,35 +138,35 @@ OutputMuted = false
 DumpOnBoot = false
 
 
-`;
+`);
 
-export const hacks = `[Hacks]
+export const hacks = normalizeNewLines(`[Hacks]
 DMAMaxSliceTicks = 1000
 DMAHaltTicks = 100
 GPUFIFOSize = 16
 GPUMaxRunAhead = 128
 
 
-`;
+`);
 
-export const bios = `[BIOS]
+export const bios = normalizeNewLines(`[BIOS]
 PatchTTYEnable = false
 PatchFastBoot = false
 SearchDirectory = bios
 
 
-`;
+`);
 
-export const memoryCards = `[MemoryCards]
+export const memoryCards = normalizeNewLines(`[MemoryCards]
 Card1Type = PerGameTitle
 Card2Type = None
 UsePlaylistTitle = true
 Directory = memcards
 
 
-`;
+`);
 
-export const controllerPorts = `[ControllerPorts]
+export const controllerPorts = normalizeNewLines(`[ControllerPorts]
 MultitapMode = Disabled
 PointerXScale = 8,000000
 PointerYScale = 8,000000
@@ -173,9 +175,9 @@ PointerYInvert = false
 ControllerSettingsMigrated = true
 
 
-`;
+`);
 
-export const hotkeys = `[Hotkeys]
+export const hotkeys = normalizeNewLines(`[Hotkeys]
 FastForward = Keyboard/Tab
 TogglePause = Keyboard/Space
 Screenshot = Keyboard/F10
@@ -187,9 +189,9 @@ SelectPreviousSaveStateSlot = Keyboard/F3
 SelectNextSaveStateSlot = Keyboard/F4
 
 
-`;
+`);
 
-export const hotkeysMerged = `[Hotkeys]
+export const hotkeysMerged = normalizeNewLines(`[Hotkeys]
 FastForward = Keyboard/Tab
 TogglePause = Keyboard/Space
 Screenshot = Keyboard/F10
@@ -201,15 +203,15 @@ SaveSelectedSaveState = Keyboard/F1
 LoadSelectedSaveState = Keyboard/F3
 
 
-`;
+`);
 
-export const hotkeysConfiguredNew = `[Hotkeys]
+export const hotkeysConfiguredNew = normalizeNewLines(`[Hotkeys]
 OpenPauseMenu = Keyboard/F2
 ToggleFullscreen = Keyboard/F11
 SaveSelectedSaveState = Keyboard/F1
-LoadSelectedSaveState = Keyboard/F3`;
+LoadSelectedSaveState = Keyboard/F3`);
 
-export const pad1 = `[Pad1]
+export const pad1 = normalizeNewLines(`[Pad1]
 Type = AnalogController
 Up = SDL-0/DPadUp
 Right = Keyboard/Right
@@ -237,9 +239,9 @@ RDown = Keyboard/G
 RUp = Keyboard/T
 
 
-`;
+`);
 
-export const ps4Mapped = `[Pad1]
+export const ps4Mapped = normalizeNewLines(`[Pad1]
 Type = AnalogController
 Up = SDL-1/DPadUp
 Right = SDL-1/DPadRight
@@ -270,9 +272,9 @@ SmallMotor = SDL-1/SmallMotor
 LargeMotor = SDL-1/LargeMotor
 
 
-`;
+`);
 
-export const pad2 = `[Pad2]
+export const pad2 = normalizeNewLines(`[Pad2]
 Type = AnalogController
 Up = SDL-1/DPadUp
 Right = Keyboard/Right
@@ -300,9 +302,9 @@ RDown = Keyboard/G
 RUp = Keyboard/T
 
 
-`;
+`);
 
-export const steamDeckMapped = `[Pad4]
+export const steamDeckMapped = normalizeNewLines(`[Pad4]
 Type = AnalogController
 Up = SDL-0/DPadUp
 Right = SDL-0/DPadRight
@@ -333,9 +335,9 @@ SmallMotor = SDL-0/SmallMotor
 LargeMotor = SDL-0/LargeMotor
 
 
-`;
+`);
 
-export const pad3 = `[Pad3]
+export const pad3 = normalizeNewLines(`[Pad3]
 Type = AnalogController
 Up = SDL-2/DPadUp
 Right = Keyboard/Right
@@ -363,9 +365,9 @@ RDown = Keyboard/G
 RUp = Keyboard/T
 
 
-`;
+`);
 
-export const eightbitdoMapped = `[Pad2]
+export const eightbitdoMapped = normalizeNewLines(`[Pad2]
 Type = AnalogController
 Up = SDL-2/DPadUp
 Right = SDL-2/DPadRight
@@ -396,9 +398,9 @@ SmallMotor = SDL-2/SmallMotor
 LargeMotor = SDL-2/LargeMotor
 
 
-`;
+`);
 
-export const pad4 = `[Pad4]
+export const pad4 = normalizeNewLines(`[Pad4]
 Type = AnalogController
 Up = SDL-3/DPadUp
 Right = Keyboard/Right
@@ -426,9 +428,9 @@ RDown = Keyboard/G
 RUp = Keyboard/T
 
 
-`;
+`);
 
-export const eightbitdo2Mapped = `[Pad3]
+export const eightbitdo2Mapped = normalizeNewLines(`[Pad3]
 Type = AnalogController
 Up = SDL-3/DPadUp
 Right = SDL-3/DPadRight
@@ -459,15 +461,16 @@ SmallMotor = SDL-3/SmallMotor
 LargeMotor = SDL-3/LargeMotor
 
 
-`;
+`);
 
-export const getUnusedPad = (padNumber: number) => `[Pad${padNumber}]
+export const getUnusedPad = (padNumber: number) =>
+  normalizeNewLines(`[Pad${padNumber}]
 Type = None
 
 
-`;
+`);
 
-export const settings = `${main}
+export const settings = normalizeNewLines(`${main}
 ${pad1}
 ${getUnusedPad(2)}
 ${getUnusedPad(3)}
@@ -477,7 +480,7 @@ ${getUnusedPad(6)}
 ${getUnusedPad(7)}
 ${getUnusedPad(8)}
 ${hotkeys}
-${controllerPorts}`;
+${controllerPorts}`);
 
 export const settingsArray = [
   main,

@@ -1,4 +1,6 @@
-export const mameDefaultConfig = `#
+import { normalizeNewLines } from "../../configFile.js";
+
+export const mameDefaultConfig = normalizeNewLines(`#
 # CORE INPUT OPTIONS
 #
 coin_lockout              1
@@ -18,4 +20,4 @@ dial_device               mouse
 trackball_device          mouse
 lightgun_device           mouse
 positional_device         mouse
-mouse_device              mouse`;
+mouse_device              mouse`);
