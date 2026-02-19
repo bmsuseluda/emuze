@@ -196,7 +196,7 @@ roms
 ```
 ## 🔫 Lightgun Support
 
-emuze provides basic Lightgun support. Only the Retro Shooter Reaper is tested but others should work too.
+emuze provides basic Lightgun support. Only the Retro Shooter Reaper was tested but others should work too.
 
 You can navigate emuze with the pointer and confirm with the Trigger or use the stick and the Buttons on the side:
 
