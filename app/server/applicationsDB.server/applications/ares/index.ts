@@ -82,6 +82,7 @@ export const aresGameBoyAdvance: Application = {
   fileExtensions: [".gba", ".zip"],
   createOptionParams: (props) => [
     ...getSharedAresOptionParams(props),
+    ...["--setting", `GameBoyAdvance/Firmware/BIOS.World=${props.biosPath}`],
     ...["--system", "Game Boy Advance"],
   ],
 };
@@ -145,6 +146,10 @@ export const aresSegaCd: Application = {
   fileExtensions: [".chd", ".cue"],
   createOptionParams: (props) => [
     ...getSharedAresOptionParams(props),
+    ...["--setting", `MegaCD/Firmware/BIOS.US=${props.biosPath}`],
+    // TODO: How to set multiple bios files?
+    ...["--setting", `MegaCD/Firmware/BIOS.Europe=${props.biosPath}`],
+    ...["--setting", `MegaCD/Firmware/BIOS.Japan=${props.biosPath}`],
     ...["--system", "Mega CD"],
   ],
 };
@@ -154,6 +159,12 @@ export const aresSegaMegaLd: Application = {
   fileExtensions: [".mmi"],
   createOptionParams: (props) => [
     ...getSharedAresOptionParams(props),
+    ...["--setting", `LaserActiveSEGAPAC/Firmware/BIOS.US=${props.biosPath}`],
+    // TODO: How to set multiple bios files?
+    ...[
+      "--setting",
+      `LaserActiveSEGAPAC/Firmware/BIOS.Japan=${props.biosPath}`,
+    ],
     ...["--system", "LaserActive (SEGA PAC)"],
   ],
 };
@@ -190,6 +201,7 @@ export const aresNeoGeoPocket: Application = {
   fileExtensions: [".ngp", ".zip"],
   createOptionParams: (props) => [
     ...getSharedAresOptionParams(props),
+    ...["--setting", `NeoGeoPocket/Firmware/BIOS.World=${props.biosPath}`],
     ...["--system", "Neo Geo Pocket"],
   ],
 };
@@ -199,6 +211,7 @@ export const aresNeoGeoPocketColor: Application = {
   fileExtensions: [".ngc", ".zip"],
   createOptionParams: (props) => [
     ...getSharedAresOptionParams(props),
+    ...["--setting", `NeoGeoPocketColor/Firmware/BIOS.World=${props.biosPath}`],
     ...["--system", "Neo Geo Pocket Color"],
   ],
 };

@@ -35,6 +35,7 @@ import {
   syncFromEmuzeFolderToEmulatorFolder,
 } from "./syncSettings.server.js";
 import { setFocusOnElectronWindow } from "./importElectron.server.js";
+import { emulatorsConfigDirectory } from "./homeDirectory.server.js";
 
 type ExecFileCallback = (
   error: ExecFileException | null,
@@ -203,6 +204,55 @@ const setEnvironmentVariables = ({
   });
 };
 
+const getBiosPathWithinFolder = (folder: string, biosFiles: string[]) => {
+  const biosFileFound = biosFiles.find((biosFile) =>
+    existsSync(nodepath.join(folder, biosFile)),
+  );
+
+  if (biosFileFound) {
+    return nodepath.join(folder, biosFileFound);
+  }
+
+  return undefined;
+};
+
+/**
+ * If a bios file is necessary, look in the following order to find it:
+ * 1) defaultBiosPath
+ * 2) optional emuze bios folder
+ * 3) roms folder of this system
+ */
+const getBiosPath = (
+  { id, defaultBiosPath }: Application,
+  romsPathForSystem: string,
+  biosFiles?: string[],
+): string | undefined => {
+  if (biosFiles) {
+    if (defaultBiosPath) {
+      const defaultBiosPathFull = nodepath.join(
+        emulatorsConfigDirectory,
+        id,
+        defaultBiosPath,
+      );
+
+      return getBiosPathWithinFolder(defaultBiosPathFull, biosFiles);
+    }
+
+    const biosFileInRomsPath = getBiosPathWithinFolder(
+      romsPathForSystem,
+      biosFiles,
+    );
+    if (biosFileInRomsPath) {
+      return biosFileInRomsPath;
+    }
+
+    throw new Error(`A Bios File is necessary for this System. The following are supported:
+${biosFiles.map((biosFile) => `- ${biosFile}`).join("\n")}`);
+  }
+
+  return undefined;
+};
+
 export const startGame = async (
   systemId: SystemId,
   entryData: Entry,
@@ -218,6 +268,11 @@ export const startGame = async (
       general: generalData,
       appearance: readAppearance(true),
     };
+
+    const romsPathForSystem = nodepath.join(
+      generalData.categoriesPath,
+      categoryData.name,
+    );
 
     const absoluteEntryPath = createAbsoluteEntryPath(
       generalData.categoriesPath,
@@ -237,30 +292,37 @@ export const startGame = async (
 
       createEmuzeFolderIfNotExist(id, configFile);
 
-      const environmentVariables = (applicationPath?: string) => {
-        if (defineEnvironmentVariables) {
-          setEnvironmentVariables({
-            defineEnvironmentVariables,
-            categoryData,
-            settings,
-            applicationPath,
-          });
-        }
-      };
-
-      const getOptionParams = (applicationPath?: string) =>
-        createOptionParams
-          ? createOptionParams({
-              entryData,
+      try {
+        const environmentVariables = (applicationPath?: string) => {
+          if (defineEnvironmentVariables) {
+            setEnvironmentVariables({
+              defineEnvironmentVariables,
               categoryData,
               settings,
-              absoluteEntryPath,
-              hasAnalogStick: categoryDB.hasAnalogStick,
               applicationPath,
-            })
-          : [];
+            });
+          }
+        };
 
-      try {
+        const biosPath = getBiosPath(
+          applicationData,
+          romsPathForSystem,
+          categoryDB.biosFiles,
+        );
+
+        const getOptionParams = (applicationPath?: string) =>
+          createOptionParams
+            ? createOptionParams({
+                entryData,
+                categoryData,
+                settings,
+                absoluteEntryPath,
+                hasAnalogStick: categoryDB.hasAnalogStick,
+                applicationPath,
+                biosPath,
+              })
+            : [];
+
         if (bundledPath) {
           environmentVariables();
           const optionParams = getOptionParams();

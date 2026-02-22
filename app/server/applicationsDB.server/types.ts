@@ -17,6 +17,7 @@ export type OptionParamFunction = ({
   settings,
   absoluteEntryPath,
   hasAnalogStick,
+  biosPath,
 }: {
   entryData: Entry;
   categoryData: Category;
@@ -24,6 +25,7 @@ export type OptionParamFunction = ({
   settings: Settings;
   absoluteEntryPath: string;
   hasAnalogStick: boolean;
+  biosPath?: string;
 }) => string[];
 
 export type EnvironmentVariableFunction = ({
@@ -79,4 +81,5 @@ export interface Application {
   findEntryName?: FindEntryNameFunction;
   excludeFiles?: ExcludeFilesFunction;
   bundledPath?: string;
+  defaultBiosPath?: string;
 }

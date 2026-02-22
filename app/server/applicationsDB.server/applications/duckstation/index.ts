@@ -85,6 +85,13 @@ export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
 export const replaceUiConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[UI]", [{ keyValue: "EnableMouseMapping = true" }]);
 
+export const replaceBiosConfig =
+  (biosPath: string): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[BIOS]", [
+      { keyValue: `SearchDirectory = ${nodepath.dirname(biosPath)}` },
+    ]);
+
 /**
  * TODO: Check which game is compatible with multitap
  * TODO: set multitap only if more than 2 controller
@@ -115,6 +122,7 @@ const readConfigFile = (filePath: string) => {
 export const replaceConfigSections = (
   psxRomsPath: string,
   gameName: string,
+  biosPath: string,
 ) => {
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
@@ -126,8 +134,9 @@ export const replaceConfigSections = (
     replaceInputSourcesConfig,
     // replaceControllerPortsConfig,
     replaceMainConfig,
-    replaceHotkeyConfig,
+    replaceBiosConfig(biosPath),
     replaceGamepadConfig(gameName),
+    replaceHotkeyConfig,
     replaceAutoUpdaterConfig,
     replaceGameListConfig(psxRomsPath),
     replaceUiConfig,
@@ -163,6 +172,7 @@ export const duckstation: Application = {
       "savstates",
     ],
   },
+  defaultBiosPath: nodepath.join(getConfigFileBasePath(), "bios"),
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
@@ -170,9 +180,10 @@ export const duckstation: Application = {
     },
     categoryData,
     entryData,
+    biosPath,
   }) => {
     const psxRomsPath = nodepath.join(categoriesPath, categoryData.name);
-    replaceConfigSections(psxRomsPath, entryData.name);
+    replaceConfigSections(psxRomsPath, entryData.name, biosPath!);
 
     const optionParams = [];
     if (fullscreen) {

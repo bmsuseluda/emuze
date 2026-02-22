@@ -7,4 +7,5 @@ export interface Category {
   igdbPlatformIds: number[];
   application: Application;
   hasAnalogStick: boolean;
+  biosFiles?: string[];
 }
