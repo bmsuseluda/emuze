@@ -35,7 +35,10 @@ import {
   syncFromEmuzeFolderToEmulatorFolder,
 } from "./syncSettings.server.js";
 import { setFocusOnElectronWindow } from "./importElectron.server.js";
-import { emulatorsConfigDirectory } from "./homeDirectory.server.js";
+import {
+  getBiosFiles,
+  getOtherRequiredFiles,
+} from "./applicationsDB.server/checkRequiredFiles.js";
 
 type ExecFileCallback = (
   error: ExecFileException | null,
@@ -204,55 +207,6 @@ const setEnvironmentVariables = ({
   });
 };
 
-const getBiosPathWithinFolder = (folder: string, biosFiles: string[]) => {
-  const biosFileFound = biosFiles.find((biosFile) =>
-    existsSync(nodepath.join(folder, biosFile)),
-  );
-
-  if (biosFileFound) {
-    return nodepath.join(folder, biosFileFound);
-  }
-
-  return undefined;
-};
-
-/**
- * If a bios file is necessary, look in the following order to find it:
- * 1) defaultBiosPath
- * 2) optional emuze bios folder
- * 3) roms folder of this system
- */
-const getBiosPath = (
-  { id, defaultBiosPath }: Application,
-  romsPathForSystem: string,
-  biosFiles?: string[],
-): string | undefined => {
-  if (biosFiles) {
-    if (defaultBiosPath) {
-      const defaultBiosPathFull = nodepath.join(
-        emulatorsConfigDirectory,
-        id,
-        defaultBiosPath,
-      );
-
-      return getBiosPathWithinFolder(defaultBiosPathFull, biosFiles);
-    }
-
-    const biosFileInRomsPath = getBiosPathWithinFolder(
-      romsPathForSystem,
-      biosFiles,
-    );
-    if (biosFileInRomsPath) {
-      return biosFileInRomsPath;
-    }
-
-    throw new Error(`A Bios File is necessary for this System. The following are supported:
-${biosFiles.map((biosFile) => `- ${biosFile}`).join("\n")}`);
-  }
-
-  return undefined;
-};
-
 export const startGame = async (
   systemId: SystemId,
   entryData: Entry,
@@ -304,10 +258,10 @@ export const startGame = async (
           }
         };
 
-        const biosPath = getBiosPath(
+        const biosFiles = getBiosFiles(applicationData, romsPathForSystem);
+        const otherRequiredFiles = getOtherRequiredFiles(
           applicationData,
           romsPathForSystem,
-          categoryDB.biosFiles,
         );
 
         const getOptionParams = (applicationPath?: string) =>
@@ -319,7 +273,8 @@ export const startGame = async (
                 absoluteEntryPath,
                 hasAnalogStick: categoryDB.hasAnalogStick,
                 applicationPath,
-                biosPath,
+                biosFiles,
+                otherRequiredFiles,
               })
             : [];
 

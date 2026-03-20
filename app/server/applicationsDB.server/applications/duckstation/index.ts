@@ -1,4 +1,4 @@
-import type { Application } from "../../types.js";
+import type { Application, DetectedRequiredFile } from "../../types.js";
 import { log } from "../../../debug.server.js";
 import fs from "node:fs";
 import { EOL, homedir } from "node:os";
@@ -86,10 +86,12 @@ export const replaceUiConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[UI]", [{ keyValue: "EnableMouseMapping = true" }]);
 
 export const replaceBiosConfig =
-  (biosPath: string): SectionReplacement =>
+  (biosFiles: DetectedRequiredFile[]): SectionReplacement =>
   (sections) =>
     replaceSection(sections, "[BIOS]", [
-      { keyValue: `SearchDirectory = ${nodepath.dirname(biosPath)}` },
+      {
+        keyValue: `SearchDirectory = ${nodepath.dirname(biosFiles.at(0)!.filePath)}`,
+      },
     ]);
 
 /**
@@ -122,7 +124,7 @@ const readConfigFile = (filePath: string) => {
 export const replaceConfigSections = (
   psxRomsPath: string,
   gameName: string,
-  biosPath: string,
+  biosFiles: DetectedRequiredFile[],
 ) => {
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
@@ -134,7 +136,7 @@ export const replaceConfigSections = (
     replaceInputSourcesConfig,
     // replaceControllerPortsConfig,
     replaceMainConfig,
-    replaceBiosConfig(biosPath),
+    replaceBiosConfig(biosFiles),
     replaceGamepadConfig(gameName),
     replaceHotkeyConfig,
     replaceAutoUpdaterConfig,
@@ -154,6 +156,8 @@ const getConfigFileBasePath = () => {
   }
 };
 
+const defaultBiosPath = nodepath.join(getConfigFileBasePath(), "bios");
+
 export const duckstation: Application = {
   id: applicationId,
   name: "DuckStation (Legacy)",
@@ -172,7 +176,11 @@ export const duckstation: Application = {
       "savstates",
     ],
   },
-  defaultBiosPath: nodepath.join(getConfigFileBasePath(), "bios"),
+  biosFiles: [
+    { filename: "scph5502.bin", defaultPath: defaultBiosPath },
+    { filename: "scph5501.bin", defaultPath: defaultBiosPath },
+    { filename: "scph5500.bin", defaultPath: defaultBiosPath },
+  ],
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
@@ -180,10 +188,10 @@ export const duckstation: Application = {
     },
     categoryData,
     entryData,
-    biosPath,
+    biosFiles,
   }) => {
     const psxRomsPath = nodepath.join(categoriesPath, categoryData.name);
-    replaceConfigSections(psxRomsPath, entryData.name, biosPath!);
+    replaceConfigSections(psxRomsPath, entryData.name, biosFiles!);
 
     const optionParams = [];
     if (fullscreen) {

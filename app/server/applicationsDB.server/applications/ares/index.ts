@@ -82,9 +82,13 @@ export const aresGameBoyAdvance: Application = {
   fileExtensions: [".gba", ".zip"],
   createOptionParams: (props) => [
     ...getSharedAresOptionParams(props),
-    ...["--setting", `GameBoyAdvance/Firmware/BIOS.World=${props.biosPath}`],
+    ...[
+      "--setting",
+      `GameBoyAdvance/Firmware/BIOS.World=${props.biosFiles!.at(0)!.filePath}`,
+    ],
     ...["--system", "Game Boy Advance"],
   ],
+  biosFiles: [{ filename: "gba_bios.bin" }],
 };
 
 export const aresNES: Application = {
@@ -141,31 +145,98 @@ export const aresMegaDrive: Application = {
   ],
 };
 
+const segaCdBiosTypes = {
+  us: "US",
+  japan: "JAPAN",
+  europe: "EUROPE",
+};
+
 export const aresSegaCd: Application = {
   ...ares,
   fileExtensions: [".chd", ".cue"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--setting", `MegaCD/Firmware/BIOS.US=${props.biosPath}`],
-    // TODO: How to set multiple bios files?
-    ...["--setting", `MegaCD/Firmware/BIOS.Europe=${props.biosPath}`],
-    ...["--setting", `MegaCD/Firmware/BIOS.Japan=${props.biosPath}`],
-    ...["--system", "Mega CD"],
+  createOptionParams: (props) => {
+    const optionParams = [
+      ...getSharedAresOptionParams(props),
+      ...["--system", "Mega CD"],
+    ];
+
+    props.biosFiles?.forEach(({ filePath, type }) => {
+      optionParams.push(
+        ...["--setting", `MegaCD/Firmware/BIOS.${type}=${filePath}`],
+      );
+    });
+
+    return optionParams;
+  },
+  biosFiles: [
+    {
+      filename: "bios_CD_U.bin",
+      type: segaCdBiosTypes.us,
+    },
+    {
+      filename: "us_scd2_9306.bin",
+      type: segaCdBiosTypes.us,
+    },
+    {
+      filename: "bios_CD_E.bin",
+      type: segaCdBiosTypes.europe,
+    },
+    {
+      filename: "eu_mcd2_9306.bin",
+      type: segaCdBiosTypes.europe,
+    },
+    {
+      filename: "bios_CD_J.bin",
+      type: segaCdBiosTypes.japan,
+    },
+    {
+      filename: "jp_mcd2_921222.bin",
+      type: segaCdBiosTypes.japan,
+    },
   ],
+};
+
+const megaLdBiosTypes = {
+  us: "US",
+  japan: "JAPAN",
 };
 
 export const aresSegaMegaLd: Application = {
   ...ares,
   fileExtensions: [".mmi"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--setting", `LaserActiveSEGAPAC/Firmware/BIOS.US=${props.biosPath}`],
-    // TODO: How to set multiple bios files?
-    ...[
-      "--setting",
-      `LaserActiveSEGAPAC/Firmware/BIOS.Japan=${props.biosPath}`,
-    ],
-    ...["--system", "LaserActive (SEGA PAC)"],
+  createOptionParams: (props) => {
+    const optionParams = [
+      ...getSharedAresOptionParams(props),
+      ...["--system", "LaserActive (SEGA PAC)"],
+    ];
+
+    props.biosFiles?.forEach(({ filePath, type }) => {
+      optionParams.push(
+        ...[
+          "--setting",
+          `LaserActiveSEGAPAC/Firmware/BIOS.${type}=${filePath}`,
+        ],
+      );
+    });
+
+    return optionParams;
+  },
+  biosFiles: [
+    {
+      filename:
+        "Pioneer LaserActive Sega PAC Boot ROM v1.04 (1993)(Pioneer - Sega)(US).bin",
+      type: megaLdBiosTypes.us,
+    },
+    {
+      filename:
+        "Pioneer LaserActive Sega PAC Boot ROM v1.02 (1993)(Pioneer - Sega)(US).bin",
+      type: megaLdBiosTypes.us,
+    },
+    {
+      filename:
+        "Pioneer LaserActive Sega PAC Boot ROM v1.02 (1993)(Pioneer - Sega)(JP)(en-ja).bin",
+      type: megaLdBiosTypes.japan,
+    },
   ],
 };
 
@@ -201,9 +272,13 @@ export const aresNeoGeoPocket: Application = {
   fileExtensions: [".ngp", ".zip"],
   createOptionParams: (props) => [
     ...getSharedAresOptionParams(props),
-    ...["--setting", `NeoGeoPocket/Firmware/BIOS.World=${props.biosPath}`],
+    ...[
+      "--setting",
+      `NeoGeoPocket/Firmware/BIOS.World=${props.biosFiles!.at(0)!.filePath}`,
+    ],
     ...["--system", "Neo Geo Pocket"],
   ],
+  biosFiles: [{ filename: "ngpbios.rom" }],
 };
 
 export const aresNeoGeoPocketColor: Application = {
@@ -211,7 +286,11 @@ export const aresNeoGeoPocketColor: Application = {
   fileExtensions: [".ngc", ".zip"],
   createOptionParams: (props) => [
     ...getSharedAresOptionParams(props),
-    ...["--setting", `NeoGeoPocketColor/Firmware/BIOS.World=${props.biosPath}`],
+    ...[
+      "--setting",
+      `NeoGeoPocketColor/Firmware/BIOS.World=${props.biosFiles!.at(0)!.filePath}`,
+    ],
     ...["--system", "Neo Geo Pocket Color"],
   ],
+  biosFiles: [{ filename: "ngpcbios.rom" }],
 };

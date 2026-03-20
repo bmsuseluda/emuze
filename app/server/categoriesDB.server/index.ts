@@ -50,7 +50,6 @@ export const sonyplaystation: Category = {
   igdbPlatformIds: [7],
   application: duckstation,
   hasAnalogStick: true,
-  biosFiles: ["scph5502.bin", "scph5501.bin", "scph5500.bin"],
 };
 
 export const sonyplaystation2: Category = {
@@ -142,11 +141,6 @@ export const segamegald: Category = {
   igdbPlatformIds: [487],
   application: aresSegaMegaLd,
   hasAnalogStick: false,
-  biosFiles: [
-    "Pioneer LaserActive Sega PAC Boot ROM v1.04 (1993)(Pioneer - Sega)(US).bin",
-    "Pioneer LaserActive Sega PAC Boot ROM v1.02 (1993)(Pioneer - Sega)(US).bin",
-    "Pioneer LaserActive Sega PAC Boot ROM v1.02 (1993)(Pioneer - Sega)(JP)(en-ja).bin",
-  ],
 };
 
 export const segadreamcast: Category = {
@@ -272,7 +266,6 @@ export const nintendogameboyadvance: Category = {
   igdbPlatformIds: [24],
   application: aresGameBoyAdvance,
   hasAnalogStick: false,
-  biosFiles: ["gba_bios.bin"],
 };
 
 export const segasaturn: Category = {
@@ -281,7 +274,6 @@ export const segasaturn: Category = {
   igdbPlatformIds: [32],
   application: mednafenSaturn,
   hasAnalogStick: true,
-  biosFiles: ["mpr-17933.bin", "sega_101.bin"],
 };
 
 export const pcengine: Category = {
@@ -298,7 +290,6 @@ export const pcengine: Category = {
   igdbPlatformIds: [86],
   application: aresPcEngine,
   hasAnalogStick: false,
-  biosFiles: ["syscard3.pce", "syscard2.pce", "syscard1.pce"],
 };
 
 export const pcenginecd: Category = {
@@ -313,7 +304,6 @@ export const pcenginecd: Category = {
   igdbPlatformIds: [150],
   application: mednafenPcEngineCD,
   hasAnalogStick: false,
-  biosFiles: ["syscard3.pce", "syscard2.pce", "syscard1.pce"],
 };
 
 export const pcenginesupergrafx: Category = {
@@ -346,7 +336,6 @@ export const neogeo: Category = {
   igdbPlatformIds: [79, 80],
   application: mameNeoGeo,
   hasAnalogStick: false,
-  biosFiles: ["neogeo.zip"],
 };
 
 export const neogeocd: Category = {
@@ -355,7 +344,6 @@ export const neogeocd: Category = {
   igdbPlatformIds: [136],
   application: mameNeoGeoCD,
   hasAnalogStick: false,
-  biosFiles: ["neocdz.zip"],
 };
 
 export const neogeopocket: Category = {
@@ -364,7 +352,6 @@ export const neogeopocket: Category = {
   igdbPlatformIds: [119],
   application: aresNeoGeoPocket,
   hasAnalogStick: false,
-  biosFiles: ["ngpcbios.rom"],
 };
 
 export const neogeopocketcolor: Category = {
@@ -373,7 +360,6 @@ export const neogeopocketcolor: Category = {
   igdbPlatformIds: [120],
   application: aresNeoGeoPocketColor,
   hasAnalogStick: false,
-  biosFiles: ["ngpcbios.rom"],
 };
 
 export const dos: Category = {
@@ -398,7 +384,6 @@ export const xbox: Category = {
   igdbPlatformIds: [11],
   application: xemu,
   hasAnalogStick: true,
-  biosFiles: ["Complex_4627.bin", "Complex_4627v1.03.bin"],
 };
 
 /**

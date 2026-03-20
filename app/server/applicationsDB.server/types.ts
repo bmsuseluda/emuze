@@ -10,6 +10,14 @@ export interface Settings {
   appearance: Appearance;
 }
 
+export interface DetectedRequiredFile {
+  filePath: string;
+  /**
+   * could be a region, a specific system bios type or other system specific file
+   */
+  type?: string;
+}
+
 export type OptionParamFunction = ({
   entryData,
   categoryData,
@@ -17,7 +25,8 @@ export type OptionParamFunction = ({
   settings,
   absoluteEntryPath,
   hasAnalogStick,
-  biosPath,
+  biosFiles,
+  otherRequiredFiles,
 }: {
   entryData: Entry;
   categoryData: Category;
@@ -25,7 +34,8 @@ export type OptionParamFunction = ({
   settings: Settings;
   absoluteEntryPath: string;
   hasAnalogStick: boolean;
-  biosPath?: string;
+  biosFiles?: DetectedRequiredFile[];
+  otherRequiredFiles?: DetectedRequiredFile[];
 }) => string[];
 
 export type EnvironmentVariableFunction = ({
@@ -66,6 +76,19 @@ export interface ConfigFile {
   files: string[];
 }
 
+export interface RequiredFile {
+  filename: string;
+  /**
+   * could be a region, a specific system bios type or other system specific file
+   */
+  type?: string;
+  //** TODO: Check if necessary */
+  inRomsFolder?: boolean;
+  defaultPath?: string;
+  //** TODO: Check if necessary */
+  instructionMessage?: string;
+}
+
 export interface Application {
   id: ApplicationId;
   name: string;
@@ -81,5 +104,8 @@ export interface Application {
   findEntryName?: FindEntryNameFunction;
   excludeFiles?: ExcludeFilesFunction;
   bundledPath?: string;
-  defaultBiosPath?: string;
+  /** only one is necessary */
+  biosFiles?: RequiredFile[];
+  /** if they are defined, all of them are necessary to run the applciation */
+  otherRequiredFiles?: RequiredFile[];
 }

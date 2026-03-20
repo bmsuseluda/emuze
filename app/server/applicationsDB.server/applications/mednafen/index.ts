@@ -113,6 +113,7 @@ export const mednafenSaturn: Application = {
       ...virtualGamepadsSaturn,
     ];
   },
+  biosFiles: [{ filename: "mpr-17933.bin" }, { filename: "sega_101.bin" }],
 };
 
 export const mednafenPcEngineCD: Application = {
@@ -130,4 +131,9 @@ export const mednafenPcEngineCD: Application = {
       ...virtualGamepadsPcEngine,
     ];
   },
+  biosFiles: [
+    { filename: "syscard3.pce" },
+    { filename: "syscard2.pce" },
+    { filename: "syscard1.pce" },
+  ],
 };

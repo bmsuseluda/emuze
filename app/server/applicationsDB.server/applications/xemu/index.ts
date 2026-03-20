@@ -121,4 +121,8 @@ export const xemu: Application = {
     return optionParams;
   },
   bundledPath,
+  biosFiles: [
+    { filename: "Complex_4627.bin" },
+    { filename: "Complex_4627v1.03.bin" },
+  ],
 };

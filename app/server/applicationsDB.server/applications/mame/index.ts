@@ -157,7 +157,8 @@ export const mame: Application = {
 export const mameNeoGeo: Application = {
   ...mame,
   fileExtensions: [".zip"],
-  excludeFiles: () => ["neogeo.zip"],
+  excludeFiles: () => mameNeoGeo.biosFiles!.map(({ filename }) => filename),
+  biosFiles: [{ filename: "neogeo.zip" }],
 };
 
 export const mameNeoGeoCD: Application = {
@@ -168,6 +169,7 @@ export const mameNeoGeoCD: Application = {
     "neocdz",
     "-cdrm",
   ],
-  excludeFiles: () => ["neocdz.zip"],
+  excludeFiles: () => mameNeoGeoCD.biosFiles!.map(({ filename }) => filename),
   findEntryName: undefined,
+  biosFiles: [{ filename: "neocdz.zip" }],
 };
