@@ -223,11 +223,6 @@ export const startGame = async (
       appearance: readAppearance(true),
     };
 
-    const romsPathForSystem = nodepath.join(
-      generalData.categoriesPath,
-      categoryData.name,
-    );
-
     const absoluteEntryPath = createAbsoluteEntryPath(
       generalData.categoriesPath,
       categoryData.name,
@@ -258,10 +253,16 @@ export const startGame = async (
           }
         };
 
-        const biosFiles = getBiosFiles(applicationData, romsPathForSystem);
+        const biosFiles = getBiosFiles(
+          applicationData,
+          categoryData.name,
+          generalData.biosPath,
+        );
+
         const otherRequiredFiles = getOtherRequiredFiles(
           applicationData,
-          romsPathForSystem,
+          categoryData.name,
+          generalData.biosPath,
         );
 
         const getOptionParams = (applicationPath?: string) =>

@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import type {
   Application,
+  DetectedRequiredFile,
   FindEntryNameFunction,
   OptionParamFunction,
 } from "../../types.js";
@@ -110,12 +111,16 @@ const replaceMameConfigFile = () => {
   }
 };
 
+const createBiosRompath = (biosFiles?: DetectedRequiredFile[]) =>
+  biosFiles ? `${nodepath.dirname(biosFiles.at(0)!.filePath)};` : "";
+
 const getSharedMameOptionParams: OptionParamFunction = ({
   categoryData: { id, name },
   settings: {
     general: { categoriesPath },
     appearance: { fullscreen },
   },
+  biosFiles,
 }) => {
   replaceMameConfigFile();
   replaceDefaultConfigFile(id);
@@ -128,8 +133,10 @@ const getSharedMameOptionParams: OptionParamFunction = ({
     applicationId,
   );
 
+  const extraRomPath = createBiosRompath(biosFiles);
+
   optionParams.push(
-    ...["-rompath", entryDirname],
+    ...["-rompath", `${extraRomPath}${entryDirname}`],
     ...["-inipath", configDirectory],
     ...["-cfg_directory", nodepath.join(configDirectory, "cfg")],
     ...["-nvram_directory", nodepath.join(configDirectory, "nvram")],
@@ -157,8 +164,19 @@ export const mame: Application = {
 export const mameNeoGeo: Application = {
   ...mame,
   fileExtensions: [".zip"],
-  excludeFiles: () => mameNeoGeo.biosFiles!.map(({ filename }) => filename),
-  biosFiles: [{ filename: "neogeo.zip" }],
+  // TODO: Remove when bios files are not in roms folder anymore
+  excludeFiles: () =>
+    mameNeoGeo.biosFiles!.flatMap(({ requiredFiles }) =>
+      requiredFiles.map(({ filename }) => filename),
+    ),
+  biosFiles: [
+    {
+      type: "default",
+      requiredFiles: [
+        { filename: "neogeo.zip", hash: "9323dfa8b1fd45b071f5ec84317d01aa" },
+      ],
+    },
+  ],
 };
 
 export const mameNeoGeoCD: Application = {
@@ -169,7 +187,18 @@ export const mameNeoGeoCD: Application = {
     "neocdz",
     "-cdrm",
   ],
-  excludeFiles: () => mameNeoGeoCD.biosFiles!.map(({ filename }) => filename),
+  // TODO: Remove when bios files are not in roms folder anymore
+  excludeFiles: () =>
+    mameNeoGeoCD.biosFiles!.flatMap(({ requiredFiles }) =>
+      requiredFiles.map(({ filename }) => filename),
+    ),
   findEntryName: undefined,
-  biosFiles: [{ filename: "neocdz.zip" }],
+  biosFiles: [
+    {
+      type: "default",
+      requiredFiles: [
+        { filename: "neocdz.zip", hash: "a7cca75f3d5af6acc85efcce589ab04f" },
+      ],
+    },
+  ],
 };

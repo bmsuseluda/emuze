@@ -100,6 +100,10 @@ const fixInterlacingSaturn = (gameName: string) => {
   return [];
 };
 
+const saturnBiosTypes = {
+  us: "na_eu",
+  japan: "jp",
+};
 export const mednafenSaturn: Application = {
   ...mednafen,
   createOptionParams: (props) => {
@@ -108,12 +112,25 @@ export const mednafenSaturn: Application = {
     log("debug", "createOptionParams", virtualGamepadsSaturn);
     return [
       ...["-force_module", "ss"],
+      ...props.biosFiles!.flatMap(({ type, filePath }) => [
+        `-ss.bios_${type}`,
+        filePath,
+      ]),
       ...fixInterlacingSaturn(props.entryData.name),
       ...mednafen.createOptionParams!(props),
       ...virtualGamepadsSaturn,
     ];
   },
-  biosFiles: [{ filename: "mpr-17933.bin" }, { filename: "sega_101.bin" }],
+  biosFiles: [
+    {
+      type: saturnBiosTypes.us,
+      requiredFiles: [{ filename: "mpr-17933.bin" }],
+    },
+    {
+      type: saturnBiosTypes.japan,
+      requiredFiles: [{ filename: "sega_101.bin" }],
+    },
+  ],
 };
 
 export const mednafenPcEngineCD: Application = {
@@ -124,6 +141,7 @@ export const mednafenPcEngineCD: Application = {
     log("debug", "createOptionParams", virtualGamepadsPcEngine);
     return [
       ...["-force_module", "pce"],
+      ...["-pce.cdbios", props.biosFiles!.at(0)!.filePath],
       ...["-pce.cddavolume", "100"], // music
       ...["-pce.cdpsgvolume", "50"], // shooting
       ...["-pce.adpcmvolume", "50"], // explosions
@@ -132,8 +150,13 @@ export const mednafenPcEngineCD: Application = {
     ];
   },
   biosFiles: [
-    { filename: "syscard3.pce" },
-    { filename: "syscard2.pce" },
-    { filename: "syscard1.pce" },
+    {
+      type: "default",
+      requiredFiles: [
+        { filename: "syscard3.pce" },
+        { filename: "syscard2.pce" },
+        { filename: "syscard1.pce" },
+      ],
+    },
   ],
 };

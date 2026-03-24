@@ -15,7 +15,7 @@ export interface DetectedRequiredFile {
   /**
    * could be a region, a specific system bios type or other system specific file
    */
-  type?: string;
+  type: string;
 }
 
 export type OptionParamFunction = ({
@@ -78,13 +78,16 @@ export interface ConfigFile {
 
 export interface RequiredFile {
   filename: string;
+  hash?: string;
+}
+
+export interface RequiredFiles {
   /**
    * could be a region, a specific system bios type or other system specific file
    */
-  type?: string;
-  //** TODO: Check if necessary */
-  inRomsFolder?: boolean;
+  type: string;
   defaultPath?: string;
+  requiredFiles: RequiredFile[];
   //** TODO: Check if necessary */
   instructionMessage?: string;
 }
@@ -105,7 +108,7 @@ export interface Application {
   excludeFiles?: ExcludeFilesFunction;
   bundledPath?: string;
   /** only one is necessary */
-  biosFiles?: RequiredFile[];
+  biosFiles?: RequiredFiles[];
   /** if they are defined, all of them are necessary to run the applciation */
-  otherRequiredFiles?: RequiredFile[];
+  otherRequiredFiles?: RequiredFiles[];
 }

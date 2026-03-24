@@ -177,9 +177,18 @@ export const duckstation: Application = {
     ],
   },
   biosFiles: [
-    { filename: "scph5502.bin", defaultPath: defaultBiosPath },
-    { filename: "scph5501.bin", defaultPath: defaultBiosPath },
-    { filename: "scph5500.bin", defaultPath: defaultBiosPath },
+    {
+      type: "default",
+      defaultPath: defaultBiosPath,
+      requiredFiles: [
+        /** Europe */
+        { filename: "scph5502.bin" },
+        /** US */
+        { filename: "scph5501.bin" },
+        /** Japan */
+        { filename: "scph5500.bin" },
+      ],
+    },
   ],
   createOptionParams: ({
     settings: {

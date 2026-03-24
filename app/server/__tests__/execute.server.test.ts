@@ -24,6 +24,7 @@ vi.mock("../readWriteData.server");
 vi.mock("../categoryDataCache.server");
 vi.mock("../settings.server");
 vi.mock("../lastPlayed.server");
+vi.mock("../applicationsDB.server/checkRequiredFiles");
 
 const getFirstEntry = (
   category: Category & Required<Pick<Category, "entries">>,

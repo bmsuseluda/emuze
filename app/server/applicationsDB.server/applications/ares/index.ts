@@ -88,7 +88,9 @@ export const aresGameBoyAdvance: Application = {
     ],
     ...["--system", "Game Boy Advance"],
   ],
-  biosFiles: [{ filename: "gba_bios.bin" }],
+  biosFiles: [
+    { type: "default", requiredFiles: [{ filename: "gba_bios.bin" }] },
+  ],
 };
 
 export const aresNES: Application = {
@@ -170,28 +172,43 @@ export const aresSegaCd: Application = {
   },
   biosFiles: [
     {
-      filename: "bios_CD_U.bin",
       type: segaCdBiosTypes.us,
+      requiredFiles: [
+        {
+          filename: "bios_CD_U.bin",
+          hash: "2efd74e3232ff260e371b99f84024f7f",
+        },
+        {
+          filename: "us_scd2_9306.bin",
+          hash: "310a9081d2edf2d316ab38813136725e",
+        },
+      ],
     },
     {
-      filename: "us_scd2_9306.bin",
-      type: segaCdBiosTypes.us,
-    },
-    {
-      filename: "bios_CD_E.bin",
       type: segaCdBiosTypes.europe,
+      requiredFiles: [
+        {
+          filename: "bios_CD_E.bin",
+          hash: "e66fa1dc5820d254611fdcdba0662372",
+        },
+        {
+          filename: "eu_mcd2_9306.bin",
+          hash: "9b562ebf2d095bf1dabadbc1881f519a",
+        },
+      ],
     },
     {
-      filename: "eu_mcd2_9306.bin",
-      type: segaCdBiosTypes.europe,
-    },
-    {
-      filename: "bios_CD_J.bin",
       type: segaCdBiosTypes.japan,
-    },
-    {
-      filename: "jp_mcd2_921222.bin",
-      type: segaCdBiosTypes.japan,
+      requiredFiles: [
+        {
+          filename: "bios_CD_J.bin",
+          hash: "278a9397d192149e84e820ac621a8edd",
+        },
+        {
+          filename: "jp_mcd2_921222.bin",
+          hash: "683a8a9e273662561172468dfa2858eb",
+        },
+      ],
     },
   ],
 };
@@ -223,19 +240,26 @@ export const aresSegaMegaLd: Application = {
   },
   biosFiles: [
     {
-      filename:
-        "Pioneer LaserActive Sega PAC Boot ROM v1.04 (1993)(Pioneer - Sega)(US).bin",
       type: megaLdBiosTypes.us,
+      requiredFiles: [
+        {
+          filename:
+            "Pioneer LaserActive Sega PAC Boot ROM v1.04 (1993)(Pioneer - Sega)(US).bin",
+        },
+        {
+          filename:
+            "Pioneer LaserActive Sega PAC Boot ROM v1.02 (1993)(Pioneer - Sega)(US).bin",
+        },
+      ],
     },
     {
-      filename:
-        "Pioneer LaserActive Sega PAC Boot ROM v1.02 (1993)(Pioneer - Sega)(US).bin",
-      type: megaLdBiosTypes.us,
-    },
-    {
-      filename:
-        "Pioneer LaserActive Sega PAC Boot ROM v1.02 (1993)(Pioneer - Sega)(JP)(en-ja).bin",
       type: megaLdBiosTypes.japan,
+      requiredFiles: [
+        {
+          filename:
+            "Pioneer LaserActive Sega PAC Boot ROM v1.02 (1993)(Pioneer - Sega)(JP)(en-ja).bin",
+        },
+      ],
     },
   ],
 };
@@ -278,7 +302,9 @@ export const aresNeoGeoPocket: Application = {
     ],
     ...["--system", "Neo Geo Pocket"],
   ],
-  biosFiles: [{ filename: "ngpbios.rom" }],
+  biosFiles: [
+    { type: "default", requiredFiles: [{ filename: "ngpbios.rom" }] },
+  ],
 };
 
 export const aresNeoGeoPocketColor: Application = {
@@ -292,5 +318,7 @@ export const aresNeoGeoPocketColor: Application = {
     ],
     ...["--system", "Neo Geo Pocket Color"],
   ],
-  biosFiles: [{ filename: "ngpcbios.rom" }],
+  biosFiles: [
+    { type: "default", requiredFiles: [{ filename: "ngpcbios.rom" }] },
+  ],
 };
