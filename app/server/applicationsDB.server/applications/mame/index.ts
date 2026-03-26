@@ -173,7 +173,10 @@ export const mameNeoGeo: Application = {
     {
       type: "default",
       requiredFiles: [
-        { filename: "neogeo.zip", hash: "9323dfa8b1fd45b071f5ec84317d01aa" },
+        {
+          filename: "neogeo.zip",
+          hash: "9323dfa8b1fd45b071f5ec84317d01aa",
+        },
       ],
     },
   ],

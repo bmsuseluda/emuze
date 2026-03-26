@@ -35,10 +35,7 @@ import {
   syncFromEmuzeFolderToEmulatorFolder,
 } from "./syncSettings.server.js";
 import { setFocusOnElectronWindow } from "./importElectron.server.js";
-import {
-  getBiosFiles,
-  getOtherRequiredFiles,
-} from "./applicationsDB.server/checkRequiredFiles.js";
+import { getRequiredFiles } from "./applicationsDB.server/checkRequiredFiles.js";
 
 type ExecFileCallback = (
   error: ExecFileException | null,
@@ -253,17 +250,18 @@ export const startGame = async (
           }
         };
 
-        const biosFiles = getBiosFiles(
-          applicationData,
-          categoryData.name,
-          generalData.biosPath,
-        );
+        const biosFiles = getRequiredFiles({
+          requiredFiles: applicationData.biosFiles,
+          systemFolderName: categoryData.name,
+          biosPath: generalData.biosPath,
+        });
 
-        const otherRequiredFiles = getOtherRequiredFiles(
-          applicationData,
-          categoryData.name,
-          generalData.biosPath,
-        );
+        const otherRequiredFiles = getRequiredFiles({
+          requiredFiles: applicationData.otherRequiredFiles,
+          systemFolderName: categoryData.name,
+          biosPath: generalData.biosPath,
+          allRequired: true,
+        });
 
         const getOptionParams = (applicationPath?: string) =>
           createOptionParams

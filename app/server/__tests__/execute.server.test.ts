@@ -16,6 +16,8 @@ import { startGame } from "../execute.server.js";
 import { readFilenames } from "../readWriteData.server.js";
 import { bundledEmulatorsPathBase } from "../bundledEmulatorsPath.server.js";
 import { mednafen } from "../applicationsDB.server/applications/mednafen/index.js";
+import type { DetectedRequiredFile } from "../applicationsDB.server/types.js";
+import { getRequiredFiles } from "../applicationsDB.server/checkRequiredFiles.js";
 
 vi.mock("@kmamal/sdl");
 vi.mock("node:child_process");
@@ -48,6 +50,9 @@ describe("execute.server", () => {
   });
 
   describe("executeApplication", () => {
+    const detectedBiosFiles: DetectedRequiredFile[] = [
+      { type: "default", filePath: "This is just a dummy path" },
+    ];
     describe("executeApplicationOnWindows", () => {
       beforeEach(() => {
         vi.stubEnv("EMUZE_IS_WINDOWS", "true");
@@ -57,6 +62,7 @@ describe("execute.server", () => {
         vi.mocked(readAppearance).mockReturnValue({
           fullscreen: false,
         });
+        vi.mocked(getRequiredFiles).mockReturnValue(detectedBiosFiles);
       });
 
       const mednafenPath = nodepath.join(
@@ -126,6 +132,7 @@ describe("execute.server", () => {
           fullscreen: false,
         });
         vi.mocked(existsSync).mockReturnValueOnce(true);
+        vi.mocked(getRequiredFiles).mockReturnValue(detectedBiosFiles);
       });
 
       const mednafenPath = nodepath.join(

@@ -1,7 +1,21 @@
 import nodepath from "node:path";
-import type { Application, DetectedRequiredFile } from "./types.js";
+import crypto from "node:crypto";
+import type {
+  DetectedRequiredFile,
+  RequiredFile,
+  RequiredFiles,
+} from "./types.js";
 import { readFilenames } from "../readWriteData.server.js";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
+
+const createHash = (filepath: string) =>
+  crypto.createHash("md5").update(readFileSync(filepath)).digest("hex");
+
+const findFilenameOrHash =
+  ({ filename, hash }: RequiredFile) =>
+  (foundFilePath: string) =>
+    foundFilePath.endsWith(filename) ||
+    (hash && hash === createHash(foundFilePath));
 
 /*
  * TODO: For migration purposes it would be good to check if the emulator was configured already to use a bios.
@@ -14,111 +28,62 @@ import { existsSync } from "node:fs";
  * 1) name
  * 2) file type and hash
  */
-export const getBiosFiles = (
-  { biosFiles }: Application,
-  systemFolderName: string,
-  biosPath?: string,
-) => {
-  if (biosFiles) {
+export const getRequiredFiles = ({
+  requiredFiles,
+  systemFolderName,
+  biosPath,
+  allRequired = false,
+}: {
+  requiredFiles?: RequiredFiles[];
+  systemFolderName: string;
+  biosPath?: string;
+  allRequired?: boolean;
+}) => {
+  if (requiredFiles) {
     if (!biosPath) {
       throw new Error(
         `A Bios File is necessary for this System. Please set a "Bios Path" in the general settings.`,
       );
     }
     const systemBiosPath = nodepath.join(biosPath, systemFolderName);
-    const detectedBiosFiles: DetectedRequiredFile[] = [];
+    const detectedRequiredFiles: DetectedRequiredFile[] = [];
 
     if (existsSync(systemBiosPath)) {
-      const foundBiosFilenames = readFilenames({
+      const foundFilenames = readFilenames({
         path: systemBiosPath,
-        // TODO: are there several fileExtensions?
-        fileExtensions: [
-          nodepath.extname(biosFiles.at(0)!.requiredFiles.at(0)!.filename),
-        ],
+        fileExtensions: requiredFiles.flatMap(({ requiredFiles }) =>
+          requiredFiles.map(({ filename }) => nodepath.extname(filename)),
+        ),
       });
 
-      biosFiles.forEach(({ type, requiredFiles }) => {
-        const biosFileForType = requiredFiles.find(
+      requiredFiles.forEach(({ type, requiredFiles }) => {
+        const foundFileForType = requiredFiles.find(
           (requiredFile) =>
-            !!foundBiosFilenames.find((foundFileName) =>
-              foundFileName.endsWith(requiredFile.filename),
-            ),
+            !!foundFilenames.find(findFilenameOrHash(requiredFile)),
         );
 
-        if (biosFileForType) {
-          detectedBiosFiles.push({
+        if (foundFileForType) {
+          detectedRequiredFiles.push({
             type,
-            filePath: nodepath.join(systemBiosPath, biosFileForType.filename),
+            filePath: nodepath.join(systemBiosPath, foundFileForType.filename),
           });
         } else {
-          // TODO: check hash
+          if (allRequired) {
+            throw new Error(`A ${type} File is necessary for this System. The following are supported:
+              ${requiredFiles.map(({ filename }) => `- ${filename}`).join("\n")}`);
+          }
         }
       });
     }
 
-    if (detectedBiosFiles.length === 0) {
+    if (detectedRequiredFiles.length === 0) {
       throw new Error(`A Bios File is necessary for this System. The following are supported:
-${biosFiles.flatMap(({ requiredFiles }) => requiredFiles.map(({ filename }) => `- ${filename}`)).join("\n")}
+${requiredFiles.flatMap(({ requiredFiles }) => requiredFiles.map(({ filename }) => `- ${filename}`)).join("\n")}
 
 Please put your Bios File under "${systemBiosPath}"`);
     }
 
-    return detectedBiosFiles;
-  }
-
-  return undefined;
-};
-
-/**
- * If there are other required files, look in the emuze bios folder.
- * Check for other required files in the following order:
- * 1) name
- * 2) file type and hash
- *
- * TODO: How to use the getBiosFiles function here?
- */
-export const getOtherRequiredFiles = (
-  { otherRequiredFiles }: Application,
-  systemFolderName: string,
-  biosPath?: string,
-) => {
-  if (otherRequiredFiles) {
-    if (!biosPath) {
-      throw new Error(
-        `A Bios File is necessary for this System. Please set a "Bios Path" in the general settings`,
-      );
-    }
-    const detectedBiosFiles: DetectedRequiredFile[] = [];
-
-    const systemBiosPath = nodepath.join(biosPath, systemFolderName);
-    const foundBiosFilenames = readFilenames({
-      path: systemBiosPath,
-      fileExtensions: otherRequiredFiles.flatMap(({ requiredFiles }) =>
-        requiredFiles.map(({ filename }) => nodepath.extname(filename)),
-      ),
-    });
-
-    otherRequiredFiles.forEach(({ type, requiredFiles }) => {
-      const fileForType = requiredFiles.find(
-        (requiredFile) =>
-          !!foundBiosFilenames.find((foundFileName) =>
-            foundFileName.endsWith(requiredFile.filename),
-          ),
-      );
-
-      if (fileForType) {
-        detectedBiosFiles.push({
-          type,
-          filePath: nodepath.join(systemBiosPath, fileForType.filename),
-        });
-      } else {
-        // TODO: check hash
-        throw new Error(`A ${type} File is necessary for this System. The following are supported:
-${requiredFiles.map(({ filename }) => `- ${filename}`).join("\n")}`);
-      }
-    });
-
-    return detectedBiosFiles;
+    return detectedRequiredFiles;
   }
 
   return undefined;

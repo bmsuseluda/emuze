@@ -1,5 +1,5 @@
 import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
-import nodepath, { basename, join } from "node:path";
+import { basename, join } from "node:path";
 import followRedirects from "follow-redirects";
 import decompress from "decompress";
 import { applications, emulatorVersions } from "./applications.js";
@@ -15,12 +15,11 @@ import {
 import _7z from "7zip-min";
 import { moveSync } from "fs-extra/esm";
 
-import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import { isWindows } from "../app/server/operationsystem.server.js";
 import { downloadFile } from "../app/server/downloadFile.server.js";
 
-const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
+const __dirname = import.meta.dirname;
 
 type OperatingSystem = "Windows" | "Linux";
 type EmulatorDownloads = Record<ApplicationId, Record<OperatingSystem, string>>;

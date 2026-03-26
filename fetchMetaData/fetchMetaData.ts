@@ -7,9 +7,7 @@ import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { normalizeString } from "../app/server/igdb.server.js";
 
-import { fileURLToPath } from "node:url";
-
-const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
+const __dirname = import.meta.dirname;
 
 export type GameTrimmed = [name: string, cover: string];
 

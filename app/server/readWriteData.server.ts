@@ -68,6 +68,9 @@ export const readAllFilenames = ({
   return filenames;
 };
 
+/**
+ * Returns all files as absolute path. Searches recursivly.
+ */
 export const readFilenames = ({
   path,
   searchFilesOnlyIn,
