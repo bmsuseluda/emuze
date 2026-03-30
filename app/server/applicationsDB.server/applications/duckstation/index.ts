@@ -182,11 +182,20 @@ export const duckstation: Application = {
       defaultPath: defaultBiosPath,
       requiredFiles: [
         /** Europe */
-        { filename: "scph5502.bin" },
+        {
+          filename: "scph5502.bin",
+          hash: "1faaa18fa820a0225e488d9f086296b8e6c46df739666093987ff7d8fd352c09",
+        },
         /** US */
-        { filename: "scph5501.bin" },
+        {
+          filename: "scph5501.bin",
+          hash: "11052b6499e466bbf0a709b1f9cb6834a9418e66680387912451e971cf8a1fef",
+        },
         /** Japan */
-        { filename: "scph5500.bin" },
+        {
+          filename: "scph5500.bin",
+          hash: "9c0421858e217805f4abe18698afea8d5aa36ff0727eb8484944e00eb5e7eadb",
+        },
       ],
     },
   ],

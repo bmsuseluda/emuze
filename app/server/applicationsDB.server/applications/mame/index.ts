@@ -174,8 +174,12 @@ export const mameNeoGeo: Application = {
       type: "default",
       requiredFiles: [
         {
+          filename: "uni-bios.rom",
+          hash: "e016ce75097df0b5f5910e8eb4914439f5c77511de65df5a1e089eef147b256b",
+        },
+        {
           filename: "neogeo.zip",
-          hash: "9323dfa8b1fd45b071f5ec84317d01aa",
+          hash: "095f3324012226d67a968b4cb5bf291d96622228f74915deddd61a66985e3969",
         },
       ],
     },
@@ -200,7 +204,14 @@ export const mameNeoGeoCD: Application = {
     {
       type: "default",
       requiredFiles: [
-        { filename: "neocdz.zip", hash: "a7cca75f3d5af6acc85efcce589ab04f" },
+        {
+          filename: "uni-bioscd.rom",
+          hash: "1c3ec20824a58e5f5cbf47ccc2c91a10f34d21cfa2791b3413cea89b0c920db8",
+        },
+        {
+          filename: "neocdz.zip",
+          hash: "61c9a0034ad19fc7199ff87785e2818712ea01bf1633bf9315166ffac9669a44",
+        },
       ],
     },
   ],

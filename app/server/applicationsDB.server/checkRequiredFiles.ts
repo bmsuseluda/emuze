@@ -9,7 +9,7 @@ import { readFilenames } from "../readWriteData.server.js";
 import { existsSync, readFileSync } from "node:fs";
 
 const createHash = (filepath: string) =>
-  crypto.createHash("md5").update(readFileSync(filepath)).digest("hex");
+  crypto.createHash("sha512").update(readFileSync(filepath)).digest("hex");
 
 const findFilenameOrHash =
   ({ filename, hash }: RequiredFile) =>
@@ -45,6 +45,7 @@ export const getRequiredFiles = ({
         `A Bios File is necessary for this System. Please set a "Bios Path" in the general settings.`,
       );
     }
+    // TODO: Are the subfolders per system necessary?
     const systemBiosPath = nodepath.join(biosPath, systemFolderName);
     const detectedRequiredFiles: DetectedRequiredFile[] = [];
 
