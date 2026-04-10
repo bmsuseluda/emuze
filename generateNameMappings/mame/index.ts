@@ -3,11 +3,10 @@ import { XMLParser } from "fast-xml-parser";
 import { writeFile } from "../../app/server/readWriteData.server.js";
 import { spawnSync } from "node:child_process";
 
-import { fileURLToPath } from "node:url";
 import { bundledEmulatorsPathBase } from "../../app/server/bundledEmulatorsPath.server.js";
 import { mame } from "../../app/server/applicationsDB.server/applications/mame/index.js";
 
-const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
+const __dirname = import.meta.dirname;
 
 type Result = Record<string, string | number>;
 
@@ -82,10 +81,14 @@ const extractGames = (xmlData: string) => {
 
 const importMame = () => {
   try {
-    const result = spawnSync(nodepath.join(bundledEmulatorsPathBase, mame.bundledPath!), ["-listxml"], {
-      encoding: "utf-8",
-      maxBuffer: 10000000000000,
-    });
+    const result = spawnSync(
+      nodepath.join(bundledEmulatorsPathBase, mame.bundledPath!),
+      ["-listxml"],
+      {
+        encoding: "utf-8",
+        maxBuffer: 10000000000000,
+      },
+    );
     if (result.stderr) {
       console.log(result.stderr);
     }

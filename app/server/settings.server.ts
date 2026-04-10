@@ -35,9 +35,10 @@ export const paths = {
 } satisfies Record<SettingsID, string>;
 
 const generalDataCache = new FileDataCache<General>(paths.general, {});
-export const readGeneral = () => {
+export const readGeneral = (): General | null => {
   const testRomsPath = process.env.EMUZE_TEST_ROMS_PATH;
   const testEmulatorsPath = process.env.EMUZE_TEST_EMULATORS_PATH;
+  const testBiosPath = process.env.EMUZE_TEST_BIOS_PATH;
   const result = generalDataCache.readFile();
 
   if (result) {
@@ -45,6 +46,7 @@ export const readGeneral = () => {
       ...result,
       categoriesPath: testRomsPath || result.categoriesPath,
       applicationsPath: testEmulatorsPath || result.applicationsPath,
+      biosPath: testBiosPath || result.biosPath,
     };
   }
 

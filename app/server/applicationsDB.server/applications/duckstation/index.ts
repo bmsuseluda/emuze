@@ -1,4 +1,4 @@
-import type { Application } from "../../types.js";
+import type { Application, DetectedRequiredFile } from "../../types.js";
 import { log } from "../../../debug.server.js";
 import fs from "node:fs";
 import { EOL, homedir } from "node:os";
@@ -85,6 +85,15 @@ export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
 export const replaceUiConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[UI]", [{ keyValue: "EnableMouseMapping = true" }]);
 
+export const replaceBiosConfig =
+  (biosFiles: DetectedRequiredFile[]): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[BIOS]", [
+      {
+        keyValue: `SearchDirectory = ${nodepath.dirname(biosFiles.at(0)!.filePath)}`,
+      },
+    ]);
+
 /**
  * TODO: Check which game is compatible with multitap
  * TODO: set multitap only if more than 2 controller
@@ -115,6 +124,7 @@ const readConfigFile = (filePath: string) => {
 export const replaceConfigSections = (
   psxRomsPath: string,
   gameName: string,
+  biosFiles: DetectedRequiredFile[],
 ) => {
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
@@ -126,8 +136,9 @@ export const replaceConfigSections = (
     replaceInputSourcesConfig,
     // replaceControllerPortsConfig,
     replaceMainConfig,
-    replaceHotkeyConfig,
+    replaceBiosConfig(biosFiles),
     replaceGamepadConfig(gameName),
+    replaceHotkeyConfig,
     replaceAutoUpdaterConfig,
     replaceGameListConfig(psxRomsPath),
     replaceUiConfig,
@@ -163,6 +174,28 @@ export const duckstation: Application = {
       "savstates",
     ],
   },
+  biosFiles: [
+    {
+      type: "default",
+      requiredFiles: [
+        /** Europe */
+        {
+          filename: "scph5502.bin",
+          hash: "1faaa18fa820a0225e488d9f086296b8e6c46df739666093987ff7d8fd352c09",
+        },
+        /** US */
+        {
+          filename: "scph5501.bin",
+          hash: "11052b6499e466bbf0a709b1f9cb6834a9418e66680387912451e971cf8a1fef",
+        },
+        /** Japan */
+        {
+          filename: "scph5500.bin",
+          hash: "9c0421858e217805f4abe18698afea8d5aa36ff0727eb8484944e00eb5e7eadb",
+        },
+      ],
+    },
+  ],
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
@@ -170,9 +203,10 @@ export const duckstation: Application = {
     },
     categoryData,
     entryData,
+    biosFiles,
   }) => {
     const psxRomsPath = nodepath.join(categoriesPath, categoryData.name);
-    replaceConfigSections(psxRomsPath, entryData.name);
+    replaceConfigSections(psxRomsPath, entryData.name, biosFiles!);
 
     const optionParams = [];
     if (fullscreen) {

@@ -35,6 +35,7 @@ import {
   syncFromEmuzeFolderToEmulatorFolder,
 } from "./syncSettings.server.js";
 import { setFocusOnElectronWindow } from "./importElectron.server.js";
+import { getRequiredFiles } from "./applicationsDB.server/checkRequiredFiles.js";
 
 type ExecFileCallback = (
   error: ExecFileException | null,
@@ -237,30 +238,45 @@ export const startGame = async (
 
       createEmuzeFolderIfNotExist(id, configFile);
 
-      const environmentVariables = (applicationPath?: string) => {
-        if (defineEnvironmentVariables) {
-          setEnvironmentVariables({
-            defineEnvironmentVariables,
-            categoryData,
-            settings,
-            applicationPath,
-          });
-        }
-      };
-
-      const getOptionParams = (applicationPath?: string) =>
-        createOptionParams
-          ? createOptionParams({
-              entryData,
+      try {
+        const environmentVariables = (applicationPath?: string) => {
+          if (defineEnvironmentVariables) {
+            setEnvironmentVariables({
+              defineEnvironmentVariables,
               categoryData,
               settings,
-              absoluteEntryPath,
-              hasAnalogStick: categoryDB.hasAnalogStick,
               applicationPath,
-            })
-          : [];
+            });
+          }
+        };
 
-      try {
+        const biosFiles = getRequiredFiles({
+          requiredFiles: applicationData.biosFiles,
+          systemFolderName: categoryData.name,
+          biosPath: generalData.biosPath,
+        });
+
+        const otherRequiredFiles = getRequiredFiles({
+          requiredFiles: applicationData.otherRequiredFiles,
+          systemFolderName: categoryData.name,
+          biosPath: generalData.biosPath,
+          allRequired: true,
+        });
+
+        const getOptionParams = (applicationPath?: string) =>
+          createOptionParams
+            ? createOptionParams({
+                entryData,
+                categoryData,
+                settings,
+                absoluteEntryPath,
+                hasAnalogStick: categoryDB.hasAnalogStick,
+                applicationPath,
+                biosFiles,
+                otherRequiredFiles,
+              })
+            : [];
+
         if (bundledPath) {
           environmentVariables();
           const optionParams = getOptionParams();

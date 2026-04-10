@@ -20,9 +20,8 @@ import {
   commandLineOptionsString,
 } from "../app/server/commandLine.server.js";
 import { initReactRouter } from "./initReactRouter.js";
-import { fileURLToPath } from "node:url";
 
-const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
+const __dirname = import.meta.dirname;
 const { autoUpdater } = electronUpdater;
 
 dotenv.config();

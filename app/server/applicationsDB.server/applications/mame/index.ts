@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import type {
   Application,
+  DetectedRequiredFile,
   FindEntryNameFunction,
   OptionParamFunction,
 } from "../../types.js";
@@ -110,12 +111,16 @@ const replaceMameConfigFile = () => {
   }
 };
 
+const createBiosRompath = (biosFiles?: DetectedRequiredFile[]) =>
+  biosFiles ? `${nodepath.dirname(biosFiles.at(0)!.filePath)};` : "";
+
 const getSharedMameOptionParams: OptionParamFunction = ({
   categoryData: { id, name },
   settings: {
     general: { categoriesPath },
     appearance: { fullscreen },
   },
+  biosFiles,
 }) => {
   replaceMameConfigFile();
   replaceDefaultConfigFile(id);
@@ -128,8 +133,10 @@ const getSharedMameOptionParams: OptionParamFunction = ({
     applicationId,
   );
 
+  const extraRomPath = createBiosRompath(biosFiles);
+
   optionParams.push(
-    ...["-rompath", entryDirname],
+    ...["-rompath", `${extraRomPath}${entryDirname}`],
     ...["-inipath", configDirectory],
     ...["-cfg_directory", nodepath.join(configDirectory, "cfg")],
     ...["-nvram_directory", nodepath.join(configDirectory, "nvram")],
@@ -157,7 +164,26 @@ export const mame: Application = {
 export const mameNeoGeo: Application = {
   ...mame,
   fileExtensions: [".zip"],
-  excludeFiles: () => ["neogeo.zip"],
+  // TODO: Remove when bios files are not in roms folder anymore
+  excludeFiles: () =>
+    mameNeoGeo.biosFiles!.flatMap(({ requiredFiles }) =>
+      requiredFiles.map(({ filename }) => filename),
+    ),
+  biosFiles: [
+    {
+      type: "default",
+      requiredFiles: [
+        {
+          filename: "uni-bios.rom",
+          hash: "e016ce75097df0b5f5910e8eb4914439f5c77511de65df5a1e089eef147b256b",
+        },
+        {
+          filename: "neogeo.zip",
+          hash: "095f3324012226d67a968b4cb5bf291d96622228f74915deddd61a66985e3969",
+        },
+      ],
+    },
+  ],
 };
 
 export const mameNeoGeoCD: Application = {
@@ -168,6 +194,25 @@ export const mameNeoGeoCD: Application = {
     "neocdz",
     "-cdrm",
   ],
-  excludeFiles: () => ["neocdz.zip"],
+  // TODO: Remove when bios files are not in roms folder anymore
+  excludeFiles: () =>
+    mameNeoGeoCD.biosFiles!.flatMap(({ requiredFiles }) =>
+      requiredFiles.map(({ filename }) => filename),
+    ),
   findEntryName: undefined,
+  biosFiles: [
+    {
+      type: "default",
+      requiredFiles: [
+        {
+          filename: "uni-bioscd.rom",
+          hash: "1c3ec20824a58e5f5cbf47ccc2c91a10f34d21cfa2791b3413cea89b0c920db8",
+        },
+        {
+          filename: "neocdz.zip",
+          hash: "61c9a0034ad19fc7199ff87785e2818712ea01bf1633bf9315166ffac9669a44",
+        },
+      ],
+    },
+  ],
 };

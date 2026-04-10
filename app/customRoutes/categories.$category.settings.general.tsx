@@ -17,7 +17,6 @@ import {
 import { openFolderDialog } from "../server/openDialog.server.js";
 import { readGeneral, writeGeneral } from "../server/settings.server.js";
 import type { General } from "../types/jsonFiles/settings/general.js";
-import { isWindows } from "../server/operationsystem.server.js";
 import { SettingsIcon } from "../components/SettingsIcon/index.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
@@ -48,14 +47,14 @@ export const loader = () => {
     validateCategoriesPath(errors, general.categoriesPath);
   }
 
-  return { ...general, isWindows: isWindows(), categories, errors };
+  return { ...general, categories, errors };
 };
 
 const importButtonId: ImportButtonId = "importAll";
 
 const actionIds = {
-  chooseApplicationsPath: "chooseApplicationsPath",
   chooseCategoriesPath: "chooseCategoriesPath",
+  chooseBiosPath: "chooseBiosPath",
   import: importButtonId,
 };
 
@@ -67,6 +66,13 @@ const validateCategoriesPath = (errors: Errors, categoriesPath?: string) => {
   const errorCategoriesPath = validatePath(categoriesPathLabel, categoriesPath);
   if (errorCategoriesPath) {
     errors.categoriesPath = errorCategoriesPath;
+  }
+};
+
+const validateBiosPath = (errors: Errors, biosPath?: string) => {
+  const errorBiosPath = validatePathExist(categoriesPathLabel, biosPath);
+  if (errorBiosPath) {
+    errors.categoriesPath = errorBiosPath;
   }
 };
 
@@ -100,10 +106,10 @@ const validatePath = (label: string, path?: string) => {
 };
 
 const categoriesPathLabel = "Roms Path";
-const applicationsPathLabel = "Emulators Path (Optional)";
+const biosPathLabel = "BIOS Path (Optional)";
 
 type ActionReturn = {
-  applicationsPath?: string;
+  biosPath?: string;
   categoriesPath?: string;
   errors?: Errors;
 };
@@ -131,7 +137,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
   try {
     const form = await request.formData();
     const _actionId = form.get("_actionId");
-    const applicationsPath = form.get("applicationsPath")?.toString();
+    const biosPath = form.get("biosPath")?.toString();
     const categoriesPath = form.get("categoriesPath")?.toString();
 
     if (_actionId === actionIds.import) {
@@ -144,10 +150,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
       }
 
       const fields: General = {
-        applicationsPath:
-          isWindows() && typeof applicationsPath === "string"
-            ? applicationsPath
-            : undefined,
+        biosPath,
         categoriesPath,
       };
 
@@ -182,25 +185,25 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
       }
 
       return {
-        applicationsPath,
+        biosPath,
         categoriesPath,
       };
     }
 
-    if (_actionId === actionIds.chooseApplicationsPath) {
-      const newApplicationsPath = await openFolderDialog(
-        "Select Emulators Folder",
-        typeof applicationsPath === "string" ? applicationsPath : undefined,
+    if (_actionId === actionIds.chooseBiosPath) {
+      const newBiosPath = await openFolderDialog(
+        "Select BIOS Folder",
+        typeof biosPath === "string" ? biosPath : undefined,
       );
-      if (newApplicationsPath) {
+      if (newBiosPath) {
         const errors: Errors = {};
-        validateCategoriesPath(errors, newApplicationsPath);
+        validateBiosPath(errors, newBiosPath);
         if (Object.keys(errors).length > 0) {
           return { errors };
         }
 
         const fields: General = {
-          applicationsPath: newApplicationsPath,
+          biosPath: newBiosPath,
           categoriesPath,
         };
 
@@ -217,7 +220,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
       );
       if (newCategoriesPath) {
         return {
-          applicationsPath,
+          biosPath,
           categoriesPath: newCategoriesPath,
         };
       }
@@ -304,7 +307,7 @@ export default function General() {
     setTimeout(() => {
       enableGamepads();
     }, 100);
-  }, [actionIds.chooseApplicationsPath, actionIds.chooseCategoriesPath]);
+  }, [actionIds.chooseBiosPath, actionIds.chooseCategoriesPath]);
 
   const onOpenFileDialog = useCallback(
     (event: MouseEvent<ComponentRef<"button">>) => {
@@ -343,19 +346,17 @@ export default function General() {
                     onOpenFileDialog={onOpenFileDialog}
                   />
                 </li>
-                {defaultData.isWindows && (
-                  <li>
-                    <FileDialogInputField
-                      id="applicationsPath"
-                      label={applicationsPathLabel}
-                      defaultValue={defaultData?.applicationsPath}
-                      newValue={newData?.applicationsPath}
-                      actionId={actionIds.chooseApplicationsPath}
-                      openDialogButtonRef={entriesRefCallback(1)}
-                      onOpenFileDialog={onOpenFileDialog}
-                    />
-                  </li>
-                )}
+                <li>
+                  <FileDialogInputField
+                    id="biosPath"
+                    label={biosPathLabel}
+                    defaultValue={defaultData?.biosPath}
+                    newValue={newData?.biosPath}
+                    actionId={actionIds.chooseBiosPath}
+                    openDialogButtonRef={entriesRefCallback(1)}
+                    onOpenFileDialog={onOpenFileDialog}
+                  />
+                </li>
               </FormBox>
             }
             actions={

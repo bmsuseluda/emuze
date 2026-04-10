@@ -100,6 +100,10 @@ const fixInterlacingSaturn = (gameName: string) => {
   return [];
 };
 
+const saturnBiosTypes = {
+  us: "na_eu",
+  japan: "jp",
+};
 export const mednafenSaturn: Application = {
   ...mednafen,
   createOptionParams: (props) => {
@@ -108,11 +112,35 @@ export const mednafenSaturn: Application = {
     log("debug", "createOptionParams", virtualGamepadsSaturn);
     return [
       ...["-force_module", "ss"],
+      ...props.biosFiles!.flatMap(({ type, filePath }) => [
+        `-ss.bios_${type}`,
+        filePath,
+      ]),
       ...fixInterlacingSaturn(props.entryData.name),
       ...mednafen.createOptionParams!(props),
       ...virtualGamepadsSaturn,
     ];
   },
+  biosFiles: [
+    {
+      type: saturnBiosTypes.us,
+      requiredFiles: [
+        {
+          filename: "mpr-17933.bin",
+          hash: "96e106f740ab448cf89f0dd49dfbac7fe5391cb6bd6e14ad5e3061c13330266f",
+        },
+      ],
+    },
+    {
+      type: saturnBiosTypes.japan,
+      requiredFiles: [
+        {
+          filename: "sega_101.bin",
+          hash: "dcfef4b99605f872b6c3b6d05c045385cdea3d1b702906a0ed930df7bcb7deac",
+        },
+      ],
+    },
+  ],
 };
 
 export const mednafenPcEngineCD: Application = {
@@ -123,6 +151,7 @@ export const mednafenPcEngineCD: Application = {
     log("debug", "createOptionParams", virtualGamepadsPcEngine);
     return [
       ...["-force_module", "pce"],
+      ...["-pce.cdbios", props.biosFiles!.at(0)!.filePath],
       ...["-pce.cddavolume", "100"], // music
       ...["-pce.cdpsgvolume", "50"], // shooting
       ...["-pce.adpcmvolume", "50"], // explosions
@@ -130,4 +159,35 @@ export const mednafenPcEngineCD: Application = {
       ...virtualGamepadsPcEngine,
     ];
   },
+  biosFiles: [
+    {
+      type: "default",
+      requiredFiles: [
+        /** Japan */
+        {
+          filename: "syscard3.pce",
+          hash: "e11527b3b96ce112a037138988ca72fd117a6b0779c2480d9e03eaebece3d9ce",
+        },
+        /** US */
+        {
+          filename: "syscard3.pce",
+          hash: "cadac2725711b3c442bcf237b02f5a5210c96f17625c35fa58f009e0ed39e4db",
+        },
+        {
+          filename: "syscard2.pce",
+          hash: "7abb2f2241d78b105aa63efb43c3c2bae1a94ebfd25376fdd17172c947b6267f",
+        },
+        /** Japan */
+        {
+          filename: "syscard1.pce",
+          hash: "afe9f27f91ac918348555b86298b4f984643eafa2773196f2c5441ea84f0c3bb",
+        },
+        /** US */
+        {
+          filename: "syscard1.pce",
+          hash: "bdd98396a3a81e61456599df0c5156aa2164fb64b5c303830f0254b3697b6290",
+        },
+      ],
+    },
+  ],
 };

@@ -7,9 +7,7 @@ import nodepath from "node:path";
 import { parseRoman } from "@ultirequiem/roman";
 import { log } from "./debug.server.js";
 
-import { fileURLToPath } from "node:url";
-
-const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
+const __dirname = import.meta.dirname;
 
 export type Game = [name: string, cover: string];
 
