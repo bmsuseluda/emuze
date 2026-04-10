@@ -156,8 +156,6 @@ const getConfigFileBasePath = () => {
   }
 };
 
-const defaultBiosPath = nodepath.join(getConfigFileBasePath(), "bios");
-
 export const duckstation: Application = {
   id: applicationId,
   name: "DuckStation (Legacy)",
@@ -179,7 +177,6 @@ export const duckstation: Application = {
   biosFiles: [
     {
       type: "default",
-      defaultPath: defaultBiosPath,
       requiredFiles: [
         /** Europe */
         {

@@ -86,7 +86,6 @@ export interface RequiredFiles {
    * could be a region, a specific system bios type or other system specific file
    */
   type: string;
-  defaultPath?: string;
   requiredFiles: RequiredFile[];
   //** TODO: Check if necessary */
   instructionMessage?: string;

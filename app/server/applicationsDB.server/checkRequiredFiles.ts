@@ -17,11 +17,6 @@ const findFilenameOrHash =
     foundFilePath.endsWith(filename) ||
     (hash && hash === createHash(foundFilePath));
 
-/*
- * TODO: For migration purposes it would be good to check if the emulator was configured already to use a bios.
- * This bios file could be copied or the path just used. Of couse only if the file exists.
- */
-
 /**
  * If a bios file is necessary, look in the emuze bios folder.
  * Check for bios files in the following order:
@@ -30,7 +25,6 @@ const findFilenameOrHash =
  */
 export const getRequiredFiles = ({
   requiredFiles,
-  systemFolderName,
   biosPath,
   allRequired = false,
 }: {
@@ -40,18 +34,16 @@ export const getRequiredFiles = ({
   allRequired?: boolean;
 }) => {
   if (requiredFiles) {
-    if (!biosPath) {
+    if (!biosPath || biosPath.trim().length < 3) {
       throw new Error(
-        `A Bios File is necessary for this System. Please set a "Bios Path" in the general settings.`,
+        `A BIOS File is necessary for this System. Please set a "BIOS Path" in the general settings.`,
       );
     }
-    // TODO: Are the subfolders per system necessary?
-    const systemBiosPath = nodepath.join(biosPath, systemFolderName);
     const detectedRequiredFiles: DetectedRequiredFile[] = [];
 
-    if (existsSync(systemBiosPath)) {
+    if (existsSync(biosPath)) {
       const foundFilenames = readFilenames({
-        path: systemBiosPath,
+        path: biosPath,
         fileExtensions: requiredFiles.flatMap(({ requiredFiles }) =>
           requiredFiles.map(({ filename }) => nodepath.extname(filename)),
         ),
@@ -66,7 +58,7 @@ export const getRequiredFiles = ({
         if (foundFileForType) {
           detectedRequiredFiles.push({
             type,
-            filePath: nodepath.join(systemBiosPath, foundFileForType.filename),
+            filePath: nodepath.join(biosPath, foundFileForType.filename),
           });
         } else {
           if (allRequired) {
@@ -78,10 +70,10 @@ export const getRequiredFiles = ({
     }
 
     if (detectedRequiredFiles.length === 0) {
-      throw new Error(`A Bios File is necessary for this System. The following are supported:
+      throw new Error(`A BIOS File is necessary for this System. The following are supported:
 ${requiredFiles.flatMap(({ requiredFiles }) => requiredFiles.map(({ filename }) => `- ${filename}`)).join("\n")}
 
-Please put your Bios File under "${systemBiosPath}"`);
+Please put your BIOS File under "${biosPath}"`);
     }
 
     return detectedRequiredFiles;

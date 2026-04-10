@@ -5,6 +5,8 @@ import { configFolderPath, e2ePath, testName } from "./config.js";
 
 test.describe.configure({ mode: "serial" });
 
+const playstationSystemName = "Playstation";
+
 const resetFiles = () => {
   fs.removeSync(configFolderPath);
   fs.copySync(nodepath.join(e2ePath, "config"), configFolderPath);
@@ -87,7 +89,6 @@ test("import all", async ({ page, libraryPage, settingsPage }) => {
   await libraryPage.press("ArrowDown");
   await libraryPage.expectIsSystem("Game Boy", "Super Mario Land");
 
-  const playstationSystemName = "Playstation";
   const playstationLink = page.getByRole("link", {
     name: playstationSystemName,
   });
@@ -156,6 +157,20 @@ test("Should open the about page", async ({ page, settingsPage }) => {
   await settingsPage.press("ArrowRight");
   await settingsPage.press("ArrowDown");
   await expect(settingsPage.aboutPage.changelog).toBeFocused();
+  await expect(page).toHaveScreenshot();
+});
+
+test("Should show error that bios folder is necessary", async ({
+  page,
+  libraryPage,
+}) => {
+  await libraryPage.press("i");
+  await libraryPage.goToSystemViaClick(playstationSystemName, "Klonoa");
+  await libraryPage.press("ArrowRight");
+  await libraryPage.press("ArrowRight");
+  await libraryPage.expectGameFocused("Klonoa");
+  await libraryPage.press("Enter");
+  await expect(page.getByText("BIOS Path")).toBeVisible();
   await expect(page).toHaveScreenshot();
 });
 

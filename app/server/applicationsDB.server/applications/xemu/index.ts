@@ -5,8 +5,7 @@ import type { ApplicationId } from "../../applicationId.js";
 import type { Application, DetectedRequiredFile } from "../../types.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { log } from "../../../debug.server.js";
-import type { SectionReplacement ,
-  ParamToReplace} from "../../configFile.js";
+import type { SectionReplacement, ParamToReplace } from "../../configFile.js";
 import {
   chainSectionReplacements,
   replaceSection,
@@ -114,7 +113,6 @@ const getConfigFileBasePath = () => {
 
 const requiredFileTypes = {
   bootRom: "bootrom",
-  eepRom: "eeprom",
   hdd: "hdd",
 };
 
@@ -151,19 +149,26 @@ export const xemu: Application = {
     {
       type: "default",
       requiredFiles: [
-        { filename: "Complex_4627v1.03.bin" },
-        { filename: "Complex_4627.bin" },
+        {
+          filename: "Complex_4627v1.03.bin",
+          hash: "1de4c87effe40d44f95581d204f9fa0600fbd5fe2171692316dcf97af0f4113f",
+        },
+        {
+          filename: "Complex_4627.bin",
+          hash: "34f1c8ded59116436065783f8ad2ef0939df3cbfc76277ec9e5c41bf9ccb93cd",
+        },
       ],
     },
   ],
   otherRequiredFiles: [
     {
       type: requiredFileTypes.bootRom,
-      requiredFiles: [{ filename: "mcpx_1.0.bin" }],
-    },
-    {
-      type: requiredFileTypes.eepRom,
-      requiredFiles: [{ filename: "eeprom.bin" }],
+      requiredFiles: [
+        {
+          filename: "mcpx_1.0.bin",
+          hash: "e99e3a772bf5f5d262786aee895664eb96136196e37732fe66e14ae062f20335",
+        },
+      ],
     },
     {
       type: requiredFileTypes.hdd,
