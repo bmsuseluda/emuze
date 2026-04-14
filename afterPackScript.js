@@ -16,9 +16,9 @@ if [ "$SCRIPT_DIR" == "/usr/bin" ]; then
 fi
 
 if pgrep -x "steam" > /dev/null; then
-  exec "$SCRIPT_DIR/${executableName}.bin" --no-sandbox "$@"
+  exec "$SCRIPT_DIR/${executableName}.bin" --no-sandbox --ozone-platform=x11 "$@"
 else
-  exec "$SCRIPT_DIR/${executableName}.bin" "$@"
+  exec "$SCRIPT_DIR/${executableName}.bin" --ozone-platform=x11 "$@"
 fi
 `;
         renameSync(executable, executable + ".bin");

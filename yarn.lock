@@ -5015,11 +5015,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:^24.9.0":
-  version: 24.10.13
-  resolution: "@types/node@npm:24.10.13"
+  version: 24.12.2
+  resolution: "@types/node@npm:24.12.2"
   dependencies:
     undici-types: "npm:~7.16.0"
-  checksum: 10/c779d14cf17758a9d603e0c0978c8045bd070e259617ec16f4ddac419ec11aac0e0cf2bb013dab008fdbd2f46c39f82397884662bbdfabeb19bef0079679ea48
+  checksum: 10/99b9f15e67a4b3c39b39ad83ee0febad7f0b4709c004863104d7acfa4146dd7e58c12a08a9a7ff2be8c2eefd0063bf991fade0879d7c4a370a0ee7fd4c799e8a
   languageName: node
   linkType: hard
 
@@ -8666,16 +8666,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:40.6.1":
-  version: 40.6.1
-  resolution: "electron@npm:40.6.1"
+"electron@npm:41.2.0":
+  version: 41.2.0
+  resolution: "electron@npm:41.2.0"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^24.9.0"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 10/d3a9cbce8c95b4e6e7a4fe0c78772722fe3b9678ce3b4566c87a051559c65c6a8b23d46b2b8bd45f9e99ed7af4754f54653dda1c7f2fd672f38dc5bf9eaaaeee
+  checksum: 10/ad9acc58d0c83a463eae018ffbffccfce7f1c7322d4b50429f9c98198adcc925822a641cbf4d7221b5b42c365aeee9634be6f8931f6ce40dcf76dd8fb283441e
   languageName: node
   linkType: hard
 
@@ -8752,7 +8752,7 @@ __metadata:
     decompress: "npm:4.2.1"
     del-cli: "npm:5.1.0"
     dotenv: "npm:16.6.1"
-    electron: "npm:40.6.1"
+    electron: "npm:41.2.0"
     electron-builder: "npm:26.8.1"
     electron-updater: "npm:6.8.3"
     eslint: "npm:8.57.1"

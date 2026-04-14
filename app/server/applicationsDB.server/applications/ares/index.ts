@@ -157,8 +157,8 @@ export const aresMegaDrive: Application = {
 
 const segaCdBiosTypes = {
   us: "US",
-  japan: "JAPAN",
-  europe: "EUROPE",
+  japan: "Japan",
+  europe: "Europe",
 };
 
 export const aresSegaCd: Application = {
@@ -220,7 +220,7 @@ export const aresSegaCd: Application = {
 
 const megaLdBiosTypes = {
   us: "US",
-  japan: "JAPAN",
+  japan: "Japan",
 };
 
 export const aresSegaMegaLd: Application = {

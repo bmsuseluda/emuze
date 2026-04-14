@@ -74,9 +74,9 @@ const replaceSysFilesConfig =
   ): SectionReplacement =>
   (sections) =>
     replaceSection(sections, "[sys.files]", [
-      { keyValue: `flashrom_path = ${biosFiles.at(0)!.filePath}` },
+      { keyValue: `flashrom_path = '${biosFiles.at(0)!.filePath}'` },
       ...otherRequiredFiles.map<ParamToReplace>(({ type, filePath }) => ({
-        keyValue: `${type}_path = ${filePath}`,
+        keyValue: `${type}_path = '${filePath}'`,
       })),
     ]);
 

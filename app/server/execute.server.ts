@@ -64,6 +64,7 @@ const execFileCallback =
 
 const executeApplication = (file: string, args: string[]) => {
   return new Promise<void>((resolve, reject) => {
+    log("debug", "params", args);
     const childProcess = execFile(
       file,
       args,

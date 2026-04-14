@@ -50,15 +50,21 @@ export const getRequiredFiles = ({
       });
 
       requiredFiles.forEach(({ type, requiredFiles }) => {
-        const foundFileForType = requiredFiles.find(
-          (requiredFile) =>
-            !!foundFilenames.find(findFilenameOrHash(requiredFile)),
-        );
+        let foundFileForType: string | null = null;
+        for (const requiredFile of requiredFiles) {
+          const foundFilename = foundFilenames.find(
+            findFilenameOrHash(requiredFile),
+          );
+          if (foundFilename) {
+            foundFileForType = foundFilename;
+            break;
+          }
+        }
 
         if (foundFileForType) {
           detectedRequiredFiles.push({
             type,
-            filePath: nodepath.join(biosPath, foundFileForType.filename),
+            filePath: foundFileForType,
           });
         } else {
           if (allRequired) {
