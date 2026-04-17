@@ -37,7 +37,6 @@ export const paths = {
 const generalDataCache = new FileDataCache<General>(paths.general, {});
 export const readGeneral = (): General | null => {
   const testRomsPath = process.env.EMUZE_TEST_ROMS_PATH;
-  const testEmulatorsPath = process.env.EMUZE_TEST_EMULATORS_PATH;
   const testBiosPath = process.env.EMUZE_TEST_BIOS_PATH;
   const result = generalDataCache.readFile();
 
@@ -45,7 +44,6 @@ export const readGeneral = (): General | null => {
     return {
       ...result,
       categoriesPath: testRomsPath || result.categoriesPath,
-      applicationsPath: testEmulatorsPath || result.applicationsPath,
       biosPath: testBiosPath || result.biosPath,
     };
   }

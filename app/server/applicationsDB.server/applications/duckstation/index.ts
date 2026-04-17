@@ -19,7 +19,6 @@ import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
-const flatpakId = "org.duckstation.DuckStation";
 const applicationId: ApplicationId = "duckstation";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "duckstation-qt-x64-ReleaseLTCG.exe")
@@ -160,7 +159,6 @@ export const duckstation: Application = {
   id: applicationId,
   name: "DuckStation (Legacy)",
   fileExtensions: [".chd", ".cue"],
-  flatpakId,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {
     basePath: getConfigFileBasePath(),

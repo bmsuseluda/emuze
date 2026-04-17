@@ -111,6 +111,8 @@
     "concurrently": "9.2.1",
     "cross-env": "10.1.0",
     "decompress": "4.2.1",
+    "decompress-tarxz": "^3.0.0",
+    "decompress-unzip": "^4.0.1",
     "del-cli": "5.1.0",
     "electron": "41.2.0",
     "electron-builder": "26.8.1",

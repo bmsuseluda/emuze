@@ -34,7 +34,6 @@ import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { isLightgunConnected } from "../../../../types/gamepad.js";
 
-const flatpakId = "net.rpcs3.RPCS3";
 const applicationId: ApplicationId = "rpcs3";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "rpcs3.exe")
@@ -328,7 +327,6 @@ const getConfigFileBasePath = () => {
 export const rpcs3: Application = {
   id: applicationId,
   name: "RPCS3",
-  flatpakId,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   omitAbsoluteEntryPathAsLastParam: true,
   searchFilesOnlyIn: [nodepath.join("dev_hdd0", "game"), "games"],

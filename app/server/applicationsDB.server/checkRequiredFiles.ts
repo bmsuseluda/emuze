@@ -17,6 +17,10 @@ const findFilenameOrHash =
     foundFilePath.endsWith(filename) ||
     (hash && hash === createHash(foundFilePath));
 
+const removeDuplicateFilenames = (requiredFiles: RequiredFile[]): string[] => [
+  ...new Set(requiredFiles.map(({ filename }) => filename)),
+];
+
 /**
  * If a bios file is necessary, look in the emuze bios folder.
  * Check for bios files in the following order:
@@ -77,7 +81,7 @@ export const getRequiredFiles = ({
 
     if (detectedRequiredFiles.length === 0) {
       throw new Error(`A BIOS File is necessary for this System. The following are supported:
-${requiredFiles.flatMap(({ requiredFiles }) => requiredFiles.map(({ filename }) => `- ${filename}`)).join("\n")}
+${requiredFiles.flatMap(({ requiredFiles }) => removeDuplicateFilenames(requiredFiles).map((filename) => `- ${filename}`)).join("\n")}
 
 Please put your BIOS File under "${biosPath}"`);
     }

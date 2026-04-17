@@ -116,23 +116,6 @@ return scripts.createSystemsTableExpert()
 return scripts.getWindowsDownloadLink('1) ')
 ```
 2) Choose the [folder where your Roms are located](#roms-folder)
-3) Optionally choose the [folder where your Emulators are located](#emulators-folder-windows-only)
-
-#### Emulators Folder (Windows only)
-
-This is the folder where your emulators are installed. It is only necessary on Windows and only for emulators not bundled by emuze.
-
-```
-emulators
-|-> scummvm
-|---> ...
-|---> scummvm.exe
-|---> ...
-|-> dosbox-staging
-|---> ...
-|---> dosbox.exe
-|---> ...
-```
 
 ### 🐧 Linux
 
@@ -141,9 +124,6 @@ return scripts.getLinuxDownloadLink('1) ')
 ```
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
-
-> [!NOTE]  
-> All emulators, not bundled, need to be installed via flatpak.
 
 ### 🎮️ Steam Deck in Game mode
 

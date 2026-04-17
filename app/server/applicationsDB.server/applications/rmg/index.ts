@@ -21,7 +21,6 @@ import { EOL } from "node:os";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
-const flatpakId = "com.github.Rosalie241.RMG";
 const applicationId: ApplicationId = "rosaliesMupenGui";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "RMG.exe")
@@ -127,7 +126,6 @@ export const rosaliesMupenGui: Application = {
   id: applicationId,
   name: "Rosalie's Mupen GUI",
   fileExtensions: [".z64", ".n64", ".v64"],
-  flatpakId,
   defineEnvironmentVariables: () => ({
     ...sdlGameControllerConfig,
   }),

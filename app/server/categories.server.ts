@@ -53,7 +53,7 @@ export const importCategories = async () => {
   const generalData = readGeneral();
 
   if (generalData?.categoriesPath) {
-    const { categoriesPath, applicationsPath } = generalData;
+    const { categoriesPath } = generalData;
     const categoryFolderNames = readDirectorynames(categoriesPath);
     categoryFolderNames.sort(sortCaseInsensitive);
 
@@ -67,7 +67,6 @@ export const importCategories = async () => {
         result.push({
           categoryDbData,
           categoryFolderBaseName,
-          applicationsPath,
         });
       }
 

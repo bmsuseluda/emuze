@@ -42,6 +42,7 @@ export const emulatorVersions = {
   ares: "147",
   azahar: "2124.3",
   dolphin: "2512",
+  dosboxstaging: "0.82.2",
   duckstation: "0.1-7371",
   cemu: "2.6",
   flycast: "2.6",
@@ -53,5 +54,6 @@ export const emulatorVersions = {
   rosaliesMupenGui: "0.8.9",
   rpcs3: "0.0.39",
   ryujinx: "1.3.3",
+  scummvm: "2026.2.0",
   xemu: "0.8.133",
 } satisfies Partial<Record<ApplicationId, string>>;

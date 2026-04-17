@@ -10,7 +10,7 @@ export type FocusElement =
   | "closeDialog";
 
 export const getFocusDefault = (general: General | null): FocusElement => {
-  if (general?.applicationsPath || general?.categoriesPath) {
+  if (general?.categoriesPath) {
     return "sidebar";
   }
   return "settingsSidebar";
@@ -19,7 +19,7 @@ export const getFocusDefault = (general: General | null): FocusElement => {
 export const getFocusHistoryDefault = (
   general: General | null,
 ): FocusElement[] => {
-  if (general?.applicationsPath || general?.categoriesPath) {
+  if (general?.categoriesPath) {
     return [];
   }
   return ["sidebar"];

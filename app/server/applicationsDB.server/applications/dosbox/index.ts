@@ -8,6 +8,13 @@ import type {
 } from "../../types.js";
 import nodepath from "node:path";
 import { readFilenames } from "../../../readWriteData.server.js";
+import type { ApplicationId } from "../../applicationId.js";
+import { isWindows } from "../../../operationsystem.server.js";
+
+const applicationId: ApplicationId = "dosboxstaging";
+const bundledPath = isWindows()
+  ? nodepath.join(applicationId, "dosbox.exe")
+  : nodepath.join(applicationId, "dosbox");
 
 const findDosGameEntry = (filePath: string) =>
   Object.entries(dosGames).find(([key]) =>
@@ -124,12 +131,11 @@ const createOptionParams: OptionParamFunction = ({
 };
 
 export const dosboxstaging: Application = {
-  id: "dosboxstaging",
+  id: applicationId,
   name: "DOSBox-Staging",
-  executable: "dosbox.exe",
   fileExtensions: [".exe", ".bat"],
-  flatpakId: "io.github.dosbox-staging",
   excludeFiles: excludeDosSecondaryFiles,
   createOptionParams,
   findEntryName: findDosGameName,
+  bundledPath,
 };

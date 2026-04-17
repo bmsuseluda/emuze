@@ -20,7 +20,6 @@ import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { getKeyboardButtonMappings } from "./keyboardConfig.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
-const flatpakId = "org.flycast.Flycast";
 const applicationId: ApplicationId = "flycast";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "flycast.exe")
@@ -113,7 +112,6 @@ export const flycast: Application = {
   id: applicationId,
   name: "Flycast",
   fileExtensions: [".cue", ".chd", ".gdi", ".cdi"],
-  flatpakId,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {
     basePath: getConfigFileBasePath(),

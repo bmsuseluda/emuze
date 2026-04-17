@@ -20,7 +20,6 @@ import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
-const flatpakId = "net.kuribo64.melonDS";
 const applicationId: ApplicationId = "melonds";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "melonDS.exe")
@@ -84,7 +83,6 @@ export const melonds: Application = {
   id: applicationId,
   name: "melonDS",
   fileExtensions: [".nds"],
-  flatpakId,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {
     basePath: getConfigFileBasePath(),

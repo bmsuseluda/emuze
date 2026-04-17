@@ -19,7 +19,6 @@ import { getKeyboardButtonMappings } from "./keyboardConfig.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
-const flatpakId = "app.xemu.xemu";
 const applicationId: ApplicationId = "xemu";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "xemu.exe")
@@ -120,7 +119,6 @@ export const xemu: Application = {
   id: applicationId,
   name: "xemu",
   fileExtensions: [".iso", ".xiso"],
-  flatpakId,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   omitAbsoluteEntryPathAsLastParam: true,
   configFile: {

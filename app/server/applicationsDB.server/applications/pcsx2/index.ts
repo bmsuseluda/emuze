@@ -19,7 +19,6 @@ import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
-const flatpakId = "net.pcsx2.PCSX2";
 const applicationId: ApplicationId = "pcsx2";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "pcsx2-qt.exe")
@@ -163,7 +162,6 @@ export const pcsx2: Application = {
   id: applicationId,
   name: "PCSX2",
   fileExtensions: [".chd", ".iso"],
-  flatpakId,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {
     basePath: getConfigFileBasePath(),

@@ -257,7 +257,6 @@ export const readEntriesWithMetaData = async (
 export interface CategoryImportData {
   categoryDbData: CategoryDB;
   categoryFolderBaseName: string;
-  applicationsPath?: string;
 }
 
 export const createCategoryData = ({

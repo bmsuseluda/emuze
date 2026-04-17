@@ -19,7 +19,6 @@ import { mameDefaultConfig } from "./mameDefaultConfig.js";
 import type { SystemId } from "../../../categoriesDB.server/systemId.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
-const flatpakId = "org.mamedev.MAME";
 const applicationId: ApplicationId = "mame";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "mame.exe")
@@ -151,7 +150,6 @@ export const mame: Application = {
   id: applicationId,
   name: "MAME",
   fileExtensions: [".zip", ".chd", ".cue"],
-  flatpakId,
   defineEnvironmentVariables: () => ({
     SDL_ENABLE_SCREEN_KEYBOARD: "0",
     ...sdlGameControllerConfig,

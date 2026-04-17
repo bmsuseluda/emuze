@@ -2,6 +2,10 @@ import type { ApplicationId } from "../app/server/applicationsDB.server/applicat
 import { basename, join } from "node:path";
 import followRedirects from "follow-redirects";
 import decompress from "decompress";
+// @ts-ignore
+import decompressTarxz from "decompress-tarxz";
+// @ts-ignore
+import decompressUnzip from "decompress-unzip";
 import { applications, emulatorVersions } from "./applications.js";
 import {
   chmodSync,
@@ -40,6 +44,10 @@ const emulatorDownloads = {
   dolphin: {
     Linux: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions.dolphin}%402026-01-01_1767256227/Dolphin_Emulator-${emulatorVersions.dolphin}-anylinux.dwarfs-x86_64.AppImage`,
     Windows: `https://dl.dolphin-emu.org/releases/${emulatorVersions.dolphin}/dolphin-${emulatorVersions.dolphin}-x64.7z`,
+  },
+  dosboxstaging: {
+    Linux: `https://github.com/dosbox-staging/dosbox-staging/releases/download/v${emulatorVersions.dosboxstaging}/dosbox-staging-linux-x86_64-v${emulatorVersions.dosboxstaging}.tar.xz`,
+    Windows: `https://github.com/dosbox-staging/dosbox-staging/releases/download/v${emulatorVersions.dosboxstaging}/dosbox-staging-windows-x64-v${emulatorVersions.dosboxstaging}.zip`,
   },
   duckstation: {
     Linux: `https://github.com/Kyuyrii/Duckstation-GPL3/releases/download/v${emulatorVersions.duckstation}/DuckStation-x64.AppImage`,
@@ -80,6 +88,10 @@ const emulatorDownloads = {
   ryujinx: {
     Linux: `https://git.ryujinx.app/projects/Ryubing/releases/download/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-x64.AppImage`,
     Windows: `https://git.ryujinx.app/projects/Ryubing/releases/download/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-win_x64.zip`,
+  },
+  scummvm: {
+    Linux: `https://github.com/pkgforge-dev/ScummVM-AppImage/releases/download/${emulatorVersions.scummvm}-1%402026-04-01_1775040486/ScummVM-${emulatorVersions.scummvm}-1-anylinux-x86_64.AppImage`,
+    Windows: `https://downloads.scummvm.org/frs/scummvm/${emulatorVersions.scummvm}/scummvm-${emulatorVersions.scummvm}-win32-x86_64.zip`,
   },
   xemu: {
     Linux: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-${emulatorVersions.xemu}-x86_64.AppImage`,
@@ -275,6 +287,7 @@ const downloadAndExtract = (
         try {
           await decompress(buffer, outputFolder, {
             filter: (file) => !file.path.endsWith("/"),
+            plugins: [decompressTarxz(), decompressUnzip()],
           });
           console.log(`Download of ${url} complete`);
           console.log(`${url} extracted`);

@@ -59,7 +59,6 @@ export const ares: Application = {
   id: "ares",
   name: "ares",
   fileExtensions: [],
-  flatpakId: "dev.ares.ares",
   configFile: {
     basePath: getConfigFileBasePath(),
     files: ["settings.bml"],
