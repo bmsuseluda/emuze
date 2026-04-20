@@ -3,7 +3,7 @@ import { basename, join } from "node:path";
 import followRedirects from "follow-redirects";
 import decompress from "decompress";
 // @ts-ignore
-import decompressTarxz from "decompress-tarxz";
+import decompressTarxz from "@felipecrs/decompress-tarxz";
 // @ts-ignore
 import decompressUnzip from "decompress-unzip";
 import { applications, emulatorVersions } from "./applications.js";
