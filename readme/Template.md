@@ -17,9 +17,10 @@ It is not there yet for every system and emulator, please have a look at 🕹️
 - 🪄 Provides Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
 - 🎮️ Seamless gamepad integration for most emulators
 - 🔫 Basic lightgun integration for some emulators
-- 📦️ Bundles most emulators
+- 📦️ Bundles all emulators
 - 💻️ Windows, Linux and Steam Deck support
 - 💫 Updates itself
+- 🛠️ BIOS handling
 
 <br>
 
@@ -81,12 +82,24 @@ You can close a game via
 If you have gamepads connected with your Steam Deck the Steam Deck Controls will be configured as the last gamepad. This is done to use the Steam Deck on a TV. If you have other PC Handhelds where this feature would come in handy, please let me know.
 
 ### Bundled
-If a system is bundled, the respective emulator is provided with emuze in a specific version.
+All emulators are provided with emuze in a specific version.
 
 Config files of bundled emulators are stored in `~/.local/share/emuze/emulators/` on linux and `AppData\Local\emuze\Data\emulators\` on windows.
 
 ### BIOS needed
-Some emulators need a BIOS or firmware to run. Please check the documentation of the respective emulator for more information.
+Some emulators need a BIOS or firmware to run. If so you have to set the folder to your BIOS files in the settings. emuze will detect the appropriate file and configures the emulator accordingly.
+
+For some emulators a open source BIOS implementation is bundled with emuze:
+<br>
+
+| System | Open Source BIOS implementation |
+| ------ | ------------------------------- |
+```mmd
+return scripts.createBiosOpenSourceTable()
+```
+
+> [!IMPORTANT]  
+> ❤️ Many thanks to the creators. Your work is a big step forward simplifing emulation.
 
 ### Supported System Names and file extensions
 In general emuze should just detect your systems and games. If not please check the supported system names and file extensions:

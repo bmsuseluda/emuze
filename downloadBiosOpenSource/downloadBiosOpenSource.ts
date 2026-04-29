@@ -4,22 +4,35 @@ import {
   downloadFile,
 } from "../downloadEmulators/downloadFile.js";
 import { copy, removeFile } from "../app/server/readWriteData.server.js";
-import { existsSync } from "node:fs";
+import { existsSync, mkdirSync } from "node:fs";
+import type { SystemId } from "../app/server/categoriesDB.server/systemId.js";
 
 interface BiosDownloadDefinition {
+  name: string;
   path: string;
+  homepage: string;
+  system: SystemId;
   /** only necessary if path points to archive */
   subPath?: string;
 }
 
-const emulatorsBios: BiosDownloadDefinition[] = [
+export const emulatorsBios: BiosDownloadDefinition[] = [
   {
+    name: "neogeo-bios",
+    system: "neogeo",
+    homepage: "https://github.com/neogeo-projects/neogeo-bios",
     path: "https://github.com/neogeo-projects/neogeo-bios/releases/download/v0.0.2/neogeo-bios-mvs-us-v0.0.2.bin",
   },
   {
+    name: "gba-bios",
+    system: "nintendogameboyadvance",
+    homepage: "https://github.com/ez-me/gba-bios",
     path: "https://github.com/ez-me/gba-bios/releases/download/1.0/gba_bios.bin",
   },
   {
+    name: "PCSX Redux Openbios",
+    system: "sonyplaystation",
+    homepage: "https://pcsx-redux.consoledev.net/openbios/",
     path: "https://distrib.app/storage/assets/77b/d4f/d19/3c97129607573203202183c377b103b0131b23ad707ec4adc9cb33f/pcsx-redux-nightly-23726.20260420.7-x64.zip",
     subPath: "openbios.bin",
   },
@@ -72,6 +85,7 @@ const downloadAndExtractBios = (url: string, subPath: string) => {
 };
 
 const downloadBiosOpenSource = () => {
+  mkdirSync(biosFolderPath, { recursive: true });
   emulatorsBios.forEach(({ path, subPath }) => {
     if (subPath) {
       downloadAndExtractBios(path, subPath);

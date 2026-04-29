@@ -56,4 +56,4 @@ export const emulatorVersions = {
   ryujinx: "1.3.3",
   scummvm: "2026.2.0",
   xemu: "0.8.133",
-} satisfies Partial<Record<ApplicationId, string>>;
+} satisfies Record<ApplicationId, string>;
