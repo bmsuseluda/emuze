@@ -16,7 +16,6 @@ import { removeFile } from "../../../readWriteData.server.js";
 import { findWiiUGameName } from "./findEntryName.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
-const flatpakId = "info.cemu.Cemu";
 const applicationId: ApplicationId = "cemu";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "Cemu.exe")
@@ -93,7 +92,6 @@ export const cemu: Application = {
   name: "Cemu",
   entryAsDirectory: true,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
-  flatpakId,
   findEntryName: findWiiUGameName,
   configFile: {
     basePath: getConfigFileBasePath(),

@@ -7,6 +7,7 @@ import { keyboardMapping } from "../app/types/gamepad.js";
 import type { Category } from "../app/server/categoriesDB.server/types.js";
 import type { Application } from "../app/server/applicationsDB.server/types.js";
 import { rosaliesMupenGui } from "../app/server/applicationsDB.server/applications/rmg/index.js";
+import { emulatorsBios } from "../downloadBiosOpenSource/downloadBiosOpenSource.js";
 
 const preConfigured: ApplicationId[] = [
   "ares",
@@ -25,44 +26,6 @@ const preConfigured: ApplicationId[] = [
   "rpcs3",
   "ryujinx",
   "xemu",
-];
-
-const bundled: Partial<Record<ApplicationId, string>> = {
-  ares: emulatorVersions.ares,
-  azahar: emulatorVersions.azahar,
-  cemu: emulatorVersions.cemu,
-  dolphin: emulatorVersions.dolphin,
-  duckstation: emulatorVersions.duckstation,
-  flycast: emulatorVersions.flycast,
-  mame: emulatorVersions.mame,
-  mednafen: emulatorVersions.mednafen,
-  melonds: emulatorVersions.melonds,
-  pcsx2: emulatorVersions.pcsx2,
-  ppsspp: emulatorVersions.ppsspp,
-  rosaliesMupenGui: emulatorVersions.rosaliesMupenGui,
-  rpcs3: emulatorVersions.rpcs3,
-  ryujinx: emulatorVersions.ryujinx,
-  xemu: emulatorVersions.xemu,
-};
-
-const biosNeeded: SystemId[] = [
-  "arcade",
-  "pcenginecd",
-  "pcenginesupergrafx",
-  "neogeo",
-  "neogeopocket",
-  "neogeopocketcolor",
-  "nintendogameboyadvance",
-  "nintendowiiu",
-  "nintendoswitch",
-  "sega32x",
-  "segacd",
-  "segamegald",
-  "segasaturn",
-  "sonyplaystation",
-  "sonyplaystation2",
-  "sonyplaystation3",
-  "xbox",
 ];
 
 const homepages: Record<ApplicationId, string> = {
@@ -99,12 +62,11 @@ const createSystemsTableRow = (
     : nameOverwrites[category.id] || category.names[0];
   const emulatorName = `[${application.name}](${homepages[application.id]})`;
   const isPreConfigured = preConfigured.includes(application.id) ? "Yes" : "No";
-  const isBundled = bundled[application.id]
-    ? `v${bundled[application.id]}`
-    : "-";
-  const isBiosNeeded = biosNeeded.includes(category.id) ? "Yes" : "No";
+  const bundledVersion = emulatorVersions[application.id];
+  const isBiosNeeded =
+    application.biosFiles && !application.bundledBiosOpenSource ? "Yes" : "No";
 
-  return `| ${systemName} | ${emulatorName} | ${isPreConfigured} | ${isBundled} | ${isBiosNeeded} | `;
+  return `| ${systemName} | ${emulatorName} | ${isPreConfigured} | ${bundledVersion} | ${isBiosNeeded} | `;
 };
 
 export const createSystemsTable = () =>
@@ -142,6 +104,14 @@ export const createSystemsTableExpert = () =>
       return `| ${systemName} | ${systemNames} | ${entryAsDirectory ? "Folder" : fileExtensions} | `;
     })
     .filter(Boolean)
+    .join("\n");
+
+export const createBiosOpenSourceTable = () =>
+  emulatorsBios
+    .map(({ name, system, homepage }) => {
+      const systemName = categories[system].names[0];
+      return `| ${systemName} | [${name}](${homepage}) |`;
+    })
     .join("\n");
 
 export const createKeyboardMapping = () =>

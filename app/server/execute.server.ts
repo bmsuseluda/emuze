@@ -1,20 +1,12 @@
 import type { ExecFileException } from "node:child_process";
-import { execFile, execFileSync } from "node:child_process";
+import { execFile } from "node:child_process";
 import { existsSync } from "node:fs";
 import nodepath from "node:path";
 import type { Category, Entry } from "../types/jsonFiles/category.js";
 import { createAbsoluteEntryPath } from "../types/jsonFiles/category.js";
 import { isGeneralConfigured } from "../types/jsonFiles/settings/general.js";
 import type { Settings } from "../types/jsonFiles/settings/index.js";
-import { getInstalledApplicationForCategoryOnWindows } from "./applications.server.js";
-import {
-  checkFlatpakIsInstalled,
-  EmulatorNotInstalledError,
-} from "./applicationsDB.server/checkEmulatorIsInstalled.js";
-import type {
-  Application,
-  EnvironmentVariableFunction,
-} from "./applicationsDB.server/types.js";
+import type { EnvironmentVariableFunction } from "./applicationsDB.server/types.js";
 import { categories } from "./categoriesDB.server/index.js";
 import type { SystemId } from "./categoriesDB.server/systemId.js";
 import { readCategory } from "./categoryDataCache.server.js";
@@ -64,6 +56,7 @@ const execFileCallback =
 
 const executeApplication = (file: string, args: string[]) => {
   return new Promise<void>((resolve, reject) => {
+    log("debug", "params", args);
     const childProcess = execFile(
       file,
       args,
@@ -109,75 +102,6 @@ const executeBundledApplication = async ({
     nodepath.join(bundledEmulatorsPathBase, bundledPath),
     params,
   );
-};
-
-const executeApplicationOnLinux = async ({
-  applicationFlatpakId,
-  absoluteEntryPath,
-  optionParams,
-  omitAbsoluteEntryPathAsLastParam,
-  categoriesPath,
-  applicationName,
-}: {
-  applicationFlatpakId: string;
-  absoluteEntryPath: string;
-  optionParams: string[];
-  omitAbsoluteEntryPathAsLastParam?: boolean;
-  categoriesPath: string;
-  applicationName: string;
-}) => {
-  if (checkFlatpakIsInstalled(applicationFlatpakId)) {
-    const params = ["run", `--filesystem=${categoriesPath}`];
-    params.push(applicationFlatpakId);
-    params.push(...optionParams);
-
-    if (!omitAbsoluteEntryPathAsLastParam) {
-      params.push(absoluteEntryPath);
-    }
-
-    return executeApplication("flatpak", params);
-  } else {
-    throw new EmulatorNotInstalledError(applicationName);
-  }
-};
-
-const executeApplicationOnWindows = async ({
-  applicationData,
-  applicationsPath,
-  absoluteEntryPath,
-  getOptionParams,
-  environmentVariables,
-  omitAbsoluteEntryPathAsLastParam,
-}: {
-  applicationData: Application;
-  applicationsPath: string;
-  absoluteEntryPath: string;
-  getOptionParams: (applicationsPath?: string) => string[] | Promise<string[]>;
-  environmentVariables: (applicationsPath?: string) => void;
-  omitAbsoluteEntryPathAsLastParam?: boolean;
-}) => {
-  const applicationPath = getInstalledApplicationForCategoryOnWindows(
-    applicationData,
-    applicationsPath,
-  )?.path;
-
-  if (applicationPath) {
-    environmentVariables(applicationPath);
-    const params = [];
-    params.push(...(await getOptionParams(applicationPath)));
-    syncFromEmuzeFolderToEmulatorFolder(
-      applicationData.id,
-      applicationData.configFile,
-    );
-
-    if (!omitAbsoluteEntryPathAsLastParam) {
-      params.push(absoluteEntryPath);
-    }
-
-    return executeApplication(applicationPath, params);
-  } else {
-    throw new EmulatorNotInstalledError(applicationData.name);
-  }
 };
 
 const setEnvironmentVariables = ({
@@ -230,10 +154,10 @@ export const startGame = async (
       const {
         defineEnvironmentVariables,
         createOptionParams,
-        flatpakId,
         configFile,
         id,
         bundledPath,
+        bundledBiosOpenSource,
       } = applicationData;
 
       createEmuzeFolderIfNotExist(id, configFile);
@@ -254,12 +178,14 @@ export const startGame = async (
           requiredFiles: applicationData.biosFiles,
           systemFolderName: categoryData.name,
           biosPath: generalData.biosPath,
+          bundledBiosOpenSource,
         });
 
         const otherRequiredFiles = getRequiredFiles({
           requiredFiles: applicationData.otherRequiredFiles,
           systemFolderName: categoryData.name,
           biosPath: generalData.biosPath,
+          bundledBiosOpenSource,
           allRequired: true,
         });
 
@@ -277,45 +203,17 @@ export const startGame = async (
               })
             : [];
 
-        if (bundledPath) {
-          environmentVariables();
-          const optionParams = getOptionParams();
-          syncFromEmuzeFolderToEmulatorFolder(id, configFile);
+        environmentVariables();
+        const optionParams = getOptionParams();
+        syncFromEmuzeFolderToEmulatorFolder(id, configFile);
 
-          await executeBundledApplication({
-            bundledPath,
-            absoluteEntryPath,
-            optionParams,
-            omitAbsoluteEntryPathAsLastParam:
-              applicationData.omitAbsoluteEntryPathAsLastParam,
-          });
-        } else {
-          if (isWindows() && generalData.applicationsPath) {
-            await executeApplicationOnWindows({
-              applicationData,
-              applicationsPath: generalData.applicationsPath,
-              absoluteEntryPath,
-              getOptionParams,
-              environmentVariables,
-              omitAbsoluteEntryPathAsLastParam:
-                applicationData.omitAbsoluteEntryPathAsLastParam,
-            });
-          } else {
-            environmentVariables();
-            const optionParams = getOptionParams();
-            syncFromEmuzeFolderToEmulatorFolder(id, configFile);
-
-            await executeApplicationOnLinux({
-              applicationFlatpakId: flatpakId,
-              absoluteEntryPath,
-              optionParams,
-              omitAbsoluteEntryPathAsLastParam:
-                applicationData.omitAbsoluteEntryPathAsLastParam,
-              categoriesPath: generalData.categoriesPath,
-              applicationName: applicationData.name,
-            });
-          }
-        }
+        await executeBundledApplication({
+          bundledPath,
+          absoluteEntryPath,
+          optionParams,
+          omitAbsoluteEntryPathAsLastParam:
+            applicationData.omitAbsoluteEntryPathAsLastParam,
+        });
 
         syncFromEmulatorFolderToEmuzeFolder(id, configFile);
         addToLastPlayedCached(parentEntryData || entryData, systemId);
@@ -333,19 +231,5 @@ export const startGame = async (
       );
       throw new Error();
     }
-  }
-};
-
-export const installFlatpak = (flatpakId: string) => {
-  try {
-    log("debug", `Start Install ${flatpakId}`);
-    execFileSync("flatpak", ["install", "--noninteractive", flatpakId], {
-      encoding: "utf8",
-    });
-    log("debug", `End Install ${flatpakId}`);
-    return true;
-  } catch (error) {
-    log("error", "installFlatpak", error);
-    return false;
   }
 };

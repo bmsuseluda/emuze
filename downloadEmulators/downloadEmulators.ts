@@ -1,7 +1,6 @@
 import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
 import { basename, join } from "node:path";
-import followRedirects from "follow-redirects";
-import decompress from "decompress";
+
 import { applications, emulatorVersions } from "./applications.js";
 import {
   chmodSync,
@@ -17,7 +16,8 @@ import { moveSync } from "fs-extra/esm";
 
 import { spawnSync } from "node:child_process";
 import { isWindows } from "../app/server/operationsystem.server.js";
-import { downloadFile } from "../app/server/downloadFile.server.js";
+import { downloadAndExtract, downloadFile } from "./downloadFile.js";
+import { removeFile } from "../app/server/readWriteData.server.js";
 
 const __dirname = import.meta.dirname;
 
@@ -40,6 +40,10 @@ const emulatorDownloads = {
   dolphin: {
     Linux: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions.dolphin}%402026-01-01_1767256227/Dolphin_Emulator-${emulatorVersions.dolphin}-anylinux.dwarfs-x86_64.AppImage`,
     Windows: `https://dl.dolphin-emu.org/releases/${emulatorVersions.dolphin}/dolphin-${emulatorVersions.dolphin}-x64.7z`,
+  },
+  dosboxstaging: {
+    Linux: `https://github.com/dosbox-staging/dosbox-staging/releases/download/v${emulatorVersions.dosboxstaging}/dosbox-staging-linux-x86_64-v${emulatorVersions.dosboxstaging}.tar.xz`,
+    Windows: `https://github.com/dosbox-staging/dosbox-staging/releases/download/v${emulatorVersions.dosboxstaging}/dosbox-staging-windows-x64-v${emulatorVersions.dosboxstaging}.zip`,
   },
   duckstation: {
     Linux: `https://github.com/Kyuyrii/Duckstation-GPL3/releases/download/v${emulatorVersions.duckstation}/DuckStation-x64.AppImage`,
@@ -78,8 +82,12 @@ const emulatorDownloads = {
     Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-93dbdead24e1474a94c59fffc1f6cfb25abe488b/rpcs3-v${emulatorVersions.rpcs3}-18763-93dbdead_win64_msvc.7z`,
   },
   ryujinx: {
-    Linux: `https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-x64.AppImage`,
-    Windows: `https://git.ryujinx.app/api/v4/projects/1/packages/generic/Ryubing/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-win_x64.zip`,
+    Linux: `https://git.ryujinx.app/projects/Ryubing/releases/download/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-x64.AppImage`,
+    Windows: `https://git.ryujinx.app/projects/Ryubing/releases/download/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-win_x64.zip`,
+  },
+  scummvm: {
+    Linux: `https://github.com/pkgforge-dev/ScummVM-AppImage/releases/download/${emulatorVersions.scummvm}-1%402026-04-01_1775040486/ScummVM-${emulatorVersions.scummvm}-1-anylinux-x86_64.AppImage`,
+    Windows: `https://downloads.scummvm.org/frs/scummvm/${emulatorVersions.scummvm}/scummvm-${emulatorVersions.scummvm}-win32-x86_64.zip`,
   },
   xemu: {
     Linux: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-${emulatorVersions.xemu}-x86_64.AppImage`,
@@ -117,7 +125,13 @@ const downloadEmulator = (emulatorId: ApplicationId, downloadLink: string) => {
     } else if (downloadLink.toLowerCase().endsWith(".exe")) {
       downloadExe(downloadLink, emulatorFolderPath, bundledPath);
     } else {
-      downloadAndExtract(downloadLink, emulatorFolderPath, bundledPath);
+      downloadAndExtract(
+        downloadLink,
+        emulatorFolderPath,
+        bundledPath,
+        () => removeRootFolderIfNecessary(emulatorFolderPath),
+        exitOnResponseCodeError,
+      );
     }
   }
 };
@@ -240,61 +254,9 @@ const removeRootFolderIfNecessary = (folder: string) => {
       const rootFolder = join(tempFolder, files[0]);
       moveSync(rootFolder, folder);
 
-      // remove temp folder
-      rmSync(tempFolder, { recursive: true, force: true });
+      removeFile(tempFolder);
     }
   }
-};
-
-const downloadAndExtract = (
-  url: string,
-  outputFolder: string,
-  fileToCheck: string,
-) => {
-  console.log(`Download of ${url} started`);
-  followRedirects.https
-    .get(url, (response) => {
-      if (
-        typeof response.statusCode !== "undefined" &&
-        response.statusCode !== 200
-      ) {
-        console.error(
-          `Failed to download ${url}. Status code: ${response.statusCode}`,
-        );
-        exitOnResponseCodeError();
-      }
-
-      const chunks: Buffer[] = [];
-
-      response.on("data", (chunk) => {
-        chunks.push(chunk);
-      });
-
-      response.on("end", async () => {
-        const buffer = Buffer.concat(chunks);
-        try {
-          await decompress(buffer, outputFolder, {
-            filter: (file) => !file.path.endsWith("/"),
-          });
-          console.log(`Download of ${url} complete`);
-          console.log(`${url} extracted`);
-
-          removeRootFolderIfNecessary(outputFolder);
-
-          if (!existsSync(fileToCheck)) {
-            console.error(`${fileToCheck} does not exist`);
-            process.exit(1);
-          }
-        } catch (err) {
-          console.error(`Error during extraction: ${err}`);
-          process.exit(1);
-        }
-      });
-    })
-    .on("error", (err) => {
-      console.error(`Error downloading the file: ${err.message}`);
-      process.exit(1);
-    });
 };
 
 downloadEmulators();

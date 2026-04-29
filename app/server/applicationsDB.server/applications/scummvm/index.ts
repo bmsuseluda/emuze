@@ -1,9 +1,17 @@
+import nodepath from "node:path";
+
+import { isWindows } from "../../../operationsystem.server.js";
 import type { Application } from "../../types.js";
+import type { ApplicationId } from "../../applicationId.js";
+
+const applicationId: ApplicationId = "scummvm";
+const bundledPath = isWindows()
+  ? nodepath.join(applicationId, "scummvm.exe")
+  : nodepath.join(applicationId, `${applicationId}.AppImage`);
 
 export const scummvm: Application = {
-  id: "scummvm",
+  id: applicationId,
   name: "ScummVM",
-  flatpakId: "org.scummvm.ScummVM",
   entryAsDirectory: true,
   omitAbsoluteEntryPathAsLastParam: true,
   createOptionParams: ({
@@ -20,4 +28,5 @@ export const scummvm: Application = {
     optionParams.push("--auto-detect");
     return optionParams;
   },
+  bundledPath,
 };

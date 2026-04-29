@@ -15,7 +15,6 @@ import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { copy } from "../../../readWriteData.server.js";
 
 const applicationId: ApplicationId = "ryujinx";
-const flatpakId = "org.ryujinx.Ryujinx";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "Ryujinx.exe")
   : nodepath.join(applicationId, `${applicationId}.AppImage`);
@@ -79,7 +78,6 @@ export const ryujinx: Application = {
   id: applicationId,
   name: "Ryujinx",
   fileExtensions: [".xci", ".nsp"],
-  flatpakId,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   createOptionParams: ({
     settings: {

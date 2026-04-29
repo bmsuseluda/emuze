@@ -21,7 +21,6 @@ test("Should show initial config page", async ({ page, settingsPage }) => {
   await expect(
     settingsPage.generalPage.romsPathRequiredError,
   ).not.toBeVisible();
-  await expect(settingsPage.generalPage.emulatorsPath).not.toBeVisible();
 
   await expect(page).toHaveScreenshot();
 

@@ -94,7 +94,6 @@ export interface RequiredFiles {
 export interface Application {
   id: ApplicationId;
   name: string;
-  executable?: `${string}.exe`;
   fileExtensions?: string[];
   searchFilesOnlyIn?: string[];
   entryAsDirectory?: boolean;
@@ -102,10 +101,10 @@ export interface Application {
   omitAbsoluteEntryPathAsLastParam?: boolean;
   defineEnvironmentVariables?: EnvironmentVariableFunction;
   createOptionParams?: OptionParamFunction;
-  flatpakId: string;
   findEntryName?: FindEntryNameFunction;
   excludeFiles?: ExcludeFilesFunction;
-  bundledPath?: string;
+  bundledPath: string;
+  bundledBiosOpenSource?: boolean;
   /** only one is necessary */
   biosFiles?: RequiredFiles[];
   /** if they are defined, all of them are necessary to run the applciation */

@@ -15,11 +15,14 @@ import {
   writeAppearance,
 } from "../app/server/settings.server.js";
 import { createLogFile, isDebug, log } from "../app/server/debug.server.js";
+import { bundledBiosOpenSourcePath } from "../app/server/bundledEmulatorsPath.server.js";
 import {
   commandLineOptions,
   commandLineOptionsString,
 } from "../app/server/commandLine.server.js";
 import { initReactRouter } from "./initReactRouter.js";
+import { cp } from "node:fs";
+import { biosOpenSourceHomeDirectory } from "../app/server/homeDirectory.server.js";
 
 const __dirname = import.meta.dirname;
 const { autoUpdater } = electronUpdater;
@@ -39,6 +42,17 @@ const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
   if (!fullscreen) {
     window.maximize();
   }
+};
+
+const copyBiosOpenSource = () => {
+  cp(
+    bundledBiosOpenSourcePath,
+    biosOpenSourceHomeDirectory,
+    { force: true, recursive: true },
+    (error) => {
+      log("error", "copyBiosOpenSource", error?.message);
+    },
+  );
 };
 
 const showHelp = () => {
@@ -184,6 +198,8 @@ app.on("ready", async () => {
       window.focusOnWebView();
     }, 100);
   });
+
+  copyBiosOpenSource();
 });
 
 app.on("will-quit", () => {

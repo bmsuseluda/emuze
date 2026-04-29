@@ -19,7 +19,6 @@ import { getKeyboardButtonMappings } from "./keyboardConfig.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
-const flatpakId = "app.xemu.xemu";
 const applicationId: ApplicationId = "xemu";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "xemu.exe")
@@ -74,9 +73,9 @@ const replaceSysFilesConfig =
   ): SectionReplacement =>
   (sections) =>
     replaceSection(sections, "[sys.files]", [
-      { keyValue: `flashrom_path = ${biosFiles.at(0)!.filePath}` },
+      { keyValue: `flashrom_path = '${biosFiles.at(0)!.filePath}'` },
       ...otherRequiredFiles.map<ParamToReplace>(({ type, filePath }) => ({
-        keyValue: `${type}_path = ${filePath}`,
+        keyValue: `${type}_path = '${filePath}'`,
       })),
     ]);
 
@@ -120,7 +119,6 @@ export const xemu: Application = {
   id: applicationId,
   name: "xemu",
   fileExtensions: [".iso", ".xiso"],
-  flatpakId,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   omitAbsoluteEntryPathAsLastParam: true,
   configFile: {

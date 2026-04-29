@@ -19,7 +19,6 @@ import { isWindows } from "../../../operationsystem.server.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
-const flatpakId = "org.DolphinEmu.dolphin-emu";
 const applicationId: ApplicationId = "dolphin";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "Dolphin.exe")
@@ -130,7 +129,6 @@ export const dolphin: Application = {
   id: applicationId,
   name: "Dolphin",
   fileExtensions: [".iso", ".rvz"],
-  flatpakId,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   createOptionParams: ({
     settings: {

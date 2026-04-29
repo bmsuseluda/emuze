@@ -19,7 +19,6 @@ import { mameDefaultConfig } from "./mameDefaultConfig.js";
 import type { SystemId } from "../../../categoriesDB.server/systemId.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
-const flatpakId = "org.mamedev.MAME";
 const applicationId: ApplicationId = "mame";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "mame.exe")
@@ -151,7 +150,6 @@ export const mame: Application = {
   id: applicationId,
   name: "MAME",
   fileExtensions: [".zip", ".chd", ".cue"],
-  flatpakId,
   defineEnvironmentVariables: () => ({
     SDL_ENABLE_SCREEN_KEYBOARD: "0",
     ...sdlGameControllerConfig,
@@ -181,9 +179,22 @@ export const mameNeoGeo: Application = {
           filename: "neogeo.zip",
           hash: "095f3324012226d67a968b4cb5bf291d96622228f74915deddd61a66985e3969",
         },
+        {
+          filename: "neogeo-bios-mvs-eu-v0.0.2.bin",
+          hash: "94bce7938643627e56bbb7194469ca648dc9200be1bcc92f590cf7fa3f8da2f4",
+        },
+        {
+          filename: "neogeo-bios-mvs-jp-v0.0.2.bin",
+          hash: "bd374581d9c7360462b83dc139db9b48fe5f4859776509cf0041452472948431",
+        },
+        {
+          filename: "neogeo-bios-mvs-us-v0.0.2.bin",
+          hash: "818e1a9371e2fc6d270ddfa4755d8be32f9c582740ae0c91cfb18e1f3298c81d",
+        },
       ],
     },
   ],
+  bundledBiosOpenSource: true,
 };
 
 export const mameNeoGeoCD: Application = {

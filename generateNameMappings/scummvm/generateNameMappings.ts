@@ -2,7 +2,8 @@ import nodepath from "node:path";
 // Import can't be shortend because path aliases do not work
 import { writeFile } from "../../app/server/readWriteData.server.js";
 import { spawnSync } from "node:child_process";
-import { checkFlatpakIsInstalled } from "../../app/server/applicationsDB.server/checkEmulatorIsInstalled.js";
+import { bundledEmulatorsPathBase } from "../../app/server/bundledEmulatorsPath.server.js";
+import { scummvm } from "../../app/server/applicationsDB.server/applications/scummvm/index.js";
 
 const __dirname = import.meta.dirname;
 
@@ -36,25 +37,22 @@ export const extractGames = (data: string) => {
 };
 
 export const importScummvm = () => {
-  const flatpakId = "org.scummvm.ScummVM";
-  const isScummVmInstalled = checkFlatpakIsInstalled(flatpakId);
+  const executable = nodepath.join(
+    bundledEmulatorsPathBase,
+    scummvm.bundledPath,
+  );
 
-  if (isScummVmInstalled) {
-    try {
-      const data = spawnSync("flatpak", ["run", flatpakId, "--list-games"], {
-        encoding: "utf-8",
-        maxBuffer: 1000000000,
-      }).stdout.toString();
+  try {
+    const data = spawnSync(executable, ["--list-games"], {
+      encoding: "utf-8",
+      maxBuffer: 1000000000,
+    }).stdout.toString();
 
-      const result = extractGames(data);
+    const result = extractGames(data);
 
-      writeFile(result, nodepath.join(resultPath, "scummvm.json"));
-    } catch (error) {
-      console.log(error);
-      process.exit(1);
-    }
-  } else {
-    console.error("ScummVM is not installed");
+    writeFile(result, nodepath.join(resultPath, "scummvm.json"));
+  } catch (error) {
+    console.log(error);
     process.exit(1);
   }
 };

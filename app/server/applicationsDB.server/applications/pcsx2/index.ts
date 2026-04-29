@@ -19,7 +19,6 @@ import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
-const flatpakId = "net.pcsx2.PCSX2";
 const applicationId: ApplicationId = "pcsx2";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "pcsx2-qt.exe")
@@ -163,7 +162,6 @@ export const pcsx2: Application = {
   id: applicationId,
   name: "PCSX2",
   fileExtensions: [".chd", ".iso"],
-  flatpakId,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {
     basePath: getConfigFileBasePath(),
@@ -190,7 +188,7 @@ export const pcsx2: Application = {
         },
         /** Europe */
         {
-          filename: "SCPH-70004_BIOS_V12_PAL_200.BIN",
+          filename: "SCPH-70004_BIOS_V12_PAL_200.bin",
           hash: "d6653f4e93be2f6f9e9d690a934f26cf0f6ad4e348b69f41ef736732c3a6685b",
         },
         /** Japan */

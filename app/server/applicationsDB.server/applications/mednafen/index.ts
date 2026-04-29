@@ -4,7 +4,7 @@ import nodepath from "node:path";
 import { getVirtualGamepadsSaturn } from "./VirtualGamepadSaturn.js";
 import { getVirtualGamepadsPcEngine } from "./VirtualGamepadPcEngine.js";
 import { getKeyboardKey } from "./keyboardConfig.js";
-import { applicationId, bundledPath, flatpakId } from "./definitions.js";
+import { applicationId, bundledPath } from "./definitions.js";
 import { log } from "../../../debug.server.js";
 import { getGamepads } from "./initGamepadIDs.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
@@ -63,7 +63,6 @@ export const mednafen: Application = {
     basePath: getConfigFileBasePath(),
     files: ["mednafen.cfg", "cheats", "firmware", "sav"],
   },
-  flatpakId,
   defineEnvironmentVariables: () => {
     const environmentVariables: Record<string, string> = {
       SDL_ENABLE_SCREEN_KEYBOARD: "0",
