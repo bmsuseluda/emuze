@@ -157,6 +157,7 @@ export const startGame = async (
         configFile,
         id,
         bundledPath,
+        bundledBiosOpenSource,
       } = applicationData;
 
       createEmuzeFolderIfNotExist(id, configFile);
@@ -177,12 +178,14 @@ export const startGame = async (
           requiredFiles: applicationData.biosFiles,
           systemFolderName: categoryData.name,
           biosPath: generalData.biosPath,
+          bundledBiosOpenSource,
         });
 
         const otherRequiredFiles = getRequiredFiles({
           requiredFiles: applicationData.otherRequiredFiles,
           systemFolderName: categoryData.name,
           biosPath: generalData.biosPath,
+          bundledBiosOpenSource,
           allRequired: true,
         });
 

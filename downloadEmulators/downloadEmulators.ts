@@ -1,11 +1,6 @@
 import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
 import { basename, join } from "node:path";
-import followRedirects from "follow-redirects";
-import decompress from "decompress";
-// @ts-ignore
-import decompressTarxz from "@felipecrs/decompress-tarxz";
-// @ts-ignore
-import decompressUnzip from "decompress-unzip";
+
 import { applications, emulatorVersions } from "./applications.js";
 import {
   chmodSync,
@@ -21,7 +16,8 @@ import { moveSync } from "fs-extra/esm";
 
 import { spawnSync } from "node:child_process";
 import { isWindows } from "../app/server/operationsystem.server.js";
-import { downloadFile } from "../app/server/downloadFile.server.js";
+import { downloadAndExtract, downloadFile } from "./downloadFile.js";
+import { removeFile } from "../app/server/readWriteData.server.js";
 
 const __dirname = import.meta.dirname;
 
@@ -129,7 +125,13 @@ const downloadEmulator = (emulatorId: ApplicationId, downloadLink: string) => {
     } else if (downloadLink.toLowerCase().endsWith(".exe")) {
       downloadExe(downloadLink, emulatorFolderPath, bundledPath);
     } else {
-      downloadAndExtract(downloadLink, emulatorFolderPath, bundledPath);
+      downloadAndExtract(
+        downloadLink,
+        emulatorFolderPath,
+        bundledPath,
+        () => removeRootFolderIfNecessary(emulatorFolderPath),
+        exitOnResponseCodeError,
+      );
     }
   }
 };
@@ -252,62 +254,9 @@ const removeRootFolderIfNecessary = (folder: string) => {
       const rootFolder = join(tempFolder, files[0]);
       moveSync(rootFolder, folder);
 
-      // remove temp folder
-      rmSync(tempFolder, { recursive: true, force: true });
+      removeFile(tempFolder);
     }
   }
-};
-
-const downloadAndExtract = (
-  url: string,
-  outputFolder: string,
-  fileToCheck: string,
-) => {
-  console.log(`Download of ${url} started`);
-  followRedirects.https
-    .get(url, (response) => {
-      if (
-        typeof response.statusCode !== "undefined" &&
-        response.statusCode !== 200
-      ) {
-        console.error(
-          `Failed to download ${url}. Status code: ${response.statusCode}`,
-        );
-        exitOnResponseCodeError();
-      }
-
-      const chunks: Buffer[] = [];
-
-      response.on("data", (chunk) => {
-        chunks.push(chunk);
-      });
-
-      response.on("end", async () => {
-        const buffer = Buffer.concat(chunks);
-        try {
-          await decompress(buffer, outputFolder, {
-            filter: (file) => !file.path.endsWith("/"),
-            plugins: [decompressTarxz(), decompressUnzip()],
-          });
-          console.log(`Download of ${url} complete`);
-          console.log(`${url} extracted`);
-
-          removeRootFolderIfNecessary(outputFolder);
-
-          if (!existsSync(fileToCheck)) {
-            console.error(`${fileToCheck} does not exist`);
-            process.exit(1);
-          }
-        } catch (err) {
-          console.error(`Error during extraction: ${err}`);
-          process.exit(1);
-        }
-      });
-    })
-    .on("error", (err) => {
-      console.error(`Error downloading the file: ${err.message}`);
-      process.exit(1);
-    });
 };
 
 downloadEmulators();

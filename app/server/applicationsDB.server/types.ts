@@ -104,6 +104,7 @@ export interface Application {
   findEntryName?: FindEntryNameFunction;
   excludeFiles?: ExcludeFilesFunction;
   bundledPath: string;
+  bundledBiosOpenSource?: boolean;
   /** only one is necessary */
   biosFiles?: RequiredFiles[];
   /** if they are defined, all of them are necessary to run the applciation */

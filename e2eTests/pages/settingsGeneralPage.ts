@@ -5,6 +5,7 @@ export class SettingsGeneralPage {
   readonly headline: Locator;
   readonly name = "General";
   readonly romsPath: Locator;
+  readonly biosPath: Locator;
   readonly romsPathNotExistError: Locator;
   readonly romsPathRequiredError: Locator;
   readonly importAllButton: Locator;
@@ -17,6 +18,7 @@ export class SettingsGeneralPage {
     this.romsPath = page.getByRole("textbox", { name: "Roms Path" });
     this.romsPathNotExistError = page.getByText("The Roms Path does not exist");
     this.romsPathRequiredError = page.getByText("The Roms Path is missing");
+    this.biosPath = page.getByRole("textbox", { name: "BIOS Path (Optional)" });
     this.importAllButton = page.getByRole("button", { name: "Import all" });
   }
 }

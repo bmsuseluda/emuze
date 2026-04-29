@@ -10,10 +10,10 @@
     "resolveJsonModule": true,
     "target": "ESNext",
     "strict": true,
-    "baseUrl": ".",
     "skipLibCheck": true,
     "allowJs": false,
     "forceConsistentCasingInFileNames": true,
+    "rootDir": "..",
     "outDir": "../buildDesktop",
   }
 }

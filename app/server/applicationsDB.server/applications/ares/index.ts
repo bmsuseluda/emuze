@@ -98,6 +98,7 @@ export const aresGameBoyAdvance: Application = {
       ],
     },
   ],
+  bundledBiosOpenSource: true,
 };
 
 export const aresNES: Application = {

@@ -6,6 +6,7 @@ import { configFolderPath, e2ePath, testName } from "./config.js";
 test.describe.configure({ mode: "serial" });
 
 const playstationSystemName = "Playstation";
+const saturnSystemName = "Sega Saturn";
 
 const resetFiles = () => {
   fs.removeSync(configFolderPath);
@@ -165,12 +166,35 @@ test("Should show error that bios folder is necessary", async ({
   libraryPage,
 }) => {
   await libraryPage.press("i");
-  await libraryPage.goToSystemViaClick(playstationSystemName, "Klonoa");
+  await libraryPage.goToSystemViaClick(saturnSystemName, "Daytona USA");
   await libraryPage.press("ArrowRight");
-  await libraryPage.press("ArrowRight");
-  await libraryPage.expectGameFocused("Klonoa");
+  await libraryPage.expectGameFocused("Daytona USA");
   await libraryPage.press("Enter");
   await expect(page.getByText("BIOS Path")).toBeVisible();
+  await expect(page).toHaveScreenshot();
+});
+
+const testBiosPath = nodepath.join(e2ePath, "testBios");
+
+test("Should show error that bios file is necessary", async ({
+  page,
+  libraryPage,
+  settingsPage,
+}) => {
+  await settingsPage.openSettingsViaClick();
+  await settingsPage.generalPage.biosPath.fill(testBiosPath);
+  await settingsPage.generalPage.importAllButton.click();
+  await expect(libraryPage.loadingModal).toBeVisible();
+  await expect(libraryPage.loadingModal).not.toBeVisible();
+  await libraryPage.press("Escape");
+
+  await libraryPage.goToSystemViaClick(saturnSystemName, "Daytona USA");
+  await libraryPage.press("ArrowRight");
+  await libraryPage.expectGameFocused("Daytona USA");
+  await libraryPage.press("Enter");
+  await expect(
+    page.getByText("A BIOS File is necessary for this System."),
+  ).toBeVisible();
   await expect(page).toHaveScreenshot();
 });
 

@@ -6,7 +6,6 @@
     "moduleResolution": "NodeNext",
     "noImplicitAny": true,
     "strict": true,
-    "baseUrl": ".",
     "skipLibCheck": true,
     "outDir": "../buildConfig"
   }

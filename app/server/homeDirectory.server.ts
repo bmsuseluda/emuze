@@ -11,3 +11,8 @@ export const emulatorsConfigDirectory = nodepath.join(
   homeDirectory,
   "emulators",
 );
+
+export const biosOpenSourceHomeDirectory = nodepath.join(
+  homeDirectory,
+  "biosOpenSource",
+);

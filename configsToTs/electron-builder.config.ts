@@ -3,7 +3,7 @@ import type { Configuration } from "electron-builder";
 const config: Configuration = {
   appId: "org.emuze.emuze",
   files: ["buildDesktop", "build", "public", "fetchMetaData/systems"],
-  extraFiles: ["emulators/**"],
+  extraFiles: ["emulators/**", "biosOpenSource/**"],
   win: {
     target: [
       {

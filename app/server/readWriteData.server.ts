@@ -83,13 +83,17 @@ export const readFilenames = ({
   entryAsDirectory?: boolean;
 }) => {
   if (searchFilesOnlyIn) {
-    return searchFilesOnlyIn.flatMap((allowedFolder) =>
-      readAllFilenames({
-        path: nodepath.join(path, allowedFolder),
-        fileExtensions,
-        entryAsDirectory,
-      }),
-    );
+    return searchFilesOnlyIn.flatMap((allowedFolder) => {
+      const allowedFolderPath = nodepath.join(path, allowedFolder);
+      if (existsSync(allowedFolderPath)) {
+        return readAllFilenames({
+          path: allowedFolderPath,
+          fileExtensions,
+          entryAsDirectory,
+        });
+      }
+      return [];
+    });
   }
 
   return readAllFilenames({

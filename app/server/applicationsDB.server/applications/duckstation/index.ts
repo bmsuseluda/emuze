@@ -191,6 +191,10 @@ export const duckstation: Application = {
           filename: "scph5500.bin",
           hash: "9c0421858e217805f4abe18698afea8d5aa36ff0727eb8484944e00eb5e7eadb",
         },
+        {
+          filename: "openbios.bin",
+          hash: "ac81ad019d82a9a09dd8ccc06eac184ca11f3fe4b868685c046bf33a044ade51",
+        },
       ],
     },
   ],
@@ -214,5 +218,6 @@ export const duckstation: Application = {
     }
     return optionParams;
   },
+  bundledBiosOpenSource: true,
   bundledPath,
 };
