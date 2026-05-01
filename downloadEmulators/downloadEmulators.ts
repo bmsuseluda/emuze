@@ -258,5 +258,3 @@ const removeRootFolderIfNecessary = (folder: string) => {
     }
   }
 };
-
-downloadEmulators();

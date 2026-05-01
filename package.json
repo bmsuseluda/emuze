@@ -33,7 +33,7 @@
     "convertSvgs": "svgr --svgo-config svgo.config.js --config-file .svgrrc.js ./svgs",
     "download": "concurrently -c 'auto' --kill-others-on-fail 'yarn:download:*'",
     "download:emulators": "tsx ./downloadEmulators/downloadEmulators.ts && yarn import:sdlMappings",
-    "download:biosOpenSource": "tsx ./downloadBiosOpenSource/downloadBiosOpenSource.ts && yarn import:sdlMappings",
+    "download:biosOpenSource": "tsx ./downloadBiosOpenSource/downloadBiosOpenSource.ts",
     "dumpGame:cd": "tsx dumpGames/dumpCdAndConvert.ts",
     "dumpGame:dvd": "tsx dumpGames/dumpDvdAndConvert.ts",
     "convertAllToChd": "tsx dumpGames/convertAllToChd.ts",
