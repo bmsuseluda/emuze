@@ -1,7 +1,7 @@
 import nodepath from "node:path";
 import { writeFile } from "../app/server/readWriteData.server.js";
 import { gamecontrollerdbPath } from "../app/server/bundledEmulatorsPath.server.js";
-import { writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 
 const __dirname = import.meta.dirname;
 
@@ -24,7 +24,15 @@ const fetchSdlMappings = () => {
         .filter((line) => line && !line.startsWith("#"));
 
       writeFile(mappings, nodepath.join(resultPath, "mappings.json"));
-      writeFileSync(nodepath.join(projectPath, gamecontrollerdbPath), text);
+
+      const absoluteGamecontrollerdbPath = nodepath.join(
+        projectPath,
+        gamecontrollerdbPath,
+      );
+      mkdirSync(nodepath.dirname(absoluteGamecontrollerdbPath), {
+        recursive: true,
+      });
+      writeFileSync(absoluteGamecontrollerdbPath, text);
     });
   });
 };
