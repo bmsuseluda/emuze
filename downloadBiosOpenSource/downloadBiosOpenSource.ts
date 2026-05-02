@@ -84,7 +84,7 @@ const downloadAndExtractBios = (url: string, subPath: string) => {
   }
 };
 
-const downloadBiosOpenSource = () => {
+export const downloadBiosOpenSource = () => {
   mkdirSync(biosFolderPath, { recursive: true });
   emulatorsBios.forEach(({ path, subPath }) => {
     if (subPath) {
@@ -94,5 +94,3 @@ const downloadBiosOpenSource = () => {
     }
   });
 };
-
-downloadBiosOpenSource();
