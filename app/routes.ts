@@ -8,6 +8,12 @@ const createErrorDialog = (route: DefineRouteFunction, id: string) => {
   });
 };
 
+const createReleaseNotesDialog = (route: DefineRouteFunction, id: string) => {
+  route("releaseNotes", "customRoutes/categories.$category.releaseNotes.tsx", {
+    id: `${id}ReleaseNotes`,
+  });
+};
+
 const createGameDialog = (route: DefineRouteFunction, id: string) => {
   route(
     ":gameId",
@@ -73,11 +79,13 @@ const createCategoriesRoutes = (route: DefineRouteFunction) => {
       );
       createSettingsRoutes(route, id);
       createErrorDialog(route, id);
+      createReleaseNotesDialog(route, id);
     });
     route(":category", "customRoutes/categories.$category.tsx", () => {
       createGameDialog(route, "category");
       createSettingsRoutes(route, "category");
       createErrorDialog(route, "category");
+      createReleaseNotesDialog(route, "category");
     });
   });
 };

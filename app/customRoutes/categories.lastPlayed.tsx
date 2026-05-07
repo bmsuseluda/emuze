@@ -7,7 +7,6 @@ import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/i
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
 import { readAppearance, readGeneral } from "../server/settings.server.js";
-import { SettingsLink } from "../containers/SettingsLink/index.js";
 import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
 import { log } from "../server/debug.server.js";
 import { readLastPlayed } from "../server/lastPlayed.server.js";
@@ -18,6 +17,8 @@ import { ImportButton } from "../containers/ImportButton/index.js";
 import type { ImportButtonId } from "../containers/ImportButton/importButtonId.js";
 import { importCategories } from "../server/categories.server.js";
 import { useLaunchButton } from "../hooks/useLaunchButton/index.js";
+import { ReleaseNotesLinkLink } from "../containers/ReleaseNotesLink/index.js";
+import { SettingsLink } from "../containers/SettingsLink/index.js";
 
 export const loader = () => {
   const lastPlayed = readLastPlayed();
@@ -146,6 +147,7 @@ export default function LastPlayed() {
           />
         </Form>
       </ListActionBarLayout>
+      <ReleaseNotesLinkLink isInFocus={isInFocus} switchFocus={switchFocus} />
       <SettingsLink isInFocus={isInFocus} switchFocus={switchFocus} />
       <Outlet />
     </>

@@ -9,7 +9,6 @@ import { SystemIcon } from "../components/SystemIcon/index.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
 import { readAppearance, readGeneral } from "../server/settings.server.js";
-import { SettingsLink } from "../containers/SettingsLink/index.js";
 import type { DataFunctionArgs } from "../context.js";
 import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
 import fs from "node:fs";
@@ -20,6 +19,8 @@ import type { ImportButtonId } from "../containers/ImportButton/importButtonId.j
 import { LaunchButton, launchId } from "../containers/LaunchButton/index.js";
 import { readCategory } from "../server/categoryDataCache.server.js";
 import { useLaunchButton } from "../hooks/useLaunchButton/index.js";
+import { ReleaseNotesLinkLink } from "../containers/ReleaseNotesLink/index.js";
+import { SettingsLink } from "../containers/SettingsLink/index.js";
 
 export const loader = ({ params }: DataFunctionArgs) => {
   const { category } = params;
@@ -191,6 +192,7 @@ export default function Category() {
           />
         </Form>
       </ListActionBarLayout>
+      <ReleaseNotesLinkLink isInFocus={isInFocus} switchFocus={switchFocus} />
       <SettingsLink isInFocus={isInFocus} switchFocus={switchFocus} />
       <Outlet />
     </>

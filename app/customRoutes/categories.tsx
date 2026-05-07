@@ -15,6 +15,7 @@ import type { DataFunctionArgs } from "../context.js";
 import type { SystemId } from "../server/categoriesDB.server/systemId.js";
 import { readLastPlayed } from "../server/lastPlayed.server.js";
 import { useOpenSettings } from "../containers/SettingsLink/useOpenSettings.js";
+import { useOpenReleaseNotes } from "../containers/ReleaseNotesLink/useOpenReleaseNotes.js";
 import { useImportButton } from "../containers/ImportButton/useImportButton.js";
 import {
   useDirectionalInputRight,
@@ -101,6 +102,7 @@ export default function Categories() {
   useDirectionalInputRight(switchToMain);
   useInputConfirmation(switchToMain);
   useOpenSettings(isInFocus);
+  useOpenReleaseNotes(isInFocus);
   useImportButton(isInFocus, "importGames");
 
   const onLinkClick = useCallback(() => {
