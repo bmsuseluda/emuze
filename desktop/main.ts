@@ -50,7 +50,9 @@ const copyBiosOpenSource = () => {
     biosOpenSourceHomeDirectory,
     { force: true, recursive: true },
     (error) => {
-      log("error", "copyBiosOpenSource", error?.message);
+      if (error) {
+        log("error", "copyBiosOpenSource", error.message);
+      }
     },
   );
 };

@@ -1,7 +1,7 @@
 import { Link as RemixLink } from "react-router";
 import type { LinkProps } from "react-router";
 import { styled } from "../../../styled-system/jsx/index.js";
-import { FaBell } from "react-icons/fa";
+import { FaBell, FaRegBell } from "react-icons/fa";
 
 const Link = styled(RemixLink, {
   base: {
@@ -47,11 +47,13 @@ const Link = styled(RemixLink, {
 interface Props extends Omit<LinkProps, "to"> {
   isFullscreen?: boolean;
   to?: string;
+  updateAvailable?: boolean;
 }
 
 export const ReleaseNotesLink = ({
   isFullscreen = false,
   to = "releaseNotes",
+  updateAvailable = false,
   ...rest
 }: Props) => (
   <Link
@@ -63,6 +65,6 @@ export const ReleaseNotesLink = ({
     draggable={false}
     isFullscreen={isFullscreen}
   >
-    <FaBell />
+    {updateAvailable ? <FaBell /> : <FaRegBell />}
   </Link>
 );

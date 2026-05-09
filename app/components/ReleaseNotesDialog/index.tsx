@@ -1,5 +1,5 @@
 import { Dialog } from "../Dialog/index.js";
-import { MdErrorOutline } from "react-icons/md";
+import { FaBell } from "react-icons/fa";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { ListActionBarLayout } from "../layouts/ListActionBarLayout/index.js";
@@ -9,7 +9,6 @@ import { styled } from "../../../styled-system/jsx/index.js";
 
 const ReleaseNotesContainer = styled("div", {
   base: {
-    whiteSpace: "pre-wrap",
     fontSize: "small",
 
     "& ul": {
@@ -17,7 +16,12 @@ const ReleaseNotesContainer = styled("div", {
       paddingLeft: "revert",
       display: "flex",
       flexDirection: "column",
+      marginBottom: "2",
       gap: "10px",
+    },
+
+    "& ul ul": {
+      marginBottom: 0,
     },
 
     "& li": {
@@ -27,17 +31,21 @@ const ReleaseNotesContainer = styled("div", {
 
     "& p": {
       fontSize: "small",
-      marginBottom: "1",
+      marginBottom: "2",
     },
 
     "& code": {
-      backgroundColor: "#1e232a",
+      all: "unset",
+      backgroundColor: "#191c20",
       padding: "0.2rem 0.4rem",
       borderRadius: "0.5rem",
     },
 
     "& a": {
       all: "revert",
+      textUnderlineOffset: "0.2rem",
+      textDecorationThickness: "0.0625rem",
+      color: "#3e87e3",
     },
 
     "& h2": {
@@ -45,6 +53,8 @@ const ReleaseNotesContainer = styled("div", {
       fontSize: "large",
       marginTop: "2",
       marginBottom: "1",
+      borderBottom: "0.125rem solid #2d2c2c",
+      paddingBottom: "0.125rem",
     },
 
     "& h3": {
@@ -73,7 +83,7 @@ export const ReleaseNotesDialog = ({
         <ListActionBarLayout
           headline={{
             title: "Release Notes",
-            icon: <MdErrorOutline />,
+            icon: <FaBell />,
           }}
         >
           <ListActionBarLayout.ListActionBarContainer
