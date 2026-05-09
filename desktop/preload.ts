@@ -20,7 +20,7 @@ export const electronAPI = {
   isFullscreen: () => electron?.ipcRenderer.invoke("isFullscreen"),
   closeEmuze: () => electron?.ipcRenderer.invoke("closeEmuze"),
   isUpdateAvailable: (callback: () => void) =>
-    autoUpdater.on("appimage-filename-updated", (path) => {
+    autoUpdater.on("appimage-filename-updated", () => {
       callback();
     }),
 };
