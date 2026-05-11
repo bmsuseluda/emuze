@@ -96,9 +96,7 @@ app.on("ready", async () => {
   });
   autoUpdater.on("update-downloaded", ({ downloadedFile }) => {
     log("debug", "update downloaded", downloadedFile);
-  });
-  autoUpdater.on("appimage-filename-updated", (path) => {
-    log("debug", "update appimage filename updated", path);
+    window.webContents.send("updateAvailable");
   });
 
   const appearance = readAppearance();

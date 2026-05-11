@@ -1,5 +1,6 @@
 import { ReleaseNotesLink as ReleaseNotesLinkComponent } from "../../components/ReleaseNotesLink/index.js";
 import { useFullscreen } from "../../hooks/useFullscreen/index.js";
+import { useUpdateAvailable } from "../../hooks/useUpdateAvailable/index.js";
 import type { FocusElement } from "../../types/focusElement.js";
 import {
   openReleaseNotesId,
@@ -13,6 +14,7 @@ interface Props {
 
 export const ReleaseNotesLinkLink = ({ isInFocus, switchFocus }: Props) => {
   const isFullscreen = useFullscreen();
+  const isUpdateAvailable = useUpdateAvailable();
 
   useOpenReleaseNotes(isInFocus);
 
@@ -23,6 +25,7 @@ export const ReleaseNotesLinkLink = ({ isInFocus, switchFocus }: Props) => {
       onClick={() => {
         switchFocus("releaseNotesDialog");
       }}
+      updateAvailable={isUpdateAvailable}
     />
   );
 };

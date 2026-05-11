@@ -1,7 +1,4 @@
 import electron from "electron";
-import electronUpdater from "electron-updater";
-
-const { autoUpdater } = electronUpdater;
 
 export type WindowChangeEvents =
   | "close"
@@ -19,10 +16,8 @@ export const electronAPI = {
     ),
   isFullscreen: () => electron?.ipcRenderer.invoke("isFullscreen"),
   closeEmuze: () => electron?.ipcRenderer.invoke("closeEmuze"),
-  isUpdateAvailable: (callback: () => void) =>
-    autoUpdater.on("appimage-filename-updated", () => {
-      callback();
-    }),
+  onUpdateAvailable: (callback: () => void) =>
+    electron?.ipcRenderer.on("updateAvailable", callback),
 };
 
 electron?.contextBridge.exposeInMainWorld("electronAPI", electronAPI);

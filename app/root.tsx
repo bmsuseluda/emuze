@@ -24,6 +24,7 @@ import { readGeneral } from "./server/settings.server.js";
 import { GamepadProvider } from "./provider/GamepadProvider/index.js";
 import { useFullscreen } from "./hooks/useFullscreen/index.js";
 import { isWindows } from "./server/operationsystem.server.js";
+import { UpdateAvailableProvider } from "./provider/UpdateAvailableProvider/index.js";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
@@ -44,17 +45,19 @@ export default function App() {
   return (
     <Document>
       <FullscreenProvider fullscreenDefault={fullscreen}>
-        <Layout isWindows={isWindows}>
-          <FocusProvider
-            focusDefault={focusDefault}
-            focusHistoryDefault={focusHistoryDefault}
-          >
-            <GamepadProvider>
-              <Titlebar />
-              <Outlet />
-            </GamepadProvider>
-          </FocusProvider>
-        </Layout>
+        <UpdateAvailableProvider>
+          <Layout isWindows={isWindows}>
+            <FocusProvider
+              focusDefault={focusDefault}
+              focusHistoryDefault={focusHistoryDefault}
+            >
+              <GamepadProvider>
+                <Titlebar />
+                <Outlet />
+              </GamepadProvider>
+            </FocusProvider>
+          </Layout>
+        </UpdateAvailableProvider>
       </FullscreenProvider>
     </Document>
   );
