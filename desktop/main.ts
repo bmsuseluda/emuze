@@ -12,7 +12,9 @@ import * as dotenv from "dotenv";
 import electronUpdater from "electron-updater";
 import {
   readAppearance,
+  readGeneral,
   writeAppearance,
+  writeGeneral,
 } from "../app/server/settings.server.js";
 import { createLogFile, isDebug, log } from "../app/server/debug.server.js";
 import { bundledBiosOpenSourcePath } from "../app/server/bundledEmulatorsPath.server.js";
@@ -96,7 +98,8 @@ app.on("ready", async () => {
   });
   autoUpdater.on("update-downloaded", ({ downloadedFile }) => {
     log("debug", "update downloaded", downloadedFile);
-    window.webContents.send("updateAvailable");
+    const general = readGeneral();
+    writeGeneral({ ...general, showReleaseNotesOnStart: true });
   });
 
   const appearance = readAppearance();

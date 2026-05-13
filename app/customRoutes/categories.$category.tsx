@@ -19,7 +19,6 @@ import type { ImportButtonId } from "../containers/ImportButton/importButtonId.j
 import { LaunchButton, launchId } from "../containers/LaunchButton/index.js";
 import { readCategory } from "../server/categoryDataCache.server.js";
 import { useLaunchButton } from "../hooks/useLaunchButton/index.js";
-import { ReleaseNotesLinkLink } from "../containers/ReleaseNotesLink/index.js";
 import { SettingsLink } from "../containers/SettingsLink/index.js";
 
 export const loader = ({ params }: DataFunctionArgs) => {
@@ -192,7 +191,6 @@ export default function Category() {
           />
         </Form>
       </ListActionBarLayout>
-      <ReleaseNotesLinkLink isInFocus={isInFocus} switchFocus={switchFocus} />
       <SettingsLink isInFocus={isInFocus} switchFocus={switchFocus} />
       <Outlet />
     </>

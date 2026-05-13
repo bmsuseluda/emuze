@@ -3,6 +3,7 @@ import type { Required } from "utility-types";
 export interface General {
   categoriesPath?: string;
   biosPath?: string;
+  showReleaseNotesOnStart?: boolean;
 }
 
 export type GeneralConfigured = Required<General, "categoriesPath">;

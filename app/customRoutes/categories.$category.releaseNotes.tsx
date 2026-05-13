@@ -12,8 +12,13 @@ import {
 } from "../hooks/useDirectionalInput/index.js";
 import { ReleaseNotesDialog } from "../components/ReleaseNotesDialog/index.js";
 import { loadChangelog } from "../server/changelog.server.js";
+import { readGeneral, writeGeneral } from "../server/settings.server.js";
 
 export const loader = () => {
+  const general = readGeneral();
+  if (general?.showReleaseNotesOnStart) {
+    writeGeneral({ ...general, showReleaseNotesOnStart: false });
+  }
   const releaseNotesMarkdown = loadChangelog();
 
   return { releaseNotesMarkdown };

@@ -17,7 +17,6 @@ import { ImportButton } from "../containers/ImportButton/index.js";
 import type { ImportButtonId } from "../containers/ImportButton/importButtonId.js";
 import { importCategories } from "../server/categories.server.js";
 import { useLaunchButton } from "../hooks/useLaunchButton/index.js";
-import { ReleaseNotesLinkLink } from "../containers/ReleaseNotesLink/index.js";
 import { SettingsLink } from "../containers/SettingsLink/index.js";
 
 export const loader = () => {
@@ -147,7 +146,6 @@ export default function LastPlayed() {
           />
         </Form>
       </ListActionBarLayout>
-      <ReleaseNotesLinkLink isInFocus={isInFocus} switchFocus={switchFocus} />
       <SettingsLink isInFocus={isInFocus} switchFocus={switchFocus} />
       <Outlet />
     </>

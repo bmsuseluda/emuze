@@ -1,5 +1,5 @@
 import { Dialog } from "../Dialog/index.js";
-import { FaBell } from "react-icons/fa";
+import { CgNotes } from "react-icons/cg";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { ListActionBarLayout } from "../layouts/ListActionBarLayout/index.js";
@@ -83,7 +83,7 @@ export const ReleaseNotesDialog = ({
         <ListActionBarLayout
           headline={{
             title: "Release Notes",
-            icon: <FaBell />,
+            icon: <CgNotes />,
           }}
         >
           <ListActionBarLayout.ListActionBarContainer

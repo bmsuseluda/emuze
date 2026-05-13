@@ -5,7 +5,7 @@ import { SidebarNavigationLink } from "../containers/SidebarNavigationLink/index
 import { Header } from "../containers/Header/index.js";
 import { SystemIcon } from "../components/SystemIcon/index.js";
 import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar/index.js";
-import { readAppearance } from "../server/settings.server.js";
+import { readAppearance, readGeneral } from "../server/settings.server.js";
 import { useCallback } from "react";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
@@ -15,7 +15,6 @@ import type { DataFunctionArgs } from "../context.js";
 import type { SystemId } from "../server/categoriesDB.server/systemId.js";
 import { readLastPlayed } from "../server/lastPlayed.server.js";
 import { useOpenSettings } from "../containers/SettingsLink/useOpenSettings.js";
-import { useOpenReleaseNotes } from "../containers/ReleaseNotesLink/useOpenReleaseNotes.js";
 import { useImportButton } from "../containers/ImportButton/useImportButton.js";
 import {
   useDirectionalInputRight,
@@ -42,11 +41,15 @@ export const loader = ({ params, request }: DataFunctionArgs) => {
     }
 
     if (!request.url.includes("lastPlayed") && !category) {
+      const showReleaseNotesOnStart = readGeneral()?.showReleaseNotesOnStart;
+      const releaseNotesNestedRoute = showReleaseNotesOnStart
+        ? "/releaseNotes"
+        : "";
       if (isLastPlayedAvailable) {
-        throw redirect("lastPlayed");
+        throw redirect(`lastPlayed${releaseNotesNestedRoute}`);
       }
 
-      throw redirect(categories[0].id);
+      throw redirect(`${categories[0].id}${releaseNotesNestedRoute}`);
     }
 
     const categoryLinks = categories.map(({ id, name }) => ({
@@ -102,7 +105,6 @@ export default function Categories() {
   useDirectionalInputRight(switchToMain);
   useInputConfirmation(switchToMain);
   useOpenSettings(isInFocus);
-  useOpenReleaseNotes(isInFocus);
   useImportButton(isInFocus, "importGames");
 
   const onLinkClick = useCallback(() => {

@@ -16,8 +16,6 @@ export const electronAPI = {
     ),
   isFullscreen: () => electron?.ipcRenderer.invoke("isFullscreen"),
   closeEmuze: () => electron?.ipcRenderer.invoke("closeEmuze"),
-  onUpdateAvailable: (callback: () => void) =>
-    electron?.ipcRenderer.on("updateAvailable", callback),
 };
 
 electron?.contextBridge.exposeInMainWorld("electronAPI", electronAPI);
