@@ -1,9 +1,9 @@
 import { useCallback } from "react";
 import { ConfirmationDialogContainer } from "../ConfirmationDialog/index.js";
 import { TbCancel } from "react-icons/tb";
-import { RiShutDownLine } from "react-icons/ri";
+import { MdOutlineCreateNewFolder } from "react-icons/md";
 
-export const CloseDialogContainer = () => {
+export const CreateSystemFoldersDialogContainer = () => {
   const onClose = useCallback(() => {
     if (window.electronAPI) {
       window.electronAPI.closeEmuze();
@@ -12,16 +12,16 @@ export const CloseDialogContainer = () => {
 
   return (
     <ConfirmationDialogContainer
-      headline="Close emuze?"
-      focusElement="closeDialog"
+      headline="Create System folders?"
+      focusElement="createSystemFoldersDialog"
       onConfirm={onClose}
       cancelButtonDefinition={{
         icon: <TbCancel />,
         children: "Cancel",
       }}
       confirmButtonDefinition={{
-        icon: <RiShutDownLine />,
-        children: "Close",
+        icon: <MdOutlineCreateNewFolder />,
+        children: "Create folders",
       }}
     />
   );

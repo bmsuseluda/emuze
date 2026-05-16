@@ -1,10 +1,12 @@
 import nodepath from "node:path";
-
 import type { CategorySlim } from "../types/jsonFiles/categories.js";
 import { readDirectorynames } from "./readWriteData.server.js";
 import { sortCaseInsensitive } from "./sortCaseInsensitive.server.js";
 import { readGeneral } from "./settings.server.js";
-import { getCategoryDataByName } from "./categoriesDB.server/index.js";
+import {
+  getCategoryDataByName,
+  categories as categoriesDB,
+} from "./categoriesDB.server/index.js";
 import { FileDataCache } from "./FileDataCache.server.js";
 import type { CategoryImportData } from "./importCategory.server.js";
 import { importCategory } from "./importCategory.server.js";
@@ -46,6 +48,18 @@ export const cleanupRemovedCategories = (
   removedCategories.forEach((category) => {
     removeCategory(category);
   });
+};
+
+export const createSystemFolders = () => {
+  const generalData = readGeneral();
+
+  if (generalData?.categoriesPath) {
+    const { categoriesPath } = generalData;
+    const categoryFolderNames = readDirectorynames(categoriesPath);
+    Object.values(categoriesDB).forEach((categoryDbData) => {
+      categoryDbData;
+    });
+  }
 };
 
 export const importCategories = async () => {

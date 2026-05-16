@@ -1,22 +1,24 @@
 import { Button } from "../../components/Button/index.js";
 import { GamepadButtonIcon } from "../../components/GamepadButtonIcon/index.js";
-import { IoMdRefresh } from "react-icons/io";
 import { useNavigation } from "react-router";
-import { useImportButton } from "./useImportButton.js";
-import type { ImportButtonId } from "./importButtonId.js";
-import { importButtonGamepadButtonId } from "./importButtonId.js";
 import { LogoPulseModal } from "../../components/LogoPulseModal/index.js";
 import { useGamepadConnected } from "../../hooks/useGamepadConnected/index.js";
+import {
+  createSystemFoldersButtonGamepadButtonId,
+  type CreateSystemFoldersButtonId,
+} from "./createSystemFoldersButtonId.js";
+import { useCreateSystemFoldersButton } from "./useCreateSystemFoldersButton.js";
+import { MdOutlineCreateNewFolder } from "react-icons/md";
 
 interface Props {
   isInFocus: boolean;
-  id: ImportButtonId;
+  id: CreateSystemFoldersButtonId;
 }
 
-export const ImportButton = ({ isInFocus, id }: Props) => {
+export const CreateSystemFoldersButton = ({ isInFocus, id }: Props) => {
   const { state, formData } = useNavigation();
-  useImportButton(isInFocus, id);
-  const isImporting =
+  useCreateSystemFoldersButton(isInFocus, id);
+  const isCreatingFolders =
     state === "submitting" && formData?.get("_actionId") === id;
   const { gamepadType } = useGamepadConnected();
 
@@ -30,17 +32,17 @@ export const ImportButton = ({ isInFocus, id }: Props) => {
         icon={
           gamepadType ? (
             <GamepadButtonIcon
-              buttonId={importButtonGamepadButtonId}
+              buttonId={createSystemFoldersButtonGamepadButtonId}
               gamepadType={gamepadType}
             />
           ) : (
-            <IoMdRefresh />
+            <MdOutlineCreateNewFolder />
           )
         }
       >
-        Import Games
+        Create System Folders
       </Button>
-      <LogoPulseModal active={isImporting} />
+      <LogoPulseModal active={isCreatingFolders} />
     </>
   );
 };

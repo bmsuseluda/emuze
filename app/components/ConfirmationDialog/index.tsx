@@ -1,17 +1,18 @@
-import { TbCancel } from "react-icons/tb";
-import { RiShutDownLine } from "react-icons/ri";
 import { Dialog } from "../Dialog/index.js";
 import { styled } from "../../../styled-system/jsx/index.js";
 import { Headline } from "../Headline/index.js";
+import type { Props as ButtonProps } from "../Button/index.js";
 import { Button } from "../Button/index.js";
 import type { RefObject } from "react";
 
 interface Props {
   open: boolean;
-  onClose: () => void;
-  onCancel: () => void;
+  headline: string;
+  cancelButtonDefinition: ButtonProps;
+  confirmButtonDefinition: ButtonProps;
   entryListRef: RefObject<HTMLUListElement | null>;
   entriesRefCallback: (index: number) => (ref: HTMLButtonElement) => void;
+  onDialogClose: () => void;
 }
 
 const Content = styled("div", {
@@ -33,34 +34,24 @@ const ButtonRow = styled("ul", {
   },
 });
 
-export const CloseDialog = ({
+export const ConfirmationDialog = ({
   open,
-  onClose,
-  onCancel,
+  headline,
+  cancelButtonDefinition,
+  confirmButtonDefinition,
+  onDialogClose,
   entryListRef,
   entriesRefCallback,
 }: Props) => (
-  <Dialog open={open} onClose={onCancel} size="dynamic">
+  <Dialog open={open} onClose={onDialogClose} size="dynamic">
     <Content>
-      <Headline>Close emuze?</Headline>
+      <Headline>{headline}</Headline>
       <ButtonRow ref={entryListRef}>
         <li>
-          <Button
-            onClick={onCancel}
-            icon={<TbCancel />}
-            ref={entriesRefCallback(0)}
-          >
-            Cancel
-          </Button>
+          <Button {...cancelButtonDefinition} ref={entriesRefCallback(0)} />
         </li>
         <li>
-          <Button
-            onClick={onClose}
-            icon={<RiShutDownLine />}
-            ref={entriesRefCallback(1)}
-          >
-            Close
-          </Button>
+          <Button {...confirmButtonDefinition} ref={entriesRefCallback(1)} />
         </li>
       </ButtonRow>
     </Content>

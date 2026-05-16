@@ -7,7 +7,7 @@ import { ErrorDialog } from "../components/ErrorDialog/index.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
 import type { ComponentRef } from "react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 import {
   useDirectionalInputDown,
   useDirectionalInputUp,
@@ -15,6 +15,7 @@ import {
   useInputConfirmation,
   useInputSettings,
 } from "../hooks/useDirectionalInput/index.js";
+import { useFocusOnMount } from "../hooks/useFocusOnMount/index.js";
 
 export const loader = () => {
   const errorDialog = getErrorDialog();
@@ -44,13 +45,7 @@ export default function RenderComponent() {
   const { switchFocusBack, isInFocus, enableFocus } =
     useFocus<FocusElement>("errorDialog");
 
-  useEffect(() => {
-    if (!isInFocus) {
-      enableFocus();
-    }
-    // Should be executed only once, therefore isInFocus can not be part of the dependency array
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useFocusOnMount(isInFocus, enableFocus);
 
   const handleClose = useCallback(() => {
     if (isInFocus) {

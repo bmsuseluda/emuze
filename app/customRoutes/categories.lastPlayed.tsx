@@ -138,9 +138,7 @@ export default function LastPlayed() {
                   disabled={!lastPlayed || lastPlayed.length === 0}
                 />
 
-                <ImportButton isInFocus={isInFocus} id={actionIds.import}>
-                  Import Games
-                </ImportButton>
+                <ImportButton isInFocus={isInFocus} id={actionIds.import} />
               </>
             }
           />

@@ -183,9 +183,7 @@ export default function Category() {
                   disabled={!entries || entries.length === 0}
                 />
 
-                <ImportButton isInFocus={isInFocus} id={actionIds.import}>
-                  Import Games
-                </ImportButton>
+                <ImportButton isInFocus={isInFocus} id={actionIds.import} />
               </>
             }
           />
