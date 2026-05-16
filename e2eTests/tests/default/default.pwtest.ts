@@ -157,8 +157,21 @@ test("Should open the about page", async ({ page, settingsPage }) => {
   await expect(settingsPage.aboutPage.github).toBeVisible();
   await settingsPage.press("ArrowRight");
   await settingsPage.press("ArrowDown");
-  await expect(settingsPage.aboutPage.changelog).toBeFocused();
+  await expect(settingsPage.aboutPage.releasenotes).toBeFocused();
   await expect(page).toHaveScreenshot();
+  await settingsPage.press("Enter");
+  await expect(
+    settingsPage.page.getByRole("heading", {
+      name: "Release Notes",
+    }),
+  ).toBeVisible();
+  await expect(page).toHaveScreenshot();
+  await settingsPage.press("Escape");
+  await expect(
+    settingsPage.page.getByRole("heading", {
+      name: "Release Notes",
+    }),
+  ).not.toBeVisible();
 });
 
 test("Should show error that bios folder is necessary", async ({
