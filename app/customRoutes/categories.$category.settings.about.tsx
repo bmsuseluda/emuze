@@ -17,7 +17,7 @@ import type { Result } from "../hooks/useGamepadsOnGrid/index.js";
 import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid/index.js";
 import { getVersion } from "../server/packagejson.server.js";
 import type { IconType } from "react-icons";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useLocation, useNavigate } from "react-router";
 
 export const loader = () => {
   return { version: getVersion() };
@@ -68,17 +68,8 @@ interface Link {
   to: string;
   href: string;
   icon: IconType;
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 }
-
-const linkConfig: Link[] = [
-  { href: "https://github.com/bmsuseluda/emuze", to: "GitHub", icon: FaGithub },
-  {
-    href: "https://github.com/bmsuseluda/emuze/releases",
-    to: "Changelog",
-    icon: CgNotes,
-  },
-  { href: "https://discord.gg/tCzK7kc6Y4", to: "Discord", icon: FaDiscord },
-];
 
 export const Links = styled("ul", {
   base: {
@@ -92,7 +83,37 @@ const focus: FocusElement = "settingsMain";
 
 export default function About() {
   const { version } = useLoaderData<typeof loader>();
-  const { isInFocus, switchFocusBack } = useFocus<FocusElement>(focus);
+  const { isInFocus, switchFocusBack, switchFocusBackMultiple } =
+    useFocus<FocusElement>(focus);
+
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  const goToReleaseNotes = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
+      if (!pathname.startsWith("/settings")) {
+        event.preventDefault();
+        switchFocusBackMultiple("settingsMain", "settingsSidebar");
+        navigate(`${pathname.split("/settings/about")[0]}/releaseNotes`);
+      }
+    },
+    [pathname, navigate, switchFocusBackMultiple],
+  );
+
+  const linkConfig: Link[] = [
+    {
+      href: "https://github.com/bmsuseluda/emuze",
+      to: "GitHub",
+      icon: FaGithub,
+    },
+    {
+      href: "https://github.com/bmsuseluda/emuze/releases",
+      to: "Release Notes",
+      icon: CgNotes,
+      onClick: goToReleaseNotes,
+    },
+    { href: "https://discord.gg/tCzK7kc6Y4", to: "Discord", icon: FaDiscord },
+  ];
 
   const selectEntry = useCallback((entry: ComponentRef<"a">) => {
     entry.focus();
@@ -161,12 +182,13 @@ export default function About() {
                   <p>GPL-3.0</p>
                 </Properties>
                 <Links ref={entryListRef}>
-                  {linkConfig.map(({ href, to, icon }, index) => (
+                  {linkConfig.map(({ href, to, icon, onClick }, index) => (
                     <li key={to}>
                       <Link
                         href={href}
                         icon={icon}
                         ref={entriesRefCallback(index)}
+                        onClick={onClick}
                       >
                         {to}
                       </Link>

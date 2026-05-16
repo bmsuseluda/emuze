@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.58.0
+## 0.58.0 (19-02-2026)
 
 As one of the few nerdy kids in a small sleepy town in a country where arcade gaming was classified as gambling i could see lightgun games in magazines only. I had an NES and Captain N with his Zapper was sooo awesome to me. But when the time came that i could buy one with my own money the rise of flat panels began and with it the death of CRT TVs and Lightguns altogether. It was just a thing of the past, sadly.
 But surprisingly the genre came back with the Wii and PS3 and there Pointer devices. Some years later camera based Lightguns came to the market and finally Lightgun gaming with the same and even higher precision is possible on flat panels.
@@ -65,7 +65,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - fixed a focus problem on Windows whereby gamepad inputs were not recognized after closing a game
 - fixed a focus problem on Windows whereby gamepad inputs were not recognized after choosing a Roms Folder
 
-## 0.57.0
+## 0.57.0 (18-10-2025)
 
 Starfox, Space Harrier, Panzer Dragoon... They look awesome, they sound awesome and the action is non stop and thrilling. I love those games, but always thought there are not enough of them. Shoot em up fans had the PC Engine and the Mega Drive. Fighting game fans had the NeoGeo, but Rail Shooter fans?
 Back then i did not know, but there was the [Pioneer LaserActive](https://en.wikipedia.org/wiki/LaserActive). A really interesting modular system which combines LaserDiscs with gaming. In particular there were 2 modules. One from NEC based on the PC Engine and one from Sega based on the Mega Drive / Genesis.
@@ -130,7 +130,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
   - mgba
   - lime3ds
 
-## 0.56.0
+## 0.56.0 (15-08-2025)
 
 In this release i fully reworked the gamepad integration in emuze. In the past i used the Web Gamepad Api implementation of Chromium. Sadly i faced a lot of bugs and limitations with this implementation. Therefore i looked for an alternative for a while and finally decided for SDL which is used by most emulators too these days. With this a lot more gamepads are supported and i could close all controller related bugs i had stumbled upon. On top of it the implementation is a lot simpler and more straight forward. A big thank you to [kmamal](https://github.com/kmamal) for providing sdl bindings for NodeJS: [SDL](https://github.com/kmamal/node-sdl).
 
@@ -186,7 +186,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - Updater does not work on Steam Deck Game Mode -> Please switch to Desktop for updating emuze
 - dinput controllers are not mapped correctly on mednafen
 
-## 0.55.0
+## 0.55.0 (03-06-2025)
 
 Finally this release is done. It went quite longer then i expected. I had to do a lot under the hood with some major version jumps of the libraries i use that lead to bigger refactorings.
 
@@ -246,7 +246,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - switch gamepads do not work in emuze on linux
 - dinput gamepads do not work reliably after closing a game in emuze on windows
 
-## 0.54.0
+## 0.54.0 (13-03-2025)
 
 As long as I have been working on emuze, there was one topic that I was never really satisfied with: The first import when setting up emuze took far too long. The reason is quite simple: To retrieve meta data a request has to be sent to the igdb api. Like every service, igdb has a rate limit and authentication that I have to comply with. In order to take care of this and not get into financial trouble, a serverless server has been my solution for fetching meta data to this day. However, this led to the fact that the first import at cold start of the server could take a good 40 seconds for a large game collection.
 
@@ -276,12 +276,12 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - Game Boy, Game Boy Color and Game Boy Advance won't be combined under Game Boy anymore. Therefore you need to create separate folders for these specific systems
 - NeoGeo Pocket and NeoGeo Pocket Color won't be combined under NeoGeo Pocket anymore. Therefore you need to create separate folders for these specific systems
 
-## 0.53.1
+## 0.53.1 (12-02-2025)
 
 ### 🪲 Bug Fixes
 - fix bundled Dolphin on Linux
 
-## 0.53.0
+## 0.53.0 (12-02-2025)
 
 This release is a big step forward towards version 1.0.
 20 of the 33 supported systems are pre configured and 15 of them are bundled now.
@@ -325,7 +325,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - fix missing audio with mednafen on linux
 - fix dolphin gamepad mapping for more then 1 player
 
-## 0.52.1
+## 0.52.1 (29-11-2024)
 
 ### 💥 Features
 - pre configure Ryujinx
@@ -339,7 +339,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - do not show update and dlc files for Nintendo Switch
 - forward fullscreen setting to emulators was not reliable
 
-## 0.51.0
+## 0.51.0 (06-11-2024)
 
 ### 💥 Features
 - group game versions and discs (You have to `Import all` again)
@@ -354,7 +354,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - Settings -> General: Remove error message if new path was choosen
 - remove duplicate `PlayStation All-Stars Battle Royale` entry in PS3 Game Grid
 
-## 0.50.0
+## 0.50.0 (26-09-2024)
 
 ### 💥 Features
 - add last played games grid
@@ -375,7 +375,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - fixed unintended scrolling in sidebar on mouse click
 - mouse click on appearance settings does set focus correctly
 
-## 0.49.0
+## 0.49.0 (26-06-2024)
 
 ### 💥 Features
 - pre configure rumble for n64
@@ -388,7 +388,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - Games are too small on 4k resolutions
 - fix `Import all` on first start without internet connection
 
-## 0.48.0
+## 0.48.0 (31-03-2024)
 
 ### 💥 Features
 - add Neo Geo Pocket and Color support
@@ -414,7 +414,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - use limit and offset on igdb requests to get meta data for more than 500 games per system
 - fast navigation inputs were blocked
 
-## 0.47.1
+## 0.47.1 (26-04-2024)
 
 ### 💥 Features
 - holding buttons to scroll fast
@@ -433,7 +433,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - add [lime3DS](https://github.com/Lime3DS/Lime3DS) as the default Nintendo 3DS Emulator
 - add Donkey.Bas to supported DOS Games
 
-## 0.46.0
+## 0.46.0 (22-03-2024)
 
 ### 💥 Features
 - add support for more dos games (based on a [whitelist](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json) for now)
@@ -455,7 +455,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 ### 📣 Info
 - citra and yuzu can not be installed anymore, because they were removed from flathub. If you have them installed already they will work like before
 
-## 0.45.0
+## 0.45.0 (25-02-2024)
 
 ### 💥 Features
 - add support for ScummVM
@@ -466,7 +466,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - fix Play! integration
 - fix "Install Emulators" could not be triggered via gamepad
 
-## 0.44.0
+## 0.44.0 (15-02-2024)
 
 ### 💥 Features
 - add Game Gear system and emulators
@@ -475,7 +475,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - add Switch system and emulators
 - support gdi and cdi format for flycast
 
-## 0.43.0
+## 0.43.0 (03-02-2024)
 
 ### 💥 Features
 - show fallback game image if offline and there is no cache
@@ -484,7 +484,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - add Rosalie's Mupen GUI Emulator
 - add fullscreen support for flycast
 
-## 0.42.0
+## 0.42.0 (02-02-2024)
 
 ### 💥 Features
 - add chd support for ppsspp

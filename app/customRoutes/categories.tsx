@@ -5,7 +5,7 @@ import { SidebarNavigationLink } from "../containers/SidebarNavigationLink/index
 import { Header } from "../containers/Header/index.js";
 import { SystemIcon } from "../components/SystemIcon/index.js";
 import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar/index.js";
-import { readAppearance } from "../server/settings.server.js";
+import { readAppearance, readGeneral } from "../server/settings.server.js";
 import { useCallback } from "react";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
@@ -41,11 +41,15 @@ export const loader = ({ params, request }: DataFunctionArgs) => {
     }
 
     if (!request.url.includes("lastPlayed") && !category) {
+      const showReleaseNotesOnStart = readGeneral()?.showReleaseNotesOnStart;
+      const releaseNotesNestedRoute = showReleaseNotesOnStart
+        ? "/releaseNotes"
+        : "";
       if (isLastPlayedAvailable) {
-        throw redirect("lastPlayed");
+        throw redirect(`lastPlayed${releaseNotesNestedRoute}`);
       }
 
-      throw redirect(categories[0].id);
+      throw redirect(`${categories[0].id}${releaseNotesNestedRoute}`);
     }
 
     const categoryLinks = categories.map(({ id, name }) => ({

@@ -44,6 +44,7 @@ export const Titlebar = () => {
         <Draggable className="draggable" />
         <Buttons>
           <FakeSettingsButton />
+          <FakeSettingsButton />
           <IconButton variant="minimize" />
           <IconButton variant="maximize" />
           <IconButton variant="close" />

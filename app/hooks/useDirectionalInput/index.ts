@@ -41,3 +41,8 @@ export const useInputSettings = (onSettings: () => void) => {
   useKeyboardEvent("Escape", onSettings);
   useGamepadButtonPressEvent("start", onSettings);
 };
+
+export const useInputReleaseNotes = (onReleaseNotes: () => void) => {
+  useKeyboardEvent("r", onReleaseNotes);
+  useGamepadButtonPressEvent("back", onReleaseNotes);
+};
