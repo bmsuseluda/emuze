@@ -6,12 +6,14 @@ import { readGeneral } from "./settings.server.js";
 import {
   getCategoryDataByName,
   categories as categoriesDB,
+  normalizeString,
 } from "./categoriesDB.server/index.js";
 import { FileDataCache } from "./FileDataCache.server.js";
 import type { CategoryImportData } from "./importCategory.server.js";
 import { importCategory } from "./importCategory.server.js";
 import { setImportIsRunning } from "./importIsRunning.server.js";
 import { readCategory, removeCategory } from "./categoryDataCache.server.js";
+import { mkdirSync } from "node:fs";
 
 export const paths = {
   categories: "data/categories.json",
@@ -55,9 +57,18 @@ export const createSystemFolders = () => {
 
   if (generalData?.categoriesPath) {
     const { categoriesPath } = generalData;
-    const categoryFolderNames = readDirectorynames(categoriesPath);
-    Object.values(categoriesDB).forEach((categoryDbData) => {
-      categoryDbData;
+    const categoryFolderNamesNormalized = readDirectorynames(
+      categoriesPath,
+    ).map((directoryName) => normalizeString(nodepath.basename(directoryName)));
+    Object.values(categoriesDB).forEach(({ names }) => {
+      const systemFolderExist = !!categoryFolderNamesNormalized.find(
+        (categoryFolderName) =>
+          names.find((name) => normalizeString(name) === categoryFolderName),
+      );
+
+      if (!systemFolderExist) {
+        mkdirSync(nodepath.join(categoriesPath, names[0]), { recursive: true });
+      }
     });
   }
 };
@@ -76,8 +87,11 @@ export const importCategories = async () => {
     >((result, categoryFolderName) => {
       const categoryFolderBaseName = nodepath.basename(categoryFolderName);
       const categoryDbData = getCategoryDataByName(categoryFolderBaseName);
+      const categoryExistsAlready = !!result.find(
+        ({ categoryDbData: { id } }) => id === categoryDbData?.id,
+      );
 
-      if (categoryDbData) {
+      if (categoryDbData && !categoryExistsAlready) {
         result.push({
           categoryDbData,
           categoryFolderBaseName,

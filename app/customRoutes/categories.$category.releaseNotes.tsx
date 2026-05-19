@@ -17,7 +17,11 @@ import { useFocusOnMount } from "../hooks/useFocusOnMount/index.js";
 
 export const loader = () => {
   const general = readGeneral();
-  if (general?.showReleaseNotesOnStart) {
+  const showReleaseNotesOnStart = general?.showReleaseNotesOnStart;
+  if (
+    typeof showReleaseNotesOnStart === "undefined" ||
+    showReleaseNotesOnStart
+  ) {
     writeGeneral({ ...general, showReleaseNotesOnStart: false });
   }
   const releaseNotesMarkdown = loadChangelog();

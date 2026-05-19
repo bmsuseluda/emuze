@@ -11,6 +11,7 @@ import {
 import { FormBox } from "../components/FormBox/index.js";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
 import {
+  createSystemFolders,
   importCategories,
   readCategories,
 } from "../server/categories.server.js";
@@ -156,6 +157,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
       }
 
       const fields: General = {
+        ...readGeneral(),
         biosPath,
         categoriesPath,
       };
@@ -197,7 +199,19 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
     }
 
     if (_actionId === actionIds.createSystemFolders && categoriesPath) {
-      // create folders
+      const fields: General = {
+        ...readGeneral(),
+        biosPath,
+        categoriesPath,
+      };
+      writeGeneral(fields);
+
+      createSystemFolders();
+
+      return {
+        biosPath,
+        categoriesPath,
+      };
     }
 
     if (_actionId === actionIds.chooseBiosPath) {
@@ -213,6 +227,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
         }
 
         const fields: General = {
+          ...readGeneral(),
           biosPath: newBiosPath,
           categoriesPath,
         };

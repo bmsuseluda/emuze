@@ -16,6 +16,7 @@ import {
   useInputSettings,
 } from "../hooks/useDirectionalInput/index.js";
 import { CloseDialogContainer } from "../containers/CloseDialog/index.js";
+import { useCreateSystemFoldersButton } from "../containers/CreateSystemFoldersButton/useCreateSystemFoldersButton.js";
 
 export const loader = () => {
   const { collapseSidebar } = readAppearance();
@@ -79,6 +80,7 @@ export default function Index() {
   useInputBack(handleCloseOnFocus);
   useInputSettings(handleClose);
   useImportButton(isInFocus, "importAll");
+  useCreateSystemFoldersButton(isInFocus, "createSystemFolders");
 
   // TODO: think about if this should be a callback from useGamepadsOnSidebar
   const onLinkClick = useCallback(() => {

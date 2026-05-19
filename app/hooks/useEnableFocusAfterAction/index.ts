@@ -9,6 +9,7 @@ export const useEnableFocusAfterAction = (
 
   useEffect(() => {
     const actionId = formData?.get("_actionId");
+    console.log("useEnableFocusAfterAction", state, actionId);
     if (
       state === "loading" &&
       typeof actionId === "string" &&
