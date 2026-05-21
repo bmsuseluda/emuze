@@ -98,7 +98,6 @@ export const useGamepads = () => {
   );
 
   const disableGamepads = useCallback(() => {
-    console.log("disable");
     isEnabled.current = false;
   }, []);
 
@@ -129,7 +128,6 @@ export const useGamepads = () => {
   }, [fireEventOnButtonPress]);
 
   const enableGamepads = useCallback(() => {
-    console.log("enableGamepad");
     isEnabled.current = true;
   }, []);
 

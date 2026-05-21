@@ -67,7 +67,7 @@ describe("execute.server", () => {
 
       const mednafenPath = nodepath.join(
         bundledEmulatorsPathBase,
-        mednafen.bundledPath!,
+        mednafen.bundledPath,
       );
 
       it("Should execute the entry with the defined application of the category", async () => {
@@ -137,7 +137,7 @@ describe("execute.server", () => {
 
       const mednafenPath = nodepath.join(
         bundledEmulatorsPathBase,
-        mednafen.bundledPath!,
+        mednafen.bundledPath,
       );
 
       it("Should execute the entry with the defined application of the category", async () => {

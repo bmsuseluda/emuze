@@ -121,6 +121,9 @@ return scripts.createSystemsTableExpert()
 > [!NOTE]
 > Capitalization, special characters and white spaces do not matter in a System Name. E.g. `TurboGrafx-16` will be detected as well as `turbo grafx 16`.
 
+> [!NOTE]
+> emuze can create the System Folders in the selected Roms Folder. Use the "Create System Folders" Button under Settings General.
+
 ## 🚀 Getting started
 
 ### 🪟 Windows
@@ -187,6 +190,10 @@ roms
 |---> Terranigma.sfc
 |---> ...
 ```
+
+> [!NOTE]
+> emuze can create the System Folders in the selected Roms Folder. Use the "Create System Folders" Button under Settings General.
+
 ## 🔫 Lightgun Support
 
 emuze provides basic Lightgun support. Only the Retro Shooter Reaper was tested but others should work too.

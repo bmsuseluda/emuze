@@ -82,7 +82,7 @@ const extractGames = (xmlData: string) => {
 const importMame = () => {
   try {
     const result = spawnSync(
-      nodepath.join(bundledEmulatorsPathBase, mame.bundledPath!),
+      nodepath.join(bundledEmulatorsPathBase, mame.bundledPath),
       ["-listxml"],
       {
         encoding: "utf-8",

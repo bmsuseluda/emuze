@@ -8,9 +8,9 @@
     "moduleResolution": "NodeNext",
     "noImplicitAny": true,
     "strict": true,
-    "baseUrl": ".",
     "resolveJsonModule": true,
     "skipLibCheck": true,
+    "rootDir": "..",
     "outDir": "./build",
     "target": "ESNext"
   }
