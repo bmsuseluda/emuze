@@ -1,7 +1,7 @@
 const config = {
     appId: "org.emuze.emuze",
     files: ["buildDesktop", "build", "public", "fetchMetaData/systems"],
-    extraFiles: ["emulators/**", "biosOpenSource/**"],
+    extraFiles: ["emulators/**", "biosOpenSource/**", "CHANGELOG.md"],
     win: {
         target: [
             {

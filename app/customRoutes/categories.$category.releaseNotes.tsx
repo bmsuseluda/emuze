@@ -2,7 +2,7 @@ import { redirect, useLoaderData, useSubmit } from "react-router";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
 import type { ComponentRef } from "react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 import {
   useDirectionalInputDown,
   useDirectionalInputUp,
@@ -13,10 +13,15 @@ import {
 import { ReleaseNotesDialog } from "../components/ReleaseNotesDialog/index.js";
 import { loadChangelog } from "../server/changelog.server.js";
 import { readGeneral, writeGeneral } from "../server/settings.server.js";
+import { useFocusOnMount } from "../hooks/useFocusOnMount/index.js";
 
 export const loader = () => {
   const general = readGeneral();
-  if (general?.showReleaseNotesOnStart) {
+  const showReleaseNotesOnStart = general?.showReleaseNotesOnStart;
+  if (
+    typeof showReleaseNotesOnStart === "undefined" ||
+    showReleaseNotesOnStart
+  ) {
     writeGeneral({ ...general, showReleaseNotesOnStart: false });
   }
   const releaseNotesMarkdown = loadChangelog();
@@ -35,13 +40,7 @@ export default function RenderComponent() {
   const { switchFocusBack, isInFocus, enableFocus } =
     useFocus<FocusElement>("releaseNotesDialog");
 
-  useEffect(() => {
-    if (!isInFocus) {
-      enableFocus();
-    }
-    // Should be executed only once, therefore isInFocus can not be part of the dependency array
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useFocusOnMount(isInFocus, enableFocus);
 
   const handleClose = useCallback(() => {
     if (isInFocus) {

@@ -11,6 +11,7 @@ import {
 import { FormBox } from "../components/FormBox/index.js";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
 import {
+  createSystemFolders,
   importCategories,
   readCategories,
 } from "../server/categories.server.js";
@@ -36,6 +37,9 @@ import {
 import { FileDialogInputField } from "../containers/FileDialogTextInput/index.js";
 import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction/index.js";
 import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
+import { CreateSystemFoldersDialogContainer } from "../containers/CreateSystemFoldersDialog/index.js";
+import { CreateSystemFoldersButton } from "../containers/CreateSystemFoldersButton/index.js";
+import type { CreateSystemFoldersButtonId } from "../containers/CreateSystemFoldersButton/createSystemFoldersButtonId.js";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
@@ -51,11 +55,14 @@ export const loader = () => {
 };
 
 const importButtonId: ImportButtonId = "importAll";
+const createSystemFoldersId: CreateSystemFoldersButtonId =
+  "createSystemFolders";
 
 const actionIds = {
   chooseCategoriesPath: "chooseCategoriesPath",
   chooseBiosPath: "chooseBiosPath",
   import: importButtonId,
+  createSystemFolders: createSystemFoldersId,
 };
 
 type Errors = {
@@ -150,6 +157,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
       }
 
       const fields: General = {
+        ...readGeneral(),
         biosPath,
         categoriesPath,
       };
@@ -168,7 +176,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
           return {
             errors: {
               categoriesPath:
-                "No supported Systems were found. The Roms need to be grouped by their System. E.g. 'Final Fantasy VII.chd' needs to be stored in a folder 'Playstation'.",
+                "No supported Systems were found. The Roms need to be grouped by their System. E.g. 'Final Fantasy VII.chd' needs to be stored in a folder 'PlayStation'.",
             },
           };
         }
@@ -190,6 +198,22 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
       };
     }
 
+    if (_actionId === actionIds.createSystemFolders && categoriesPath) {
+      const fields: General = {
+        ...readGeneral(),
+        biosPath,
+        categoriesPath,
+      };
+      writeGeneral(fields);
+
+      createSystemFolders();
+
+      return {
+        biosPath,
+        categoriesPath,
+      };
+    }
+
     if (_actionId === actionIds.chooseBiosPath) {
       const newBiosPath = await openFolderDialog(
         "Select BIOS Folder",
@@ -203,6 +227,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
         }
 
         const fields: General = {
+          ...readGeneral(),
           biosPath: newBiosPath,
           categoriesPath,
         };
@@ -361,14 +386,19 @@ export default function General() {
             }
             actions={
               <>
-                <ImportButton isInFocus={isInFocus} id={actionIds.import}>
-                  Import all
-                </ImportButton>
+                <ImportButton isInFocus={isInFocus} id={actionIds.import} />
+                {(defaultData.categoriesPath || newData?.categoriesPath) && (
+                  <CreateSystemFoldersButton
+                    isInFocus={isInFocus}
+                    id={actionIds.createSystemFolders}
+                  />
+                )}
               </>
             }
           />
         </Form>
       </ListActionBarLayout>
+      <CreateSystemFoldersDialogContainer />
       <Outlet />
     </>
   );

@@ -1,15 +1,19 @@
 import nodepath from "node:path";
-
 import type { CategorySlim } from "../types/jsonFiles/categories.js";
 import { readDirectorynames } from "./readWriteData.server.js";
 import { sortCaseInsensitive } from "./sortCaseInsensitive.server.js";
 import { readGeneral } from "./settings.server.js";
-import { getCategoryDataByName } from "./categoriesDB.server/index.js";
+import {
+  getCategoryDataByName,
+  categories as categoriesDB,
+  normalizeString,
+} from "./categoriesDB.server/index.js";
 import { FileDataCache } from "./FileDataCache.server.js";
 import type { CategoryImportData } from "./importCategory.server.js";
 import { importCategory } from "./importCategory.server.js";
 import { setImportIsRunning } from "./importIsRunning.server.js";
 import { readCategory, removeCategory } from "./categoryDataCache.server.js";
+import { mkdirSync } from "node:fs";
 
 export const paths = {
   categories: "data/categories.json",
@@ -48,6 +52,27 @@ export const cleanupRemovedCategories = (
   });
 };
 
+export const createSystemFolders = () => {
+  const generalData = readGeneral();
+
+  if (generalData?.categoriesPath) {
+    const { categoriesPath } = generalData;
+    const categoryFolderNamesNormalized = readDirectorynames(
+      categoriesPath,
+    ).map((directoryName) => normalizeString(nodepath.basename(directoryName)));
+    Object.values(categoriesDB).forEach(({ names }) => {
+      const systemFolderExist = !!categoryFolderNamesNormalized.find(
+        (categoryFolderName) =>
+          names.find((name) => normalizeString(name) === categoryFolderName),
+      );
+
+      if (!systemFolderExist) {
+        mkdirSync(nodepath.join(categoriesPath, names[0]), { recursive: true });
+      }
+    });
+  }
+};
+
 export const importCategories = async () => {
   setImportIsRunning(true);
   const generalData = readGeneral();
@@ -62,8 +87,11 @@ export const importCategories = async () => {
     >((result, categoryFolderName) => {
       const categoryFolderBaseName = nodepath.basename(categoryFolderName);
       const categoryDbData = getCategoryDataByName(categoryFolderBaseName);
+      const categoryExistsAlready = !!result.find(
+        ({ categoryDbData: { id } }) => id === categoryDbData?.id,
+      );
 
-      if (categoryDbData) {
+      if (categoryDbData && !categoryExistsAlready) {
         result.push({
           categoryDbData,
           categoryFolderBaseName,

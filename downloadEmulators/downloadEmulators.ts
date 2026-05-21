@@ -108,7 +108,7 @@ const makeFileExecutableLinux = (filePath: string) => {
 };
 
 const downloadEmulator = (emulatorId: ApplicationId, downloadLink: string) => {
-  const bundledPathRelative = applications[emulatorId].bundledPath!;
+  const bundledPathRelative = applications[emulatorId].bundledPath;
   const bundledPath = join(emulatorsFolderPath, bundledPathRelative);
   const bundledPathExists = existsSync(bundledPath);
 

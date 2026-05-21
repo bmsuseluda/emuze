@@ -42,9 +42,11 @@ export const loader = ({ params, request }: DataFunctionArgs) => {
 
     if (!request.url.includes("lastPlayed") && !category) {
       const showReleaseNotesOnStart = readGeneral()?.showReleaseNotesOnStart;
-      const releaseNotesNestedRoute = showReleaseNotesOnStart
-        ? "/releaseNotes"
-        : "";
+      const releaseNotesNestedRoute =
+        typeof showReleaseNotesOnStart === "undefined" ||
+        showReleaseNotesOnStart
+          ? "/releaseNotes"
+          : "";
       if (isLastPlayedAvailable) {
         throw redirect(`lastPlayed${releaseNotesNestedRoute}`);
       }

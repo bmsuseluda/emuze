@@ -19,6 +19,8 @@ export class SettingsGeneralPage {
     this.romsPathNotExistError = page.getByText("The Roms Path does not exist");
     this.romsPathRequiredError = page.getByText("The Roms Path is missing");
     this.biosPath = page.getByRole("textbox", { name: "BIOS Path (Optional)" });
-    this.importAllButton = page.getByRole("button", { name: "Import all" });
+    this.importAllButton = page
+      .locator("#importAll")
+      .and(page.getByRole("button", { name: "Import Games" }));
   }
 }

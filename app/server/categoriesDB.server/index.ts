@@ -436,7 +436,7 @@ export const categories = {
   lastPlayed,
 } satisfies Record<SystemId, Category>;
 
-const normalizeString = (a: string) =>
+export const normalizeString = (a: string) =>
   a
     .toLowerCase()
     .replaceAll(" ", "")
@@ -444,7 +444,8 @@ const normalizeString = (a: string) =>
 
 export const getCategoryDataByName = (name: string) =>
   Object.values(categories).find(
-    ({ names }) =>
+    ({ names, id }) =>
+      id !== "lastPlayed" &&
       !!names.find(
         (categoryName) =>
           normalizeString(categoryName) === normalizeString(name),
