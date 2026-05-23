@@ -34,6 +34,7 @@ const homepages: Record<ApplicationId, string> = {
   dolphin: "https://github.com/dolphin-emu/dolphin",
   dosboxstaging: "https://github.com/dosbox-staging/dosbox-staging",
   duckstation: "https://github.com/stenzek/duckstation",
+  eden: "https://git.eden-emu.dev/eden-emu/eden/releases",
   flycast: "https://github.com/flyinghead/flycast",
   azahar: "https://github.com/azahar-emu/azahar",
   mame: "https://github.com/mamedev/mame",

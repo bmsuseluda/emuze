@@ -15,4 +15,5 @@ export type ApplicationId =
   | "dosboxstaging"
   | "rosaliesMupenGui"
   | "scummvm"
-  | "xemu";
+  | "xemu"
+  | "eden";

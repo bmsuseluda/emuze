@@ -43,6 +43,10 @@ import {
   isRmgForN64,
   rosaliesMupenGui,
 } from "../applicationsDB.server/applications/rmg/index.js";
+import {
+  eden,
+  isEdenForSwitch,
+} from "../applicationsDB.server/applications/eden/index.js";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",
@@ -218,7 +222,7 @@ export const nintendoswitch: Category = {
   id: "nintendoswitch",
   names: ["Nintendo Switch", "Switch"],
   igdbPlatformIds: [130],
-  application: ryujinx,
+  application: isEdenForSwitch() ? eden : ryujinx,
   hasAnalogStick: true,
 };
 

@@ -16,6 +16,11 @@ export const commandLineOptions = {
     description:
       "Activates the less accurate but more performant Rosalies Mupen GUI (RMG) emulator to play N64",
   },
+  edenSwitch: {
+    id: "eden",
+    description:
+      "Activates the maybe less accurate but more performant Eden emulator to play Switch",
+  },
 } satisfies Record<string, { id: string; description: string }>;
 
 export const commandLineOptionsString = `Usage: emuze [options]

@@ -17,6 +17,7 @@ import { melonds } from "../app/server/applicationsDB.server/applications/melond
 import { cemu } from "../app/server/applicationsDB.server/applications/cemu/index.js";
 import { rosaliesMupenGui } from "../app/server/applicationsDB.server/applications/rmg/index.js";
 import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
+import { eden } from "../app/server/applicationsDB.server/applications/eden/index.js";
 
 export const applications = {
   duckstation,
@@ -36,15 +37,17 @@ export const applications = {
   rosaliesMupenGui,
   scummvm,
   xemu,
+  eden,
 } satisfies Record<string, Application>;
 
 export const emulatorVersions = {
   ares: "147",
   azahar: "2124.3",
+  cemu: "2.6",
   dolphin: "2512",
   dosboxstaging: "0.82.2",
   duckstation: "0.1-7371",
-  cemu: "2.6",
+  eden: "0.2.0",
   flycast: "2.6",
   mame: "0.285",
   mednafen: "1.32.1",
@@ -52,7 +55,7 @@ export const emulatorVersions = {
   pcsx2: "2.6.3",
   ppsspp: "1.19.3",
   rosaliesMupenGui: "0.8.9",
-  rpcs3: "0.0.39",
+  rpcs3: "0.0.40",
   ryujinx: "1.3.3",
   scummvm: "2026.2.0",
   xemu: "0.8.133",

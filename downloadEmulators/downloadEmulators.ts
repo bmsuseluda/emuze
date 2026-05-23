@@ -49,6 +49,10 @@ const emulatorDownloads = {
     Linux: `https://github.com/Kyuyrii/Duckstation-GPL3/releases/download/v${emulatorVersions.duckstation}/DuckStation-x64.AppImage`,
     Windows: `https://github.com/Kyuyrii/Duckstation-GPL3/releases/download/v${emulatorVersions.duckstation}/duckstation-windows-x64-release.zip`,
   },
+  eden: {
+    Linux: `https://stable.eden-emu.dev/v${emulatorVersions.eden}/Eden-Linux-v${emulatorVersions.eden}-amd64-clang-pgo.AppImage`,
+    Windows: `https://stable.eden-emu.dev/v${emulatorVersions.eden}/Eden-Windows-v${emulatorVersions.eden}-amd64-clang-pgo.zip`,
+  },
   flycast: {
     Linux: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-x86_64.AppImage`,
     Windows: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-win64-${emulatorVersions.flycast}.zip`,
@@ -78,8 +82,8 @@ const emulatorDownloads = {
     Windows: `https://github.com/Rosalie241/RMG/releases/download/v${emulatorVersions.rosaliesMupenGui}/RMG-Portable-Windows64-v${emulatorVersions.rosaliesMupenGui}.zip`,
   },
   rpcs3: {
-    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-93dbdead24e1474a94c59fffc1f6cfb25abe488b/rpcs3-v${emulatorVersions.rpcs3}-18763-93dbdead_linux64.AppImage`,
-    Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-93dbdead24e1474a94c59fffc1f6cfb25abe488b/rpcs3-v${emulatorVersions.rpcs3}-18763-93dbdead_win64_msvc.7z`,
+    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-67464f97df8679d5d540256987551f34fe00d4cc/rpcs3-v${emulatorVersions.rpcs3}-19389-67464f97_linux64.AppImage`,
+    Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-67464f97df8679d5d540256987551f34fe00d4cc/rpcs3-v${emulatorVersions.rpcs3}-19389-67464f97_win64_msvc.7z`,
   },
   ryujinx: {
     Linux: `https://git.ryujinx.app/projects/Ryubing/releases/download/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-x64.AppImage`,
