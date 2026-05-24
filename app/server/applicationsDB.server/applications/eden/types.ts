@@ -15,7 +15,7 @@ export type EdenButtonId =
   | "button_r"
   | "button_zl"
   | "button_zr"
-  | "lstick"
-  | "rstick"
+  | "button_lstick"
+  | "button_rstick"
   | "button_screenshot"
   | "button_home";

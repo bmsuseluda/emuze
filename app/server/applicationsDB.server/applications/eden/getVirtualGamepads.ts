@@ -50,6 +50,8 @@ const edenButtonIds = {
   button_r: "rightshoulder",
   button_zl: "lefttrigger",
   button_zr: "righttrigger",
+  button_lstick: "leftstick",
+  button_rstick: "rightstick",
   button_minus: "back",
   button_plus: "start",
 } satisfies Partial<Record<EdenButtonId, SdlButtonId>>;
@@ -97,12 +99,15 @@ const getGamepadButtonMappings = (
     ),
   );
 
+const normalizeGuid = (guid: string) =>
+  [guid.slice(0, 4), guid.slice(8)].join("0000");
+
 export const getVirtualGamepad =
   (playerIndexArray: number[]) =>
   (sdlDevice: Sdl.Joystick.Device, sdlIndex: number): ParamToReplace[] => {
     log("debug", "gamepad", { sdlDevice });
 
-    const guid = sdlDevice.guid!;
+    const guid = normalizeGuid(sdlDevice.guid!);
     const controller = getControllerFromJoystick(sdlDevice)!;
     const mappingObject = createSdlMappingObject(controller.mapping!);
     const playerIndex = playerIndexArray[sdlIndex];
@@ -110,14 +115,6 @@ export const getVirtualGamepad =
     return [
       ...getSetting(`player_${playerIndex}_connected`, true),
       ...getGamepadButtonMappings(guid, mappingObject, playerIndex),
-      ...getSetting(
-        `player_${playerIndex}_lstick`,
-        `axis_x:${getButtonIndex(mappingObject, "leftx")},axis_y:${getButtonIndex(mappingObject, "lefty")},deadzone:0.100000,engine:sdl,guid:${guid},port:0`,
-      ),
-      ...getSetting(
-        `player_${playerIndex}_rstick`,
-        `axis_x:${getButtonIndex(mappingObject, "rightx")},axis_y:${getButtonIndex(mappingObject, "righty")},deadzone:0.100000,engine:sdl,guid:${guid},port:0`,
-      ),
       ...getKeyboardDebugMapping(),
     ];
   };
