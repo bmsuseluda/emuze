@@ -86,4 +86,12 @@ export const keyboardConfig: ParamToReplace[] = [
     "player_0_button_zr",
     `code:${scancodes[keyboardMapping["rightTrigger"]]},direction:+,engine:keyboard,threshold:0.5`,
   ),
+  ...getSetting(
+    "player_0_lstick",
+    `down:code$0${scancodes[keyboardMapping["leftStickDown"]]}$1engine$0keyboard,engine:analog_from_button,left:code$0${scancodes[keyboardMapping["leftStickLeft"]]}$1engine$0keyboard,modifier:code$081$1engine$0keyboard,modifier_scale:0.500000,right:code$0${scancodes[keyboardMapping["leftStickRight"]]}$1engine$0keyboard,up:code$0${scancodes[keyboardMapping["leftStickUp"]]}$1engine$0keyboard`,
+  ),
+  ...getSetting(
+    "player_0_rstick",
+    `down:code$0${scancodes[keyboardMapping["rightStickDown"]]}$1engine$0keyboard,engine:analog_from_button,left:code$0${scancodes[keyboardMapping["rightStickLeft"]]}$1engine$0keyboard,modifier:code$081$1engine$0keyboard,modifier_scale:0.500000,right:code$0${scancodes[keyboardMapping["rightStickRight"]]}$1engine$0keyboard,up:code$0${scancodes[keyboardMapping["rightStickUp"]]}$1engine$0keyboard`,
+  ),
 ];

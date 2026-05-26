@@ -115,6 +115,14 @@ export const getVirtualGamepad =
     return [
       ...getSetting(`player_${playerIndex}_connected`, true),
       ...getGamepadButtonMappings(guid, mappingObject, playerIndex),
+      ...getSetting(
+        `player_${playerIndex}_lstick`,
+        `axis_x:${getButtonIndex(mappingObject, "leftx")},axis_y:${getButtonIndex(mappingObject, "lefty")},deadzone:0.100000,engine:sdl,guid:${guid},port:0`,
+      ),
+      ...getSetting(
+        `player_${playerIndex}_rstick`,
+        `axis_x:${getButtonIndex(mappingObject, "rightx")},axis_y:${getButtonIndex(mappingObject, "righty")},deadzone:0.100000,engine:sdl,guid:${guid},port:0`,
+      ),
       ...getKeyboardDebugMapping(),
     ];
   };
