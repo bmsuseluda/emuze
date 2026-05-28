@@ -63,6 +63,7 @@ export const replaceUiConfig =
       ...disableSetting("Shortcuts\\Main%20Window\\Load%20Amiibo\\KeySeq"),
       ...disableSetting("Shortcuts\\Main%20Window\\Remove%20Amiibo\\KeySeq"),
       { keyValue: `Paths\\gamedirs\\4\\path=${switchRomsPath}` },
+      { keyValue: `Paths\\external_content_dirs\\1\\path=${switchRomsPath}` },
       { keyValue: "fullscreen\\default=true" },
     ]);
 
@@ -147,6 +148,8 @@ export const eden: Application = {
     if (fullscreen) {
       optionParams.push("-f");
     }
+
+    optionParams.push("-g");
 
     return optionParams;
   },

@@ -8,6 +8,7 @@ import type { Category } from "../app/server/categoriesDB.server/types.js";
 import type { Application } from "../app/server/applicationsDB.server/types.js";
 import { rosaliesMupenGui } from "../app/server/applicationsDB.server/applications/rmg/index.js";
 import { emulatorsBios } from "../downloadBiosOpenSource/downloadBiosOpenSource.js";
+import { eden } from "../app/server/applicationsDB.server/applications/eden/index.js";
 
 const preConfigured: ApplicationId[] = [
   "ares",
@@ -15,6 +16,7 @@ const preConfigured: ApplicationId[] = [
   "cemu",
   "dolphin",
   "duckstation",
+  "eden",
   "flycast",
   "mame",
   "mednafen",
@@ -65,7 +67,10 @@ const createSystemsTableRow = (
   const isPreConfigured = preConfigured.includes(application.id) ? "Yes" : "No";
   const bundledVersion = emulatorVersions[application.id];
   const isBiosNeeded =
-    application.biosFiles && !application.bundledBiosOpenSource ? "Yes" : "No";
+    (application.biosFiles && !application.bundledBiosOpenSource) ||
+    application.otherRequiredFiles
+      ? "Yes"
+      : "No";
 
   return `| ${systemName} | ${emulatorName} | ${isPreConfigured} | ${bundledVersion} | ${isBiosNeeded} | `;
 };
@@ -81,6 +86,13 @@ export const createSystemsTable = () =>
         return [
           createSystemsTableRow(category),
           createSystemsTableRow(category, rosaliesMupenGui),
+        ].join("\n");
+      }
+
+      if (category.id === "nintendoswitch") {
+        return [
+          createSystemsTableRow(category),
+          createSystemsTableRow(category, eden),
         ].join("\n");
       }
 

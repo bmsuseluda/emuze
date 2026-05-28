@@ -52,6 +52,8 @@ const edenButtonIds = {
   start: "button_plus",
   leftShoulder: "button_l",
   rightShoulder: "button_r",
+  leftStick: "button_lstick",
+  rightStick: "button_rstick",
 } satisfies Partial<Record<EmuzeButtonId, EdenButtonId>>;
 
 const getKeyboardButtonMapping = (
