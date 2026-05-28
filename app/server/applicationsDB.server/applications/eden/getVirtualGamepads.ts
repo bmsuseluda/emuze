@@ -11,10 +11,10 @@ import type {
 import {
   createSdlMappingObject,
   getButtonIndex,
-  getPlayerIndexArray,
   isAnalog,
   isDpadHat,
   isSteamDeckController,
+  sortSteamDeckLast,
 } from "../../../../types/gamepad.js";
 import { getControllerFromJoystick } from "../../../gamepad.server.js";
 import { getKeyboardDebugMapping, keyboardConfig } from "./keyboardConfig.js";
@@ -61,6 +61,7 @@ const getGamepadButtonMapping = (
   guid: string,
   mappingObject: SdlButtonMapping,
   playerIndex: number,
+  guidIndex: number,
 ): ParamToReplace[] => {
   const sdlButtonId = edenButtonIds[edenButtonId];
 
@@ -68,20 +69,20 @@ const getGamepadButtonMapping = (
     const direction = edenButtonId.split("_d")[1];
     return getSetting(
       `player_${playerIndex}_${edenButtonId}`,
-      `direction:${direction},engine:sdl,guid:${guid},hat:0,port:0`,
+      `direction:${direction},engine:sdl,guid:${guid},hat:0,port:${guidIndex}`,
     );
   }
 
   if (isAnalog(mappingObject, sdlButtonId)) {
     return getSetting(
       `player_${playerIndex}_${edenButtonId}`,
-      `axis:${getButtonIndex(mappingObject, sdlButtonId)},engine:sdl,guid:${guid},port:0,threshold:0.5`,
+      `axis:${getButtonIndex(mappingObject, sdlButtonId)},engine:sdl,guid:${guid},port:${guidIndex},threshold:0.5`,
     );
   }
 
   return getSetting(
     `player_${playerIndex}_${edenButtonId}`,
-    `button:${getButtonIndex(mappingObject, sdlButtonId)},engine:sdl,guid:${guid},port:0`,
+    `button:${getButtonIndex(mappingObject, sdlButtonId)},engine:sdl,guid:${guid},port:${guidIndex}`,
   );
 };
 
@@ -89,6 +90,7 @@ const getGamepadButtonMappings = (
   guid: string,
   mappingObject: SdlButtonMapping,
   playerIndex: number,
+  guidIndex: number,
 ): ParamToReplace[] =>
   Object.keys(edenButtonIds).flatMap((edenButtonId) =>
     getGamepadButtonMapping(
@@ -96,32 +98,53 @@ const getGamepadButtonMappings = (
       guid,
       mappingObject,
       playerIndex,
+      guidIndex,
     ),
   );
 
 const normalizeGuid = (guid: string) =>
   [guid.slice(0, 4), guid.slice(8)].join("0000");
 
+/**
+ * check all devices until sdlIndex (current index) for GUID. count how much and return accordingly
+ *
+ * @return number starts with 0
+ */
+export const getSdlGuidIndex =
+  (devices: (Sdl.Joystick.Device | Sdl.Controller.Device)[]) =>
+  (guid: string, sdlIndex: number) => {
+    let nameCount = 0;
+    for (let index = 0; index < sdlIndex; index++) {
+      const device = devices[index];
+      if (normalizeGuid(device.guid!) === normalizeGuid(guid)) {
+        nameCount++;
+      }
+    }
+
+    return nameCount;
+  };
+
 export const getVirtualGamepad =
-  (playerIndexArray: number[]) =>
+  (detectSdlGuidIndex: (guid: string, sdlIndex: number) => number) =>
   (sdlDevice: Sdl.Joystick.Device, sdlIndex: number): ParamToReplace[] => {
     log("debug", "gamepad", { sdlDevice });
 
     const guid = normalizeGuid(sdlDevice.guid!);
     const controller = getControllerFromJoystick(sdlDevice)!;
     const mappingObject = createSdlMappingObject(controller.mapping!);
-    const playerIndex = playerIndexArray[sdlIndex];
+    const playerIndex = sdlIndex;
+    const guidIndex = detectSdlGuidIndex(guid, sdlIndex);
 
     return [
       ...getSetting(`player_${playerIndex}_connected`, true),
-      ...getGamepadButtonMappings(guid, mappingObject, playerIndex),
+      ...getGamepadButtonMappings(guid, mappingObject, playerIndex, guidIndex),
       ...getSetting(
         `player_${playerIndex}_lstick`,
-        `axis_x:${getButtonIndex(mappingObject, "leftx")},axis_y:${getButtonIndex(mappingObject, "lefty")},deadzone:0.100000,engine:sdl,guid:${guid},port:0`,
+        `axis_x:${getButtonIndex(mappingObject, "leftx")},axis_y:${getButtonIndex(mappingObject, "lefty")},deadzone:0.100000,engine:sdl,guid:${guid},port:${guidIndex}`,
       ),
       ...getSetting(
         `player_${playerIndex}_rstick`,
-        `axis_x:${getButtonIndex(mappingObject, "rightx")},axis_y:${getButtonIndex(mappingObject, "righty")},deadzone:0.100000,engine:sdl,guid:${guid},port:0`,
+        `axis_x:${getButtonIndex(mappingObject, "rightx")},axis_y:${getButtonIndex(mappingObject, "righty")},deadzone:0.100000,engine:sdl,guid:${guid},port:${guidIndex}`,
       ),
       ...getKeyboardDebugMapping(),
     ];
@@ -132,12 +155,14 @@ const getVirtualGamepadReset = (gamepadIndex: number): ParamToReplace => ({
 });
 
 export const getVirtualGamepads = () => {
-  const gamepads = sdl.joystick.devices.filter(({ type }) => type);
-  const playerIndexArray = getPlayerIndexArray(gamepads);
+  const gamepads = sdl.joystick.devices
+    .filter(({ type }) => type)
+    .toSorted(sortSteamDeckLast);
+  const detectSdlGuidIndex = getSdlGuidIndex(gamepads);
 
   const virtualGamepads =
     gamepads.length > 0
-      ? gamepads.flatMap(getVirtualGamepad(playerIndexArray))
+      ? gamepads.flatMap(getVirtualGamepad(detectSdlGuidIndex))
       : keyboardConfig;
 
   return [
