@@ -1,8 +1,9 @@
 import type { General } from "../types/jsonFiles/settings/general.js";
 import type { Appearance } from "../types/jsonFiles/settings/appearance.js";
 import { FileDataCache } from "./FileDataCache.server.js";
+import type { Advanced } from "../types/jsonFiles/settings/advanced.js";
 
-export type SettingsID = "general" | "appearance" | "about";
+export type SettingsID = "general" | "appearance" | "advanced" | "about";
 
 export interface Category {
   id: SettingsID;
@@ -22,6 +23,11 @@ export const categories = [
     to: "appearance",
   },
   {
+    id: "advanced",
+    name: "Advanced",
+    to: "advanced",
+  },
+  {
     id: "about",
     name: "About",
     to: "about",
@@ -31,6 +37,7 @@ export const categories = [
 export const paths = {
   general: "data/settings/general.json",
   appearance: "data/settings/appearance.json",
+  advanced: "data/settings/advanced.json",
   about: "data/settings/about.json",
 } satisfies Record<SettingsID, string>;
 
@@ -63,4 +70,13 @@ export const writeAppearance = (appearance: Appearance) =>
   appearanceDataCache.writeFile(appearance);
 export const invalidateAppearanceDataCache = () => {
   appearanceDataCache.invalidateCache();
+};
+
+const advancedDataCache = new FileDataCache<Advanced>(paths.advanced, {});
+export const readAdvanced = (updateCache?: boolean) =>
+  advancedDataCache.readFile(updateCache) || {};
+export const writeAdvanced = (advanced: Advanced) =>
+  advancedDataCache.writeFile(advanced);
+export const invalidateAdvancedDataCache = () => {
+  advancedDataCache.invalidateCache();
 };

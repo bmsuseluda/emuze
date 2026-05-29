@@ -3,8 +3,6 @@ import nodepath from "node:path";
 import fs from "node:fs";
 import type { ApplicationId } from "../../applicationId.js";
 import type { Application } from "../../types.js";
-import { importElectron } from "../../../importElectron.server.js";
-import { commandLineOptions } from "../../../commandLine.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
@@ -20,6 +18,7 @@ import {
 import { EOL } from "node:os";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
+import { readAdvanced } from "../../../settings.server.js";
 
 const applicationId: ApplicationId = "rosaliesMupenGui";
 const bundledPath = isWindows()
@@ -160,10 +159,7 @@ export const rosaliesMupenGui: Application = {
 };
 
 export const isRmgForN64 = () => {
-  const electron = importElectron();
+  const rmg = readAdvanced()?.rmg;
 
-  return (
-    electron?.app?.commandLine.hasSwitch(commandLineOptions.rmgN64.id) ||
-    process.env.EMUZE_RMG_N64 === "true"
-  );
+  return rmg || false;
 };

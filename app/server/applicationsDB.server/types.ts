@@ -4,10 +4,12 @@ import type { Category, Entry } from "../../types/jsonFiles/category.js";
 import type { GeneralConfigured } from "../../types/jsonFiles/settings/general.js";
 import type { Appearance } from "../../types/jsonFiles/settings/appearance.js";
 import type { ApplicationId } from "./applicationId.js";
+import type { Advanced } from "../../types/jsonFiles/settings/advanced.js";
 
 export interface Settings {
   general: GeneralConfigured;
   appearance: Appearance;
+  advanced: Advanced;
 }
 
 export interface DetectedRequiredFile {
