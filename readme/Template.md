@@ -8,15 +8,13 @@
 emuze is an emulation frontend designed to simplify your retro gaming experience.
 It automates the configuration of each emulator, including seamless gamepad integration and automatic import of games along with their metadata. With its console-like interface and intuitive controls, emuze lets you focus on enjoying your retro games, just like you would on a gaming console.
 
-It is not there yet for every system and emulator, please have a look at 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) for more details.
-
 ## 💥 Features
 
 - ⚡️ Intuitive console-like interface
 - 🚂 Import all your roms with a click of a button
 - 🪄 Provides Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
-- 🎮️ Seamless gamepad integration for most emulators
-- 🔫 Basic lightgun integration for some emulators
+- 🎮️ Seamless gamepad integration for all Systems except DOS
+- 🔫 Basic lightgun integration for some Systems
 - 📦️ Bundles all emulators
 - 💻️ Windows, Linux and Steam Deck support
 - 💫 Updates itself
@@ -35,8 +33,8 @@ It is not there yet for every system and emulator, please have a look at 🕹️
 
 The following systems are supported:
 
-| System | Emulator | Pre Configured | Bundled | BIOS needed |
-| ------ | -------- | -------------- | ------- | ----------- |
+| System | Emulator | BIOS needed |
+| ------ | -------- | ----------- |
 ```mmd
 return scripts.createSystemsTable()
 ```
@@ -44,7 +42,7 @@ return scripts.createSystemsTable()
 > ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
 
 ### Pre Configured
-If a System is pre configured means the following:
+All Systems, except DOS, are pre configured. This means the following:
 
 #### Gamepad Mapping
 All connected gamepads will be configured for the specific Emulator and should just work without further tinkering.
@@ -162,9 +160,6 @@ There is a Steam Input Profile with the name `emuze`, which has some Hotkeys pre
 - `R5`: Left Mouse Click
 - `Left Trackpad`: Scroll Wheel
 - `Right Trackpad`: Mouse
-
-> [!IMPORTANT]
-> Steam Input can result in gamepads not being able to be used correctly in some emulators. Therefore, I recommend disabling Steam Input for all gamepads except the Steam Deck controller.
 
 #### SteamGridDB
 

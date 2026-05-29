@@ -14,7 +14,11 @@ import { log } from "./debug.server.js";
 import { setErrorDialog } from "./errorDialog.server.js";
 import { addToLastPlayedCached } from "./lastPlayed.server.js";
 import { isWindows } from "./operationsystem.server.js";
-import { readAppearance, readGeneral } from "./settings.server.js";
+import {
+  readAdvanced,
+  readAppearance,
+  readGeneral,
+} from "./settings.server.js";
 import {
   registerCloseGameOnKeyboardEvent,
   unregisterCloseGameOnKeyboardEvent,
@@ -142,6 +146,7 @@ export const startGame = async (
     const settings: Settings = {
       general: generalData,
       appearance: readAppearance(true),
+      advanced: readAdvanced(),
     };
 
     const absoluteEntryPath = createAbsoluteEntryPath(

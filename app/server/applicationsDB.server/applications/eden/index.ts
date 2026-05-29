@@ -8,8 +8,6 @@ import { findEntryName } from "./findEntryName.js";
 import { excludeFiles } from "./excludeFiles.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { copy } from "../../../readWriteData.server.js";
-import { importElectron } from "../../../importElectron.server.js";
-import { commandLineOptions } from "../../../commandLine.server.js";
 import { envPaths } from "../../../envPaths.server.js";
 import type { SectionReplacement } from "../../configFile.js";
 import {
@@ -23,6 +21,7 @@ import { log } from "../../../debug.server.js";
 import { defaultSettings } from "./defaultSettings.js";
 import { disableSetting, getSetting } from "./getSettings.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
+import { readAdvanced } from "../../../settings.server.js";
 
 const applicationId: ApplicationId = "eden";
 const bundledPath = isWindows()
@@ -173,10 +172,7 @@ export const eden: Application = {
 };
 
 export const isEdenForSwitch = () => {
-  const electron = importElectron();
+  const eden = readAdvanced()?.eden;
 
-  return (
-    electron?.app?.commandLine.hasSwitch(commandLineOptions.edenSwitch.id) ||
-    process.env.EMUZE_EDEN_SWITCH === "true"
-  );
+  return eden || false;
 };
