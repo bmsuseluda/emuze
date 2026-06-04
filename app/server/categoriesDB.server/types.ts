@@ -5,6 +5,6 @@ export interface Category {
   id: SystemId;
   names: string[];
   igdbPlatformIds: number[];
-  application: Application;
+  getApplication: () => Application;
   hasAnalogStick: boolean;
 }

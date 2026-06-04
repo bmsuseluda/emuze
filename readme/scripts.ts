@@ -39,7 +39,7 @@ const createSystemsTableRow = (
   category: Category,
   alternativeApplication?: Application,
 ) => {
-  const application = alternativeApplication || category.application;
+  const application = alternativeApplication || category.getApplication();
   const systemName = alternativeApplication
     ? ""
     : nameOverwrites[category.id] || category.names[0];
@@ -86,12 +86,13 @@ export const createSystemsTableExpert = () =>
       if (category.id === "lastPlayed") {
         return null;
       }
+      const application = category.getApplication();
       const systemName = category.names[0];
       const systemNames = category.names.join(", ");
-      const fileExtensions = category.application.fileExtensions
+      const fileExtensions = application.fileExtensions
         ?.map((fileExtension) => `\`${fileExtension}\``)
         .join(", ");
-      const entryAsDirectory = category.application.entryAsDirectory;
+      const entryAsDirectory = application.entryAsDirectory;
 
       return `| ${systemName} | ${systemNames} | ${entryAsDirectory ? "Folder" : fileExtensions} | `;
     })

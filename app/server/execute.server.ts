@@ -140,7 +140,7 @@ export const startGame = async (
   const generalData = readGeneral();
   const categoryData = readCategory(systemId);
   const categoryDB = categories[systemId];
-  const applicationData = categoryDB.application;
+  const applicationData = categoryDB.getApplication();
 
   if (isGeneralConfigured(generalData) && categoryData && applicationData) {
     const settings: Settings = {
