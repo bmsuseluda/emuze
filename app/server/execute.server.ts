@@ -14,7 +14,11 @@ import { log } from "./debug.server.js";
 import { setErrorDialog } from "./errorDialog.server.js";
 import { addToLastPlayedCached } from "./lastPlayed.server.js";
 import { isWindows } from "./operationsystem.server.js";
-import { readAppearance, readGeneral } from "./settings.server.js";
+import {
+  readAdvanced,
+  readAppearance,
+  readGeneral,
+} from "./settings.server.js";
 import {
   registerCloseGameOnKeyboardEvent,
   unregisterCloseGameOnKeyboardEvent,
@@ -136,12 +140,13 @@ export const startGame = async (
   const generalData = readGeneral();
   const categoryData = readCategory(systemId);
   const categoryDB = categories[systemId];
-  const applicationData = categoryDB.application;
+  const applicationData = categoryDB.getApplication();
 
   if (isGeneralConfigured(generalData) && categoryData && applicationData) {
     const settings: Settings = {
       general: generalData,
       appearance: readAppearance(true),
+      advanced: readAdvanced(),
     };
 
     const absoluteEntryPath = createAbsoluteEntryPath(

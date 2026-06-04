@@ -10,26 +10,6 @@ import { rosaliesMupenGui } from "../app/server/applicationsDB.server/applicatio
 import { emulatorsBios } from "../downloadBiosOpenSource/downloadBiosOpenSource.js";
 import { eden } from "../app/server/applicationsDB.server/applications/eden/index.js";
 
-const preConfigured: ApplicationId[] = [
-  "ares",
-  "azahar",
-  "cemu",
-  "dolphin",
-  "duckstation",
-  "eden",
-  "flycast",
-  "mame",
-  "mednafen",
-  "melonds",
-  "pcsx2",
-  "ppsspp",
-  "scummvm",
-  "rosaliesMupenGui",
-  "rpcs3",
-  "ryujinx",
-  "xemu",
-];
-
 const homepages: Record<ApplicationId, string> = {
   ares: "https://github.com/ares-emulator/ares",
   cemu: "https://github.com/cemu-project/Cemu",
@@ -59,12 +39,11 @@ const createSystemsTableRow = (
   category: Category,
   alternativeApplication?: Application,
 ) => {
-  const application = alternativeApplication || category.application;
+  const application = alternativeApplication || category.getApplication();
   const systemName = alternativeApplication
     ? ""
     : nameOverwrites[category.id] || category.names[0];
   const emulatorName = `[${application.name}](${homepages[application.id]})`;
-  const isPreConfigured = preConfigured.includes(application.id) ? "Yes" : "No";
   const bundledVersion = emulatorVersions[application.id];
   const isBiosNeeded =
     (application.biosFiles && !application.bundledBiosOpenSource) ||
@@ -72,7 +51,7 @@ const createSystemsTableRow = (
       ? "Yes"
       : "No";
 
-  return `| ${systemName} | ${emulatorName} | ${isPreConfigured} | ${bundledVersion} | ${isBiosNeeded} | `;
+  return `| ${systemName} | ${emulatorName} v${bundledVersion} | ${isBiosNeeded} | `;
 };
 
 export const createSystemsTable = () =>
@@ -107,12 +86,13 @@ export const createSystemsTableExpert = () =>
       if (category.id === "lastPlayed") {
         return null;
       }
+      const application = category.getApplication();
       const systemName = category.names[0];
       const systemNames = category.names.join(", ");
-      const fileExtensions = category.application.fileExtensions
+      const fileExtensions = application.fileExtensions
         ?.map((fileExtension) => `\`${fileExtension}\``)
         .join(", ");
-      const entryAsDirectory = category.application.entryAsDirectory;
+      const entryAsDirectory = application.entryAsDirectory;
 
       return `| ${systemName} | ${systemNames} | ${entryAsDirectory ? "Folder" : fileExtensions} | `;
     })

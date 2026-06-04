@@ -47,6 +47,10 @@ vi.mock("node:fs");
 vi.mock("../igdb.server.ts");
 vi.mock("../settings.server.ts", () => ({
   readGeneral: () => general,
+  readAdvanced: () => ({
+    eden: false,
+    rmg: false,
+  }),
 }));
 vi.mock("../getExpiresOn.server.ts", () => {
   const getFutureDate = () => {

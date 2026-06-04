@@ -263,12 +263,12 @@ export const createCategoryData = ({
   categoryDbData,
   categoryFolderBaseName,
 }: CategoryImportData): Category => {
-  const { id, application } = categoryDbData;
+  const { id, getApplication } = categoryDbData;
   const oldCategoryData = readCategory(id);
 
   const entries = readEntries({
     categoryName: categoryFolderBaseName,
-    application,
+    application: getApplication(),
     oldEntries: oldCategoryData?.entries,
   });
 

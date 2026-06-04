@@ -1,6 +1,7 @@
 import type { LoaderFunction } from "react-router";
 import { redirect } from "react-router";
 import {
+  invalidateAdvancedDataCache,
   invalidateAppearanceDataCache,
   invalidateGeneralDataCache,
 } from "../server/settings.server.js";
@@ -11,6 +12,7 @@ import { invalidateCategoryDataCache } from "../server/categoryDataCache.server.
 export const loader: LoaderFunction = () => {
   invalidateGeneralDataCache();
   invalidateAppearanceDataCache();
+  invalidateAdvancedDataCache();
   invalidateCategoriesDataCache();
   invalidateCategoryDataCache();
   invalidateLastPlayedDataCache();
