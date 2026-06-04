@@ -129,15 +129,8 @@ export const isPs4Controller = ({ type }: Sdl.Controller.Device) =>
 export const isGamecubeController = (controllerName: string) =>
   controllerName.toLowerCase().includes("gamecube");
 
-export const isSteamDeckController = ({
-  guid,
-  vendor,
-  product,
-  name,
-}: Sdl.Joystick.Device) =>
-  guid === steamDeck.guid ||
-  (vendor === steamDeck.vendor && product === steamDeck.product) ||
-  !!name?.startsWith("Steam Deck");
+export const isSteamDeckController = ({ vendor, name }: Sdl.Joystick.Device) =>
+  vendor === steamDeck.vendor && !!name?.startsWith("Steam Deck");
 
 export const isN64Controller = ({
   guid,
@@ -382,6 +375,20 @@ export const steamDeck = {
   guid: "030079f6de280000ff11000001000000",
   vendor: 10462,
   product: 4613, // 4607
+  version: 1,
+  player: 0,
+  mapping:
+    "030079f6de280000ff11000001000000,Steam Virtual Gamepad,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b8,leftshoulder:b4,leftstick:b9,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
+} satisfies Sdl.Controller.Device;
+
+export const steamController = {
+  id: 0,
+  name: "Steam Virtual Gamepad",
+  path: "/dev/input/event27",
+  type: null,
+  guid: "030079f6de280000ff11000001000000",
+  vendor: 10462,
+  product: 4866,
   version: 1,
   player: 0,
   mapping:

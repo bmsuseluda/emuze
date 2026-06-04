@@ -150,28 +150,8 @@ const getVirtualGamepadDpad = (
   }
 };
 
-const getIndexForDeviceId = (index: number) => `${index + 1}`;
-
-/**
- * Creates the ares specific device id based on the SDL device input.
- *
- * result e.g. 0x1045e02e0 (8bitdo pro 2)
- *
- * 0x1054c05c4 (ds4)
- * 0x2045e02e0 (8bitdo pro 2)
- * 0x3054c0268 (ds3)
- *
- * ? = 0x (is always the same)
- * deviceIndex = 1 (index + 1)
- * vendor = 28de (hex value, needs to be padded with "0" on start to 4 characters)
- * product = 11ff (hex value, needs to be padded with "0" on start to 4 characters)
- */
-export const createDeviceId = (
-  { vendor, product }: Sdl.Controller.Device,
-  index: number,
-) => {
-  const deviceIdIndex = getIndexForDeviceId(index);
-  return `0x${deviceIdIndex}${vendor?.toString(16).padStart(4, "0")}${product?.toString(16).padStart(4, "0")}`;
+export const createDeviceId = ({ guid }: Sdl.Controller.Device) => {
+  return `${guid}/0`;
 };
 
 export const getVirtualGamepad =
@@ -183,7 +163,7 @@ export const getVirtualGamepad =
   (sdlDevice: Sdl.Controller.Device, index: number) => {
     const virtualGamepadIndex = playerIndexArray[index];
     const mappingObject = createSdlMappingObject(sdlDevice.mapping!);
-    const deviceId = createDeviceId(sdlDevice, index);
+    const deviceId = createDeviceId(sdlDevice);
     const physicalGamepad = new PhysicalGamepad(deviceId, mappingObject);
     const joystick = getJoystickFromController(sdlDevice)!;
 
