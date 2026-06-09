@@ -1,5 +1,5 @@
 import { getVirtualGamepad } from "../getVirtualGamepads.js";
-import { steamDeck } from "../../../../../types/gamepad.js";
+import { steamDeck, steamDeckJoystick } from "../../../../../types/gamepad.js";
 
 vi.mock("@kmamal/sdl");
 
@@ -13,7 +13,7 @@ describe("ares", () => {
       )(steamDeck, 0);
 
       expect(result.at(1)).toContain("VirtualPad1");
-      expect(result.at(1)).toContain("0x128de1205");
+      expect(result.at(1)).toContain(steamDeckJoystick.guid);
     });
 
     it("Should position the Steam Deck controls on last position if there are other gamepads connected", () => {
@@ -24,7 +24,7 @@ describe("ares", () => {
       )(steamDeck, 0);
 
       expect(result.at(1)).toContain("VirtualPad5");
-      expect(result.at(1)).toContain("0x128de1205");
+      expect(result.at(1)).toContain(steamDeckJoystick.guid);
     });
   });
 });

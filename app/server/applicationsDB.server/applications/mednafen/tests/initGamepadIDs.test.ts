@@ -1,4 +1,4 @@
-import { devices } from "../../../../../../__mocks__/@kmamal/sdl.js";
+import { controllerDevices } from "../../../../../../__mocks__/@kmamal/sdl.js";
 import {
   eightBitDoPro2,
   gamepadPs4,
@@ -56,7 +56,9 @@ describe("initGamepadIDs", () => {
         name: "8BitDo Pro 2",
         nameIndex: 0,
       };
-      const result = getMappedGamepad(mednafenGamepadId, [...devices]);
+      const result = getMappedGamepad(mednafenGamepadId, [
+        ...controllerDevices,
+      ]);
 
       const expected: MappedGamepad = {
         sdlController: eightBitDoPro2,
@@ -72,7 +74,9 @@ describe("initGamepadIDs", () => {
         name: "Microsoft X-Box 360 pad 0",
         nameIndex: 0,
       };
-      const result = getMappedGamepad(mednafenGamepadId, [...devices]);
+      const result = getMappedGamepad(mednafenGamepadId, [
+        ...controllerDevices,
+      ]);
 
       const expected: MappedGamepad = {
         sdlController: steamDeck,

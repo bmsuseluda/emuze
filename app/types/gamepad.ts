@@ -350,33 +350,45 @@ export const createSdlMappingObject = (sdlMapping: string): SdlButtonMapping =>
       return accumulator;
     }, {});
 
-export const eightBitDoPro2 = {
+export const eightBitDoPro2Joystick = {
   id: 2,
-  type: "xboxOne",
-  name: "Xbox One Wireless Controller",
+  type: "gamecontroller",
+  name: "8bitdo Pro 2",
   path: "/dev/input/event19",
   guid: "050095ac5e040000e002000003090000",
   vendor: 1118,
   product: 736,
   version: 2307,
   player: 2,
+} satisfies Sdl.Joystick.Device;
+
+export const eightBitDoPro2 = {
+  ...eightBitDoPro2Joystick,
+  type: "xboxOne",
+  name: "Xbox One Wireless Controller",
   mapping:
     "050095ac5e040000e002000003090000,Xbox One Wireless Controller,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b10,leftshoulder:b4,leftstick:b8,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b9,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,",
 } satisfies Sdl.Controller.Device;
 
-/**
- * This is the SDL definition of the internal gamepad of the Steam Deck
- */
-export const steamDeck = {
+export const steamDeckJoystick = {
   id: 0,
-  type: "virtual",
-  name: "Steam Virtual Gamepad",
+  type: "gamecontroller",
+  name: "Steam Deck Controller",
   path: "/dev/input/event6",
   guid: "030079f6de280000ff11000001000000",
   vendor: 10462,
   product: 4613, // 4607
   version: 1,
   player: 0,
+} satisfies Sdl.Joystick.Device;
+
+/**
+ * This is the SDL definition of the internal gamepad of the Steam Deck
+ */
+export const steamDeck = {
+  ...steamDeckJoystick,
+  type: "virtual",
+  name: "Steam Virtual Gamepad",
   mapping:
     "030079f6de280000ff11000001000000,Steam Virtual Gamepad,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b8,leftshoulder:b4,leftstick:b9,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
 } satisfies Sdl.Controller.Device;
@@ -409,30 +421,42 @@ export const gamepadN64 = {
     "05001c5e7e0500001920000001800000,NSO N64 Controller,+rightx:b2,+righty:b3,-rightx:b4,-righty:b10,a:b0,b:b1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b6,lefttrigger:b8,leftx:a0,lefty:a1,misc1:b5,rightshoulder:b7,righttrigger:b9,start:b11,platform:Linux,crc:5e1c,",
 } satisfies Sdl.Controller.Device;
 
-export const gamepadPs4 = {
+export const gamepadPs4Joystick = {
   id: 1,
   name: "PS4 Controller",
   path: "/dev/hidraw1",
-  type: "ps4",
+  type: "gamecontroller",
   guid: "03008fe54c050000c405000000006800",
   vendor: 1356,
   product: 1476,
   version: null,
   player: 1,
+} satisfies Sdl.Joystick.Device;
+
+export const gamepadPs4 = {
+  ...gamepadPs4Joystick,
+  name: "PS4 Controller",
+  type: "ps4",
   mapping:
     "03008fe54c050000c405000000006800,*,a:b0,b:b1,back:b4,dpdown:b12,dpleft:b13,dpright:b14,dpup:b11,guide:b5,leftshoulder:b9,leftstick:b7,lefttrigger:a4,leftx:a0,lefty:a1,rightshoulder:b10,rightstick:b8,righttrigger:a5,rightx:a2,righty:a3,start:b6,x:b2,y:b3,touchpad:b15,crc:e58f,",
 } satisfies Sdl.Controller.Device;
 
-export const gamepadPs3 = {
+export const gamepadPs3Joystick = {
   id: 2,
   name: "PS3 Controller",
   path: "/dev/input/event28",
-  type: "ps3",
+  type: "gamecontroller",
   guid: "0500f9d24c0500006802000000800000",
   vendor: 1356,
   product: 616,
   version: 32768,
   player: 0,
+} satisfies Sdl.Joystick.Device;
+
+export const gamepadPs3 = {
+  ...gamepadPs3Joystick,
+  name: "PS3 Controller",
+  type: "ps3",
   mapping:
     "0500f9d24c0500006802000000800000,PS3 Controller,a:b0,b:b1,back:b8,dpdown:b14,dpleft:b15,dpright:b16,dpup:b13,guide:b10,leftshoulder:b4,leftstick:b11,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b12,righttrigger:a5,rightx:a3,righty:a4,start:b9,x:b3,y:b2,platform:Linux,",
 } satisfies Sdl.Controller.Device;
@@ -486,13 +510,6 @@ export const isLightgunConnected = (joysticks: Sdl.Joystick.Device[]) =>
         name?.toLowerCase().includes(lightgunName.toLowerCase()),
       ),
   );
-
-export const convertToJoystick = (
-  controller: Sdl.Controller.Device,
-): Sdl.Joystick.Device => ({
-  ...controller,
-  type: "gamecontroller",
-});
 
 export const isController = (
   device: Sdl.Joystick.Device | Sdl.Controller.Device,

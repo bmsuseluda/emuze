@@ -2,15 +2,25 @@ import type { Sdl } from "@kmamal/sdl";
 import { scancodes } from "../../app/server/applicationsDB.server/applications/ares/keyboardConfig.js";
 import {
   gamepadPs4,
+  gamepadPs4Joystick,
   steamDeck,
+  steamDeckJoystick,
   eightBitDoPro2,
+  eightBitDoPro2Joystick,
 } from "../../app/types/gamepad.js";
 
-export const devices: Sdl.Controller.Device[] = [
+export const controllerDevices: Sdl.Controller.Device[] = [
   steamDeck,
   gamepadPs4,
   eightBitDoPro2,
   { ...eightBitDoPro2, id: 3, player: 3 },
+];
+
+export const joystickDevices: Sdl.Joystick.Device[] = [
+  steamDeckJoystick,
+  gamepadPs4Joystick,
+  eightBitDoPro2Joystick,
+  { ...eightBitDoPro2Joystick, id: 3, player: 3 },
 ];
 
 const on = (
@@ -22,7 +32,7 @@ const on = (
 
 const sdlMock = {
   controller: {
-    devices,
+    devices: controllerDevices,
     openDevice: (controller: Sdl.Controller.Device) => {
       return {
         on,
@@ -37,7 +47,7 @@ const sdlMock = {
     addMappings: () => {},
   },
   joystick: {
-    devices,
+    devices: joystickDevices,
     openDevice: () => {
       return {
         on,
