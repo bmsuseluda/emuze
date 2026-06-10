@@ -26,7 +26,7 @@ type EmulatorDownloads = Record<ApplicationId, Record<OperatingSystem, string>>;
 
 const emulatorDownloads = {
   ares: {
-    Linux: `https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v${emulatorVersions.ares}%402026-01-01_1767253716/ares-v${emulatorVersions.ares}-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v${emulatorVersions.ares}%402026-05-30_1780149007/ares-v${emulatorVersions.ares}-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/ares-emulator/ares/releases/download/v${emulatorVersions.ares}/ares-windows-x64.zip`,
   },
   azahar: {
@@ -114,28 +114,28 @@ const makeFileExecutableLinux = (filePath: string) => {
 const downloadEmulator = (emulatorId: ApplicationId, downloadLink: string) => {
   const bundledPathRelative = applications[emulatorId].bundledPath;
   const bundledPath = join(emulatorsFolderPath, bundledPathRelative);
-  const bundledPathExists = existsSync(bundledPath);
 
-  if (!bundledPathExists) {
+  if (!existsSync(bundledPath)) {
     const emulatorFolderPath = join(emulatorsFolderPath, emulatorId);
-    if (!existsSync(emulatorFolderPath)) {
-      mkdirSync(emulatorFolderPath, { recursive: true });
-    }
 
-    if (downloadLink.toLowerCase().endsWith(".appimage")) {
-      downloadAppImage(downloadLink, bundledPath);
-    } else if (downloadLink.toLowerCase().endsWith(".7z")) {
-      downloadAndExtract7z(downloadLink, emulatorFolderPath, bundledPath);
-    } else if (downloadLink.toLowerCase().endsWith(".exe")) {
-      downloadExe(downloadLink, emulatorFolderPath, bundledPath);
-    } else {
-      downloadAndExtract(
-        downloadLink,
-        emulatorFolderPath,
-        bundledPath,
-        () => removeRootFolderIfNecessary(emulatorFolderPath),
-        exitOnResponseCodeError,
-      );
+    if (!existsSync(bundledPath)) {
+      mkdirSync(emulatorFolderPath, { recursive: true });
+
+      if (downloadLink.toLowerCase().endsWith(".appimage")) {
+        downloadAppImage(downloadLink, bundledPath);
+      } else if (downloadLink.toLowerCase().endsWith(".7z")) {
+        downloadAndExtract7z(downloadLink, emulatorFolderPath, bundledPath);
+      } else if (downloadLink.toLowerCase().endsWith(".exe")) {
+        downloadExe(downloadLink, emulatorFolderPath, bundledPath);
+      } else {
+        downloadAndExtract(
+          downloadLink,
+          emulatorFolderPath,
+          bundledPath,
+          () => removeRootFolderIfNecessary(emulatorFolderPath),
+          exitOnResponseCodeError,
+        );
+      }
     }
   }
 };

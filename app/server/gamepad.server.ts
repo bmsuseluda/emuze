@@ -3,8 +3,10 @@ import type { Sdl } from "@kmamal/sdl";
 import { isWindows } from "./operationsystem.server.js";
 import { isController, isXinputController } from "../types/gamepad.js";
 
-export const getJoystickFromController = (controller: Sdl.Controller.Device) =>
-  sdl.joystick.devices.find(({ id }) => controller.id === id);
+export const getJoystickFromController = (
+  controller: Sdl.Controller.Device,
+): Sdl.Joystick.Device =>
+  sdl.joystick.devices.find(({ id }) => controller.id === id)!;
 
 export const getControllerFromJoystick = (joystick: Sdl.Joystick.Device) =>
   sdl.controller.devices.find(({ id }) => joystick.id === id);
