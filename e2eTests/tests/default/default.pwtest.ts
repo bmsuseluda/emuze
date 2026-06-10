@@ -174,6 +174,21 @@ test("Should open the about page", async ({ page, settingsPage }) => {
   ).not.toBeVisible();
 });
 
+test("Should open the advanced page", async ({ page, settingsPage }) => {
+  await settingsPage.openSettingsViaClick(true);
+  await settingsPage.goToSubPageViaClick(settingsPage.advancedPage.name);
+  await expect(settingsPage.advancedPage.eden).toBeVisible();
+  await settingsPage.press("ArrowRight");
+  await settingsPage.press("ArrowDown");
+  await expect(settingsPage.advancedPage.rmg).toBeFocused();
+  await expect(page).toHaveScreenshot();
+  await settingsPage.press("Enter");
+  await expect(settingsPage.advancedPage.rmg).toBeChecked();
+  await expect(page).toHaveScreenshot();
+
+  await settingsPage.closeSettingsViaClick(true);
+});
+
 test("Should show error that bios folder is necessary", async ({
   page,
   libraryPage,
