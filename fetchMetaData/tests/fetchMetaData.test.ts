@@ -44,7 +44,7 @@ describe("fetchMetaData", () => {
     const systemId = "nintendoentertainmentsystem";
     await fetchMetaData(systemId);
 
-    expect(writeFile).toBeCalledWith(
+    expect(writeFile).toHaveBeenCalledWith(
       [
         ["teenagemutantninjaturtles", "ddsada"],
         ["teenagemutantheroturtles", "dsfsdf"],
@@ -78,7 +78,7 @@ describe("fetchMetaData", () => {
     const systemId = "segamegadrive";
     await fetchMetaData(systemId);
 
-    expect(writeFile).toBeCalledWith(
+    expect(writeFile).toHaveBeenCalledWith(
       [
         ["lighteningforce", "lighteningforce"],
         ["thunderforce4", "thunderforceiv"],
@@ -105,7 +105,7 @@ describe("fetchMetaData", () => {
     const systemId = "nintendoentertainmentsystem";
     await fetchMetaData(systemId);
 
-    expect(writeFile).toBeCalledWith(
+    expect(writeFile).toHaveBeenCalledWith(
       [["teenagemutantninjaturtles", "ddsada"]],
       getDbPath(systemId),
     );
@@ -141,7 +141,7 @@ describe("fetchMetaData", () => {
     const systemId = "nintendoentertainmentsystem";
     await fetchMetaData(systemId);
 
-    expect(writeFile).toBeCalledWith(
+    expect(writeFile).toHaveBeenCalledWith(
       [
         ["teenagemutantninjaturtles", "ddsada"],
         ["teenagemutantninjaturtles2thearcadegame", "ddsada"],
@@ -165,7 +165,7 @@ describe("fetchMetaData", () => {
     const systemId = "nintendoentertainmentsystem";
     await fetchMetaData(systemId);
 
-    expect(writeFile).toBeCalledWith(
+    expect(writeFile).toHaveBeenCalledWith(
       [["teenagemutantninjaturtles2000", "ddsada"]],
       getDbPath(systemId),
     );

@@ -38,7 +38,7 @@ describe("useGamepadsOnGrid", () => {
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row1element1",
       });
-      expect(onSelectEntry).toBeCalledWith("row1element1");
+      expect(onSelectEntry).toHaveBeenCalledWith("row1element1");
 
       // press down to go to second row
       pressButton("dpadDown");
@@ -46,7 +46,7 @@ describe("useGamepadsOnGrid", () => {
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row2element1",
       });
-      expect(onSelectEntry).toBeCalledWith("row2element1");
+      expect(onSelectEntry).toHaveBeenCalledWith("row2element1");
     });
 
     it("Should select last element in second row on dpad down press", () => {
@@ -74,7 +74,7 @@ describe("useGamepadsOnGrid", () => {
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row1element1",
       });
-      expect(onSelectEntry).toBeCalledWith("row1element1");
+      expect(onSelectEntry).toHaveBeenCalledWith("row1element1");
 
       // press right 2 times to go to last element on first row
       pressButton("dpadRight");
@@ -83,7 +83,7 @@ describe("useGamepadsOnGrid", () => {
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row1element3",
       });
-      expect(onSelectEntry).toBeCalledWith("row1element3");
+      expect(onSelectEntry).toHaveBeenCalledWith("row1element3");
 
       // press down to go to second row
       pressButton("dpadDown");
@@ -91,7 +91,7 @@ describe("useGamepadsOnGrid", () => {
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row2element2",
       });
-      expect(onSelectEntry).toBeCalledWith("row2element2");
+      expect(onSelectEntry).toHaveBeenCalledWith("row2element2");
     });
 
     it("Should not trigger anything if not in focus", () => {
@@ -119,7 +119,7 @@ describe("useGamepadsOnGrid", () => {
       expect(result.current.selectedEntry).toStrictEqual({
         current: undefined,
       });
-      expect(onSelectEntry).not.toBeCalled();
+      expect(onSelectEntry).not.toHaveBeenCalled();
     });
 
     it("Should call onLeftOverTheEdge", () => {
@@ -149,12 +149,12 @@ describe("useGamepadsOnGrid", () => {
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row1element1",
       });
-      expect(onSelectEntry).toBeCalledWith("row1element1");
+      expect(onSelectEntry).toHaveBeenCalledWith("row1element1");
 
       // press left to go over the edge
       pressButton("dpadLeft");
 
-      expect(onLeftOverTheEdge).toBeCalled();
+      expect(onLeftOverTheEdge).toHaveBeenCalled();
     });
 
     it("Should call onRightOverTheEdge", () => {
@@ -184,14 +184,14 @@ describe("useGamepadsOnGrid", () => {
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row1element1",
       });
-      expect(onSelectEntry).toBeCalledWith("row1element1");
+      expect(onSelectEntry).toHaveBeenCalledWith("row1element1");
 
       // press right to go over the edge
       pressButton("dpadRight");
       pressButton("dpadRight");
       pressButton("dpadRight");
 
-      expect(onRightOverTheEdge).toBeCalled();
+      expect(onRightOverTheEdge).toHaveBeenCalled();
     });
 
     it("Should call onTopOverTheEdge", () => {
@@ -221,12 +221,12 @@ describe("useGamepadsOnGrid", () => {
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row1element1",
       });
-      expect(onSelectEntry).toBeCalledWith("row1element1");
+      expect(onSelectEntry).toHaveBeenCalledWith("row1element1");
 
       // press up to go over the edge
       pressButton("dpadUp");
 
-      expect(onTopOverTheEdge).toBeCalled();
+      expect(onTopOverTheEdge).toHaveBeenCalled();
     });
 
     it("Should call onBottomOverTheEdge", () => {
@@ -256,13 +256,13 @@ describe("useGamepadsOnGrid", () => {
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row1element1",
       });
-      expect(onSelectEntry).toBeCalledWith("row1element1");
+      expect(onSelectEntry).toHaveBeenCalledWith("row1element1");
 
       // press down to go over the edge
       pressButton("dpadDown");
       pressButton("dpadDown");
 
-      expect(onBottomOverTheEdge).toBeCalled();
+      expect(onBottomOverTheEdge).toHaveBeenCalled();
     });
   });
 
@@ -292,7 +292,7 @@ describe("useGamepadsOnGrid", () => {
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row1element1",
       });
-      expect(onSelectEntry).toBeCalledWith("row1element1");
+      expect(onSelectEntry).toHaveBeenCalledWith("row1element1");
 
       // press down to go to second row
       pressButton("leftStickDown");
@@ -300,7 +300,7 @@ describe("useGamepadsOnGrid", () => {
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row2element1",
       });
-      expect(onSelectEntry).toBeCalledWith("row2element1");
+      expect(onSelectEntry).toHaveBeenCalledWith("row2element1");
     });
 
     it("Should not trigger anything if not in focus", () => {
@@ -328,7 +328,7 @@ describe("useGamepadsOnGrid", () => {
       expect(result.current.selectedEntry).toStrictEqual({
         current: undefined,
       });
-      expect(onSelectEntry).not.toBeCalled();
+      expect(onSelectEntry).not.toHaveBeenCalled();
     });
   });
 
@@ -358,7 +358,7 @@ describe("useGamepadsOnGrid", () => {
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row1element1",
       });
-      expect(onSelectEntry).toBeCalledWith("row1element1");
+      expect(onSelectEntry).toHaveBeenCalledWith("row1element1");
 
       // press down to go to second row
       await userEvent.keyboard("{ArrowDown}");
@@ -366,7 +366,7 @@ describe("useGamepadsOnGrid", () => {
       expect(result.current.selectedEntry).toStrictEqual({
         current: "row2element1",
       });
-      expect(onSelectEntry).toBeCalledWith("row2element1");
+      expect(onSelectEntry).toHaveBeenCalledWith("row2element1");
     });
 
     it("Should not trigger anything if not in focus", async () => {
@@ -394,7 +394,7 @@ describe("useGamepadsOnGrid", () => {
       expect(result.current.selectedEntry).toStrictEqual({
         current: undefined,
       });
-      expect(onSelectEntry).not.toBeCalled();
+      expect(onSelectEntry).not.toHaveBeenCalled();
     });
   });
 });
