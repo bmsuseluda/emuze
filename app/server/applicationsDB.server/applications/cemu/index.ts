@@ -3,7 +3,7 @@ import type { Application } from "../../types.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { isWindows } from "../../../operationsystem.server.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
-import { XMLBuilder } from "fast-xml-parser";
+import XMLBuilder from "fast-xml-builder";
 import { log } from "../../../debug.server.js";
 import { readXmlConfigFile, writeConfig } from "../../configFile.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";

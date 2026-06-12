@@ -1,7 +1,8 @@
 import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
 import { keyboardConfig } from "./keyboardConfig.js";
-import { XMLBuilder, XMLParser } from "fast-xml-parser";
+import { XMLParser } from "fast-xml-parser";
+import XMLBuilder from "fast-xml-builder";
 import type { ControllerConfigFile } from "./config.js";
 import {
   defaultGamepadConfig,
