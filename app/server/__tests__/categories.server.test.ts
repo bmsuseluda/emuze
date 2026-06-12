@@ -95,7 +95,7 @@ describe("categories.server", () => {
       await importCategories();
 
       // expect
-      expect(writeFileHome).toBeCalledTimes(3);
+      expect(writeFileHome).toHaveBeenCalledTimes(3);
       expect(writeFileHome).toHaveBeenNthCalledWith(
         1,
         nintendo3ds,

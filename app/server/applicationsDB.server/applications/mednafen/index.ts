@@ -93,7 +93,7 @@ const hiresGames = [
 const fixInterlacingSaturn = (gameName: string) => {
   const gameNameNormalized = normalizeString(gameName);
   if (hiresGames.includes(gameNameNormalized)) {
-    return [...["-video.deinterlacer", "bob_offset"]];
+    return ["-video.deinterlacer", "bob_offset"];
   }
 
   return [];

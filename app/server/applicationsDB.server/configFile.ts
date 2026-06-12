@@ -146,7 +146,7 @@ export const readXmlConfigFile = (
   const parser = new XMLParser({
     ignoreAttributes: false,
     parseTagValue: false,
-    ...(parseOptions || {}),
+    ...parseOptions,
   });
   try {
     const file = fs.readFileSync(filePath, "utf8");
