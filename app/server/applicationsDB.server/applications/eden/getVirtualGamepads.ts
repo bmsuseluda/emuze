@@ -108,7 +108,7 @@ const normalizeGuid = (guid: string) =>
 /**
  * check all devices until sdlIndex (current index) for GUID. count how much and return accordingly
  *
- * @return number starts with 0
+ * @returns number starts with 0
  */
 export const getSdlGuidIndex =
   (devices: (Sdl.Joystick.Device | Sdl.Controller.Device)[]) =>

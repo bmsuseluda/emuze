@@ -139,7 +139,7 @@ export const xemu: Application = {
     if (fullscreen) {
       optionParams.push("-full-screen");
     }
-    optionParams.push(...["-dvd_path", absoluteEntryPath]);
+    optionParams.push("-dvd_path", absoluteEntryPath);
     return optionParams;
   },
   bundledPath,

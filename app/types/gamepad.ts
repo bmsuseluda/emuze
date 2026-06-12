@@ -85,7 +85,7 @@ export const getGamepadButtonEventName = (buttonId: ButtonId) =>
 /**
  * check all devices until sdlIndex (current index) for name. count how much and return accordingly
  *
- * @return number starts with 0
+ * @returns number starts with 0
  */
 export const getNameIndex = (
   name: string,

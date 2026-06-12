@@ -28,7 +28,7 @@ export const getGamepadName = (
 /**
  * check all devices until sdlIndex (current index) for name. count how much and return accordingly
  *
- * @return number starts with 0
+ * @returns number starts with 0
  */
 export const getSdlNameIndex = (
   name: string,
