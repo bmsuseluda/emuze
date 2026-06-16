@@ -21,7 +21,7 @@ import {
   mameNeoGeo,
   mameNeoGeoCD,
 } from "../applicationsDB.server/applications/mame/index.js";
-import { dosboxstaging } from "../applicationsDB.server/applications/dosbox/index.js";
+import { dosboxpure } from "../applicationsDB.server/applications/dosbox/index.js";
 import { scummvm } from "../applicationsDB.server/applications/scummvm/index.js";
 import type { Category } from "./types.js";
 import type { SystemId } from "./systemId.js";
@@ -370,7 +370,7 @@ export const dos: Category = {
   id: "dos",
   names: ["Microsoft DOS", "DOS", "MS DOS"],
   igdbPlatformIds: [13],
-  getApplication: () => dosboxstaging,
+  getApplication: () => dosboxpure,
   hasAnalogStick: false,
 };
 

@@ -9,6 +9,7 @@ import {
   eightBitDoPro2Joystick,
 } from "../../app/types/gamepad.js";
 
+// TODO: add steam controller
 export const controllerDevices: Sdl.Controller.Device[] = [
   steamDeck,
   gamepadPs4,

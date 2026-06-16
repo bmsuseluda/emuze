@@ -12,7 +12,7 @@ export type ApplicationId =
   | "mame"
   | "ares"
   | "flycast"
-  | "dosboxstaging"
+  | "dosboxpure"
   | "rosaliesMupenGui"
   | "scummvm"
   | "xemu"

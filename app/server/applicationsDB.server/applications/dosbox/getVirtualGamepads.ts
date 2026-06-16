@@ -16,7 +16,7 @@ import {
 } from "../../../../types/gamepad.js";
 import { getControllerFromJoystick } from "../../../gamepad.server.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
-import { DosboxButtonId } from "./types.js";
+import { DosboxButtonId, DosboxButtonIdWithPort } from "./types.js";
 import {
   AnalogType,
   AnalogValue,
@@ -43,24 +43,23 @@ export const getGamepad = () => {
   return null;
 };
 
-// TODO: remove portId
 const dosboxButtonIds = {
-  bind_port_1_up: "dpup",
-  bind_port_1_down: "dpdown",
-  bind_port_1_left: "dpleft",
-  bind_port_1_right: "dpright",
-  bind_port_1_a: "b",
-  bind_port_1_b: "a",
-  bind_port_1_x: "y",
-  bind_port_1_y: "x",
-  bind_port_1_l: "leftshoulder",
-  bind_port_1_r: "rightshoulder",
-  bind_port_1_l2: "lefttrigger",
-  bind_port_1_r2: "righttrigger",
-  bind_port_1_l3: "leftstick",
-  bind_port_1_r3: "rightstick",
-  bind_port_1_select: "back",
-  bind_port_1_start: "start",
+  up: "dpup",
+  down: "dpdown",
+  left: "dpleft",
+  right: "dpright",
+  a: "b",
+  b: "a",
+  x: "y",
+  y: "x",
+  l: "leftshoulder",
+  r: "rightshoulder",
+  l2: "lefttrigger",
+  r2: "righttrigger",
+  l3: "leftstick",
+  r3: "rightstick",
+  select: "back",
+  start: "start",
 } satisfies Partial<Record<DosboxButtonId, SdlButtonId>>;
 
 const getAnalogType = (
@@ -80,9 +79,10 @@ const getAnalogType = (
   }
 };
 
-type ControllerSetting = {
-  [K in DosboxButtonId]: HatValue | AnalogValue | ButtonValue | null;
-};
+type ControllerSetting = Record<
+  DosboxButtonIdWithPort,
+  HatValue | AnalogValue | ButtonValue | null
+>;
 
 const getDosBoxButtonId = (
   mappingObject: SdlButtonMapping,
@@ -109,6 +109,11 @@ const getHatDirection = (sdlButtonId: SdlButtonId): HatType => {
   }
 };
 
+const prepareButtonIdString =
+  (portId: number) =>
+  (dosboxButtonId: DosboxButtonId): DosboxButtonIdWithPort =>
+    `bind_port_${portId}_${dosboxButtonId}`;
+
 const getGamepadButtonMapping = (
   dosboxButtonId: keyof typeof dosboxButtonIds,
   mappingObject: SdlButtonMapping,
@@ -116,13 +121,14 @@ const getGamepadButtonMapping = (
   joystickName: string,
 ): ControllerSetting => {
   const sdlButtonId = dosboxButtonIds[dosboxButtonId];
+  const dosboxButtonIdString = prepareButtonIdString(portId)(dosboxButtonId);
   const buttonId = getDosBoxButtonId(mappingObject, sdlButtonId);
 
   if (isDpadHat(mappingObject, sdlButtonId)) {
     const direction = getHatDirection(sdlButtonId);
     const hatValue: HatValue = `${joystickName}|Hat|1|${direction}`;
     return {
-      [dosboxButtonId]: hatValue,
+      [dosboxButtonIdString]: hatValue,
     };
   }
 
@@ -130,20 +136,14 @@ const getGamepadButtonMapping = (
     const analogType = getAnalogType(mappingObject, sdlButtonId);
     const analogValue: AnalogValue = `${joystickName}|Axis|${buttonId}|${analogType}`;
     return {
-      [dosboxButtonId]: analogValue,
+      [dosboxButtonIdString]: analogValue,
     };
   }
 
   const buttonValue: ButtonValue = `${joystickName}|Button|${buttonId}`;
 
-  return { [dosboxButtonId]: buttonValue };
+  return { [dosboxButtonIdString]: buttonValue };
 };
-
-const getDosboxButtonIdWithPort = (dosboxButtonId: string, portId: number) =>
-  dosboxButtonId.replace(
-    "1",
-    portId.toString(),
-  ) as keyof typeof dosboxButtonIds;
 
 const getGamepadButtonMappings = (
   mappingObject: SdlButtonMapping,
@@ -154,7 +154,7 @@ const getGamepadButtonMappings = (
     (accumulator, dosboxButtonId) => ({
       ...accumulator,
       ...getGamepadButtonMapping(
-        getDosboxButtonIdWithPort(dosboxButtonId, portId),
+        dosboxButtonId as keyof typeof dosboxButtonIds,
         mappingObject,
         portId,
         joystickName,
@@ -185,38 +185,41 @@ export const getVirtualGamepad = (
   const portId = sdlIndex + 1;
   const deviceName = getDeviceNameFromHid(sdlDevice)!;
   const getAnalogValue = prepareAnalogValue(mappingObject, deviceName);
+  const getButtonIdString = prepareButtonIdString(portId);
 
   return {
     ...getGamepadButtonMappings(mappingObject, portId, deviceName),
-    [`bind_port_${portId}_lstickup`]: getAnalogValue("lefty", "Negative"),
-    [`bind_port_${portId}_lstickdown`]: getAnalogValue("lefty", "Positive"),
-    [`bind_port_${portId}_lstickleft`]: getAnalogValue("leftx", "Negative"),
-    [`bind_port_${portId}_lstickright`]: getAnalogValue("leftx", "Positive"),
-    [`bind_port_${portId}_rstickup`]: getAnalogValue("righty", "Negative"),
-    [`bind_port_${portId}_rstickdown`]: getAnalogValue("righty", "Positive"),
-    [`bind_port_${portId}_rstickleft`]: getAnalogValue("rightx", "Negative"),
-    [`bind_port_${portId}_rstickright`]: getAnalogValue("rightx", "Positive"),
+    [getButtonIdString("lstickup")]: getAnalogValue("lefty", "Negative"),
+    [getButtonIdString("lstickdown")]: getAnalogValue("lefty", "Positive"),
+    [getButtonIdString("lstickleft")]: getAnalogValue("leftx", "Negative"),
+    [getButtonIdString("lstickright")]: getAnalogValue("leftx", "Positive"),
+    [getButtonIdString("rstickup")]: getAnalogValue("righty", "Negative"),
+    [getButtonIdString("rstickdown")]: getAnalogValue("righty", "Positive"),
+    [getButtonIdString("rstickleft")]: getAnalogValue("rightx", "Negative"),
+    [getButtonIdString("rstickright")]: getAnalogValue("rightx", "Positive"),
   };
 };
 
 const getVirtualGamepadReset = (gamepadIndex: number): ControllerSetting => {
   const portId = gamepadIndex + 1;
+  const getButtonIdString = prepareButtonIdString(portId);
+
   return {
     ...Object.keys(dosboxButtonIds).reduce<ControllerSetting>(
       (accumulator, dosboxButtonId) => ({
         ...accumulator,
-        [getDosboxButtonIdWithPort(dosboxButtonId, portId)]: "",
+        [getButtonIdString(dosboxButtonId as keyof typeof dosboxButtonIds)]: "",
       }),
       {},
     ),
-    [`bind_port_${portId}_lstickup`]: "",
-    [`bind_port_${portId}_lstickdown`]: "",
-    [`bind_port_${portId}_lstickleft`]: "",
-    [`bind_port_${portId}_lstickright`]: "",
-    [`bind_port_${portId}_rstickup`]: "",
-    [`bind_port_${portId}_rstickdown`]: "",
-    [`bind_port_${portId}_rstickleft`]: "",
-    [`bind_port_${portId}_rstickright`]: "",
+    [getButtonIdString("lstickup")]: "",
+    [getButtonIdString("lstickdown")]: "",
+    [getButtonIdString("lstickleft")]: "",
+    [getButtonIdString("lstickright")]: "",
+    [getButtonIdString("rstickup")]: "",
+    [getButtonIdString("rstickdown")]: "",
+    [getButtonIdString("rstickleft")]: "",
+    [getButtonIdString("rstickright")]: "",
   };
 };
 

@@ -41,9 +41,9 @@ const emulatorDownloads = {
     Linux: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions.dolphin}%402026-01-01_1767256227/Dolphin_Emulator-${emulatorVersions.dolphin}-anylinux.dwarfs-x86_64.AppImage`,
     Windows: `https://dl.dolphin-emu.org/releases/${emulatorVersions.dolphin}/dolphin-${emulatorVersions.dolphin}-x64.7z`,
   },
-  dosboxstaging: {
-    Linux: `https://github.com/dosbox-staging/dosbox-staging/releases/download/v${emulatorVersions.dosboxstaging}/dosbox-staging-linux-x86_64-v${emulatorVersions.dosboxstaging}.tar.xz`,
-    Windows: `https://github.com/dosbox-staging/dosbox-staging/releases/download/v${emulatorVersions.dosboxstaging}/dosbox-staging-windows-x64-v${emulatorVersions.dosboxstaging}.zip`,
+  dosboxpure: {
+    Linux: `https://github.com/schellingb/dosbox-pure-unleashed/releases/download/${emulatorVersions.dosboxpure}/dosbox_pure_unleashed-linux-x64-${emulatorVersions.dosboxpure}fix.zip`,
+    Windows: `https://github.com/schellingb/dosbox-pure-unleashed/releases/download/${emulatorVersions.dosboxpure}/dosbox_pure_unleashed-windows-64bit-${emulatorVersions.dosboxpure}fix.zip`,
   },
   duckstation: {
     Linux: `https://github.com/Kyuyrii/Duckstation-GPL3/releases/download/v${emulatorVersions.duckstation}/DuckStation-x64.AppImage`,

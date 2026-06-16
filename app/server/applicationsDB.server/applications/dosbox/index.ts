@@ -17,7 +17,7 @@ import { log } from "../../../debug.server.js";
 import { writeConfig } from "../../configFile.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 
-const applicationId: ApplicationId = "dosboxstaging";
+const applicationId: ApplicationId = "dosboxpure";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "dosbox.exe")
   : nodepath.join(applicationId, "dosbox");
@@ -200,9 +200,9 @@ const getConfigFileBasePath = () => {
   }
 };
 
-export const dosboxstaging: Application = {
+export const dosboxpure: Application = {
   id: applicationId,
-  name: "DOSBox-Staging",
+  name: "DOSBox Pure Unleashed",
   fileExtensions: [".exe", ".bat"],
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {

@@ -1,6 +1,6 @@
 import type { Application } from "../app/server/applicationsDB.server/types.js";
 import { scummvm } from "../app/server/applicationsDB.server/applications/scummvm/index.js";
-import { dosboxstaging } from "../app/server/applicationsDB.server/applications/dosbox/index.js";
+import { dosboxpure } from "../app/server/applicationsDB.server/applications/dosbox/index.js";
 import { mame } from "../app/server/applicationsDB.server/applications/mame/index.js";
 import { rpcs3 } from "../app/server/applicationsDB.server/applications/rpcs3/index.js";
 import { ares } from "../app/server/applicationsDB.server/applications/ares/index.js";
@@ -33,7 +33,7 @@ export const applications = {
   mame,
   ares,
   flycast,
-  dosboxstaging,
+  dosboxpure,
   rosaliesMupenGui,
   scummvm,
   xemu,
@@ -45,7 +45,7 @@ export const emulatorVersions = {
   azahar: "2124.3",
   cemu: "2.6",
   dolphin: "2512",
-  dosboxstaging: "0.82.2",
+  dosboxpure: "1.0-preview5",
   duckstation: "0.1-7371",
   eden: "0.2.0",
   flycast: "2.6",
