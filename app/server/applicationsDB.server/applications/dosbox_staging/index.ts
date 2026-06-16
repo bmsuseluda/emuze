@@ -1,5 +1,5 @@
 import dosGames from "./nameMapping/dos.json" with { type: "json" };
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import type {
   Application,
   ExcludeFilesFunction,
@@ -10,35 +10,11 @@ import nodepath from "node:path";
 import { readFilenames } from "../../../readWriteData.server.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { isWindows } from "../../../operationsystem.server.js";
-import { envPaths } from "../../../envPaths.server.js";
-import { sdlGameControllerConfig } from "../../environmentVariables.js";
-import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
-import { log } from "../../../debug.server.js";
-import { writeConfig } from "../../configFile.js";
-import { getVirtualGamepads } from "./getVirtualGamepads.js";
 
 const applicationId: ApplicationId = "dosboxstaging";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "dosbox.exe")
   : nodepath.join(applicationId, "dosbox");
-
-const configFolderPath = nodepath.join(emulatorsConfigDirectory, applicationId);
-const configFileName = "DOSBoxPure.cfg";
-const configFilePath = nodepath.join(configFolderPath, configFileName);
-
-const readConfigFile = (filePath: string) => {
-  try {
-    return JSON.parse(readFileSync(filePath, "utf8"));
-  } catch (error) {
-    log(
-      "debug",
-      "dosbox",
-      "config file can not be read. defaultSettings will be used.",
-      error,
-    );
-    return {};
-  }
-};
 
 const findDosGameEntry = (filePath: string) =>
   Object.entries(dosGames).find(([key]) =>
@@ -66,8 +42,10 @@ const findDosGameName: FindEntryNameFunction = ({ entry: { path } }) => {
   return nodepath.basename(path);
 };
 
-const createMountCommand = (fileToMount: string) =>
-  `imgmount D ${fileToMount} -t cdrom`;
+const createMountCommand = (fileToMount: string) => [
+  "-c",
+  `imgmount D ${fileToMount} -t cdrom`,
+];
 
 /**
  * Looks for a disc drive file. Uses the following priority:
@@ -82,7 +60,7 @@ const createMountCommand = (fileToMount: string) =>
 const mountDiscDrive = (
   directoryName: string,
   filenameWithoutExtension: string,
-): string => {
+): string[] => {
   const cueFiles = readFilenames({
     path: directoryName,
     fileExtensions: [".cue"],
@@ -113,45 +91,7 @@ const mountDiscDrive = (
     return createMountCommand(`${filenameWithoutExtension}.DAT`);
   }
 
-  return "";
-};
-
-const createPrepareBatFile = (
-  workingDirectory: string,
-  absoluteEntryPath: string,
-  mountDiscDriveCommand: string,
-) => {
-  const filePath = nodepath.join(workingDirectory, "PREPARE.BAT");
-
-  const executableFileName = nodepath.basename(absoluteEntryPath);
-  const executableRelativePath = absoluteEntryPath.split(workingDirectory)[1];
-  const executableRelativeDir =
-    executableRelativePath.split(executableFileName)[0];
-
-  const file = [
-    mountDiscDriveCommand,
-    "loadfix",
-    `CD ${executableRelativeDir}`,
-    executableFileName,
-  ].join("\n");
-
-  writeFileSync(filePath, file);
-
-  return filePath;
-};
-
-const writeConfigFile = (fullscreen?: boolean) => {
-  const filePath = configFilePath;
-  const fileContent = readConfigFile(filePath);
-
-  const fileContentNew = {
-    ...fileContent,
-    custom_controller_bindings: "true",
-    screen_fullscreen: fullscreen ? "true" : "false",
-    ...getVirtualGamepads(),
-  };
-
-  writeConfig(filePath, JSON.stringify(fileContentNew));
+  return [];
 };
 
 const createOptionParams: OptionParamFunction = ({
@@ -161,9 +101,12 @@ const createOptionParams: OptionParamFunction = ({
   },
   entryData: { path },
   categoryData,
-  absoluteEntryPath,
 }) => {
-  writeConfigFile(fullscreen);
+  const optionParams = [];
+
+  if (fullscreen) {
+    optionParams.push("--fullscreen");
+  }
 
   const workingDirectory = nodepath.join(
     categoriesPath,
@@ -175,42 +118,23 @@ const createOptionParams: OptionParamFunction = ({
     nodepath.extname(path),
   );
 
-  const mountDiscDriveCommand = mountDiscDrive(
-    workingDirectory,
-    filenameWithoutExtension,
+  optionParams.push("--working-dir", workingDirectory);
+  optionParams.push("-c", "mount C . -t dir");
+
+  optionParams.push(
+    ...mountDiscDrive(workingDirectory, filenameWithoutExtension),
   );
 
-  const prepareBatFile = createPrepareBatFile(
-    workingDirectory,
-    absoluteEntryPath,
-    mountDiscDriveCommand,
-  );
-  const optionParams = [prepareBatFile];
+  optionParams.push("-c", "loadfix");
 
   return optionParams;
-};
-
-const getConfigFileBasePath = () => {
-  if (isWindows()) {
-    const { config } = envPaths("DOSBoxPure", { suffix: "" });
-    return nodepath.join(config);
-  } else {
-    const { config } = envPaths("DOSBoxPure", { suffix: "" });
-    return nodepath.join(config);
-  }
 };
 
 export const dosboxstaging: Application = {
   id: applicationId,
   name: "DOSBox-Staging",
   fileExtensions: [".exe", ".bat"],
-  defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
-  configFile: {
-    basePath: getConfigFileBasePath(),
-    files: [configFileName],
-  },
   excludeFiles: excludeDosSecondaryFiles,
-  omitAbsoluteEntryPathAsLastParam: true,
   createOptionParams,
   findEntryName: findDosGameName,
   bundledPath,

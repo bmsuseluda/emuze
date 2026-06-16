@@ -353,7 +353,7 @@ export const createSdlMappingObject = (sdlMapping: string): SdlButtonMapping =>
 export const eightBitDoPro2Joystick = {
   id: 2,
   type: "gamecontroller",
-  name: "8bitdo Pro 2",
+  name: "Xbox One S Controller",
   path: "/dev/input/event19",
   guid: "050095ac5e040000e002000003090000",
   vendor: 1118,
@@ -381,6 +381,9 @@ export const steamDeckJoystick = {
   version: 1,
   player: 0,
 } satisfies Sdl.Joystick.Device;
+
+// 030079f6de280000ff11000001000000: first
+// 0300b836de280000ff11000001000000: second
 
 /**
  * This is the SDL definition of the internal gamepad of the Steam Deck

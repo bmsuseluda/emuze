@@ -30,6 +30,14 @@ const on = (
   onEvent({ button: "a", device: steamDeck });
 };
 
+const getSteamHandle = (controller: Sdl.Controller.Device) => {
+  if (controller === steamDeck) {
+    return 123;
+  }
+
+  return null;
+};
+
 const sdlMock = {
   controller: {
     devices: controllerDevices,
@@ -39,7 +47,7 @@ const sdlMock = {
         buttons: {
           back: false,
         },
-        steamHandle: controller === eightBitDoPro2 ? 123 : null,
+        steamHandle: getSteamHandle(controller),
         close: () => {},
       };
     },
