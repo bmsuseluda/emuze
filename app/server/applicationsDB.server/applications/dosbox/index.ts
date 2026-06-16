@@ -19,8 +19,8 @@ import { getVirtualGamepads } from "./getVirtualGamepads.js";
 
 const applicationId: ApplicationId = "dosboxpure";
 const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "dosbox.exe")
-  : nodepath.join(applicationId, "dosbox");
+  ? nodepath.join(applicationId, "DOSBoxPure.exe")
+  : nodepath.join(applicationId, "DOSBoxPure");
 
 const configFolderPath = nodepath.join(emulatorsConfigDirectory, applicationId);
 const configFileName = "DOSBoxPure.cfg";
