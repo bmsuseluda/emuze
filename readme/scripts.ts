@@ -14,7 +14,7 @@ const homepages: Record<ApplicationId, string> = {
   ares: "https://github.com/ares-emulator/ares",
   cemu: "https://github.com/cemu-project/Cemu",
   dolphin: "https://github.com/dolphin-emu/dolphin",
-  dosboxstaging: "https://github.com/dosbox-staging/dosbox-staging",
+  dosboxpure: "https://github.com/schellingb/dosbox-pure-unleashed",
   duckstation: "https://github.com/stenzek/duckstation",
   eden: "https://git.eden-emu.dev/eden-emu/eden/releases",
   flycast: "https://github.com/flyinghead/flycast",

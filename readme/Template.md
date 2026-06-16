@@ -13,9 +13,9 @@ It automates the configuration of each emulator, including seamless gamepad inte
 - ⚡️ Intuitive console-like interface
 - 🚂 Import all your roms with a click of a button
 - 🪄 Provides Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
-- 🎮️ Seamless gamepad integration for all Systems except DOS
+- 🎮️ Seamless gamepad integration for all Systems
+- 📦️ Bundles emulators for all Systems
 - 🔫 Basic lightgun integration for some Systems
-- 📦️ Bundles all emulators
 - 💻️ Windows, Linux and Steam Deck support
 - 💫 Updates itself
 - 🛠️ BIOS handling
@@ -42,7 +42,7 @@ return scripts.createSystemsTable()
 > ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
 
 ### Pre Configured
-All Systems, except DOS, are pre configured. This means the following:
+All Systems are pre configured. This means the following:
 
 #### Gamepad Mapping
 All connected gamepads will be configured for the specific Emulator and should just work without further tinkering.

@@ -28,26 +28,24 @@ describe("VirtualGamepadSaturn", () => {
       expect(steamDeckDpadUpIndex).toBeGreaterThan(-1);
       expect(result.at(steamDeckDpadUpIndex + 1)).toContain(steamDeck.id);
 
-      const eightBitDoDpadUpIndex = result.findIndex(
-        (line) => line === "-ss.input.port1.3dpad.up",
-      );
-      expect(eightBitDoDpadUpIndex).toBeGreaterThan(-1);
-      expect(result.at(eightBitDoDpadUpIndex + 1)).toContain(
-        steamDeckSteamInputCopy.id,
-      );
-
       const ps4DpadUpIndex = result.findIndex(
-        (line) => line === "-ss.input.port2.3dpad.up",
+        (line) => line === "-ss.input.port1.3dpad.up",
       );
       expect(ps4DpadUpIndex).toBeGreaterThan(-1);
       expect(result.at(ps4DpadUpIndex + 1)).toContain(gamepadPs4.id);
+
+      const eightBitDoDpadUpIndex = result.findIndex(
+        (line) => line === "-ss.input.port2.3dpad.up",
+      );
+      expect(eightBitDoDpadUpIndex).toBeGreaterThan(-1);
+      expect(result.at(eightBitDoDpadUpIndex + 1)).toContain(eightBitDoPro2.id);
 
       const eightBitDoSecondDeviceDpadUpIndex = result.findIndex(
         (line) => line === "-ss.input.port3.3dpad.up",
       );
       expect(eightBitDoSecondDeviceDpadUpIndex).toBeGreaterThan(-1);
       expect(result.at(eightBitDoSecondDeviceDpadUpIndex + 1)).toContain(
-        eightBitDoPro2.id,
+        eightBitDoPro2SecondDevice.id,
       );
 
       const disabledDevice = result.findIndex(

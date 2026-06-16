@@ -5,11 +5,16 @@ import { spawnSync } from "node:child_process";
 import sdl from "@kmamal/sdl";
 import type { Sdl } from "@kmamal/sdl";
 
-import { getJoystickFromController } from "../../../gamepad.server.js";
-import { getDeviceNameFromHid } from "../../../getDeviceNameFromHid.js";
+import {
+  getJoystickFromController,
+  isSteamHandle,
+} from "../../../gamepad.server.js";
+import {
+  getDeviceNameFromHid,
+  steamInputHandleFromHid,
+} from "../../../getDeviceNameFromHid.js";
 import {
   getPlayerIndexArray,
-  isSteamDeckController,
   isXinputController,
 } from "../../../../types/gamepad.js";
 import { bundledPath } from "./definitions.js";
@@ -56,16 +61,6 @@ const executeWithLogs = (applicationPath: string, args: string[]): string => {
   return result.stdout || "";
 };
 
-export const isSteamHandle = (
-  controller: Sdl.Controller.Device,
-): boolean | null => {
-  try {
-    return !!sdl.controller.openDevice(controller).steamHandle;
-  } catch {
-    return null;
-  }
-};
-
 export const getGamepads = (): MednafenGamepadID[] => {
   if (sdl.controller.devices.length > 0) {
     try {
@@ -82,16 +77,7 @@ export const getGamepads = (): MednafenGamepadID[] => {
   return [];
 };
 
-const steamInputHandle = "Microsoft X-Box 360 pad";
-
-const getAlternativeNames = (
-  controller: Sdl.Controller.Device,
-  joystick: Sdl.Joystick.Device,
-): string[] => {
-  if (isSteamDeckController(joystick) || isSteamHandle(controller)) {
-    return [steamInputHandle];
-  }
-
+const getAlternativeNames = (controller: Sdl.Controller.Device): string[] => {
   if (isWindows() && isXinputController(controller.type)) {
     return ["xinput"];
   }
@@ -110,8 +96,8 @@ export interface MappedGamepadWithPlayerIndex extends MappedGamepad {
 
 const sortMednafenGamepadIDs = (a: MednafenGamepadID, b: MednafenGamepadID) => {
   if (
-    a.name.startsWith(steamInputHandle) &&
-    b.name.startsWith(steamInputHandle)
+    a.name.startsWith(steamInputHandleFromHid) &&
+    b.name.startsWith(steamInputHandleFromHid)
   ) {
     if (a.name.charAt(-1) < b.name.charAt(-1)) {
       return -1;
@@ -120,8 +106,8 @@ const sortMednafenGamepadIDs = (a: MednafenGamepadID, b: MednafenGamepadID) => {
   }
 
   if (
-    a.name.startsWith(steamInputHandle) &&
-    !b.name.startsWith(steamInputHandle)
+    a.name.startsWith(steamInputHandleFromHid) &&
+    !b.name.startsWith(steamInputHandleFromHid)
   ) {
     return -1;
   }
@@ -173,7 +159,7 @@ export const getMappedGamepad = (
   const sdlControllerIndex = gamepads.findIndex((gamepad) => {
     const joystick = getJoystickFromController(gamepad)!;
     const nameFromHid = getDeviceNameFromHid(joystick) || "";
-    const alternativeNames = getAlternativeNames(gamepad, joystick);
+    const alternativeNames = getAlternativeNames(gamepad);
 
     log(
       "debug",

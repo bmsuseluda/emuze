@@ -134,18 +134,18 @@ describe("initGamepadIDs", () => {
           playerIndex: 3,
         },
         {
-          sdlController: eightBitDoPro2,
-          mednafenGamepadId: mednafenGamepadTestData.steamDeckSteamInputCopy,
+          sdlController: gamepadPs4,
+          mednafenGamepadId: mednafenGamepadTestData.gamepadPs4,
           playerIndex: 0,
         },
         {
-          sdlController: gamepadPs4,
-          mednafenGamepadId: mednafenGamepadTestData.gamepadPs4,
+          sdlController: eightBitDoPro2,
+          mednafenGamepadId: mednafenGamepadTestData.eightBitDoPro2,
           playerIndex: 1,
         },
         {
           sdlController: { ...eightBitDoPro2, id: 3, player: 3 },
-          mednafenGamepadId: mednafenGamepadTestData.eightBitDoPro2,
+          mednafenGamepadId: mednafenGamepadTestData.eightBitDoPro2SecondDevice,
           playerIndex: 2,
         },
       ];

@@ -45,3 +45,13 @@ export const getSdlNameIndex = (
 
   return nameCount;
 };
+
+export const isSteamHandle = (
+  controller: Sdl.Controller.Device,
+): boolean | null => {
+  try {
+    return !!sdl.controller.openDevice(controller).steamHandle;
+  } catch {
+    return false;
+  }
+};
