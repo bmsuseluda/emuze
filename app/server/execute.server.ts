@@ -32,6 +32,7 @@ import {
 } from "./syncSettings.server.js";
 import { setFocusOnElectronWindow } from "./importElectron.server.js";
 import { getRequiredFiles } from "./applicationsDB.server/checkRequiredFiles.js";
+import { createRequiredSystemFolderStructure } from "./createSystemFolders.server.js";
 
 type ExecFileCallback = (
   error: ExecFileException | null,
@@ -149,6 +150,11 @@ export const startGame = async (
       advanced: readAdvanced(),
     };
 
+    const systemFolderPath = nodepath.join(
+      generalData.categoriesPath,
+      categoryData.name,
+    );
+
     const absoluteEntryPath = createAbsoluteEntryPath(
       generalData.categoriesPath,
       categoryData.name,
@@ -163,6 +169,7 @@ export const startGame = async (
         id,
         bundledPath,
         bundledBiosOpenSource,
+        requiredSystemFolderStructure,
       } = applicationData;
 
       createEmuzeFolderIfNotExist(id, configFile);
@@ -193,6 +200,11 @@ export const startGame = async (
           bundledBiosOpenSource,
           allRequired: true,
         });
+
+        createRequiredSystemFolderStructure(
+          systemFolderPath,
+          requiredSystemFolderStructure,
+        );
 
         const getOptionParams = (applicationPath?: string) =>
           createOptionParams

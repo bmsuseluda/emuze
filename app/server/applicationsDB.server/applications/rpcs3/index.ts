@@ -334,12 +334,18 @@ const getConfigFileBasePath = () => {
     : nodepath.join(config);
 };
 
+const searchGamesOnlyIn = [nodepath.join("dev_hdd0", "game"), "games"];
+
 export const rpcs3: Application = {
   id: applicationId,
   name: "RPCS3",
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   omitAbsoluteEntryPathAsLastParam: true,
-  searchFilesOnlyIn: [nodepath.join("dev_hdd0", "game"), "games"],
+  searchGamesOnlyIn: searchGamesOnlyIn,
+  requiredSystemFolderStructure: [
+    ...searchGamesOnlyIn,
+    nodepath.join("dev_hdd0", "home"),
+  ],
   fileExtensions: [
     nodepath.join("USRDIR", "EBOOT.BIN"),
     nodepath.join("USRDIR", "CONTENT", "EBOOT.PBP"),

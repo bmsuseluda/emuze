@@ -89,7 +89,7 @@ export interface RequiredFiles {
    */
   type: string;
   requiredFiles: RequiredFile[];
-  //** TODO: Check if necessary */
+  /** TODO: Check if necessary */
   instructionMessage?: string;
 }
 
@@ -97,7 +97,8 @@ export interface Application {
   id: ApplicationId;
   name: string;
   fileExtensions?: string[];
-  searchFilesOnlyIn?: string[];
+  requiredSystemFolderStructure?: string[];
+  searchGamesOnlyIn?: string[];
   entryAsDirectory?: boolean;
   configFile?: ConfigFile;
   omitAbsoluteEntryPathAsLastParam?: boolean;
