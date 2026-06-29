@@ -11,7 +11,6 @@ import {
 import { FormBox } from "../components/FormBox/index.js";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
 import {
-  createSystemFolders,
   importCategories,
   readCategories,
 } from "../server/categories.server.js";
@@ -40,6 +39,7 @@ import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
 import { CreateSystemFoldersDialogContainer } from "../containers/CreateSystemFoldersDialog/index.js";
 import { CreateSystemFoldersButton } from "../containers/CreateSystemFoldersButton/index.js";
 import type { CreateSystemFoldersButtonId } from "../containers/CreateSystemFoldersButton/createSystemFoldersButtonId.js";
+import { createSystemFolders } from "../server/createSystemFolders.server.js";
 
 export const loader = () => {
   const general: General = readGeneral() || {};

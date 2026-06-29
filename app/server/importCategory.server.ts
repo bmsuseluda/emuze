@@ -187,7 +187,7 @@ export const readEntries = ({
     const {
       findEntryName,
       excludeFiles,
-      searchFilesOnlyIn,
+      searchGamesOnlyIn,
       fileExtensions,
       entryAsDirectory,
     } = application;
@@ -196,7 +196,7 @@ export const readEntries = ({
     const categoryPath = nodepath.join(categoriesPath, categoryName);
     const filenames = readFilenames({
       path: categoryPath,
-      searchFilesOnlyIn,
+      searchFilesOnlyIn: searchGamesOnlyIn,
       fileExtensions,
       entryAsDirectory,
     });

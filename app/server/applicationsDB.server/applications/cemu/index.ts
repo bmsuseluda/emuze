@@ -87,11 +87,15 @@ const getConfigFileBasePath = () => {
     : nodepath.join(config);
 };
 
+const searchGamesOnlyIn = ["games"];
+
 export const cemu: Application = {
   id: applicationId,
   name: "Cemu",
   entryAsDirectory: true,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
+  searchGamesOnlyIn,
+  requiredSystemFolderStructure: ["mlc", ...searchGamesOnlyIn],
   findEntryName: findWiiUGameName,
   configFile: {
     basePath: getConfigFileBasePath(),
@@ -105,11 +109,17 @@ export const cemu: Application = {
     categoryData,
     absoluteEntryPath,
   }) => {
-    const wiiuRomsPath = nodepath.join(categoriesPath, categoryData.name);
+    const wiiuSystemFolderPath = nodepath.join(
+      categoriesPath,
+      categoryData.name,
+    );
+    const wiiuRomsPath = nodepath.join(wiiuSystemFolderPath, "games");
+    const wiiuMlcPath = nodepath.join(wiiuSystemFolderPath, "mlc");
+
     replaceDefaultConfigFile(wiiuRomsPath);
     replaceControllerConfigFile();
 
-    const optionParams = [];
+    const optionParams = [...["--mlc", wiiuMlcPath]];
     if (fullscreen) {
       optionParams.push("--fullscreen");
     }
