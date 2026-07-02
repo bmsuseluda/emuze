@@ -69,7 +69,7 @@ export const SidebarNavigationLink = ({
   isFocused,
   ...rest
 }: Props) => (
-  <StyledNavLink to={to} prefetch="intent" draggable={false} {...rest}>
+  <StyledNavLink to={to} prefetch="viewport" draggable={false} {...rest}>
     {({ isActive }) => (
       <LinkSpan
         active={isActive}

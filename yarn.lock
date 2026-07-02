@@ -4398,19 +4398,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-router/remix-routes-option-adapter@npm:7.17.0":
-  version: 7.17.0
-  resolution: "@react-router/remix-routes-option-adapter@npm:7.17.0"
-  peerDependencies:
-    "@react-router/dev": ^7.17.0
-    typescript: ^5.1.0 || ^6.0.0
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 10/a54838e016587d6476f76b865df6a5dee311d94e10f80b00e1ae35f19acb7b8fe86c8c6f3b007d1d7ab5a8a48b387b65f63dba6ff189664d8eb69fe7d8c03c82
-  languageName: node
-  linkType: hard
-
 "@react-router/serve@npm:7.17.0":
   version: 7.17.0
   resolution: "@react-router/serve@npm:7.17.0"
@@ -8486,7 +8473,6 @@ __metadata:
     "@radix-ui/react-select": "npm:2.3.0"
     "@react-router/dev": "npm:7.17.0"
     "@react-router/node": "npm:7.17.0"
-    "@react-router/remix-routes-option-adapter": "npm:7.17.0"
     "@react-router/serve": "npm:7.17.0"
     "@storybook/addon-docs": "npm:10.4.4"
     "@storybook/addon-links": "npm:10.4.4"
