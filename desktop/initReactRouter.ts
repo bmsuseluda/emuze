@@ -61,7 +61,7 @@ export const initReactRouter = async () => {
         }
 
         const handler = createRequestHandler(serverBuild, "production");
-        return await handler(req, {});
+        return await handler(req);
       } catch (err) {
         console.warn(err);
         const { stack, message } = toError(err);

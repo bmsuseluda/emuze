@@ -1,4 +1,4 @@
-import { redirect, useLoaderData, useSubmit } from "react-router";
+import { redirect, useSubmit } from "react-router";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
 import type { ComponentRef } from "react";
@@ -14,6 +14,7 @@ import { ReleaseNotesDialog } from "../components/ReleaseNotesDialog/index.js";
 import { loadChangelog } from "../server/changelog.server.js";
 import { readGeneral, writeGeneral } from "../server/settings.server.js";
 import { useFocusOnMount } from "../hooks/useFocusOnMount/index.js";
+import { Route } from "./+types/categories.$category.releaseNotes.js";
 
 export const loader = () => {
   const general = readGeneral();
@@ -33,8 +34,9 @@ export const action = () => {
   throw redirect("..");
 };
 
-export default function RenderComponent() {
-  const { releaseNotesMarkdown } = useLoaderData<typeof loader>();
+export default function RenderComponent({
+  loaderData: { releaseNotesMarkdown },
+}: Route.ComponentProps) {
   const listRef = useRef<ComponentRef<"div">>(null);
   const submit = useSubmit();
   const { switchFocusBack, isInFocus, enableFocus } =

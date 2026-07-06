@@ -17,7 +17,8 @@ import type { Result } from "../hooks/useGamepadsOnGrid/index.js";
 import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid/index.js";
 import { getVersion } from "../server/packagejson.server.js";
 import type { IconType } from "react-icons";
-import { useLoaderData, useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
+import { Route } from "./+types/categories.$category.settings.about.js";
 
 export const loader = () => {
   return { version: getVersion() };
@@ -81,8 +82,9 @@ export const Links = styled("ul", {
 
 const focus: FocusElement = "settingsMain";
 
-export default function About() {
-  const { version } = useLoaderData<typeof loader>();
+export default function About({
+  loaderData: { version },
+}: Route.ComponentProps) {
   const { isInFocus, switchFocusBack, switchFocusBackMultiple } =
     useFocus<FocusElement>(focus);
 

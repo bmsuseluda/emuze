@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import type { ActionFunction } from "react-router";
-import { Form, Outlet, redirect, useLoaderData } from "react-router";
+import { Form, Outlet, redirect } from "react-router";
 import { startGame } from "../server/execute.server.js";
 import { importCategories } from "../server/categories.server.js";
 import { GameGridDynamic } from "../components/GameGrid/index.js";
@@ -9,7 +9,6 @@ import { SystemIcon } from "../components/SystemIcon/index.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
 import { readAppearance, readGeneral } from "../server/settings.server.js";
-import type { DataFunctionArgs } from "../context.js";
 import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
 import fs from "node:fs";
 import type { SystemId } from "../server/categoriesDB.server/systemId.js";
@@ -20,8 +19,9 @@ import { LaunchButton, launchId } from "../containers/LaunchButton/index.js";
 import { readCategory } from "../server/categoryDataCache.server.js";
 import { useLaunchButton } from "../hooks/useLaunchButton/index.js";
 import { SettingsLink } from "../containers/SettingsLink/index.js";
+import type { Route } from "./+types/categories.$category.js";
 
-export const loader = ({ params }: DataFunctionArgs) => {
+export const loader = ({ params }: Route.LoaderArgs) => {
   const { category } = params;
   if (!category) {
     log("error", "category empty");
@@ -121,9 +121,9 @@ export const shouldRevalidate = ({
 
 const focus: FocusElement = "main";
 
-export default function Category() {
-  const { categoryData, alwaysGameNames } = useLoaderData<typeof loader>();
-
+export default function Category({
+  loaderData: { categoryData, alwaysGameNames },
+}: Route.ComponentProps) {
   const { launchButtonRef, onExecute } = useLaunchButton();
 
   const { isInFocus, switchFocus, switchFocusBack, enableFocus } =

@@ -1,5 +1,5 @@
 import type { ActionFunction } from "react-router";
-import { Form, useLoaderData } from "react-router";
+import { Form } from "react-router";
 import { Button } from "../components/Button/index.js";
 import { FormBox } from "../components/FormBox/index.js";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
@@ -18,6 +18,7 @@ import {
   useInputConfirmation,
 } from "../hooks/useDirectionalInput/index.js";
 import { CheckboxRow } from "../containers/CheckboxRow/index.js";
+import { Route } from "./+types/categories.$category.settings.appearance.js";
 
 export const loader = () => {
   const appearance = readAppearance();
@@ -59,8 +60,9 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 const focus: FocusElement = "settingsMain";
 
-export default function Appearance() {
-  const { alwaysGameNames, collapseSidebar } = useLoaderData<typeof loader>();
+export default function Appearance({
+  loaderData: { alwaysGameNames, collapseSidebar },
+}: Route.ComponentProps) {
   const fullscreen = useFullscreen();
 
   const saveButtonRef = useRef<ComponentRef<"button">>(null);

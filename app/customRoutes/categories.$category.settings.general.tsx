@@ -1,13 +1,6 @@
 import type { ComponentRef, MouseEvent } from "react";
 import { useCallback } from "react";
-import type { ActionFunctionArgs } from "react-router";
-import {
-  Form,
-  Outlet,
-  redirect,
-  useActionData,
-  useLoaderData,
-} from "react-router";
+import { Form, Outlet, redirect, useActionData } from "react-router";
 import { FormBox } from "../components/FormBox/index.js";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
 import {
@@ -40,6 +33,7 @@ import { CreateSystemFoldersDialogContainer } from "../containers/CreateSystemFo
 import { CreateSystemFoldersButton } from "../containers/CreateSystemFoldersButton/index.js";
 import type { CreateSystemFoldersButtonId } from "../containers/CreateSystemFoldersButton/createSystemFoldersButtonId.js";
 import { createSystemFolders } from "../server/createSystemFolders.server.js";
+import { Route } from "./+types/categories.$category.settings.general.js";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
@@ -138,7 +132,7 @@ const findCategoryToRedirect = (
   return categories[0].id;
 };
 
-export const action = async ({ params, request }: ActionFunctionArgs) => {
+export const action = async ({ params, request }: Route.ActionArgs) => {
   const { category: systemId } = params as { category: SystemId };
 
   try {
@@ -270,8 +264,9 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 const focus: FocusElement = "settingsMain";
 
-export default function General() {
-  const defaultData = useLoaderData<typeof loader>();
+export default function General({
+  loaderData: defaultData,
+}: Route.ComponentProps) {
   const newData = useActionData<ActionReturn>();
 
   const { disableGamepads, enableGamepads } = useGamepadConnected();
