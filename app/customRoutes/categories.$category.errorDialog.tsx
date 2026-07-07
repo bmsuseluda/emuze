@@ -2,7 +2,7 @@ import {
   getErrorDialog,
   resetErrorDialog,
 } from "../server/errorDialog.server.js";
-import { redirect, useLoaderData, useSubmit } from "react-router";
+import { redirect, useSubmit } from "react-router";
 import { ErrorDialog } from "../components/ErrorDialog/index.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
@@ -16,6 +16,7 @@ import {
   useInputSettings,
 } from "../hooks/useDirectionalInput/index.js";
 import { useFocusOnMount } from "../hooks/useFocusOnMount/index.js";
+import { Route } from "./+types/categories.$category.errorDialog.js";
 
 export const loader = () => {
   const errorDialog = getErrorDialog();
@@ -38,8 +39,9 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
   );
 };
 
-export default function RenderComponent() {
-  const { errorDialog } = useLoaderData<typeof loader>();
+export default function RenderComponent({
+  loaderData: { errorDialog },
+}: Route.ComponentProps) {
   const listRef = useRef<ComponentRef<"div">>(null);
   const submit = useSubmit();
   const { switchFocusBack, isInFocus, enableFocus } =

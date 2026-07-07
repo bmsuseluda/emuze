@@ -1,4 +1,4 @@
-import { Outlet, useLoaderData, useLocation, useNavigate } from "react-router";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout/index.js";
 import { SidebarNavigationLink } from "../containers/SidebarNavigationLink/index.js";
 import { categories, readAppearance } from "../server/settings.server.js";
@@ -17,6 +17,7 @@ import {
 } from "../hooks/useDirectionalInput/index.js";
 import { CloseDialogContainer } from "../containers/CloseDialog/index.js";
 import { useCreateSystemFoldersButton } from "../containers/CreateSystemFoldersButton/useCreateSystemFoldersButton.js";
+import { Route } from "./+types/categories.$category.settings.js";
 
 export const loader = () => {
   const { collapseSidebar } = readAppearance();
@@ -24,9 +25,9 @@ export const loader = () => {
   return { categories, collapseSidebar };
 };
 
-export default function Index() {
-  const { categories, collapseSidebar } = useLoaderData<typeof loader>();
-
+export default function Index({
+  loaderData: { categories, collapseSidebar },
+}: Route.ComponentProps) {
   const { pathname } = useLocation();
 
   const closable = useMemo(() => !pathname.startsWith("/settings"), [pathname]);

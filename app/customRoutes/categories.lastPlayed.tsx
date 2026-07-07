@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import type { ActionFunction } from "react-router";
-import { Form, Outlet, redirect, useLoaderData } from "react-router";
+import { Form, Outlet, redirect } from "react-router";
 import { startGame } from "../server/execute.server.js";
 import { GameGridDynamic } from "../components/GameGrid/index.js";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
@@ -18,6 +18,7 @@ import type { ImportButtonId } from "../containers/ImportButton/importButtonId.j
 import { importCategories } from "../server/categories.server.js";
 import { useLaunchButton } from "../hooks/useLaunchButton/index.js";
 import { SettingsLink } from "../containers/SettingsLink/index.js";
+import { Route } from "./+types/categories.lastPlayed.js";
 
 export const loader = () => {
   const lastPlayed = readLastPlayed();
@@ -84,9 +85,9 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
   );
 };
 
-export default function LastPlayed() {
-  const { lastPlayed, alwaysGameNames } = useLoaderData<typeof loader>();
-
+export default function LastPlayed({
+  loaderData: { lastPlayed, alwaysGameNames },
+}: Route.ComponentProps) {
   const { launchButtonRef, onExecute } = useLaunchButton();
 
   const { isInFocus, switchFocus, switchFocusBack, enableFocus } =

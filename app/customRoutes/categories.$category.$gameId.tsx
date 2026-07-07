@@ -1,12 +1,5 @@
 import type { ActionFunction } from "react-router";
-import {
-  Form,
-  Outlet,
-  redirect,
-  useLoaderData,
-  useLocation,
-  useNavigate,
-} from "react-router";
+import { Form, Outlet, redirect, useLocation, useNavigate } from "react-router";
 import { readGeneral } from "../server/settings.server.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
@@ -14,7 +7,6 @@ import { useCallback, useEffect } from "react";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
 import { LaunchButton, launchId } from "../containers/LaunchButton/index.js";
 import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
-import type { DataFunctionArgs } from "../context.js";
 import { log } from "../server/debug.server.js";
 import type { SystemId } from "../server/categoriesDB.server/systemId.js";
 import { startGame } from "../server/execute.server.js";
@@ -26,6 +18,7 @@ import { GameVersions } from "../components/GameVersions/index.js";
 import { readCategory } from "../server/categoryDataCache.server.js";
 import { useLaunchButton } from "../hooks/useLaunchButton/index.js";
 import { Dialog } from "../components/Dialog/index.js";
+import type { Route } from "./+types/categories.$category.$gameId.js";
 
 const getGameData = (category: SystemId, gameId: string) => {
   let systemId: SystemId | undefined;
@@ -50,7 +43,7 @@ const getGameData = (category: SystemId, gameId: string) => {
   };
 };
 
-export const loader = (props: DataFunctionArgs) => {
+export const loader = (props: Route.LoaderArgs) => {
   const { category, gameId } = props.params;
 
   if (!category) {
@@ -146,9 +139,9 @@ export const shouldRevalidate = ({
 
 const focus: FocusElement = "gameDialog";
 
-export default function Index() {
-  const { gameData, pathnameRelative } = useLoaderData<typeof loader>();
-
+export default function Index({
+  loaderData: { gameData, pathnameRelative },
+}: Route.ComponentProps) {
   const { launchButtonRef, onExecute } = useLaunchButton();
 
   const { isInFocus, enableFocus, switchFocusBack } =

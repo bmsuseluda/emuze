@@ -59,7 +59,7 @@ export const SettingsLink = ({
     to={to}
     aria-label="Settings"
     title="Settings"
-    prefetch="intent"
+    prefetch="render"
     draggable={false}
     isFullscreen={isFullscreen}
   >

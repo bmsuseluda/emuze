@@ -1,7 +1,7 @@
 import type { ComponentRef, MouseEvent } from "react";
 import { useCallback, useRef } from "react";
 import type { ActionFunction } from "react-router";
-import { Form, Outlet, useLoaderData } from "react-router";
+import { Form, Outlet } from "react-router";
 import { FormBox } from "../components/FormBox/index.js";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
 import { SettingsIcon } from "../components/SettingsIcon/index.js";
@@ -18,6 +18,7 @@ import {
 } from "../hooks/useDirectionalInput/index.js";
 import { readAdvanced, writeAdvanced } from "../server/settings.server.js";
 import type { Advanced } from "../types/jsonFiles/settings/advanced.js";
+import { Route } from "./+types/categories.$category.settings.advanced.js";
 
 export const loader = () => {
   const advanced = readAdvanced();
@@ -57,9 +58,9 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 const focus: FocusElement = "settingsMain";
 
-export default function General() {
-  const { eden, rmg } = useLoaderData<typeof loader>();
-
+export default function General({
+  loaderData: { eden, rmg },
+}: Route.ComponentProps) {
   const saveButtonRef = useRef<ComponentRef<"button">>(null);
   const { isInFocus, switchFocusBack, switchFocus } =
     useFocus<FocusElement>(focus);

@@ -16,7 +16,6 @@ import {
   getFocusHistoryDefault,
 } from "./types/focusElement.js";
 import type { ReactNode } from "react";
-import type { DataFunctionArgs } from "./context.js";
 
 import styles from "./index.css?url";
 import { styled } from "../styled-system/jsx/index.js";
@@ -27,23 +26,22 @@ import { isWindows } from "./server/operationsystem.server.js";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
-export const loader = ({ context }: DataFunctionArgs) => {
-  const fullscreen = context?.fullscreen as boolean;
+export const loader = () => {
   const general = readGeneral();
   const focusDefault = getFocusDefault(general);
   const focusHistoryDefault = getFocusHistoryDefault(general);
   const windows = isWindows();
 
-  return { fullscreen, focusDefault, focusHistoryDefault, isWindows: windows };
+  return { focusDefault, focusHistoryDefault, isWindows: windows };
 };
 
 export default function App() {
-  const { fullscreen, focusDefault, focusHistoryDefault, isWindows } =
+  const { focusDefault, focusHistoryDefault, isWindows } =
     useLoaderData<typeof loader>();
 
   return (
     <Document>
-      <FullscreenProvider fullscreenDefault={fullscreen}>
+      <FullscreenProvider>
         <Layout isWindows={isWindows}>
           <FocusProvider
             focusDefault={focusDefault}

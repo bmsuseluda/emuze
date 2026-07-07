@@ -35,6 +35,18 @@ const nameOverwrites: Partial<Record<SystemId, string>> = {
   dos: "Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json))",
 };
 
+const applicationsWithBiosNotHandled: ApplicationId[] = [
+  "rpcs3",
+  "cemu",
+  "ryujinx",
+  "eden",
+];
+
+const checkIsBiosNeeded = (application: Application) =>
+  (application.biosFiles && !application.bundledBiosOpenSource) ||
+  application.otherRequiredFiles ||
+  applicationsWithBiosNotHandled.includes(application.id);
+
 const createSystemsTableRow = (
   category: Category,
   alternativeApplication?: Application,
@@ -43,13 +55,10 @@ const createSystemsTableRow = (
   const systemName = alternativeApplication
     ? ""
     : nameOverwrites[category.id] || category.names[0];
+
   const emulatorName = `[${application.name}](${homepages[application.id]})`;
   const bundledVersion = emulatorVersions[application.id];
-  const isBiosNeeded =
-    (application.biosFiles && !application.bundledBiosOpenSource) ||
-    application.otherRequiredFiles
-      ? "Yes"
-      : "No";
+  const isBiosNeeded = checkIsBiosNeeded(application) ? "Yes" : "No";
 
   return `| ${systemName} | ${emulatorName} v${bundledVersion} | ${isBiosNeeded} | `;
 };
