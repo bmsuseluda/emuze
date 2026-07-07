@@ -1,5 +1,5 @@
 import { gamepadPs4Joystick, steamDeckJoystick } from "../../types/gamepad.js";
-import { getDeviceNameFromHid } from "../getDeviceNameFromHid.js";
+import { getDeviceNameFromHid } from "../gamepad.server.js";
 
 vi.mock("@kmamal/sdl");
 vi.mock("node-hid");

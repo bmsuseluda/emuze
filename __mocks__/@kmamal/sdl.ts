@@ -10,6 +10,7 @@ import {
 } from "../../app/types/gamepad.js";
 
 // TODO: add steam controller
+// TODO: add joystick without controller
 export const controllerDevices: Sdl.Controller.Device[] = [
   steamDeck,
   gamepadPs4,

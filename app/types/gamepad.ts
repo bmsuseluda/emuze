@@ -382,9 +382,6 @@ export const steamDeckJoystick = {
   player: 0,
 } satisfies Sdl.Joystick.Device;
 
-// 030079f6de280000ff11000001000000: first
-// 0300b836de280000ff11000001000000: second
-
 /**
  * This is the SDL definition of the internal gamepad of the Steam Deck
  */

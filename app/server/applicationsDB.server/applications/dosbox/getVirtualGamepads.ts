@@ -14,7 +14,10 @@ import {
   isSteamDeckController,
   sortSteamDeckLast,
 } from "../../../../types/gamepad.js";
-import { getControllerFromJoystick } from "../../../gamepad.server.js";
+import {
+  getControllerFromJoystick,
+  getDeviceNameFromHid,
+} from "../../../gamepad.server.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { DosboxButtonId, DosboxButtonIdWithPort } from "./types.js";
 import {
@@ -24,7 +27,6 @@ import {
   HatType,
   HatValue,
 } from "./config.js";
-import { getDeviceNameFromHid } from "../../../getDeviceNameFromHid.js";
 
 export const getGamepad = () => {
   const gamepads = sdl.joystick.devices;

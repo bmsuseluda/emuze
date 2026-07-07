@@ -8,11 +8,9 @@ import type { Sdl } from "@kmamal/sdl";
 import {
   getJoystickFromController,
   isSteamHandle,
-} from "../../../gamepad.server.js";
-import {
   getDeviceNameFromHid,
   steamInputHandleFromHid,
-} from "../../../getDeviceNameFromHid.js";
+} from "../../../gamepad.server.js";
 import {
   getPlayerIndexArray,
   isXinputController,
