@@ -5,16 +5,13 @@ import {
   steamDeck,
 } from "../../../../../types/gamepad.js";
 import * as mednafenGamepadTestData from "./testData.js";
-import type {
-  MappedGamepad,
-  MappedGamepadWithPlayerIndex,
-  MednafenGamepadID,
-} from "../initGamepadIDs.js";
+import type { MappedGamepad, MednafenGamepadID } from "../initGamepadIDs.js";
 import {
   extractGamepadIDs,
   getMappedGamepad,
   getMappedGamepads,
 } from "../initGamepadIDs.js";
+import { getControllers } from "../../../../gamepad.server.js";
 
 vi.mock("@kmamal/sdl");
 vi.mock("node-hid");
@@ -56,9 +53,7 @@ describe("initGamepadIDs", () => {
         name: "8BitDo Pro 2",
         nameIndex: 0,
       };
-      const result = getMappedGamepad(mednafenGamepadId, [
-        ...controllerDevices,
-      ]);
+      const result = getMappedGamepad(mednafenGamepadId, [...getControllers()]);
 
       const expected: MappedGamepad = {
         sdlController: eightBitDoPro2,
