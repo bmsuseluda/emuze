@@ -1,7 +1,4 @@
-import type {
-  MappedGamepadWithPlayerIndex,
-  MednafenGamepadID,
-} from "./initGamepadIDs.js";
+import type { MappedGamepad, MednafenGamepadID } from "./initGamepadIDs.js";
 import { getMappedGamepads } from "./initGamepadIDs.js";
 import { log } from "../../../debug.server.js";
 import { VirtualGamepad } from "./VirtualGamepad.js";
@@ -93,13 +90,18 @@ export const getKeyboardPcEngine = () => {
 
 export const getVirtualGamepadPcEngine = ({
   mednafenGamepadId,
-  playerIndex,
-  sdlController,
-}: MappedGamepadWithPlayerIndex) => {
-  log("debug", "gamepad", mednafenGamepadId, sdlController, playerIndex);
+  emuzeController,
+}: MappedGamepad) => {
+  log("debug", "gamepad", mednafenGamepadId, emuzeController);
   const { initialize, createButtonMapping, disableButtonMapping } =
-    new VirtualGamepad<MednafenButtonIdPcEngine>(playerIndex, system);
-  const physicalGamepad = getPhysicalGamepad(sdlController, mednafenGamepadId);
+    new VirtualGamepad<MednafenButtonIdPcEngine>(
+      emuzeController.player,
+      system,
+    );
+  const physicalGamepad = getPhysicalGamepad(
+    emuzeController.sdlController,
+    mednafenGamepadId,
+  );
 
   return [
     ...initialize(),

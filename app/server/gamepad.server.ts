@@ -1,6 +1,6 @@
 import sdl from "@kmamal/sdl";
 import type { Sdl } from "@kmamal/sdl";
-import { isWindows } from "./operationsystem.server.js";
+import { isSteamOs, isWindows } from "./operationsystem.server.js";
 import {
   createSdlMappingObject,
   isController,
@@ -30,7 +30,7 @@ export const getSteamInputHandleIndex = (gamepad: Sdl.Controller.Device) => {
   return steamInputHandleIndex;
 };
 
-// TODO: if no hid devices where find, will it be a steam input device?
+// TODO: if no hid devices where found, will it be a steam input device?
 export const getDeviceNameFromHid = (joystick: Sdl.Joystick.Device) => {
   const { vendor, product } = joystick;
   if (vendor && product) {
@@ -49,8 +49,9 @@ export interface EmuzeController {
   id: number;
   name: string;
   joystickName: string;
+  nameOsSpecific: string;
   hidName?: string;
-  type?: Sdl.Controller.ControllerType;
+  type: Sdl.Controller.ControllerType;
   guid: string;
   vendor: number;
   product: number;
@@ -77,10 +78,11 @@ const steamHandleGUIDs = [
  * - sort controller that Steam Deck Controller is last
  * - if a controller has a steam handle, replace GUID with the next from steamHandleGUIDs
  *
- * TODO: add getGamepadName?
  * TODO: add name index?
+ * TODO: add sdl name index?
  * TODO: replace player with index?
  * TODO: add more steam handle GUIDs
+ * TODO: do lightguns have a controller in sdl as well?
  */
 export const getControllers = () => {
   const emuzeControllers: EmuzeController[] = [];
@@ -112,7 +114,7 @@ export const getControllers = () => {
         product,
         vendor,
       } = joystick;
-      const { name, mapping } = controller;
+      const { name, mapping, type } = controller;
       const hidName = getDeviceNameFromHid(joystick);
       const hasSteamHandle = isSteamHandle(controller);
       const steamGUID = getSteamGUID(hasSteamHandle);
@@ -125,11 +127,14 @@ export const getControllers = () => {
         isNumber(player) &&
         mapping
       ) {
+        const nameOsSpecific = getNameOsSpecific(name, joystickName, type);
         emuzeControllers.push({
           id,
           guid: steamGUID || guid,
           name,
           joystickName,
+          nameOsSpecific,
+          type,
           hidName,
           product,
           vendor,
@@ -157,23 +162,37 @@ export const getControllers = () => {
   return emuzeControllers;
 };
 
+const getNameOsSpecific = (
+  controllerName: string,
+  joystickName: string,
+  type: Sdl.Controller.ControllerType,
+) => {
+  if (isWindows() && isXinputController(type)) {
+    return `XInput Controller`;
+  } else if (isSteamOs()) {
+    return joystickName;
+  } else {
+    return controllerName;
+  }
+};
+
 /**
  * ares: guid
  * azahar: guid
- * cemu: controller name and guid
- * dolphin: getGamepadName
+ * cemu: controller name and guid getNameIndex
+ * dolphin: getGamepadName getSdlNameIndex
  * dosbox: hidName
  * duckstation: player
- * eden: guid
- * flycast: auto
+ * eden: guid getSdlGuidIndex
+ * flycast: player
  * mame: auto
  * mednafen: hidName and controller type
  * melonds: joystick index
  * pcsx2: player
  * ppsspp: map several controllers
- * rmg: getGamepadName
- * rpcs3: getGamepadName
- * ryujinx: guid and index
+ * rmg: getGamepadName getNameIndex
+ * rpcs3: getGamepadName getSdlNameIndex
+ * ryujinx: guid getNameIndex
  * scummvm: auto
  * xemu: guid and index
  */
@@ -186,6 +205,10 @@ export const getJoystickFromController = (
 export const getControllerFromJoystick = (joystick: Sdl.Joystick.Device) =>
   sdl.controller.devices.find(({ id }) => joystick.id === id);
 
+/**
+ *
+ * @deprecated use getNameOsSpecific instead
+ */
 export const getGamepadName = (
   gamepad: Sdl.Controller.Device | Sdl.Joystick.Device,
 ) => {
@@ -208,12 +231,12 @@ export const getGamepadName = (
 export const getSdlNameIndex = (
   name: string,
   sdlIndex: number,
-  devices: (Sdl.Joystick.Device | Sdl.Controller.Device)[],
+  devices: EmuzeController[],
 ) => {
   let nameCount = 0;
   for (let index = 0; index < sdlIndex; index++) {
     const device = devices[index];
-    if (getGamepadName(device) === name) {
+    if (device.nameOsSpecific === name) {
       nameCount++;
     }
   }

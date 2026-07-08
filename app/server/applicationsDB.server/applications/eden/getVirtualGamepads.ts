@@ -1,4 +1,3 @@
-import type { Sdl } from "@kmamal/sdl";
 import { log } from "../../../debug.server.js";
 import { getSetting } from "./getSettings.js";
 import type { ParamToReplace } from "../../configFile.js";
@@ -9,14 +8,12 @@ import type {
   SdlButtonMapping,
 } from "../../../../types/gamepad.js";
 import {
-  createSdlMappingObject,
   getButtonIndex,
   isAnalog,
   isDpadHat,
   isSteamDeckController,
-  sortSteamDeckLast,
 } from "../../../../types/gamepad.js";
-import { getControllerFromJoystick } from "../../../gamepad.server.js";
+import { EmuzeController, getControllers } from "../../../gamepad.server.js";
 import { getKeyboardDebugMapping, keyboardConfig } from "./keyboardConfig.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 
@@ -110,13 +107,12 @@ const normalizeGuid = (guid: string) =>
  *
  * @returns number starts with 0
  */
-export const getSdlGuidIndex =
-  (devices: (Sdl.Joystick.Device | Sdl.Controller.Device)[]) =>
-  (guid: string, sdlIndex: number) => {
+const getSdlGuidIndex =
+  (devices: EmuzeController[]) => (guid: string, sdlIndex: number) => {
     let nameCount = 0;
     for (let index = 0; index < sdlIndex; index++) {
       const device = devices[index];
-      if (normalizeGuid(device.guid!) === normalizeGuid(guid)) {
+      if (normalizeGuid(device.guid) === normalizeGuid(guid)) {
         nameCount++;
       }
     }
@@ -126,12 +122,11 @@ export const getSdlGuidIndex =
 
 export const getVirtualGamepad =
   (detectSdlGuidIndex: (guid: string, sdlIndex: number) => number) =>
-  (sdlDevice: Sdl.Joystick.Device, sdlIndex: number): ParamToReplace[] => {
-    log("debug", "gamepad", { sdlDevice });
+  (emuzeController: EmuzeController, sdlIndex: number): ParamToReplace[] => {
+    log("debug", "gamepad", emuzeController);
 
-    const guid = normalizeGuid(sdlDevice.guid!);
-    const controller = getControllerFromJoystick(sdlDevice)!;
-    const mappingObject = createSdlMappingObject(controller.mapping!);
+    const guid = normalizeGuid(emuzeController.guid!);
+    const { mappingObject } = emuzeController;
     const playerIndex = sdlIndex;
     const guidIndex = detectSdlGuidIndex(guid, sdlIndex);
 
@@ -155,9 +150,7 @@ const getVirtualGamepadReset = (gamepadIndex: number): ParamToReplace => ({
 });
 
 export const getVirtualGamepads = () => {
-  const gamepads = sdl.joystick.devices
-    .filter(({ type }) => type)
-    .toSorted(sortSteamDeckLast);
+  const gamepads = getControllers();
   const detectSdlGuidIndex = getSdlGuidIndex(gamepads);
 
   const virtualGamepads =

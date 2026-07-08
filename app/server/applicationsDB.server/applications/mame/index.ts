@@ -163,7 +163,6 @@ export const mame: Application = {
 export const mameNeoGeo: Application = {
   ...mame,
   fileExtensions: [".zip"],
-  // TODO: Remove when bios files are not in roms folder anymore
   excludeFiles: () =>
     mameNeoGeo.biosFiles!.flatMap(({ requiredFiles }) =>
       requiredFiles.map(({ filename }) => filename),
@@ -206,7 +205,6 @@ export const mameNeoGeoCD: Application = {
     "neocdz",
     "-cdrm",
   ],
-  // TODO: Remove when bios files are not in roms folder anymore
   excludeFiles: () =>
     mameNeoGeoCD.biosFiles!.flatMap(({ requiredFiles }) =>
       requiredFiles.map(({ filename }) => filename),

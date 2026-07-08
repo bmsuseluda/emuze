@@ -1,16 +1,14 @@
 import { EOL } from "node:os";
-import {
-  getPlayerIndexArray,
-  isGamecubeController,
-} from "../../../../types/gamepad.js";
-import { isSteamOs } from "../../../operationsystem.server.js";
+import { isGamecubeController } from "../../../../types/gamepad.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import { log } from "../../../debug.server.js";
-import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
 import type { DolphinButtonId } from "./types.js";
-import { getGamepadName, getSdlNameIndex } from "../../../gamepad.server.js";
+import {
+  EmuzeController,
+  getControllers,
+  getSdlNameIndex,
+} from "../../../gamepad.server.js";
 
 const getDolphinButtonIds = (isGamecubeController: boolean) =>
   ({
@@ -39,24 +37,21 @@ const getDolphinButtonIds = (isGamecubeController: boolean) =>
   }) satisfies Partial<Record<DolphinButtonId, string>>;
 
 export const getVirtualGamepad =
-  (
-    devices: Sdl.Joystick.Device[] | Sdl.Controller.Device[],
-    playerIndexArray: number[],
-  ) =>
-  (controller: Sdl.Joystick.Device | Sdl.Controller.Device, index: number) => {
+  (devices: EmuzeController[]) =>
+  (controller: EmuzeController, index: number) => {
     log("debug", "gamepad", { index, controller });
 
-    const deviceName = getGamepadName(controller);
-    const nameIndex = getSdlNameIndex(deviceName, index, devices);
+    const { nameOsSpecific } = controller;
+    const nameIndex = getSdlNameIndex(nameOsSpecific, index, devices);
 
-    const gamecubeController = isGamecubeController(deviceName);
+    const gamecubeController = isGamecubeController(nameOsSpecific);
     const dolphinButtonIds = Object.entries(
       getDolphinButtonIds(gamecubeController),
     ).map(([key, value]) => `${key} = ${value}`);
 
     return [
-      `[GCPad${playerIndexArray[index] + 1}]`,
-      `Device = SDL/${nameIndex}/${deviceName}`,
+      `[GCPad${index + 1}]`,
+      `Device = SDL/${nameIndex}/${nameOsSpecific}`,
       ...dolphinButtonIds,
       `Main Stick/Modifier = \`Thumb L\``,
       `Main Stick/Calibration = 100.00 141.42 100.00 141.42 100.00 141.42 100.00 141.42`,
@@ -73,12 +68,11 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
   ].join(EOL);
 
 export const getVirtualGamepads = () => {
-  const gamepads = isSteamOs() ? sdl.joystick.devices : sdl.controller.devices;
-  const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
+  const gamepads = getControllers();
 
   const virtualGamepads =
     gamepads.length > 0
-      ? gamepads.map(getVirtualGamepad(gamepads, playerIndexArray))
+      ? gamepads.map(getVirtualGamepad(gamepads))
       : [keyboardConfig];
 
   return [

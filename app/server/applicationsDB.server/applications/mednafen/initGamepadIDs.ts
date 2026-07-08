@@ -3,18 +3,13 @@ import { isWindows } from "../../../operationsystem.server.js";
 import { log } from "../../../debug.server.js";
 import { spawnSync } from "node:child_process";
 import sdl from "@kmamal/sdl";
-import type { Sdl } from "@kmamal/sdl";
 
 import {
-  getJoystickFromController,
-  isSteamHandle,
-  getDeviceNameFromHid,
   steamInputHandleFromHid,
+  EmuzeController,
+  getControllers,
 } from "../../../gamepad.server.js";
-import {
-  getPlayerIndexArray,
-  isXinputController,
-} from "../../../../types/gamepad.js";
+import { isXinputController } from "../../../../types/gamepad.js";
 import { bundledPath } from "./definitions.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 
@@ -75,7 +70,7 @@ export const getGamepads = (): MednafenGamepadID[] => {
   return [];
 };
 
-const getAlternativeNames = (controller: Sdl.Controller.Device): string[] => {
+const getAlternativeNames = (controller: EmuzeController): string[] => {
   if (isWindows() && isXinputController(controller.type)) {
     return ["xinput"];
   }
@@ -84,12 +79,8 @@ const getAlternativeNames = (controller: Sdl.Controller.Device): string[] => {
 };
 
 export interface MappedGamepad {
-  sdlController: Sdl.Controller.Device;
+  emuzeController: EmuzeController;
   mednafenGamepadId: MednafenGamepadID;
-}
-
-export interface MappedGamepadWithPlayerIndex extends MappedGamepad {
-  playerIndex: number;
 }
 
 const sortMednafenGamepadIDs = (a: MednafenGamepadID, b: MednafenGamepadID) => {
@@ -115,37 +106,24 @@ const sortMednafenGamepadIDs = (a: MednafenGamepadID, b: MednafenGamepadID) => {
 
 export const getMappedGamepads = (
   mednafenGamepadIds: MednafenGamepadID[],
-): MappedGamepadWithPlayerIndex[] => {
+): MappedGamepad[] => {
   const mappedGamepads: MappedGamepad[] = [];
-  const gamepadsSdl = [...sdl.controller.devices];
+  const emuzeControllers = [...getControllers()];
   mednafenGamepadIds.sort(sortMednafenGamepadIDs);
 
   mednafenGamepadIds.forEach((mednafenGamepadId) => {
-    const mappedGamepad = getMappedGamepad(mednafenGamepadId, gamepadsSdl);
+    const mappedGamepad = getMappedGamepad(mednafenGamepadId, emuzeControllers);
     if (mappedGamepad) {
       mappedGamepads.push(mappedGamepad);
     }
   });
 
-  const mappedJoysticks = mappedGamepads.map(
-    ({ sdlController }) => getJoystickFromController(sdlController)!,
-  );
-  const playerIndexArray = getPlayerIndexArray(mappedJoysticks);
-
-  const mappedGamepadsWithPlayerIndex =
-    mappedGamepads.map<MappedGamepadWithPlayerIndex>(
-      (mappedGamepad, index) => ({
-        ...mappedGamepad,
-        playerIndex: playerIndexArray[index],
-      }),
-    );
-
-  return mappedGamepadsWithPlayerIndex;
+  return mappedGamepads;
 };
 
 export const getMappedGamepad = (
   mednafenGamepadId: MednafenGamepadID,
-  gamepads: Sdl.Controller.Device[],
+  gamepads: EmuzeController[],
 ): MappedGamepad | null => {
   log(
     "debug",
@@ -155,25 +133,20 @@ export const getMappedGamepad = (
   );
 
   const sdlControllerIndex = gamepads.findIndex((gamepad) => {
-    const joystick = getJoystickFromController(gamepad)!;
-    const nameFromHid = getDeviceNameFromHid(joystick) || "";
+    const { hidName, joystickName, name, hasSteamHandle } = gamepad;
+    const nameFromHid = hidName || "";
     const alternativeNames = getAlternativeNames(gamepad);
 
     log(
       "debug",
       "findSdlGamepad filter",
       `hid: ${nameFromHid}`,
-      `joystick: ${joystick.name}`,
-      `controller: ${gamepad.name}`,
-      `steamHandle: ${isSteamHandle(gamepad)}`,
+      `joystick: ${joystickName}`,
+      `controller: ${name}`,
+      `steamHandle: ${hasSteamHandle}`,
     );
 
-    return !![
-      ...alternativeNames,
-      nameFromHid,
-      joystick.name,
-      gamepad.name,
-    ].find(
+    return !![...alternativeNames, nameFromHid, joystickName, name].find(
       (name) =>
         name &&
         mednafenGamepadId.name
@@ -184,9 +157,9 @@ export const getMappedGamepad = (
   });
 
   if (sdlControllerIndex >= 0) {
-    const sdlController = gamepads[sdlControllerIndex];
+    const emuzeController = gamepads[sdlControllerIndex];
     gamepads.splice(sdlControllerIndex, 1);
-    return { mednafenGamepadId, sdlController };
+    return { mednafenGamepadId, emuzeController };
   }
 
   return null;
