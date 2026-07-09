@@ -1,4 +1,4 @@
-import type { MappedGamepad, MednafenGamepadID } from "./initGamepadIDs.js";
+import type { MappedGamepad } from "./initGamepadIDs.js";
 import { getMappedGamepads } from "./initGamepadIDs.js";
 import { log } from "../../../debug.server.js";
 import { VirtualGamepad } from "./VirtualGamepad.js";
@@ -139,10 +139,8 @@ export const getVirtualGamepadPcEngine = ({
   ];
 };
 
-export const getVirtualGamepadsPcEngine = (
-  mednafenGamepadIds: MednafenGamepadID[],
-) => {
-  const mappedGamepads = getMappedGamepads(mednafenGamepadIds);
+export const getVirtualGamepadsPcEngine = () => {
+  const mappedGamepads = getMappedGamepads();
 
   const virtualGamepads =
     mappedGamepads.length > 0

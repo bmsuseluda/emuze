@@ -2,7 +2,6 @@ import nodepath from "node:path";
 import { isWindows } from "../../../operationsystem.server.js";
 import { log } from "../../../debug.server.js";
 import { spawnSync } from "node:child_process";
-import sdl from "@kmamal/sdl";
 
 import {
   steamInputHandleFromHid,
@@ -54,8 +53,10 @@ const executeWithLogs = (applicationPath: string, args: string[]): string => {
   return result.stdout || "";
 };
 
-export const getGamepads = (): MednafenGamepadID[] => {
-  if (sdl.controller.devices.length > 0) {
+export const getMednafenGamepadIDs = (
+  emuzeControllers: EmuzeController[],
+): MednafenGamepadID[] => {
+  if (emuzeControllers.length > 0) {
     try {
       const output = executeWithLogs(
         nodepath.join(bundledEmulatorsPathBase, bundledPath),
@@ -104,11 +105,11 @@ const sortMednafenGamepadIDs = (a: MednafenGamepadID, b: MednafenGamepadID) => {
   return 1;
 };
 
-export const getMappedGamepads = (
-  mednafenGamepadIds: MednafenGamepadID[],
-): MappedGamepad[] => {
-  const mappedGamepads: MappedGamepad[] = [];
+export const getMappedGamepads = (): MappedGamepad[] => {
   const emuzeControllers = [...getControllers()];
+  const mednafenGamepadIds = getMednafenGamepadIDs(emuzeControllers);
+
+  const mappedGamepads: MappedGamepad[] = [];
   mednafenGamepadIds.sort(sortMednafenGamepadIDs);
 
   mednafenGamepadIds.forEach((mednafenGamepadId) => {

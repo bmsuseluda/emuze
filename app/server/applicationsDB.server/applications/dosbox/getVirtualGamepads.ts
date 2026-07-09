@@ -1,5 +1,4 @@
 import { log } from "../../../debug.server.js";
-import sdl from "@kmamal/sdl";
 import type {
   SdlButtonId,
   SdlButtonMapping,
@@ -9,7 +8,6 @@ import {
   getButtonIndex,
   isAnalog,
   isDpadHat,
-  isSteamDeckController,
 } from "../../../../types/gamepad.js";
 import { EmuzeController, getControllers } from "../../../gamepad.server.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
@@ -21,23 +19,6 @@ import {
   HatType,
   HatValue,
 } from "./config.js";
-
-export const getGamepad = () => {
-  const gamepads = sdl.joystick.devices;
-
-  if (gamepads.length === 1) {
-    return gamepads[0];
-  }
-
-  if (gamepads.length > 1) {
-    if (isSteamDeckController(gamepads[0])) {
-      return gamepads[1];
-    } else {
-      return gamepads[0];
-    }
-  }
-  return null;
-};
 
 const dosboxButtonIds = {
   up: "dpup",

@@ -2,7 +2,6 @@ import { log } from "../../../debug.server.js";
 import { getSetting } from "./getSettings.js";
 import type { ParamToReplace } from "../../configFile.js";
 import type { EdenButtonId } from "./types.js";
-import sdl from "@kmamal/sdl";
 import type {
   SdlButtonId,
   SdlButtonMapping,
@@ -11,28 +10,10 @@ import {
   getButtonIndex,
   isAnalog,
   isDpadHat,
-  isSteamDeckController,
 } from "../../../../types/gamepad.js";
 import { EmuzeController, getControllers } from "../../../gamepad.server.js";
 import { getKeyboardDebugMapping, keyboardConfig } from "./keyboardConfig.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
-
-export const getGamepad = () => {
-  const gamepads = sdl.joystick.devices;
-
-  if (gamepads.length === 1) {
-    return gamepads[0];
-  }
-
-  if (gamepads.length > 1) {
-    if (isSteamDeckController(gamepads[0])) {
-      return gamepads[1];
-    } else {
-      return gamepads[0];
-    }
-  }
-  return null;
-};
 
 const edenButtonIds = {
   button_dup: "dpup",

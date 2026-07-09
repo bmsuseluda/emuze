@@ -83,6 +83,7 @@ const steamHandleGUIDs = [
  * TODO: replace player with index?
  * TODO: add more steam handle GUIDs
  * TODO: do lightguns have a controller in sdl as well?
+ * TODO: overwrite guid in sdlJoystick and sdlController too?
  */
 export const getControllers = () => {
   const emuzeControllers: EmuzeController[] = [];
@@ -103,6 +104,7 @@ export const getControllers = () => {
 
   const joystickSorted = sdl.joystick.devices.toSorted(sortSteamDeckLast);
 
+  let playerIndex = 0;
   joystickSorted.forEach((joystick) => {
     const controller = getControllerFromJoystick(joystick);
     if (controller) {
@@ -138,13 +140,14 @@ export const getControllers = () => {
           hidName,
           product,
           vendor,
-          player,
+          player: playerIndex,
           mapping,
           mappingObject: createSdlMappingObject(mapping),
           hasSteamHandle,
           sdlJoystick: joystick,
           sdlController: controller,
         });
+        playerIndex++;
       } else {
         log(
           "debug",
