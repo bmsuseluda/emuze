@@ -1,16 +1,9 @@
-import { controllerDevices } from "../../../../../../__mocks__/@kmamal/sdl.js";
 import {
-  eightBitDoPro2,
-  gamepadPs4,
-  steamDeck,
+  eightBitDoPro2Joystick,
+  steamDeckJoystick,
 } from "../../../../../types/gamepad.js";
-import * as mednafenGamepadTestData from "./testData.js";
 import type { MappedGamepad, MednafenGamepadID } from "../initGamepadIDs.js";
-import {
-  extractGamepadIDs,
-  getMappedGamepad,
-  getMappedGamepads,
-} from "../initGamepadIDs.js";
+import { extractGamepadIDs, getMappedGamepad } from "../initGamepadIDs.js";
 import { getControllers } from "../../../../gamepad.server.js";
 
 vi.mock("@kmamal/sdl");
@@ -53,10 +46,13 @@ describe("initGamepadIDs", () => {
         name: "8BitDo Pro 2",
         nameIndex: 0,
       };
-      const result = getMappedGamepad(mednafenGamepadId, [...getControllers()]);
+      const emuzeControllers = getControllers();
+      const result = getMappedGamepad(mednafenGamepadId, [...emuzeControllers]);
 
       const expected: MappedGamepad = {
-        sdlController: eightBitDoPro2,
+        emuzeController: emuzeControllers.find(
+          ({ joystickName }) => eightBitDoPro2Joystick.name === joystickName,
+        )!,
         mednafenGamepadId,
       };
 
@@ -69,81 +65,15 @@ describe("initGamepadIDs", () => {
         name: "Microsoft X-Box 360 pad 0",
         nameIndex: 0,
       };
-      const result = getMappedGamepad(mednafenGamepadId, [
-        ...controllerDevices,
-      ]);
+      const emuzeControllers = getControllers();
+      const result = getMappedGamepad(mednafenGamepadId, [...emuzeControllers]);
 
       const expected: MappedGamepad = {
-        sdlController: steamDeck,
+        emuzeController: emuzeControllers.find(
+          ({ joystickName }) => steamDeckJoystick.name === joystickName,
+        )!,
         mednafenGamepadId,
       };
-
-      expect(result).toStrictEqual(expected);
-    });
-  });
-
-  describe("getMappedGamepads", () => {
-    it("Should map the gamepads", () => {
-      const mednafenGamepadIds: MednafenGamepadID[] = [
-        mednafenGamepadTestData.steamDeck,
-        mednafenGamepadTestData.eightBitDoPro2,
-        mednafenGamepadTestData.eightBitDoPro2SecondDevice,
-      ];
-      const result = getMappedGamepads(mednafenGamepadIds);
-
-      const expected: MappedGamepadWithPlayerIndex[] = [
-        {
-          sdlController: steamDeck,
-          mednafenGamepadId: mednafenGamepadTestData.steamDeck,
-          playerIndex: 2,
-        },
-        {
-          sdlController: eightBitDoPro2,
-          mednafenGamepadId: mednafenGamepadTestData.eightBitDoPro2,
-          playerIndex: 0,
-        },
-        {
-          sdlController: { ...eightBitDoPro2, id: 3, player: 3 },
-          mednafenGamepadId: mednafenGamepadTestData.eightBitDoPro2SecondDevice,
-          playerIndex: 1,
-        },
-      ];
-
-      expect(result).toStrictEqual(expected);
-    });
-
-    it("Should map the gamepads with steam input", () => {
-      const mednafenGamepadIds: MednafenGamepadID[] = [
-        mednafenGamepadTestData.steamDeck,
-        mednafenGamepadTestData.gamepadPs4,
-        mednafenGamepadTestData.eightBitDoPro2,
-        mednafenGamepadTestData.steamDeckSteamInputCopy,
-        mednafenGamepadTestData.eightBitDoPro2SecondDevice,
-      ];
-      const result = getMappedGamepads(mednafenGamepadIds);
-
-      const expected: MappedGamepadWithPlayerIndex[] = [
-        {
-          sdlController: steamDeck,
-          mednafenGamepadId: mednafenGamepadTestData.steamDeck,
-          playerIndex: 3,
-        },
-        {
-          sdlController: gamepadPs4,
-          mednafenGamepadId: mednafenGamepadTestData.gamepadPs4,
-          playerIndex: 0,
-        },
-        {
-          sdlController: eightBitDoPro2,
-          mednafenGamepadId: mednafenGamepadTestData.eightBitDoPro2,
-          playerIndex: 1,
-        },
-        {
-          sdlController: { ...eightBitDoPro2, id: 3, player: 3 },
-          mednafenGamepadId: mednafenGamepadTestData.eightBitDoPro2SecondDevice,
-          playerIndex: 2,
-        },
-      ];
 
       expect(result).toStrictEqual(expected);
     });

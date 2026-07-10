@@ -80,7 +80,7 @@ const getGamepadButtonMappings = (
     ),
   );
 
-const normalizeGuid = (guid: string) =>
+export const normalizeGuid = (guid: string) =>
   [guid.slice(0, 4), guid.slice(8)].join("0000");
 
 /**
@@ -88,7 +88,7 @@ const normalizeGuid = (guid: string) =>
  *
  * @returns number starts with 0
  */
-const getSdlGuidIndex =
+export const getSdlGuidIndex =
   (devices: EmuzeController[]) => (guid: string, sdlIndex: number) => {
     let nameCount = 0;
     for (let index = 0; index < sdlIndex; index++) {
@@ -106,7 +106,7 @@ export const getVirtualGamepad =
   (emuzeController: EmuzeController, sdlIndex: number): ParamToReplace[] => {
     log("debug", "gamepad", emuzeController);
 
-    const guid = normalizeGuid(emuzeController.guid!);
+    const guid = normalizeGuid(emuzeController.guid);
     const { mappingObject } = emuzeController;
     const playerIndex = sdlIndex;
     const guidIndex = detectSdlGuidIndex(guid, sdlIndex);

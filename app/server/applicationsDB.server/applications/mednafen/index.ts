@@ -9,6 +9,7 @@ import { log } from "../../../debug.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { homedir } from "node:os";
 import { normalizeString } from "../../../igdb.server.js";
+import { getMappedGamepads } from "./initGamepadIDs.js";
 
 const getSharedMednafenOptionParams: OptionParamFunction = ({
   settings: {
@@ -105,7 +106,8 @@ const saturnBiosTypes = {
 export const mednafenSaturn: Application = {
   ...mednafen,
   createOptionParams: (props) => {
-    const virtualGamepadsSaturn = getVirtualGamepadsSaturn();
+    const mappedGamepads = getMappedGamepads();
+    const virtualGamepadsSaturn = getVirtualGamepadsSaturn(mappedGamepads);
     log("debug", "createOptionParams", virtualGamepadsSaturn);
     return [
       ...["-force_module", "ss"],
@@ -143,7 +145,8 @@ export const mednafenSaturn: Application = {
 export const mednafenPcEngineCD: Application = {
   ...mednafen,
   createOptionParams: (props) => {
-    const virtualGamepadsPcEngine = getVirtualGamepadsPcEngine();
+    const mappedGamepads = getMappedGamepads();
+    const virtualGamepadsPcEngine = getVirtualGamepadsPcEngine(mappedGamepads);
     log("debug", "createOptionParams", virtualGamepadsPcEngine);
     return [
       ...["-force_module", "pce"],

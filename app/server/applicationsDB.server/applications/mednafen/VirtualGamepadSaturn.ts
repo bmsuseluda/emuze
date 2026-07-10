@@ -1,5 +1,4 @@
 import type { MappedGamepad } from "./initGamepadIDs.js";
-import { getMappedGamepads } from "./initGamepadIDs.js";
 import { log } from "../../../debug.server.js";
 import { VirtualGamepad } from "./VirtualGamepad.js";
 import { getKeyboardMapping } from "./keyboardConfig.js";
@@ -125,9 +124,7 @@ export const getVirtualGamepadSaturn = ({
   ];
 };
 
-export const getVirtualGamepadsSaturn = () => {
-  const mappedGamepads = getMappedGamepads();
-
+export const getVirtualGamepadsSaturn = (mappedGamepads: MappedGamepad[]) => {
   const virtualGamepads =
     mappedGamepads.length > 0
       ? mappedGamepads.map(getVirtualGamepadSaturn)

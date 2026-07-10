@@ -63,12 +63,62 @@ export interface EmuzeController {
   sdlController: Sdl.Controller.Device;
 }
 
-const steamHandleGUIDs = [
+export const steamHandleGUIDs = [
   "030079f6de280000ff11000001000000",
   "0300b836de280000ff11000001000000",
   "0300f837de280000ff11000001000000",
   "030039f7de280000ff11000001000000",
 ];
+
+const isNumber = (value?: number | null): value is number =>
+  value !== null && typeof value !== "undefined" && Number.isInteger(value);
+
+export const createEmuzeController = ({
+  controller,
+  joystick,
+  playerIndex,
+  hasSteamHandle,
+  steamGUID,
+  hidName,
+}: {
+  controller: Sdl.Controller.Device;
+  joystick: Sdl.Joystick.Device;
+  playerIndex: number;
+  hasSteamHandle: boolean;
+  steamGUID: string | null;
+  hidName?: string;
+}) => {
+  const { id, guid, name: joystickName, player, product, vendor } = joystick;
+  const { name, mapping, type } = controller;
+
+  if (
+    guid &&
+    joystickName &&
+    isNumber(product) &&
+    isNumber(vendor) &&
+    isNumber(player) &&
+    mapping
+  ) {
+    const nameOsSpecific = getNameOsSpecific(name, joystickName, type);
+    return {
+      id,
+      guid: steamGUID || guid,
+      name,
+      joystickName,
+      nameOsSpecific,
+      type,
+      hidName,
+      product,
+      vendor,
+      player: playerIndex,
+      mapping,
+      mappingObject: createSdlMappingObject(mapping),
+      hasSteamHandle,
+      sdlJoystick: joystick,
+      sdlController: controller,
+    };
+  }
+};
 
 /**
  * Returns Array of EmuzeControllers.
@@ -99,54 +149,27 @@ export const getControllers = () => {
     return null;
   };
 
-  const isNumber = (value?: number | null): value is number =>
-    value !== null && typeof value !== "undefined" && Number.isInteger(value);
-
   const joystickSorted = sdl.joystick.devices.toSorted(sortSteamDeckLast);
 
   let playerIndex = 0;
   joystickSorted.forEach((joystick) => {
     const controller = getControllerFromJoystick(joystick);
     if (controller) {
-      const {
-        id,
-        guid,
-        name: joystickName,
-        player,
-        product,
-        vendor,
-      } = joystick;
-      const { name, mapping, type } = controller;
       const hidName = getDeviceNameFromHid(joystick);
       const hasSteamHandle = isSteamHandle(controller);
       const steamGUID = getSteamGUID(hasSteamHandle);
 
-      if (
-        guid &&
-        joystickName &&
-        isNumber(product) &&
-        isNumber(vendor) &&
-        isNumber(player) &&
-        mapping
-      ) {
-        const nameOsSpecific = getNameOsSpecific(name, joystickName, type);
-        emuzeControllers.push({
-          id,
-          guid: steamGUID || guid,
-          name,
-          joystickName,
-          nameOsSpecific,
-          type,
-          hidName,
-          product,
-          vendor,
-          player: playerIndex,
-          mapping,
-          mappingObject: createSdlMappingObject(mapping),
-          hasSteamHandle,
-          sdlJoystick: joystick,
-          sdlController: controller,
-        });
+      const emuzeController = createEmuzeController({
+        controller,
+        joystick,
+        playerIndex,
+        hasSteamHandle,
+        steamGUID,
+        hidName,
+      });
+
+      if (emuzeController) {
+        emuzeControllers.push(emuzeController);
         playerIndex++;
       } else {
         log(

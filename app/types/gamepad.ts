@@ -393,18 +393,24 @@ export const steamDeck = {
     "030079f6de280000ff11000001000000,Steam Virtual Gamepad,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b8,leftshoulder:b4,leftstick:b9,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
 } satisfies Sdl.Controller.Device;
 
-export const steamController = {
-  id: 0,
-  name: "Steam Virtual Gamepad",
-  path: "/dev/input/event27",
-  type: null,
-  guid: "030079f6de280000ff11000001000000",
+export const steamControllerJoystick = {
+  id: 2,
+  name: "#SettingsController_SteamController",
+  path: "/dev/input/event29",
+  type: "gamecontroller",
+  guid: "0300f837de280000ff11000001000000",
   vendor: 10462,
   product: 4866,
   version: 1,
-  player: 0,
+  player: 2,
+} satisfies Sdl.Joystick.Device;
+
+export const steamController = {
+  ...steamControllerJoystick,
+  type: null,
+  name: "Steam Virtual Gamepad",
   mapping:
-    "030079f6de280000ff11000001000000,Steam Virtual Gamepad,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b8,leftshoulder:b4,leftstick:b9,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
+    "0300f837de280000ff11000001000000,Steam Virtual Gamepad,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b8,leftshoulder:b4,leftstick:b9,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
 } satisfies Sdl.Controller.Device;
 
 export const gamepadN64 = {

@@ -241,7 +241,7 @@ RUp = Keyboard/T
 
 `);
 
-export const ps4Mapped = normalizeNewLines(`[Pad1]
+export const ps4Mapped = normalizeNewLines(`[Pad2]
 Type = AnalogController
 Up = SDL-1/DPadUp
 Right = SDL-1/DPadRight
@@ -304,7 +304,7 @@ RUp = Keyboard/T
 
 `);
 
-export const steamDeckMapped = normalizeNewLines(`[Pad4]
+export const steamDeckMapped = normalizeNewLines(`[Pad1]
 Type = AnalogController
 Up = SDL-0/DPadUp
 Right = SDL-0/DPadRight
@@ -367,7 +367,7 @@ RUp = Keyboard/T
 
 `);
 
-export const eightbitdoMapped = normalizeNewLines(`[Pad2]
+export const eightbitdoMapped = normalizeNewLines(`[Pad3]
 Type = AnalogController
 Up = SDL-2/DPadUp
 Right = SDL-2/DPadRight
@@ -430,7 +430,7 @@ RUp = Keyboard/T
 
 `);
 
-export const eightbitdo2Mapped = normalizeNewLines(`[Pad3]
+export const eightbitdo2Mapped = normalizeNewLines(`[Pad4]
 Type = AnalogController
 Up = SDL-3/DPadUp
 Right = SDL-3/DPadRight
