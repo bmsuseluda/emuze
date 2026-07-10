@@ -3,7 +3,6 @@ import type { Sdl } from "@kmamal/sdl";
 import { isSteamOs, isWindows } from "./operationsystem.server.js";
 import {
   createSdlMappingObject,
-  isController,
   isXinputController,
   SdlButtonMapping,
   sortSteamDeckLast,
@@ -61,6 +60,8 @@ export interface EmuzeController {
   hasSteamHandle: boolean;
   sdlJoystick: Sdl.Joystick.Device;
   sdlController: Sdl.Controller.Device;
+  serialNumber: string;
+  path: string | null;
 }
 
 export const steamHandleGUIDs = [
@@ -80,6 +81,7 @@ export const createEmuzeController = ({
   hasSteamHandle,
   steamGUID,
   hidName,
+  serialNumber,
 }: {
   controller: Sdl.Controller.Device;
   joystick: Sdl.Joystick.Device;
@@ -87,8 +89,17 @@ export const createEmuzeController = ({
   hasSteamHandle: boolean;
   steamGUID: string | null;
   hidName?: string;
+  serialNumber: string;
 }) => {
-  const { id, guid, name: joystickName, player, product, vendor } = joystick;
+  const {
+    id,
+    guid,
+    name: joystickName,
+    player,
+    product,
+    vendor,
+    path,
+  } = joystick;
   const { name, mapping, type } = controller;
 
   if (
@@ -114,6 +125,8 @@ export const createEmuzeController = ({
       mapping,
       mappingObject: createSdlMappingObject(mapping),
       hasSteamHandle,
+      serialNumber,
+      path,
       sdlJoystick: joystick,
       sdlController: controller,
     };
@@ -158,6 +171,7 @@ export const getControllers = () => {
       const hidName = getDeviceNameFromHid(joystick);
       const hasSteamHandle = isSteamHandle(controller);
       const steamGUID = getSteamGUID(hasSteamHandle);
+      const serialNumber = sdl.controller.openDevice(controller).serialNumber;
 
       const emuzeController = createEmuzeController({
         controller,
@@ -166,6 +180,7 @@ export const getControllers = () => {
         hasSteamHandle,
         steamGUID,
         hidName,
+        serialNumber,
       });
 
       if (emuzeController) {
@@ -230,24 +245,6 @@ export const getJoystickFromController = (
 
 export const getControllerFromJoystick = (joystick: Sdl.Joystick.Device) =>
   sdl.controller.devices.find(({ id }) => joystick.id === id);
-
-/**
- *
- * @deprecated use getNameOsSpecific instead
- */
-export const getGamepadName = (
-  gamepad: Sdl.Controller.Device | Sdl.Joystick.Device,
-) => {
-  if (
-    isWindows() &&
-    isController(gamepad) &&
-    isXinputController(gamepad.type)
-  ) {
-    return `XInput Controller`;
-  } else {
-    return gamepad.name!;
-  }
-};
 
 /**
  * check all devices until sdlIndex (current index) for name. count how much and return accordingly

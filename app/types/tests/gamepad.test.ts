@@ -6,7 +6,6 @@ import {
   gamepadPs3Joystick,
   gamepadPs4Joystick,
   getNameIndex,
-  getPlayerIndexArray,
   removeVendorFromGuid,
   sortSteamDeckLast,
   steamDeckJoystick,
@@ -22,45 +21,6 @@ describe("getNameIndex", () => {
     expect(getNameIndex(gamepadPs4Joystick.name, 0, devices)).toBe(0);
     expect(getNameIndex(steamDeckJoystick.name, 1, devices)).toBe(0);
     expect(getNameIndex(gamepadPs4Joystick.name, 2, devices)).toBe(1);
-  });
-});
-
-describe("getPlayerIndexArray", () => {
-  it("Should return the last index as playerIndex for steam deck", () => {
-    expect(
-      getPlayerIndexArray([
-        steamDeckJoystick,
-        gamepadPs4Joystick,
-        { ...gamepadPs4Joystick },
-        eightBitDoPro2Joystick,
-      ]),
-    ).toStrictEqual([3, 0, 1, 2]);
-  });
-
-  it("Should return the last index as playerIndex for steam deck and gamecube before that", () => {
-    expect(
-      getPlayerIndexArray([
-        steamDeckJoystick,
-        gamecubeAdapter,
-        { ...gamecubeAdapter },
-        { ...gamecubeAdapter },
-        { ...gamecubeAdapter },
-        gamepadPs4Joystick,
-        { ...gamepadPs4Joystick },
-        eightBitDoPro2Joystick,
-      ]),
-    ).toStrictEqual([7, 3, 4, 5, 6, 0, 1, 2]);
-  });
-
-  it("Should return the indexes untouched if there is no steam deck", () => {
-    expect(
-      getPlayerIndexArray([
-        gamepadPs3Joystick,
-        gamepadPs4Joystick,
-        { ...gamepadPs4Joystick },
-        eightBitDoPro2Joystick,
-      ]),
-    ).toStrictEqual([0, 1, 2, 3]);
   });
 });
 

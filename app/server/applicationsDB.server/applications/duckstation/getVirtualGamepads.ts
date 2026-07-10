@@ -40,7 +40,7 @@ export const getVirtualGamepad = (
   emuzeController: EmuzeController,
   sdlIndex: number,
 ) => {
-  log("debug", "gamepad", { sdlIndex, sdlDevice: emuzeController });
+  log("debug", "gamepad", { sdlIndex, emuzeController });
 
   return [
     `[Pad${sdlIndex + 1}]`,

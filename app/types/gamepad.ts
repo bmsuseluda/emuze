@@ -303,38 +303,6 @@ export const isDpadHat = (
   sdlButtonId: SdlButtonId,
 ) => mappingObject[sdlButtonId]?.includes("h");
 
-export const getPlayerIndexArray = (gamepads: Sdl.Joystick.Device[]) => {
-  const playerIndexArray: number[] = [];
-
-  const gamepadsSorted = gamepads
-    .toSorted(sortGamecubeLast)
-    .toSorted(sortSteamDeckLast);
-
-  gamepads.forEach((gamepad) => {
-    playerIndexArray.push(
-      gamepadsSorted.findIndex((gamepadSorted) => gamepad === gamepadSorted),
-    );
-  });
-
-  return playerIndexArray;
-};
-
-export const getPlayerIdArray = (gamepads: Sdl.Joystick.Device[]) => {
-  const playerIdArray: number[] = [];
-
-  const gamepadsSorted = gamepads
-    .toSorted(sortGamecubeLast)
-    .toSorted(sortSteamDeckLast);
-
-  gamepads.forEach((gamepad) => {
-    playerIdArray.push(
-      gamepadsSorted.find((gamepadSorted) => gamepad === gamepadSorted)!.id,
-    );
-  });
-
-  return playerIdArray;
-};
-
 /**
  *
  * @param sdlMapping "030000004c050000c405000000010000,PS4 Controller,platform:Windows,a:b1,b:b2,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b4,leftstick:b10,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b11,righttrigger:a4,rightx:a2,righty:a5,start:b9,x:b0,y:b3,"
@@ -516,10 +484,6 @@ export const isLightgunConnected = (joysticks: Sdl.Joystick.Device[]) =>
         name?.toLowerCase().includes(lightgunName.toLowerCase()),
       ),
   );
-
-export const isController = (
-  device: Sdl.Joystick.Device | Sdl.Controller.Device,
-): device is Sdl.Controller.Device => "mapping" in device;
 
 export const sortLast = <T>(
   a: T,

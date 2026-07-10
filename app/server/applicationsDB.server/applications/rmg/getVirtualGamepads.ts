@@ -8,21 +8,18 @@ import {
   emuzeToSdlButtonId,
   getButtonIndex,
   getNameIndex,
-  getPlayerIndexArray,
   isAnalog,
-  isController,
   isXinputController,
 } from "../../../../types/gamepad.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { log } from "../../../debug.server.js";
 import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
 import { keyboardConfig } from "./keyboardConfig.js";
 import type { ButtonDetailsFunction, RmgButtonId } from "./types.js";
 import { mapAndJoinEmuzeButtonIds, rmgButtonIds } from "./types.js";
-import { isSteamOs, isWindows } from "../../../operationsystem.server.js";
+import { isWindows } from "../../../operationsystem.server.js";
 import { normalizeNewLines } from "../../configFile.js";
-import { getGamepadName } from "../../../gamepad.server.js";
+import { EmuzeController, getControllers } from "../../../gamepad.server.js";
 
 const getInputType =
   (mappingObject: SdlButtonMapping): ButtonDetailsFunction =>
@@ -72,11 +69,11 @@ export const getRmgButtonsMapping = (controller: Sdl.Controller.Device) => {
 const xinputDevicePathWithoutIndex = "XInput#";
 
 const getDevicePath = (
-  gamepad: Sdl.Joystick.Device | Sdl.Controller.Device,
+  gamepad: EmuzeController,
   xinputDevicePaths: { name: string }[],
 ) => {
   if (isWindows()) {
-    if (isController(gamepad) && isXinputController(gamepad.type)) {
+    if (isXinputController(gamepad.type)) {
       const devicePathIndex = getNameIndex(
         xinputDevicePathWithoutIndex,
         xinputDevicePaths.length,
@@ -95,35 +92,29 @@ const getDevicePath = (
 };
 
 export const getVirtualGamepad =
-  (playerIndexArray: number[], xinputDevicePaths: { name: string }[]) =>
-  (controller: Sdl.Joystick.Device | Sdl.Controller.Device, index: number) => {
-    log("debug", "gamepad", { index, controller });
-    const { name } = controller;
+  (xinputDevicePaths: { name: string }[]) =>
+  (emuzeController: EmuzeController, index: number) => {
+    log("debug", "gamepad", { index, emuzeController });
+    const { serialNumber, nameOsSpecific } = emuzeController;
 
-    if (name) {
-      const deviceSerial =
-        (isController(controller)
-          ? sdl.controller.openDevice(controller)
-          : sdl.joystick.openDevice(controller)
-        ).serialNumber || "";
-      const devicePath = getDevicePath(controller, xinputDevicePaths);
+    const devicePath = getDevicePath(emuzeController, xinputDevicePaths);
 
-      return [
-        `[Rosalie's Mupen GUI - Input Plugin Profile ${playerIndexArray[index]}]`,
-        `PluggedIn = True`,
-        `DeviceName = "${getGamepadName(controller)}"`,
-        `DeviceType = 4`,
-        `DevicePath = "${devicePath}"`,
-        `DeviceSerial = "${deviceSerial}"`,
-        `Deadzone = 9`,
-        `Sensitivity = 100`,
-        `Pak = 0`,
-        `RemoveDuplicateMappings = True`,
-        `FilterEventsForButtons = True`,
-        `FilterEventsForAxis = True`,
-        // TODO: use when sdl3 is integrated
-        // ...getRmgButtonsMapping(controller),
-        normalizeNewLines(`DpadUp_InputType = "0"
+    return [
+      `[Rosalie's Mupen GUI - Input Plugin Profile ${index}]`,
+      `PluggedIn = True`,
+      `DeviceName = "${nameOsSpecific}"`,
+      `DeviceType = 4`,
+      `DevicePath = "${devicePath}"`,
+      `DeviceSerial = "${serialNumber}"`,
+      `Deadzone = 9`,
+      `Sensitivity = 100`,
+      `Pak = 0`,
+      `RemoveDuplicateMappings = True`,
+      `FilterEventsForButtons = True`,
+      `FilterEventsForAxis = True`,
+      // TODO: use when sdl3 is integrated
+      // ...getRmgButtonsMapping(controller),
+      normalizeNewLines(`DpadUp_InputType = "0"
 DpadUp_Name = "dpup"
 DpadUp_Data = "11"
 DpadUp_ExtraData = "0"
@@ -195,10 +186,7 @@ CButtonRight_InputType = "1"
 CButtonRight_Name = "rightx+"
 CButtonRight_Data = "2"
 CButtonRight_ExtraData = "1"`),
-      ].join(EOL);
-    }
-
-    return "";
+    ].join(EOL);
   };
 
 const getVirtualGamepadReset = (gamepadIndex: number) =>
@@ -213,12 +201,11 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
 
 export const getVirtualGamepads = () => {
   const xinputDevicePaths: { name: string }[] = [];
-  const gamepads = isSteamOs() ? sdl.joystick.devices : sdl.controller.devices;
-  const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
+  const gamepads = getControllers();
 
   const virtualGamepads =
     gamepads.length > 0
-      ? gamepads.map(getVirtualGamepad(playerIndexArray, xinputDevicePaths))
+      ? gamepads.map(getVirtualGamepad(xinputDevicePaths))
       : [keyboardConfig];
 
   return [

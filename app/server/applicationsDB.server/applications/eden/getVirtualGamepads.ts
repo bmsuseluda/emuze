@@ -10,6 +10,7 @@ import {
   getButtonIndex,
   isAnalog,
   isDpadHat,
+  removeVendorFromGuid,
 } from "../../../../types/gamepad.js";
 import { EmuzeController, getControllers } from "../../../gamepad.server.js";
 import { getKeyboardDebugMapping, keyboardConfig } from "./keyboardConfig.js";
@@ -80,9 +81,6 @@ const getGamepadButtonMappings = (
     ),
   );
 
-export const normalizeGuid = (guid: string) =>
-  [guid.slice(0, 4), guid.slice(8)].join("0000");
-
 /**
  * check all devices until sdlIndex (current index) for GUID. count how much and return accordingly
  *
@@ -93,7 +91,7 @@ export const getSdlGuidIndex =
     let nameCount = 0;
     for (let index = 0; index < sdlIndex; index++) {
       const device = devices[index];
-      if (normalizeGuid(device.guid) === normalizeGuid(guid)) {
+      if (removeVendorFromGuid(device.guid) === removeVendorFromGuid(guid)) {
         nameCount++;
       }
     }
@@ -106,7 +104,7 @@ export const getVirtualGamepad =
   (emuzeController: EmuzeController, sdlIndex: number): ParamToReplace[] => {
     log("debug", "gamepad", emuzeController);
 
-    const guid = normalizeGuid(emuzeController.guid);
+    const guid = removeVendorFromGuid(emuzeController.guid);
     const { mappingObject } = emuzeController;
     const playerIndex = sdlIndex;
     const guidIndex = detectSdlGuidIndex(guid, sdlIndex);
