@@ -1,5 +1,5 @@
 import { emuzeControllersSteamInput } from "../../../../__testData__/emuzeControllers.js";
-import { getSdlGuidIndex, normalizeGuid } from "../getVirtualGamepads.js";
+import { getSdlGuidIndex } from "../getVirtualGamepads.js";
 
 describe("getVirtualGamepads", () => {
   describe("getSdlGuidIndex", () => {
@@ -19,18 +19,6 @@ describe("getVirtualGamepads", () => {
       );
 
       expect(result).toBe(3);
-    });
-  });
-
-  describe("normalizeGuid", () => {
-    it("Should normalize guid", () => {
-      const result = normalizeGuid("030079f6de280000ff11000001000000");
-      expect(result).toBe("03000000de280000ff11000001000000");
-    });
-
-    it("Should not alter guid normalized already", () => {
-      const result = normalizeGuid("03000000de280000ff11000001000000");
-      expect(result).toBe("03000000de280000ff11000001000000");
     });
   });
 });

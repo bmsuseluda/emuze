@@ -21,6 +21,7 @@ export const steamControllerEmuzeController = createEmuzeController({
   playerIndex: 0,
   steamGUID: steamHandleGUIDs[0],
   hidName: "dummy",
+  serialNumber: "dummy",
 })!;
 
 export const steamDeckEmuzeController = createEmuzeController({
@@ -30,6 +31,7 @@ export const steamDeckEmuzeController = createEmuzeController({
   playerIndex: 3,
   steamGUID: steamHandleGUIDs[3],
   hidName: "dummy",
+  serialNumber: "dummy",
 })!;
 
 export const emuzeControllersSteamInput: EmuzeController[] = [
@@ -41,6 +43,7 @@ export const emuzeControllersSteamInput: EmuzeController[] = [
     playerIndex: 1,
     steamGUID: steamHandleGUIDs[1],
     hidName: "dummy",
+    serialNumber: "dummy",
   })!,
   createEmuzeController({
     controller: gamepadPs4,
@@ -49,6 +52,7 @@ export const emuzeControllersSteamInput: EmuzeController[] = [
     playerIndex: 2,
     steamGUID: steamHandleGUIDs[2],
     hidName: "dummy",
+    serialNumber: "dummy",
   })!,
   steamDeckEmuzeController,
 ];
