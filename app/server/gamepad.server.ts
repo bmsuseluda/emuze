@@ -30,17 +30,18 @@ export const getSteamInputHandleIndex = (gamepad: Sdl.Controller.Device) => {
 };
 
 // TODO: if no hid devices where found, will it be a steam input device?
-export const getDeviceNameFromHid = (joystick: Sdl.Joystick.Device) => {
-  const { vendor, product } = joystick;
-  if (vendor && product) {
-    const controller = getControllerFromJoystick(joystick);
-    if (controller && isSteamHandle(controller)) {
-      return `${steamInputHandleFromHid} ${getSteamInputHandleIndex(controller)}`;
-    }
+export const getDeviceNameFromHid = (controller: Sdl.Controller.Device) => {
+  if (isSteamHandle(controller)) {
+    return `${steamInputHandleFromHid} ${getSteamInputHandleIndex(controller)}`;
+  }
 
+  const { vendor, product } = controller;
+  if (vendor && product) {
     const hidDevices = HID.devices(vendor, product);
+    log("debug", "hid path", hidDevices.at(0)?.path);
     return hidDevices.at(0)?.product;
   }
+
   return undefined;
 };
 
@@ -168,7 +169,7 @@ export const getControllers = () => {
   joystickSorted.forEach((joystick) => {
     const controller = getControllerFromJoystick(joystick);
     if (controller) {
-      const hidName = getDeviceNameFromHid(joystick);
+      const hidName = getDeviceNameFromHid(controller);
       const hasSteamHandle = isSteamHandle(controller);
       const steamGUID = getSteamGUID(hasSteamHandle);
       const serialNumber = sdl.controller.openDevice(controller).serialNumber;

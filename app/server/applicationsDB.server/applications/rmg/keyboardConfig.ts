@@ -34,7 +34,6 @@ const getKeyboardButtonMappings = (): string[] =>
     getRmgButtonMapping(rmgButtonId as RmgButtonId, emuzeButtonIds),
   );
 
-// TODO: Check how keyboard mapping works in rmg
 export const keyboardConfig =
   normalizeNewLines(`[Rosalie's Mupen GUI - Input Plugin Profile 0]
 PluggedIn = True

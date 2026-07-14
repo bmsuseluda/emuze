@@ -3,6 +3,7 @@ import nodepath from "node:path";
 import { isWindows } from "../../../operationsystem.server.js";
 import type { Application } from "../../types.js";
 import type { ApplicationId } from "../../applicationId.js";
+import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const applicationId: ApplicationId = "scummvm";
 const bundledPath = isWindows()
@@ -14,6 +15,7 @@ export const scummvm: Application = {
   name: "ScummVM",
   entryAsDirectory: true,
   omitAbsoluteEntryPathAsLastParam: true,
+  defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },

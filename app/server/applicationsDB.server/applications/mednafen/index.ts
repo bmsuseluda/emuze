@@ -10,6 +10,7 @@ import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.j
 import { homedir } from "node:os";
 import { normalizeString } from "../../../igdb.server.js";
 import { getMappedGamepads } from "./initGamepadIDs.js";
+import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const getSharedMednafenOptionParams: OptionParamFunction = ({
   settings: {
@@ -65,6 +66,7 @@ export const mednafen: Application = {
   },
   defineEnvironmentVariables: () => {
     const environmentVariables: Record<string, string> = {
+      ...sdlGameControllerConfig,
       SDL_ENABLE_SCREEN_KEYBOARD: "0",
     };
 

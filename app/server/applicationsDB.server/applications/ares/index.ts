@@ -7,6 +7,7 @@ import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { getMouse } from "./mouseConfig.js";
+import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const applicationId: ApplicationId = "ares";
 const bundledPath = isWindows()
@@ -325,6 +326,7 @@ export const aresNeoGeoPocket: Application = {
 export const aresNeoGeoPocketColor: Application = {
   ...ares,
   fileExtensions: [".ngc", ".zip"],
+  defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   createOptionParams: (props) => [
     ...getSharedAresOptionParams(props),
     ...[

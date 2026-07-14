@@ -129,8 +129,15 @@ export const isPs4Controller = ({ type }: Sdl.Controller.Device) =>
 export const isGamecubeController = (controllerName: string) =>
   controllerName.toLowerCase().includes("gamecube");
 
-export const isSteamDeckController = ({ vendor, name }: Sdl.Joystick.Device) =>
-  vendor === steamDeck.vendor && !!name?.startsWith("Steam Deck");
+export const isSteamDeckController = ({
+  vendor,
+  product,
+  name,
+}: Sdl.Joystick.Device) =>
+  vendor === steamDeckJoystick.vendor &&
+  (product === steamDeckJoystick.product ||
+    product === steamDeckAlternativeJoystick.product ||
+    !!name?.startsWith("Steam Deck"));
 
 export const isN64Controller = ({
   guid,
@@ -266,6 +273,7 @@ export const getButtonIndex = (
   mappingObject[buttonId]
     ?.replace("b", "")
     .replace("a", "")
+    .replace("h", "")
     .replace("~", "")
     .replace("+", "")
     .replace("-", "");
@@ -345,9 +353,16 @@ export const steamDeckJoystick = {
   path: "/dev/input/event6",
   guid: "030079f6de280000ff11000001000000",
   vendor: 10462,
-  product: 4613, // 4607
+  product: 4613,
   version: 1,
   player: 0,
+} satisfies Sdl.Joystick.Device;
+
+export const steamDeckAlternativeJoystick = {
+  ...steamDeckJoystick,
+  name: "Microsoft X-Box 360 pad 0",
+  path: "/dev/input/event19",
+  product: 4607,
 } satisfies Sdl.Joystick.Device;
 
 /**
