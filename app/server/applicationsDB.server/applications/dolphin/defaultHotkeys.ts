@@ -3,9 +3,9 @@ import { normalizeNewLines } from "../../configFile.js";
 export const defaultHotkeys = normalizeNewLines(`[Hotkeys]
 Device = XInput2/0/Virtual core pointer
 General/Open = @(Ctrl+O)
-General/Toggle Pause = F2
+General/Toggle Pause = 
 General/Stop = Escape
-General/Toggle Fullscreen = F11
+General/Toggle Fullscreen = F2
 General/Take Screenshot = F9
 Emulation Speed/Disable Emulation Speed Limit = Tab
 Stepping/Step Into = @(Shift+F9)

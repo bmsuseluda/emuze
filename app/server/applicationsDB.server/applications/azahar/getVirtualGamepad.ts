@@ -11,25 +11,13 @@ import {
   getButtonIndex,
   isAnalog,
   isDpadHat,
-  isSteamDeckController,
 } from "../../../../types/gamepad.js";
 import { EmuzeController, getControllers } from "../../../gamepad.server.js";
 
 export const getGamepad = () => {
   const gamepads = getControllers();
 
-  if (gamepads.length === 1) {
-    return gamepads[0];
-  }
-
-  if (gamepads.length > 1) {
-    if (isSteamDeckController(gamepads[0].sdlJoystick)) {
-      return gamepads[1];
-    } else {
-      return gamepads[0];
-    }
-  }
-  return null;
+  return gamepads.at(0);
 };
 
 const azaharButtonIds = {

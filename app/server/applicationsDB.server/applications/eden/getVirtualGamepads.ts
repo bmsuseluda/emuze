@@ -12,7 +12,12 @@ import {
   isDpadHat,
   removeVendorFromGuid,
 } from "../../../../types/gamepad.js";
-import { EmuzeController, getControllers } from "../../../gamepad.server.js";
+import {
+  DetectSdlGuidIndex,
+  EmuzeController,
+  getControllers,
+  getSdlGuidIndex,
+} from "../../../gamepad.server.js";
 import { getKeyboardDebugMapping, keyboardConfig } from "./keyboardConfig.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 
@@ -81,26 +86,8 @@ const getGamepadButtonMappings = (
     ),
   );
 
-/**
- * check all devices until sdlIndex (current index) for GUID. count how much and return accordingly
- *
- * @returns number starts with 0
- */
-export const getSdlGuidIndex =
-  (devices: EmuzeController[]) => (guid: string, sdlIndex: number) => {
-    let nameCount = 0;
-    for (let index = 0; index < sdlIndex; index++) {
-      const device = devices[index];
-      if (removeVendorFromGuid(device.guid) === removeVendorFromGuid(guid)) {
-        nameCount++;
-      }
-    }
-
-    return nameCount;
-  };
-
 export const getVirtualGamepad =
-  (detectSdlGuidIndex: (guid: string, sdlIndex: number) => number) =>
+  (detectSdlGuidIndex: DetectSdlGuidIndex) =>
   (emuzeController: EmuzeController, sdlIndex: number): ParamToReplace[] => {
     log("debug", "gamepad", emuzeController);
 
@@ -130,7 +117,7 @@ const getVirtualGamepadReset = (gamepadIndex: number): ParamToReplace => ({
 
 export const getVirtualGamepads = () => {
   const gamepads = getControllers();
-  const detectSdlGuidIndex = getSdlGuidIndex(gamepads);
+  const detectSdlGuidIndex = getSdlGuidIndex(gamepads, removeVendorFromGuid);
 
   const virtualGamepads =
     gamepads.length > 0

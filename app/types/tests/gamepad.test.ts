@@ -8,6 +8,7 @@ import {
   getNameIndex,
   removeVendorFromGuid,
   sortSteamDeckLast,
+  steamDeckAlternativeJoystick,
   steamDeckJoystick,
 } from "../gamepad.js";
 
@@ -38,7 +39,41 @@ describe("sortGamepads", () => {
       steamDeckJoystick,
     ];
 
-    expect(gamepads.sort(sortSteamDeckLast)).toStrictEqual(sortedGamepads);
+    expect(sortSteamDeckLast(gamepads)).toStrictEqual(sortedGamepads);
+  });
+
+  it("should sort the steam deck alternative last", () => {
+    const gamepads: Sdl.Joystick.Device[] = [
+      steamDeckAlternativeJoystick,
+      gamepadPs4Joystick,
+      gamepadPs3Joystick,
+    ];
+
+    const sortedGamepads: Sdl.Joystick.Device[] = [
+      gamepadPs4Joystick,
+      gamepadPs3Joystick,
+      steamDeckAlternativeJoystick,
+    ];
+
+    expect(sortSteamDeckLast(gamepads)).toStrictEqual(sortedGamepads);
+  });
+
+  it("should sort the steam deck last if alternative is there as well", () => {
+    const gamepads: Sdl.Joystick.Device[] = [
+      steamDeckAlternativeJoystick,
+      steamDeckJoystick,
+      gamepadPs4Joystick,
+      gamepadPs3Joystick,
+    ];
+
+    const sortedGamepads: Sdl.Joystick.Device[] = [
+      steamDeckAlternativeJoystick,
+      gamepadPs4Joystick,
+      gamepadPs3Joystick,
+      steamDeckJoystick,
+    ];
+
+    expect(sortSteamDeckLast(gamepads)).toStrictEqual(sortedGamepads);
   });
 });
 

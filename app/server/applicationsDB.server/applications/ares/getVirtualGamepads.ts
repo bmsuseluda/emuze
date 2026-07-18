@@ -1,7 +1,12 @@
 import type { SdlButtonMapping } from "../../../../types/gamepad.js";
 import { isN64Controller, isPs3Controller } from "../../../../types/gamepad.js";
 import { log } from "../../../debug.server.js";
-import { EmuzeController, getControllers } from "../../../gamepad.server.js";
+import {
+  DetectSdlGuidIndex,
+  EmuzeController,
+  getControllers,
+  getSdlGuidIndex,
+} from "../../../gamepad.server.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { getKeyboard } from "./keyboardConfig.js";
 import { PhysicalGamepad } from "./PhysicalGamepad.js";
@@ -143,15 +148,28 @@ const getVirtualGamepadDpad = (
   }
 };
 
-export const createDeviceId = ({ guid }: EmuzeController) => {
-  return `${guid}/0`;
+const guidOverwrites: Record<string, string> = {
+  "03008fe54c050000c405000000006800": "05008fe54c050000c405000000006800",
+};
+
+export const createDeviceId = (
+  { guid }: EmuzeController,
+  guidIndex: number,
+) => {
+  const guidConverted = guidOverwrites[guid];
+  return `${guidConverted || guid}/${guidIndex}`;
 };
 
 export const getVirtualGamepad =
-  (systemId: SystemId, systemHasAnalogStick: boolean) =>
+  (
+    systemId: SystemId,
+    systemHasAnalogStick: boolean,
+    detectSdlGuidIndex: DetectSdlGuidIndex,
+  ) =>
   (controller: EmuzeController, index: number) => {
-    const { mappingObject } = controller;
-    const deviceId = createDeviceId(controller);
+    const { mappingObject, guid } = controller;
+    const guidIndex = detectSdlGuidIndex(guid, index);
+    const deviceId = createDeviceId(controller, guidIndex);
     const physicalGamepad = new PhysicalGamepad(deviceId, mappingObject);
 
     log("debug", "gamepad", { index, controller, deviceId });
@@ -280,10 +298,13 @@ export const getVirtualGamepads = (
   systemHasAnalogStick: boolean,
 ) => {
   const gamepads = getControllers();
+  const detectSdlGuidIndex = getSdlGuidIndex(gamepads);
 
   const virtualGamepads =
     gamepads.length > 0
-      ? gamepads.map(getVirtualGamepad(systemId, systemHasAnalogStick))
+      ? gamepads.map(
+          getVirtualGamepad(systemId, systemHasAnalogStick, detectSdlGuidIndex),
+        )
       : getKeyboard();
   log("debug", "gamepads", gamepads.length);
 

@@ -13,26 +13,12 @@ import { log } from "./debug.server.js";
 
 export const steamInputHandleFromHid = "Microsoft X-Box 360 pad";
 
-export const getSteamInputHandleIndex = (gamepad: Sdl.Controller.Device) => {
-  const gamepads = sdl.controller.devices;
-  let steamInputHandleIndex = 0;
-
-  for (const gamepadToCheck of gamepads) {
-    if (gamepadToCheck === gamepad) {
-      break;
-    }
-    if (isSteamHandle(gamepadToCheck)) {
-      steamInputHandleIndex += 1;
-    }
-  }
-
-  return steamInputHandleIndex;
-};
-
-// TODO: if no hid devices where found, will it be a steam input device?
-export const getDeviceNameFromHid = (controller: Sdl.Controller.Device) => {
+export const getDeviceNameFromHid = (
+  controller: Sdl.Controller.Device,
+  steamHandleIndex: number,
+) => {
   if (isSteamHandle(controller)) {
-    return `${steamInputHandleFromHid} ${getSteamInputHandleIndex(controller)}`;
+    return `${steamInputHandleFromHid} ${steamHandleIndex}`;
   }
 
   const { vendor, product } = controller;
@@ -70,6 +56,7 @@ export const steamHandleGUIDs = [
   "0300b836de280000ff11000001000000",
   "0300f837de280000ff11000001000000",
   "030039f7de280000ff11000001000000",
+  "03007835de280000ff11000001000000",
 ];
 
 const isNumber = (value?: number | null): value is number =>
@@ -134,6 +121,15 @@ export const createEmuzeController = ({
   }
 };
 
+const getSteamGUID = (hasSteamHandle: boolean, steamHandleIndex: number) => {
+  if (hasSteamHandle) {
+    const steamGUID = steamHandleGUIDs.at(steamHandleIndex) || null;
+    return steamGUID;
+  }
+
+  return null;
+};
+
 /**
  * Returns Array of EmuzeControllers.
  * - Iterate through SDL.controllers as a base
@@ -153,25 +149,16 @@ export const getControllers = () => {
   const emuzeControllers: EmuzeController[] = [];
 
   let steamHandleIndex = 0;
-  const getSteamGUID = (hasSteamHandle: boolean) => {
-    if (hasSteamHandle) {
-      const steamGUID = steamHandleGUIDs.at(steamHandleIndex) || null;
-      steamHandleIndex++;
-      return steamGUID;
-    }
 
-    return null;
-  };
-
-  const joystickSorted = sdl.joystick.devices.toSorted(sortSteamDeckLast);
+  const joystickSorted = sortSteamDeckLast(sdl.joystick.devices);
 
   let playerIndex = 0;
   joystickSorted.forEach((joystick) => {
     const controller = getControllerFromJoystick(joystick);
     if (controller) {
-      const hidName = getDeviceNameFromHid(controller);
       const hasSteamHandle = isSteamHandle(controller);
-      const steamGUID = getSteamGUID(hasSteamHandle);
+      const hidName = getDeviceNameFromHid(controller, steamHandleIndex);
+      const steamGUID = getSteamGUID(hasSteamHandle, steamHandleIndex);
       const serialNumber = sdl.controller.openDevice(controller).serialNumber;
 
       const emuzeController = createEmuzeController({
@@ -183,6 +170,10 @@ export const getControllers = () => {
         hidName,
         serialNumber,
       });
+
+      if (hasSteamHandle) {
+        steamHandleIndex++;
+      }
 
       if (emuzeController) {
         emuzeControllers.push(emuzeController);
@@ -267,6 +258,30 @@ export const getSdlNameIndex = (
 
   return nameCount;
 };
+
+export type DetectSdlGuidIndex = (guid: string, sdlIndex: number) => number;
+
+/**
+ * check all devices until sdlIndex (current index) for GUID. count how much and return accordingly
+ *
+ * @returns number starts with 0
+ */
+export const getSdlGuidIndex =
+  (
+    devices: EmuzeController[],
+    normalizeGuid: (guid: string) => string = (guid: string) => guid,
+  ): DetectSdlGuidIndex =>
+  (guid, sdlIndex) => {
+    let nameCount = 0;
+    for (let index = 0; index < sdlIndex; index++) {
+      const device = devices[index];
+      if (normalizeGuid(device.guid) === normalizeGuid(guid)) {
+        nameCount++;
+      }
+    }
+
+    return nameCount;
+  };
 
 export const isSteamHandle = (controller: Sdl.Controller.Device): boolean => {
   try {

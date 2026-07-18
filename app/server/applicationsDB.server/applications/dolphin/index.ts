@@ -69,9 +69,8 @@ export const replaceGamepadConfigFile = () => {
 
 export const replaceHotkeysSection: SectionReplacement = (sections) =>
   replaceSection(sections, "[Hotkeys]", [
-    { keyValue: "General/Toggle Pause = F2", disableParamWithSameValue: true },
     {
-      keyValue: "General/Toggle Fullscreen = F11",
+      keyValue: "General/Toggle Fullscreen = F2",
       disableParamWithSameValue: true,
     },
     {
