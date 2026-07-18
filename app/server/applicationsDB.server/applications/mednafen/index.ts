@@ -6,10 +6,11 @@ import { getVirtualGamepadsPcEngine } from "./VirtualGamepadPcEngine.js";
 import { getKeyboardKey } from "./keyboardConfig.js";
 import { applicationId, bundledPath } from "./definitions.js";
 import { log } from "../../../debug.server.js";
-import { getGamepads } from "./initGamepadIDs.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { homedir } from "node:os";
 import { normalizeString } from "../../../igdb.server.js";
+import { getMappedGamepads } from "./initGamepadIDs.js";
+import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const getSharedMednafenOptionParams: OptionParamFunction = ({
   settings: {
@@ -65,6 +66,7 @@ export const mednafen: Application = {
   },
   defineEnvironmentVariables: () => {
     const environmentVariables: Record<string, string> = {
+      ...sdlGameControllerConfig,
       SDL_ENABLE_SCREEN_KEYBOARD: "0",
     };
 
@@ -106,8 +108,8 @@ const saturnBiosTypes = {
 export const mednafenSaturn: Application = {
   ...mednafen,
   createOptionParams: (props) => {
-    const gamepads = getGamepads();
-    const virtualGamepadsSaturn = getVirtualGamepadsSaturn(gamepads);
+    const mappedGamepads = getMappedGamepads();
+    const virtualGamepadsSaturn = getVirtualGamepadsSaturn(mappedGamepads);
     log("debug", "createOptionParams", virtualGamepadsSaturn);
     return [
       ...["-force_module", "ss"],
@@ -145,8 +147,8 @@ export const mednafenSaturn: Application = {
 export const mednafenPcEngineCD: Application = {
   ...mednafen,
   createOptionParams: (props) => {
-    const gamepads = getGamepads();
-    const virtualGamepadsPcEngine = getVirtualGamepadsPcEngine(gamepads);
+    const mappedGamepads = getMappedGamepads();
+    const virtualGamepadsPcEngine = getVirtualGamepadsPcEngine(mappedGamepads);
     log("debug", "createOptionParams", virtualGamepadsPcEngine);
     return [
       ...["-force_module", "pce"],

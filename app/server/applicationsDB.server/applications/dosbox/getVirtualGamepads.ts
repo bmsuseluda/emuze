@@ -1,20 +1,15 @@
-import type { Sdl } from "@kmamal/sdl";
 import { log } from "../../../debug.server.js";
-import sdl from "@kmamal/sdl";
 import type {
   SdlButtonId,
   SdlButtonMapping,
 } from "../../../../types/gamepad.js";
 import {
-  createSdlMappingObject,
   getAxis,
   getButtonIndex,
   isAnalog,
   isDpadHat,
-  isSteamDeckController,
-  sortSteamDeckLast,
 } from "../../../../types/gamepad.js";
-import { getControllerFromJoystick } from "../../../gamepad.server.js";
+import { EmuzeController, getControllers } from "../../../gamepad.server.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { DosboxButtonId, DosboxButtonIdWithPort } from "./types.js";
 import {
@@ -24,24 +19,6 @@ import {
   HatType,
   HatValue,
 } from "./config.js";
-import { getDeviceNameFromHid } from "../../../getDeviceNameFromHid.js";
-
-export const getGamepad = () => {
-  const gamepads = sdl.joystick.devices;
-
-  if (gamepads.length === 1) {
-    return gamepads[0];
-  }
-
-  if (gamepads.length > 1) {
-    if (isSteamDeckController(gamepads[0])) {
-      return gamepads[1];
-    } else {
-      return gamepads[0];
-    }
-  }
-  return null;
-};
 
 const dosboxButtonIds = {
   up: "dpup",
@@ -175,15 +152,14 @@ const prepareAnalogValue =
   };
 
 export const getVirtualGamepad = (
-  sdlDevice: Sdl.Joystick.Device,
+  emuzeController: EmuzeController,
   sdlIndex: number,
 ): ControllerSetting => {
-  log("debug", "gamepad", { sdlDevice });
+  log("debug", "gamepad", emuzeController);
 
-  const controller = getControllerFromJoystick(sdlDevice)!;
-  const mappingObject = createSdlMappingObject(controller.mapping!);
+  const { mappingObject, hidName, joystickName } = emuzeController;
   const portId = sdlIndex + 1;
-  const deviceName = getDeviceNameFromHid(sdlDevice)!;
+  const deviceName = hidName || joystickName;
   const getAnalogValue = prepareAnalogValue(mappingObject, deviceName);
   const getButtonIdString = prepareButtonIdString(portId);
 
@@ -224,9 +200,7 @@ const getVirtualGamepadReset = (gamepadIndex: number): ControllerSetting => {
 };
 
 export const getVirtualGamepads = (): ControllerSetting => {
-  const gamepads = sdl.joystick.devices
-    .filter(({ type }) => type)
-    .toSorted(sortSteamDeckLast);
+  const gamepads = getControllers();
 
   const virtualGamepads =
     gamepads.length > 0

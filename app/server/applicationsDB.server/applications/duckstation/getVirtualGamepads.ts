@@ -1,15 +1,12 @@
 import { EOL } from "node:os";
-import {
-  getPlayerIndexArray,
-  isLightgunConnected,
-} from "../../../../types/gamepad.js";
+import { isLightgunConnected } from "../../../../types/gamepad.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { keyboardConfig } from "./keyboardConfig.js";
-import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
 import { log } from "../../../debug.server.js";
 import type { DuckStationButtonId } from "./types.js";
 import { normalizeString } from "../../../igdb.server.js";
+import { EmuzeController, getControllers } from "../../../gamepad.server.js";
 
 const buttonMapping = {
   Up: "DPadUp",
@@ -39,24 +36,25 @@ const buttonMapping = {
   Analog: "Guide",
 } satisfies Record<DuckStationButtonId, string>;
 
-export const getVirtualGamepad =
-  (playerIndexArray: number[]) =>
-  (sdlDevice: Sdl.Joystick.Device, sdlIndex: number) => {
-    log("debug", "gamepad", { sdlIndex, sdlDevice });
+export const getVirtualGamepad = (
+  emuzeController: EmuzeController,
+  sdlIndex: number,
+) => {
+  log("debug", "gamepad", { sdlIndex, emuzeController });
 
-    return [
-      `[Pad${playerIndexArray[sdlIndex] + 1}]`,
-      `Type = AnalogController`,
-      ...Object.entries(buttonMapping).map(
-        ([key, value]) => `${key} = SDL-${sdlDevice.player}/${value}`,
-      ),
-      `SmallMotor = SDL-${sdlIndex}/SmallMotor`,
-      `LargeMotor = SDL-${sdlIndex}/LargeMotor`,
-      "",
-      "",
-      "",
-    ].join(EOL);
-  };
+  return [
+    `[Pad${sdlIndex + 1}]`,
+    `Type = AnalogController`,
+    ...Object.entries(buttonMapping).map(
+      ([key, value]) => `${key} = SDL-${emuzeController.player}/${value}`,
+    ),
+    `SmallMotor = SDL-${sdlIndex}/SmallMotor`,
+    `LargeMotor = SDL-${sdlIndex}/LargeMotor`,
+    "",
+    "",
+    "",
+  ].join(EOL);
+};
 
 const gameSpecificXscaleValues: Record<string, string> = {
   [normalizeString("Time Crisis")]: "0.94",
@@ -87,15 +85,14 @@ export const getLightgun = (gameName: string, playerIndex: number) => [
 ];
 
 const getVirtualGamepadConfig = (gameName: string): string[] => {
-  const gamepads = sdl.joystick.devices;
+  const gamepads = getControllers();
 
   if (gamepads.length > 0) {
-    if (isLightgunConnected(gamepads)) {
+    if (isLightgunConnected(sdl.joystick.devices)) {
       return [...getLightgun(gameName, 0)];
     }
 
-    const playerIndexArray = getPlayerIndexArray(gamepads);
-    return gamepads.map(getVirtualGamepad(playerIndexArray));
+    return gamepads.map(getVirtualGamepad);
   }
 
   return [keyboardConfig];

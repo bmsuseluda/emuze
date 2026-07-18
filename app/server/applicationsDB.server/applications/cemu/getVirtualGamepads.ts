@@ -1,5 +1,3 @@
-import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
 import { keyboardConfig } from "./keyboardConfig.js";
 import { XMLParser } from "fast-xml-parser";
 import XMLBuilder from "fast-xml-builder";
@@ -8,15 +6,12 @@ import {
   defaultGamepadConfig,
   defaultProControllerConfig,
 } from "./defaultGamepadConfig.js";
-import {
-  getNameIndex,
-  getPlayerIndexArray,
-} from "../../../../types/gamepad.js";
-import { getJoystickFromController } from "../../../gamepad.server.js";
+import { getNameIndex } from "../../../../types/gamepad.js";
+import { EmuzeController, getControllers } from "../../../gamepad.server.js";
 
 const getVirtualGamepad =
-  (playerIndexArray: number[], devices: Sdl.Controller.Device[]) =>
-  (controller: Sdl.Controller.Device, index: number): VirtualGamepadFile => {
+  (devices: EmuzeController[]) =>
+  (controller: EmuzeController, index: number): string => {
     const parser = new XMLParser({
       ignoreAttributes: false,
       parseTagValue: false,
@@ -24,8 +19,7 @@ const getVirtualGamepad =
     const defaultControllerConfig = parser.parse(
       index === 0 ? defaultGamepadConfig : defaultProControllerConfig,
     );
-    const { guid } = getJoystickFromController(controller)!;
-    const { name } = controller;
+    const { name, guid } = controller;
 
     const controllerConfig: ControllerConfigFile = {
       ...defaultControllerConfig,
@@ -41,25 +35,17 @@ const getVirtualGamepad =
 
     const builder = new XMLBuilder({ ignoreAttributes: false, format: true });
     const content: string = builder.build(controllerConfig);
-    return { content, playerIndex: playerIndexArray[index] };
+    return content;
   };
 
-interface VirtualGamepadFile {
-  content: string;
-  playerIndex: number;
-}
-
-export const getVirtualGamepads = (): VirtualGamepadFile[] => {
-  const gamepads = sdl.controller.devices;
-  const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
+export const getVirtualGamepads = (): string[] => {
+  const gamepads = getControllers();
 
   if (gamepads.length > 0) {
-    const mappings = gamepads.map(
-      getVirtualGamepad(playerIndexArray, gamepads),
-    );
+    const mappings = gamepads.map(getVirtualGamepad(gamepads));
 
     return mappings;
   }
 
-  return [{ content: keyboardConfig, playerIndex: 0 }];
+  return [keyboardConfig];
 };

@@ -129,8 +129,51 @@ export const isPs4Controller = ({ type }: Sdl.Controller.Device) =>
 export const isGamecubeController = (controllerName: string) =>
   controllerName.toLowerCase().includes("gamecube");
 
-export const isSteamDeckController = ({ vendor, name }: Sdl.Joystick.Device) =>
-  vendor === steamDeck.vendor && !!name?.startsWith("Steam Deck");
+export const isSteamDeckController = ({
+  vendor,
+  product,
+  name,
+}: Sdl.Joystick.Device) =>
+  vendor === steamDeckJoystick.vendor &&
+  (product === steamDeckJoystick.product || !!name?.startsWith("Steam Deck"));
+
+export const isSteamDeckControllerAlternative = ({
+  vendor,
+  product,
+  name,
+}: Sdl.Joystick.Device) =>
+  vendor === steamDeckJoystick.vendor &&
+  (product === steamDeckAlternativeJoystick.product ||
+    !!name?.startsWith("Steam Deck"));
+
+const findIndex = <T extends unknown>(
+  array: T[],
+  predicate: (value: T, index: number, obj: T[]) => unknown,
+): number | null => {
+  const result = array.findIndex(predicate);
+  if (result >= 0) {
+    return result;
+  }
+
+  return null;
+};
+
+export const sortSteamDeckLast = (joysticks: Sdl.Joystick.Device[]) => {
+  const steamDeckIndex =
+    findIndex(joysticks, isSteamDeckController) ||
+    findIndex(joysticks, isSteamDeckControllerAlternative);
+
+  if (steamDeckIndex !== null) {
+    const steamDeckController = joysticks[steamDeckIndex];
+    return [
+      ...joysticks.slice(0, steamDeckIndex),
+      ...joysticks.slice(steamDeckIndex + 1),
+      steamDeckController,
+    ];
+  }
+
+  return joysticks;
+};
 
 export const isN64Controller = ({
   guid,
@@ -266,6 +309,7 @@ export const getButtonIndex = (
   mappingObject[buttonId]
     ?.replace("b", "")
     .replace("a", "")
+    .replace("h", "")
     .replace("~", "")
     .replace("+", "")
     .replace("-", "");
@@ -303,38 +347,6 @@ export const isDpadHat = (
   sdlButtonId: SdlButtonId,
 ) => mappingObject[sdlButtonId]?.includes("h");
 
-export const getPlayerIndexArray = (gamepads: Sdl.Joystick.Device[]) => {
-  const playerIndexArray: number[] = [];
-
-  const gamepadsSorted = gamepads
-    .toSorted(sortGamecubeLast)
-    .toSorted(sortSteamDeckLast);
-
-  gamepads.forEach((gamepad) => {
-    playerIndexArray.push(
-      gamepadsSorted.findIndex((gamepadSorted) => gamepad === gamepadSorted),
-    );
-  });
-
-  return playerIndexArray;
-};
-
-export const getPlayerIdArray = (gamepads: Sdl.Joystick.Device[]) => {
-  const playerIdArray: number[] = [];
-
-  const gamepadsSorted = gamepads
-    .toSorted(sortGamecubeLast)
-    .toSorted(sortSteamDeckLast);
-
-  gamepads.forEach((gamepad) => {
-    playerIdArray.push(
-      gamepadsSorted.find((gamepadSorted) => gamepad === gamepadSorted)!.id,
-    );
-  });
-
-  return playerIdArray;
-};
-
 /**
  *
  * @param sdlMapping "030000004c050000c405000000010000,PS4 Controller,platform:Windows,a:b1,b:b2,back:b8,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b12,leftshoulder:b4,leftstick:b10,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b11,righttrigger:a4,rightx:a2,righty:a5,start:b9,x:b0,y:b3,"
@@ -349,6 +361,26 @@ export const createSdlMappingObject = (sdlMapping: string): SdlButtonMapping =>
       }
       return accumulator;
     }, {});
+
+export const eightBitDoPro2DinputJoystick = {
+  id: 6,
+  name: "8BitDo Pro 2",
+  path: "/dev/input/event22",
+  type: "gamecontroller",
+  guid: "0300f837de280000ff11000001000000",
+  vendor: 11720,
+  product: 24582,
+  version: 1,
+  player: 2,
+} satisfies Sdl.Joystick.Device;
+
+export const eightBitDoPro2Dinput = {
+  ...eightBitDoPro2DinputJoystick,
+  name: "Steam Virtual Gamepad",
+  type: null,
+  mapping:
+    "0300f837de280000ff11000001000000,Steam Virtual Gamepad,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b8,leftshoulder:b4,leftstick:b9,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
+} satisfies Sdl.Controller.Device;
 
 export const eightBitDoPro2Joystick = {
   id: 2,
@@ -377,13 +409,21 @@ export const steamDeckJoystick = {
   path: "/dev/input/event6",
   guid: "030079f6de280000ff11000001000000",
   vendor: 10462,
-  product: 4613, // 4607
+  product: 4613,
   version: 1,
   player: 0,
 } satisfies Sdl.Joystick.Device;
 
-// 030079f6de280000ff11000001000000: first
-// 0300b836de280000ff11000001000000: second
+/**
+ * In some szenarios the Steam Deck Controller will be mapped this way.
+ * In some szenarios another Steam Input Gamepad will be mapped this way besides the usual Steam Deck Controller mapping.
+ */
+export const steamDeckAlternativeJoystick = {
+  ...steamDeckJoystick,
+  name: "Microsoft X-Box 360 pad 0",
+  path: "/dev/input/event19",
+  product: 4607,
+} satisfies Sdl.Joystick.Device;
 
 /**
  * This is the SDL definition of the internal gamepad of the Steam Deck
@@ -396,18 +436,24 @@ export const steamDeck = {
     "030079f6de280000ff11000001000000,Steam Virtual Gamepad,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b8,leftshoulder:b4,leftstick:b9,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
 } satisfies Sdl.Controller.Device;
 
-export const steamController = {
-  id: 0,
-  name: "Steam Virtual Gamepad",
-  path: "/dev/input/event27",
-  type: null,
-  guid: "030079f6de280000ff11000001000000",
+export const steamControllerJoystick = {
+  id: 2,
+  name: "#SettingsController_SteamController",
+  path: "/dev/input/event29",
+  type: "gamecontroller",
+  guid: "0300f837de280000ff11000001000000",
   vendor: 10462,
   product: 4866,
   version: 1,
-  player: 0,
+  player: 2,
+} satisfies Sdl.Joystick.Device;
+
+export const steamController = {
+  ...steamControllerJoystick,
+  type: null,
+  name: "Steam Virtual Gamepad",
   mapping:
-    "030079f6de280000ff11000001000000,Steam Virtual Gamepad,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b8,leftshoulder:b4,leftstick:b9,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
+    "0300f837de280000ff11000001000000,Steam Virtual Gamepad,a:b0,b:b1,back:b6,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,guide:b8,leftshoulder:b4,leftstick:b9,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
 } satisfies Sdl.Controller.Device;
 
 export const gamepadN64 = {
@@ -492,6 +538,26 @@ export const nsoNes = {
     "0500a7a57e0500000720000001800000,NSO NES Controller,a:b0,b:b1,back:b4,start:b5,leftshoulder:b2,rightshoulder:b3,dpup:h0.1,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,platform:Linux,",
 } satisfies Sdl.Controller.Device;
 
+export const xbox360Joystick = {
+  id: 4,
+  name: "Xbox 360 Wireless Controller",
+  path: "/dev/input/event256",
+  type: "gamecontroller",
+  guid: "0300a81c5e040000a102000000010000",
+  vendor: 1118,
+  product: 673,
+  version: 256,
+  player: 4,
+} satisfies Sdl.Joystick.Device;
+
+export const xbox360 = {
+  ...xbox360Joystick,
+  name: "Xbox 360 Controller",
+  type: "xbox360",
+  mapping:
+    "0300a81c5e040000a102000000010000,Xbox 360 Controller,a:b0,b:b1,back:b6,dpdown:b14,dpleft:b11,dpright:b12,dpup:b13,guide:b8,leftshoulder:b4,leftstick:b9,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
+} satisfies Sdl.Controller.Device;
+
 export const retroShooterReaper = {
   id: 0,
   name: "3AGAME 3A-3H Retro Shooter 1",
@@ -513,42 +579,6 @@ export const isLightgunConnected = (joysticks: Sdl.Joystick.Device[]) =>
         name?.toLowerCase().includes(lightgunName.toLowerCase()),
       ),
   );
-
-export const isController = (
-  device: Sdl.Joystick.Device | Sdl.Controller.Device,
-): device is Sdl.Controller.Device => "mapping" in device;
-
-export const sortLast = <T>(
-  a: T,
-  b: T,
-  shouldBeLast: (element: T) => boolean,
-) => {
-  const aShouldBeLast = shouldBeLast(a);
-  const bShouldBeLast = shouldBeLast(b);
-  if (aShouldBeLast === bShouldBeLast) {
-    return 0;
-  }
-  if (!aShouldBeLast && bShouldBeLast) {
-    return -1;
-  }
-  return 1;
-};
-
-/**
- * If one of the gamepads is the Steam Deck, it should be positioned last.
- */
-export const sortSteamDeckLast = (
-  a: Sdl.Joystick.Device,
-  b: Sdl.Joystick.Device,
-) => sortLast(a, b, isSteamDeckController);
-
-/**
- * If one of the gamepads is a GameCube Controller, it should be positioned last.
- */
-export const sortGamecubeLast = (
-  a: Sdl.Joystick.Device,
-  b: Sdl.Joystick.Device,
-) => sortLast(a.name!, b.name!, isGamecubeController);
 
 export const removeVendorFromGuid = (guid: string): string =>
   guid.substring(0, 4) + "0000" + guid.substring(8);

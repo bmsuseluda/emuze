@@ -15,7 +15,7 @@ import {
 } from "../../configFile.js";
 import { defaultSettings } from "./defaultSettings.js";
 import { replaceKeyboardConfig } from "./keyboardConfig.js";
-import { getPlayerId, getVirtualGamepad } from "./getVirtualGamepad.js";
+import { getVirtualGamepad } from "./getVirtualGamepad.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
@@ -48,9 +48,8 @@ const replaceJoystickConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Instance0.Joystick]", [...getVirtualGamepad()]);
 
 const replaceInstanceConfig: SectionReplacement = (sections) => {
-  const playerId = getPlayerId();
   return replaceSection(sections, "[Instance0]", [
-    { keyValue: `JoystickID = ${playerId}` },
+    { keyValue: `JoystickID = 0` },
   ]);
 };
 

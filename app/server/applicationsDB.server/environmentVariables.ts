@@ -1,5 +1,35 @@
 import { gamecontrollerdbPath } from "../bundledEmulatorsPath.server.js";
 
+export const sdlJoystickEnvironmentVariables = {
+  SDL_HIDAPI_UDEV: "1",
+  /** sdl2 */
+  SDL_HIDAPI_JOYSTICK_DISABLE_UDEV: "1",
+  SDL_HIDAPI_LIBUSB: "0",
+  /** sdl2 */
+  SDL_HIDAPI_DISABLE_LIBUSB: "0",
+  SDL_JOYSTICK_HIDAPI: "1",
+  SDL_JOYSTICK_HIDAPI_PS3: "1",
+  SDL_JOYSTICK_HIDAPI_PS4: "1",
+  SDL_JOYSTICK_HIDAPI_PS5: "1",
+  SDL_JOYSTICK_HIDAPI_STEAM: "1",
+  SDL_JOYSTICK_HIDAPI_STEAMDECK: "1",
+  SDL_JOYSTICK_HIDAPI_XBOX: "1",
+  SDL_JOYSTICK_HIDAPI_XBOX_360: "1",
+  SDL_JOYSTICK_HIDAPI_XBOX_360_WIRELESS: "1",
+  SDL_JOYSTICK_HIDAPI_XBOX_ONE: "1",
+  SDL_JOYSTICK_LINUX_CLASSIC: "0",
+  /** sdl2 */
+  SDL_LINUX_JOYSTICK_CLASSIC: "0",
+  SDL_JOYSTICK_RAWINPUT: "0",
+  SDL_JOYSTICK_DIRECTINPUT: "1",
+  /** sdl2 */
+  SDL_DIRECTINPUT_ENABLED: "1",
+  SDL_JOYSTICK_LINUX_DIGITAL_HATS: "0",
+  /** sdl2 */
+  SDL_LINUX_JOYSTICK_DIGITAL_HATS: "0",
+};
+
 export const sdlGameControllerConfig = {
   SDL_GAMECONTROLLERCONFIG_FILE: gamecontrollerdbPath,
+  ...sdlJoystickEnvironmentVariables,
 };

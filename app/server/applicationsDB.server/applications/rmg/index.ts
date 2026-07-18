@@ -81,6 +81,18 @@ export const replaceRomBrowserConfig =
       },
     ]);
 
+const replaceInputConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[Rosalie's Mupen GUI - Input Plugin]", [
+    /**
+     * 0 = automatic
+     * 1 = joystick
+     * 2 = gamepad (controller)
+     */
+    {
+      keyValue: `ControllerMode = 1`,
+    },
+  ]);
+
 export const replaceGamepadConfig = (): SectionReplacement => {
   const virtualGamepads = getVirtualGamepads();
 
@@ -101,6 +113,7 @@ export const replaceConfigSections = (n64RomsPath: string) => {
   const fileContentNew = chainSectionReplacements(
     sections,
     replaceMainConfig,
+    replaceInputConfig,
     replaceGamepadConfig(),
     replaceKeyBindingsConfig,
     replaceRomBrowserConfig(n64RomsPath),

@@ -1,41 +1,25 @@
-import type { Sdl } from "@kmamal/sdl";
 import { log } from "../../../debug.server.js";
 import { getSetting } from "./getSettings.js";
 import type { ParamToReplace } from "../../configFile.js";
 import type { EdenButtonId } from "./types.js";
-import sdl from "@kmamal/sdl";
 import type {
   SdlButtonId,
   SdlButtonMapping,
 } from "../../../../types/gamepad.js";
 import {
-  createSdlMappingObject,
   getButtonIndex,
   isAnalog,
   isDpadHat,
-  isSteamDeckController,
-  sortSteamDeckLast,
+  removeVendorFromGuid,
 } from "../../../../types/gamepad.js";
-import { getControllerFromJoystick } from "../../../gamepad.server.js";
+import {
+  DetectSdlGuidIndex,
+  EmuzeController,
+  getControllers,
+  getSdlGuidIndex,
+} from "../../../gamepad.server.js";
 import { getKeyboardDebugMapping, keyboardConfig } from "./keyboardConfig.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
-
-export const getGamepad = () => {
-  const gamepads = sdl.joystick.devices;
-
-  if (gamepads.length === 1) {
-    return gamepads[0];
-  }
-
-  if (gamepads.length > 1) {
-    if (isSteamDeckController(gamepads[0])) {
-      return gamepads[1];
-    } else {
-      return gamepads[0];
-    }
-  }
-  return null;
-};
 
 const edenButtonIds = {
   button_dup: "dpup",
@@ -102,36 +86,13 @@ const getGamepadButtonMappings = (
     ),
   );
 
-const normalizeGuid = (guid: string) =>
-  [guid.slice(0, 4), guid.slice(8)].join("0000");
-
-/**
- * check all devices until sdlIndex (current index) for GUID. count how much and return accordingly
- *
- * @returns number starts with 0
- */
-export const getSdlGuidIndex =
-  (devices: (Sdl.Joystick.Device | Sdl.Controller.Device)[]) =>
-  (guid: string, sdlIndex: number) => {
-    let nameCount = 0;
-    for (let index = 0; index < sdlIndex; index++) {
-      const device = devices[index];
-      if (normalizeGuid(device.guid!) === normalizeGuid(guid)) {
-        nameCount++;
-      }
-    }
-
-    return nameCount;
-  };
-
 export const getVirtualGamepad =
-  (detectSdlGuidIndex: (guid: string, sdlIndex: number) => number) =>
-  (sdlDevice: Sdl.Joystick.Device, sdlIndex: number): ParamToReplace[] => {
-    log("debug", "gamepad", { sdlDevice });
+  (detectSdlGuidIndex: DetectSdlGuidIndex) =>
+  (emuzeController: EmuzeController, sdlIndex: number): ParamToReplace[] => {
+    log("debug", "gamepad", emuzeController);
 
-    const guid = normalizeGuid(sdlDevice.guid!);
-    const controller = getControllerFromJoystick(sdlDevice)!;
-    const mappingObject = createSdlMappingObject(controller.mapping!);
+    const guid = removeVendorFromGuid(emuzeController.guid);
+    const { mappingObject } = emuzeController;
     const playerIndex = sdlIndex;
     const guidIndex = detectSdlGuidIndex(guid, sdlIndex);
 
@@ -155,10 +116,8 @@ const getVirtualGamepadReset = (gamepadIndex: number): ParamToReplace => ({
 });
 
 export const getVirtualGamepads = () => {
-  const gamepads = sdl.joystick.devices
-    .filter(({ type }) => type)
-    .toSorted(sortSteamDeckLast);
-  const detectSdlGuidIndex = getSdlGuidIndex(gamepads);
+  const gamepads = getControllers();
+  const detectSdlGuidIndex = getSdlGuidIndex(gamepads, removeVendorFromGuid);
 
   const virtualGamepads =
     gamepads.length > 0

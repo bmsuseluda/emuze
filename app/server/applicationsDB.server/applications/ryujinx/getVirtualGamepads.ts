@@ -1,14 +1,12 @@
-import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
 import {
   getNameIndex,
-  getPlayerIndexArray,
   isGamecubeController,
 } from "../../../../types/gamepad.js";
 import { log } from "../../../debug.server.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import type { InputConfig } from "./config.js";
 import { defaultInputConfig } from "./config.js";
+import { EmuzeController, getControllers } from "../../../gamepad.server.js";
 
 const splitStringByIndices = (str: string, indices: number[]): string[] => {
   const result: string[] = [];
@@ -73,30 +71,30 @@ const createDeviceSpecificInputConfig = (controllerName: string) => {
 };
 
 const getVirtualGamepad =
-  (controllerIds: { name: string }[], playerIndexArray: number[]) =>
-  (controller: Sdl.Joystick.Device, index: number): InputConfig => {
+  (controllerIds: { name: string }[]) =>
+  (controller: EmuzeController, index: number): InputConfig => {
     log("debug", "gamepad", {
       index,
       controller,
     });
 
-    const gamepadId = createControllerId(controllerIds, controller.guid!);
+    const gamepadId = createControllerId(controllerIds, controller.guid);
 
     return {
-      ...createDeviceSpecificInputConfig(controller.name!),
+      ...createDeviceSpecificInputConfig(controller.name),
       id: gamepadId,
       controller_type: createControllerType(),
-      player_index: `Player${playerIndexArray[index] + 1}`,
+      player_index: `Player${index + 1}`,
     };
   };
 
 export const getVirtualGamepads = () => {
   const controllerIds: { name: string }[] = [];
-  const gamepads = sdl.joystick.devices;
-  const playerIndexArray = getPlayerIndexArray(gamepads);
+  const gamepads = getControllers();
+
   const virtualGamepads =
     gamepads.length > 0
-      ? gamepads.map(getVirtualGamepad(controllerIds, playerIndexArray))
+      ? gamepads.map(getVirtualGamepad(controllerIds))
       : [keyboardConfig];
 
   return virtualGamepads;

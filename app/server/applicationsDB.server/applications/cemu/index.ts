@@ -64,13 +64,13 @@ const replaceDefaultConfigFile = (wiiuRomsPath: string) => {
 };
 
 const replaceControllerConfigFile = () => {
-  const fileContents = getVirtualGamepads();
+  const virtualGamepads = getVirtualGamepads();
 
-  fileContents.forEach(({ content, playerIndex }) => {
-    writeConfig(getControllerConfigFilePath(playerIndex), content);
+  virtualGamepads.forEach((virtualGamepad, index) => {
+    writeConfig(getControllerConfigFilePath(index), virtualGamepad);
   });
 
-  resetUnusedVirtualGamepads(8, fileContents.length, (gamepadIndex) => {
+  resetUnusedVirtualGamepads(8, virtualGamepads.length, (gamepadIndex) => {
     removeFile(getControllerConfigFilePath(gamepadIndex));
   });
 };

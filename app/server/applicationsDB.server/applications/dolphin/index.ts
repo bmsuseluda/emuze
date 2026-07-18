@@ -1,5 +1,5 @@
 import type { Application } from "../../types.js";
-import type { SectionReplacement } from "../../configFile.js";
+import type { ParamToReplace, SectionReplacement } from "../../configFile.js";
 import {
   chainSectionReplacements,
   replaceSection,
@@ -10,7 +10,6 @@ import { EOL } from "node:os";
 import fs from "node:fs";
 import { log } from "../../../debug.server.js";
 import nodepath from "node:path";
-import sdl from "@kmamal/sdl";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { defaultHotkeys } from "./defaultHotkeys.js";
 import type { ApplicationId } from "../../applicationId.js";
@@ -18,6 +17,8 @@ import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { isWindows } from "../../../operationsystem.server.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
+import { getControllers } from "../../../gamepad.server.js";
+import { defaultDolphinSettings } from "./defaultDolphinSettings.js";
 
 const applicationId: ApplicationId = "dolphin";
 const bundledPath = isWindows()
@@ -25,6 +26,11 @@ const bundledPath = isWindows()
   : nodepath.join(applicationId, `${applicationId}.AppImage`);
 
 const configFolderPath = nodepath.join(emulatorsConfigDirectory, applicationId);
+const dolphinConfigFileName = nodepath.join(
+  configFolderPath,
+  "Config",
+  "Dolphin.ini",
+);
 const gamepadConfigFileName = nodepath.join(
   configFolderPath,
   "Config",
@@ -63,9 +69,8 @@ export const replaceGamepadConfigFile = () => {
 
 export const replaceHotkeysSection: SectionReplacement = (sections) =>
   replaceSection(sections, "[Hotkeys]", [
-    { keyValue: "General/Toggle Pause = F2", disableParamWithSameValue: true },
     {
-      keyValue: "General/Toggle Fullscreen = F11",
+      keyValue: "General/Toggle Fullscreen = F2",
       disableParamWithSameValue: true,
     },
     {
@@ -85,27 +90,33 @@ export const replaceHotkeysFile = () =>
     replaceHotkeysSection,
   );
 
-const setDeviceToStandardController = (index: number): string[] => [
-  "--config",
-  `Dolphin.SIDevice${index}=6`,
-];
+const setDeviceToStandardController = (index: number): ParamToReplace => ({
+  keyValue: `SIDevice${index} = 6`,
+});
 
-export const getSiDeviceConfigs = (): string[] => {
-  const gamepads = sdl.joystick.devices;
+export const replaceDolphinCoreSection: SectionReplacement = (sections) => {
+  const gamepads = getControllers();
   const virtualGamepads = gamepads.length > 0 ? gamepads : ["keyboard"];
-  const siDevices = [
-    ...virtualGamepads.flatMap((_, index) =>
-      setDeviceToStandardController(index),
-    ),
+  const siDevices: ParamToReplace[] = [
+    ...virtualGamepads.map((_, index) => setDeviceToStandardController(index)),
     ...resetUnusedVirtualGamepads(
       4,
       virtualGamepads.length,
-      (index: number): string[] => ["--config", `Dolphin.SIDevice${index}=0`],
-    ).flat(),
+      (index: number): ParamToReplace => ({
+        keyValue: `SIDevice${index} = 0`,
+      }),
+    ),
   ];
 
-  return siDevices;
+  return replaceSection(sections, "[Core]", siDevices);
 };
+
+export const replaceDolphinFile = () =>
+  replaceConfigSections(
+    dolphinConfigFileName,
+    defaultDolphinSettings,
+    replaceDolphinCoreSection,
+  );
 
 // TODO: extract to configFile.ts
 export const replaceConfigSections = (
@@ -136,6 +147,7 @@ export const dolphin: Application = {
       general: { categoriesPath },
     },
   }) => {
+    replaceDolphinFile();
     replaceGamepadConfigFile();
     replaceHotkeysFile();
 
@@ -147,7 +159,6 @@ export const dolphin: Application = {
       ...["--config", `Dolphin.General.ISOPath0=${categoriesPath}`],
       ...["--config", "Dolphin.General.ISOPaths=1"],
       ...["--config", "Dolphin.General.RecursiveISOPaths=True"],
-      ...getSiDeviceConfigs(),
     ];
 
     log("debug", "optionParams", optionParams);

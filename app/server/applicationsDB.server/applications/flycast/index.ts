@@ -13,12 +13,12 @@ import {
   writeConfig,
 } from "../../configFile.js";
 import { EOL } from "node:os";
-import { getPlayerIndexArray } from "../../../../types/gamepad.js";
 import { isWindows } from "../../../operationsystem.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { getKeyboardButtonMappings } from "./keyboardConfig.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
+import { getControllers } from "../../../gamepad.server.js";
 
 const applicationId: ApplicationId = "flycast";
 const bundledPath = isWindows()
@@ -81,12 +81,12 @@ const replaceKeyboardConfigFile = () => {
 };
 
 const getJoystickBindIndices = () => {
-  const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
-  log("debug", "flycast", "joysticks", sdl.joystick.devices, playerIndexArray);
+  const gamepads = getControllers();
+  log("debug", "flycast", gamepads);
 
-  return playerIndexArray.flatMap((playerIndex, sdlIndex) => [
+  return gamepads.flatMap(({ player }, sdlIndex) => [
     // set order of gamepads
-    ...["--config", `input:maple_sdl_joystick_${sdlIndex}=${playerIndex}`],
+    ...["--config", `input:maple_sdl_joystick_${sdlIndex}=${player}`],
     // map to Sega Controller
     ...["--config", `input:device${sdlIndex + 1}=0`],
     // set VMU
