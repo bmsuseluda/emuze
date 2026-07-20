@@ -7,6 +7,7 @@ import {
   SdlButtonMapping,
   sortSteamDeckLast,
   steamDeckJoystick,
+  xbox360Joystick,
 } from "../types/gamepad.js";
 import HID from "node-hid";
 import { log } from "./debug.server.js";
@@ -24,7 +25,7 @@ export const getDeviceNameFromHid = (
   const { vendor, product } = controller;
   if (vendor && product) {
     const hidDevices = HID.devices(vendor, product);
-    log("debug", "hid path", hidDevices.at(0)?.path);
+    log("debug", "hid object", hidDevices.at(0));
     return hidDevices.at(0)?.product;
   }
 
@@ -98,7 +99,7 @@ export const createEmuzeController = ({
     isNumber(player) &&
     mapping
   ) {
-    const nameOsSpecific = getNameOsSpecific(name, joystickName, type);
+    const nameOsSpecific = getNameOsSpecific(joystick, controller);
     return {
       id,
       guid: steamGUID || guid,
@@ -130,27 +131,14 @@ const getSteamGUID = (hasSteamHandle: boolean, steamHandleIndex: number) => {
   return null;
 };
 
-/**
- * Returns Array of EmuzeControllers.
- * - Iterate through SDL.controllers as a base
- * - filter out controller without guid, mapping or player
- * - add jostickname and hidname
- * - sort controller that Steam Deck Controller is last
- * - if a controller has a steam handle, replace GUID with the next from steamHandleGUIDs
- *
- * TODO: add name index?
- * TODO: add sdl name index?
- * TODO: replace player with index?
- * TODO: add more steam handle GUIDs
- * TODO: do lightguns have a controller in sdl as well?
- * TODO: overwrite guid in sdlJoystick and sdlController too?
- */
-export const getControllers = () => {
+export const getControllers = (
+  joysticks: Sdl.Joystick.Device[] = sdl.joystick.devices,
+) => {
   const emuzeControllers: EmuzeController[] = [];
 
   let steamHandleIndex = 0;
 
-  const joystickSorted = sortSteamDeckLast(sdl.joystick.devices);
+  const joystickSorted = sortSteamDeckLast(joysticks);
 
   let playerIndex = 0;
   joystickSorted.forEach((joystick) => {
@@ -159,7 +147,7 @@ export const getControllers = () => {
       const hasSteamHandle = isSteamHandle(controller);
       const hidName = getDeviceNameFromHid(controller, steamHandleIndex);
       const steamGUID = getSteamGUID(hasSteamHandle, steamHandleIndex);
-      const serialNumber = sdl.controller.openDevice(controller).serialNumber;
+      const serialNumber = sdl.joystick.openDevice(joystick).serialNumber;
 
       const emuzeController = createEmuzeController({
         controller,
@@ -196,39 +184,23 @@ export const getControllers = () => {
 };
 
 const getNameOsSpecific = (
-  controllerName: string,
-  joystickName: string,
-  type: Sdl.Controller.ControllerType,
+  joystick: Sdl.Joystick.Device,
+  controller: Sdl.Controller.Device,
 ) => {
-  if (isWindows() && isXinputController(type)) {
+  if (isWindows() && isXinputController(controller.type)) {
     return `XInput Controller`;
-  } else if (isSteamOs()) {
-    return joystickName;
-  } else {
-    return controllerName;
   }
-};
 
-/**
- * ares: guid
- * azahar: guid
- * cemu: controller name and guid getNameIndex
- * dolphin: getGamepadName getSdlNameIndex
- * dosbox: hidName
- * duckstation: player
- * eden: guid getSdlGuidIndex
- * flycast: player
- * mame: auto
- * mednafen: hidName and controller type
- * melonds: joystick index
- * pcsx2: player
- * ppsspp: map several controllers
- * rmg: getGamepadName getNameIndex
- * rpcs3: getGamepadName getSdlNameIndex
- * ryujinx: guid getNameIndex
- * scummvm: auto
- * xemu: guid and index
- */
+  if (
+    isSteamOs() &&
+    joystick.vendor !== xbox360Joystick.vendor &&
+    joystick.product !== xbox360Joystick.product
+  ) {
+    return joystick.name!;
+  }
+
+  return controller.name;
+};
 
 export const getJoystickFromController = (
   controller: Sdl.Controller.Device,
@@ -287,7 +259,8 @@ export const isSteamHandle = (controller: Sdl.Controller.Device): boolean => {
   try {
     return (
       !!sdl.controller.openDevice(controller).steamHandle ||
-      controller.vendor === steamDeckJoystick.vendor
+      controller.vendor === steamDeckJoystick.vendor ||
+      controller.name === "Steam Virtual Gamepad"
     );
   } catch {
     return false;
