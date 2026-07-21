@@ -1,5 +1,6 @@
-import type { Sdl } from "@kmamal/sdl";
+import type { Sdl, Events } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
+import sdl3 from "@kmamal/sdl3";
 import { log } from "../debug.server.js";
 import mappings from "./mappings.json" with { type: "json" };
 import {
@@ -10,25 +11,26 @@ import {
 import { getJoystickFromController } from "../gamepad.server.js";
 
 type ButtonUpEventFunction = (
-  event: sdl.Events.Controller.ButtonUp,
+  event: Events.Controller.ButtonUp,
   controller: Sdl.Controller.ControllerInstance,
   gamepadType: GamepadType,
 ) => void;
 
 type ButtonDownEventFunction = (
-  event: sdl.Events.Controller.ButtonDown,
+  event: Events.Controller.ButtonDown,
   controller: Sdl.Controller.ControllerInstance,
   gamepadType: GamepadType,
 ) => void;
 
 export type AxisMotionEventFunction = (
-  event: sdl.Events.Controller.AxisMotion,
+  event: Events.Controller.AxisMotion,
   controller: Sdl.Controller.ControllerInstance,
   gamepadType: GamepadType,
 ) => void;
 
 const addMappings = () => {
   sdl.controller.addMappings(mappings);
+  sdl3.controller.addMappings(mappings);
 };
 
 class GamepadManager {
@@ -38,12 +40,12 @@ class GamepadManager {
 
   constructor() {
     addMappings();
-    log("info", "sdl version", sdl.info.version);
-    sdl.controller.on("deviceAdd", (event) => {
+    log("info", "sdl version", sdl3.info.version);
+    sdl3.controller.on("deviceAdd", (event) => {
       this.registerEventsForDevice(event.device);
     });
 
-    const devices = sdl.controller.devices;
+    const devices = sdl3.controller.devices;
     if (devices.length > 0) {
       devices.forEach((device) => {
         this.registerEventsForDevice(device);
@@ -56,7 +58,7 @@ class GamepadManager {
     log("debug", "registerEvents", device, joystick?.name);
 
     try {
-      const controller = sdl.controller.openDevice(device);
+      const controller = sdl3.controller.openDevice(device);
       const gamepadType = this.getGamepadType(device, joystick);
 
       controller.on("buttonUp", (event) => {

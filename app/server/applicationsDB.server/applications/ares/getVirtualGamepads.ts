@@ -4,7 +4,7 @@ import { log } from "../../../debug.server.js";
 import {
   DetectSdlGuidIndex,
   EmuzeController,
-  getControllers,
+  getControllersSdl3,
   getSdlGuidIndex,
 } from "../../../gamepad.server.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
@@ -297,7 +297,7 @@ export const getVirtualGamepads = (
   systemId: SystemId,
   systemHasAnalogStick: boolean,
 ) => {
-  const gamepads = getControllers();
+  const gamepads = getControllersSdl3();
   const detectSdlGuidIndex = getSdlGuidIndex(gamepads);
 
   const virtualGamepads =

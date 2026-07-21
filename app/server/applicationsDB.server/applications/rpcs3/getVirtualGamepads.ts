@@ -5,7 +5,7 @@ import { globalDefaultInputConfigFileReset } from "./config.js";
 import { keyboardConfig } from "./keyboardConfig.js";
 import {
   EmuzeController,
-  getControllers,
+  getControllersSdl3,
   getSdlNameIndex,
 } from "../../../gamepad.server.js";
 
@@ -119,7 +119,7 @@ export const getVirtualGamepad =
 export const getVirtualGamepads = (
   isPs1Classic: boolean,
 ): GlobalDefaultInputConfigFile => {
-  const gamepads = getControllers();
+  const gamepads = getControllersSdl3();
 
   if (gamepads.length > 0) {
     const mappedGamepads = gamepads.reduce<GlobalDefaultInputConfigFile>(
