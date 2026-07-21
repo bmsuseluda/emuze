@@ -8,7 +8,6 @@ import {
   SdlButtonMapping,
   sortSteamDeckLast,
   steamDeckJoystick,
-  xbox360Joystick,
 } from "../types/gamepad.js";
 import HID from "node-hid";
 import { log } from "./debug.server.js";
@@ -194,11 +193,7 @@ const getNameOsSpecific = (
     return `XInput Controller`;
   }
 
-  if (
-    isSteamOs() &&
-    joystick.vendor !== xbox360Joystick.vendor &&
-    joystick.product !== xbox360Joystick.product
-  ) {
+  if (isSteamOs()) {
     return joystick.name!;
   }
 

@@ -1,17 +1,10 @@
 import nodepath from "node:path";
-import { writeFile } from "../app/server/readWriteData.server.js";
 import { gamecontrollerdbPath } from "../app/server/bundledEmulatorsPath.server.js";
 import { mkdirSync, writeFileSync } from "node:fs";
 
 const __dirname = import.meta.dirname;
 
 const projectPath = nodepath.join(__dirname, "..");
-const resultPath = nodepath.join(
-  projectPath,
-  "app",
-  "server",
-  "gamepadManager.server",
-);
 
 const url =
   "https://raw.githubusercontent.com/mdqinc/SDL_GameControllerDB/refs/heads/master/gamecontrollerdb.txt";
@@ -37,7 +30,7 @@ const overwrites = [
 
   "03000000790000004318000010010000,Mayflash GameCube Controller Adapter,a:b1,b:b2,dpdown:h0.4,dpleft:h0.8,dpright:h0.2,dpup:h0.1,lefttrigger:a3,leftx:a0,lefty:a1,rightshoulder:b7,righttrigger:a4,rightx:a5,righty:a2,start:b9,x:b0,y:b3,platform:Linux,",
 
-  "0300a81c5e040000a102000000010000,Xbox 360 Controller,a:b0,b:b1,back:b6,dpdown:b12,dpleft:b13,dpright:b14,dpup:b11,guide:b8,leftshoulder:b4,leftstick:b9,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
+  "030000005e040000a102000000010000,Xbox 360 Controller,a:b0,b:b1,back:b6,dpdown:b12,dpleft:b13,dpright:b14,dpup:b11,guide:b8,leftshoulder:b4,leftstick:b9,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b10,righttrigger:a5,rightx:a3,righty:a4,start:b7,x:b2,y:b3,platform:Linux,",
 ];
 
 const fetchSdlMappings = () => {
@@ -51,8 +44,6 @@ const fetchSdlMappings = () => {
         ...filterMappings(mappings, overwrites),
         ...overwrites,
       ];
-
-      writeFile(mappingsFiltered, nodepath.join(resultPath, "mappings.json"));
 
       const absoluteGamecontrollerdbPath = nodepath.join(
         projectPath,

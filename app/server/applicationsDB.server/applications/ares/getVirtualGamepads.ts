@@ -148,16 +148,11 @@ const getVirtualGamepadDpad = (
   }
 };
 
-const guidOverwrites: Record<string, string> = {
-  "03008fe54c050000c405000000006800": "05008fe54c050000c405000000006800",
-};
-
 export const createDeviceId = (
   { guid }: EmuzeController,
   guidIndex: number,
 ) => {
-  const guidConverted = guidOverwrites[guid];
-  return `${guidConverted || guid}/${guidIndex}`;
+  return `${guid}/${guidIndex}`;
 };
 
 export const getVirtualGamepad =
