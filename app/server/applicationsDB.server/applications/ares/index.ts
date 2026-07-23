@@ -14,7 +14,7 @@ const bundledPath = isWindows()
   ? nodepath.join(applicationId, "ares.exe")
   : nodepath.join(applicationId, `${applicationId}.AppImage`);
 
-const getSharedAresOptionParams: OptionParamFunction = ({
+export const getSharedAresOptionParams: OptionParamFunction = ({
   settings: {
     appearance: { fullscreen },
   },
@@ -66,85 +66,6 @@ export const ares: Application = {
   },
   createOptionParams: getSharedAresOptionParams,
   bundledPath,
-};
-
-export const aresGameBoyColor: Application = {
-  ...ares,
-  fileExtensions: [".gb", ".gbc", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Game Boy Color"],
-  ],
-};
-
-export const aresGameBoyAdvance: Application = {
-  ...ares,
-  fileExtensions: [".gba", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...[
-      "--setting",
-      `GameBoyAdvance/Firmware/BIOS.World=${props.biosFiles!.at(0)!.filePath}`,
-    ],
-    ...["--system", "Game Boy Advance"],
-  ],
-  biosFiles: [
-    {
-      type: "default",
-      requiredFiles: [
-        {
-          filename: "gba_bios.bin",
-          hash: "fd2547724b505f487e6dcb29ec2ecff3af35a841a77ab2e85fd87350abd36570",
-        },
-      ],
-    },
-  ],
-  bundledBiosOpenSource: true,
-};
-
-export const aresNES: Application = {
-  ...ares,
-  fileExtensions: [".nes", ".fc", ".unh", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Famicom"],
-  ],
-};
-
-export const aresSuperNintendo: Application = {
-  ...ares,
-  fileExtensions: [".sfc", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Super Famicom"],
-  ],
-};
-
-export const aresNintendo64: Application = {
-  ...ares,
-  fileExtensions: [".z64", ".n64", ".v64"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Nintendo 64"],
-  ],
-};
-
-export const aresMasterSystem: Application = {
-  ...ares,
-  fileExtensions: [".sms", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Master System"],
-  ],
-};
-
-export const aresGameGear: Application = {
-  ...ares,
-  fileExtensions: [".gg", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Game Gear"],
-  ],
 };
 
 export const aresMegaDrive: Application = {

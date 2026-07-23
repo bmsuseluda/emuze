@@ -81,7 +81,7 @@ const replaceKeyboardConfigFile = () => {
 };
 
 const getJoystickBindIndices = () => {
-  const gamepads = getControllers();
+  const gamepads = getControllers().slice(0, 3);
   log("debug", "flycast", gamepads);
 
   return gamepads.flatMap(({ player }, sdlIndex) => [
