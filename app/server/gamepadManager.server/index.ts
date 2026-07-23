@@ -1,7 +1,6 @@
 import type { Sdl } from "@kmamal/sdl";
 import sdl from "@kmamal/sdl";
 import { log } from "../debug.server.js";
-import mappings from "./mappings.json" with { type: "json" };
 import {
   eightBitDoPro2,
   gamepadPs4,
@@ -27,17 +26,12 @@ export type AxisMotionEventFunction = (
   gamepadType: GamepadType,
 ) => void;
 
-const addMappings = () => {
-  sdl.controller.addMappings(mappings);
-};
-
 class GamepadManager {
   buttonUpEvents: Record<string, ButtonUpEventFunction> = {};
   buttonDownEvents: Record<string, ButtonDownEventFunction> = {};
   axisMotionEvents: Record<string, AxisMotionEventFunction> = {};
 
   constructor() {
-    addMappings();
     log("info", "sdl version", sdl.info.version);
     sdl.controller.on("deviceAdd", (event) => {
       this.registerEventsForDevice(event.device);

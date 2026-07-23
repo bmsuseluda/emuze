@@ -25,12 +25,12 @@ import {
 import { initReactRouter } from "./initReactRouter.js";
 import { cp } from "node:fs";
 import { biosOpenSourceHomeDirectory } from "../app/server/homeDirectory.server.js";
-import { sdlJoystickEnvironmentVariables } from "../app/server/applicationsDB.server/environmentVariables.js";
+import { sdlGameControllerConfig } from "../app/server/applicationsDB.server/environmentVariables.js";
 
 const __dirname = import.meta.dirname;
 const { autoUpdater } = electronUpdater;
 
-Object.entries(sdlJoystickEnvironmentVariables).forEach(([key, value]) => {
+Object.entries(sdlGameControllerConfig).forEach(([key, value]) => {
   process.env[key] = value;
 });
 

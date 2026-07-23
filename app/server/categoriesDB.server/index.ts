@@ -1,20 +1,13 @@
 import { rpcs3 } from "../applicationsDB.server/applications/rpcs3/index.js";
 import {
-  aresGameBoyAdvance,
-  aresGameBoyColor,
-  aresGameGear,
-  aresMasterSystem,
   aresMegaDrive,
   aresNeoGeoPocket,
   aresNeoGeoPocketColor,
-  aresNES,
-  aresNintendo64,
   aresPcEngine,
   aresSega32x,
   aresSegaCd,
   aresSegaMegaLd,
   aresSuperGrafx,
-  aresSuperNintendo,
 } from "../applicationsDB.server/applications/ares/index.js";
 import {
   mame,
@@ -47,6 +40,13 @@ import {
   eden,
   isEdenForSwitch,
 } from "../applicationsDB.server/applications/eden/index.js";
+import { aresNintendo64 } from "../applicationsDB.server/applications/ares/systems/n64.js";
+import { aresGameBoyColor } from "../applicationsDB.server/applications/ares/systems/gameboyColor.js";
+import { aresGameGear } from "../applicationsDB.server/applications/ares/systems/gameGear.js";
+import { aresSuperNintendo } from "../applicationsDB.server/applications/ares/systems/snes.js";
+import { aresNES } from "../applicationsDB.server/applications/ares/systems/nes.js";
+import { aresGameBoyAdvance } from "../applicationsDB.server/applications/ares/systems/gameboyAdvance.js";
+import { aresMasterSystem } from "../applicationsDB.server/applications/ares/systems/masterSystem.js";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",
