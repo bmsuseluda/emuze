@@ -3,7 +3,8 @@ import type {
   SdlButtonMapping,
 } from "../../../../types/gamepad.js";
 import { getButtonIndex, isDpadHat } from "../../../../types/gamepad.js";
-import { getControllers } from "../../../gamepad.server.js";
+import { log } from "../../../debug.server.js";
+import { EmuzeController } from "../../../gamepad.server.js";
 import type { ParamToReplace } from "../../configFile.js";
 import type { MelonDsButtonId } from "./types.js";
 
@@ -67,10 +68,12 @@ const getButtonMapping = (
   };
 };
 
-export const getVirtualGamepad = (): ParamToReplace[] => {
-  const emuzeControllers = getControllers();
-  if (emuzeControllers.length > 0) {
-    const { mappingObject } = emuzeControllers[0];
+export const getVirtualGamepad = (
+  emuzeController?: EmuzeController,
+): ParamToReplace[] => {
+  if (emuzeController) {
+    log("debug", "melonds", { emuzeController });
+    const { mappingObject } = emuzeController;
 
     return [
       getDpadButtonMapping(mappingObject, "Up"),
