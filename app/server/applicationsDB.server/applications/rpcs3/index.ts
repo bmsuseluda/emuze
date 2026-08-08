@@ -23,7 +23,7 @@ import type {
   GlobalDefaultInputConfigFile,
   VfsConfigFile,
 } from "./config.js";
-import { isWindows } from "../../../operationsystem.server.js";
+import { isWindows, replaceToPosixPathing } from "../../../operationsystem.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import {
@@ -378,7 +378,7 @@ export const rpcs3: Application = {
     absoluteEntryPath,
   }) => {
     const ps3RomsPath = nodepath.posix
-      .join(categoriesPath.replace(/\\/g, "/"), categoryData.name)
+      .join(replaceToPosixPathing(categoriesPath), categoryData.name)
       .normalize();
     const ps3RomsPathWithTrailingSeparator = `${ps3RomsPath}${ps3RomsPath.endsWith(nodepath.posix.sep) ? "" : nodepath.posix.sep}`;
     const isPs1Classic = absoluteEntryPath.endsWith("EBOOT.PBP");
