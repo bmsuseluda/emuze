@@ -9,7 +9,7 @@ import type {
 import nodepath from "node:path";
 import { readFilenames } from "../../../readWriteData.server.js";
 import type { ApplicationId } from "../../applicationId.js";
-import { isWindows } from "../../../operationsystem.server.js";
+import { isWindows, replaceToPosixPathing } from "../../../operationsystem.server.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
@@ -67,7 +67,7 @@ const findDosGameName: FindEntryNameFunction = ({ entry: { path } }) => {
 };
 
 const createMountCommand = (fileToMount: string) =>
-  `imgmount D ${fileToMount} -t cdrom`;
+  `imgmount D ${replaceToPosixPathing(fileToMount)} -t cdrom`;
 
 /**
  * Looks for a disc drive file. Uses the following priority:
@@ -124,8 +124,8 @@ const createPrepareBatFile = (
   const filePath = nodepath.join(workingDirectory, "PREPARE.BAT");
 
   const executableFileName = nodepath.basename(absoluteEntryPath);
-  const executableRelativePath = absoluteEntryPath.split(workingDirectory)[1];
-  const executableRelativeDir =
+  const executableRelativePath = replaceToPosixPathing(absoluteEntryPath.split(workingDirectory)[1]);
+  const executableRelativeDir = 
     executableRelativePath.split(executableFileName)[0];
 
   const file = [
@@ -146,9 +146,8 @@ const writeConfigFile = (fullscreen?: boolean) => {
 
   const fileContentNew = {
     ...fileContent,
-    custom_controller_bindings: "true",
     screen_fullscreen: fullscreen ? "true" : "false",
-    ...getVirtualGamepads(),
+    ...(!isWindows() ? getVirtualGamepads(): {}),
   };
 
   writeConfig(filePath, JSON.stringify(fileContentNew));
@@ -193,7 +192,7 @@ const createOptionParams: OptionParamFunction = ({
 const getConfigFileBasePath = () => {
   if (isWindows()) {
     const { config } = envPaths("DOSBoxPure", { suffix: "" });
-    return nodepath.join(config);
+    return nodepath.join(config, "..");
   } else {
     const { config } = envPaths("DOSBoxPure", { suffix: "" });
     return nodepath.join(config);

@@ -59,7 +59,9 @@ const getAnalogType = (
 type ControllerSetting = Record<
   DosboxButtonIdWithPort,
   HatValue | AnalogValue | ButtonValue | null
->;
+> & {
+  custom_controller_bindings?: "true" | "false",
+};
 
 const getDosBoxButtonId = (
   mappingObject: SdlButtonMapping,
@@ -222,5 +224,6 @@ export const getVirtualGamepads = (): ControllerSetting => {
   return {
     ...virtualGamepads,
     ...gamepadResets,
+    custom_controller_bindings: "true",
   };
 };
