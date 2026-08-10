@@ -1,5 +1,67 @@
 # Changelog
 
+## 0.59.0 (09-08-2026)
+
+As you might now i love the simplicity of console gaming. You start the game and it just works. With emulation more often then not you have to provide more then just the game. You need things like a BIOS file, firmware or key files. I wanted to assist with this for a long time. With this release you can choose a folder where you can put your BIOS files and emuze will pick them up and configure the Emulators. Of course emuze will tell you if a required file is missing. On top of this emuze comes bundled with open source BIOS implementations for PlayStation, Game Boy Advance and NEO GEO. Of course you can use official BIOS files instead if you need by putting them in the BIOS folder. Sadly i was not able to achieve the same result for more complicated systems like PlayStation 3, WiiU and Switch. These systems require a installation of a firmware. I will try to tackle these in a future release.
+
+Besides this i bundled and pre configured ScummVM and DOSBox Pure Unleashed.
+Therefore the day is finally here: All 35 supported systems are pre configured and bundled now 🥳
+No matter which system you want to play all connected gamepads will be configured for the specific Emulator and should just work without further tinkering.
+
+In the past i already bundled and pre configured RMG as an alternative to ares to play N64 if your device is not capable to run ares N64 with 100% speed.
+For similar reasons i bundled and pre configured Eden as an alternative to Ryujinx.
+With this release you can activate RMG and Eden via Settings -> Advanced.
+
+Please let me know what you think of it in the [emuze discord](https://discord.gg/tCzK7kc6Y4).
+
+### 💥 Features
+- all emulators are bundled now
+- all emulators are pre configured now
+- detects and configures BIOS files
+  - except PlayStation 3, WiiU and Switch. These are much more complicated and will be tackled in future releases
+- bundles open source BIOS implementations which will be used if no official BIOS is provided by the user
+- integrate Release Notes
+- Option to create all System Folders (Settings -> General -> Button "Create System Folders")
+  - Creates necessary Substructure for PlayStation 3 and WiiU as well 
+- pre configure Eden as an alternative to Ryujinx
+- pre configure DOSBox Pure Unleashed
+- add settings page to activate alternative emulators (Settings -> Advanced)
+- the Emulators Path on Windows is not necessary anymore and was removed
+- support the new Steam Controller
+
+### 💫 Updates / Bundles
+- bundle ScummVM [v2026.3.0](https://github.com/scummvm/scummvm/releases/tag/v2026.3.0)
+- bundle DOSBox Pure Unleashed [v1.0-preview6](https://github.com/schellingb/dosbox-pure-unleashed/releases/tag/1.0-preview6)
+- bundle Eden [v0.2.1](https://git.eden-emu.dev/eden-emu/eden/releases/tag/v0.2.1)
+- bundle [Openbios](https://pcsx-redux.consoledev.net/openbios) from the PCSX Redux Team
+- bundle neogeo-bios [v0.0.2](https://github.com/neogeo-projects/neogeo-bios/releases/tag/v0.0.2)
+- bundle gba-bios [v1.0](https://github.com/ez-me/gba-bios/releases/tag/1.0)
+- update bundled RPCS3 to [v0.0.42](https://github.com/RPCS3/rpcs3/releases/tag/v0.0.42)
+- update bundled ares to [v148](https://github.com/ares-emulator/ares/releases/tag/v148)
+- update bundled PPSSPP to [v1.20.4](https://github.com/hrydgard/ppsspp/releases/tag/v1.20.4)
+- update bundled Azahar to [v2125.1.3](https://github.com/azahar-emu/azahar/releases/tag/2125.1.3)
+- update bundled MAME to [v0.288](https://www.mamedev.org/?p=564)
+- update bundled xemu to [v0.8.136](https://github.com/xemu-project/xemu/releases/tag/v0.8.136)
+- update bundled RMG to [v0.9.0](https://github.com/Rosalie241/RMG/releases/tag/v0.9.0)
+
+### 🪲 Bug Fixes
+- loading animation did not work correctly on some linux distributions
+- import failed if PlayStation 3 folder structure was not as expected
+- controls did not work correctly if there where multiple folders of a system
+- if PlayStation 3 disc games were removed, they were not removed in the RPCS3 games list
+- gamepad mapping in ares did not work in rare cases
+- gamepad mapping in RMG did not work in rare cases
+- emuze was crashing when a device was connected, that would be recognized by SDL as a Joystick but not as a Controller
+- gamepad mapping in Ryujinx did not work in some cases on Steam Deck with Steam Input deactivated
+- gamepad mapping in Dolphin did not work in some cases on Steam Deck with Steam Input activated
+- gamepad mapping in Mednafen did not work in some cases on Steam Deck with Steam Input activated
+- dpad was not mapped correctly for ps4 controller in melonDS
+
+### ❗️ Breaking Changes
+- removed DOSBox Staging in favor of DOSBox Pure Unleashed
+- to support the mlc folder for WiiU, your games need to be in a subfolder "games"
+- because bios files are handled by emuze now, you have to put your bios files in a folder and set this folder under Settings -> General -> BIOS Path
+
 ## 0.58.0 (19-02-2026)
 
 As one of the few nerdy kids in a small sleepy town in a country where arcade gaming was classified as gambling i could see lightgun games in magazines only. I had an NES and Captain N with his Zapper was sooo awesome to me. But when the time came that i could buy one with my own money the rise of flat panels began and with it the death of CRT TVs and Lightguns altogether. It was just a thing of the past, sadly.

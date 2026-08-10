@@ -8,18 +8,17 @@
 emuze is an emulation frontend designed to simplify your retro gaming experience.
 It automates the configuration of each emulator, including seamless gamepad integration and automatic import of games along with their metadata. With its console-like interface and intuitive controls, emuze lets you focus on enjoying your retro games, just like you would on a gaming console.
 
-It is not there yet for every system and emulator, please have a look at 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) for more details.
-
 ## 💥 Features
 
 - ⚡️ Intuitive console-like interface
 - 🚂 Import all your roms with a click of a button
-- 🪄 Provides Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
-- 🎮️ Seamless gamepad integration for most emulators
-- 🔫 Basic lightgun integration for some emulators
-- 📦️ Bundles most emulators
+- 🪄 Provides Metadata from [IGDB](https://www.igdb.com) based on the filenames of your roms
+- 🎮️ Seamless gamepad integration for all Systems and emulators
+- 📦️ Bundles emulators for all Systems
+- 🔫 Basic lightgun integration for some Systems
 - 💻️ Windows, Linux and Steam Deck support
 - 💫 Updates itself
+- 🛠️ BIOS handling
 
 <br>
 
@@ -34,50 +33,51 @@ It is not there yet for every system and emulator, please have a look at 🕹️
 
 The following systems are supported:
 
-| System | Emulator | Pre Configured | Bundled | BIOS needed |
-| ------ | -------- | -------------- | ------- | ----------- |
-| Sega Master System | [ares](https://github.com/ares-emulator/ares) | Yes | v147 | No | 
-| Sega Game Gear | [ares](https://github.com/ares-emulator/ares) | Yes | v147 | No | 
-| Sega Mega Drive | [ares](https://github.com/ares-emulator/ares) | Yes | v147 | No | 
-| Sega 32X | [ares](https://github.com/ares-emulator/ares) | Yes | v147 | Yes | 
-| Sega CD | [ares](https://github.com/ares-emulator/ares) | Yes | v147 | Yes | 
-| Mega LD | [ares](https://github.com/ares-emulator/ares) | Yes | v147 | Yes | 
-| Sega Saturn | [Mednafen](https://mednafen.github.io/) | Yes | v1.32.1 | Yes | 
-| Sega Dreamcast | [Flycast](https://github.com/flyinghead/flycast) | Yes | v2.6 | No | 
-| Nintendo Entertainment System | [ares](https://github.com/ares-emulator/ares) | Yes | v147 | No | 
-| Super Nintendo Entertainment System | [ares](https://github.com/ares-emulator/ares) | Yes | v147 | No | 
-| Nintendo Game Boy | [ares](https://github.com/ares-emulator/ares) | Yes | v147 | No | 
-| Nintendo Game Boy Color | [ares](https://github.com/ares-emulator/ares) | Yes | v147 | No | 
-| Nintendo Game Boy Advance | [ares](https://github.com/ares-emulator/ares) | Yes | v147 | Yes | 
-| Nintendo DS | [melonDS](https://github.com/melonDS-emu/melonDS) | Yes | v1.1 | No | 
-| Nintendo 3DS | [Azahar](https://github.com/azahar-emu/azahar) | Yes | v2124.3 | No | 
-| Nintendo 64 | [ares](https://github.com/ares-emulator/ares) | Yes | v147 | No | 
-|  | [Rosalie's Mupen GUI](https://github.com/Rosalie241/RMG) | Yes | v0.8.9 | No | 
-| Nintendo GameCube | [Dolphin](https://github.com/dolphin-emu/dolphin) | Yes | v2512 | No | 
-| Nintendo Wii | [Dolphin](https://github.com/dolphin-emu/dolphin) | Yes | v2512 | No | 
-| Nintendo Wii U | [Cemu](https://github.com/cemu-project/Cemu) | Yes | v2.6 | Yes | 
-| Nintendo Switch | [Ryujinx](https://git.ryujinx.app/ryubing/ryujinx) | Yes | v1.3.3 | Yes | 
-| Sony PlayStation | [DuckStation (Legacy)](https://github.com/stenzek/duckstation) | Yes | v0.1-7371 | Yes | 
-| Sony PlayStation 2 | [PCSX2](https://github.com/PCSX2/pcsx2) | Yes | v2.6.3 | Yes | 
-| Sony PlayStation 3 | [RPCS3](https://github.com/RPCS3/rpcs3) | Yes | v0.0.39 | Yes | 
-| Sony PlayStation Portable | [PPSSPP](https://github.com/hrydgard/ppsspp) | Yes | v1.19.3 | No | 
-| NEC PC Engine | [ares](https://github.com/ares-emulator/ares) | Yes | v147 | No | 
-| NEC PC Engine CD | [Mednafen](https://mednafen.github.io/) | Yes | v1.32.1 | Yes | 
-| NEC PC Engine SuperGrafx | [ares](https://github.com/ares-emulator/ares) | Yes | v147 | Yes | 
-| Arcade | [MAME](https://github.com/mamedev/mame) | Yes | v0.285 | Yes | 
-| SNK Neo Geo | [MAME](https://github.com/mamedev/mame) | Yes | v0.285 | Yes | 
-| SNK Neo Geo CD | [MAME](https://github.com/mamedev/mame) | Yes | v0.285 | No | 
-| SNK Neo Geo Pocket | [ares](https://github.com/ares-emulator/ares) | Yes | v147 | Yes | 
-| SNK Neo Geo Pocket Color | [ares](https://github.com/ares-emulator/ares) | Yes | v147 | Yes | 
-| Scumm | [ScummVM](https://github.com/scummvm/scummvm) | Yes | - | No | 
-| Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json)) | [DOSBox-Staging](https://github.com/dosbox-staging/dosbox-staging) | No | - | No | 
-| Microsoft XBOX | [xemu](https://github.com/xemu-project/xemu) | Yes | v0.8.133 | Yes | 
+| System | Emulator | BIOS needed |
+| ------ | -------- | ----------- |
+| Sega Master System | [ares](https://github.com/ares-emulator/ares) v148 | No | 
+| Sega Game Gear | [ares](https://github.com/ares-emulator/ares) v148 | No | 
+| Sega Mega Drive | [ares](https://github.com/ares-emulator/ares) v148 | No | 
+| Sega 32X | [ares](https://github.com/ares-emulator/ares) v148 | No | 
+| Sega CD | [ares](https://github.com/ares-emulator/ares) v148 | Yes | 
+| Mega LD | [ares](https://github.com/ares-emulator/ares) v148 | Yes | 
+| Sega Saturn | [Mednafen](https://mednafen.github.io/) v1.32.1 | Yes | 
+| Sega Dreamcast | [Flycast](https://github.com/flyinghead/flycast) v2.6 | No | 
+| Nintendo Entertainment System | [ares](https://github.com/ares-emulator/ares) v148 | No | 
+| Super Nintendo Entertainment System | [ares](https://github.com/ares-emulator/ares) v148 | No | 
+| Nintendo Game Boy | [ares](https://github.com/ares-emulator/ares) v148 | No | 
+| Nintendo Game Boy Color | [ares](https://github.com/ares-emulator/ares) v148 | No | 
+| Nintendo Game Boy Advance | [ares](https://github.com/ares-emulator/ares) v148 | No | 
+| Nintendo DS | [melonDS](https://github.com/melonDS-emu/melonDS) v1.1 | No | 
+| Nintendo 3DS | [Azahar](https://github.com/azahar-emu/azahar) v2125.1.3 | No | 
+| Nintendo 64 | [ares](https://github.com/ares-emulator/ares) v148 | No | 
+|  | [Rosalie's Mupen GUI](https://github.com/Rosalie241/RMG) v0.9.0 | No | 
+| Nintendo GameCube | [Dolphin](https://github.com/dolphin-emu/dolphin) v2606 | No | 
+| Nintendo Wii | [Dolphin](https://github.com/dolphin-emu/dolphin) v2606 | No | 
+| Nintendo Wii U | [Cemu](https://github.com/cemu-project/Cemu) v2.6 | Yes | 
+| Nintendo Switch | [Eden](https://git.eden-emu.dev/eden-emu/eden/releases) v0.2.1 | Yes | 
+|  | [Eden](https://git.eden-emu.dev/eden-emu/eden/releases) v0.2.1 | Yes | 
+| Sony PlayStation | [DuckStation (Legacy)](https://github.com/stenzek/duckstation) v0.1-7371 | No | 
+| Sony PlayStation 2 | [PCSX2](https://github.com/PCSX2/pcsx2) v2.6.3 | Yes | 
+| Sony PlayStation 3 | [RPCS3](https://github.com/RPCS3/rpcs3) v0.0.42 | Yes | 
+| Sony PlayStation Portable | [PPSSPP](https://github.com/hrydgard/ppsspp) v1.20.4 | No | 
+| NEC PC Engine | [ares](https://github.com/ares-emulator/ares) v148 | No | 
+| NEC PC Engine CD | [Mednafen](https://mednafen.github.io/) v1.32.1 | Yes | 
+| NEC PC Engine SuperGrafx | [ares](https://github.com/ares-emulator/ares) v148 | No | 
+| Arcade | [MAME](https://github.com/mamedev/mame) v0.288 | No | 
+| SNK Neo Geo | [MAME](https://github.com/mamedev/mame) v0.288 | No | 
+| SNK Neo Geo CD | [MAME](https://github.com/mamedev/mame) v0.288 | Yes | 
+| SNK Neo Geo Pocket | [ares](https://github.com/ares-emulator/ares) v148 | Yes | 
+| SNK Neo Geo Pocket Color | [ares](https://github.com/ares-emulator/ares) v148 | Yes | 
+| Scumm | [ScummVM](https://github.com/scummvm/scummvm) v2026.3.0 | No | 
+| Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json)) | [DOSBox Pure Unleashed](https://github.com/schellingb/dosbox-pure-unleashed) v1.0-preview6 | No | 
+| Microsoft XBOX | [xemu](https://github.com/xemu-project/xemu) v0.8.136 | Yes | 
 
 > [!IMPORTANT]  
 > ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
 
 ### Pre Configured
-If a System is pre configured means the following:
+All Systems are pre configured. This means the following:
 
 #### Gamepad Mapping
 All connected gamepads will be configured for the specific Emulator and should just work without further tinkering.
@@ -137,12 +137,24 @@ You can close a game via
 If you have gamepads connected with your Steam Deck the Steam Deck Controls will be configured as the last gamepad. This is done to use the Steam Deck on a TV. If you have other PC Handhelds where this feature would come in handy, please let me know.
 
 ### Bundled
-If a system is bundled, the respective emulator is provided with emuze in a specific version.
+All emulators are provided with emuze in a specific version.
 
 Config files of bundled emulators are stored in `~/.local/share/emuze/emulators/` on linux and `AppData\Local\emuze\Data\emulators\` on windows.
 
 ### BIOS needed
-Some emulators need a BIOS or firmware to run. Please check the documentation of the respective emulator for more information.
+Some emulators need a BIOS or firmware to run. If so you have to set the folder to your BIOS files in the settings. emuze will detect the appropriate file and configures the emulator accordingly.
+
+For some emulators a open source BIOS implementation is bundled with emuze:
+<br>
+
+| System | Open Source BIOS implementation |
+| ------ | ------------------------------- |
+| SNK Neo Geo | [neogeo-bios](https://github.com/neogeo-projects/neogeo-bios) |
+| Nintendo Game Boy Advance | [gba-bios](https://github.com/ez-me/gba-bios) |
+| Sony PlayStation | [PCSX Redux Openbios](https://pcsx-redux.consoledev.net/openbios/) |
+
+> [!IMPORTANT]  
+> ❤️ Many thanks to the creators. Your work is a big step forward simplifing emulation.
 
 ### Supported System Names and file extensions
 In general emuze should just detect your systems and games. If not please check the supported system names and file extensions:
@@ -196,45 +208,28 @@ In general emuze should just detect your systems and games. If not please check 
 > [!NOTE]
 > Capitalization, special characters and white spaces do not matter in a System Name. E.g. `TurboGrafx-16` will be detected as well as `turbo grafx 16`.
 
+> [!NOTE]
+> emuze can create the System Folders in the selected Roms Folder. Use the "Create System Folders" Button under Settings General.
+
 ## 🚀 Getting started
 
 ### 🪟 Windows
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.58.0/emuze-Setup-0.58.0.exe) the latest Version of emuze and install it
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.59.0/emuze-Setup-0.59.0.exe) the latest Version of emuze and install it
 
 2) Choose the [folder where your Roms are located](#roms-folder)
-3) Optionally choose the [folder where your Emulators are located](#emulators-folder-windows-only)
-
-#### Emulators Folder (Windows only)
-
-This is the folder where your emulators are installed. It is only necessary on Windows and only for emulators not bundled by emuze.
-
-```
-emulators
-|-> scummvm
-|---> ...
-|---> scummvm.exe
-|---> ...
-|-> dosbox-staging
-|---> ...
-|---> dosbox.exe
-|---> ...
-```
 
 ### 🐧 Linux
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.58.0/emuze-0.58.0.AppImage) the latest Version of emuze
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.59.0/emuze-0.59.0.AppImage) the latest Version of emuze
 
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
 
-> [!NOTE]  
-> All emulators, not bundled, need to be installed via flatpak.
-
 ### 🎮️ Steam Deck in Game mode
 
 1) Switch to Desktop
-2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.58.0/emuze-0.58.0.AppImage) the latest Version of emuze
+2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.59.0/emuze-0.59.0.AppImage) the latest Version of emuze
 
 3) Mark the AppImage as executable
 4) Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze`
@@ -251,9 +246,6 @@ There is a Steam Input Profile with the name `emuze`, which has some Hotkeys pre
 - `R5`: Left Mouse Click
 - `Left Trackpad`: Scroll Wheel
 - `Right Trackpad`: Mouse
-
-> [!IMPORTANT]
-> Steam Input can result in gamepads not being able to be used correctly in some emulators. Therefore, I recommend disabling Steam Input for all gamepads except the Steam Deck controller.
 
 #### SteamGridDB
 
@@ -279,6 +271,9 @@ roms
 |---> Terranigma.sfc
 |---> ...
 ```
+
+> [!NOTE]
+> emuze can create the System Folders in the selected Roms Folder. Use the "Create System Folders" Button under Settings General.
 
 ## 🔫 Lightgun Support
 
@@ -354,8 +349,7 @@ Usage: emuze [options]
 Options:
   --help             Show help
   --fullscreen       Start the app in fullscreen mode
-  --debug-emuze      Activates verbose logging to /home/.local/share/emuze/emuze.log
-  --rmg              Activates the less accurate but more performant Rosalies Mupen GUI (RMG) emulator to play N64
+  --debug-emuze      Activates verbose logging to /home/bmsuseluda/.local/share/emuze/emuze.log
 ```
 
 ## 🚑️ Support
