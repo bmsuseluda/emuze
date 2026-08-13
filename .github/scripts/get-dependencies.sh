@@ -23,6 +23,7 @@ node -v
 npm -v
 npm install -g corepack
 yarn -v
+
 yarn
 yarn app:dirLinux
 yarn shrinkBundleSize
