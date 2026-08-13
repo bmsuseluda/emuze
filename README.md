@@ -13,7 +13,7 @@ It automates the configuration of each emulator, including seamless gamepad inte
 - ⚡️ Intuitive console-like interface
 - 🚂 Import all your roms with a click of a button
 - 🪄 Provides Metadata from [IGDB](https://www.igdb.com) based on the filenames of your roms
-- 🎮️ Seamless gamepad integration for all Systems and emulators
+- 🎮️ Seamless gamepad integration for all Systems
 - 📦️ Bundles emulators for all Systems
 - 🔫 Basic lightgun integration for some Systems
 - 💻️ Windows, Linux and Steam Deck support
@@ -55,7 +55,7 @@ The following systems are supported:
 | Nintendo GameCube | [Dolphin](https://github.com/dolphin-emu/dolphin) v2606 | No | 
 | Nintendo Wii | [Dolphin](https://github.com/dolphin-emu/dolphin) v2606 | No | 
 | Nintendo Wii U | [Cemu](https://github.com/cemu-project/Cemu) v2.6 | Yes | 
-| Nintendo Switch | [Eden](https://git.eden-emu.dev/eden-emu/eden/releases) v0.2.1 | Yes | 
+| Nintendo Switch | [Ryujinx](https://git.ryujinx.app/ryubing/ryujinx) v1.3.3 | Yes | 
 |  | [Eden](https://git.eden-emu.dev/eden-emu/eden/releases) v0.2.1 | Yes | 
 | Sony PlayStation | [DuckStation (Legacy)](https://github.com/stenzek/duckstation) v0.1-7371 | No | 
 | Sony PlayStation 2 | [PCSX2](https://github.com/PCSX2/pcsx2) v2.6.3 | Yes | 
@@ -349,7 +349,7 @@ Usage: emuze [options]
 Options:
   --help             Show help
   --fullscreen       Start the app in fullscreen mode
-  --debug-emuze      Activates verbose logging to /home/bmsuseluda/.local/share/emuze/emuze.log
+  --debug-emuze      Activates verbose logging to /home/.local/share/emuze/emuze.log
 ```
 
 ## 🚑️ Support
