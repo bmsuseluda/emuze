@@ -1,4 +1,4 @@
-import type { Application } from "../../types.js";
+import type { Application, DetectedRequiredFile } from "../../types.js";
 import nodepath from "node:path";
 import { writeConfig } from "../../configFile.js";
 import fs from "node:fs";
@@ -12,9 +12,9 @@ import { findEntryName } from "./findEntryName.js";
 import { excludeFiles } from "./excludeFiles.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
+import { copy } from "../../../readWriteData.server.js";
 
 const applicationId: ApplicationId = "ryujinx";
-const flatpakId = "org.ryujinx.Ryujinx";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "Ryujinx.exe")
   : nodepath.join(applicationId, `${applicationId}.AppImage`);
@@ -22,6 +22,15 @@ const bundledPath = isWindows()
 const configFolderPath = nodepath.join(emulatorsConfigDirectory, applicationId);
 const configFileName = "Config.json";
 const configFilePath = nodepath.join(configFolderPath, configFileName);
+
+const copyKeyFiles = (keyFiles: DetectedRequiredFile[]) => {
+  keyFiles.forEach((keyFile) => {
+    copy(
+      keyFile.filePath,
+      nodepath.join(configFolderPath, "system", keyFile.type),
+    );
+  });
+};
 
 const readConfigFile = (filePath: string) => {
   try {
@@ -59,11 +68,16 @@ const replaceConfig = (switchRomsPath: string) => {
   writeConfig(configFilePath, JSON.stringify(newConfig));
 };
 
+const requiredFileTypes = {
+  devKeys: "dev.keys",
+  prodKeys: "prod.keys",
+  titleKeys: "title.keys",
+};
+
 export const ryujinx: Application = {
   id: applicationId,
   name: "Ryujinx",
   fileExtensions: [".xci", ".nsp"],
-  flatpakId,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   createOptionParams: ({
     settings: {
@@ -71,9 +85,11 @@ export const ryujinx: Application = {
       general: { categoriesPath },
     },
     categoryData,
+    otherRequiredFiles,
   }) => {
     const switchRomsPath = nodepath.join(categoriesPath, categoryData.name);
     replaceConfig(switchRomsPath);
+    copyKeyFiles(otherRequiredFiles!);
 
     const optionParams = ["--root-data-dir", configFolderPath];
     if (fullscreen) {
@@ -86,4 +102,18 @@ export const ryujinx: Application = {
   excludeFiles,
   findEntryName,
   bundledPath,
+  otherRequiredFiles: [
+    {
+      type: requiredFileTypes.prodKeys,
+      requiredFiles: [{ filename: requiredFileTypes.prodKeys }],
+    },
+    {
+      type: requiredFileTypes.devKeys,
+      requiredFiles: [{ filename: requiredFileTypes.devKeys }],
+    },
+    {
+      type: requiredFileTypes.titleKeys,
+      requiredFiles: [{ filename: requiredFileTypes.titleKeys }],
+    },
+  ],
 };

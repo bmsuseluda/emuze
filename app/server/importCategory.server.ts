@@ -187,7 +187,7 @@ export const readEntries = ({
     const {
       findEntryName,
       excludeFiles,
-      searchFilesOnlyIn,
+      searchGamesOnlyIn,
       fileExtensions,
       entryAsDirectory,
     } = application;
@@ -196,7 +196,7 @@ export const readEntries = ({
     const categoryPath = nodepath.join(categoriesPath, categoryName);
     const filenames = readFilenames({
       path: categoryPath,
-      searchFilesOnlyIn,
+      searchFilesOnlyIn: searchGamesOnlyIn,
       fileExtensions,
       entryAsDirectory,
     });
@@ -257,19 +257,18 @@ export const readEntriesWithMetaData = async (
 export interface CategoryImportData {
   categoryDbData: CategoryDB;
   categoryFolderBaseName: string;
-  applicationsPath?: string;
 }
 
 export const createCategoryData = ({
   categoryDbData,
   categoryFolderBaseName,
 }: CategoryImportData): Category => {
-  const { id, application } = categoryDbData;
+  const { id, getApplication } = categoryDbData;
   const oldCategoryData = readCategory(id);
 
   const entries = readEntries({
     categoryName: categoryFolderBaseName,
-    application,
+    application: getApplication(),
     oldEntries: oldCategoryData?.entries,
   });
 

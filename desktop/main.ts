@@ -1,30 +1,67 @@
 import { platform } from "node:os";
-import { app, BrowserWindow, globalShortcut, ipcMain, shell } from "electron";
+import {
+  app,
+  BrowserWindow,
+  globalShortcut,
+  ipcMain,
+  shell,
+  screen,
+} from "electron";
 import nodepath from "node:path";
 import * as dotenv from "dotenv";
 import electronUpdater from "electron-updater";
 import {
   readAppearance,
+  readGeneral,
   writeAppearance,
+  writeGeneral,
 } from "../app/server/settings.server.js";
 import { createLogFile, isDebug, log } from "../app/server/debug.server.js";
+import { bundledBiosOpenSourcePath } from "../app/server/bundledEmulatorsPath.server.js";
 import {
   commandLineOptions,
   commandLineOptionsString,
 } from "../app/server/commandLine.server.js";
 import { initReactRouter } from "./initReactRouter.js";
-import { fileURLToPath } from "node:url";
+import { cp } from "node:fs";
+import { biosOpenSourceHomeDirectory } from "../app/server/homeDirectory.server.js";
+import { sdlGameControllerConfig } from "../app/server/applicationsDB.server/environmentVariables.js";
 
-const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
+const __dirname = import.meta.dirname;
 const { autoUpdater } = electronUpdater;
+
+Object.entries(sdlGameControllerConfig).forEach(([key, value]) => {
+  process.env[key] = value;
+});
 
 dotenv.config();
 
 const setFullscreen = (window: BrowserWindow, fullscreen: boolean) => {
+  if (fullscreen && window.isMaximized()) {
+    window.unmaximize();
+  }
+
   window.setFullScreen(fullscreen);
   window.webContents.send("fullscreen", fullscreen);
   const appearance = readAppearance(true);
   writeAppearance({ ...appearance, fullscreen });
+
+  if (!fullscreen) {
+    window.maximize();
+  }
+};
+
+const copyBiosOpenSource = () => {
+  cp(
+    bundledBiosOpenSourcePath,
+    biosOpenSourceHomeDirectory,
+    { force: true, recursive: true },
+    (error) => {
+      if (error) {
+        log("error", "copyBiosOpenSource", error.message);
+      }
+    },
+  );
 };
 
 const showHelp = () => {
@@ -66,9 +103,8 @@ app.on("ready", async () => {
   });
   autoUpdater.on("update-downloaded", ({ downloadedFile }) => {
     log("debug", "update downloaded", downloadedFile);
-  });
-  autoUpdater.on("appimage-filename-updated", (path) => {
-    log("debug", "update appimage filename updated", path);
+    const general = readGeneral();
+    writeGeneral({ ...general, showReleaseNotesOnStart: true });
   });
 
   const appearance = readAppearance();
@@ -79,10 +115,12 @@ app.on("ready", async () => {
   // TODO: Check how to set context for react router with fullscreen
   const url = await initReactRouter();
 
+  const { height, width } = screen.getPrimaryDisplay().workAreaSize;
+
   const window = new BrowserWindow({
     show: false,
     frame: false,
-    transparent: true,
+    transparent: platform() !== "win32",
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
@@ -95,8 +133,10 @@ app.on("ready", async () => {
       platform() === "win32"
         ? nodepath.join(__dirname, "..", "public", "icon.ico")
         : nodepath.join(__dirname, "..", "public", "icons", "icon96x96.png"),
-    minWidth: 650,
-    minHeight: 600,
+    minWidth: 800,
+    minHeight: 800,
+    width,
+    height,
   });
 
   ipcMain.handle("isFullscreen", () => window.isFullScreen());
@@ -150,16 +190,24 @@ app.on("ready", async () => {
   });
 
   await window.loadURL(url);
-  window.maximize();
+  if (!fullscreen) {
+    window.maximize();
+  }
+
   window.show();
 
   if (fullscreen) {
     setFullscreen(window, true);
   }
 
-  setTimeout(() => {
-    window.maximize();
-  }, 10);
+  window.on("show", () => {
+    setTimeout(() => {
+      window.focus();
+      window.focusOnWebView();
+    }, 100);
+  });
+
+  copyBiosOpenSource();
 });
 
 app.on("will-quit", () => {

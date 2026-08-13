@@ -1,4 +1,6 @@
-export const defaultSettings = `[Main]
+import { normalizeNewLines } from "../../configFile.js";
+
+export const defaultSettings = normalizeNewLines(`[Main]
 SettingsVersion = 3
 EmulationSpeed = 1
 FastForwardSpeed = 0
@@ -363,4 +365,4 @@ SelectNextSaveStateSlot = Keyboard/F4
 
 
 [AutoUpdater]
-CheckAtStartup = false`;
+CheckAtStartup = false`);

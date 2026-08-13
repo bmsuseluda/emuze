@@ -70,8 +70,6 @@ describe("readWriteData.server", () => {
   });
 
   describe("readFilenames", () => {
-    // TODO: add test for searchFilesOnlyIn
-
     it("Should return filenames with supported filenames only", () => {
       vi.mocked(readdirSync).mockReturnValue([
         new SimpleDirent("Cotton.cue", false),

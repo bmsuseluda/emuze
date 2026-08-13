@@ -16,33 +16,33 @@ import {
   getFocusHistoryDefault,
 } from "./types/focusElement.js";
 import type { ReactNode } from "react";
-import type { DataFunctionArgs } from "./context.js";
 
 import styles from "./index.css?url";
 import { styled } from "../styled-system/jsx/index.js";
 import { readGeneral } from "./server/settings.server.js";
 import { GamepadProvider } from "./provider/GamepadProvider/index.js";
 import { useFullscreen } from "./hooks/useFullscreen/index.js";
+import { isWindows } from "./server/operationsystem.server.js";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
-export const loader = ({ context }: DataFunctionArgs) => {
-  const fullscreen = context?.fullscreen as boolean;
+export const loader = () => {
   const general = readGeneral();
   const focusDefault = getFocusDefault(general);
   const focusHistoryDefault = getFocusHistoryDefault(general);
+  const windows = isWindows();
 
-  return { fullscreen, focusDefault, focusHistoryDefault };
+  return { focusDefault, focusHistoryDefault, isWindows: windows };
 };
 
 export default function App() {
-  const { fullscreen, focusDefault, focusHistoryDefault } =
+  const { focusDefault, focusHistoryDefault, isWindows } =
     useLoaderData<typeof loader>();
 
   return (
     <Document>
-      <FullscreenProvider fullscreenDefault={fullscreen}>
-        <Layout>
+      <FullscreenProvider>
+        <Layout isWindows={isWindows}>
           <FocusProvider
             focusDefault={focusDefault}
             focusHistoryDefault={focusHistoryDefault}
@@ -133,8 +133,14 @@ const Wrapper = styled("div", {
   },
 });
 
-function Layout({ children }: { children: ReactNode }) {
+function Layout({
+  children,
+  isWindows,
+}: {
+  children: ReactNode;
+  isWindows: boolean;
+}) {
   const fullscreen = useFullscreen();
 
-  return <Wrapper fullscreen={fullscreen}>{children}</Wrapper>;
+  return <Wrapper fullscreen={fullscreen || isWindows}>{children}</Wrapper>;
 }

@@ -15,12 +15,13 @@ import {
 } from "../../configFile.js";
 import { defaultSettings } from "./defaultSettings.js";
 import { replaceKeyboardConfig } from "./keyboardConfig.js";
-import { getPlayerId, getVirtualGamepad } from "./getVirtualGamepad.js";
+import { getVirtualGamepad } from "./getVirtualGamepad.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
+import { EmuzeController, getControllers } from "../../../gamepad.server.js";
+import { gamepadPs4Joystick } from "../../../../types/gamepad.js";
 
-const flatpakId = "net.kuribo64.melonDS";
 const applicationId: ApplicationId = "melonds";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "melonDS.exe")
@@ -45,15 +46,27 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
-const replaceJoystickConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[Instance0.Joystick]", [...getVirtualGamepad()]);
+const replaceJoystickConfig =
+  (emuzeController?: EmuzeController): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[Instance0.Joystick]", [
+      ...getVirtualGamepad(emuzeController),
+    ]);
 
-const replaceInstanceConfig: SectionReplacement = (sections) => {
-  const playerId = getPlayerId();
-  return replaceSection(sections, "[Instance0]", [
-    { keyValue: `JoystickID = ${playerId}` },
-  ]);
-};
+const isGamepadWithTwoInstances = (emuzeController?: EmuzeController) =>
+  emuzeController?.hasSteamHandle &&
+  emuzeController.vendor === gamepadPs4Joystick.vendor &&
+  (emuzeController.joystickName.includes("4") ||
+    emuzeController.product === gamepadPs4Joystick.product);
+
+const replaceInstanceConfig =
+  (emuzeController?: EmuzeController): SectionReplacement =>
+  (sections) => {
+    const joystickId = isGamepadWithTwoInstances(emuzeController) ? 1 : 0;
+    return replaceSection(sections, "[Instance0]", [
+      { keyValue: `JoystickID = ${joystickId}` },
+    ]);
+  };
 
 const replaceConfigFile = () => {
   const filePath = getConfigFilePath();
@@ -61,11 +74,13 @@ const replaceConfigFile = () => {
 
   const sections = splitConfigBySection(fileContent);
 
+  const emuzeController = getControllers().at(0);
+
   const fileContentNew = chainSectionReplacements(
     sections,
-    replaceInstanceConfig,
+    replaceInstanceConfig(emuzeController),
     replaceKeyboardConfig,
-    replaceJoystickConfig,
+    replaceJoystickConfig(emuzeController),
   ).join(EOL);
 
   writeConfig(filePath, fileContentNew);
@@ -84,7 +99,6 @@ export const melonds: Application = {
   id: applicationId,
   name: "melonDS",
   fileExtensions: [".nds"],
-  flatpakId,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {
     basePath: getConfigFileBasePath(),

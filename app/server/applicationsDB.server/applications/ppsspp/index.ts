@@ -20,7 +20,6 @@ import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { getVirtualGamepad } from "./getVirtualGamepad.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
-const flatpakId = "org.ppsspp.PPSSPP";
 const applicationId: ApplicationId = "ppsspp";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "PPSSPPWindows64.exe")
@@ -147,7 +146,6 @@ export const ppsspp: Application = {
   id: applicationId,
   name: "PPSSPP",
   fileExtensions: [".chd", ".cso", ".iso", ".pbp"],
-  flatpakId,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {
     basePath: getConfigFileBasePath(),

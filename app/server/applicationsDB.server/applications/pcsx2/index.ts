@@ -1,4 +1,4 @@
-import type { Application } from "../../types.js";
+import type { Application, DetectedRequiredFile } from "../../types.js";
 import fs from "node:fs";
 import { EOL, homedir } from "os";
 import { isWindows } from "../../../operationsystem.server.js";
@@ -19,7 +19,6 @@ import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
-const flatpakId = "net.pcsx2.PCSX2";
 const applicationId: ApplicationId = "pcsx2";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "pcsx2-qt.exe")
@@ -82,6 +81,20 @@ export const replaceUiConfig: SectionReplacement = (sections) =>
     { keyValue: "SetupWizardIncomplete = false" },
   ]);
 
+export const replaceFoldersConfig =
+  (biosFiles: DetectedRequiredFile[]): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[Folders]", [
+      { keyValue: `Bios = ${nodepath.dirname(biosFiles.at(0)!.filePath)}` },
+    ]);
+
+export const replaceFilenamesConfig =
+  (biosFiles: DetectedRequiredFile[]): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[Filenames]", [
+      { keyValue: `BIOS = ${nodepath.basename(biosFiles.at(0)!.filePath)}` },
+    ]);
+
 /**
  * TODO: Check which game is compatible with multitap
  * TODO: set multitap only if more than 2 controller
@@ -111,7 +124,10 @@ const getConfigFilePath = () =>
     configFilePathRelative,
   );
 
-export const replaceConfigSections = (ps2RomsPath: string) => {
+export const replaceConfigSections = (
+  ps2RomsPath: string,
+  biosFiles: DetectedRequiredFile[],
+) => {
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
 
@@ -120,6 +136,8 @@ export const replaceConfigSections = (ps2RomsPath: string) => {
   const fileContentNew = chainSectionReplacements(
     sections,
     replaceUiConfig,
+    replaceFoldersConfig(biosFiles),
+    replaceFilenamesConfig(biosFiles),
     replaceInputSourcesConfig,
     // replacePadConfig,
     replaceHotkeyConfig,
@@ -144,7 +162,6 @@ export const pcsx2: Application = {
   id: applicationId,
   name: "PCSX2",
   fileExtensions: [".chd", ".iso"],
-  flatpakId,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {
     basePath: getConfigFileBasePath(),
@@ -160,15 +177,43 @@ export const pcsx2: Application = {
       "sstates",
     ],
   },
+  biosFiles: [
+    {
+      type: "default",
+      requiredFiles: [
+        /** US */
+        {
+          filename: "scph39001.bin",
+          hash: "f4c948e61a291d4b3f92a141e550cf8357204287a31ff784caccbedaef910c9d",
+        },
+        /** Europe */
+        {
+          filename: "SCPH-70004_BIOS_V12_PAL_200.bin",
+          hash: "d6653f4e93be2f6f9e9d690a934f26cf0f6ad4e348b69f41ef736732c3a6685b",
+        },
+        /** Japan */
+        {
+          filename: "scph10000.bin",
+          hash: "c4dad3b5c6ad58bce70a47fc332602880f041c0338ac6be89061c928f6919ab1",
+        },
+        /** Europe */
+        {
+          filename: "PS2 Bios 30004R V6 Pal.bin",
+          hash: "ee7ae4cc152588b7da1dab17494a321ceafafaf799769baea4e8a28afa5044b1",
+        },
+      ],
+    },
+  ],
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
       general: { categoriesPath },
     },
     categoryData,
+    biosFiles,
   }) => {
     const ps2RomsPath = nodepath.join(categoriesPath, categoryData.name);
-    replaceConfigSections(ps2RomsPath);
+    replaceConfigSections(ps2RomsPath, biosFiles!);
 
     const optionParams = [];
     if (fullscreen) {

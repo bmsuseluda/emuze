@@ -1,6 +1,133 @@
 # Changelog
 
-## 0.57.0
+## 0.59.0 (09-08-2026)
+
+As you might now i love the simplicity of console gaming. You start the game and it just works. With emulation more often then not you have to provide more then just the game. You need things like a BIOS file, firmware or key files. I wanted to assist with this for a long time. With this release you can choose a folder where you can put your BIOS files and emuze will pick them up and configure the Emulators. Of course emuze will tell you if a required file is missing. On top of this emuze comes bundled with open source BIOS implementations for PlayStation, Game Boy Advance and NEO GEO. Of course you can use official BIOS files instead if you need by putting them in the BIOS folder. Sadly i was not able to achieve the same result for more complicated systems like PlayStation 3, WiiU and Switch. These systems require a installation of a firmware. I will try to tackle these in a future release.
+
+Besides this i bundled and pre configured ScummVM and DOSBox Pure Unleashed.
+Therefore the day is finally here: All 35 supported systems are pre configured and bundled now 🥳
+No matter which system you want to play all connected gamepads will be configured for the specific Emulator and should just work without further tinkering.
+
+In the past i already bundled and pre configured RMG as an alternative to ares to play N64 if your device is not capable to run ares N64 with 100% speed.
+For similar reasons i bundled and pre configured Eden as an alternative to Ryujinx.
+With this release you can activate RMG and Eden via Settings -> Advanced.
+
+Please let me know what you think of it in the [emuze discord](https://discord.gg/tCzK7kc6Y4).
+
+### 💥 Features
+- all emulators are bundled now
+- all emulators are pre configured now
+- detects and configures BIOS files
+  - except PlayStation 3, WiiU and Switch. These are much more complicated and will be tackled in future releases
+- bundles open source BIOS implementations which will be used if no official BIOS is provided by the user
+- integrate Release Notes
+- Option to create all System Folders (Settings -> General -> Button "Create System Folders")
+  - Creates necessary Substructure for PlayStation 3 and WiiU as well 
+- pre configure Eden as an alternative to Ryujinx
+- pre configure DOSBox Pure Unleashed
+- add settings page to activate alternative emulators (Settings -> Advanced)
+- the Emulators Path on Windows is not necessary anymore and was removed
+- support the new Steam Controller
+
+### 💫 Updates / Bundles
+- bundle ScummVM [v2026.3.0](https://github.com/scummvm/scummvm/releases/tag/v2026.3.0)
+- bundle DOSBox Pure Unleashed [v1.0-preview6](https://github.com/schellingb/dosbox-pure-unleashed/releases/tag/1.0-preview6)
+- bundle Eden [v0.2.1](https://git.eden-emu.dev/eden-emu/eden/releases/tag/v0.2.1)
+- bundle [Openbios](https://pcsx-redux.consoledev.net/openbios) from the PCSX Redux Team
+- bundle neogeo-bios [v0.0.2](https://github.com/neogeo-projects/neogeo-bios/releases/tag/v0.0.2)
+- bundle gba-bios [v1.0](https://github.com/ez-me/gba-bios/releases/tag/1.0)
+- update bundled RPCS3 to [v0.0.42](https://github.com/RPCS3/rpcs3/releases/tag/v0.0.42)
+- update bundled ares to [v148](https://github.com/ares-emulator/ares/releases/tag/v148)
+- update bundled PPSSPP to [v1.20.4](https://github.com/hrydgard/ppsspp/releases/tag/v1.20.4)
+- update bundled Azahar to [v2125.1.3](https://github.com/azahar-emu/azahar/releases/tag/2125.1.3)
+- update bundled MAME to [v0.288](https://www.mamedev.org/?p=564)
+- update bundled xemu to [v0.8.136](https://github.com/xemu-project/xemu/releases/tag/v0.8.136)
+- update bundled RMG to [v0.9.0](https://github.com/Rosalie241/RMG/releases/tag/v0.9.0)
+
+### 🪲 Bug Fixes
+- loading animation did not work correctly on some linux distributions
+- import failed if PlayStation 3 folder structure was not as expected
+- controls did not work correctly if there where multiple folders of a system
+- if PlayStation 3 disc games were removed, they were not removed in the RPCS3 games list
+- gamepad mapping in ares did not work in rare cases
+- gamepad mapping in RMG did not work in rare cases
+- emuze was crashing when a device was connected, that would be recognized by SDL as a Joystick but not as a Controller
+- gamepad mapping in Ryujinx did not work in some cases on Steam Deck with Steam Input deactivated
+- gamepad mapping in Dolphin did not work in some cases on Steam Deck with Steam Input activated
+- gamepad mapping in Mednafen did not work in some cases on Steam Deck with Steam Input activated
+- dpad was not mapped correctly for ps4 controller in melonDS
+
+### ❗️ Breaking Changes
+- removed DOSBox Staging in favor of DOSBox Pure Unleashed
+- to support the mlc folder for WiiU, your games need to be in a subfolder "games"
+- because bios files are handled by emuze now, you have to put your bios files in a folder and set this folder under Settings -> General -> BIOS Path
+
+## 0.58.0 (19-02-2026)
+
+As one of the few nerdy kids in a small sleepy town in a country where arcade gaming was classified as gambling i could see lightgun games in magazines only. I had an NES and Captain N with his Zapper was sooo awesome to me. But when the time came that i could buy one with my own money the rise of flat panels began and with it the death of CRT TVs and Lightguns altogether. It was just a thing of the past, sadly.
+But surprisingly the genre came back with the Wii and PS3 and there Pointer devices. Some years later camera based Lightguns came to the market and finally Lightgun gaming with the same and even higher precision is possible on flat panels.
+Last year i fulfilled my childhood dream and brought a Retro Shooter Reaper. It was expensive but it was worth it. Playing Time Crisis or House of the Dead 3 with a proper Lightgun is a game changer. Enough with the introduction, emuze now has basic Lightgun support for PlayStation and PlayStation 3. As always my goal is to make the experience as plug and play as possible, but my testing is limited. This is just the beginning and i will expand the support with future updates. For more information please have a look into the [documentation](https://github.com/bmsuseluda/emuze?tab=readme-ov-file#-lightgun-support).
+
+Furthermore i squashed a lot of Bugs and did several smaller things like a UI scaling for higher resolutions. Tiny game tiles and controls are a thing of the past now 🙂
+
+Besides this i bundled and pre configured Cemu, Rosalie's Mupen GUI and MAME.
+Thanks to [Samueru-sama](https://github.com/Samueru-sama) who created an AppImage for Rosalie's Mupen GUI.
+34 of the 35 supported systems are pre configured and 33 of them are bundled now 🥳
+For the next release i plan to bundle the last remaining Emulators ScummVM and DOSBox.
+
+Please let me know what you think of it in the [emuze discord](https://discord.gg/tCzK7kc6Y4).
+
+### 💥 Features
+- pre configure MAME
+- pre configure Cemu
+- pre configure Rosalie's Mupen GUI (RMG)
+- provide basic Lightgun support for PlayStation and PlayStation 3. For more information please check the [documentation](https://github.com/bmsuseluda/emuze?tab=readme-ov-file#-lightgun-support)
+- scale emuze on higher resolutions
+- updated Steam Input Profile:
+  - Left Touchpad works as a scroll wheel
+  - Right Touchpad Click works as Left Mouse Click
+  - Left Touchpad Click works as Right Mouse Click
+  - Touchscreen can be used to scroll
+- greatly improve PlayStation 3 import speed
+- add support for PSN PlayStation 1 games (PSOne Classics) with RPCS3
+- support `.pbp` format for ppsspp to play PSN games like PSP Minis
+- support `.3ds` format for Azahar
+- use deinterlacer `bob_offset` to fix interlacing problems with high resolution Saturn games e.g. `Virtua Fighter 2`
+- use 94% xscale value to fix lightgun aiming in `Time Crisis` on PlayStation
+- for Nintendo 64 map `Right Stick Down` to XBOX `B` Button and `Right Stick Left` to XBOX `Y` Button for games like `Super Smash Bros.` to jump properly. This will be mapped on top of the regular mapping
+- use native window decoration for Mednafen on Linux, thanks to [Samueru-sama](https://github.com/Samueru-sama)
+- synchronize sdl gamecontroller db with bundled emulators
+- document [external data](https://github.com/bmsuseluda/emuze?tab=readme-ov-file#-external-data) that is used
+- set hotkey to swap screens to `Right Stick Click` for Nintendo DS
+
+### 💫 Updates / Bundles
+- bundle Rosalie's Mupen GUI v0.8.9
+- bundle Cemu v2.6
+- update bundled ares to v147
+- update bundled Dolphin to v2512
+- update bundled melonDS to v1.1
+- update bundled RPCS3 to v0.0.39
+- update bundled xemu to v0.8.133
+- update bundled Flycast to v2.6
+- update bundled MAME to v0.285
+- update bundled Azahar to v2124.3
+
+### 🪲 Bug Fixes
+- fixed overwriting existing config files while syncing config files from emuze folder to emulator folder
+- physical PlayStation 3 games could not be started if there were update files for those games
+- import of PlayStation 3 games could result in wrongly mixed up game tiles
+- L and R Buttons were not mapped correctly for PlayStation Portable on Linux
+- fixed settings overlay to large on 4K screens
+- if a system was removed, games from this system were not removed from last played
+- if a system was removed, going up in the system list wasn't working reliably
+- on Steam Deck sometimes emuze did not launch maximized
+- fixed keyboard mapping for GameCube and Wii on Windows
+- fixed writing config files for several Systems on Windows
+- fixed a focus problem on Windows whereby gamepad inputs were not recognized immediately after starting emuze
+- fixed a focus problem on Windows whereby gamepad inputs were not recognized after closing a game
+- fixed a focus problem on Windows whereby gamepad inputs were not recognized after choosing a Roms Folder
+
+## 0.57.0 (18-10-2025)
 
 Starfox, Space Harrier, Panzer Dragoon... They look awesome, they sound awesome and the action is non stop and thrilling. I love those games, but always thought there are not enough of them. Shoot em up fans had the PC Engine and the Mega Drive. Fighting game fans had the NeoGeo, but Rail Shooter fans?
 Back then i did not know, but there was the [Pioneer LaserActive](https://en.wikipedia.org/wiki/LaserActive). A really interesting modular system which combines LaserDiscs with gaming. In particular there were 2 modules. One from NEC based on the PC Engine and one from Sega based on the Mega Drive / Genesis.
@@ -65,7 +192,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
   - mgba
   - lime3ds
 
-## 0.56.0
+## 0.56.0 (15-08-2025)
 
 In this release i fully reworked the gamepad integration in emuze. In the past i used the Web Gamepad Api implementation of Chromium. Sadly i faced a lot of bugs and limitations with this implementation. Therefore i looked for an alternative for a while and finally decided for SDL which is used by most emulators too these days. With this a lot more gamepads are supported and i could close all controller related bugs i had stumbled upon. On top of it the implementation is a lot simpler and more straight forward. A big thank you to [kmamal](https://github.com/kmamal) for providing sdl bindings for NodeJS: [SDL](https://github.com/kmamal/node-sdl).
 
@@ -121,7 +248,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - Updater does not work on Steam Deck Game Mode -> Please switch to Desktop for updating emuze
 - dinput controllers are not mapped correctly on mednafen
 
-## 0.55.0
+## 0.55.0 (03-06-2025)
 
 Finally this release is done. It went quite longer then i expected. I had to do a lot under the hood with some major version jumps of the libraries i use that lead to bigger refactorings.
 
@@ -181,7 +308,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - switch gamepads do not work in emuze on linux
 - dinput gamepads do not work reliably after closing a game in emuze on windows
 
-## 0.54.0
+## 0.54.0 (13-03-2025)
 
 As long as I have been working on emuze, there was one topic that I was never really satisfied with: The first import when setting up emuze took far too long. The reason is quite simple: To retrieve meta data a request has to be sent to the igdb api. Like every service, igdb has a rate limit and authentication that I have to comply with. In order to take care of this and not get into financial trouble, a serverless server has been my solution for fetching meta data to this day. However, this led to the fact that the first import at cold start of the server could take a good 40 seconds for a large game collection.
 
@@ -211,12 +338,12 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - Game Boy, Game Boy Color and Game Boy Advance won't be combined under Game Boy anymore. Therefore you need to create separate folders for these specific systems
 - NeoGeo Pocket and NeoGeo Pocket Color won't be combined under NeoGeo Pocket anymore. Therefore you need to create separate folders for these specific systems
 
-## 0.53.1
+## 0.53.1 (12-02-2025)
 
 ### 🪲 Bug Fixes
 - fix bundled Dolphin on Linux
 
-## 0.53.0
+## 0.53.0 (12-02-2025)
 
 This release is a big step forward towards version 1.0.
 20 of the 33 supported systems are pre configured and 15 of them are bundled now.
@@ -260,7 +387,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - fix missing audio with mednafen on linux
 - fix dolphin gamepad mapping for more then 1 player
 
-## 0.52.1
+## 0.52.1 (29-11-2024)
 
 ### 💥 Features
 - pre configure Ryujinx
@@ -274,7 +401,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - do not show update and dlc files for Nintendo Switch
 - forward fullscreen setting to emulators was not reliable
 
-## 0.51.0
+## 0.51.0 (06-11-2024)
 
 ### 💥 Features
 - group game versions and discs (You have to `Import all` again)
@@ -289,7 +416,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - Settings -> General: Remove error message if new path was choosen
 - remove duplicate `PlayStation All-Stars Battle Royale` entry in PS3 Game Grid
 
-## 0.50.0
+## 0.50.0 (26-09-2024)
 
 ### 💥 Features
 - add last played games grid
@@ -310,7 +437,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - fixed unintended scrolling in sidebar on mouse click
 - mouse click on appearance settings does set focus correctly
 
-## 0.49.0
+## 0.49.0 (26-06-2024)
 
 ### 💥 Features
 - pre configure rumble for n64
@@ -323,7 +450,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - Games are too small on 4k resolutions
 - fix `Import all` on first start without internet connection
 
-## 0.48.0
+## 0.48.0 (31-03-2024)
 
 ### 💥 Features
 - add Neo Geo Pocket and Color support
@@ -349,7 +476,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - use limit and offset on igdb requests to get meta data for more than 500 games per system
 - fast navigation inputs were blocked
 
-## 0.47.1
+## 0.47.1 (26-04-2024)
 
 ### 💥 Features
 - holding buttons to scroll fast
@@ -368,7 +495,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - add [lime3DS](https://github.com/Lime3DS/Lime3DS) as the default Nintendo 3DS Emulator
 - add Donkey.Bas to supported DOS Games
 
-## 0.46.0
+## 0.46.0 (22-03-2024)
 
 ### 💥 Features
 - add support for more dos games (based on a [whitelist](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json) for now)
@@ -390,7 +517,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 ### 📣 Info
 - citra and yuzu can not be installed anymore, because they were removed from flathub. If you have them installed already they will work like before
 
-## 0.45.0
+## 0.45.0 (25-02-2024)
 
 ### 💥 Features
 - add support for ScummVM
@@ -401,7 +528,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - fix Play! integration
 - fix "Install Emulators" could not be triggered via gamepad
 
-## 0.44.0
+## 0.44.0 (15-02-2024)
 
 ### 💥 Features
 - add Game Gear system and emulators
@@ -410,7 +537,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - add Switch system and emulators
 - support gdi and cdi format for flycast
 
-## 0.43.0
+## 0.43.0 (03-02-2024)
 
 ### 💥 Features
 - show fallback game image if offline and there is no cache
@@ -419,7 +546,7 @@ Please let me know what you think of it in the [emuze discord](https://discord.g
 - add Rosalie's Mupen GUI Emulator
 - add fullscreen support for flycast
 
-## 0.42.0
+## 0.42.0 (02-02-2024)
 
 ### 💥 Features
 - add chd support for ppsspp

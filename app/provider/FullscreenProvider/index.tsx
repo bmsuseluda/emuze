@@ -4,7 +4,7 @@ import { createContext, useEffect, useState } from "react";
 export const FullscreenContext = createContext<boolean>(false);
 
 type Props = {
-  fullscreenDefault: boolean;
+  fullscreenDefault?: boolean;
   children: ReactNode;
 };
 

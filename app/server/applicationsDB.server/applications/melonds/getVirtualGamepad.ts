@@ -1,17 +1,10 @@
-import sdl from "@kmamal/sdl";
-
 import type {
   SdlButtonId,
   SdlButtonMapping,
 } from "../../../../types/gamepad.js";
-import {
-  createSdlMappingObject,
-  getButtonIndex,
-  getPlayerIdArray,
-  getPlayerIndexArray,
-  isDpadHat,
-} from "../../../../types/gamepad.js";
-import { getControllerFromJoystick } from "../../../gamepad.server.js";
+import { getButtonIndex, isDpadHat } from "../../../../types/gamepad.js";
+import { log } from "../../../debug.server.js";
+import { EmuzeController } from "../../../gamepad.server.js";
 import type { ParamToReplace } from "../../configFile.js";
 import type { MelonDsButtonId } from "./types.js";
 
@@ -28,6 +21,7 @@ const melonDsButtonMapping = {
   Start: "start",
   L: "leftshoulder",
   R: "rightshoulder",
+  HK_SwapScreens: "rightstick",
 } satisfies Record<MelonDsButtonId, SdlButtonId>;
 
 const getMelonDsDpadHatMapping = (melonDsButtonId: MelonDsButtonId) => {
@@ -74,35 +68,29 @@ const getButtonMapping = (
   };
 };
 
-export const getVirtualGamepad = (): ParamToReplace[] => {
-  const joysticks = sdl.joystick.devices;
-  if (joysticks.length > 0) {
-    const playerIndex = getPlayerIndexArray(joysticks).at(0) || 0;
-    const controller = getControllerFromJoystick(joysticks[playerIndex]);
-    if (controller?.mapping) {
-      const mappingObject = createSdlMappingObject(controller.mapping);
+export const getVirtualGamepad = (
+  emuzeController?: EmuzeController,
+): ParamToReplace[] => {
+  if (emuzeController) {
+    log("debug", "melonds", { emuzeController });
+    const { mappingObject } = emuzeController;
 
-      return [
-        getDpadButtonMapping(mappingObject, "Up"),
-        getDpadButtonMapping(mappingObject, "Down"),
-        getDpadButtonMapping(mappingObject, "Left"),
-        getDpadButtonMapping(mappingObject, "Right"),
-        getButtonMapping(mappingObject, "A"),
-        getButtonMapping(mappingObject, "B"),
-        getButtonMapping(mappingObject, "X"),
-        getButtonMapping(mappingObject, "Y"),
-        getButtonMapping(mappingObject, "L"),
-        getButtonMapping(mappingObject, "R"),
-        getButtonMapping(mappingObject, "Select"),
-        getButtonMapping(mappingObject, "Start"),
-        // TODO: how to set this?
-        { keyValue: `HK_SwapScreens = 35782655` },
-      ];
-    }
+    return [
+      getDpadButtonMapping(mappingObject, "Up"),
+      getDpadButtonMapping(mappingObject, "Down"),
+      getDpadButtonMapping(mappingObject, "Left"),
+      getDpadButtonMapping(mappingObject, "Right"),
+      getButtonMapping(mappingObject, "A"),
+      getButtonMapping(mappingObject, "B"),
+      getButtonMapping(mappingObject, "X"),
+      getButtonMapping(mappingObject, "Y"),
+      getButtonMapping(mappingObject, "L"),
+      getButtonMapping(mappingObject, "R"),
+      getButtonMapping(mappingObject, "Select"),
+      getButtonMapping(mappingObject, "Start"),
+      getButtonMapping(mappingObject, "HK_SwapScreens"),
+    ];
   }
 
   return [];
 };
-
-export const getPlayerId = () =>
-  getPlayerIdArray(sdl.joystick.devices).at(0) || 0;

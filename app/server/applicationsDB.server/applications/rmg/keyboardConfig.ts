@@ -5,6 +5,7 @@ import { mapAndJoinEmuzeButtonIds, rmgButtonIds } from "./types.js";
 import type { EmuzeButtonId } from "../../../../types/gamepad.js";
 import { keyboardMapping } from "../../../../types/gamepad.js";
 import { capitalizeFirst } from "../../../capitalizeFirst.server.js";
+import { normalizeNewLines } from "../../configFile.js";
 
 const getInputType: ButtonDetailsFunction = () => "-1";
 
@@ -33,8 +34,8 @@ const getKeyboardButtonMappings = (): string[] =>
     getRmgButtonMapping(rmgButtonId as RmgButtonId, emuzeButtonIds),
   );
 
-// TODO: Check how keyboard mapping works in rmg
-export const keyboardConfig = `[Rosalie's Mupen GUI - Input Plugin Profile 0]
+export const keyboardConfig =
+  normalizeNewLines(`[Rosalie's Mupen GUI - Input Plugin Profile 0]
 PluggedIn = True
 DeviceName = "Keyboard"
 DeviceType = 3
@@ -46,4 +47,4 @@ Pak = 0
 RemoveDuplicateMappings = True
 FilterEventsForButtons = True
 FilterEventsForAxis = True
-${getKeyboardButtonMappings().join(EOL)}`;
+${getKeyboardButtonMappings().join(EOL)}`);

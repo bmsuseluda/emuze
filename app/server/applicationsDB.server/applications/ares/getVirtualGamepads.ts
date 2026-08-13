@@ -1,14 +1,12 @@
-import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
 import type { SdlButtonMapping } from "../../../../types/gamepad.js";
-import {
-  createSdlMappingObject,
-  getPlayerIndexArray,
-  isN64Controller,
-  isPs3Controller,
-} from "../../../../types/gamepad.js";
+import { isN64Controller, isPs3Controller } from "../../../../types/gamepad.js";
 import { log } from "../../../debug.server.js";
-import { getJoystickFromController } from "../../../gamepad.server.js";
+import {
+  DetectSdlGuidIndex,
+  EmuzeController,
+  getControllers,
+  getSdlGuidIndex,
+} from "../../../gamepad.server.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { getKeyboard } from "./keyboardConfig.js";
 import { PhysicalGamepad } from "./PhysicalGamepad.js";
@@ -74,11 +72,11 @@ const getVirtualGamepadDpad = (
   mappingObject: SdlButtonMapping,
   physicalGamepad: PhysicalGamepad,
   systemHasAnalogStick: boolean,
-  controller: Sdl.Controller.Device,
+  controller: EmuzeController,
 ) => {
   log("debug", "mappingObject", mappingObject);
   if (mappingObject.dpup) {
-    if (isPs3Controller(controller)) {
+    if (isPs3Controller(controller.sdlController)) {
       //     button
       return [
         ...getVirtualGamepadButton(
@@ -150,151 +148,139 @@ const getVirtualGamepadDpad = (
   }
 };
 
-const getIndexForDeviceId = (index: number) => `${index + 1}`;
+const guidOverwrites: Record<string, string> = {
+  "03008fe54c050000c405000000006800": "05008fe54c050000c405000000006800",
+  "030044f05e040000e002000000006800": "050044f05e040000e002000000006800",
+};
 
-/**
- * Creates the ares specific device id based on the SDL device input.
- *
- * result e.g. 0x1045e02e0 (8bitdo pro 2)
- *
- * 0x1054c05c4 (ds4)
- * 0x2045e02e0 (8bitdo pro 2)
- * 0x3054c0268 (ds3)
- *
- * ? = 0x (is always the same)
- * deviceIndex = 1 (index + 1)
- * vendor = 28de (hex value, needs to be padded with "0" on start to 4 characters)
- * product = 11ff (hex value, needs to be padded with "0" on start to 4 characters)
- */
 export const createDeviceId = (
-  { vendor, product }: Sdl.Controller.Device,
-  index: number,
+  { guid }: EmuzeController,
+  guidIndex: number,
 ) => {
-  const deviceIdIndex = getIndexForDeviceId(index);
-  return `0x${deviceIdIndex}${vendor?.toString(16).padStart(4, "0")}${product?.toString(16).padStart(4, "0")}`;
+  const guidConverted = guidOverwrites[guid];
+  return `${guidConverted || guid}/${guidIndex}`;
 };
 
 export const getVirtualGamepad =
   (
     systemId: SystemId,
     systemHasAnalogStick: boolean,
-    playerIndexArray: number[],
+    detectSdlGuidIndex: DetectSdlGuidIndex,
   ) =>
-  (sdlDevice: Sdl.Controller.Device, index: number) => {
-    const virtualGamepadIndex = playerIndexArray[index];
-    const mappingObject = createSdlMappingObject(sdlDevice.mapping!);
-    const deviceId = createDeviceId(sdlDevice, index);
+  (controller: EmuzeController, index: number) => {
+    const { mappingObject, guid } = controller;
+    const guidIndex = detectSdlGuidIndex(guid, index);
+    const deviceId = createDeviceId(controller, guidIndex);
     const physicalGamepad = new PhysicalGamepad(deviceId, mappingObject);
-    const joystick = getJoystickFromController(sdlDevice)!;
 
-    log("debug", "gamepad", { index, sdlDevice, deviceId }, joystick);
+    log("debug", "gamepad", { index, controller, deviceId });
 
     return [
       ...getVirtualGamepadDpad(
-        virtualGamepadIndex,
+        index,
         mappingObject,
         physicalGamepad,
         systemHasAnalogStick,
-        sdlDevice,
+        controller,
       ),
 
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "Select" },
+        { gamepadIndex: index, buttonId: "Select" },
         physicalGamepad.getBack(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "Start" },
+        { gamepadIndex: index, buttonId: "Start" },
         physicalGamepad.getStart(),
       ),
 
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "A..South" },
+        { gamepadIndex: index, buttonId: "A..South" },
         physicalGamepad.getA(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "B..East" },
+        { gamepadIndex: index, buttonId: "B..East" },
         physicalGamepad.getB(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "X..West" },
+        { gamepadIndex: index, buttonId: "X..West" },
         physicalGamepad.getX().inputId
           ? physicalGamepad.getX()
           : physicalGamepad.getB(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "Y..North" },
+        { gamepadIndex: index, buttonId: "Y..North" },
         physicalGamepad.getY(),
       ),
 
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "L-Bumper" },
+        { gamepadIndex: index, buttonId: "L-Bumper" },
         physicalGamepad.getLeftShoulder(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Bumper" },
+        { gamepadIndex: index, buttonId: "R-Bumper" },
         physicalGamepad.getRightShoulder(),
       ),
 
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "L-Trigger" },
+        { gamepadIndex: index, buttonId: "L-Trigger" },
         physicalGamepad.getLeftTrigger(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Trigger" },
-        isN64Controller(joystick)
+        { gamepadIndex: index, buttonId: "R-Trigger" },
+        isN64Controller(controller.sdlJoystick)
           ? physicalGamepad.getLeftTrigger()
           : physicalGamepad.getRightTrigger(),
         systemId === "nintendo64" ? physicalGamepad.getLeftTrigger() : null,
       ),
 
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "L-Stick..Click" },
+        { gamepadIndex: index, buttonId: "L-Stick..Click" },
         physicalGamepad.getLeftStickClick(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Stick..Click" },
+        { gamepadIndex: index, buttonId: "R-Stick..Click" },
         physicalGamepad.getRightStickClick(),
       ),
 
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "L-Up" },
+        { gamepadIndex: index, buttonId: "L-Up" },
         physicalGamepad.getLeftStickUp(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "L-Down" },
+        { gamepadIndex: index, buttonId: "L-Down" },
         physicalGamepad.getLeftStickDown(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "L-Left" },
+        { gamepadIndex: index, buttonId: "L-Left" },
         physicalGamepad.getLeftStickLeft(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "L-Right" },
+        { gamepadIndex: index, buttonId: "L-Right" },
         physicalGamepad.getLeftStickRight(),
       ),
 
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Up" },
+        { gamepadIndex: index, buttonId: "R-Up" },
         physicalGamepad.getRightStickUp().inputId
           ? physicalGamepad.getRightStickUp()
           : physicalGamepad.getRightButtonUp(),
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Down" },
+        { gamepadIndex: index, buttonId: "R-Down" },
         physicalGamepad.getRightStickDown().inputId
           ? physicalGamepad.getRightStickDown()
           : physicalGamepad.getRightButtonDown(),
         systemId === "nintendo64" ? physicalGamepad.getB() : null,
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Left" },
+        { gamepadIndex: index, buttonId: "R-Left" },
         physicalGamepad.getRightStickLeft().inputId
           ? physicalGamepad.getRightStickLeft()
           : physicalGamepad.getRightButtonLeft(),
         systemId === "nintendo64" ? physicalGamepad.getY() : null,
       ),
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "R-Right" },
+        { gamepadIndex: index, buttonId: "R-Right" },
         physicalGamepad.getRightStickRight().inputId
           ? physicalGamepad.getRightStickRight()
           : physicalGamepad.getRightButtonRight(),
@@ -302,7 +288,7 @@ export const getVirtualGamepad =
 
       //   To activate rumble, it can be any button
       ...getVirtualGamepadButton(
-        { gamepadIndex: virtualGamepadIndex, buttonId: "Rumble" },
+        { gamepadIndex: index, buttonId: "Rumble" },
         physicalGamepad.getStart(),
       ),
     ];
@@ -312,13 +298,13 @@ export const getVirtualGamepads = (
   systemId: SystemId,
   systemHasAnalogStick: boolean,
 ) => {
-  const gamepads = sdl.controller.devices;
-  const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
+  const gamepads = getControllers();
+  const detectSdlGuidIndex = getSdlGuidIndex(gamepads);
 
   const virtualGamepads =
     gamepads.length > 0
       ? gamepads.map(
-          getVirtualGamepad(systemId, systemHasAnalogStick, playerIndexArray),
+          getVirtualGamepad(systemId, systemHasAnalogStick, detectSdlGuidIndex),
         )
       : getKeyboard();
   log("debug", "gamepads", gamepads.length);

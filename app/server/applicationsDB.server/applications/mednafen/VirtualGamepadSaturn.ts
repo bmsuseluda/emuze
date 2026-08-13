@@ -1,8 +1,4 @@
-import type {
-  MappedGamepadWithPlayerIndex,
-  MednafenGamepadID,
-} from "./initGamepadIDs.js";
-import { getMappedGamepads } from "./initGamepadIDs.js";
+import type { MappedGamepad } from "./initGamepadIDs.js";
 import { log } from "../../../debug.server.js";
 import { VirtualGamepad } from "./VirtualGamepad.js";
 import { getKeyboardMapping } from "./keyboardConfig.js";
@@ -91,17 +87,19 @@ export const getKeyboardSaturn = () => {
 
 export const getVirtualGamepadSaturn = ({
   mednafenGamepadId,
-  playerIndex,
-  sdlController,
-}: MappedGamepadWithPlayerIndex) => {
-  log("debug", "gamepad", mednafenGamepadId, sdlController, playerIndex);
+  emuzeController,
+}: MappedGamepad) => {
+  log("debug", "gamepad", mednafenGamepadId, emuzeController);
   const { initialize, createButtonMapping } =
     new VirtualGamepad<MednafenButtonIdSaturn>(
-      playerIndex,
+      emuzeController.player,
       system,
       gamepadType,
     );
-  const physicalGamepad = getPhysicalGamepad(sdlController, mednafenGamepadId);
+  const physicalGamepad = getPhysicalGamepad(
+    emuzeController.sdlController,
+    mednafenGamepadId,
+  );
 
   return [
     ...initialize(),
@@ -126,11 +124,7 @@ export const getVirtualGamepadSaturn = ({
   ];
 };
 
-export const getVirtualGamepadsSaturn = (
-  mednafenGamepadIds: MednafenGamepadID[],
-) => {
-  const mappedGamepads = getMappedGamepads(mednafenGamepadIds);
-
+export const getVirtualGamepadsSaturn = (mappedGamepads: MappedGamepad[]) => {
   const virtualGamepads =
     mappedGamepads.length > 0
       ? mappedGamepads.map(getVirtualGamepadSaturn)

@@ -3,9 +3,7 @@ import nodepath from "node:path";
 import fs from "fs-extra/esm";
 import { configFolderPath, e2ePath, testName } from "./config.js";
 
-import { fileURLToPath } from "node:url";
-
-const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
+const __dirname = import.meta.dirname;
 
 test.describe.configure({ mode: "serial" });
 

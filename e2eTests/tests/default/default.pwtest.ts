@@ -5,6 +5,9 @@ import { configFolderPath, e2ePath, testName } from "./config.js";
 
 test.describe.configure({ mode: "serial" });
 
+const playstationSystemName = "Playstation";
+const saturnSystemName = "Sega Saturn";
+
 const resetFiles = () => {
   fs.removeSync(configFolderPath);
   fs.copySync(nodepath.join(e2ePath, "config"), configFolderPath);
@@ -87,7 +90,6 @@ test("import all", async ({ page, libraryPage, settingsPage }) => {
   await libraryPage.press("ArrowDown");
   await libraryPage.expectIsSystem("Game Boy", "Super Mario Land");
 
-  const playstationSystemName = "Playstation";
   const playstationLink = page.getByRole("link", {
     name: playstationSystemName,
   });
@@ -155,7 +157,72 @@ test("Should open the about page", async ({ page, settingsPage }) => {
   await expect(settingsPage.aboutPage.github).toBeVisible();
   await settingsPage.press("ArrowRight");
   await settingsPage.press("ArrowDown");
-  await expect(settingsPage.aboutPage.changelog).toBeFocused();
+  await expect(settingsPage.aboutPage.releasenotes).toBeFocused();
+  await expect(page).toHaveScreenshot();
+  await settingsPage.press("Enter");
+  await expect(
+    settingsPage.page.getByRole("heading", {
+      name: "Release Notes",
+    }),
+  ).toBeVisible();
+  await expect(page).toHaveScreenshot();
+  await settingsPage.press("Escape");
+  await expect(
+    settingsPage.page.getByRole("heading", {
+      name: "Release Notes",
+    }),
+  ).not.toBeVisible();
+});
+
+test("Should open the advanced page", async ({ page, settingsPage }) => {
+  await settingsPage.openSettingsViaClick(true);
+  await settingsPage.goToSubPageViaClick(settingsPage.advancedPage.name);
+  await expect(settingsPage.advancedPage.eden).toBeVisible();
+  await settingsPage.press("ArrowRight");
+  await settingsPage.press("ArrowDown");
+  await expect(settingsPage.advancedPage.rmg).toBeFocused();
+  await expect(page).toHaveScreenshot();
+  await settingsPage.press("Enter");
+  await expect(settingsPage.advancedPage.rmg).toBeChecked();
+  await expect(page).toHaveScreenshot();
+
+  await settingsPage.closeSettingsViaClick(true);
+});
+
+test("Should show error that bios folder is necessary", async ({
+  page,
+  libraryPage,
+}) => {
+  await libraryPage.press("i");
+  await libraryPage.goToSystemViaClick(saturnSystemName, "Daytona USA");
+  await libraryPage.press("ArrowRight");
+  await libraryPage.expectGameFocused("Daytona USA");
+  await libraryPage.press("Enter");
+  await expect(page.getByText("BIOS Path")).toBeVisible();
+  await expect(page).toHaveScreenshot();
+});
+
+const testBiosPath = nodepath.join(e2ePath, "testBios");
+
+test("Should show error that bios file is necessary", async ({
+  page,
+  libraryPage,
+  settingsPage,
+}) => {
+  await settingsPage.openSettingsViaClick();
+  await settingsPage.generalPage.biosPath.fill(testBiosPath);
+  await settingsPage.generalPage.importAllButton.click();
+  await expect(libraryPage.loadingModal).toBeVisible();
+  await expect(libraryPage.loadingModal).not.toBeVisible();
+  await libraryPage.press("Escape");
+
+  await libraryPage.goToSystemViaClick(saturnSystemName, "Daytona USA");
+  await libraryPage.press("ArrowRight");
+  await libraryPage.expectGameFocused("Daytona USA");
+  await libraryPage.press("Enter");
+  await expect(
+    page.getByText("A BIOS File is necessary for this System."),
+  ).toBeVisible();
   await expect(page).toHaveScreenshot();
 });
 

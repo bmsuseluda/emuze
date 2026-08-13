@@ -23,7 +23,7 @@ describe("FileDataCache", () => {
       dataCache.readFile();
       expect(dataCache.readFile()).toBe(result);
 
-      expect(readFileHome).toBeCalledTimes(1);
+      expect(readFileHome).toHaveBeenCalledTimes(1);
     });
 
     it("Should return updated data from cache", () => {
@@ -39,9 +39,9 @@ describe("FileDataCache", () => {
 
       expect(dataCache.readFile()).toBe(newResult);
 
-      expect(writeFileHome).toBeCalledWith(newResult, filePath);
-      expect(readFileHome).toBeCalledTimes(1);
-      expect(writeFileHome).toBeCalledTimes(1);
+      expect(writeFileHome).toHaveBeenCalledWith(newResult, filePath);
+      expect(readFileHome).toHaveBeenCalledTimes(1);
+      expect(writeFileHome).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -69,7 +69,7 @@ describe("FileDataCache", () => {
       dataCache.readFile(files[1].filePath);
       expect(dataCache.readFile(files[1].filePath)).toBe(files[1].content);
 
-      expect(readFileHome).toBeCalledTimes(2);
+      expect(readFileHome).toHaveBeenCalledTimes(2);
     });
 
     it("Should return specific updated data for filePath from cache and not overwrite data for other filePath", () => {
@@ -106,12 +106,12 @@ describe("FileDataCache", () => {
         files[1].updatedContent,
       );
 
-      expect(writeFileHome).toBeCalledWith(
+      expect(writeFileHome).toHaveBeenCalledWith(
         files[1].updatedContent,
         files[1].filePath,
       );
-      expect(readFileHome).toBeCalledTimes(2);
-      expect(writeFileHome).toBeCalledTimes(1);
+      expect(readFileHome).toHaveBeenCalledTimes(2);
+      expect(writeFileHome).toHaveBeenCalledTimes(1);
     });
   });
 });

@@ -21,16 +21,12 @@ export type RmgButtonId =
   | "DpadRight";
 
 export const rmgButtonIds = {
-  DpadUp: ["dpadUp"],
-  DpadDown: ["dpadDown"],
-  DpadLeft: ["dpadLeft"],
-  DpadRight: ["dpadRight"],
   Start: ["start"],
   A: ["a"],
   B: ["x"],
   LeftTrigger: ["leftShoulder"],
   RightTrigger: ["rightShoulder"],
-  ZTrigger: ["leftTrigger"],
+  ZTrigger: ["leftTrigger", "rightTrigger"],
   AnalogStickUp: ["leftStickUp"],
   AnalogStickDown: ["leftStickDown"],
   AnalogStickLeft: ["leftStickLeft"],

@@ -9,3 +9,8 @@ export const gamecontrollerdbPath = nodepath.join(
   bundledEmulatorsPathBase,
   "gamecontrollerdb.txt",
 );
+
+export const bundledBiosOpenSourcePath = nodepath.join(
+  process.env.APPDIR || "",
+  "biosOpenSource",
+);

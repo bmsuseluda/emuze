@@ -2,7 +2,7 @@ import nodepath from "node:path";
 import wiiuGames from "./nameMapping/cemu.json" with { type: "json" };
 import { log } from "../../../debug.server.js";
 import type { FindEntryNameFunction } from "../../types.js";
-import { readXmlConfigFile } from "../../configFile.js";
+import { normalizeNewLines, readXmlConfigFile } from "../../configFile.js";
 
 interface ConfigFile {
   "?xml": { "@_version": "1.0"; "@_encoding": "UTF-8" };
@@ -11,8 +11,9 @@ interface ConfigFile {
   };
 }
 
-export const defaultConfig = `<?xml version="1.0" encoding="UTF-8"?>
-<app></app>`;
+export const defaultConfig =
+  normalizeNewLines(`<?xml version="1.0" encoding="UTF-8"?>
+<app></app>`);
 
 export const findWiiuSerial = (path: string): string | undefined => {
   const appConfigFile = readXmlConfigFile(

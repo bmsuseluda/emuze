@@ -1,14 +1,12 @@
 import type { ActionFunction } from "react-router";
-import { Form, useLoaderData } from "react-router";
+import { Form } from "react-router";
 import { Button } from "../components/Button/index.js";
 import { FormBox } from "../components/FormBox/index.js";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
 import { readAppearance, writeAppearance } from "../server/settings.server.js";
-import { Checkbox } from "../components/Checkbox/index.js";
 import type { Appearance } from "../types/jsonFiles/settings/appearance.js";
 import { SettingsIcon } from "../components/SettingsIcon/index.js";
 import { useFullscreen } from "../hooks/useFullscreen/index.js";
-import { CheckboxLabel } from "../components/CheckboxLabel/index.js";
 import type { ComponentRef, MouseEvent } from "react";
 import { useCallback, useRef } from "react";
 import type { Result } from "../hooks/useGamepadsOnGrid/index.js";
@@ -19,7 +17,8 @@ import {
   useInputBack,
   useInputConfirmation,
 } from "../hooks/useDirectionalInput/index.js";
-import { FormRow } from "../components/FormRow/index.js";
+import { CheckboxRow } from "../containers/CheckboxRow/index.js";
+import { Route } from "./+types/categories.$category.settings.appearance.js";
 
 export const loader = () => {
   const appearance = readAppearance();
@@ -61,8 +60,9 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 const focus: FocusElement = "settingsMain";
 
-export default function Appearance() {
-  const { alwaysGameNames, collapseSidebar } = useLoaderData<typeof loader>();
+export default function Appearance({
+  loaderData: { alwaysGameNames, collapseSidebar },
+}: Route.ComponentProps) {
   const fullscreen = useFullscreen();
 
   const saveButtonRef = useRef<ComponentRef<"button">>(null);
@@ -145,53 +145,41 @@ export default function Appearance() {
           list={
             <FormBox ref={entryListRef}>
               <li>
-                <FormRow>
-                  <CheckboxLabel>
-                    <Checkbox
-                      id="fullscreen"
-                      name="fullscreen"
-                      checked={fullscreen}
-                      ref={entriesRefCallback(0)}
-                      onCheckedChange={() => {
-                        if (window.electronAPI) {
-                          window.electronAPI.changeWindow("fullscreen");
-                        }
-                      }}
-                      onClick={onClick}
-                    />
-                    Fullscreen
-                  </CheckboxLabel>
-                </FormRow>
+                <CheckboxRow
+                  id="fullscreen"
+                  name="fullscreen"
+                  checked={fullscreen}
+                  ref={entriesRefCallback(0)}
+                  onCheckedChange={() => {
+                    if (window.electronAPI) {
+                      window.electronAPI.changeWindow("fullscreen");
+                    }
+                  }}
+                  onClick={onClick}
+                  aria-label="Fullscreen"
+                />
               </li>
               <li>
-                <FormRow>
-                  <CheckboxLabel>
-                    <Checkbox
-                      id="alwaysGameNames"
-                      name="alwaysGameNames"
-                      defaultChecked={alwaysGameNames}
-                      ref={entriesRefCallback(1)}
-                      onCheckedChange={onSave}
-                      onClick={onClick}
-                    />
-                    Always show game names
-                  </CheckboxLabel>
-                </FormRow>
+                <CheckboxRow
+                  id="alwaysGameNames"
+                  name="alwaysGameNames"
+                  defaultChecked={alwaysGameNames}
+                  ref={entriesRefCallback(1)}
+                  onCheckedChange={onSave}
+                  onClick={onClick}
+                  aria-label="Always show game names"
+                />
               </li>
               <li>
-                <FormRow>
-                  <CheckboxLabel>
-                    <Checkbox
-                      id="collapseSidebar"
-                      name="collapseSidebar"
-                      defaultChecked={collapseSidebar}
-                      ref={entriesRefCallback(2)}
-                      onCheckedChange={onSave}
-                      onClick={onClick}
-                    />
-                    Collapse sidebar
-                  </CheckboxLabel>
-                </FormRow>
+                <CheckboxRow
+                  id="collapseSidebar"
+                  name="collapseSidebar"
+                  defaultChecked={collapseSidebar}
+                  ref={entriesRefCallback(2)}
+                  onCheckedChange={onSave}
+                  onClick={onClick}
+                  aria-label="Collapse sidebar"
+                />
               </li>
             </FormBox>
           }

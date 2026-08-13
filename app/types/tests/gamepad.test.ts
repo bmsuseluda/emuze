@@ -1,85 +1,79 @@
 import type { Sdl } from "@kmamal/sdl";
 import {
-  convertToJoystick,
-  eightBitDoPro2,
+  eightBitDoPro2Joystick,
   gamecubeAdapter,
   gamepadN64,
-  gamepadPs3,
-  gamepadPs4,
+  gamepadPs3Joystick,
+  gamepadPs4Joystick,
   getNameIndex,
-  getPlayerIndexArray,
   removeVendorFromGuid,
   sortSteamDeckLast,
-  steamDeck,
+  steamDeckAlternativeJoystick,
+  steamDeckJoystick,
 } from "../gamepad.js";
 
 describe("getNameIndex", () => {
   it("Should return the index based on the name of the joystick", () => {
     const devices: { name: string }[] = [
-      { name: gamepadPs4.name },
-      { name: steamDeck.name },
-      { name: gamepadPs4.name },
+      { name: gamepadPs4Joystick.name },
+      { name: steamDeckJoystick.name },
+      { name: gamepadPs4Joystick.name },
     ];
-    expect(getNameIndex(gamepadPs4.name, 0, devices)).toBe(0);
-    expect(getNameIndex(steamDeck.name, 1, devices)).toBe(0);
-    expect(getNameIndex(gamepadPs4.name, 2, devices)).toBe(1);
-  });
-});
-
-describe("getPlayerIndexArray", () => {
-  it("Should return the last index as playerIndex for steam deck", () => {
-    expect(
-      getPlayerIndexArray([
-        convertToJoystick(steamDeck),
-        convertToJoystick(gamepadPs4),
-        convertToJoystick(gamepadPs4),
-        convertToJoystick(eightBitDoPro2),
-      ]),
-    ).toStrictEqual([3, 0, 1, 2]);
-  });
-
-  it("Should return the last index as playerIndex for steam deck and gamecube before that", () => {
-    expect(
-      getPlayerIndexArray([
-        convertToJoystick(steamDeck),
-        convertToJoystick(gamecubeAdapter),
-        convertToJoystick(gamecubeAdapter),
-        convertToJoystick(gamecubeAdapter),
-        convertToJoystick(gamecubeAdapter),
-        convertToJoystick(gamepadPs4),
-        convertToJoystick(gamepadPs4),
-        convertToJoystick(eightBitDoPro2),
-      ]),
-    ).toStrictEqual([7, 3, 4, 5, 6, 0, 1, 2]);
-  });
-
-  it("Should return the indexes untouched if there is no steam deck", () => {
-    expect(
-      getPlayerIndexArray([
-        convertToJoystick(gamepadPs3),
-        convertToJoystick(gamepadPs4),
-        convertToJoystick(gamepadPs4),
-        convertToJoystick(eightBitDoPro2),
-      ]),
-    ).toStrictEqual([0, 1, 2, 3]);
+    expect(getNameIndex(gamepadPs4Joystick.name, 0, devices)).toBe(0);
+    expect(getNameIndex(steamDeckJoystick.name, 1, devices)).toBe(0);
+    expect(getNameIndex(gamepadPs4Joystick.name, 2, devices)).toBe(1);
   });
 });
 
 describe("sortGamepads", () => {
   it("should sort the steam deck last", () => {
     const gamepads: Sdl.Joystick.Device[] = [
-      convertToJoystick(steamDeck),
-      convertToJoystick(gamepadPs4),
-      convertToJoystick(gamepadPs3),
+      steamDeckJoystick,
+      gamepadPs4Joystick,
+      gamepadPs3Joystick,
     ];
 
     const sortedGamepads: Sdl.Joystick.Device[] = [
-      convertToJoystick(gamepadPs4),
-      convertToJoystick(gamepadPs3),
-      convertToJoystick(steamDeck),
+      gamepadPs4Joystick,
+      gamepadPs3Joystick,
+      steamDeckJoystick,
     ];
 
-    expect(gamepads.sort(sortSteamDeckLast)).toStrictEqual(sortedGamepads);
+    expect(sortSteamDeckLast(gamepads)).toStrictEqual(sortedGamepads);
+  });
+
+  it("should sort the steam deck alternative last", () => {
+    const gamepads: Sdl.Joystick.Device[] = [
+      steamDeckAlternativeJoystick,
+      gamepadPs4Joystick,
+      gamepadPs3Joystick,
+    ];
+
+    const sortedGamepads: Sdl.Joystick.Device[] = [
+      gamepadPs4Joystick,
+      gamepadPs3Joystick,
+      steamDeckAlternativeJoystick,
+    ];
+
+    expect(sortSteamDeckLast(gamepads)).toStrictEqual(sortedGamepads);
+  });
+
+  it("should sort the steam deck last if alternative is there as well", () => {
+    const gamepads: Sdl.Joystick.Device[] = [
+      steamDeckAlternativeJoystick,
+      steamDeckJoystick,
+      gamepadPs4Joystick,
+      gamepadPs3Joystick,
+    ];
+
+    const sortedGamepads: Sdl.Joystick.Device[] = [
+      steamDeckAlternativeJoystick,
+      gamepadPs4Joystick,
+      gamepadPs3Joystick,
+      steamDeckJoystick,
+    ];
+
+    expect(sortSteamDeckLast(gamepads)).toStrictEqual(sortedGamepads);
   });
 });
 
@@ -87,22 +81,22 @@ describe("removeVendorFromGuid", () => {
   const testCases = [
     {
       name: "8BitDo Pro 2 Controller",
-      input: eightBitDoPro2.guid,
+      input: eightBitDoPro2Joystick.guid,
       expected: "050000005e040000e002000003090000",
     },
     {
       name: "Steam Deck",
-      input: steamDeck.guid,
+      input: steamDeckJoystick.guid,
       expected: "03000000de280000ff11000001000000",
     },
     {
       name: "PS4 Controller",
-      input: gamepadPs4.guid,
+      input: gamepadPs4Joystick.guid,
       expected: "030000004c050000c405000000006800",
     },
     {
       name: "PS3 Controller",
-      input: gamepadPs3.guid,
+      input: gamepadPs3Joystick.guid,
       expected: "050000004c0500006802000000800000",
     },
     {

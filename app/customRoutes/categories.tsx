@@ -1,18 +1,16 @@
-import { Outlet, redirect, useLoaderData } from "react-router";
+import { Outlet, redirect } from "react-router";
 import { readCategories } from "../server/categories.server.js";
 import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout/index.js";
 import { SidebarNavigationLink } from "../containers/SidebarNavigationLink/index.js";
 import { Header } from "../containers/Header/index.js";
 import { SystemIcon } from "../components/SystemIcon/index.js";
 import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar/index.js";
-import { readAppearance } from "../server/settings.server.js";
+import { readAppearance, readGeneral } from "../server/settings.server.js";
 import { useCallback } from "react";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
 import { Typography } from "../components/Typography/index.js";
 import { styled } from "../../styled-system/jsx/index.js";
-import type { DataFunctionArgs } from "../context.js";
-import type { SystemId } from "../server/categoriesDB.server/systemId.js";
 import { readLastPlayed } from "../server/lastPlayed.server.js";
 import { useOpenSettings } from "../containers/SettingsLink/useOpenSettings.js";
 import { useImportButton } from "../containers/ImportButton/useImportButton.js";
@@ -21,14 +19,9 @@ import {
   useInputConfirmation,
 } from "../hooks/useDirectionalInput/index.js";
 import { CloseDialogContainer } from "../containers/CloseDialog/index.js";
+import type { Route } from "./+types/categories.js";
 
-type CategoryLinks = Array<{ id: SystemId; name: string; to: string }>;
-type LoaderData = {
-  categoryLinks: CategoryLinks;
-  collapseSidebar?: boolean;
-};
-
-export const loader = ({ params, request }: DataFunctionArgs) => {
+export const loader = ({ params, request }: Route.LoaderArgs) => {
   const { category } = params;
   const { collapseSidebar } = readAppearance();
   const categories = readCategories();
@@ -41,11 +34,17 @@ export const loader = ({ params, request }: DataFunctionArgs) => {
     }
 
     if (!request.url.includes("lastPlayed") && !category) {
+      const showReleaseNotesOnStart = readGeneral()?.showReleaseNotesOnStart;
+      const releaseNotesNestedRoute =
+        typeof showReleaseNotesOnStart === "undefined" ||
+        showReleaseNotesOnStart
+          ? "/releaseNotes"
+          : "";
       if (isLastPlayedAvailable) {
-        throw redirect("lastPlayed");
+        throw redirect(`lastPlayed${releaseNotesNestedRoute}`);
       }
 
-      throw redirect(categories[0].id);
+      throw redirect(`${categories[0].id}${releaseNotesNestedRoute}`);
     }
 
     const categoryLinks = categories.map(({ id, name }) => ({
@@ -81,9 +80,9 @@ const Name = styled(Typography, {
   },
 });
 
-export default function Categories() {
-  const { categoryLinks, collapseSidebar } = useLoaderData<LoaderData>();
-
+export default function Categories({
+  loaderData: { categoryLinks, collapseSidebar },
+}: Route.ComponentProps) {
   const { isInFocus, switchFocus, enableFocus } =
     useFocus<FocusElement>("sidebar");
 

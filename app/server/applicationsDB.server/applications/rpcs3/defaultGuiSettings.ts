@@ -1,4 +1,6 @@
-export const defaultGuiSettings = `[Debugger]
+import { normalizeNewLines } from "../../configFile.js";
+
+export const defaultGuiSettings = normalizeNewLines(`[Debugger]
 
 [GameList]
 hidden_list=@Invalid()
@@ -41,4 +43,4 @@ useRichPresence=true
 [main_window]
 confirmationBoxExitGame=false
 infoBoxEnabledWelcome=false
-`;
+`);

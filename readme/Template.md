@@ -8,18 +8,17 @@
 emuze is an emulation frontend designed to simplify your retro gaming experience.
 It automates the configuration of each emulator, including seamless gamepad integration and automatic import of games along with their metadata. With its console-like interface and intuitive controls, emuze lets you focus on enjoying your retro games, just like you would on a gaming console.
 
-It is not there yet for every system and emulator, please have a look at 🕹️ [Supported Systems](#%EF%B8%8F-supported-systems) for more details.
-
 ## 💥 Features
 
 - ⚡️ Intuitive console-like interface
 - 🚂 Import all your roms with a click of a button
-- 🪄 Provides Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
-- 🎮️ Seamless gamepad integration for most emulators
-- 🔫 Basic lightgun integration for some emulators
-- 📦️ Bundles most emulators
+- 🪄 Provides Metadata from [IGDB](https://www.igdb.com) based on the filenames of your roms
+- 🎮️ Seamless gamepad integration for all Systems
+- 📦️ Bundles emulators for all Systems
+- 🔫 Basic lightgun integration for some Systems
 - 💻️ Windows, Linux and Steam Deck support
 - 💫 Updates itself
+- 🛠️ BIOS handling
 
 <br>
 
@@ -34,8 +33,8 @@ It is not there yet for every system and emulator, please have a look at 🕹️
 
 The following systems are supported:
 
-| System | Emulator | Pre Configured | Bundled | BIOS needed |
-| ------ | -------- | -------------- | ------- | ----------- |
+| System | Emulator | BIOS needed |
+| ------ | -------- | ----------- |
 ```mmd
 return scripts.createSystemsTable()
 ```
@@ -43,7 +42,7 @@ return scripts.createSystemsTable()
 > ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
 
 ### Pre Configured
-If a System is pre configured means the following:
+All Systems are pre configured. This means the following:
 
 #### Gamepad Mapping
 All connected gamepads will be configured for the specific Emulator and should just work without further tinkering.
@@ -81,12 +80,24 @@ You can close a game via
 If you have gamepads connected with your Steam Deck the Steam Deck Controls will be configured as the last gamepad. This is done to use the Steam Deck on a TV. If you have other PC Handhelds where this feature would come in handy, please let me know.
 
 ### Bundled
-If a system is bundled, the respective emulator is provided with emuze in a specific version.
+All emulators are provided with emuze in a specific version.
 
 Config files of bundled emulators are stored in `~/.local/share/emuze/emulators/` on linux and `AppData\Local\emuze\Data\emulators\` on windows.
 
 ### BIOS needed
-Some emulators need a BIOS or firmware to run. Please check the documentation of the respective emulator for more information.
+Some emulators need a BIOS or firmware to run. If so you have to set the folder to your BIOS files in the settings. emuze will detect the appropriate file and configures the emulator accordingly.
+
+For some emulators a open source BIOS implementation is bundled with emuze:
+<br>
+
+| System | Open Source BIOS implementation |
+| ------ | ------------------------------- |
+```mmd
+return scripts.createBiosOpenSourceTable()
+```
+
+> [!IMPORTANT]  
+> ❤️ Many thanks to the creators. Your work is a big step forward simplifing emulation.
 
 ### Supported System Names and file extensions
 In general emuze should just detect your systems and games. If not please check the supported system names and file extensions:
@@ -108,6 +119,9 @@ return scripts.createSystemsTableExpert()
 > [!NOTE]
 > Capitalization, special characters and white spaces do not matter in a System Name. E.g. `TurboGrafx-16` will be detected as well as `turbo grafx 16`.
 
+> [!NOTE]
+> emuze can create the System Folders in the selected Roms Folder. Use the "Create System Folders" Button under Settings General.
+
 ## 🚀 Getting started
 
 ### 🪟 Windows
@@ -116,23 +130,6 @@ return scripts.createSystemsTableExpert()
 return scripts.getWindowsDownloadLink('1) ')
 ```
 2) Choose the [folder where your Roms are located](#roms-folder)
-3) Optionally choose the [folder where your Emulators are located](#emulators-folder-windows-only)
-
-#### Emulators Folder (Windows only)
-
-This is the folder where your emulators are installed. It is only necessary on Windows and only for emulators not bundled by emuze.
-
-```
-emulators
-|-> scummvm
-|---> ...
-|---> scummvm.exe
-|---> ...
-|-> dosbox-staging
-|---> ...
-|---> dosbox.exe
-|---> ...
-```
 
 ### 🐧 Linux
 
@@ -141,9 +138,6 @@ return scripts.getLinuxDownloadLink('1) ')
 ```
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
-
-> [!NOTE]  
-> All emulators, not bundled, need to be installed via flatpak.
 
 ### 🎮️ Steam Deck in Game mode
 
@@ -166,9 +160,6 @@ There is a Steam Input Profile with the name `emuze`, which has some Hotkeys pre
 - `R5`: Left Mouse Click
 - `Left Trackpad`: Scroll Wheel
 - `Right Trackpad`: Mouse
-
-> [!IMPORTANT]
-> Steam Input can result in gamepads not being able to be used correctly in some emulators. Therefore, I recommend disabling Steam Input for all gamepads except the Steam Deck controller.
 
 #### SteamGridDB
 
@@ -194,9 +185,13 @@ roms
 |---> Terranigma.sfc
 |---> ...
 ```
+
+> [!NOTE]
+> emuze can create the System Folders in the selected Roms Folder. Use the "Create System Folders" Button under Settings General.
+
 ## 🔫 Lightgun Support
 
-emuze provides basic Lightgun support. Only the Retro Shooter Reaper is tested but others should work too.
+emuze provides basic Lightgun support. Only the Retro Shooter Reaper was tested but others should work too.
 
 You can navigate emuze with the pointer and confirm with the Trigger or use the stick and the Buttons on the side:
 
@@ -246,7 +241,7 @@ emuze relies on the following external data:
 
 | Data | Usecase |
 | ------ | --- |
-| [igdb](https://www.igdb.com) | is used to provide Metadata for your games |
+| [IGDB](https://www.igdb.com) | is used to provide Metadata for your games |
 | [MAME](https://github.com/mamedev/mame) xml list (`mame -listxml`) | is used to map MAME IDs to game names |
 | [ScummVM](https://github.com/scummvm/scummvm) games list (`scummvm --list-games`) | is used to map ScummVM IDs to game names |
 | [nus-info](https://github.com/DanTheMan827/nus-info) | is used to map WiiU Title IDs to game names |

@@ -32,6 +32,10 @@ vi.mock("node:fs");
 vi.mock("../igdb.server.ts");
 vi.mock("../settings.server.ts", () => ({
   readGeneral: () => general,
+  readAdvanced: () => ({
+    eden: false,
+    rmg: false,
+  }),
 }));
 vi.mock("../getExpiresOn.server.ts", () => {
   const getFutureDate = () => {
@@ -91,7 +95,7 @@ describe("categories.server", () => {
       await importCategories();
 
       // expect
-      expect(writeFileHome).toBeCalledTimes(3);
+      expect(writeFileHome).toHaveBeenCalledTimes(3);
       expect(writeFileHome).toHaveBeenNthCalledWith(
         1,
         nintendo3ds,

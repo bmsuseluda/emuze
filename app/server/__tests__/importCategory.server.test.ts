@@ -35,7 +35,7 @@ import { categories as categoriesDB } from "../categoriesDB.server/index.js";
 import { getExpiresOn } from "../getExpiresOn.server.js";
 import { mameNeoGeo } from "../applicationsDB.server/applications/mame/index.js";
 import { duckstation } from "../applicationsDB.server/applications/duckstation/index.js";
-import { dosboxstaging } from "../applicationsDB.server/applications/dosbox/index.js";
+import { dosboxpure } from "../applicationsDB.server/applications/dosbox/index.js";
 import { rpcs3 } from "../applicationsDB.server/applications/rpcs3/index.js";
 import { scummvm } from "../applicationsDB.server/applications/scummvm/index.js";
 
@@ -47,6 +47,10 @@ vi.mock("node:fs");
 vi.mock("../igdb.server.ts");
 vi.mock("../settings.server.ts", () => ({
   readGeneral: () => general,
+  readAdvanced: () => ({
+    eden: false,
+    rmg: false,
+  }),
 }));
 vi.mock("../getExpiresOn.server.ts", () => {
   const getFutureDate = () => {
@@ -265,7 +269,7 @@ describe("importCategory.server", () => {
 
       const result = readEntries({
         categoryName: dos.name,
-        application: dosboxstaging,
+        application: dosboxpure,
         oldEntries,
       });
 

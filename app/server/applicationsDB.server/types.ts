@@ -4,10 +4,20 @@ import type { Category, Entry } from "../../types/jsonFiles/category.js";
 import type { GeneralConfigured } from "../../types/jsonFiles/settings/general.js";
 import type { Appearance } from "../../types/jsonFiles/settings/appearance.js";
 import type { ApplicationId } from "./applicationId.js";
+import type { Advanced } from "../../types/jsonFiles/settings/advanced.js";
 
 export interface Settings {
   general: GeneralConfigured;
   appearance: Appearance;
+  advanced: Advanced;
+}
+
+export interface DetectedRequiredFile {
+  filePath: string;
+  /**
+   * could be a region, a specific system bios type or other system specific file
+   */
+  type: string;
 }
 
 export type OptionParamFunction = ({
@@ -17,6 +27,8 @@ export type OptionParamFunction = ({
   settings,
   absoluteEntryPath,
   hasAnalogStick,
+  biosFiles,
+  otherRequiredFiles,
 }: {
   entryData: Entry;
   categoryData: Category;
@@ -24,6 +36,8 @@ export type OptionParamFunction = ({
   settings: Settings;
   absoluteEntryPath: string;
   hasAnalogStick: boolean;
+  biosFiles?: DetectedRequiredFile[];
+  otherRequiredFiles?: DetectedRequiredFile[];
 }) => string[];
 
 export type EnvironmentVariableFunction = ({
@@ -64,19 +78,38 @@ export interface ConfigFile {
   files: string[];
 }
 
+export interface RequiredFile {
+  filename: string;
+  hash?: string;
+}
+
+export interface RequiredFiles {
+  /**
+   * could be a region, a specific system bios type or other system specific file
+   */
+  type: string;
+  requiredFiles: RequiredFile[];
+  /** TODO: Check if necessary */
+  instructionMessage?: string;
+}
+
 export interface Application {
   id: ApplicationId;
   name: string;
-  executable?: `${string}.exe`;
   fileExtensions?: string[];
-  searchFilesOnlyIn?: string[];
+  requiredSystemFolderStructure?: string[];
+  searchGamesOnlyIn?: string[];
   entryAsDirectory?: boolean;
   configFile?: ConfigFile;
   omitAbsoluteEntryPathAsLastParam?: boolean;
   defineEnvironmentVariables?: EnvironmentVariableFunction;
   createOptionParams?: OptionParamFunction;
-  flatpakId: string;
   findEntryName?: FindEntryNameFunction;
   excludeFiles?: ExcludeFilesFunction;
-  bundledPath?: string;
+  bundledPath: string;
+  bundledBiosOpenSource?: boolean;
+  /** only one is necessary */
+  biosFiles?: RequiredFiles[];
+  /** if they are defined, all of them are necessary to run the applciation */
+  otherRequiredFiles?: RequiredFiles[];
 }

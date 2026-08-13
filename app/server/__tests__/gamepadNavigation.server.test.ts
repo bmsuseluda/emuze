@@ -34,7 +34,7 @@ describe("gamepadNavigation.server", () => {
         eventType: "buttonDown",
       };
 
-      expect(sendEvent).toBeCalledWith(expected);
+      expect(sendEvent).toHaveBeenCalledWith(expected);
       expect(axisButtonsPressed[eightBitDoPro2.id].leftStickDown).toBeTruthy();
       expect(axisButtonsPressed[eightBitDoPro2.id].leftStickUp).toBeFalsy();
     });
@@ -51,7 +51,7 @@ describe("gamepadNavigation.server", () => {
         gamepadType,
       );
 
-      expect(sendEvent).not.toBeCalled();
+      expect(sendEvent).not.toHaveBeenCalled();
       expect(axisButtonsPressed[eightBitDoPro2.id].leftStickDown).toBeFalsy();
       expect(axisButtonsPressed[eightBitDoPro2.id].leftStickUp).toBeFalsy();
       expect(axisButtonsPressed[gamepadPs4.id].leftStickDown).toBeFalsy();
@@ -78,7 +78,7 @@ describe("gamepadNavigation.server", () => {
         eventType: "buttonUp",
       };
 
-      expect(sendEvent).toBeCalledWith(expected);
+      expect(sendEvent).toHaveBeenCalledWith(expected);
       expect(axisButtonsPressed[eightBitDoPro2.id].leftStickDown).toBeFalsy();
       expect(axisButtonsPressed[eightBitDoPro2.id].leftStickUp).toBeFalsy();
     });
@@ -104,7 +104,7 @@ describe("gamepadNavigation.server", () => {
         eventType: "buttonUp",
       };
 
-      expect(sendEvent).toBeCalledWith(expected);
+      expect(sendEvent).toHaveBeenCalledWith(expected);
       expect(axisButtonsPressed[eightBitDoPro2.id].leftStickUp).toBeFalsy();
       expect(axisButtonsPressed[eightBitDoPro2.id].leftStickDown).toBeFalsy();
     });

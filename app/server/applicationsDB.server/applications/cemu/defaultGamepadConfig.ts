@@ -1,4 +1,7 @@
-export const defaultGamepadConfig = `<?xml version="1.0" encoding="UTF-8"?>
+import { normalizeNewLines } from "../../configFile.js";
+
+export const defaultGamepadConfig =
+  normalizeNewLines(`<?xml version="1.0" encoding="UTF-8"?>
 <emulated_controller>
 	<type>Wii U GamePad</type>
 	<toggle_display>0</toggle_display>
@@ -118,9 +121,10 @@ export const defaultGamepadConfig = `<?xml version="1.0" encoding="UTF-8"?>
 			</entry>
 		</mappings>
 	</controller>
-</emulated_controller>`;
+</emulated_controller>`);
 
-export const defaultProControllerConfig = `<?xml version="1.0" encoding="UTF-8"?>
+export const defaultProControllerConfig =
+  normalizeNewLines(`<?xml version="1.0" encoding="UTF-8"?>
 <emulated_controller>
 	<type>Wii U Pro Controller</type>
 	<controller>
@@ -239,4 +243,4 @@ export const defaultProControllerConfig = `<?xml version="1.0" encoding="UTF-8"?
 			</entry>
 		</mappings>
 	</controller>
-</emulated_controller>`;
+</emulated_controller>`);

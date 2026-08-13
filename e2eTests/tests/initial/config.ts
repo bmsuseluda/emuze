@@ -1,9 +1,7 @@
 import nodepath from "node:path";
 import type { TestName } from "../ports.js";
 
-import { fileURLToPath } from "node:url";
-
-const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
+const __dirname = import.meta.dirname;
 
 export const configFolderPath = nodepath.join(__dirname, "emptyConfig");
 

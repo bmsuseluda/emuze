@@ -20,7 +20,6 @@ import { getGamepad, getVirtualGamepad } from "./getVirtualGamepad.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
-const flatpakId = "io.github.lime3ds.Lime3DS";
 const applicationId: ApplicationId = "azahar";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "azahar.exe")
@@ -115,8 +114,7 @@ const getConfigFileBasePath = () => {
 export const azahar: Application = {
   id: applicationId,
   name: "Azahar",
-  fileExtensions: [".cci", ".zcia", ".zcci", ".z3dsx", ".zcxi"],
-  flatpakId,
+  fileExtensions: [".cci", ".zcia", ".zcci", ".z3dsx", ".zcxi", ".3ds"],
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {
     basePath: getConfigFileBasePath(),

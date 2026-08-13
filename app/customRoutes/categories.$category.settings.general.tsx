@@ -1,13 +1,6 @@
 import type { ComponentRef, MouseEvent } from "react";
 import { useCallback } from "react";
-import type { ActionFunctionArgs } from "react-router";
-import {
-  Form,
-  Outlet,
-  redirect,
-  useActionData,
-  useLoaderData,
-} from "react-router";
+import { Form, Outlet, redirect, useActionData } from "react-router";
 import { FormBox } from "../components/FormBox/index.js";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
 import {
@@ -17,7 +10,6 @@ import {
 import { openFolderDialog } from "../server/openDialog.server.js";
 import { readGeneral, writeGeneral } from "../server/settings.server.js";
 import type { General } from "../types/jsonFiles/settings/general.js";
-import { isWindows } from "../server/operationsystem.server.js";
 import { SettingsIcon } from "../components/SettingsIcon/index.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
@@ -37,6 +29,11 @@ import {
 import { FileDialogInputField } from "../containers/FileDialogTextInput/index.js";
 import { useEnableFocusAfterAction } from "../hooks/useEnableFocusAfterAction/index.js";
 import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
+import { CreateSystemFoldersDialogContainer } from "../containers/CreateSystemFoldersDialog/index.js";
+import { CreateSystemFoldersButton } from "../containers/CreateSystemFoldersButton/index.js";
+import type { CreateSystemFoldersButtonId } from "../containers/CreateSystemFoldersButton/createSystemFoldersButtonId.js";
+import { createSystemFolders } from "../server/createSystemFolders.server.js";
+import { Route } from "./+types/categories.$category.settings.general.js";
 
 export const loader = () => {
   const general: General = readGeneral() || {};
@@ -48,15 +45,18 @@ export const loader = () => {
     validateCategoriesPath(errors, general.categoriesPath);
   }
 
-  return { ...general, isWindows: isWindows(), categories, errors };
+  return { ...general, categories, errors };
 };
 
 const importButtonId: ImportButtonId = "importAll";
+const createSystemFoldersId: CreateSystemFoldersButtonId =
+  "createSystemFolders";
 
 const actionIds = {
-  chooseApplicationsPath: "chooseApplicationsPath",
   chooseCategoriesPath: "chooseCategoriesPath",
+  chooseBiosPath: "chooseBiosPath",
   import: importButtonId,
+  createSystemFolders: createSystemFoldersId,
 };
 
 type Errors = {
@@ -67,6 +67,13 @@ const validateCategoriesPath = (errors: Errors, categoriesPath?: string) => {
   const errorCategoriesPath = validatePath(categoriesPathLabel, categoriesPath);
   if (errorCategoriesPath) {
     errors.categoriesPath = errorCategoriesPath;
+  }
+};
+
+const validateBiosPath = (errors: Errors, biosPath?: string) => {
+  const errorBiosPath = validatePathExist(categoriesPathLabel, biosPath);
+  if (errorBiosPath) {
+    errors.categoriesPath = errorBiosPath;
   }
 };
 
@@ -100,10 +107,10 @@ const validatePath = (label: string, path?: string) => {
 };
 
 const categoriesPathLabel = "Roms Path";
-const applicationsPathLabel = "Emulators Path (Optional)";
+const biosPathLabel = "BIOS Path (Optional)";
 
 type ActionReturn = {
-  applicationsPath?: string;
+  biosPath?: string;
   categoriesPath?: string;
   errors?: Errors;
 };
@@ -125,13 +132,13 @@ const findCategoryToRedirect = (
   return categories[0].id;
 };
 
-export const action = async ({ params, request }: ActionFunctionArgs) => {
+export const action = async ({ params, request }: Route.ActionArgs) => {
   const { category: systemId } = params as { category: SystemId };
 
   try {
     const form = await request.formData();
     const _actionId = form.get("_actionId");
-    const applicationsPath = form.get("applicationsPath")?.toString();
+    const biosPath = form.get("biosPath")?.toString();
     const categoriesPath = form.get("categoriesPath")?.toString();
 
     if (_actionId === actionIds.import) {
@@ -144,10 +151,8 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
       }
 
       const fields: General = {
-        applicationsPath:
-          isWindows() && typeof applicationsPath === "string"
-            ? applicationsPath
-            : undefined,
+        ...readGeneral(),
+        biosPath,
         categoriesPath,
       };
 
@@ -165,7 +170,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
           return {
             errors: {
               categoriesPath:
-                "No supported Systems were found. The Roms need to be grouped by their System. E.g. 'Final Fantasy VII.chd' needs to be stored in a folder 'Playstation'.",
+                "No supported Systems were found. The Roms need to be grouped by their System. E.g. 'Final Fantasy VII.chd' needs to be stored in a folder 'PlayStation'.",
             },
           };
         }
@@ -182,25 +187,42 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
       }
 
       return {
-        applicationsPath,
+        biosPath,
         categoriesPath,
       };
     }
 
-    if (_actionId === actionIds.chooseApplicationsPath) {
-      const newApplicationsPath = await openFolderDialog(
-        "Select Emulators Folder",
-        typeof applicationsPath === "string" ? applicationsPath : undefined,
+    if (_actionId === actionIds.createSystemFolders && categoriesPath) {
+      const fields: General = {
+        ...readGeneral(),
+        biosPath,
+        categoriesPath,
+      };
+      writeGeneral(fields);
+
+      createSystemFolders();
+
+      return {
+        biosPath,
+        categoriesPath,
+      };
+    }
+
+    if (_actionId === actionIds.chooseBiosPath) {
+      const newBiosPath = await openFolderDialog(
+        "Select BIOS Folder",
+        typeof biosPath === "string" ? biosPath : undefined,
       );
-      if (newApplicationsPath) {
+      if (newBiosPath) {
         const errors: Errors = {};
-        validateCategoriesPath(errors, newApplicationsPath);
+        validateBiosPath(errors, newBiosPath);
         if (Object.keys(errors).length > 0) {
           return { errors };
         }
 
         const fields: General = {
-          applicationsPath: newApplicationsPath,
+          ...readGeneral(),
+          biosPath: newBiosPath,
           categoriesPath,
         };
 
@@ -217,7 +239,7 @@ export const action = async ({ params, request }: ActionFunctionArgs) => {
       );
       if (newCategoriesPath) {
         return {
-          applicationsPath,
+          biosPath,
           categoriesPath: newCategoriesPath,
         };
       }
@@ -242,8 +264,9 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 const focus: FocusElement = "settingsMain";
 
-export default function General() {
-  const defaultData = useLoaderData<typeof loader>();
+export default function General({
+  loaderData: defaultData,
+}: Route.ComponentProps) {
   const newData = useActionData<ActionReturn>();
 
   const { disableGamepads, enableGamepads } = useGamepadConnected();
@@ -304,7 +327,7 @@ export default function General() {
     setTimeout(() => {
       enableGamepads();
     }, 100);
-  }, [actionIds.chooseApplicationsPath, actionIds.chooseCategoriesPath]);
+  }, [actionIds.chooseBiosPath, actionIds.chooseCategoriesPath]);
 
   const onOpenFileDialog = useCallback(
     (event: MouseEvent<ComponentRef<"button">>) => {
@@ -343,31 +366,34 @@ export default function General() {
                     onOpenFileDialog={onOpenFileDialog}
                   />
                 </li>
-                {defaultData.isWindows && (
-                  <li>
-                    <FileDialogInputField
-                      id="applicationsPath"
-                      label={applicationsPathLabel}
-                      defaultValue={defaultData?.applicationsPath}
-                      newValue={newData?.applicationsPath}
-                      actionId={actionIds.chooseApplicationsPath}
-                      openDialogButtonRef={entriesRefCallback(1)}
-                      onOpenFileDialog={onOpenFileDialog}
-                    />
-                  </li>
-                )}
+                <li>
+                  <FileDialogInputField
+                    id="biosPath"
+                    label={biosPathLabel}
+                    defaultValue={defaultData?.biosPath}
+                    newValue={newData?.biosPath}
+                    actionId={actionIds.chooseBiosPath}
+                    openDialogButtonRef={entriesRefCallback(1)}
+                    onOpenFileDialog={onOpenFileDialog}
+                  />
+                </li>
               </FormBox>
             }
             actions={
               <>
-                <ImportButton isInFocus={isInFocus} id={actionIds.import}>
-                  Import all
-                </ImportButton>
+                <ImportButton isInFocus={isInFocus} id={actionIds.import} />
+                {(defaultData.categoriesPath || newData?.categoriesPath) && (
+                  <CreateSystemFoldersButton
+                    isInFocus={isInFocus}
+                    id={actionIds.createSystemFolders}
+                  />
+                )}
               </>
             }
           />
         </Form>
       </ListActionBarLayout>
+      <CreateSystemFoldersDialogContainer />
       <Outlet />
     </>
   );

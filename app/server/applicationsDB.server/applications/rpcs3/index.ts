@@ -23,7 +23,10 @@ import type {
   GlobalDefaultInputConfigFile,
   VfsConfigFile,
 } from "./config.js";
-import { isWindows } from "../../../operationsystem.server.js";
+import {
+  isWindows,
+  replaceToPosixPathing,
+} from "../../../operationsystem.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import {
@@ -33,8 +36,8 @@ import {
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { isLightgunConnected } from "../../../../types/gamepad.js";
+import { removeFile } from "../../../readWriteData.server.js";
 
-const flatpakId = "net.rpcs3.RPCS3";
 const applicationId: ApplicationId = "rpcs3";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "rpcs3.exe")
@@ -50,6 +53,7 @@ const gemMouseConfigFileName = "gem_mouse.yml";
 const gemRealConfigFileName = "gem_real.yml";
 const rawMouseConfigFileName = "raw_mouse.yml";
 const configMouseConfigFileName = "config_mouse.yml";
+const gamesFileName = "games.yml";
 
 const guiConfigPathRelative = nodepath.join("GuiConfigs", guiConfigFileName);
 const vfsConfigPathRelative = isWindows()
@@ -84,6 +88,9 @@ const globalDefaultInputConfigPathRelative = isWindows()
       globalDefaultInputConfigFileName,
     )
   : nodepath.join("input_configs", "global", globalDefaultInputConfigFileName);
+const gamesPathRelative = isWindows()
+  ? nodepath.join("config", gamesFileName)
+  : nodepath.join(gamesFileName);
 
 const readYmlConfigFile = (filePath: string) => {
   try {
@@ -126,6 +133,7 @@ const getActiveInputConfigFilePath = () =>
   getConfigFilePath(activeInputConfigPathRelative);
 const getGlobalDefaultInputConfigFilePath = () =>
   getConfigFilePath(globalDefaultInputConfigPathRelative);
+const getGamesFilePath = () => getConfigFilePath(gamesPathRelative);
 
 const readVfsConfigFile = () =>
   readYmlConfigFile(getVfsConfigFilePath()) as VfsConfigFile;
@@ -179,6 +187,10 @@ const replaceFileSystemConfig =
       { keyValue: "dev_hdd1_list=$(EmulatorDir)dev_hdd1/" },
       { keyValue: "games_list=$(EmulatorDir)games/" },
     ]);
+
+const removeGamesFile = () => {
+  removeFile(getGamesFilePath());
+};
 
 export const replaceGuiConfigFile = (ps3RomsPath: string) => {
   const filePath = getGuiConfigFilePath();
@@ -325,13 +337,18 @@ const getConfigFileBasePath = () => {
     : nodepath.join(config);
 };
 
+const searchGamesOnlyIn = [nodepath.join("dev_hdd0", "game"), "games"];
+
 export const rpcs3: Application = {
   id: applicationId,
   name: "RPCS3",
-  flatpakId,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   omitAbsoluteEntryPathAsLastParam: true,
-  searchFilesOnlyIn: [nodepath.join("dev_hdd0", "game"), "games"],
+  searchGamesOnlyIn: searchGamesOnlyIn,
+  requiredSystemFolderStructure: [
+    ...searchGamesOnlyIn,
+    nodepath.join("dev_hdd0", "home"),
+  ],
   fileExtensions: [
     nodepath.join("USRDIR", "EBOOT.BIN"),
     nodepath.join("USRDIR", "CONTENT", "EBOOT.PBP"),
@@ -350,7 +367,7 @@ export const rpcs3: Application = {
       gemRealConfigPathRelative,
       rawMouseConfigPathRelative,
       configMouseConfigPathRelative,
-      // TODO: check if patches and savestates are under config folder as well on windows
+      gamesPathRelative,
       "patches",
       "savestates",
     ],
@@ -364,12 +381,13 @@ export const rpcs3: Application = {
     absoluteEntryPath,
   }) => {
     const ps3RomsPath = nodepath.posix
-      .join(categoriesPath.replace(/\\/g, "/"), categoryData.name)
+      .join(replaceToPosixPathing(categoriesPath), categoryData.name)
       .normalize();
     const ps3RomsPathWithTrailingSeparator = `${ps3RomsPath}${ps3RomsPath.endsWith(nodepath.posix.sep) ? "" : nodepath.posix.sep}`;
     const isPs1Classic = absoluteEntryPath.endsWith("EBOOT.PBP");
     log("debug", "rpcs3", "ps3RomsPath", ps3RomsPathWithTrailingSeparator);
 
+    removeGamesFile();
     replaceGuiConfigFile(ps3RomsPathWithTrailingSeparator);
     replaceVfsConfigFile(ps3RomsPathWithTrailingSeparator);
     replaceGemMouseConfigFile();
@@ -384,7 +402,9 @@ export const rpcs3: Application = {
       optionParams.push("--no-gui");
     }
 
-    const gameFolderPath = absoluteEntryPath.split("USRDIR")[0];
+    const gameFolderPath = fs.realpathSync(
+      absoluteEntryPath.split("USRDIR")[0],
+    );
     optionParams.push(gameFolderPath);
     return optionParams;
   },

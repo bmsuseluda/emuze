@@ -1,27 +1,10 @@
 import { rpcs3 } from "../applicationsDB.server/applications/rpcs3/index.js";
 import {
-  aresGameBoyAdvance,
-  aresGameBoyColor,
-  aresGameGear,
-  aresMasterSystem,
-  aresMegaDrive,
-  aresNeoGeoPocket,
-  aresNeoGeoPocketColor,
-  aresNES,
-  aresNintendo64,
-  aresPcEngine,
-  aresSega32x,
-  aresSegaCd,
-  aresSegaMegaLd,
-  aresSuperGrafx,
-  aresSuperNintendo,
-} from "../applicationsDB.server/applications/ares/index.js";
-import {
   mame,
   mameNeoGeo,
   mameNeoGeoCD,
 } from "../applicationsDB.server/applications/mame/index.js";
-import { dosboxstaging } from "../applicationsDB.server/applications/dosbox/index.js";
+import { dosboxpure } from "../applicationsDB.server/applications/dosbox/index.js";
 import { scummvm } from "../applicationsDB.server/applications/scummvm/index.js";
 import type { Category } from "./types.js";
 import type { SystemId } from "./systemId.js";
@@ -43,12 +26,31 @@ import {
   isRmgForN64,
   rosaliesMupenGui,
 } from "../applicationsDB.server/applications/rmg/index.js";
+import {
+  eden,
+  isEdenForSwitch,
+} from "../applicationsDB.server/applications/eden/index.js";
+import { aresNintendo64 } from "../applicationsDB.server/applications/ares/systems/n64.js";
+import { aresGameBoyColor } from "../applicationsDB.server/applications/ares/systems/gameBoyColor.js";
+import { aresGameGear } from "../applicationsDB.server/applications/ares/systems/gameGear.js";
+import { aresSuperNintendo } from "../applicationsDB.server/applications/ares/systems/snes.js";
+import { aresNES } from "../applicationsDB.server/applications/ares/systems/nes.js";
+import { aresGameBoyAdvance } from "../applicationsDB.server/applications/ares/systems/gameBoyAdvance.js";
+import { aresMasterSystem } from "../applicationsDB.server/applications/ares/systems/masterSystem.js";
+import { aresMegaDrive } from "../applicationsDB.server/applications/ares/systems/megaDrive.js";
+import { aresSegaCd } from "../applicationsDB.server/applications/ares/systems/segaCd.js";
+import { aresSegaMegaLd } from "../applicationsDB.server/applications/ares/systems/segaMegaLd.js";
+import { aresSega32x } from "../applicationsDB.server/applications/ares/systems/sega32x.js";
+import { aresPcEngine } from "../applicationsDB.server/applications/ares/systems/pcEngine.js";
+import { aresSuperGrafx } from "../applicationsDB.server/applications/ares/systems/superGrafx.js";
+import { aresNeoGeoPocket } from "../applicationsDB.server/applications/ares/systems/neoGeoPocket.js";
+import { aresNeoGeoPocketColor } from "../applicationsDB.server/applications/ares/systems/neoGeoPocketColor.js";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",
   names: ["Sony PlayStation", "PlayStation", "psx", "ps1", "psone"],
   igdbPlatformIds: [7],
-  application: duckstation,
+  getApplication: () => duckstation,
   hasAnalogStick: true,
 };
 
@@ -56,7 +58,7 @@ export const sonyplaystation2: Category = {
   id: "sonyplaystation2",
   names: ["Sony PlayStation 2", "PlayStation 2", "ps2"],
   igdbPlatformIds: [8],
-  application: pcsx2,
+  getApplication: () => pcsx2,
   hasAnalogStick: true,
 };
 
@@ -64,7 +66,7 @@ export const sonyplaystation3: Category = {
   id: "sonyplaystation3",
   names: ["Sony PlayStation 3", "PlayStation 3", "ps3"],
   igdbPlatformIds: [9],
-  application: rpcs3,
+  getApplication: () => rpcs3,
   hasAnalogStick: true,
 };
 
@@ -77,7 +79,7 @@ export const sonypsp: Category = {
     "PSP",
   ],
   igdbPlatformIds: [38],
-  application: ppsspp,
+  getApplication: () => ppsspp,
   hasAnalogStick: true,
 };
 
@@ -85,7 +87,7 @@ export const segamastersystem: Category = {
   id: "segamastersystem",
   names: ["Sega Master System", "Master System", "SMS"],
   igdbPlatformIds: [64],
-  application: aresMasterSystem,
+  getApplication: () => aresMasterSystem,
   hasAnalogStick: false,
 };
 
@@ -93,7 +95,7 @@ export const segagamegear: Category = {
   id: "segagamegear",
   names: ["Sega Game Gear", "Game Gear", "gg", "sgg"],
   igdbPlatformIds: [35],
-  application: aresGameGear,
+  getApplication: () => aresGameGear,
   hasAnalogStick: false,
 };
 
@@ -101,7 +103,7 @@ export const segamegadrive: Category = {
   id: "segamegadrive",
   names: ["Sega Mega Drive", "Mega Drive", "Sega Genesis", "Genesis", "smd"],
   igdbPlatformIds: [29],
-  application: aresMegaDrive,
+  getApplication: () => aresMegaDrive,
   hasAnalogStick: false,
 };
 
@@ -116,7 +118,7 @@ export const sega32x: Category = {
     "Super 32X",
   ],
   igdbPlatformIds: [30],
-  application: aresSega32x,
+  getApplication: () => aresSega32x,
   hasAnalogStick: false,
 };
 
@@ -124,7 +126,7 @@ export const segacd: Category = {
   id: "segacd",
   names: ["Sega CD", "Mega CD", "Sega Mega CD", "smcd"],
   igdbPlatformIds: [78],
-  application: aresSegaCd,
+  getApplication: () => aresSegaCd,
   hasAnalogStick: false,
 };
 
@@ -139,7 +141,7 @@ export const segamegald: Category = {
     "Pioneer LaserActive Sega PAC",
   ],
   igdbPlatformIds: [487],
-  application: aresSegaMegaLd,
+  getApplication: () => aresSegaMegaLd,
   hasAnalogStick: false,
 };
 
@@ -147,7 +149,7 @@ export const segadreamcast: Category = {
   id: "segadreamcast",
   names: ["Sega Dreamcast", "Dreamcast", "dc"],
   igdbPlatformIds: [23],
-  application: flycast,
+  getApplication: () => flycast,
   hasAnalogStick: true,
 };
 
@@ -162,7 +164,7 @@ export const supernintendo: Category = {
     "sfc",
   ],
   igdbPlatformIds: [19, /** Super Famicom */ 58],
-  application: aresSuperNintendo,
+  getApplication: () => aresSuperNintendo,
   hasAnalogStick: false,
 };
 
@@ -170,7 +172,7 @@ export const nintendods: Category = {
   id: "nintendods",
   names: ["Nintendo DS", "DS", "nds"],
   igdbPlatformIds: [20],
-  application: melonds,
+  getApplication: () => melonds,
   hasAnalogStick: false,
 };
 
@@ -178,15 +180,15 @@ export const nintendo3ds: Category = {
   id: "nintendo3ds",
   names: ["Nintendo 3DS", "3DS", "n3ds"],
   igdbPlatformIds: [37, /** New Nintendo 3DS */ 137],
-  application: azahar,
+  getApplication: () => azahar,
   hasAnalogStick: true,
 };
 
 export const nintendogamecube: Category = {
   id: "nintendogamecube",
-  names: ["Nintendo Gamecube", "Gamecube", "ngc", "gc"],
+  names: ["Nintendo GameCube", "GameCube", "ngc", "gc"],
   igdbPlatformIds: [21],
-  application: dolphin,
+  getApplication: () => dolphin,
   hasAnalogStick: true,
 };
 
@@ -194,7 +196,7 @@ export const arcade: Category = {
   id: "arcade",
   names: ["Arcade"],
   igdbPlatformIds: [52],
-  application: mame,
+  getApplication: () => mame,
   hasAnalogStick: false,
 };
 
@@ -202,7 +204,7 @@ export const nintendowii: Category = {
   id: "nintendowii",
   names: ["Nintendo Wii", "Wii"],
   igdbPlatformIds: [5],
-  application: dolphin,
+  getApplication: () => dolphin,
   hasAnalogStick: true,
 };
 
@@ -210,7 +212,7 @@ export const nintendowiiu: Category = {
   id: "nintendowiiu",
   names: ["Nintendo Wii U", "Wii U"],
   igdbPlatformIds: [41],
-  application: cemu,
+  getApplication: () => cemu,
   hasAnalogStick: true,
 };
 
@@ -218,7 +220,7 @@ export const nintendoswitch: Category = {
   id: "nintendoswitch",
   names: ["Nintendo Switch", "Switch"],
   igdbPlatformIds: [130],
-  application: ryujinx,
+  getApplication: () => (isEdenForSwitch() ? eden : ryujinx),
   hasAnalogStick: true,
 };
 
@@ -232,7 +234,7 @@ export const nintendoentertainmentsystem: Category = {
     "fc",
   ],
   igdbPlatformIds: [18, /** Famicom Disc System */ 51, /** Famicom */ 99],
-  application: aresNES,
+  getApplication: () => aresNES,
   hasAnalogStick: false,
 };
 
@@ -240,7 +242,7 @@ export const nintendo64: Category = {
   id: "nintendo64",
   names: ["Nintendo 64", "N64"],
   igdbPlatformIds: [4],
-  application: isRmgForN64() ? rosaliesMupenGui : aresNintendo64,
+  getApplication: () => (isRmgForN64() ? rosaliesMupenGui : aresNintendo64),
   hasAnalogStick: true,
 };
 
@@ -248,7 +250,7 @@ export const nintendogameboy: Category = {
   id: "nintendogameboy",
   names: ["Nintendo Game Boy", "Game Boy", "GB"],
   igdbPlatformIds: [33],
-  application: aresGameBoyColor,
+  getApplication: () => aresGameBoyColor,
   hasAnalogStick: false,
 };
 
@@ -256,7 +258,7 @@ export const nintendogameboycolor: Category = {
   id: "nintendogameboycolor",
   names: ["Nintendo Game Boy Color", "Game Boy Color", "GBC"],
   igdbPlatformIds: [22],
-  application: aresGameBoyColor,
+  getApplication: () => aresGameBoyColor,
   hasAnalogStick: false,
 };
 
@@ -264,7 +266,7 @@ export const nintendogameboyadvance: Category = {
   id: "nintendogameboyadvance",
   names: ["Nintendo Game Boy Advance", "Game Boy Advance", "GBA"],
   igdbPlatformIds: [24],
-  application: aresGameBoyAdvance,
+  getApplication: () => aresGameBoyAdvance,
   hasAnalogStick: false,
 };
 
@@ -272,7 +274,7 @@ export const segasaturn: Category = {
   id: "segasaturn",
   names: ["Sega Saturn", "Saturn", "ss"],
   igdbPlatformIds: [32],
-  application: mednafenSaturn,
+  getApplication: () => mednafenSaturn,
   hasAnalogStick: true,
 };
 
@@ -288,7 +290,7 @@ export const pcengine: Category = {
     "pce",
   ],
   igdbPlatformIds: [86],
-  application: aresPcEngine,
+  getApplication: () => aresPcEngine,
   hasAnalogStick: false,
 };
 
@@ -302,7 +304,7 @@ export const pcenginecd: Category = {
     "pcecd",
   ],
   igdbPlatformIds: [150],
-  application: mednafenPcEngineCD,
+  getApplication: () => mednafenPcEngineCD,
   hasAnalogStick: false,
 };
 
@@ -316,7 +318,7 @@ export const pcenginesupergrafx: Category = {
     "pcfx",
   ],
   igdbPlatformIds: [128],
-  application: aresSuperGrafx,
+  getApplication: () => aresSuperGrafx,
   hasAnalogStick: false,
 };
 
@@ -334,7 +336,7 @@ export const neogeo: Category = {
     "mvs",
   ],
   igdbPlatformIds: [79, 80],
-  application: mameNeoGeo,
+  getApplication: () => mameNeoGeo,
   hasAnalogStick: false,
 };
 
@@ -342,7 +344,7 @@ export const neogeocd: Category = {
   id: "neogeocd",
   names: ["SNK Neo Geo CD", "Neo Geo CD", "ngcd"],
   igdbPlatformIds: [136],
-  application: mameNeoGeoCD,
+  getApplication: () => mameNeoGeoCD,
   hasAnalogStick: false,
 };
 
@@ -350,7 +352,7 @@ export const neogeopocket: Category = {
   id: "neogeopocket",
   names: ["SNK Neo Geo Pocket", "Neo Geo Pocket", "ngp"],
   igdbPlatformIds: [119],
-  application: aresNeoGeoPocket,
+  getApplication: () => aresNeoGeoPocket,
   hasAnalogStick: false,
 };
 
@@ -358,7 +360,7 @@ export const neogeopocketcolor: Category = {
   id: "neogeopocketcolor",
   names: ["SNK Neo Geo Pocket Color", "Neo Geo Pocket Color", "ngpc"],
   igdbPlatformIds: [120],
-  application: aresNeoGeoPocketColor,
+  getApplication: () => aresNeoGeoPocketColor,
   hasAnalogStick: false,
 };
 
@@ -366,7 +368,7 @@ export const dos: Category = {
   id: "dos",
   names: ["Microsoft DOS", "DOS", "MS DOS"],
   igdbPlatformIds: [13],
-  application: dosboxstaging,
+  getApplication: () => dosboxpure,
   hasAnalogStick: false,
 };
 
@@ -374,7 +376,7 @@ export const scumm: Category = {
   id: "scumm",
   names: ["Scumm", "Scumm VM"],
   igdbPlatformIds: [/** PC */ 6, /** Dos */ 13],
-  application: scummvm,
+  getApplication: () => scummvm,
   hasAnalogStick: true,
 };
 
@@ -382,7 +384,7 @@ export const xbox: Category = {
   id: "xbox",
   names: ["Microsoft XBOX", "XBOX"],
   igdbPlatformIds: [11],
-  application: xemu,
+  getApplication: () => xemu,
   hasAnalogStick: true,
 };
 
@@ -393,7 +395,7 @@ export const lastPlayed: Category = {
   id: "lastPlayed",
   names: ["Last Played"],
   igdbPlatformIds: [],
-  application: aresPcEngine,
+  getApplication: () => aresPcEngine,
   hasAnalogStick: true,
 };
 
@@ -436,7 +438,7 @@ export const categories = {
   lastPlayed,
 } satisfies Record<SystemId, Category>;
 
-const normalizeString = (a: string) =>
+export const normalizeString = (a: string) =>
   a
     .toLowerCase()
     .replaceAll(" ", "")
@@ -444,7 +446,8 @@ const normalizeString = (a: string) =>
 
 export const getCategoryDataByName = (name: string) =>
   Object.values(categories).find(
-    ({ names }) =>
+    ({ names, id }) =>
+      id !== "lastPlayed" &&
       !!names.find(
         (categoryName) =>
           normalizeString(categoryName) === normalizeString(name),

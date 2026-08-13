@@ -1,28 +1,23 @@
-import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
-import {
-  getNameIndex,
-  getPlayerIndexArray,
-} from "../../../../types/gamepad.js";
 import { log } from "../../../debug.server.js";
 import { isSteamOs } from "../../../operationsystem.server.js";
 import type { GlobalDefaultInputConfigFile, PlayerInput } from "./config.js";
 import { globalDefaultInputConfigFileReset } from "./config.js";
 import { keyboardConfig } from "./keyboardConfig.js";
+import {
+  EmuzeController,
+  getControllers,
+  getSdlNameIndex,
+} from "../../../gamepad.server.js";
 
 export const getVirtualGamepad =
   (isPs1Classic: boolean) =>
-  (
-    name: string,
-    index: number,
-    devices: Sdl.Joystick.Device[] | Sdl.Controller.Device[],
-  ): PlayerInput => {
+  (name: string, index: number, devices: EmuzeController[]): PlayerInput => {
     const psButtonPs1ClassicOverwrite =
       isSteamOs() && isPs1Classic ? { "PS Button": "RS", R3: "" } : {};
 
     return {
       Handler: "SDL",
-      Device: `${name} ${getNameIndex(name, index, devices) + 1}`,
+      Device: `${name} ${getSdlNameIndex(name, index, devices) + 1}`,
       Config: {
         "Left Stick Left": "LS X-",
         "Left Stick Down": "LS Y-",
@@ -124,8 +119,7 @@ export const getVirtualGamepad =
 export const getVirtualGamepads = (
   isPs1Classic: boolean,
 ): GlobalDefaultInputConfigFile => {
-  const gamepads = isSteamOs() ? sdl.joystick.devices : sdl.controller.devices;
-  const playerIndexArray = getPlayerIndexArray(sdl.joystick.devices);
+  const gamepads = getControllers();
 
   if (gamepads.length > 0) {
     const mappedGamepads = gamepads.reduce<GlobalDefaultInputConfigFile>(
@@ -133,12 +127,9 @@ export const getVirtualGamepads = (
         if (currentDevice.name) {
           log("debug", "gamepad", { index, currentDevice });
 
-          accumulator[`Player ${playerIndexArray[index] + 1} Input`] =
-            getVirtualGamepad(isPs1Classic)(
-              currentDevice.name,
-              index,
-              gamepads,
-            );
+          accumulator[`Player ${index + 1} Input`] = getVirtualGamepad(
+            isPs1Classic,
+          )(currentDevice.nameOsSpecific, index, gamepads);
         }
         return accumulator;
       },

@@ -1,4 +1,7 @@
-export const keyboardConfig = `<?xml version="1.0" encoding="UTF-8"?>
+import { normalizeNewLines } from "../../configFile.js";
+
+export const keyboardConfig =
+  normalizeNewLines(`<?xml version="1.0" encoding="UTF-8"?>
 <emulated_controller>
 	<type>Wii U GamePad</type>
 	<toggle_display>1</toggle_display>
@@ -121,4 +124,4 @@ export const keyboardConfig = `<?xml version="1.0" encoding="UTF-8"?>
 			</entry>
 		</mappings>
 	</controller>
-</emulated_controller>`;
+</emulated_controller>`);

@@ -4,9 +4,7 @@ import nodepath from "node:path";
 import { writeFile } from "../app/server/readWriteData.server.js";
 import { normalizeString } from "../app/server/igdb.server.js";
 
-import { fileURLToPath } from "node:url";
-
-const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
+const __dirname = import.meta.dirname;
 
 const nameMappings: [SystemId, string][] = [
   [

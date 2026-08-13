@@ -3,8 +3,6 @@ import nodepath from "node:path";
 import fs from "node:fs";
 import type { ApplicationId } from "../../applicationId.js";
 import type { Application } from "../../types.js";
-import { importElectron } from "../../../importElectron.server.js";
-import { commandLineOptions } from "../../../commandLine.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
@@ -20,8 +18,8 @@ import {
 import { EOL } from "node:os";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
+import { readAdvanced } from "../../../settings.server.js";
 
-const flatpakId = "com.github.Rosalie241.RMG";
 const applicationId: ApplicationId = "rosaliesMupenGui";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "RMG.exe")
@@ -29,8 +27,20 @@ const bundledPath = isWindows()
 
 const configFileName = "mupen64plus.cfg";
 
+const configPathRelative = isWindows()
+  ? nodepath.join("config", configFileName)
+  : nodepath.join(configFileName);
+
+const savestatesPathRelative = isWindows()
+  ? nodepath.join("config", "Save", "State")
+  : nodepath.join("savstates");
+
+const memcardsPathRelative = isWindows()
+  ? nodepath.join("config", "Save", "Game")
+  : nodepath.join("memcards");
+
 const getConfigFilePath = () =>
-  nodepath.join(emulatorsConfigDirectory, applicationId, configFileName);
+  nodepath.join(emulatorsConfigDirectory, applicationId, configPathRelative);
 
 const readConfigFile = (filePath: string) => {
   try {
@@ -71,6 +81,18 @@ export const replaceRomBrowserConfig =
       },
     ]);
 
+const replaceInputConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[Rosalie's Mupen GUI - Input Plugin]", [
+    /**
+     * 0 = automatic
+     * 1 = joystick
+     * 2 = gamepad (controller)
+     */
+    {
+      keyValue: `ControllerMode = 1`,
+    },
+  ]);
+
 export const replaceGamepadConfig = (): SectionReplacement => {
   const virtualGamepads = getVirtualGamepads();
 
@@ -91,6 +113,7 @@ export const replaceConfigSections = (n64RomsPath: string) => {
   const fileContentNew = chainSectionReplacements(
     sections,
     replaceMainConfig,
+    replaceInputConfig,
     replaceGamepadConfig(),
     replaceKeyBindingsConfig,
     replaceRomBrowserConfig(n64RomsPath),
@@ -115,18 +138,16 @@ export const rosaliesMupenGui: Application = {
   id: applicationId,
   name: "Rosalie's Mupen GUI",
   fileExtensions: [".z64", ".n64", ".v64"],
-  flatpakId,
-  defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
+  defineEnvironmentVariables: () => ({
+    ...sdlGameControllerConfig,
+  }),
   configFile: {
     basePath: getConfigFileBasePath(),
     files: [
-      configFileName,
-      "bios",
-      "cheats",
+      configPathRelative,
+      savestatesPathRelative,
+      memcardsPathRelative,
       "gamesettings",
-      "inputprofiles",
-      "memcards",
-      "savstates",
     ],
   },
   createOptionParams: ({
@@ -151,10 +172,7 @@ export const rosaliesMupenGui: Application = {
 };
 
 export const isRmgForN64 = () => {
-  const electron = importElectron();
+  const rmg = readAdvanced()?.rmg;
 
-  return (
-    electron?.app?.commandLine.hasSwitch(commandLineOptions.rmgN64.id) ||
-    process.env.EMUZE_RMG_N64 === "true"
-  );
+  return rmg || false;
 };

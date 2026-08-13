@@ -68,6 +68,9 @@ export const readAllFilenames = ({
   return filenames;
 };
 
+/**
+ * Returns all files as absolute path. Searches recursivly.
+ */
 export const readFilenames = ({
   path,
   searchFilesOnlyIn,
@@ -80,13 +83,17 @@ export const readFilenames = ({
   entryAsDirectory?: boolean;
 }) => {
   if (searchFilesOnlyIn) {
-    return searchFilesOnlyIn.flatMap((allowedFolder) =>
-      readAllFilenames({
-        path: nodepath.join(path, allowedFolder),
-        fileExtensions,
-        entryAsDirectory,
-      }),
-    );
+    return searchFilesOnlyIn.flatMap((allowedFolder) => {
+      const allowedFolderPath = nodepath.join(path, allowedFolder);
+      if (existsSync(allowedFolderPath)) {
+        return readAllFilenames({
+          path: allowedFolderPath,
+          fileExtensions,
+          entryAsDirectory,
+        });
+      }
+      return [];
+    });
   }
 
   return readAllFilenames({
@@ -121,9 +128,7 @@ export const writeFileHome = (object: unknown, path: string) => {
 };
 
 export const removeFile = (path: string) => {
-  if (existsSync(path)) {
-    rmSync(path, { force: true });
-  }
+  rmSync(path, { force: true, recursive: true });
 };
 
 export const removeFileHome = (path: string) => {
@@ -132,6 +137,7 @@ export const removeFileHome = (path: string) => {
 };
 
 export const copy = (source: string, destination: string) => {
+  removeFile(destination);
   if (existsSync(source)) {
     cpSync(source, destination, {
       recursive: true,

@@ -7,13 +7,14 @@ import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { getMouse } from "./mouseConfig.js";
+import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const applicationId: ApplicationId = "ares";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "ares.exe")
   : nodepath.join(applicationId, `${applicationId}.AppImage`);
 
-const getSharedAresOptionParams: OptionParamFunction = ({
+export const getSharedAresOptionParams: OptionParamFunction = ({
   settings: {
     appearance: { fullscreen },
   },
@@ -59,146 +60,11 @@ export const ares: Application = {
   id: "ares",
   name: "ares",
   fileExtensions: [],
-  flatpakId: "dev.ares.ares",
+  defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {
     basePath: getConfigFileBasePath(),
     files: ["settings.bml"],
   },
   createOptionParams: getSharedAresOptionParams,
   bundledPath,
-};
-
-export const aresGameBoyColor: Application = {
-  ...ares,
-  fileExtensions: [".gb", ".gbc", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Game Boy Color"],
-  ],
-};
-
-export const aresGameBoyAdvance: Application = {
-  ...ares,
-  fileExtensions: [".gba", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Game Boy Advance"],
-  ],
-};
-
-export const aresNES: Application = {
-  ...ares,
-  fileExtensions: [".nes", ".fc", ".unh", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Famicom"],
-  ],
-};
-
-export const aresSuperNintendo: Application = {
-  ...ares,
-  fileExtensions: [".sfc", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Super Famicom"],
-  ],
-};
-
-export const aresNintendo64: Application = {
-  ...ares,
-  fileExtensions: [".z64", ".n64", ".v64"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Nintendo 64"],
-  ],
-};
-
-export const aresMasterSystem: Application = {
-  ...ares,
-  fileExtensions: [".sms", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Master System"],
-  ],
-};
-
-export const aresGameGear: Application = {
-  ...ares,
-  fileExtensions: [".gg", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Game Gear"],
-  ],
-};
-
-export const aresMegaDrive: Application = {
-  ...ares,
-  fileExtensions: [".sfc", ".smc", ".68K", ".bin", ".md", ".sgd", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Mega Drive"],
-  ],
-};
-
-export const aresSegaCd: Application = {
-  ...ares,
-  fileExtensions: [".chd", ".cue"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Mega CD"],
-  ],
-};
-
-export const aresSegaMegaLd: Application = {
-  ...ares,
-  fileExtensions: [".mmi"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "LaserActive (SEGA PAC)"],
-  ],
-};
-
-export const aresSega32x: Application = {
-  ...ares,
-  fileExtensions: [".32x", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Mega 32X"],
-  ],
-};
-
-export const aresPcEngine: Application = {
-  ...ares,
-  fileExtensions: [".pce", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "PC Engine"],
-  ],
-};
-
-export const aresSuperGrafx: Application = {
-  ...ares,
-  fileExtensions: [".pce", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "SuperGrafx"],
-  ],
-};
-
-export const aresNeoGeoPocket: Application = {
-  ...ares,
-  fileExtensions: [".ngp", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Neo Geo Pocket"],
-  ],
-};
-
-export const aresNeoGeoPocketColor: Application = {
-  ...ares,
-  fileExtensions: [".ngc", ".zip"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Neo Geo Pocket Color"],
-  ],
 };

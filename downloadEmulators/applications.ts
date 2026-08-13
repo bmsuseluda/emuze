@@ -1,6 +1,6 @@
 import type { Application } from "../app/server/applicationsDB.server/types.js";
 import { scummvm } from "../app/server/applicationsDB.server/applications/scummvm/index.js";
-import { dosboxstaging } from "../app/server/applicationsDB.server/applications/dosbox/index.js";
+import { dosboxpure } from "../app/server/applicationsDB.server/applications/dosbox/index.js";
 import { mame } from "../app/server/applicationsDB.server/applications/mame/index.js";
 import { rpcs3 } from "../app/server/applicationsDB.server/applications/rpcs3/index.js";
 import { ares } from "../app/server/applicationsDB.server/applications/ares/index.js";
@@ -17,6 +17,7 @@ import { melonds } from "../app/server/applicationsDB.server/applications/melond
 import { cemu } from "../app/server/applicationsDB.server/applications/cemu/index.js";
 import { rosaliesMupenGui } from "../app/server/applicationsDB.server/applications/rmg/index.js";
 import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
+import { eden } from "../app/server/applicationsDB.server/applications/eden/index.js";
 
 export const applications = {
   duckstation,
@@ -32,26 +33,30 @@ export const applications = {
   mame,
   ares,
   flycast,
-  dosboxstaging,
+  dosboxpure,
   rosaliesMupenGui,
   scummvm,
   xemu,
+  eden,
 } satisfies Record<string, Application>;
 
 export const emulatorVersions = {
-  ares: "147",
-  azahar: "2124.2",
-  dolphin: "2512",
-  duckstation: "0.1-7371",
+  ares: "148",
+  azahar: "2125.1.3",
   cemu: "2.6",
+  dolphin: "2606",
+  dosboxpure: "1.0-preview6",
+  duckstation: "0.1-7371",
+  eden: "0.2.1",
   flycast: "2.6",
-  mame: "0.285",
+  mame: "0.288",
   mednafen: "1.32.1",
   melonds: "1.1",
   pcsx2: "2.6.3",
-  ppsspp: "1.19.3",
-  rosaliesMupenGui: "0.8.8",
-  rpcs3: "0.0.39",
+  ppsspp: "1.20.4",
+  rosaliesMupenGui: "0.9.0",
+  rpcs3: "0.0.42",
   ryujinx: "1.3.3",
-  xemu: "0.8.133",
-} satisfies Partial<Record<ApplicationId, string>>;
+  scummvm: "2026.3.0",
+  xemu: "0.8.136",
+} satisfies Record<ApplicationId, string>;

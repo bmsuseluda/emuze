@@ -3,7 +3,7 @@ import type { Application } from "../../types.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { isWindows } from "../../../operationsystem.server.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
-import { XMLBuilder } from "fast-xml-parser";
+import XMLBuilder from "fast-xml-builder";
 import { log } from "../../../debug.server.js";
 import { readXmlConfigFile, writeConfig } from "../../configFile.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
@@ -16,7 +16,6 @@ import { removeFile } from "../../../readWriteData.server.js";
 import { findWiiUGameName } from "./findEntryName.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
-const flatpakId = "info.cemu.Cemu";
 const applicationId: ApplicationId = "cemu";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "Cemu.exe")
@@ -65,13 +64,13 @@ const replaceDefaultConfigFile = (wiiuRomsPath: string) => {
 };
 
 const replaceControllerConfigFile = () => {
-  const fileContents = getVirtualGamepads();
+  const virtualGamepads = getVirtualGamepads();
 
-  fileContents.forEach(({ content, playerIndex }) => {
-    writeConfig(getControllerConfigFilePath(playerIndex), content);
+  virtualGamepads.forEach((virtualGamepad, index) => {
+    writeConfig(getControllerConfigFilePath(index), virtualGamepad);
   });
 
-  resetUnusedVirtualGamepads(8, fileContents.length, (gamepadIndex) => {
+  resetUnusedVirtualGamepads(8, virtualGamepads.length, (gamepadIndex) => {
     removeFile(getControllerConfigFilePath(gamepadIndex));
   });
 };
@@ -88,16 +87,19 @@ const getConfigFileBasePath = () => {
     : nodepath.join(config);
 };
 
+const searchGamesOnlyIn = ["games"];
+
 export const cemu: Application = {
   id: applicationId,
   name: "Cemu",
   entryAsDirectory: true,
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
-  flatpakId,
+  searchGamesOnlyIn,
+  requiredSystemFolderStructure: ["mlc", ...searchGamesOnlyIn],
   findEntryName: findWiiUGameName,
   configFile: {
     basePath: getConfigFileBasePath(),
-    files: [defaultConfigPathRelative, "controllerProfiles"],
+    files: [defaultConfigPathRelative, "controllerProfiles", "gameProfiles"],
   },
   createOptionParams: ({
     settings: {
@@ -107,11 +109,17 @@ export const cemu: Application = {
     categoryData,
     absoluteEntryPath,
   }) => {
-    const wiiuRomsPath = nodepath.join(categoriesPath, categoryData.name);
+    const wiiuSystemFolderPath = nodepath.join(
+      categoriesPath,
+      categoryData.name,
+    );
+    const wiiuRomsPath = nodepath.join(wiiuSystemFolderPath, "games");
+    const wiiuMlcPath = nodepath.join(wiiuSystemFolderPath, "mlc");
+
     replaceDefaultConfigFile(wiiuRomsPath);
     replaceControllerConfigFile();
 
-    const optionParams = [];
+    const optionParams = [...["--mlc", wiiuMlcPath]];
     if (fullscreen) {
       optionParams.push("--fullscreen");
     }

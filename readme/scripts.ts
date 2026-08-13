@@ -7,70 +7,16 @@ import { keyboardMapping } from "../app/types/gamepad.js";
 import type { Category } from "../app/server/categoriesDB.server/types.js";
 import type { Application } from "../app/server/applicationsDB.server/types.js";
 import { rosaliesMupenGui } from "../app/server/applicationsDB.server/applications/rmg/index.js";
-
-const preConfigured: ApplicationId[] = [
-  "ares",
-  "azahar",
-  "cemu",
-  "dolphin",
-  "duckstation",
-  "flycast",
-  "mame",
-  "mednafen",
-  "melonds",
-  "pcsx2",
-  "ppsspp",
-  "scummvm",
-  "rosaliesMupenGui",
-  "rpcs3",
-  "ryujinx",
-  "xemu",
-];
-
-const bundled: Partial<Record<ApplicationId, string>> = {
-  ares: emulatorVersions.ares,
-  azahar: emulatorVersions.azahar,
-  cemu: emulatorVersions.cemu,
-  dolphin: emulatorVersions.dolphin,
-  duckstation: emulatorVersions.duckstation,
-  flycast: emulatorVersions.flycast,
-  mame: emulatorVersions.mame,
-  mednafen: emulatorVersions.mednafen,
-  melonds: emulatorVersions.melonds,
-  pcsx2: emulatorVersions.pcsx2,
-  ppsspp: emulatorVersions.ppsspp,
-  rosaliesMupenGui: emulatorVersions.rosaliesMupenGui,
-  rpcs3: emulatorVersions.rpcs3,
-  ryujinx: emulatorVersions.ryujinx,
-  xemu: emulatorVersions.xemu,
-};
-
-const biosNeeded: SystemId[] = [
-  "arcade",
-  "pcenginecd",
-  "pcenginesupergrafx",
-  "neogeo",
-  "neogeopocket",
-  "neogeopocketcolor",
-  "nintendogameboyadvance",
-  "nintendowiiu",
-  "nintendoswitch",
-  "sega32x",
-  "segacd",
-  "segamegald",
-  "segasaturn",
-  "sonyplaystation",
-  "sonyplaystation2",
-  "sonyplaystation3",
-  "xbox",
-];
+import { emulatorsBios } from "../downloadBiosOpenSource/downloadBiosOpenSource.js";
+import { eden } from "../app/server/applicationsDB.server/applications/eden/index.js";
 
 const homepages: Record<ApplicationId, string> = {
   ares: "https://github.com/ares-emulator/ares",
   cemu: "https://github.com/cemu-project/Cemu",
   dolphin: "https://github.com/dolphin-emu/dolphin",
-  dosboxstaging: "https://github.com/dosbox-staging/dosbox-staging",
+  dosboxpure: "https://github.com/schellingb/dosbox-pure-unleashed",
   duckstation: "https://github.com/stenzek/duckstation",
+  eden: "https://git.eden-emu.dev/eden-emu/eden/releases",
   flycast: "https://github.com/flyinghead/flycast",
   azahar: "https://github.com/azahar-emu/azahar",
   mame: "https://github.com/mamedev/mame",
@@ -89,22 +35,32 @@ const nameOverwrites: Partial<Record<SystemId, string>> = {
   dos: "Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json))",
 };
 
+const applicationsWithBiosNotHandled: ApplicationId[] = [
+  "rpcs3",
+  "cemu",
+  "ryujinx",
+  "eden",
+];
+
+const checkIsBiosNeeded = (application: Application) =>
+  (application.biosFiles && !application.bundledBiosOpenSource) ||
+  application.otherRequiredFiles ||
+  applicationsWithBiosNotHandled.includes(application.id);
+
 const createSystemsTableRow = (
   category: Category,
   alternativeApplication?: Application,
 ) => {
-  const application = alternativeApplication || category.application;
+  const application = alternativeApplication || category.getApplication();
   const systemName = alternativeApplication
     ? ""
     : nameOverwrites[category.id] || category.names[0];
-  const emulatorName = `[${application.name}](${homepages[application.id]})`;
-  const isPreConfigured = preConfigured.includes(application.id) ? "Yes" : "No";
-  const isBundled = bundled[application.id]
-    ? `v${bundled[application.id]}`
-    : "-";
-  const isBiosNeeded = biosNeeded.includes(category.id) ? "Yes" : "No";
 
-  return `| ${systemName} | ${emulatorName} | ${isPreConfigured} | ${isBundled} | ${isBiosNeeded} | `;
+  const emulatorName = `[${application.name}](${homepages[application.id]})`;
+  const bundledVersion = emulatorVersions[application.id];
+  const isBiosNeeded = checkIsBiosNeeded(application) ? "Yes" : "No";
+
+  return `| ${systemName} | ${emulatorName} v${bundledVersion} | ${isBiosNeeded} | `;
 };
 
 export const createSystemsTable = () =>
@@ -121,6 +77,13 @@ export const createSystemsTable = () =>
         ].join("\n");
       }
 
+      if (category.id === "nintendoswitch") {
+        return [
+          createSystemsTableRow(category),
+          createSystemsTableRow(category, eden),
+        ].join("\n");
+      }
+
       return createSystemsTableRow(category);
     })
     .filter(Boolean)
@@ -132,16 +95,25 @@ export const createSystemsTableExpert = () =>
       if (category.id === "lastPlayed") {
         return null;
       }
+      const application = category.getApplication();
       const systemName = category.names[0];
       const systemNames = category.names.join(", ");
-      const fileExtensions = category.application.fileExtensions
+      const fileExtensions = application.fileExtensions
         ?.map((fileExtension) => `\`${fileExtension}\``)
         .join(", ");
-      const entryAsDirectory = category.application.entryAsDirectory;
+      const entryAsDirectory = application.entryAsDirectory;
 
       return `| ${systemName} | ${systemNames} | ${entryAsDirectory ? "Folder" : fileExtensions} | `;
     })
     .filter(Boolean)
+    .join("\n");
+
+export const createBiosOpenSourceTable = () =>
+  emulatorsBios
+    .map(({ name, system, homepage }) => {
+      const systemName = categories[system].names[0];
+      return `| ${systemName} | [${name}](${homepage}) |`;
+    })
     .join("\n");
 
 export const createKeyboardMapping = () =>

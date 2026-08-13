@@ -1,5 +1,4 @@
 import nodepath from "node:path";
-
 import type { CategorySlim } from "../types/jsonFiles/categories.js";
 import { readDirectorynames } from "./readWriteData.server.js";
 import { sortCaseInsensitive } from "./sortCaseInsensitive.server.js";
@@ -53,7 +52,7 @@ export const importCategories = async () => {
   const generalData = readGeneral();
 
   if (generalData?.categoriesPath) {
-    const { categoriesPath, applicationsPath } = generalData;
+    const { categoriesPath } = generalData;
     const categoryFolderNames = readDirectorynames(categoriesPath);
     categoryFolderNames.sort(sortCaseInsensitive);
 
@@ -62,12 +61,14 @@ export const importCategories = async () => {
     >((result, categoryFolderName) => {
       const categoryFolderBaseName = nodepath.basename(categoryFolderName);
       const categoryDbData = getCategoryDataByName(categoryFolderBaseName);
+      const categoryExistsAlready = !!result.find(
+        ({ categoryDbData: { id } }) => id === categoryDbData?.id,
+      );
 
-      if (categoryDbData) {
+      if (categoryDbData && !categoryExistsAlready) {
         result.push({
           categoryDbData,
           categoryFolderBaseName,
-          applicationsPath,
         });
       }
 

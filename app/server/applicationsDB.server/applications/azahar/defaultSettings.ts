@@ -1,4 +1,6 @@
-export const defaultSettings = `[Audio]
+import { normalizeNewLines } from "../../configFile.js";
+
+export const defaultSettings = normalizeNewLines(`[Audio]
 audio_emulation=0
 audio_emulation\\default=true
 enable_audio_stretching=true
@@ -648,4 +650,4 @@ video_encoder_options\\default=true
 citra_token=
 citra_username=
 web_api_url=https://api.citra-emu.org
-web_api_url\\default=true`;
+web_api_url\\default=true`);

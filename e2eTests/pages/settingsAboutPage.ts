@@ -5,7 +5,7 @@ export class SettingsAboutPage {
   readonly headline: Locator;
   readonly name = "About";
   readonly github: Locator;
-  readonly changelog: Locator;
+  readonly releasenotes: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -13,6 +13,6 @@ export class SettingsAboutPage {
       name: this.name,
     });
     this.github = this.page.getByRole("link", { name: "GitHub" });
-    this.changelog = this.page.getByRole("link", { name: "Changelog" });
+    this.releasenotes = this.page.getByRole("link", { name: "Release Notes" });
   }
 }
