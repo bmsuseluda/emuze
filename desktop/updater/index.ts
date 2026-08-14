@@ -45,8 +45,7 @@ const executeAppimageUpdater = (args: string[]) =>
 
 export const bundledAppimageUpdaterPath = nodepath.join(
   process.env.APPDIR || "",
-  "updater",
-  "linux",
+  "bin",
   "appimageupdate-x86_64-linux",
 );
 
