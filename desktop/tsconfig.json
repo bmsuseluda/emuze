@@ -1,5 +1,5 @@
 {
-  "include": ["main.ts", "preload.ts", "../electronApi.d.ts"],
+  "include": ["main.ts", "preload.ts", "../electronApi.d.ts", "updater/index.ts"],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2023"],
     "isolatedModules": true,

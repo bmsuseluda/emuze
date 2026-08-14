@@ -9,12 +9,9 @@ import {
 } from "electron";
 import nodepath from "node:path";
 import * as dotenv from "dotenv";
-import electronUpdater from "electron-updater";
 import {
   readAppearance,
-  readGeneral,
   writeAppearance,
-  writeGeneral,
 } from "../app/server/settings.server.js";
 import { createLogFile, isDebug, log } from "../app/server/debug.server.js";
 import { bundledBiosOpenSourcePath } from "../app/server/bundledEmulatorsPath.server.js";
@@ -26,9 +23,9 @@ import { initReactRouter } from "./initReactRouter.js";
 import { cp } from "node:fs";
 import { biosOpenSourceHomeDirectory } from "../app/server/homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../app/server/applicationsDB.server/environmentVariables.js";
+import { update } from "./updater/index.js";
 
 const __dirname = import.meta.dirname;
-const { autoUpdater } = electronUpdater;
 
 Object.entries(sdlGameControllerConfig).forEach(([key, value]) => {
   process.env[key] = value;
@@ -82,30 +79,7 @@ app.on("ready", async () => {
     createLogFile();
   }
 
-  autoUpdater
-    .checkForUpdatesAndNotify()
-    .then((result) => {
-      if (result) {
-        log("info", "check for updates", {
-          version: result.updateInfo.version,
-          updateAvailable: result.isUpdateAvailable,
-        });
-      }
-    })
-    .catch((reason) => {
-      log("error", "check for updates", reason);
-    });
-  autoUpdater.on("error", (error, message) => {
-    log("error", "check for updates", error, message);
-  });
-  autoUpdater.on("download-progress", (info) => {
-    log("debug", "update download progress", info);
-  });
-  autoUpdater.on("update-downloaded", ({ downloadedFile }) => {
-    log("debug", "update downloaded", downloadedFile);
-    const general = readGeneral();
-    writeGeneral({ ...general, showReleaseNotesOnStart: true });
-  });
+  update();
 
   const appearance = readAppearance();
   const fullscreen =

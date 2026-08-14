@@ -6,6 +6,7 @@
   "email": "gunslinger@sensonar.de",
   "url": "https://github.com/bmsuseluda/emuze",
   "license": "GNU GPLv3",
+  "desktopName": "emuze",
   "scripts": {
     "prepare": "husky install && yarn panda:codegen",
     "clean": "del-cli dist build buildDesktop public/build coverage",

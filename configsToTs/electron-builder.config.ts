@@ -3,7 +3,12 @@ import type { Configuration } from "electron-builder";
 const config: Configuration = {
   appId: "org.emuze.emuze",
   files: ["buildDesktop", "build", "public", "fetchMetaData/systems"],
-  extraFiles: ["emulators/**", "biosOpenSource/**", "CHANGELOG.md"],
+  extraFiles: [
+    "emulators/**",
+    "biosOpenSource/**",
+    "CHANGELOG.md",
+    "updater/linux",
+  ],
   win: {
     target: [
       {
@@ -26,6 +31,10 @@ const config: Configuration = {
     ],
     category: "Emulator",
     icon: "public/icons/icon512x512.png",
+    publish: {
+      provider: "github",
+      publishAutoUpdate: false,
+    },
   },
   electronLanguages: ["en-US"],
   afterPack: "./afterPackScript.js",
@@ -33,6 +42,7 @@ const config: Configuration = {
   buildDependenciesFromSource: true,
   nodeGypRebuild: false,
   npmRebuild: false,
+  toolsets: { appimage: "1.0.3" },
 };
 
 export default config;
