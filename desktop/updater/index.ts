@@ -52,7 +52,10 @@ export const bundledAppimageUpdaterPath = nodepath.join(
 
 const downloadUpdateLinux = () => {
   log("info", "download update");
-  const appimageUpdater = executeAppimageUpdater(["-Or", '"$APPIMAGE"']);
+  const appimageUpdater = executeAppimageUpdater([
+    "-Or",
+    process.env.APPIMAGE || "",
+  ]);
 
   appimageUpdater.stdout.on("data", (data) => {
     log("info", "download update", "stdout", data);
