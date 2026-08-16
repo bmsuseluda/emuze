@@ -3,7 +3,7 @@ import nodepath from "node:path";
 import { readGeneral, writeGeneral } from "../../app/server/settings.server.js";
 import { log } from "../../app/server/debug.server.js";
 import { platform } from "node:os";
-import { spawn } from "node:child_process";
+import { execSync, spawn, spawnSync } from "node:child_process";
 
 const showReleaseNotesOnStart = () => {
   const general = readGeneral();
@@ -52,10 +52,23 @@ export const bundledAppimageUpdaterPath = nodepath.join(
 
 const downloadUpdateLinux = () => {
   log("info", "download update");
-  const appimageUpdater = executeAppimageUpdater([
-    "-Or",
-    process.env.APPIMAGE || "",
-  ]);
+  log(
+    "debug",
+    "appimage var",
+    "1",
+    process.env.APPIMAGE,
+    "2",
+    spawnSync("$APPIMAGE", {
+      stdio: ["inherit", "pipe", "inherit"],
+      encoding: "utf-8",
+    }),
+    "3",
+    execSync("$APPIMAGE", {
+      stdio: ["inherit", "pipe", "inherit"],
+      encoding: "utf-8",
+    }),
+  );
+  const appimageUpdater = executeAppimageUpdater(["-Or", "$APPIMAGE"]);
 
   appimageUpdater.stdout.on("data", (data) => {
     log("info", "download update", "stdout", data);
