@@ -52,22 +52,6 @@ export const bundledAppimageUpdaterPath = nodepath.join(
 
 const downloadUpdateLinux = () => {
   log("info", "download update");
-  log(
-    "debug",
-    "appimage var",
-    "1",
-    process.env.APPIMAGE,
-    "2",
-    spawnSync("$APPIMAGE", {
-      stdio: ["inherit", "pipe", "inherit"],
-      encoding: "utf-8",
-    }),
-    "3",
-    execSync("$APPIMAGE", {
-      stdio: ["inherit", "pipe", "inherit"],
-      encoding: "utf-8",
-    }),
-  );
   const appimageUpdater = executeAppimageUpdater(["-Or", "$APPIMAGE"]);
 
   appimageUpdater.stdout.on("data", (data) => {
@@ -84,7 +68,25 @@ const downloadUpdateLinux = () => {
 
 const updateLinux = () => {
   log("info", "check for updates");
-  const appimageUpdater = executeAppimageUpdater(["-j", '"$APPIMAGE"']);
+
+  log(
+    "debug",
+    "appimage var",
+    "1",
+    process.env.APPIMAGE,
+    "2",
+    spawnSync("$APPIMAGE", {
+      stdio: ["inherit", "pipe", "inherit"],
+      encoding: "utf-8",
+    }).stdout,
+    "3",
+    execSync("$APPIMAGE", {
+      stdio: ["inherit", "pipe", "inherit"],
+      encoding: "utf-8",
+    }),
+  );
+
+  const appimageUpdater = executeAppimageUpdater(["-j", "$APPIMAGE"]);
 
   appimageUpdater.stdout.on("data", (data) => {
     log("info", "check for updates", "stdout", data);
