@@ -3,12 +3,14 @@ import nodepath from "node:path";
 import { readGeneral, writeGeneral } from "../../app/server/settings.server.js";
 import { log } from "../../app/server/debug.server.js";
 import { platform } from "node:os";
-import { execSync, spawn, spawnSync } from "node:child_process";
+import { spawn } from "node:child_process";
 
 const showReleaseNotesOnStart = () => {
   const general = readGeneral();
   writeGeneral({ ...general, showReleaseNotesOnStart: true });
 };
+
+const appImagePath = process.env.APPIMAGE || "";
 
 const { autoUpdater } = electronUpdater;
 
@@ -52,7 +54,7 @@ export const bundledAppimageUpdaterPath = nodepath.join(
 
 const downloadUpdateLinux = () => {
   log("info", "download update");
-  const appimageUpdater = executeAppimageUpdater(["-Or", "$APPIMAGE"]);
+  const appimageUpdater = executeAppimageUpdater(["-Or", appImagePath]);
 
   appimageUpdater.stdout.on("data", (data) => {
     log("info", "download update", "stdout", data);
@@ -69,29 +71,7 @@ const downloadUpdateLinux = () => {
 const updateLinux = () => {
   log("info", "check for updates");
 
-  log("debug", "appimage var", "1", process.env.APPIMAGE);
-
-  log(
-    "debug",
-    "appimage var",
-    "2",
-    spawnSync("echo", ["$APPIMAGE"], {
-      stdio: ["inherit", "pipe", "inherit"],
-      encoding: "utf-8",
-    }).stdout,
-  );
-
-  log(
-    "debug",
-    "appimage var",
-    "3",
-    execSync("echo $APPIMAGE", {
-      stdio: ["inherit", "pipe", "inherit"],
-      encoding: "utf-8",
-    }),
-  );
-
-  const appimageUpdater = executeAppimageUpdater(["-j", "$APPIMAGE"]);
+  const appimageUpdater = executeAppimageUpdater(["-j", appImagePath]);
 
   appimageUpdater.stdout.on("data", (data) => {
     log("info", "check for updates", "stdout", data);
