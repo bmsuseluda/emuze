@@ -69,18 +69,23 @@ const downloadUpdateLinux = () => {
 const updateLinux = () => {
   log("info", "check for updates");
 
+  log("debug", "appimage var", "1", process.env.APPIMAGE);
+
   log(
     "debug",
     "appimage var",
-    "1",
-    process.env.APPIMAGE,
     "2",
-    spawnSync("$APPIMAGE", {
+    spawnSync("echo", ["$APPIMAGE"], {
       stdio: ["inherit", "pipe", "inherit"],
       encoding: "utf-8",
     }).stdout,
+  );
+
+  log(
+    "debug",
+    "appimage var",
     "3",
-    execSync("$APPIMAGE", {
+    execSync("echo $APPIMAGE", {
       stdio: ["inherit", "pipe", "inherit"],
       encoding: "utf-8",
     }),
