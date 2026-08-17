@@ -23,7 +23,9 @@ yarn -v
 
 yarn
 yarn app:distLinux
+yarn shrinkBundleSize
 
+mkdir -p ./AppDir/bin
 mv -v  dist/linux-unpacked/emulators ./AppDir
 mv -v  dist/linux-unpacked/biosOpenSource ./AppDir
 mv -v  dist/linux-unpacked/CHANGELOG.md ./AppDir
@@ -33,7 +35,4 @@ cd dist && ./emuze-*.AppImage --appimage-extract && cd ..
 cp  dist/squashfs-root/.DirIcon ./AppDir
 cp  dist/squashfs-root/emuze.desktop ./AppDir
 
-mkdir -p ./AppDir/bin
 cp -rv dist/linux-unpacked/* ./AppDir/bin/
-
-yarn shrinkBundleSize

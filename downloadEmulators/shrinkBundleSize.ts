@@ -9,7 +9,7 @@ import {
 import { writeFileSync } from "node:fs";
 
 const __dirname = nodepath.dirname(fileURLToPath(import.meta.url));
-const appDirPath = nodepath.join(__dirname, "..", "AppDir");
+const distFolderPath = nodepath.join(__dirname, "..", "dist");
 
 const extractAppImage = (appImagePath: string) => {
   console.log("extract appImage", appImagePath);
@@ -48,7 +48,11 @@ const shrinkEmulatorSize = (appImagePath: string) => {
 };
 
 const shrinkBundleSize = () => {
-  const emulatorsPath = nodepath.join(appDirPath, "emulators");
+  const emulatorsPath = nodepath.join(
+    distFolderPath,
+    "linux-unpacked",
+    "emulators",
+  );
 
   readFilenames({ path: emulatorsPath, fileExtensions: [".AppImage"] }).forEach(
     shrinkEmulatorSize,
