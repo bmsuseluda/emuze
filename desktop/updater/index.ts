@@ -4,6 +4,7 @@ import { readGeneral, writeGeneral } from "../../app/server/settings.server.js";
 import { log } from "../../app/server/debug.server.js";
 import { platform } from "node:os";
 import { spawn } from "node:child_process";
+import { existsSync } from "node:fs";
 
 const showReleaseNotesOnStart = () => {
   const general = readGeneral();
@@ -14,7 +15,7 @@ const appImagePath = process.env.APPIMAGE || "";
 
 const { autoUpdater } = electronUpdater;
 
-const updateWindows = () => {
+const updateWithElectronUpdater = () => {
   autoUpdater
     .checkForUpdatesAndNotify()
     .then((result) => {
@@ -68,7 +69,7 @@ const downloadUpdateLinux = () => {
   });
 };
 
-const updateLinux = () => {
+const updateAppImageUpdate = () => {
   if (appImagePath.length > 0) {
     log("info", "check for updates");
 
@@ -90,10 +91,16 @@ const updateLinux = () => {
 
 export const update = () => {
   if (platform() === "win32") {
-    updateWindows();
+    updateWithElectronUpdater();
   } else {
     // TODO: Remove when appimageupdate is in released bundle
-    updateWindows();
-    updateLinux();
+    if (
+      existsSync(
+        nodepath.join(process.env.APPDIR || "", "resources", "app-update.yml"),
+      )
+    ) {
+      updateWithElectronUpdater();
+    }
+    updateAppImageUpdate();
   }
 };

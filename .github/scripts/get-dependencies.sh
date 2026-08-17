@@ -1,7 +1,6 @@
 #!/bin/sh
 
 set -eu
-ARCH=x86_64
 
 echo "Installing package dependencies..."
 echo "---------------------------------------------------------------"

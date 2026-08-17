@@ -2,9 +2,10 @@
 
 set -eu
 
-ARCH=x86_64
-VERSION=$(node -p "require('./package.json').version")
-export ARCH VERSION
+# use version number on release only
+# VERSION=$(node -p "require('./package.json').version")
+VERSION="nightly"
+export VERSION
 export OUTPATH=./dist
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*.AppImage.zsync"
 
