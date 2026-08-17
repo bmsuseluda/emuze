@@ -2,11 +2,13 @@
 
 set -eu
 
-ARCH=$(uname -m)
-VERSION="nightly"
+ARCH=x86_64
+VERSION=$(node -p "require('../../package.json').version")
 export ARCH VERSION
 export OUTPATH=./dist
-export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*$ARCH.AppImage.zsync"
+export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*.AppImage.zsync"
+
+yarn shrinkBundleSize
 
 # Deploy dependencies
 quick-sharun ./AppDir/bin/*  

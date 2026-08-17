@@ -1,8 +1,7 @@
 #!/bin/sh
 
 set -eu
-
-ARCH=$(uname -m)
+ARCH=x86_64
 
 echo "Installing package dependencies..."
 echo "---------------------------------------------------------------"
@@ -12,8 +11,6 @@ pacman -Syu --noconfirm  \
             at-spi2-core \
             nodejs-lts-jod \
             npm \
-          
-
 
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
@@ -25,14 +22,15 @@ npm install -g corepack
 yarn -v
 
 yarn
-yarn app:dirLinux
-yarn shrinkBundleSize
+yarn app:distLinux
+./dist/emuze-*.AppImage --appimage-extract
 
 mkdir -p ./AppDir/bin
-mv -v  dist/linux-unpacked/emulators ./AppDir
-mv -v  dist/linux-unpacked/biosOpenSource ./AppDir
-mv -v  dist/linux-unpacked/CHANGELOG.md ./AppDir
-mv -v  dist/linux-unpacked/updater ./AppDir
-cp -v  .github/scripts/.DirIcon ./AppDir
-cp -v  .github/scripts/emuze.desktop ./AppDir
-cp -rv dist/linux-unpacked/* ./AppDir/bin/
+mv -v  dist/squashfs-root/emulators ./AppDir
+mv -v  dist/squashfs-root/biosOpenSource ./AppDir
+mv -v  dist/squashfs-root/CHANGELOG.md ./AppDir
+mv -v  dist/squashfs-root/updater ./AppDir
+mv -v  dist/squashfs-root/updater ./AppDir
+mv -v  dist/squashfs-root/.DirIcon ./AppDir
+mv -v  dist/squashfs-root/emuze.desktop ./AppDir
+cp -rv dist/squashfs-root/* ./AppDir/bin/
