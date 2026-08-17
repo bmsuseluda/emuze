@@ -23,14 +23,15 @@ yarn -v
 
 yarn
 yarn app:distLinux
-./dist/emuze-*.AppImage --appimage-extract
+
+mv -v  dist/linux-unpacked/emulators ./AppDir
+mv -v  dist/linux-unpacked/biosOpenSource ./AppDir
+mv -v  dist/linux-unpacked/CHANGELOG.md ./AppDir
+mv -v  dist/linux-unpacked/updater ./AppDir
+
+cd dist && ./emuze-*.AppImage --appimage-extract && cd ..
+cp  dist/squashfs-root/.DirIcon ./AppDir
+cp  dist/squashfs-root/emuze.desktop ./AppDir
 
 mkdir -p ./AppDir/bin
-mv -v  dist/squashfs-root/emulators ./AppDir
-mv -v  dist/squashfs-root/biosOpenSource ./AppDir
-mv -v  dist/squashfs-root/CHANGELOG.md ./AppDir
-mv -v  dist/squashfs-root/updater ./AppDir
-mv -v  dist/squashfs-root/updater ./AppDir
-mv -v  dist/squashfs-root/.DirIcon ./AppDir
-mv -v  dist/squashfs-root/emuze.desktop ./AppDir
-cp -rv dist/squashfs-root/* ./AppDir/bin/
+cp -rv dist/linux-unpacked/* ./AppDir/bin/
