@@ -6,6 +6,7 @@ set -eu
 # VERSION=$(node -p "require('./package.json').version")
 VERSION="nightly"
 export VERSION
+export OUTNAME=emuze-"$VERSION".AppImage
 export OUTPATH=./dist
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*.AppImage.zsync"
 
