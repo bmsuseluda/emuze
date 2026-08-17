@@ -31,10 +31,11 @@ const config: Configuration = {
     ],
     category: "Emulator",
     icon: "public/icons/icon512x512.png",
-    publish: {
-      provider: "github",
-      publishAutoUpdate: false,
-    },
+    // TODO: use when appimageupdate is in released bundle
+    // publish: {
+    //   provider: "github",
+    //   publishAutoUpdate: false,
+    // },
   },
   electronLanguages: ["en-US"],
   afterPack: "./afterPackScript.js",

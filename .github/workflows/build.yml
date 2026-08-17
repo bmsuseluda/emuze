@@ -8,17 +8,10 @@ on:
 
 jobs:
   build_linux:
-    name: "${{ matrix.name }} (${{ matrix.arch }})"
-    runs-on: ${{ matrix.runs-on }}
-    strategy:
-      matrix:
-        include:
-          - runs-on: ubuntu-latest
-            name: Build AppImage
-            arch: x86_64
+    runs-on: ubuntu-latest
     container: ghcr.io/pkgforge-dev/archlinux:latest
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@v7.0.1
       - name: Preparing Container
         uses: pkgforge-dev/anylinux-setup-action@0964f2258d6c93d1391359978dde081fd8b3c6af # v2
       - name: Install Dependencies
@@ -26,7 +19,7 @@ jobs:
       - name: Make AppImage
         run: /bin/sh ./.github/scripts/make-appimage.sh
       - name: Upload artifact
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: emuze-nightly.AppImage
           path: "dist/emuze*.AppImage"
@@ -34,7 +27,7 @@ jobs:
   build_windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7.0.1
       - name: Use Node.js
         uses: actions/setup-node@v7
         with:
@@ -44,7 +37,7 @@ jobs:
       - name: Build
         run: yarn app:distWindows --publish=never
       - name: Upload artifact
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: emuze-Setup-nightly.exe
           path: "dist/emuze*.exe"

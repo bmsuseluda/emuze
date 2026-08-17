@@ -90,6 +90,8 @@ export const update = () => {
   if (platform() === "win32") {
     updateWindows();
   } else {
+    // TODO: Remove when appimageupdate is in released bundle
+    updateWindows();
     updateLinux();
   }
 };
