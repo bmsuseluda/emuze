@@ -35,3 +35,5 @@ cp  dist/squashfs-root/emuze.desktop ./AppDir
 
 mkdir -p ./AppDir/bin
 cp -rv dist/linux-unpacked/* ./AppDir/bin/
+
+yarn shrinkBundleSize

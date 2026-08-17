@@ -8,8 +8,6 @@ export ARCH VERSION
 export OUTPATH=./dist
 export UPINFO="gh-releases-zsync|${GITHUB_REPOSITORY%/*}|${GITHUB_REPOSITORY#*/}|latest|*.AppImage.zsync"
 
-yarn shrinkBundleSize
-
 # Deploy dependencies
 quick-sharun ./AppDir/bin/*  
 
