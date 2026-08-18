@@ -21,6 +21,18 @@ import { removeFile } from "../app/server/readWriteData.server.js";
 
 const __dirname = import.meta.dirname;
 
+/**
+ *
+ * 4. Oktober - 15. Herbstferien
+ *
+ * 4. - 8. Algäu Urlaub
+ *
+ * 15. harry potter mit sarah
+ *
+ *
+ *
+ */
+
 type OperatingSystem = "Windows" | "Linux";
 type EmulatorDownloads = Record<ApplicationId, Record<OperatingSystem, string>>;
 
@@ -66,11 +78,11 @@ const emulatorDownloads = {
     Windows: `https://mednafen.github.io/releases/files/mednafen-${emulatorVersions.mednafen}-win64.zip`,
   },
   melonds: {
-    Linux: `https://github.com/pkgforge-dev/melonDS-AppImage-Enhanced/releases/download/1.1-2%402026-08-01_1785586317/melonDS-1.1-2-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/melonDS-AppImage-Enhanced/releases/download/1.1-2%402026-08-18_1787083018/melonDS-1.1-2-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions.melonds}/melonDS-${emulatorVersions.melonds}-windows-x86_64.zip`,
   },
   pcsx2: {
-    Linux: `https://github.com/pkgforge-dev/PCSX2-AppImage-Enhanced/releases/download/2.7.511.r0.g779d5c4-1%402026-08-01_1785578606/PCSX2-2.7.511.r0.g779d5c4-1-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions.pcsx2}/pcsx2-v${emulatorVersions.pcsx2}-linux-appimage-x64-Qt.AppImage`,
     Windows: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions.pcsx2}/pcsx2-v${emulatorVersions.pcsx2}-windows-x64-Qt.7z`,
   },
   ppsspp: {
