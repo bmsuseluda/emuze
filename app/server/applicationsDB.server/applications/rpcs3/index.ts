@@ -23,7 +23,10 @@ import type {
   GlobalDefaultInputConfigFile,
   VfsConfigFile,
 } from "./config.js";
-import { isWindows, replaceToPosixPathing } from "../../../operationsystem.server.js";
+import {
+  isWindows,
+  replaceToPosixPathing,
+} from "../../../operationsystem.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import {

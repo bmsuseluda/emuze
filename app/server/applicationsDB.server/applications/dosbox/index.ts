@@ -9,7 +9,10 @@ import type {
 import nodepath from "node:path";
 import { readFilenames } from "../../../readWriteData.server.js";
 import type { ApplicationId } from "../../applicationId.js";
-import { isWindows, replaceToPosixPathing } from "../../../operationsystem.server.js";
+import {
+  isWindows,
+  replaceToPosixPathing,
+} from "../../../operationsystem.server.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
@@ -20,7 +23,7 @@ import { getVirtualGamepads } from "./getVirtualGamepads.js";
 const applicationId: ApplicationId = "dosboxpure";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "DOSBoxPure.exe")
-  : nodepath.join(applicationId, "DOSBoxPure");
+  : nodepath.join(applicationId, "DOSBoxPure.AppImage");
 
 const configFolderPath = nodepath.join(emulatorsConfigDirectory, applicationId);
 const configFileName = "DOSBoxPure.cfg";
@@ -124,8 +127,10 @@ const createPrepareBatFile = (
   const filePath = nodepath.join(workingDirectory, "PREPARE.BAT");
 
   const executableFileName = nodepath.basename(absoluteEntryPath);
-  const executableRelativePath = replaceToPosixPathing(absoluteEntryPath.split(workingDirectory)[1]);
-  const executableRelativeDir = 
+  const executableRelativePath = replaceToPosixPathing(
+    absoluteEntryPath.split(workingDirectory)[1],
+  );
+  const executableRelativeDir =
     executableRelativePath.split(executableFileName)[0];
 
   const file = [
@@ -147,7 +152,7 @@ const writeConfigFile = (fullscreen?: boolean) => {
   const fileContentNew = {
     ...fileContent,
     screen_fullscreen: fullscreen ? "true" : "false",
-    ...(!isWindows() ? getVirtualGamepads(): {}),
+    ...(!isWindows() ? getVirtualGamepads() : {}),
   };
 
   writeConfig(filePath, JSON.stringify(fileContentNew));

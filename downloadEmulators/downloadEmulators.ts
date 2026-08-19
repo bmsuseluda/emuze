@@ -21,12 +21,24 @@ import { removeFile } from "../app/server/readWriteData.server.js";
 
 const __dirname = import.meta.dirname;
 
+/**
+ *
+ * 4. Oktober - 15. Herbstferien
+ *
+ * 4. - 8. Algäu Urlaub
+ *
+ * 15. harry potter mit sarah
+ *
+ *
+ *
+ */
+
 type OperatingSystem = "Windows" | "Linux";
 type EmulatorDownloads = Record<ApplicationId, Record<OperatingSystem, string>>;
 
 const emulatorDownloads = {
   ares: {
-    Linux: `https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v${emulatorVersions.ares}%402026-05-30_1780149007/ares-v${emulatorVersions.ares}-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v${emulatorVersions.ares}%402026-08-17_1786998446/ares-v${emulatorVersions.ares}-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/ares-emulator/ares/releases/download/v${emulatorVersions.ares}/ares-windows-x64.zip`,
   },
   azahar: {
@@ -34,7 +46,7 @@ const emulatorDownloads = {
     Windows: `https://github.com/azahar-emu/azahar/releases/download/${emulatorVersions.azahar}/azahar-windows-msys2-${emulatorVersions.azahar}.zip`,
   },
   cemu: {
-    Linux: `https://github.com/cemu-project/Cemu/releases/download/v${emulatorVersions.cemu}/Cemu-${emulatorVersions.cemu}-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/Cemu-AppImage-Enhanced/releases/download/2.6-4%402026-02-01_1769935971/Cemu-2.6-4-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/cemu-project/Cemu/releases/download/v${emulatorVersions.cemu}/cemu-${emulatorVersions.cemu}-windows-x64.zip`,
   },
   dolphin: {
@@ -42,11 +54,11 @@ const emulatorDownloads = {
     Windows: `https://dl.dolphin-emu.org/releases/${emulatorVersions.dolphin}/dolphin-${emulatorVersions.dolphin}-x64.7z`,
   },
   dosboxpure: {
-    Linux: `https://github.com/schellingb/dosbox-pure-unleashed/releases/download/${emulatorVersions.dosboxpure}/dosbox_pure_unleashed-linux-x64-${emulatorVersions.dosboxpure}.zip`,
+    Linux: `https://github.com/pkgforge-dev/DOSBox-Pure-Unleashed-AppImage/releases/download/4a1141224%402026-08-01_1785586171/DOSBox_Pure_Unleashed-4a1141224-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/schellingb/dosbox-pure-unleashed/releases/download/${emulatorVersions.dosboxpure}/dosbox_pure_unleashed-windows-64bit-${emulatorVersions.dosboxpure}.zip`,
   },
   duckstation: {
-    Linux: `https://github.com/Kyuyrii/Duckstation-GPL3/releases/download/v${emulatorVersions.duckstation}/DuckStation-x64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/DuckStation-GPL-AppImage-Enhanced/releases/download/0.1.7465-7%402026-05-01_1777674496/DuckStation-0.1.7465-7-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/Kyuyrii/Duckstation-GPL3/releases/download/v${emulatorVersions.duckstation}/duckstation-windows-x64-release.zip`,
   },
   eden: {
@@ -54,7 +66,7 @@ const emulatorDownloads = {
     Windows: `https://stable.eden-emu.dev/v${emulatorVersions.eden}/Eden-Windows-v${emulatorVersions.eden}-amd64-clang-pgo.zip`,
   },
   flycast: {
-    Linux: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/Flycast-AppImage-Enhanced/releases/download/2.6-1%402026-08-01_1785585864/Flycast-2.6-1-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-win64-${emulatorVersions.flycast}.zip`,
   },
   mame: {
@@ -62,11 +74,11 @@ const emulatorDownloads = {
     Windows: `https://github.com/mamedev/mame/releases/download/mame0288/mame0288b_x64.exe`,
   },
   mednafen: {
-    Linux: `https://github.com/pkgforge-dev/mednafen-appimage/releases/download/${emulatorVersions.mednafen}%402025-09-08_1757361413/mednafen-${emulatorVersions.mednafen}-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/mednafen-appimage/releases/download/1.32.1%402026-08-09_1786298295/Mednafen_Emulator-1.32.1-anylinux-x86_64.AppImage`,
     Windows: `https://mednafen.github.io/releases/files/mednafen-${emulatorVersions.mednafen}-win64.zip`,
   },
   melonds: {
-    Linux: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions.melonds}/melonDS-${emulatorVersions.melonds}-appimage-x86_64.zip`,
+    Linux: `https://github.com/pkgforge-dev/melonDS-AppImage-Enhanced/releases/download/1.1-2%402026-08-18_1787083018/melonDS-1.1-2-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions.melonds}/melonDS-${emulatorVersions.melonds}-windows-x86_64.zip`,
   },
   pcsx2: {
@@ -94,7 +106,7 @@ const emulatorDownloads = {
     Windows: `https://downloads.scummvm.org/frs/scummvm/${emulatorVersions.scummvm}/scummvm-${emulatorVersions.scummvm}-win32-x86_64.zip`,
   },
   xemu: {
-    Linux: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-${emulatorVersions.xemu}-x86_64.AppImage`,
+    Linux: `https://github.com/pkgforge-dev/xemu-AppImage-Enhanced/releases/download/0.8.135-1%402026-08-01_1785585799/xemu-0.8.135-1-anylinux-x86_64.AppImage`,
     Windows: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-win-x86_64-release.zip`,
   },
 } satisfies Partial<EmulatorDownloads>;

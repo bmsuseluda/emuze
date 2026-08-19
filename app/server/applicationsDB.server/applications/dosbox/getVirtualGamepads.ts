@@ -60,7 +60,7 @@ type ControllerSetting = Record<
   DosboxButtonIdWithPort,
   HatValue | AnalogValue | ButtonValue | null
 > & {
-  custom_controller_bindings?: "true" | "false",
+  custom_controller_bindings?: "true" | "false";
 };
 
 const getDosBoxButtonId = (

@@ -20,5 +20,5 @@ export const isSteamOs = () => {
   return false;
 };
 
-
-export const replaceToPosixPathing = (value: string) => value.replace(/\\/g, "/")
+export const replaceToPosixPathing = (value: string) =>
+  value.replace(/\\/g, "/");
