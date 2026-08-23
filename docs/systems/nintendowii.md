@@ -1,0 +1,3 @@
+# Nintendo Wii
+
+Emulator: Dolphin

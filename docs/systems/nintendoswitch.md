@@ -1,0 +1,3 @@
+# Nintendo Switch
+
+Emulator: Ryujinx

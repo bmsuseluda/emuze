@@ -25,6 +25,7 @@
     "lint:tsc": "react-router typegen && tsc --noEmit",
     "generate:icon": "tsx ./generateIcon/index.ts",
     "generate:readme": "del-cli ./readme/build && tsc -p ./readme/tsconfig.json && mmarkdown && git add README.md",
+    "generate:docs": "tsx generateDocs/systems/index.ts",
     "import": "concurrently -c 'auto' --kill-others-on-fail 'yarn:import:*'",
     "import:mame": "tsx generateNameMappings/mame/index.ts",
     "import:scummvm": "tsx generateNameMappings/scummvm/index.ts",
@@ -57,7 +58,10 @@
     "e2e:serveRemix:wrongRomsPath": "tsx e2eTests/tests/wrongRomsPath/start.ts",
     "e2e:serveRemix:wrongRomsPathWindows": "tsx e2eTests/tests/wrongRomsPathWindows/start.ts",
     "e2e:playwright": "playwright test --ui",
-    "e2e:updateSnapshots": "yarn e2e -- --update-snapshots"
+    "e2e:updateSnapshots": "yarn e2e -- --update-snapshots",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
     "@kmamal/sdl": "0.11.13",
@@ -123,6 +127,7 @@
     "electron-builder": "26.15.6",
     "follow-redirects": "1.16.0",
     "fs-extra": "11.3.5",
+    "handlebars": "^4.7.9",
     "happy-dom": "20.10.2",
     "husky": "9.1.7",
     "lint-staged": "17.0.7",
@@ -138,8 +143,11 @@
     "typescript": "6.0.3",
     "utility-types": "3.11.0",
     "vite-plugin-devtools-json": "0.4.1",
+    "vitepress": "^2.0.0-alpha.19",
+    "vitepress-sidebar": "^1.39.0",
     "vitest": "3.2.6",
     "vitest-when": "0.10.0",
+    "vue": "^3.5.41",
     "wait-on": "9.0.10"
   },
   "engines": {

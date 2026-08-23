@@ -1,0 +1,3 @@
+# Mega LD
+
+Emulator: ares

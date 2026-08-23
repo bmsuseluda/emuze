@@ -1,0 +1,3 @@
+# Sega CD
+
+Emulator: ares

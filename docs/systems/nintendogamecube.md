@@ -1,0 +1,3 @@
+# Nintendo GameCube
+
+Emulator: Dolphin
