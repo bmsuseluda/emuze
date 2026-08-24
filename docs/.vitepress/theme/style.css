@@ -43,16 +43,98 @@
  *   in custom container, badges, etc.
  * -------------------------------------------------------------------------- */
 
+@font-face {
+  font-family: "AnnieUseYourTelescope";
+  src: url("/AnnieUseYourTelescope-Regular.ttf") format("truetype");
+  font-display: block;
+}
+
+:root {
+  --vp-c-bg: black;
+  .VPHero .name,
+  .VPNavBarTitle .title {
+    font-family: "AnnieUseYourTelescope", "Inter var", "Inter", system-ui;
+  }
+
+  .VPNavBarTitle .title {
+    font-size: 200%;
+
+    img {
+      height: 30px;
+      width: auto;
+      aspect-ratio: 1;
+    }
+
+    span {
+      margin-top: -5px;
+    }
+  }
+
+  .VPHero .name {
+    font-size: 600%;
+  }
+
+  .VPHero .heading {
+    display: none;
+  }
+  @media (min-width: 60rem) {
+    .VPHero .heading {
+      display: initial;
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .VPNavBarSocialLinks {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .VPSocialLink,
+  .VPNavBarMenuLink {
+    border-radius: 0.75rem;
+  }
+
+  .VPNavBarExtra {
+    display: none;
+  }
+
+  .VPButton.medium.brand {
+    background-color: transparent;
+    border: 0.125rem solid var(--sidebar-grey);
+    border-radius: 0.75rem;
+
+    &:focus-visible:where(:not(iframe)) {
+      border-color: var(--vp-c-brand-1);
+      outline: none !important;
+    }
+  }
+
+  .VPSidebar {
+    background: linear-gradient(45deg, black 10%, var(--sidebar-grey));
+
+    .curtain {
+      background-color: inherit;
+      position: relative;
+    }
+  }
+}
+
 :root {
   --vp-c-default-1: var(--vp-c-gray-1);
   --vp-c-default-2: var(--vp-c-gray-2);
   --vp-c-default-3: var(--vp-c-gray-3);
   --vp-c-default-soft: var(--vp-c-gray-soft);
 
-  --vp-c-brand-1: var(--vp-c-indigo-1);
+  --vp-c-brand-1: #950909;
   --vp-c-brand-2: var(--vp-c-indigo-2);
   --vp-c-brand-3: var(--vp-c-indigo-3);
   --vp-c-brand-soft: var(--vp-c-indigo-soft);
+  --sidebar-grey: #4d4d4d;
+
+  :focus-visible:where(:not(iframe)) {
+    outline: 0.125rem solid var(--vp-c-brand-1);
+  }
 
   --vp-c-tip-1: var(--vp-c-brand-1);
   --vp-c-tip-2: var(--vp-c-brand-2);
@@ -91,17 +173,12 @@
  * -------------------------------------------------------------------------- */
 
 :root {
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(
-    120deg,
-    #bd34fe 30%,
-    #41d1ff
-  );
+  --vp-home-hero-name-color: white;
 
   --vp-home-hero-image-background-image: linear-gradient(
     -45deg,
-    #bd34fe 50%,
-    #47caff 50%
+    var(--vp-c-brand-1) 50%,
+    var(--vp-c-brand-1) 50%
   );
   --vp-home-hero-image-filter: blur(44px);
 }

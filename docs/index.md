@@ -1,6 +1,22 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/bmsuseluda/emuze/main/artwork/logo400x400.png" alt="Logo" />
-</p>
+---
+layout: home
+
+hero:
+  name: emuze
+  tagline: Emulation frontend designed to simplify your retro gaming experience.
+  image:
+    src: /logo400x400.png
+    alt: emuze
+
+  actions:
+    - theme: brand
+      text: Getting started
+      link: /gettingStarted
+      icon: ❓
+    - theme: brand
+      text: View on GitHub
+      link: https://github.com/bmsuseluda/emuze
+---
 
 emuze is an emulation frontend designed to simplify your retro gaming experience.
 It automates the configuration of each emulator, including seamless gamepad integration and automatic import of games along with their metadata. With its console-like interface and intuitive controls, emuze lets you focus on enjoying your retro games, just like you would on a gaming console.

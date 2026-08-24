@@ -1,3 +1,0 @@
-# Last Played
-
-Emulator: ares
