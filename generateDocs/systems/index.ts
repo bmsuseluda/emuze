@@ -38,24 +38,22 @@ export const generateSystemDocs = () => {
   rmSync(systemDocsPath, { recursive: true, force: true });
   mkdirSync(systemDocsPath, { recursive: true });
 
-  Object.values(categories).forEach(
-    ({ id, names, getApplication, hasAnalogStick }) => {
-      if (id !== "lastPlayed") {
-        const name = names.at(0)!;
-        const application = getApplication();
-        const emulatorName = getEmulatorNameString(application);
-        const bundledVersion = emulatorVersions[application.id];
-        const isBiosNeeded = checkIsBiosNeeded(application) ? "Yes" : "No";
+  Object.values(categories).forEach(({ id, names, getApplication }) => {
+    if (id !== "lastPlayed") {
+      const name = names.at(0)!;
+      const application = getApplication();
+      const emulatorName = getEmulatorNameString(application);
+      const bundledVersion = emulatorVersions[application.id];
+      const isBiosNeeded = checkIsBiosNeeded(application) ? "Yes" : "No";
 
-        writeFileSync(
-          nodepath.join(systemDocsPath, `${id}.md`),
-          template({
-            name,
-            emulator: { name: emulatorName, version: bundledVersion },
-            isBiosNeeded,
-          }),
-        );
-      }
-    },
-  );
+      writeFileSync(
+        nodepath.join(systemDocsPath, `${id}.md`),
+        template({
+          name,
+          emulator: { name: emulatorName, version: bundledVersion },
+          isBiosNeeded,
+        }),
+      );
+    }
+  });
 };
