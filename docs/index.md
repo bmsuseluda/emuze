@@ -12,7 +12,6 @@ hero:
     - theme: brand
       text: Getting started
       link: /gettingStarted
-      icon: ❓
     - theme: brand
       text: View on GitHub
       link: https://github.com/bmsuseluda/emuze
@@ -36,10 +35,10 @@ It automates the configuration of each emulator, including seamless gamepad inte
 <br>
 
 <p>
-  <img src="https://github.com/bmsuseluda/emuze/blob/main/screenshots/library.png?raw=true" alt="Library" />
+  <img src="/screenshots/library.png?raw=true" alt="Library" />
 </p>
 <p>
-  <img src="https://github.com/bmsuseluda/emuze/blob/main/screenshots/library_collapsed.png?raw=true" alt="Library collapsed" />
+  <img src="/screenshots/library_collapsed.png?raw=true" alt="Library collapsed" />
 </p>
 
 ## 🕹️ Supported Systems

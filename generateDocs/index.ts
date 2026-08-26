@@ -23,6 +23,11 @@ const generateDocs = () => {
     { force: true },
   );
   cpSync(
+    nodepath.join(projectPath, "screenshots"),
+    nodepath.join(docsPath, "public", "screenshots"),
+    { force: true, recursive: true },
+  );
+  cpSync(
     nodepath.join(projectPath, "CHANGELOG.md"),
     nodepath.join(docsPath, "CHANGELOG.md"),
     { force: true },

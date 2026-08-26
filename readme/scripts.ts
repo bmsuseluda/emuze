@@ -72,6 +72,15 @@ export const emulatorAlternatives: Partial<Record<SystemId, ApplicationId>> = {
   nintendoswitch: "eden",
 };
 
+export const getEmulatorAlternative = (systemId: SystemId) => {
+  const emulatorAlternative = emulatorAlternatives[systemId];
+  if (emulatorAlternative) {
+    return applications[emulatorAlternative];
+  }
+
+  return null;
+};
+
 export const createSystemsTable = () =>
   Object.values(categories)
     .map((category) => {
@@ -79,11 +88,11 @@ export const createSystemsTable = () =>
         return null;
       }
 
-      const emulatorAlternative = emulatorAlternatives[category.id];
+      const emulatorAlternative = getEmulatorAlternative(category.id);
       if (emulatorAlternative) {
         return [
           createSystemsTableRow(category),
-          createSystemsTableRow(category, applications[emulatorAlternative]),
+          createSystemsTableRow(category, emulatorAlternative),
         ].join("\n");
       }
 

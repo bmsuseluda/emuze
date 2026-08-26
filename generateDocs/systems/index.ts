@@ -6,8 +6,10 @@ import { categories } from "../../app/server/categoriesDB.server/index.js";
 import { emulatorVersions } from "../../downloadEmulators/applications.js";
 import {
   checkIsBiosNeeded,
+  getEmulatorAlternative,
   getEmulatorNameString,
 } from "../../readme/scripts.js";
+import { SystemId } from "../../app/server/categoriesDB.server/systemId.js";
 
 const __dirname = import.meta.dirname;
 const projectPath = nodepath.join(__dirname, "..", "..");
@@ -34,6 +36,20 @@ const template = Handlebars.compile<SystemTemplate>(
   readFileSync(nodepath.join(__dirname, "system.md.hbs"), "utf8"),
 );
 
+const getEmulatorElternativeForTemplate = (
+  id: SystemId,
+): Emulator | undefined => {
+  const emulatorAlternative = getEmulatorAlternative(id);
+  if (emulatorAlternative) {
+    const bundledVersion = emulatorVersions[emulatorAlternative.id];
+    return {
+      name: emulatorAlternative.name,
+      version: bundledVersion,
+    };
+  }
+  return undefined;
+};
+
 export const generateSystemDocs = () => {
   rmSync(systemDocsPath, { recursive: true, force: true });
   mkdirSync(systemDocsPath, { recursive: true });
@@ -43,6 +59,7 @@ export const generateSystemDocs = () => {
       const name = names.at(0)!;
       const application = getApplication();
       const emulatorName = getEmulatorNameString(application);
+      const emulatorAlternative = getEmulatorElternativeForTemplate(id);
       const bundledVersion = emulatorVersions[application.id];
       const isBiosNeeded = checkIsBiosNeeded(application) ? "Yes" : "No";
 
@@ -51,6 +68,7 @@ export const generateSystemDocs = () => {
         template({
           name,
           emulator: { name: emulatorName, version: bundledVersion },
+          emulatorAlternative,
           isBiosNeeded,
         }),
       );

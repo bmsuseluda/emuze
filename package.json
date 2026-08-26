@@ -61,7 +61,8 @@
     "e2e:updateSnapshots": "yarn e2e -- --update-snapshots",
     "docs:dev": "yarn generate:docs && vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "docs:reactrouter": "yarn panda:codegen && cd docs_reactrouter && react-router dev"
   },
   "dependencies": {
     "@kmamal/sdl": "0.11.13",
