@@ -12,8 +12,6 @@ import {
 import { SystemId } from "../../app/server/categoriesDB.server/systemId.js";
 
 const __dirname = import.meta.dirname;
-const projectPath = nodepath.join(__dirname, "..", "..");
-const systemDocsPath = nodepath.join(projectPath, "docs", "systems");
 
 interface Emulator {
   name: string;
@@ -50,7 +48,7 @@ const getEmulatorElternativeForTemplate = (
   return undefined;
 };
 
-export const generateSystemDocs = () => {
+export const generateSystemDocs = (systemDocsPath: string) => {
   rmSync(systemDocsPath, { recursive: true, force: true });
   mkdirSync(systemDocsPath, { recursive: true });
 
