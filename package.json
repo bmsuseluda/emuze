@@ -62,7 +62,9 @@
     "docs:dev": "yarn generate:docs && vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "docs:reactrouter": "yarn panda:codegen && yarn generate:docs && cd docs_reactrouter && react-router dev"
+    "docs:reactrouter": "yarn panda:codegen && yarn generate:docs && cd docs_reactrouter && react-router dev",
+    "docs:reactrouter:build": "cross-env NODE_ENV=production yarn panda:codegen && yarn generate:docs && cd docs_reactrouter && react-router build",
+    "docs:reactrouter:serve": "react-router-serve ./docs_reactrouter/build/server/index.js"
   },
   "dependencies": {
     "@kmamal/sdl": "0.11.13",

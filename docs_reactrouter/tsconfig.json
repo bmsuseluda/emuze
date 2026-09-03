@@ -2,6 +2,7 @@
   "include": [
     "**/*",
     "../styled-system",
+    "../app",
     "**/.server/**/*",
     "**/.client/**/*",
     ".react-router/types/**/*"

@@ -9,14 +9,25 @@ import {
 
 import type { Route } from "./+types/root";
 import styles from "../../app/index.css?url";
+import { styled } from "../../styled-system/jsx";
 
 export const links: Route.LinksFunction = () => [
   { rel: "stylesheet", href: styles },
 ];
 
+const Wrapper = styled("div", {
+  base: {
+    height: "100vh",
+    display: "flex",
+    flexFlow: "column",
+    backgroundColor: "backgroundColor",
+    overflow: "inherit",
+  },
+});
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="red" data-color-mode="dark">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -24,7 +35,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <Wrapper>{children}</Wrapper>
         <ScrollRestoration />
         <Scripts />
       </body>

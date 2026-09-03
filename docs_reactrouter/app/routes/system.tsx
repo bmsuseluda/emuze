@@ -9,6 +9,7 @@ const systemsPath = nodepath.join(__dirname, "..", "..", "systems");
 
 export async function loader({ params }: Route.LoaderArgs) {
   const systemId = params.systemId;
+  // TODO: only go further if systemId is known
   const markdown = readFileSync(nodepath.join(systemsPath, `${systemId}.md`), {
     encoding: "utf8",
   });
