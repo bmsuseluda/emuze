@@ -62,7 +62,11 @@ export default defineConfig({
   watch: process.env.NODE_ENV !== "production",
   minify: process.env.NODE_ENV === "production",
   hash: process.env.NODE_ENV === "production",
-  include: ["./app/**/*.{ts,tsx}", "./.storybook/preview.tsx"],
+  include: [
+    "./app/**/*.{ts,tsx}",
+    "./.storybook/preview.tsx",
+    "./docs_reactrouter/app/**/*.{ts,tsx}",
+  ],
   exclude: [],
 
   globalCss,

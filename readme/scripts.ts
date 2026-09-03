@@ -2,15 +2,16 @@ import { categories } from "../app/server/categoriesDB.server/index.js";
 import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
 import type { SystemId } from "../app/server/categoriesDB.server/systemId.js";
 import { commandLineOptionsString } from "../app/server/commandLine.server.js";
-import { emulatorVersions } from "../downloadEmulators/applications.js";
+import {
+  applications,
+  emulatorVersions,
+} from "../downloadEmulators/applications.js";
 import { keyboardMapping } from "../app/types/gamepad.js";
 import type { Category } from "../app/server/categoriesDB.server/types.js";
 import type { Application } from "../app/server/applicationsDB.server/types.js";
-import { rosaliesMupenGui } from "../app/server/applicationsDB.server/applications/rmg/index.js";
 import { emulatorsBios } from "../downloadBiosOpenSource/downloadBiosOpenSource.js";
-import { eden } from "../app/server/applicationsDB.server/applications/eden/index.js";
 
-const homepages: Record<ApplicationId, string> = {
+export const homepages: Record<ApplicationId, string> = {
   ares: "https://github.com/ares-emulator/ares",
   cemu: "https://github.com/cemu-project/Cemu",
   dolphin: "https://github.com/dolphin-emu/dolphin",
@@ -42,7 +43,10 @@ const applicationsWithBiosNotHandled: ApplicationId[] = [
   "eden",
 ];
 
-const checkIsBiosNeeded = (application: Application) =>
+export const getEmulatorNameString = (application: Application) =>
+  `[${application.name}](${homepages[application.id]})`;
+
+export const checkIsBiosNeeded = (application: Application) =>
   (application.biosFiles && !application.bundledBiosOpenSource) ||
   application.otherRequiredFiles ||
   applicationsWithBiosNotHandled.includes(application.id);
@@ -56,11 +60,25 @@ const createSystemsTableRow = (
     ? ""
     : nameOverwrites[category.id] || category.names[0];
 
-  const emulatorName = `[${application.name}](${homepages[application.id]})`;
+  const emulatorName = getEmulatorNameString(application);
   const bundledVersion = emulatorVersions[application.id];
   const isBiosNeeded = checkIsBiosNeeded(application) ? "Yes" : "No";
 
   return `| ${systemName} | ${emulatorName} v${bundledVersion} | ${isBiosNeeded} | `;
+};
+
+export const emulatorAlternatives: Partial<Record<SystemId, ApplicationId>> = {
+  nintendo64: "rosaliesMupenGui",
+  nintendoswitch: "eden",
+};
+
+export const getEmulatorAlternative = (systemId: SystemId) => {
+  const emulatorAlternative = emulatorAlternatives[systemId];
+  if (emulatorAlternative) {
+    return applications[emulatorAlternative];
+  }
+
+  return null;
 };
 
 export const createSystemsTable = () =>
@@ -70,17 +88,11 @@ export const createSystemsTable = () =>
         return null;
       }
 
-      if (category.id === "nintendo64") {
+      const emulatorAlternative = getEmulatorAlternative(category.id);
+      if (emulatorAlternative) {
         return [
           createSystemsTableRow(category),
-          createSystemsTableRow(category, rosaliesMupenGui),
-        ].join("\n");
-      }
-
-      if (category.id === "nintendoswitch") {
-        return [
-          createSystemsTableRow(category),
-          createSystemsTableRow(category, eden),
+          createSystemsTableRow(category, emulatorAlternative),
         ].join("\n");
       }
 
