@@ -21,18 +21,6 @@ import { removeFile } from "../app/server/readWriteData.server.js";
 
 const __dirname = import.meta.dirname;
 
-/**
- *
- * 4. Oktober - 15. Herbstferien
- *
- * 4. - 8. Algäu Urlaub
- *
- * 15. harry potter mit sarah
- *
- *
- *
- */
-
 type OperatingSystem = "Windows" | "Linux";
 type EmulatorDownloads = Record<ApplicationId, Record<OperatingSystem, string>>;
 
