@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=emuze
+Exec=emuze %f
+Terminal=false
+Type=Application
+Icon=emuze
+StartupWMClass=emuze
+Comment=Launch your Retro Games fast and simple
+Categories=Emulator;

@@ -12,7 +12,7 @@ It automates the configuration of each emulator, including seamless gamepad inte
 
 - ⚡️ Intuitive console-like interface
 - 🚂 Import all your roms with a click of a button
-- 🪄 Provides Metadata from [igdb](https://www.igdb.com) based on the filenames of your roms
+- 🪄 Provides Metadata from [IGDB](https://www.igdb.com) based on the filenames of your roms
 - 🎮️ Seamless gamepad integration for all Systems
 - 📦️ Bundles emulators for all Systems
 - 🔫 Basic lightgun integration for some Systems

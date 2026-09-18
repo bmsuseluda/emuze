@@ -30,5 +30,7 @@ export type ApplicationId =
   /** sdl3 */
   | "rosaliesMupenGui"
   | "scummvm"
+  /** sdl2 */
   | "xemu"
+  /** sdl2 */
   | "eden";

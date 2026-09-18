@@ -1,4 +1,4 @@
-import type { Sdl, Events } from "@kmamal/sdl";
+import type { Sdl, Events } from "@kmamal/sdl3";
 import sdl3 from "@kmamal/sdl3";
 import { log } from "../debug.server.js";
 import {

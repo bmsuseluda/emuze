@@ -2925,12 +2925,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@kmamal/sdl3@https://github.com/bmsuseluda/node-sdl":
-  version: 0.12.0
-  resolution: "@kmamal/sdl3@https://github.com/bmsuseluda/node-sdl.git#commit=ed43f1b52644160bf43c4bdb427fb69b7f6c2c85"
+"@kmamal/sdl3@github:bmsuseluda/node-sdl#v0.12.1":
+  version: 0.12.1
+  resolution: "@kmamal/sdl3@https://github.com/bmsuseluda/node-sdl.git#commit=b00b981caa44f1c375e159ed491d4c7f92485dd6"
   dependencies:
     tar: "npm:^7.4.3"
-  checksum: 10/8f686e0b96e57e21431d332a81992b8914328e1cfe8afb387ceec05d102809fd6026fa5612ff3c4ff130a1bfe4e03406f0dad5d2bc9774dcd1c3e2ef9d95d724
+  checksum: 10/eabe6be1c87cb309417c5e5a0fc934813ff15230b3ea7cc60642d24e4f87f655cd32bc911ad35569a4b492f1d2653889bff86c82b13b5678c8c4850cc2e08471
   languageName: node
   linkType: hard
 
@@ -8405,9 +8405,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:43.0.0":
-  version: 43.0.0
-  resolution: "electron@npm:43.0.0"
+"electron@npm:43.2.0":
+  version: 43.2.0
+  resolution: "electron@npm:43.2.0"
   dependencies:
     "@electron-internal/extract-zip": "npm:^1.0.1"
     "@electron/get": "npm:^5.0.0"
@@ -8415,7 +8415,7 @@ __metadata:
   bin:
     electron: cli.js
     install-electron: install.js
-  checksum: 10/b432ad1677cbbc94d05484e307f7882da624b0c033886a70b8dea3577e801554efdb58216c37dfb715e05561c94863f5b6d4cfb22acd321634bc9c88e146f352
+  checksum: 10/70f2f822b66d8fa15e370126d40cc79545ae76795c190a26467a76576074bab8ec81e167fc1bcc092ac944843a0b03cc9f45f54326cbce6ac06a98461909a634
   languageName: node
   linkType: hard
 
@@ -8456,7 +8456,7 @@ __metadata:
     "@commitlint/config-conventional": "npm:21.0.2"
     "@felipecrs/decompress-tarxz": "npm:5.0.6"
     "@kmamal/sdl": "npm:0.11.13"
-    "@kmamal/sdl3": "https://github.com/bmsuseluda/node-sdl"
+    "@kmamal/sdl3": "github:bmsuseluda/node-sdl#v0.12.1"
     "@pandacss/dev": "npm:1.11.3"
     "@playwright/test": "npm:1.60.0"
     "@radix-ui/react-checkbox": "npm:1.3.4"
@@ -8491,7 +8491,7 @@ __metadata:
     decompress-unzip: "npm:4.0.1"
     del-cli: "npm:7.0.0"
     dotenv: "npm:17.4.2"
-    electron: "npm:43.0.0"
+    electron: "npm:43.2.0"
     electron-builder: "npm:26.15.6"
     electron-updater: "npm:6.8.9"
     fast-xml-builder: "npm:1.2.0"

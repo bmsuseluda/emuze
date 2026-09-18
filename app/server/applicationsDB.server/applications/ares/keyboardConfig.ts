@@ -1,6 +1,6 @@
 import type { AresButtonId } from "./types.js";
 import { isWindows } from "../../../operationsystem.server.js";
-import type { Sdl } from "@kmamal/sdl";
+import type { Sdl } from "@kmamal/sdl3";
 import type { EmuzeButtonId } from "../../../../types/gamepad.js";
 import { keyboardMapping } from "../../../../types/gamepad.js";
 

@@ -1,22 +1,5 @@
 import { rpcs3 } from "../applicationsDB.server/applications/rpcs3/index.js";
 import {
-  aresGameBoyAdvance,
-  aresGameBoyColor,
-  aresGameGear,
-  aresMasterSystem,
-  aresMegaDrive,
-  aresNeoGeoPocket,
-  aresNeoGeoPocketColor,
-  aresNES,
-  aresNintendo64,
-  aresPcEngine,
-  aresSega32x,
-  aresSegaCd,
-  aresSegaMegaLd,
-  aresSuperGrafx,
-  aresSuperNintendo,
-} from "../applicationsDB.server/applications/ares/index.js";
-import {
   mame,
   mameNeoGeo,
   mameNeoGeoCD,
@@ -47,6 +30,21 @@ import {
   eden,
   isEdenForSwitch,
 } from "../applicationsDB.server/applications/eden/index.js";
+import { aresNintendo64 } from "../applicationsDB.server/applications/ares/systems/n64.js";
+import { aresGameBoyColor } from "../applicationsDB.server/applications/ares/systems/gameBoyColor.js";
+import { aresGameGear } from "../applicationsDB.server/applications/ares/systems/gameGear.js";
+import { aresSuperNintendo } from "../applicationsDB.server/applications/ares/systems/snes.js";
+import { aresNES } from "../applicationsDB.server/applications/ares/systems/nes.js";
+import { aresGameBoyAdvance } from "../applicationsDB.server/applications/ares/systems/gameBoyAdvance.js";
+import { aresMasterSystem } from "../applicationsDB.server/applications/ares/systems/masterSystem.js";
+import { aresMegaDrive } from "../applicationsDB.server/applications/ares/systems/megaDrive.js";
+import { aresSegaCd } from "../applicationsDB.server/applications/ares/systems/segaCd.js";
+import { aresSegaMegaLd } from "../applicationsDB.server/applications/ares/systems/segaMegaLd.js";
+import { aresSega32x } from "../applicationsDB.server/applications/ares/systems/sega32x.js";
+import { aresPcEngine } from "../applicationsDB.server/applications/ares/systems/pcEngine.js";
+import { aresSuperGrafx } from "../applicationsDB.server/applications/ares/systems/superGrafx.js";
+import { aresNeoGeoPocket } from "../applicationsDB.server/applications/ares/systems/neoGeoPocket.js";
+import { aresNeoGeoPocketColor } from "../applicationsDB.server/applications/ares/systems/neoGeoPocketColor.js";
 
 export const sonyplaystation: Category = {
   id: "sonyplaystation",

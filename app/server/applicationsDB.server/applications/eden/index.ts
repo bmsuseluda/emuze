@@ -87,10 +87,10 @@ export const replaceConfigSections = (switchRomsPath: string) => {
   writeConfig(filePath, fileContentNew);
 };
 
-const getDataBasePath = () => {
+const getKeyBasePath = () => {
   if (isWindows()) {
-    const { data } = envPaths("Eden", { suffix: "" });
-    return nodepath.join(data);
+    const { config } = envPaths("Eden", { suffix: "" });
+    return nodepath.join(config, "..");
   } else {
     const { data } = envPaths("eden", { suffix: "" });
     return nodepath.join(data);
@@ -101,7 +101,7 @@ const copyKeyFiles = (keyFiles: DetectedRequiredFile[]) => {
   keyFiles.forEach((keyFile) => {
     copy(
       keyFile.filePath,
-      nodepath.join(getDataBasePath(), "keys", keyFile.type),
+      nodepath.join(getKeyBasePath(), "keys", keyFile.type),
     );
   });
 };
