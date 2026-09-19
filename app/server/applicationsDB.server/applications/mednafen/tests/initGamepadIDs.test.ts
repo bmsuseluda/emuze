@@ -7,6 +7,7 @@ import { extractGamepadIDs, getMappedGamepad } from "../initGamepadIDs.js";
 import { getControllers } from "../../../../gamepad.server.js";
 
 vi.mock("@kmamal/sdl");
+vi.mock("@kmamal/sdl3");
 vi.mock("node-hid");
 
 describe("initGamepadIDs", () => {

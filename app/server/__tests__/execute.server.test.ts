@@ -20,6 +20,7 @@ import type { DetectedRequiredFile } from "../applicationsDB.server/types.js";
 import { getRequiredFiles } from "../applicationsDB.server/checkRequiredFiles.js";
 
 vi.mock("@kmamal/sdl");
+vi.mock("@kmamal/sdl3");
 vi.mock("node:child_process");
 vi.mock("node:fs");
 vi.mock("../readWriteData.server");

@@ -12,6 +12,7 @@ import {
 } from "../gamepad.server.js";
 
 vi.mock("@kmamal/sdl");
+vi.mock("@kmamal/sdl3");
 vi.mock("node-hid");
 
 describe("gamepad.server", () => {
