@@ -2,17 +2,10 @@
 
 set -eu
 
-echo "Installing package dependencies..."
-echo "---------------------------------------------------------------"
-pacman -Syu --noconfirm  \
-            nodejs-lts-krypton \
-            npm \
-
 echo "Installing debloated packages..."
 echo "---------------------------------------------------------------"
 get-debloated-pkgs --add-common --prefer-nano
 
-npm install -g corepack
 yarn
 yarn app:dirLinux
 yarn shrinkBundleSize

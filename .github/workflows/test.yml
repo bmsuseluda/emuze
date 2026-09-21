@@ -9,6 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    container: ghcr.io/pkgforge-dev/archlinux:latest
     steps:
       - uses: actions/checkout@v7
       - name: Use Node.js
