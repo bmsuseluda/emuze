@@ -8405,7 +8405,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-unhandled@npm:^5.0.0":
+"electron-unhandled@npm:5.0.0":
   version: 5.0.0
   resolution: "electron-unhandled@npm:5.0.0"
   dependencies:
@@ -8522,7 +8522,7 @@ __metadata:
     dotenv: "npm:17.4.2"
     electron: "npm:43.2.0"
     electron-builder: "npm:26.15.6"
-    electron-unhandled: "npm:^5.0.0"
+    electron-unhandled: "npm:5.0.0"
     electron-updater: "npm:6.8.9"
     fast-xml-builder: "npm:1.2.0"
     fast-xml-parser: "npm:5.8.0"
