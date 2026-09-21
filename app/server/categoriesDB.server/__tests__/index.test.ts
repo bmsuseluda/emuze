@@ -1,6 +1,9 @@
 import { getCategoryDataByName, pcengine, sonyplaystation3 } from "../index.js";
 import type { Category } from "../types.js";
 
+vi.mock("@kmamal/sdl");
+vi.mock("@kmamal/sdl3");
+
 describe("categoriesDB", () => {
   describe("getCategoryDataByName", () => {
     const tests: { name: string; system: Category }[] = [

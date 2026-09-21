@@ -15,6 +15,7 @@ import {
 import { scumm, sonyplaystation } from "../categoriesDB.server/index.js";
 
 vi.mock("@kmamal/sdl");
+vi.mock("@kmamal/sdl3");
 
 describe("lastPlayed.server", () => {
   beforeEach(() => {

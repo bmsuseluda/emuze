@@ -12,10 +12,13 @@ import {
   isAnalog,
   isDpadHat,
 } from "../../../../types/gamepad.js";
-import { EmuzeController, getControllers } from "../../../gamepad.server.js";
+import {
+  EmuzeController,
+  getControllersSdl3,
+} from "../../../gamepad.server.js";
 
 export const getGamepad = () => {
-  const gamepads = getControllers();
+  const gamepads = getControllersSdl3();
 
   return gamepads.at(0);
 };

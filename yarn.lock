@@ -2925,6 +2925,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@kmamal/sdl3@github:bmsuseluda/node-sdl#v0.12.1":
+  version: 0.12.1
+  resolution: "@kmamal/sdl3@https://github.com/bmsuseluda/node-sdl.git#commit=b00b981caa44f1c375e159ed491d4c7f92485dd6"
+  dependencies:
+    tar: "npm:^7.4.3"
+  checksum: 10/eabe6be1c87cb309417c5e5a0fc934813ff15230b3ea7cc60642d24e4f87f655cd32bc911ad35569a4b492f1d2653889bff86c82b13b5678c8c4850cc2e08471
+  languageName: node
+  linkType: hard
+
 "@kmamal/sdl@npm:0.11.13":
   version: 0.11.13
   resolution: "@kmamal/sdl@npm:0.11.13"
@@ -7107,6 +7116,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"clean-stack@npm:^5.2.0":
+  version: 5.3.0
+  resolution: "clean-stack@npm:5.3.0"
+  dependencies:
+    escape-string-regexp: "npm:5.0.0"
+  checksum: 10/328226494d7e5ac51e8e5f13ee322ff0d32d0aafa4bc9834da431785f73abb254f6ccac0562cf692e293f2eb91f1dd852be94879c54ee6d86e996602f399b995
+  languageName: node
+  linkType: hard
+
 "cli-cursor@npm:^3.1.0":
   version: 3.1.0
   resolution: "cli-cursor@npm:3.1.0"
@@ -8342,6 +8360,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"electron-is-dev@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "electron-is-dev@npm:3.0.1"
+  checksum: 10/0f3bb1ebac00ab25d541a5e6b2ba9c6cdbcb0875782bffd1b0a7e8d303f837669580febfc696f1ce2b0f79cc4bc529dd71f0bf4da5d934492003c9a9b833ec22
+  languageName: node
+  linkType: hard
+
 "electron-publish@npm:26.15.3":
   version: 26.15.3
   resolution: "electron-publish@npm:26.15.3"
@@ -8377,6 +8402,19 @@ __metadata:
   version: 1.5.114
   resolution: "electron-to-chromium@npm:1.5.114"
   checksum: 10/5200b27066f1f14e096531c1aa638bb4b446581ce3ed5885c72f7b5770d652b027b2cc7c603580f40eb4dde0e487ee2e4b511e9fbc9a565c9683231cc4e9cefe
+  languageName: node
+  linkType: hard
+
+"electron-unhandled@npm:5.0.0":
+  version: 5.0.0
+  resolution: "electron-unhandled@npm:5.0.0"
+  dependencies:
+    clean-stack: "npm:^5.2.0"
+    electron-is-dev: "npm:^3.0.1"
+    ensure-error: "npm:^4.0.0"
+    lodash.debounce: "npm:^4.0.8"
+    serialize-error: "npm:^11.0.3"
+  checksum: 10/df576bf54b715c57d1fd88195c984e5d3a8284983acf2e17dc132d36249d762709bd350c3d543be6bd3fdceff84ad8e813db1c39c01d0c70699290ace1a09cf2
   languageName: node
   linkType: hard
 
@@ -8447,6 +8485,7 @@ __metadata:
     "@commitlint/config-conventional": "npm:21.0.2"
     "@felipecrs/decompress-tarxz": "npm:5.0.6"
     "@kmamal/sdl": "npm:0.11.13"
+    "@kmamal/sdl3": "github:bmsuseluda/node-sdl#v0.12.1"
     "@pandacss/dev": "npm:1.11.3"
     "@playwright/test": "npm:1.60.0"
     "@radix-ui/react-checkbox": "npm:1.3.4"
@@ -8483,6 +8522,7 @@ __metadata:
     dotenv: "npm:17.4.2"
     electron: "npm:43.2.0"
     electron-builder: "npm:26.15.6"
+    electron-unhandled: "npm:5.0.0"
     electron-updater: "npm:6.8.9"
     fast-xml-builder: "npm:1.2.0"
     fast-xml-parser: "npm:5.8.0"
@@ -8556,6 +8596,13 @@ __metadata:
     graceful-fs: "npm:^4.2.4"
     tapable: "npm:^2.2.0"
   checksum: 10/e8e03cb7a4bf3c0250a89afbd29e5ec20e90ba5fcd026066232a0754864d7d0a393fa6fc0e5379314a6529165a1834b36731147080714459d98924520410d8f5
+  languageName: node
+  linkType: hard
+
+"ensure-error@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "ensure-error@npm:4.0.0"
+  checksum: 10/1670fadfa44162b198970f6336a77a5277e6eb3299c5d9760ea7ca20817b9c11c4714c49cfb9ec99e00d7a2a40cf8d819cb814974c7468668113f470e910d322
   languageName: node
   linkType: hard
 
@@ -9070,6 +9117,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"escape-string-regexp@npm:5.0.0, escape-string-regexp@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "escape-string-regexp@npm:5.0.0"
+  checksum: 10/20daabe197f3cb198ec28546deebcf24b3dbb1a5a269184381b3116d12f0532e06007f4bc8da25669d6a7f8efb68db0758df4cd981f57bc5b57f521a3e12c59e
+  languageName: node
+  linkType: hard
+
 "escape-string-regexp@npm:^1.0.5":
   version: 1.0.5
   resolution: "escape-string-regexp@npm:1.0.5"
@@ -9081,13 +9135,6 @@ __metadata:
   version: 4.0.0
   resolution: "escape-string-regexp@npm:4.0.0"
   checksum: 10/98b48897d93060f2322108bf29db0feba7dd774be96cd069458d1453347b25ce8682ecc39859d4bca2203cc0ab19c237bcc71755eff49a0f8d90beadeeba5cc5
-  languageName: node
-  linkType: hard
-
-"escape-string-regexp@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "escape-string-regexp@npm:5.0.0"
-  checksum: 10/20daabe197f3cb198ec28546deebcf24b3dbb1a5a269184381b3116d12f0532e06007f4bc8da25669d6a7f8efb68db0758df4cd981f57bc5b57f521a3e12c59e
   languageName: node
   linkType: hard
 
@@ -11412,7 +11459,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.debounce@npm:4.0.8":
+"lodash.debounce@npm:4.0.8, lodash.debounce@npm:^4.0.8":
   version: 4.0.8
   resolution: "lodash.debounce@npm:4.0.8"
   checksum: 10/cd0b2819786e6e80cb9f5cda26b1a8fc073daaf04e48d4cb462fa4663ec9adb3a5387aa22d7129e48eed1afa05b482e2a6b79bfc99b86886364449500cbb00fd
@@ -15226,6 +15273,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"serialize-error@npm:^11.0.3":
+  version: 11.0.3
+  resolution: "serialize-error@npm:11.0.3"
+  dependencies:
+    type-fest: "npm:^2.12.2"
+  checksum: 10/5fe19e120e9ad8488c0abe27517e60da75bd65f56ae1cb48d8524e013d0e07f18bb9d05eca72898c5244e1168576f3131f29145c9f785e735e10742ee9c86c08
+  languageName: node
+  linkType: hard
+
 "serialize-error@npm:^7.0.1":
   version: 7.0.1
   resolution: "serialize-error@npm:7.0.1"
@@ -16500,6 +16556,13 @@ __metadata:
   version: 0.13.1
   resolution: "type-fest@npm:0.13.1"
   checksum: 10/11e9476dc85bf97a71f6844fb67ba8e64a4c7e445724c0f3bd37eb2ddf4bc97c1dc9337bd880b28bce158de1c0cb275c2d03259815a5bf64986727197126ab56
+  languageName: node
+  linkType: hard
+
+"type-fest@npm:^2.12.2":
+  version: 2.19.0
+  resolution: "type-fest@npm:2.19.0"
+  checksum: 10/7bf9e8fdf34f92c8bb364c0af14ca875fac7e0183f2985498b77be129dc1b3b1ad0a6b3281580f19e48c6105c037fb966ad9934520c69c6434d17fd0af4eed78
   languageName: node
   linkType: hard
 

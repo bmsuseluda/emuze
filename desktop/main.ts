@@ -24,11 +24,19 @@ import { cp } from "node:fs";
 import { biosOpenSourceHomeDirectory } from "../app/server/homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../app/server/applicationsDB.server/environmentVariables.js";
 import { update } from "./updater/index.js";
+import unhandled from "electron-unhandled";
 
 const __dirname = import.meta.dirname;
 
 Object.entries(sdlGameControllerConfig).forEach(([key, value]) => {
   process.env[key] = value;
+});
+
+unhandled({
+  logger: (error) => {
+    log("error", "unhandled", error);
+  },
+  showDialog: false,
 });
 
 dotenv.config();
@@ -86,7 +94,6 @@ app.on("ready", async () => {
     app.commandLine.hasSwitch(commandLineOptions.fullscreen.id) ||
     appearance?.fullscreen;
 
-  // TODO: Check how to set context for react router with fullscreen
   const url = await initReactRouter();
 
   const { height, width } = screen.getPrimaryDisplay().workAreaSize;
