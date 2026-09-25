@@ -8396,9 +8396,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:43.2.0":
-  version: 43.2.0
-  resolution: "electron@npm:43.2.0"
+"electron@npm:44.4.5":
+  version: 44.4.5
+  resolution: "electron@npm:44.4.5"
   dependencies:
     "@electron-internal/extract-zip": "npm:^1.0.1"
     "@electron/get": "npm:^5.0.0"
@@ -8406,7 +8406,7 @@ __metadata:
   bin:
     electron: cli.js
     install-electron: install.js
-  checksum: 10/70f2f822b66d8fa15e370126d40cc79545ae76795c190a26467a76576074bab8ec81e167fc1bcc092ac944843a0b03cc9f45f54326cbce6ac06a98461909a634
+  checksum: 10/a6c33fafef6bb1e3bee9d6feb7948ebd79ac6f8f333d21bcf589d44a15e1b66f99b877c83c6cf0abcd73a2a4ecc834da99fc52a026100acec8b1891601f1a6f5
   languageName: node
   linkType: hard
 
@@ -8481,7 +8481,7 @@ __metadata:
     decompress-unzip: "npm:4.0.1"
     del-cli: "npm:7.0.0"
     dotenv: "npm:17.4.2"
-    electron: "npm:43.2.0"
+    electron: "npm:44.4.5"
     electron-builder: "npm:26.15.6"
     electron-updater: "npm:6.8.9"
     fast-xml-builder: "npm:1.2.0"

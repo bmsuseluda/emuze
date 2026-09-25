@@ -1,25 +1,17 @@
-import type { Sdl } from "@kmamal/sdl";
-import type { MednafenGamepadID } from "./initGamepadIDs.js";
-import { isWindows } from "../../../operationsystem.server.js";
-import { PhysicalGamepadXinput } from "./PhysicalGamepadXinput.js";
 import { PhysicalGamepadSdl } from "./PhysicalGamepadSdl.js";
+import sdl from "@kmamal/sdl";
 import {
-  isPs4Controller,
-  isXinputController,
-} from "../../../../types/gamepad.js";
-import { PhysicalGamepadPs4 } from "./PhysicalGamepadPs4.js";
+  DetectSdlGuidIndex,
+  EmuzeController,
+} from "../../../gamepad.server.js";
 
 export const getPhysicalGamepad = (
-  sdlGamepad: Sdl.Controller.Device,
-  gamepadID: MednafenGamepadID,
+  { guid, mapping, sdlJoystick }: EmuzeController,
+  detectSdlGuidIndex: DetectSdlGuidIndex,
+  index: number,
 ) => {
-  if (isPs4Controller(sdlGamepad)) {
-    return new PhysicalGamepadPs4(gamepadID.id, sdlGamepad.mapping!);
-  }
+  const { buttons } = sdl.joystick.openDevice(sdlJoystick);
+  const guidIndex = detectSdlGuidIndex(guid, index);
 
-  if (isWindows() && isXinputController(sdlGamepad.type)) {
-    return new PhysicalGamepadXinput(gamepadID.id, sdlGamepad.mapping!);
-  }
-
-  return new PhysicalGamepadSdl(gamepadID.id, sdlGamepad.mapping!);
+  return new PhysicalGamepadSdl(guid, guidIndex, mapping, buttons.length);
 };
