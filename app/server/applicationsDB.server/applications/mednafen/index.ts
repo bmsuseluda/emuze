@@ -9,8 +9,8 @@ import { log } from "../../../debug.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { homedir } from "node:os";
 import { normalizeString } from "../../../igdb.server.js";
-import { getMappedGamepads } from "./initGamepadIDs.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
+import { getControllers } from "../../../gamepad.server.js";
 
 const getSharedMednafenOptionParams: OptionParamFunction = ({
   settings: {
@@ -82,7 +82,7 @@ export const mednafen: Application = {
   bundledPath,
 };
 
-const hiresGames = [
+const highResolutionGames = [
   "Dead or Alive",
   "DecAthlete",
   "Fighting Vipers",
@@ -94,7 +94,7 @@ const hiresGames = [
 
 const fixInterlacingSaturn = (gameName: string) => {
   const gameNameNormalized = normalizeString(gameName);
-  if (hiresGames.includes(gameNameNormalized)) {
+  if (highResolutionGames.includes(gameNameNormalized)) {
     return ["-video.deinterlacer", "bob_offset"];
   }
 
@@ -108,8 +108,8 @@ const saturnBiosTypes = {
 export const mednafenSaturn: Application = {
   ...mednafen,
   createOptionParams: (props) => {
-    const mappedGamepads = getMappedGamepads();
-    const virtualGamepadsSaturn = getVirtualGamepadsSaturn(mappedGamepads);
+    const gamepads = getControllers();
+    const virtualGamepadsSaturn = getVirtualGamepadsSaturn(gamepads);
     log("debug", "createOptionParams", virtualGamepadsSaturn);
     return [
       ...["-force_module", "ss"],
@@ -147,8 +147,8 @@ export const mednafenSaturn: Application = {
 export const mednafenPcEngineCD: Application = {
   ...mednafen,
   createOptionParams: (props) => {
-    const mappedGamepads = getMappedGamepads();
-    const virtualGamepadsPcEngine = getVirtualGamepadsPcEngine(mappedGamepads);
+    const gamepads = [...getControllers()];
+    const virtualGamepadsPcEngine = getVirtualGamepadsPcEngine(gamepads);
     log("debug", "createOptionParams", virtualGamepadsPcEngine);
     return [
       ...["-force_module", "pce"],

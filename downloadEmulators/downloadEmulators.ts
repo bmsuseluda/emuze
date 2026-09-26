@@ -74,7 +74,7 @@ const emulatorDownloads = {
     Windows: `https://github.com/mamedev/mame/releases/download/mame0288/mame0288b_x64.exe`,
   },
   mednafen: {
-    Linux: `https://github.com/pkgforge-dev/mednafen-appimage/releases/download/1.32.1%402026-08-09_1786298295/Mednafen_Emulator-1.32.1-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/bmsuseluda/mednafen-git/releases/download/${emulatorVersions.mednafen}%402026-09-25_1790359474/Mednafen_Emulator-${emulatorVersions.mednafen}-anylinux-x86_64.AppImage`,
     Windows: `https://mednafen.github.io/releases/files/mednafen-${emulatorVersions.mednafen}-win64.zip`,
   },
   melonds: {
