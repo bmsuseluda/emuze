@@ -475,6 +475,7 @@ export const gamepadPs4Joystick = {
   name: "PS4 Controller",
   path: "/dev/hidraw1",
   type: "gamecontroller",
+  // guid: "05008fe54c050000c405000000006800", with sdl3
   guid: "03008fe54c050000c405000000006800",
   vendor: 1356,
   product: 1476,
@@ -508,6 +509,20 @@ export const gamepadPs3 = {
   type: "ps3",
   mapping:
     "0500f9d24c0500006802000000800000,PS3 Controller,a:b0,b:b1,back:b8,dpdown:b14,dpleft:b15,dpright:b16,dpup:b13,guide:b10,leftshoulder:b4,leftstick:b11,lefttrigger:a2,leftx:a0,lefty:a1,rightshoulder:b5,rightstick:b12,righttrigger:a5,rightx:a3,righty:a4,start:b9,x:b3,y:b2,platform:Linux,",
+} satisfies Sdl.Controller.Device;
+
+export const gamepadGamecubeNso = {
+  id: 0,
+  name: "NSO GameCube Controller",
+  path: "/dev/input/event19",
+  type: null,
+  guid: "030046457e0500007320000011010000",
+  vendor: 1406,
+  product: 8307,
+  version: 273,
+  player: 0,
+  mapping:
+    "030046457e0500007320000011010000,NSO GameCube Controller,a:b1,b:b3,dpdown:b8,dpleft:b10,dpright:b9,dpup:b11,guide:b16,leftshoulder:b13,lefttrigger:b12,leftx:a0,lefty:a1~,rightshoulder:b5,righttrigger:b4,rightx:a2,righty:a3~,start:b6,x:b0,y:b2,platform:Linux,",
 } satisfies Sdl.Controller.Device;
 
 export const gamecubeAdapter = {

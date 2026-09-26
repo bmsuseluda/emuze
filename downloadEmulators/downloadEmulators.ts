@@ -21,18 +21,6 @@ import { removeFile } from "../app/server/readWriteData.server.js";
 
 const __dirname = import.meta.dirname;
 
-/**
- *
- * 4. Oktober - 15. Herbstferien
- *
- * 4. - 8. Algäu Urlaub
- *
- * 15. harry potter mit sarah
- *
- *
- *
- */
-
 type OperatingSystem = "Windows" | "Linux";
 type EmulatorDownloads = Record<ApplicationId, Record<OperatingSystem, string>>;
 
@@ -74,7 +62,7 @@ const emulatorDownloads = {
     Windows: `https://github.com/mamedev/mame/releases/download/mame0288/mame0288b_x64.exe`,
   },
   mednafen: {
-    Linux: `https://github.com/bmsuseluda/mednafen-git/releases/download/${emulatorVersions.mednafen}%402026-09-25_1790359474/Mednafen_Emulator-${emulatorVersions.mednafen}-anylinux-x86_64.AppImage`,
+    Linux: `https://github.com/bmsuseluda/mednafen-git/releases/download/${emulatorVersions.mednafen}%402026-09-26_1790454382/Mednafen_Emulator-${emulatorVersions.mednafen}-anylinux-x86_64.AppImage`,
     Windows: `https://mednafen.github.io/releases/files/mednafen-${emulatorVersions.mednafen}-win64.zip`,
   },
   melonds: {
@@ -145,7 +133,7 @@ const downloadEmulator = (emulatorId: ApplicationId, downloadLink: string) => {
           emulatorFolderPath,
           bundledPath,
           () => removeRootFolderIfNecessary(emulatorFolderPath),
-          exitOnResponseCodeError,
+          exitOnResponseCodeError(downloadLink),
         );
       }
     }
@@ -185,12 +173,13 @@ const downloadAndExtract7z = (
       });
     },
     () => {
-      exitOnResponseCodeError();
+      exitOnResponseCodeError(url)();
     },
   );
 };
 
-const exitOnResponseCodeError = () => {
+const exitOnResponseCodeError = (url: string) => () => {
+  console.error(`error downloading ${url}`);
   rmSync(emulatorsFolderPath, { recursive: true, force: true });
   process.exit(1);
 };
@@ -203,7 +192,7 @@ const downloadAppImage = (url: string, fileToCheck: string) => {
       makeFileExecutableLinux(fileToCheck);
     },
     () => {
-      exitOnResponseCodeError();
+      exitOnResponseCodeError(url)();
     },
   );
 };
@@ -250,7 +239,7 @@ const downloadExe = (
       }, 2000);
     },
     () => {
-      exitOnResponseCodeError();
+      exitOnResponseCodeError(url)();
     },
   );
 };
