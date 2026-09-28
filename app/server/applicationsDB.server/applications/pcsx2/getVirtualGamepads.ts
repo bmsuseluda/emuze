@@ -3,7 +3,10 @@ import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js"
 import { keyboardConfig } from "./keyboardConfig.js";
 import { log } from "../../../debug.server.js";
 import type { Pcsx2ButtonId } from "./types.js";
-import { EmuzeController, getControllers } from "../../../gamepad.server.js";
+import {
+  EmuzeController,
+  getControllersSdl3,
+} from "../../../gamepad.server.js";
 
 const buttonMapping = {
   Up: "DPadUp",
@@ -63,7 +66,7 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
   [`[Pad${gamepadIndex + 1}]`, "Type = None", "", "", ""].join(EOL);
 
 export const getVirtualGamepads = () => {
-  const gamepads = getControllers();
+  const gamepads = getControllersSdl3();
 
   const virtualGamepads =
     gamepads.length > 0 ? gamepads.map(getVirtualGamepad) : [keyboardConfig];

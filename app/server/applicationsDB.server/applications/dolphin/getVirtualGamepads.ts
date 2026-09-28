@@ -6,7 +6,7 @@ import { log } from "../../../debug.server.js";
 import type { DolphinButtonId } from "./types.js";
 import {
   EmuzeController,
-  getControllers,
+  getControllersSdl3,
   getSdlNameIndex,
 } from "../../../gamepad.server.js";
 
@@ -68,7 +68,7 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
   ].join(EOL);
 
 export const getVirtualGamepads = () => {
-  const gamepads = getControllers();
+  const gamepads = getControllersSdl3();
 
   const virtualGamepads =
     gamepads.length > 0

@@ -24,6 +24,7 @@ import { entriesPath } from "../categoryDataCache.server.js";
 import { azahar } from "../applicationsDB.server/applications/azahar/index.js";
 
 vi.mock("@kmamal/sdl");
+vi.mock("@kmamal/sdl3");
 vi.mock("../readWriteData.server");
 vi.mock("../lastPlayed.server.ts");
 vi.mock("../applications.server");

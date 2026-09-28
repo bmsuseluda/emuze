@@ -10,7 +10,7 @@ import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.j
 import { homedir } from "node:os";
 import { normalizeString } from "../../../igdb.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
-import { getControllers } from "../../../gamepad.server.js";
+import { getControllersSdl3 } from "../../../gamepad.server.js";
 
 const getSharedMednafenOptionParams: OptionParamFunction = ({
   settings: {
@@ -108,7 +108,7 @@ const saturnBiosTypes = {
 export const mednafenSaturn: Application = {
   ...mednafen,
   createOptionParams: (props) => {
-    const gamepads = getControllers();
+    const gamepads = getControllersSdl3();
     const virtualGamepadsSaturn = getVirtualGamepadsSaturn(gamepads);
     log("debug", "createOptionParams", virtualGamepadsSaturn);
     return [
@@ -147,7 +147,7 @@ export const mednafenSaturn: Application = {
 export const mednafenPcEngineCD: Application = {
   ...mednafen,
   createOptionParams: (props) => {
-    const gamepads = [...getControllers()];
+    const gamepads = getControllersSdl3();
     const virtualGamepadsPcEngine = getVirtualGamepadsPcEngine(gamepads);
     log("debug", "createOptionParams", virtualGamepadsPcEngine);
     return [

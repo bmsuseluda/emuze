@@ -1,5 +1,5 @@
 import { PhysicalGamepadSdl } from "./PhysicalGamepadSdl.js";
-import sdl from "@kmamal/sdl";
+import sdl from "@kmamal/sdl3";
 import {
   DetectSdlGuidIndex,
   EmuzeController,
