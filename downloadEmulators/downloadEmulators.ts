@@ -62,8 +62,8 @@ const emulatorDownloads = {
     Windows: `https://github.com/mamedev/mame/releases/download/mame0288/mame0288b_x64.exe`,
   },
   mednafen: {
-    Linux: `https://github.com/pkgforge-dev/mednafen-appimage/releases/download/1.32.1%402026-08-09_1786298295/Mednafen_Emulator-1.32.1-anylinux-x86_64.AppImage`,
-    Windows: `https://mednafen.github.io/releases/files/mednafen-${emulatorVersions.mednafen}-win64.zip`,
+    Linux: `https://github.com/bmsuseluda/mednafen-sdl3/releases/download/v${emulatorVersions.mednafen}-1/mednafen-${emulatorVersions.mednafen}-1-x86_64.AppImage`,
+    Windows: `https://github.com/bmsuseluda/mednafen-sdl3/releases/download/v${emulatorVersions.mednafen}-1/mednafen-${emulatorVersions.mednafen}-1-x86_64.zip`,
   },
   melonds: {
     Linux: `https://github.com/pkgforge-dev/melonDS-AppImage-Enhanced/releases/download/1.1-2%402026-08-18_1787083018/melonDS-1.1-2-anylinux-x86_64.AppImage`,
@@ -133,7 +133,7 @@ const downloadEmulator = (emulatorId: ApplicationId, downloadLink: string) => {
           emulatorFolderPath,
           bundledPath,
           () => removeRootFolderIfNecessary(emulatorFolderPath),
-          exitOnResponseCodeError,
+          exitOnResponseCodeError(downloadLink),
         );
       }
     }
@@ -173,12 +173,13 @@ const downloadAndExtract7z = (
       });
     },
     () => {
-      exitOnResponseCodeError();
+      exitOnResponseCodeError(url)();
     },
   );
 };
 
-const exitOnResponseCodeError = () => {
+const exitOnResponseCodeError = (url: string) => () => {
+  console.error(`error downloading ${url}`);
   rmSync(emulatorsFolderPath, { recursive: true, force: true });
   process.exit(1);
 };
@@ -191,7 +192,7 @@ const downloadAppImage = (url: string, fileToCheck: string) => {
       makeFileExecutableLinux(fileToCheck);
     },
     () => {
-      exitOnResponseCodeError();
+      exitOnResponseCodeError(url)();
     },
   );
 };
@@ -238,7 +239,7 @@ const downloadExe = (
       }, 2000);
     },
     () => {
-      exitOnResponseCodeError();
+      exitOnResponseCodeError(url)();
     },
   );
 };

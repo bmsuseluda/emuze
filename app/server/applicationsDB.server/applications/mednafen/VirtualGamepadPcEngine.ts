@@ -1,9 +1,13 @@
-import type { MappedGamepad } from "./initGamepadIDs.js";
 import { log } from "../../../debug.server.js";
 import { VirtualGamepad } from "./VirtualGamepad.js";
 import { getKeyboardMapping } from "./keyboardConfig.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { getPhysicalGamepad } from "./getPhysicalGamepad.js";
+import {
+  DetectSdlGuidIndex,
+  EmuzeController,
+  getSdlGuidIndex,
+} from "../../../gamepad.server.js";
 
 type MednafenButtonIdPcEngine =
   | "up"
@@ -87,63 +91,65 @@ export const getKeyboardPcEngine = () => {
   ];
 };
 
-export const getVirtualGamepadPcEngine = ({
-  mednafenGamepadId,
-  emuzeController,
-}: MappedGamepad) => {
-  log("debug", "gamepad", mednafenGamepadId, emuzeController);
-  const { initialize, createButtonMapping, disableButtonMapping } =
-    new VirtualGamepad<MednafenButtonIdPcEngine>(
-      emuzeController.player,
-      system,
+export const getVirtualGamepadPcEngine =
+  (detectSdlGuidIndex: DetectSdlGuidIndex) =>
+  (emuzeController: EmuzeController, index: number) => {
+    log("debug", "gamepad", emuzeController);
+    const { initialize, createButtonMapping, disableButtonMapping } =
+      new VirtualGamepad<MednafenButtonIdPcEngine>(
+        emuzeController.player,
+        system,
+      );
+    const physicalGamepad = getPhysicalGamepad(
+      emuzeController,
+      detectSdlGuidIndex,
+      index,
     );
-  const physicalGamepad = getPhysicalGamepad(
-    emuzeController.sdlController,
-    mednafenGamepadId,
-  );
 
-  return [
-    ...initialize(),
-    ...createButtonMapping(
-      "up",
-      physicalGamepad.getDpadUp(),
-      physicalGamepad.getLeftStickUp(),
-    ),
-    ...createButtonMapping(
-      "down",
-      physicalGamepad.getDpadDown(),
-      physicalGamepad.getLeftStickDown(),
-    ),
-    ...createButtonMapping(
-      "left",
-      physicalGamepad.getDpadLeft(),
-      physicalGamepad.getLeftStickLeft(),
-    ),
-    ...createButtonMapping(
-      "right",
-      physicalGamepad.getDpadRight(),
-      physicalGamepad.getLeftStickRight(),
-    ),
-    ...createButtonMapping("i", physicalGamepad.getB()),
-    ...createButtonMapping("ii", physicalGamepad.getA()),
-    ...disableButtonMapping("iii"),
-    ...disableButtonMapping("iv"),
-    ...disableButtonMapping("v"),
-    ...disableButtonMapping("vi"),
-    ...createButtonMapping("rapid_i", physicalGamepad.getY()),
-    ...createButtonMapping("rapid_ii", physicalGamepad.getX()),
-    ...disableButtonMapping("mode_select"),
-    ...createButtonMapping("select", physicalGamepad.getBack()),
-    ...createButtonMapping("run", physicalGamepad.getStart()),
-  ];
-};
+    return [
+      ...initialize(),
+      ...createButtonMapping(
+        "up",
+        physicalGamepad.getDpadUp(),
+        physicalGamepad.getLeftStickUp(),
+      ),
+      ...createButtonMapping(
+        "down",
+        physicalGamepad.getDpadDown(),
+        physicalGamepad.getLeftStickDown(),
+      ),
+      ...createButtonMapping(
+        "left",
+        physicalGamepad.getDpadLeft(),
+        physicalGamepad.getLeftStickLeft(),
+      ),
+      ...createButtonMapping(
+        "right",
+        physicalGamepad.getDpadRight(),
+        physicalGamepad.getLeftStickRight(),
+      ),
+      ...createButtonMapping("i", physicalGamepad.getB()),
+      ...createButtonMapping("ii", physicalGamepad.getA()),
+      ...disableButtonMapping("iii"),
+      ...disableButtonMapping("iv"),
+      ...disableButtonMapping("v"),
+      ...disableButtonMapping("vi"),
+      ...createButtonMapping("rapid_i", physicalGamepad.getY()),
+      ...createButtonMapping("rapid_ii", physicalGamepad.getX()),
+      ...disableButtonMapping("mode_select"),
+      ...createButtonMapping("select", physicalGamepad.getBack()),
+      ...createButtonMapping("run", physicalGamepad.getStart()),
+    ];
+  };
 
-export const getVirtualGamepadsPcEngine = (mappedGamepads: MappedGamepad[]) => {
+export const getVirtualGamepadsPcEngine = (gamepads: EmuzeController[]) => {
+  const detectSdlGuidIndex = getSdlGuidIndex(gamepads);
+
   const virtualGamepads =
-    mappedGamepads.length > 0
-      ? mappedGamepads.map(getVirtualGamepadPcEngine)
+    gamepads.length > 0
+      ? gamepads.map(getVirtualGamepadPcEngine(detectSdlGuidIndex))
       : getKeyboardPcEngine();
-  log("debug", "gamepads", mappedGamepads.length);
+  log("debug", "gamepads", gamepads.length);
 
   return [
     ...virtualGamepads.flat(),

@@ -1,5 +1,5 @@
 import type { ChildProcess } from "node:child_process";
-import { execFile, spawnSync } from "node:child_process";
+import { execFile } from "node:child_process";
 import nodepath from "node:path";
 
 import type { Category } from "../../types/jsonFiles/category.js";
@@ -79,11 +79,6 @@ describe("execute.server", () => {
 
         await startGame(pcenginecd.id, entry);
 
-        expect(spawnSync).toHaveBeenCalledWith(
-          mednafenPath,
-          ["wrong"],
-          expect.anything(),
-        );
         expect(execFile).toHaveBeenCalledWith(
           mednafenPath,
           expect.arrayContaining([
@@ -104,11 +99,6 @@ describe("execute.server", () => {
 
         await startGame(pcenginecd.id, entry);
 
-        expect(spawnSync).toHaveBeenCalledWith(
-          mednafenPath,
-          ["wrong"],
-          expect.anything(),
-        );
         expect(execFile).toHaveBeenCalledWith(
           mednafenPath,
           expect.arrayContaining([
@@ -149,11 +139,6 @@ describe("execute.server", () => {
 
         await startGame(pcenginecd.id, entry);
 
-        expect(spawnSync).toHaveBeenCalledWith(
-          mednafenPath,
-          ["wrong"],
-          expect.anything(),
-        );
         expect(execFile).toHaveBeenCalledWith(
           mednafenPath,
           expect.arrayContaining([
