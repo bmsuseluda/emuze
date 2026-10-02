@@ -19,3 +19,4 @@ coverage
 /emulators/
 /biosOpenSource/
 .react-router/
+/docs/.vitepress/cache/
