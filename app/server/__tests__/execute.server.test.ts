@@ -1,5 +1,5 @@
 import type { ChildProcess } from "node:child_process";
-import { execFile, spawnSync } from "node:child_process";
+import { execFile } from "node:child_process";
 import nodepath from "node:path";
 
 import type { Category } from "../../types/jsonFiles/category.js";
@@ -20,6 +20,7 @@ import type { DetectedRequiredFile } from "../applicationsDB.server/types.js";
 import { getRequiredFiles } from "../applicationsDB.server/checkRequiredFiles.js";
 
 vi.mock("@kmamal/sdl");
+vi.mock("@kmamal/sdl3");
 vi.mock("node:child_process");
 vi.mock("node:fs");
 vi.mock("../readWriteData.server");
@@ -78,11 +79,6 @@ describe("execute.server", () => {
 
         await startGame(pcenginecd.id, entry);
 
-        expect(spawnSync).toHaveBeenCalledWith(
-          mednafenPath,
-          ["wrong"],
-          expect.anything(),
-        );
         expect(execFile).toHaveBeenCalledWith(
           mednafenPath,
           expect.arrayContaining([
@@ -103,11 +99,6 @@ describe("execute.server", () => {
 
         await startGame(pcenginecd.id, entry);
 
-        expect(spawnSync).toHaveBeenCalledWith(
-          mednafenPath,
-          ["wrong"],
-          expect.anything(),
-        );
         expect(execFile).toHaveBeenCalledWith(
           mednafenPath,
           expect.arrayContaining([
@@ -148,11 +139,6 @@ describe("execute.server", () => {
 
         await startGame(pcenginecd.id, entry);
 
-        expect(spawnSync).toHaveBeenCalledWith(
-          mednafenPath,
-          ["wrong"],
-          expect.anything(),
-        );
         expect(execFile).toHaveBeenCalledWith(
           mednafenPath,
           expect.arrayContaining([
