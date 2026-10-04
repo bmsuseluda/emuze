@@ -1,7 +1,7 @@
 import { GiCheckMark } from "react-icons/gi";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import type { ComponentProps } from "react";
-import { styled } from "../../../styled-system/jsx/index.js";
+import { styled } from "../../../styled-system/jsx/factory.js";
 
 const Wrapper = styled("div", {
   base: {

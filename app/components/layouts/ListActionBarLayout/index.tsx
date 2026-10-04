@@ -1,7 +1,7 @@
 import { Headline } from "../../Headline/index.js";
 import type { ComponentRef, ForwardedRef, ReactNode } from "react";
 import { useCallback, useRef } from "react";
-import { styled } from "../../../../styled-system/jsx/index.js";
+import { styled } from "../../../../styled-system/jsx/factory.js";
 import { IconChildrenWrapper } from "../../IconChildrenWrapper/index.js";
 import { Typography } from "../../Typography/index.js";
 

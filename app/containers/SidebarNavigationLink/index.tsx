@@ -1,7 +1,7 @@
 import { NavLink } from "react-router";
 import type { ComponentProps, ReactNode } from "react";
 import { IconChildrenWrapper } from "../../components/IconChildrenWrapper/index.js";
-import { styled } from "../../../styled-system/jsx/index.js";
+import { styled } from "../../../styled-system/jsx/factory.js";
 
 interface Props extends ComponentProps<typeof StyledNavLink> {
   isFocused?: boolean;

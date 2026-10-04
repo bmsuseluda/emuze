@@ -7,7 +7,7 @@ import { Ul } from "../Ul/index.js";
 import { Game } from "./components/Game/index.js";
 import type { Result } from "../../hooks/useGamepadsOnGrid/index.js";
 import { useGamepadsOnGrid } from "../../hooks/useGamepadsOnGrid/index.js";
-import { styled } from "../../../styled-system/jsx/index.js";
+import { styled } from "../../../styled-system/jsx/factory.js";
 import { useAddEntriesToRenderOnScrollEnd } from "../../hooks/useAddEntriesToRenderOnScrollEnd/index.js";
 import { SystemIcon } from "../SystemIcon/index.js";
 import {

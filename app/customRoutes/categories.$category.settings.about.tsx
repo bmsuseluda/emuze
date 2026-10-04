@@ -2,7 +2,6 @@ import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/i
 import { SettingsIcon } from "../components/SettingsIcon/index.js";
 import { FaDiscord, FaGithub } from "react-icons/fa";
 import { CgNotes } from "react-icons/cg";
-import { styled } from "../../styled-system/jsx/index.js";
 import { Logo } from "../components/Logo/index.js";
 import { Link } from "../components/Link/index.js";
 import {
@@ -19,6 +18,7 @@ import { getVersion } from "../server/packagejson.server.js";
 import type { IconType } from "react-icons";
 import { useLocation, useNavigate } from "react-router";
 import { Route } from "./+types/categories.$category.settings.about.js";
+import { styled } from "../../styled-system/jsx/factory.js";
 
 export const loader = () => {
   return { version: getVersion() };

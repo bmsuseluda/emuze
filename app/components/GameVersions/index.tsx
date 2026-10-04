@@ -1,4 +1,4 @@
-import { styled } from "../../../styled-system/jsx/index.js";
+import { styled } from "../../../styled-system/jsx/factory.js";
 import type { Entry } from "../../types/jsonFiles/category.js";
 import { useGamepadsOnGrid } from "../../hooks/useGamepadsOnGrid/index.js";
 import type { ComponentRef, RefObject } from "react";
