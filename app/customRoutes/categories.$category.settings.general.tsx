@@ -300,7 +300,7 @@ export default function General({
     entriesRefCallback,
     selectedEntry,
     resetSelected,
-    updatePosition,
+    setSelectedEntry,
   } = useGamepadsOnGrid({
     onSelectEntry: selectEntry,
     isInFocus,
@@ -333,12 +333,11 @@ export default function General({
     (event: MouseEvent<ComponentRef<"button">>) => {
       if (!isInFocus) {
         switchFocus(focus);
-        selectedEntry.current = event.currentTarget;
-        updatePosition();
+        setSelectedEntry(event.currentTarget);
       }
       disableGamepads();
     },
-    [disableGamepads, isInFocus, selectedEntry, switchFocus, updatePosition],
+    [disableGamepads, isInFocus, switchFocus, setSelectedEntry],
   );
 
   return (

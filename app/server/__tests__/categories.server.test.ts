@@ -1,4 +1,3 @@
-import { when } from "vitest-when";
 import nodepath from "node:path";
 
 import { importCategories, paths } from "../categories.server.js";
@@ -66,7 +65,7 @@ describe("categories.server", () => {
         createCategoryPath(pcenginecd.name),
       ]);
       vi.mocked(readFileHome).mockReturnValueOnce([]);
-      when(readFilenames, { times: 1 })
+      vi.when(readFilenames)
         .calledWith({
           path: createCategoryPath(nintendo3ds.name),
           fileExtensions: azahar.fileExtensions,
@@ -74,7 +73,7 @@ describe("categories.server", () => {
         .thenReturn([
           createAbsoluteEntryPath(nintendo3ds.name, metroidsamusreturns.path),
         ]);
-      when(readFilenames, { times: 1 })
+      vi.when(readFilenames)
         .calledWith({
           path: createCategoryPath(pcenginecd.name),
           fileExtensions: mednafen.fileExtensions,
@@ -86,10 +85,10 @@ describe("categories.server", () => {
       vi.mocked(readFileHome).mockReturnValueOnce(pcenginecd);
       vi.mocked(readFileHome).mockReturnValueOnce(nintendo3ds);
 
-      when(fetchMetaDataFromDB)
+      vi.when(fetchMetaDataFromDB)
         .calledWith("pcenginecd", pcenginecd.entries)
         .thenResolve(pcenginecd.entries);
-      when(fetchMetaDataFromDB)
+      vi.when(fetchMetaDataFromDB)
         .calledWith("nintendo3ds", nintendo3ds.entries)
         .thenResolve(nintendo3ds.entries);
 

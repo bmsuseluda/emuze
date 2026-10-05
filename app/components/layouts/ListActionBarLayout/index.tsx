@@ -1,6 +1,6 @@
 import { Headline } from "../../Headline/index.js";
 import type { ComponentRef, ForwardedRef, ReactNode } from "react";
-import { useCallback, useRef } from "react";
+import { useCallback, useImperativeHandle, useRef } from "react";
 import { styled } from "../../../../styled-system/jsx/factory.js";
 import { IconChildrenWrapper } from "../../IconChildrenWrapper/index.js";
 import { Typography } from "../../Typography/index.js";
@@ -147,7 +147,8 @@ const ListActionBarContainer = ({
   paddingSide = true,
   dynamicHeight = false,
 }: ContainerProps) => {
-  const listRef = useRef<ComponentRef<"div">>(undefined);
+  const listRef = useRef<ComponentRef<typeof List>>(null);
+  useImperativeHandle(listRefDefault, () => listRef.current as HTMLDivElement);
 
   const onClick = useCallback(() => {
     const list = listRef.current;
@@ -167,14 +168,7 @@ const ListActionBarContainer = ({
   return (
     <ListWrapper dynamicHeight={dynamicHeight}>
       <List
-        ref={(element: HTMLInputElement) => {
-          if (typeof listRefDefault === "function") {
-            listRefDefault(element);
-          } else if (listRefDefault) {
-            listRefDefault.current = element;
-          }
-          listRef.current = element;
-        }}
+        ref={listRef}
         scrollSmooth={scrollSmooth}
         onClick={onClick}
         paddingSide={paddingSide}

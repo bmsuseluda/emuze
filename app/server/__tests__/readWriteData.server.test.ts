@@ -1,6 +1,5 @@
 import type { Dirent } from "node:fs";
 import { readdirSync } from "node:fs";
-import { when } from "vitest-when";
 import nodepath from "node:path";
 
 import { readDirectorynames, readFilenames } from "../readWriteData.server.js";
@@ -92,7 +91,7 @@ describe("readWriteData.server", () => {
     });
 
     it("Should return filenames with supported filenames from subfolders", () => {
-      when(readdirSync, { times: 1 })
+      vi.when(readdirSync)
         .calledWith(createCategoryPath(playstation.name), {
           encoding: "utf8" as "buffer",
           withFileTypes: true,
@@ -103,7 +102,7 @@ describe("readWriteData.server", () => {
           new SimpleDirent("game with unsupported file extension.wasd", false),
         ] as unknown as Dirent<Buffer<ArrayBufferLike>>[]);
 
-      when(readdirSync, { times: 1 })
+      vi.when(readdirSync)
         .calledWith(
           nodepath.join(createCategoryPath(playstation.name), "Hugo"),
           {

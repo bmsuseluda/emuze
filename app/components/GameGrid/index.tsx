@@ -94,7 +94,7 @@ export const GameGrid = ({
     entriesRefs,
     entriesRefCallback,
     selectedEntry,
-    updatePosition,
+    setSelectedEntry,
   } = useGamepadsOnGrid({
     onSelectEntry: selectEntry,
     isInFocus,
@@ -125,8 +125,7 @@ export const GameGrid = ({
         // TODO: think about if this should be a callback from useGamepadsOnGrid
         const handleClick = () => {
           onGameClick();
-          selectedEntry.current = entriesRefs.current[index];
-          updatePosition();
+          setSelectedEntry(entriesRefs.current[index]);
         };
         const handleDoubleClick = () => {
           onExecute();
