@@ -20,6 +20,7 @@ import {
 import { duckstation } from "../applicationsDB.server/applications/duckstation/index.js";
 import { mednafen } from "../applicationsDB.server/applications/mednafen/index.js";
 
+vi.mock("electron");
 vi.mock("@kmamal/sdl");
 vi.mock("@kmamal/sdl3");
 vi.mock("node:fs");

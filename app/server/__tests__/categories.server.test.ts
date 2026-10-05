@@ -23,6 +23,7 @@ import { mednafen } from "../applicationsDB.server/applications/mednafen/index.j
 import { entriesPath } from "../categoryDataCache.server.js";
 import { azahar } from "../applicationsDB.server/applications/azahar/index.js";
 
+vi.mock("electron");
 vi.mock("@kmamal/sdl");
 vi.mock("@kmamal/sdl3");
 vi.mock("../readWriteData.server");

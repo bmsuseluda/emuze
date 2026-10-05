@@ -6,6 +6,7 @@ import { fetchMetaDataForSystem } from "../igdb.js";
 import type { SystemId } from "../../app/server/categoriesDB.server/systemId.js";
 import nodepath from "node:path";
 
+vi.mock("electron");
 vi.mock("@kmamal/sdl");
 vi.mock("@kmamal/sdl3");
 vi.mock("../igdb");

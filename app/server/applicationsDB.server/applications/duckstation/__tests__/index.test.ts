@@ -19,6 +19,7 @@ import {
 } from "../__testData__/settings.js";
 import { replaceGamepadConfig, replaceHotkeyConfig } from "../index.js";
 
+vi.mock("electron");
 vi.mock("@kmamal/sdl");
 vi.mock("@kmamal/sdl3");
 

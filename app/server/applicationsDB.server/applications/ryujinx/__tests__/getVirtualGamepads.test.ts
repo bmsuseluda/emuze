@@ -1,6 +1,8 @@
 import { createControllerId } from "../getVirtualGamepads.js";
 import { gamepadPs3, steamDeck } from "../../../../../types/gamepad.js";
 
+vi.mock("electron");
+
 describe("ryujinx", () => {
   describe("createControllerId", () => {
     it("Should create controller IDs", () => {

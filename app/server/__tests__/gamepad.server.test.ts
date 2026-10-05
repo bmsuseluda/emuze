@@ -11,6 +11,7 @@ import {
   getSdlGuidIndex,
 } from "../gamepad.server.js";
 
+vi.mock("electron");
 vi.mock("@kmamal/sdl");
 vi.mock("@kmamal/sdl3");
 vi.mock("node-hid");

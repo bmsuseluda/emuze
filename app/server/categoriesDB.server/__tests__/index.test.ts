@@ -1,6 +1,7 @@
 import { getCategoryDataByName, pcengine, sonyplaystation3 } from "../index.js";
 import type { Category } from "../types.js";
 
+vi.mock("electron");
 vi.mock("@kmamal/sdl");
 vi.mock("@kmamal/sdl3");
 

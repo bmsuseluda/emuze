@@ -4,6 +4,7 @@ import {
 } from "../FileDataCache.server.js";
 import { readFileHome, writeFileHome } from "../readWriteData.server.js";
 
+vi.mock("electron");
 vi.mock("../readWriteData.server");
 
 describe("FileDataCache", () => {

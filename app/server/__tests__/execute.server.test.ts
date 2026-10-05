@@ -19,6 +19,7 @@ import { mednafen } from "../applicationsDB.server/applications/mednafen/index.j
 import type { DetectedRequiredFile } from "../applicationsDB.server/types.js";
 import { getRequiredFiles } from "../applicationsDB.server/checkRequiredFiles.js";
 
+vi.mock("electron");
 vi.mock("@kmamal/sdl");
 vi.mock("@kmamal/sdl3");
 vi.mock("node:child_process");

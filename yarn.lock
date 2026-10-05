@@ -6832,12 +6832,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"clean-stack@npm:^5.2.0":
-  version: 5.3.0
-  resolution: "clean-stack@npm:5.3.0"
+"clean-stack@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "clean-stack@npm:6.0.0"
   dependencies:
     escape-string-regexp: "npm:5.0.0"
-  checksum: 10/328226494d7e5ac51e8e5f13ee322ff0d32d0aafa4bc9834da431785f73abb254f6ccac0562cf692e293f2eb91f1dd852be94879c54ee6d86e996602f399b995
+    url-extras: "npm:^0.1.0"
+  checksum: 10/a33574e46603dba5dfc0d98679ef7543120dc4e13697e9285c742f0d87cd41c07b6827dea98f2da1145e14ceb76097ff8f1ec1f91d63e862c6fb6efd4c1c8503
   languageName: node
   linkType: hard
 
@@ -8078,16 +8079,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-unhandled@npm:5.0.0":
-  version: 5.0.0
-  resolution: "electron-unhandled@npm:5.0.0"
+"electron-unhandled@npm:6.0.0":
+  version: 6.0.0
+  resolution: "electron-unhandled@npm:6.0.0"
   dependencies:
-    clean-stack: "npm:^5.2.0"
+    clean-stack: "npm:^6.0.0"
     electron-is-dev: "npm:^3.0.1"
-    ensure-error: "npm:^4.0.0"
+    ensure-error: "npm:^5.0.0"
     lodash.debounce: "npm:^4.0.8"
-    serialize-error: "npm:^11.0.3"
-  checksum: 10/df576bf54b715c57d1fd88195c984e5d3a8284983acf2e17dc132d36249d762709bd350c3d543be6bd3fdceff84ad8e813db1c39c01d0c70699290ace1a09cf2
+    serialize-error: "npm:^13.0.1"
+  checksum: 10/4f2691fe9e1060157662ff6726f2fd8f949ca27a80236fd0a121c2ff92c22e8b725f04fc3c43d9928ace1d8b44faa6db3196e1cad35d7482ca8668df747249ea
   languageName: node
   linkType: hard
 
@@ -8195,7 +8196,7 @@ __metadata:
     dotenv: "npm:18.0.5"
     electron: "npm:44.5.1"
     electron-builder: "npm:26.17.0"
-    electron-unhandled: "npm:5.0.0"
+    electron-unhandled: "npm:6.0.0"
     electron-updater: "npm:6.8.10"
     fast-xml-builder: "npm:1.3.1"
     fast-xml-parser: "npm:5.11.2"
@@ -8272,10 +8273,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ensure-error@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "ensure-error@npm:4.0.0"
-  checksum: 10/1670fadfa44162b198970f6336a77a5277e6eb3299c5d9760ea7ca20817b9c11c4714c49cfb9ec99e00d7a2a40cf8d819cb814974c7468668113f470e910d322
+"ensure-error@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "ensure-error@npm:5.0.0"
+  checksum: 10/ddd1d8cbcfa749ea9a7e05efeb1c20bac2f7557e870c1cec0d05c52a356f9d03b086141b586bc2d2bc26d19e5a0b83a9ef54fe452fba905cbd4f5da0d7c42340
   languageName: node
   linkType: hard
 
@@ -12600,6 +12601,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"non-error@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "non-error@npm:0.1.0"
+  checksum: 10/c8140db92f2054f1789e2523cb1ac872adbe231642b8ab9c6a2c6295ea33f9ad7093a5adfc54ac07ac8cd86c245ee186ecc918d11c9b9ae3c6fa9b2e0ec7197c
+  languageName: node
+  linkType: hard
+
 "nopt@npm:^5.0.0":
   version: 5.0.0
   resolution: "nopt@npm:5.0.0"
@@ -14378,27 +14386,27 @@ __metadata:
 
 "resolve@patch:resolve@npm%3A^1.1.6#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.22.8#optional!builtin<compat/resolve>":
   version: 1.22.8
-  resolution: "resolve@patch:resolve@npm%3A1.22.8#optional!builtin<compat/resolve>::version=1.22.8&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A1.22.8#optional!builtin<compat/resolve>::version=1.22.8&hash=9bd1a5"
   dependencies:
     is-core-module: "npm:^2.13.0"
     path-parse: "npm:^1.0.7"
     supports-preserve-symlinks-flag: "npm:^1.0.0"
   bin:
     resolve: bin/resolve
-  checksum: 10/f345cd37f56a2c0275e3fe062517c650bb673815d885e7507566df589375d165bbbf4bdb6aa95600a9bc55f4744b81f452b5a63f95b9f10a72787dba3c90890a
+  checksum: 10/b14c82cbce48701a1e963c60f196b91a289186e8b596334e09c881df8069cefcfb0ac9ce85ea768742b361a58005494bf2428a95dc5056d2ba441aa993731b1f
   languageName: node
   linkType: hard
 
 "resolve@patch:resolve@npm%3A^1.22.1#optional!builtin<compat/resolve>":
   version: 1.22.1
-  resolution: "resolve@patch:resolve@npm%3A1.22.1#optional!builtin<compat/resolve>::version=1.22.1&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A1.22.1#optional!builtin<compat/resolve>::version=1.22.1&hash=9bd1a5"
   dependencies:
     is-core-module: "npm:^2.9.0"
     path-parse: "npm:^1.0.7"
     supports-preserve-symlinks-flag: "npm:^1.0.0"
   bin:
     resolve: bin/resolve
-  checksum: 10/551dd500765cce767c583747f5f21ceb51d437f539b01aee96d6ec39eb2c68a8ff5d646b083d690fe428a81329856bc1bbdb094379b8df4b3f10e7e1f6aa3839
+  checksum: 10/af66203356dffd62ccf2089ccb2fa62b12de11574ec63145e88af5641087fe413da9f402c3eafa8faf246c61618b3c117b4aac34029e908f503594eea641e8d0
   languageName: node
   linkType: hard
 
@@ -14854,12 +14862,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"serialize-error@npm:^11.0.3":
-  version: 11.0.3
-  resolution: "serialize-error@npm:11.0.3"
+"serialize-error@npm:^13.0.1":
+  version: 13.0.2
+  resolution: "serialize-error@npm:13.0.2"
   dependencies:
-    type-fest: "npm:^2.12.2"
-  checksum: 10/5fe19e120e9ad8488c0abe27517e60da75bd65f56ae1cb48d8524e013d0e07f18bb9d05eca72898c5244e1168576f3131f29145c9f785e735e10742ee9c86c08
+    non-error: "npm:^0.1.0"
+    type-fest: "npm:^5.4.1"
+  checksum: 10/888861292ef9f88078ec38626a7acb16bcf3c49859233e30c6fad186fe093108e1da6c2f71ad86f03d0f575bf21f1cf76a56d16f24e2bb3bd45f4c2aaf8f37db
   languageName: node
   linkType: hard
 
@@ -15646,6 +15655,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tagged-tag@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "tagged-tag@npm:1.0.0"
+  checksum: 10/e37653df3e495daa7ea7790cb161b810b00075bba2e4d6c93fb06a709e747e3ae9da11a120d0489833203926511b39e038a2affbd9d279cfb7a2f3fcccd30b5d
+  languageName: node
+  linkType: hard
+
 "tapable@npm:^2.2.0":
   version: 2.2.1
   resolution: "tapable@npm:2.2.1"
@@ -16096,10 +16112,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^2.12.2":
-  version: 2.19.0
-  resolution: "type-fest@npm:2.19.0"
-  checksum: 10/7bf9e8fdf34f92c8bb364c0af14ca875fac7e0183f2985498b77be129dc1b3b1ad0a6b3281580f19e48c6105c037fb966ad9934520c69c6434d17fd0af4eed78
+"type-fest@npm:^5.4.1":
+  version: 5.10.0
+  resolution: "type-fest@npm:5.10.0"
+  dependencies:
+    tagged-tag: "npm:^1.0.0"
+  checksum: 10/299a575a3d2bbc74f70da508629c448806dd5c51cbd2c5adf05b1755636f9f3b12c803b2c52c0eac561d4472ddc5e8ab42b88954cb238b101c9d4595906aea7f
   languageName: node
   linkType: hard
 
@@ -16428,6 +16446,13 @@ __metadata:
   dependencies:
     punycode: "npm:^2.1.0"
   checksum: 10/b271ca7e3d46b7160222e3afa3e531505161c9a4e097febae9664e4b59912f4cbe94861361a4175edac3a03fee99d91e44b6a58c17a634bc5a664b19fc76fbcb
+  languageName: node
+  linkType: hard
+
+"url-extras@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "url-extras@npm:0.1.0"
+  checksum: 10/8945c7fd2127eba9e2f6e0480d0f90411ad387b156e0dc92bb4657e8227cebd4e62584dbbb9da547c84dabf04e2b574ded30214560c63c10f3da3bc295a38fb9
   languageName: node
   linkType: hard
 

@@ -14,6 +14,7 @@ import {
 } from "../__testData__/category.js";
 import { scumm, sonyplaystation } from "../categoriesDB.server/index.js";
 
+vi.mock("electron");
 vi.mock("@kmamal/sdl");
 vi.mock("@kmamal/sdl3");
 
