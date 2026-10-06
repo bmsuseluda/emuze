@@ -24,7 +24,7 @@
     "lib": [
       "DOM",
       "DOM.Iterable",
-      "ES2023"
+      "ES2025"
     ],
     "isolatedModules": true,
     "esModuleInterop": true,
