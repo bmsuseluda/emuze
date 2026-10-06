@@ -12,6 +12,9 @@ export default defineConfig({
   server: {
     port: 3000,
     warmup: { clientFiles: ["./app/root.tsx"] },
+    watch: {
+      ignored: ["**/emulators/**", "**/biosOpenSource/**"],
+    },
   },
   ssr: {
     noExternal: [

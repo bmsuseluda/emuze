@@ -189,10 +189,6 @@ const getNameOsSpecific = (
   joystick: Sdl.Joystick.Device,
   controller: Sdl.Controller.Device,
 ) => {
-  if (isWindows() && isXinputController(controller.type)) {
-    return `XInput Controller`;
-  }
-
   if (isSteamOs()) {
     return joystick.name!;
   }
