@@ -1,11 +1,11 @@
-import { existsSync, mkdirSync } from "node:fs";
+import { cpSync, mkdirSync } from "node:fs";
 import _7z from "7zip-min";
 import { isWindows } from "../app/server/operationsystem.server.js";
 import { downloadFile } from "./utils/downloadFile.js";
 import { executeWithLogs } from "./utils/executeWithLogs.js";
 import { join } from "node:path";
 import { makeFileExecutableLinux } from "./utils/makeFileExecutableLinux.js";
-import { moveSync, removeSync } from "fs-extra/esm";
+import { removeSync } from "fs-extra/esm";
 
 const __dirname = import.meta.dirname;
 const projectPath = join(__dirname, "..");
@@ -34,9 +34,14 @@ const getEmulatorsFromLatestArtifactWindows = (latestReleaseId: string) => {
           artifactExtractedPath,
           (error) => {
             if (!error) {
-              moveSync(
+              cpSync(
                 join(artifactExtractedPath, "emulators"),
                 latestEmulatorsPath,
+                {
+                  recursive: true,
+                  force: true,
+                  preserveTimestamps: true,
+                },
               );
 
               removeSync(outputFilePath);
@@ -49,10 +54,6 @@ const getEmulatorsFromLatestArtifactWindows = (latestReleaseId: string) => {
   });
 };
 
-/**
- * TODO: exactly like the emulators folder the emulators from the latest release should be in latestEmulatorsPath
- * TODO: artifact and extracted folders are removed
- */
 const getEmulatorsFromLatestArtifactLinux = (latestReleaseId: string) => {
   const latestArtifactLinux = `https://github.com/bmsuseluda/emuze/releases/download/v${latestReleaseId}/emuze-${latestReleaseId}.AppImage`;
   const outputFilePath = join(
@@ -62,19 +63,35 @@ const getEmulatorsFromLatestArtifactLinux = (latestReleaseId: string) => {
 
   downloadFile(latestArtifactLinux, outputFilePath, () => {
     makeFileExecutableLinux(outputFilePath);
-    executeWithLogs(outputFilePath, ["--appimage-extract"]);
+    const output = executeWithLogs(
+      outputFilePath,
+      ["--appimage-extract"],
+      latestEmulatorsPath,
+    );
+    console.log(output);
+
+    const squashfsPath = join(latestEmulatorsPath, "squashfs-root");
+
+    cpSync(join(squashfsPath, "emulators"), latestEmulatorsPath, {
+      recursive: true,
+      force: true,
+      preserveTimestamps: true,
+    });
+
+    removeSync(squashfsPath);
+    removeSync(outputFilePath);
   });
 };
 
 export const getEmulatorsFromLatestArtifact = () => {
-  if (!existsSync(latestEmulatorsPath)) {
-    mkdirSync(latestEmulatorsPath, { recursive: true });
-    const latestReleaseId = getLatestReleaseId();
+  // if (!existsSync(latestEmulatorsPath)) {
+  mkdirSync(latestEmulatorsPath, { recursive: true });
+  const latestReleaseId = getLatestReleaseId();
 
-    if (isWindows()) {
-      getEmulatorsFromLatestArtifactWindows(latestReleaseId);
-    } else {
-      getEmulatorsFromLatestArtifactLinux(latestReleaseId);
-    }
+  if (isWindows()) {
+    getEmulatorsFromLatestArtifactWindows(latestReleaseId);
+  } else {
+    getEmulatorsFromLatestArtifactLinux(latestReleaseId);
   }
+  // }
 };

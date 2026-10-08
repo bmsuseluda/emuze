@@ -45,9 +45,10 @@ export const createEmulatorsManifestFile = () => {
     : absoluteEmulatorsManifestPathLinux;
 
   writeFileSync(path, JSON.stringify(emulatorsManifestFile));
-  executeWithLogs("yarn", [
+  const output = executeWithLogs("yarn", [
     "prettier",
     ...["--ignore-path", ".prettierignore"],
     ...["--write", path],
   ]);
+  console.log(output);
 };
