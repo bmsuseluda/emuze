@@ -12,15 +12,8 @@ const projectPath = join(__dirname, "..");
 
 export const latestEmulatorsPath = join(projectPath, "latestEmulators");
 
-const getLatestReleaseId = () =>
-  executeWithLogs("curl", [
-    "-s",
-    "https://api.github.com/repos/bmsuseluda/emuze/releases/latest",
-    "|",
-    "jq",
-    "-r",
-    "'.name'",
-  ]).trimEnd();
+// TODO: How to get it automatically
+const getLatestReleaseId = () => "0.59.0";
 
 const getEmulatorsFromLatestArtifactWindows = (latestReleaseId: string) => {
   const latestArtifactWindows = `https://github.com/bmsuseluda/emuze/releases/download/v${latestReleaseId}/emuze-Setup-${latestReleaseId}.exe`;
