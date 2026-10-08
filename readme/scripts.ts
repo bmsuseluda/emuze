@@ -2,7 +2,7 @@ import { categories } from "../app/server/categoriesDB.server/index.js";
 import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
 import type { SystemId } from "../app/server/categoriesDB.server/systemId.js";
 import { commandLineOptionsString } from "../app/server/commandLine.server.js";
-import { emulatorVersions } from "../downloadEmulators/applications.js";
+import { emulatorVersions } from "../downloadEmulators/definitions/emulatorVersions.js";
 import { keyboardMapping } from "../app/types/gamepad.js";
 import type { Category } from "../app/server/categoriesDB.server/types.js";
 import type { Application } from "../app/server/applicationsDB.server/types.js";

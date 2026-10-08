@@ -1,9 +1,9 @@
 import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
 import { basename, join } from "node:path";
 
-import { applications, emulatorVersions } from "./applications.js";
+import { emulatorDownloads } from "./definitions/emulatorVersions.js";
 import {
-  chmodSync,
+  cpSync,
   existsSync,
   mkdirSync,
   readdirSync,
@@ -14,102 +14,18 @@ import {
 import _7z from "7zip-min";
 import { moveSync } from "fs-extra/esm";
 
-import { spawnSync } from "node:child_process";
 import { isWindows } from "../app/server/operationsystem.server.js";
-import { downloadAndExtract, downloadFile } from "./downloadFile.js";
+import { downloadAndExtract, downloadFile } from "./utils/downloadFile.js";
 import { removeFile } from "../app/server/readWriteData.server.js";
+import { applications } from "./definitions/applications.js";
+import { executeWithLogs } from "./utils/executeWithLogs.js";
+import { makeFileExecutableLinux } from "./utils/makeFileExecutableLinux.js";
 
 const __dirname = import.meta.dirname;
+const projectPath = join(__dirname, "..");
 
-type OperatingSystem = "Windows" | "Linux";
-type EmulatorDownloads = Record<ApplicationId, Record<OperatingSystem, string>>;
-
-const emulatorDownloads = {
-  ares: {
-    Linux: `https://github.com/pkgforge-dev/ares-emu-appimage/releases/download/v${emulatorVersions.ares}%402026-08-17_1786998446/ares-v${emulatorVersions.ares}-anylinux-x86_64.AppImage`,
-    Windows: `https://github.com/ares-emulator/ares/releases/download/v${emulatorVersions.ares}/ares-windows-x64.zip`,
-  },
-  azahar: {
-    Linux: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions.azahar}%402026-08-01_1785586204/Azahar-${emulatorVersions.azahar}-anylinux-x86_64.AppImage`,
-    Windows: `https://github.com/azahar-emu/azahar/releases/download/${emulatorVersions.azahar}/azahar-windows-msys2-${emulatorVersions.azahar}.zip`,
-  },
-  cemu: {
-    Linux: `https://github.com/pkgforge-dev/Cemu-AppImage-Enhanced/releases/download/2.6-4%402026-02-01_1769935971/Cemu-2.6-4-anylinux-x86_64.AppImage`,
-    Windows: `https://github.com/cemu-project/Cemu/releases/download/v${emulatorVersions.cemu}/cemu-${emulatorVersions.cemu}-windows-x64.zip`,
-  },
-  dolphin: {
-    Linux: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions.dolphin}%402026-08-01_1785586331/Dolphin_Emulator-${emulatorVersions.dolphin}-anylinux-x86_64.AppImage`,
-    Windows: `https://dl.dolphin-emu.org/releases/${emulatorVersions.dolphin}/dolphin-${emulatorVersions.dolphin}-x64.7z`,
-  },
-  dosboxpure: {
-    Linux: `https://github.com/pkgforge-dev/DOSBox-Pure-Unleashed-AppImage/releases/download/4a1141224%402026-08-01_1785586171/DOSBox_Pure_Unleashed-4a1141224-anylinux-x86_64.AppImage`,
-    Windows: `https://github.com/schellingb/dosbox-pure-unleashed/releases/download/${emulatorVersions.dosboxpure}/dosbox_pure_unleashed-windows-64bit-${emulatorVersions.dosboxpure}.zip`,
-  },
-  duckstation: {
-    Linux: `https://github.com/pkgforge-dev/DuckStation-GPL-AppImage-Enhanced/releases/download/0.1.7465-7%402026-05-01_1777674496/DuckStation-0.1.7465-7-anylinux-x86_64.AppImage`,
-    Windows: `https://github.com/Kyuyrii/Duckstation-GPL3/releases/download/v${emulatorVersions.duckstation}/duckstation-windows-x64-release.zip`,
-  },
-  eden: {
-    Linux: `https://stable.eden-emu.dev/v${emulatorVersions.eden}/Eden-Linux-v${emulatorVersions.eden}-amd64-clang-pgo.AppImage`,
-    Windows: `https://stable.eden-emu.dev/v${emulatorVersions.eden}/Eden-Windows-v${emulatorVersions.eden}-amd64-clang-pgo.zip`,
-  },
-  flycast: {
-    Linux: `https://github.com/pkgforge-dev/Flycast-AppImage-Enhanced/releases/download/2.6-1%402026-08-01_1785585864/Flycast-2.6-1-anylinux-x86_64.AppImage`,
-    Windows: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-win64-${emulatorVersions.flycast}.zip`,
-  },
-  mame: {
-    Linux: `https://github.com/pkgforge-dev/MAME-AppImage/releases/download/0.288-1%402026-07-22_1784754526/MAME-0.288-1-anylinux-x86_64.AppImage`,
-    Windows: `https://github.com/mamedev/mame/releases/download/mame0288/mame0288b_x64.exe`,
-  },
-  mednafen: {
-    Linux: `https://github.com/pkgforge-dev/mednafen-appimage/releases/download/1.32.1%402026-08-09_1786298295/Mednafen_Emulator-1.32.1-anylinux-x86_64.AppImage`,
-    Windows: `https://mednafen.github.io/releases/files/mednafen-${emulatorVersions.mednafen}-win64.zip`,
-  },
-  melonds: {
-    Linux: `https://github.com/pkgforge-dev/melonDS-AppImage-Enhanced/releases/download/1.1-2%402026-08-18_1787083018/melonDS-1.1-2-anylinux-x86_64.AppImage`,
-    Windows: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions.melonds}/melonDS-${emulatorVersions.melonds}-windows-x86_64.zip`,
-  },
-  pcsx2: {
-    Linux: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions.pcsx2}/pcsx2-v${emulatorVersions.pcsx2}-linux-appimage-x64-Qt.AppImage`,
-    Windows: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions.pcsx2}/pcsx2-v${emulatorVersions.pcsx2}-windows-x64-Qt.7z`,
-  },
-  ppsspp: {
-    Linux: `https://github.com/hrydgard/ppsspp/releases/download/v${emulatorVersions.ppsspp}/PPSSPP-v${emulatorVersions.ppsspp}-anylinux-x86_64.AppImage`,
-    Windows: `https://www.ppsspp.org/files/${emulatorVersions.ppsspp.replaceAll(".", "_")}/ppsspp_win.zip`,
-  },
-  rosaliesMupenGui: {
-    Linux: `https://github.com/pkgforge-dev/RMG-AppImage-Enhanced/releases/download/${emulatorVersions.rosaliesMupenGui}-1%402026-08-01_1785586196/RMG-${emulatorVersions.rosaliesMupenGui}-1-anylinux-x86_64.AppImage`,
-    Windows: `https://github.com/Rosalie241/RMG/releases/download/v${emulatorVersions.rosaliesMupenGui}/RMG-Portable-Windows64-v${emulatorVersions.rosaliesMupenGui}.zip`,
-  },
-  rpcs3: {
-    Linux: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-daa437904edaddc746a466d7a3c76e415bba5c00/rpcs3-v${emulatorVersions.rpcs3}-19689-daa43790_linux64.AppImage`,
-    Windows: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-daa437904edaddc746a466d7a3c76e415bba5c00/rpcs3-v${emulatorVersions.rpcs3}-19689-daa43790_win64_msvc.7z`,
-  },
-  ryujinx: {
-    Linux: `https://git.ryujinx.app/projects/Ryubing/releases/download/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-x64.AppImage`,
-    Windows: `https://git.ryujinx.app/projects/Ryubing/releases/download/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-win_x64.zip`,
-  },
-  scummvm: {
-    Linux: `https://github.com/pkgforge-dev/ScummVM-AppImage/releases/download/${emulatorVersions.scummvm}-1%402026-08-01_1785585620/ScummVM-${emulatorVersions.scummvm}-1-anylinux-x86_64.AppImage`,
-    Windows: `https://downloads.scummvm.org/frs/scummvm/${emulatorVersions.scummvm}/scummvm-${emulatorVersions.scummvm}-win32-x86_64.zip`,
-  },
-  xemu: {
-    Linux: `https://github.com/pkgforge-dev/xemu-AppImage-Enhanced/releases/download/0.8.135-1%402026-08-01_1785585799/xemu-0.8.135-1-anylinux-x86_64.AppImage`,
-    Windows: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-win-x86_64-release.zip`,
-  },
-} satisfies Partial<EmulatorDownloads>;
-
-const emulatorsFolderPath = join(__dirname, "..", "emulators");
-
-const makeFileExecutableLinux = (filePath: string) => {
-  try {
-    chmodSync(filePath, "755");
-    console.log(`${filePath} is now executable`);
-  } catch (error) {
-    console.error(`Error making ${filePath} executable: ${error}`);
-    process.exit(1);
-  }
-};
+const emulatorsFolderPath = join(projectPath, "emulators");
+export const latestEmulatorsPath = join(projectPath, "latestEmulators");
 
 const downloadEmulator = (emulatorId: ApplicationId, downloadLink: string) => {
   const bundledPathRelative = applications[emulatorId].bundledPath;
@@ -141,12 +57,17 @@ const downloadEmulator = (emulatorId: ApplicationId, downloadLink: string) => {
 };
 
 export const downloadEmulators = () => {
-  Object.entries(emulatorDownloads).forEach(([emulatorId, downloadLink]) => {
-    downloadEmulator(
-      emulatorId as ApplicationId,
-      downloadLink[isWindows() ? "Windows" : "Linux"],
+  if (existsSync(latestEmulatorsPath)) {
+    cpSync(latestEmulatorsPath, emulatorsFolderPath);
+  } else {
+    Object.entries(emulatorDownloads).forEach(
+      ([emulatorId, emulatorDownload]) => {
+        const { url } = emulatorDownload[isWindows() ? "Windows" : "Linux"];
+
+        downloadEmulator(emulatorId as ApplicationId, url);
+      },
     );
-  });
+  }
 };
 
 const downloadAndExtract7z = (
@@ -194,16 +115,6 @@ const downloadAppImage = (url: string, fileToCheck: string) => {
       exitOnResponseCodeError();
     },
   );
-};
-
-const executeWithLogs = (applicationPath: string, args: string[]): string => {
-  const result = spawnSync(applicationPath, args, {
-    stdio: ["inherit", "pipe", "inherit"],
-    shell: true,
-    encoding: "utf8",
-  });
-
-  return result.stdout || "";
 };
 
 const downloadExe = (

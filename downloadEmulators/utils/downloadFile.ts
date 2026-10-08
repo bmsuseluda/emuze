@@ -5,7 +5,7 @@ import decompress from "decompress";
 import decompressTarxz from "@felipecrs/decompress-tarxz";
 // @ts-ignore
 import decompressUnzip from "decompress-unzip";
-import { log } from "../app/server/debug.server.js";
+import { log } from "../../app/server/debug.server.js";
 
 export const downloadFile = (
   url: string,
