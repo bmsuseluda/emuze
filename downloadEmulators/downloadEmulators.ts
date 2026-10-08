@@ -58,7 +58,11 @@ const downloadEmulator = (emulatorId: ApplicationId, downloadLink: string) => {
 
 export const downloadEmulators = () => {
   if (existsSync(latestEmulatorsPath)) {
-    cpSync(latestEmulatorsPath, emulatorsFolderPath);
+    cpSync(latestEmulatorsPath, emulatorsFolderPath, {
+      recursive: true,
+      force: true,
+      preserveTimestamps: true,
+    });
   } else {
     Object.entries(emulatorDownloads).forEach(
       ([emulatorId, emulatorDownload]) => {
