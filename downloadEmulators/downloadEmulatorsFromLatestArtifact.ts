@@ -5,7 +5,7 @@ import { downloadFile } from "./utils/downloadFile.js";
 import { executeWithLogs } from "./utils/executeWithLogs.js";
 import { join } from "node:path";
 import { makeFileExecutableLinux } from "./utils/makeFileExecutableLinux.js";
-import { moveSync, removeSync } from "fs-extra";
+import { moveSync, removeSync } from "fs-extra/esm";
 
 const __dirname = import.meta.dirname;
 const projectPath = join(__dirname, "..");
