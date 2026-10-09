@@ -1,4 +1,4 @@
-import { cpSync, mkdirSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync } from "node:fs";
 import _7z from "7zip-min";
 import { isWindows } from "../app/server/operationsystem.server.js";
 import { downloadFile } from "./utils/downloadFile.js";
@@ -46,9 +46,13 @@ const getEmulatorsFromLatestArtifactWindows = (latestReleaseId: string) => {
 
               removeSync(outputFilePath);
               removeSync(artifactExtractedPath);
+            } else {
+              console.log(error);
             }
           },
         );
+      } else {
+        console.log(error);
       }
     });
   });
@@ -63,6 +67,7 @@ const getEmulatorsFromLatestArtifactLinux = (latestReleaseId: string) => {
 
   downloadFile(latestArtifactLinux, outputFilePath, () => {
     makeFileExecutableLinux(outputFilePath);
+    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 1000);
     const output = executeWithLogs(
       outputFilePath,
       ["--appimage-extract"],
@@ -84,14 +89,14 @@ const getEmulatorsFromLatestArtifactLinux = (latestReleaseId: string) => {
 };
 
 export const getEmulatorsFromLatestArtifact = () => {
-  // if (!existsSync(latestEmulatorsPath)) {
-  mkdirSync(latestEmulatorsPath, { recursive: true });
-  const latestReleaseId = getLatestReleaseId();
+  if (!existsSync(latestEmulatorsPath)) {
+    mkdirSync(latestEmulatorsPath, { recursive: true });
+    const latestReleaseId = getLatestReleaseId();
 
-  if (isWindows()) {
-    getEmulatorsFromLatestArtifactWindows(latestReleaseId);
-  } else {
-    getEmulatorsFromLatestArtifactLinux(latestReleaseId);
+    if (isWindows()) {
+      getEmulatorsFromLatestArtifactWindows(latestReleaseId);
+    } else {
+      getEmulatorsFromLatestArtifactLinux(latestReleaseId);
+    }
   }
-  // }
 };
