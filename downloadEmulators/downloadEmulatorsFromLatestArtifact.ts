@@ -1,4 +1,4 @@
-import { cpSync, existsSync, mkdirSync, readdirSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync } from "node:fs";
 import _7z from "7zip-min";
 import { isWindows } from "../app/server/operationsystem.server.js";
 import { downloadFile } from "./utils/downloadFile.js";
@@ -12,8 +12,26 @@ const projectPath = join(__dirname, "..");
 
 export const latestEmulatorsPath = join(projectPath, "latestEmulators");
 
-// TODO: How to get it automatically
-const getLatestReleaseId = () => "0.59.0";
+const getLatestReleaseId = async (): Promise<string> => {
+  const response = await fetch(
+    "https://github.com/bmsuseluda/emuze/releases/latest",
+    {
+      method: "HEAD",
+      redirect: "manual",
+    },
+  );
+
+  const location = response.headers.get("location");
+  const tagMatch = location?.match(/\/releases\/tag\/v?([^/?#]+)/);
+
+  if (!tagMatch?.[1]) {
+    throw new Error(
+      `Failed to determine the latest release ID from GitHub. (Status: ${response.status}, Location: ${location})`,
+    );
+  }
+
+  return tagMatch[1];
+};
 
 const getEmulatorsFromLatestArtifactWindows = (
   latestReleaseId: string,
@@ -114,7 +132,7 @@ const getEmulatorsFromLatestArtifactLinux = (
 export const getEmulatorsFromLatestArtifact = async () => {
   if (!existsSync(latestEmulatorsPath)) {
     mkdirSync(latestEmulatorsPath, { recursive: true });
-    const latestReleaseId = getLatestReleaseId();
+    const latestReleaseId = await getLatestReleaseId();
 
     if (isWindows()) {
       await getEmulatorsFromLatestArtifactWindows(latestReleaseId);
