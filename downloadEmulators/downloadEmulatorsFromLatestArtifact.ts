@@ -29,30 +29,21 @@ const getEmulatorsFromLatestArtifactWindows = (latestReleaseId: string) => {
     );
     _7z.unpack(outputFilePath, artifactExtractedPath, (error) => {
       if (!error) {
-        _7z.unpack(
-          join(artifactExtractedPath, "app-64.7z"),
-          artifactExtractedPath,
-          (error) => {
-            if (!error) {
-              cpSync(
-                join(artifactExtractedPath, "emulators"),
-                latestEmulatorsPath,
-                {
-                  recursive: true,
-                  force: true,
-                  preserveTimestamps: true,
-                },
-              );
-
-              removeSync(outputFilePath);
-              removeSync(artifactExtractedPath);
-            } else {
-              console.log(error);
-            }
+        cpSync(
+          join(artifactExtractedPath, "emulators"),
+          latestEmulatorsPath,
+          {
+            recursive: true,
+            force: true,
+            preserveTimestamps: true,
           },
         );
+
+        removeSync(outputFilePath);
+        removeSync(artifactExtractedPath);
       } else {
         console.log(error);
+        process.exit(1);
       }
     });
   });
