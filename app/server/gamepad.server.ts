@@ -1,10 +1,9 @@
 import sdl from "@kmamal/sdl";
 import sdl3 from "@kmamal/sdl3";
 import type { Sdl } from "@kmamal/sdl";
-import { isSteamOs, isWindows } from "./operationsystem.server.js";
+import { isSteamOs } from "./operationsystem.server.js";
 import {
   createSdlMappingObject,
-  isXinputController,
   SdlButtonMapping,
   sortSteamDeckLast,
   steamDeckJoystick,
