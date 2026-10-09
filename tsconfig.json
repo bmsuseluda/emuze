@@ -18,7 +18,8 @@
     "readme/*",
     "configsToTs/*",
     ".react-router/types/**/*",
-    "__mocks__/**/*"
+    "__mocks__/**/*",
+    "downloadEmulators/utils/*"
   ],
   "compilerOptions": {
     "lib": [

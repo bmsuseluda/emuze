@@ -1,7 +1,7 @@
 import { existsSync, rmSync } from "node:fs";
 import nodepath from "node:path";
 import { writeFile } from "../../app/server/readWriteData.server.js";
-import { downloadFile } from "../../downloadEmulators/downloadFile.js";
+import { downloadFile } from "../../downloadEmulators/utils/downloadFile.js";
 
 const __dirname = import.meta.dirname;
 const projectPath = nodepath.join(__dirname, "..", "..");

@@ -17,6 +17,7 @@ coverage
 /readme/build/
 /buildConfig
 /emulators/
+/latestEmulators/
 /biosOpenSource/
 .react-router/
 .yarn/install-state.gz

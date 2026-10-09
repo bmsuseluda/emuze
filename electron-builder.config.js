@@ -1,12 +1,7 @@
 const config = {
     appId: "org.emuze.emuze",
     files: ["buildDesktop", "build", "public", "fetchMetaData/systems"],
-    extraFiles: [
-        "emulators/**",
-        "biosOpenSource/**",
-        "CHANGELOG.md",
-        "updater/linux",
-    ],
+    extraFiles: ["emulators/**", "biosOpenSource/**", "CHANGELOG.md"],
     win: {
         target: [
             {
@@ -29,6 +24,13 @@ const config = {
         ],
         category: "Emulator",
         icon: "public/icons/icon512x512.png",
+        extraFiles: [
+            "updater/linux",
+            {
+                from: ".github/scripts/emuze.metainfo.xml",
+                to: "usr/share/metainfo/emuze.metainfo.xml",
+            },
+        ],
         // TODO: use when appimageupdate is in released bundle
         // publish: {
         //   provider: "github",

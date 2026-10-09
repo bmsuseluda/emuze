@@ -2,7 +2,7 @@ import { join, basename } from "node:path";
 import {
   downloadAndExtract,
   downloadFile,
-} from "../downloadEmulators/downloadFile.js";
+} from "../downloadEmulators/utils/downloadFile.js";
 import { copy, removeFile } from "../app/server/readWriteData.server.js";
 import { existsSync, mkdirSync } from "node:fs";
 import type { SystemId } from "../app/server/categoriesDB.server/systemId.js";

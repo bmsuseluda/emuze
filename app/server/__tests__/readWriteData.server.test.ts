@@ -95,24 +95,12 @@ describe("readWriteData.server", () => {
         .calledWith(createCategoryPath(playstation.name), {
           encoding: "utf8" as "buffer",
           withFileTypes: true,
+          recursive: true,
         })
         .thenReturn([
           new SimpleDirent("Hugo", true),
+          new SimpleDirent("Hugo/Hugo.chd", false),
           new SimpleDirent("Hugo 2.chd", false),
-          new SimpleDirent("game with unsupported file extension.wasd", false),
-        ] as unknown as Dirent<Buffer<ArrayBufferLike>>[]);
-
-      vi.when(readdirSync)
-        .calledWith(
-          nodepath.join(createCategoryPath(playstation.name), "Hugo"),
-          {
-            encoding: "utf8" as "buffer",
-            withFileTypes: true,
-          },
-        )
-        .thenReturn([
-          new SimpleDirent("Hugo.chd", false),
-          new SimpleDirent("game without file extension", false),
           new SimpleDirent("game with unsupported file extension.wasd", false),
         ] as unknown as Dirent<Buffer<ArrayBufferLike>>[]);
 

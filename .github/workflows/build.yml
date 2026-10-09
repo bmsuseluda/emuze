@@ -23,6 +23,10 @@ jobs:
         with:
           name: emuze-nightly.AppImage
           path: "dist/emuze*.AppImage"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: emulators-linux.json
+          path: "emulators/emulators-linux.json"
 
   build_windows:
     runs-on: windows-latest
@@ -41,3 +45,7 @@ jobs:
         with:
           name: emuze-Setup-nightly.exe
           path: "dist/emuze*.exe"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: emulators-windows.json
+          path: "emulators/emulators-windows.json"

@@ -14,7 +14,6 @@ coverage
 /playwright/.cache/
 /e2eTests/*Config/
 /readme/build/
-/emulators/
 /fetchMetaData/systems/
 /fetchMetaData/nameMappings/
 /app/**/*.json

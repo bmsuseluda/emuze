@@ -11,9 +11,13 @@ import {
 import { log } from "./debug.server.js";
 import { homeDirectory } from "./homeDirectory.server.js";
 
-const readFiles = (path: string) => {
+const readFiles = (path: string, recursive: boolean = false) => {
   try {
-    return readdirSync(path, { encoding: "utf8", withFileTypes: true });
+    return readdirSync(path, {
+      encoding: "utf8",
+      withFileTypes: true,
+      recursive,
+    });
   } catch (error) {
     log("error", "readFiles", path, error);
     throw new Error("readFiles error");
@@ -36,23 +40,14 @@ export const readAllFilenames = ({
 }) => {
   const filenames: string[] = [];
 
-  readFiles(path).forEach((file) => {
+  readFiles(path, !entryAsDirectory).forEach((file) => {
     const filePath = nodepath.join(path, file.name);
 
-    // TODO: check if readdirSync with recursive option would be an option here
     if (entryAsDirectory) {
       if (file.isDirectory()) {
         filenames.push(filePath);
       }
     } else {
-      if (file.isDirectory()) {
-        readAllFilenames({
-          path: filePath,
-          fileExtensions,
-          entryAsDirectory,
-        }).forEach((filename) => filenames.push(filename));
-      }
-
       if (
         !file.isDirectory() &&
         (!fileExtensions ||
