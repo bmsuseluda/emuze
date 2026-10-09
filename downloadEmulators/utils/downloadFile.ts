@@ -1,4 +1,5 @@
 import { createWriteStream, existsSync } from "node:fs";
+import { pipeline } from "node:stream/promises";
 import followRedirects from "follow-redirects";
 import decompress from "decompress";
 // @ts-ignore
@@ -13,31 +14,33 @@ export const downloadFile = (
   onFinish?: () => void,
   onError?: () => void,
 ) => {
-  const file = createWriteStream(fileToCheck);
   console.log(`Download of ${url} started`);
 
   return followRedirects.https
-    .get(url, (response) => {
-      if (
-        typeof response.statusCode !== "undefined" &&
-        response.statusCode !== 200
-      ) {
-        console.error(
-          `Failed to download ${url}. Status code: ${response.statusCode}`,
-        );
-        onError?.();
-      }
+    .get(url, async (response) => {
+      try {
+        if (
+          typeof response.statusCode !== "undefined" &&
+          response.statusCode !== 200
+        ) {
+          throw new Error(
+            `Failed to download ${url}. Status code: ${response.statusCode}`,
+          );
+        }
 
-      response.pipe(file);
-
-      file.on("finish", () => {
-        file.close();
+        await pipeline(response, createWriteStream(fileToCheck));
 
         console.log(`Download of ${url} complete`);
         onFinish?.();
-      });
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        console.error(message);
+        log("error", message);
+        onError?.();
+      }
     })
     .on("error", (err) => {
+      console.error(`Error downloading the file: ${err.message}`);
       log("error", `Error downloading the file: ${err.message}`);
       onError?.();
     });
