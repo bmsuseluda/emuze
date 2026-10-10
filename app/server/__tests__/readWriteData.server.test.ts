@@ -28,12 +28,13 @@ class SimpleDirent<Name extends string> {
   name: Name;
   directory: boolean;
   path: string;
-  parentPath = "";
+  parentPath: string;
 
-  constructor(name: Name, directory: boolean) {
+  constructor(name: Name, directory: boolean, parentPath = "") {
     this.name = name;
     this.directory = directory;
     this.path = name;
+    this.parentPath = parentPath;
   }
 
   isDirectory(): boolean {
@@ -91,22 +92,32 @@ describe("readWriteData.server", () => {
     });
 
     it("Should return filenames with supported filenames from subfolders", () => {
+      const categoryPath = createCategoryPath(playstation.name);
+
       vi.when(readdirSync)
-        .calledWith(createCategoryPath(playstation.name), {
+        .calledWith(categoryPath, {
           encoding: "utf8" as "buffer",
           withFileTypes: true,
           recursive: true,
         })
         .thenReturn([
-          new SimpleDirent("Hugo", true),
-          new SimpleDirent("Hugo/Hugo.chd", false),
-          new SimpleDirent("Hugo 2.chd", false),
-          new SimpleDirent("game with unsupported file extension.wasd", false),
+          new SimpleDirent("Hugo", true, categoryPath),
+          new SimpleDirent(
+            "Hugo.chd",
+            false,
+            nodepath.join(categoryPath, "Hugo"),
+          ),
+          new SimpleDirent("Hugo 2.chd", false, categoryPath),
+          new SimpleDirent(
+            "game with unsupported file extension.wasd",
+            false,
+            categoryPath,
+          ),
         ] as unknown as Dirent<Buffer<ArrayBufferLike>>[]);
 
       expect(
         readFilenames({
-          path: createCategoryPath(playstation.name),
+          path: categoryPath,
           fileExtensions: duckstation.fileExtensions,
         }),
       ).toStrictEqual([

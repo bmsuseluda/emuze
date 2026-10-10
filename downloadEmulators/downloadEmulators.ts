@@ -56,24 +56,6 @@ const downloadEmulator = (emulatorId: ApplicationId, downloadLink: string) => {
   }
 };
 
-export const downloadEmulators = () => {
-  if (existsSync(latestEmulatorsPath)) {
-    cpSync(latestEmulatorsPath, emulatorsFolderPath, {
-      recursive: true,
-      force: true,
-      preserveTimestamps: true,
-    });
-  } else {
-    Object.entries(emulatorDownloads).forEach(
-      ([emulatorId, emulatorDownload]) => {
-        const { url } = emulatorDownload[isWindows() ? "Windows" : "Linux"];
-
-        downloadEmulator(emulatorId as ApplicationId, url);
-      },
-    );
-  }
-};
-
 const downloadAndExtract7z = (
   url: string,
   outputFolder: string,
@@ -176,5 +158,23 @@ const removeRootFolderIfNecessary = (folder: string) => {
 
       removeFile(tempFolder);
     }
+  }
+};
+
+export const downloadEmulators = () => {
+  if (existsSync(latestEmulatorsPath)) {
+    cpSync(latestEmulatorsPath, emulatorsFolderPath, {
+      recursive: true,
+      force: true,
+      preserveTimestamps: true,
+    });
+  } else {
+    Object.entries(emulatorDownloads).forEach(
+      ([emulatorId, emulatorDownload]) => {
+        const { url } = emulatorDownload[isWindows() ? "Windows" : "Linux"];
+
+        downloadEmulator(emulatorId as ApplicationId, url);
+      },
+    );
   }
 };

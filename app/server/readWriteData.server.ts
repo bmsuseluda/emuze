@@ -41,7 +41,8 @@ export const readAllFilenames = ({
   const filenames: string[] = [];
 
   readFiles(path, !entryAsDirectory).forEach((file) => {
-    const filePath = nodepath.join(path, file.name);
+    const parentPath = file.parentPath || path;
+    const filePath = nodepath.join(parentPath, file.name);
 
     if (entryAsDirectory) {
       if (file.isDirectory()) {
