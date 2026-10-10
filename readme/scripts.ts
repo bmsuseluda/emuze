@@ -20,7 +20,7 @@ const homepages: Record<ApplicationId, string> = {
   flycast: "https://github.com/flyinghead/flycast",
   azahar: "https://github.com/azahar-emu/azahar",
   mame: "https://github.com/mamedev/mame",
-  mednafen: "https://mednafen.github.io/",
+  mednafen: "https://github.com/bmsuseluda/mednafen-sdl3",
   melonds: "https://github.com/melonDS-emu/melonDS",
   pcsx2: "https://github.com/PCSX2/pcsx2",
   ppsspp: "https://github.com/hrydgard/ppsspp",

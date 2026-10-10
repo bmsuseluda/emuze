@@ -1,6 +1,8 @@
 import type { ParamToReplace } from "../configFile.js";
 import { replaceParams } from "../configFile.js";
 
+vi.mock("electron");
+
 describe("configFile", () => {
   describe("replaceParams", () => {
     it("Should replace params", () => {

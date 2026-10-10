@@ -1,13 +1,12 @@
 import sdl from "@kmamal/sdl";
+import sdl3 from "@kmamal/sdl3";
 import type { Sdl } from "@kmamal/sdl";
-import { isSteamOs, isWindows } from "./operationsystem.server.js";
+import { isSteamOs } from "./operationsystem.server.js";
 import {
   createSdlMappingObject,
-  isXinputController,
   SdlButtonMapping,
   sortSteamDeckLast,
   steamDeckJoystick,
-  xbox360Joystick,
 } from "../types/gamepad.js";
 import HID from "node-hid";
 import { log } from "./debug.server.js";
@@ -131,6 +130,8 @@ const getSteamGUID = (hasSteamHandle: boolean, steamHandleIndex: number) => {
   return null;
 };
 
+export const getControllersSdl3 = () => getControllers(sdl3.joystick.devices);
+
 export const getControllers = (
   joysticks: Sdl.Joystick.Device[] = sdl.joystick.devices,
 ) => {
@@ -147,7 +148,7 @@ export const getControllers = (
       const hasSteamHandle = isSteamHandle(controller);
       const hidName = getDeviceNameFromHid(controller, steamHandleIndex);
       const steamGUID = getSteamGUID(hasSteamHandle, steamHandleIndex);
-      const serialNumber = sdl.joystick.openDevice(joystick).serialNumber;
+      const serialNumber = sdl.controller.openDevice(controller).serialNumber;
 
       const emuzeController = createEmuzeController({
         controller,
@@ -187,15 +188,7 @@ const getNameOsSpecific = (
   joystick: Sdl.Joystick.Device,
   controller: Sdl.Controller.Device,
 ) => {
-  if (isWindows() && isXinputController(controller.type)) {
-    return `XInput Controller`;
-  }
-
-  if (
-    isSteamOs() &&
-    joystick.vendor !== xbox360Joystick.vendor &&
-    joystick.product !== xbox360Joystick.product
-  ) {
+  if (isSteamOs()) {
     return joystick.name!;
   }
 

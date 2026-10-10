@@ -1,4 +1,3 @@
-import { when } from "vitest-when";
 import nodepath from "node:path";
 
 import { importCategories, paths } from "../categories.server.js";
@@ -23,7 +22,9 @@ import { mednafen } from "../applicationsDB.server/applications/mednafen/index.j
 import { entriesPath } from "../categoryDataCache.server.js";
 import { azahar } from "../applicationsDB.server/applications/azahar/index.js";
 
+vi.mock("electron");
 vi.mock("@kmamal/sdl");
+vi.mock("@kmamal/sdl3");
 vi.mock("../readWriteData.server");
 vi.mock("../lastPlayed.server.ts");
 vi.mock("../applications.server");
@@ -64,7 +65,7 @@ describe("categories.server", () => {
         createCategoryPath(pcenginecd.name),
       ]);
       vi.mocked(readFileHome).mockReturnValueOnce([]);
-      when(readFilenames, { times: 1 })
+      vi.when(readFilenames)
         .calledWith({
           path: createCategoryPath(nintendo3ds.name),
           fileExtensions: azahar.fileExtensions,
@@ -72,7 +73,7 @@ describe("categories.server", () => {
         .thenReturn([
           createAbsoluteEntryPath(nintendo3ds.name, metroidsamusreturns.path),
         ]);
-      when(readFilenames, { times: 1 })
+      vi.when(readFilenames)
         .calledWith({
           path: createCategoryPath(pcenginecd.name),
           fileExtensions: mednafen.fileExtensions,
@@ -84,10 +85,10 @@ describe("categories.server", () => {
       vi.mocked(readFileHome).mockReturnValueOnce(pcenginecd);
       vi.mocked(readFileHome).mockReturnValueOnce(nintendo3ds);
 
-      when(fetchMetaDataFromDB)
+      vi.when(fetchMetaDataFromDB)
         .calledWith("pcenginecd", pcenginecd.entries)
         .thenResolve(pcenginecd.entries);
-      when(fetchMetaDataFromDB)
+      vi.when(fetchMetaDataFromDB)
         .calledWith("nintendo3ds", nintendo3ds.entries)
         .thenResolve(nintendo3ds.entries);
 

@@ -1,7 +1,7 @@
 import { icons, SystemIcon } from "./index.js";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { styled } from "../../../styled-system/jsx/index.js";
+import { styled } from "../../../styled-system/jsx/factory.js";
 import { IconChildrenWrapper } from "../IconChildrenWrapper/index.js";
 import { Typography } from "../Typography/index.js";
 

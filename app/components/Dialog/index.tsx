@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { styled } from "../../../styled-system/jsx/index.js";
+import { styled } from "../../../styled-system/jsx/factory.js";
 import { VscChromeClose } from "react-icons/vsc";
 
 const DialogOverlay = styled("div", {

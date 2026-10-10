@@ -2,7 +2,6 @@ import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/i
 import { SettingsIcon } from "../components/SettingsIcon/index.js";
 import { FaDiscord, FaGithub } from "react-icons/fa";
 import { CgNotes } from "react-icons/cg";
-import { styled } from "../../styled-system/jsx/index.js";
 import { Logo } from "../components/Logo/index.js";
 import { Link } from "../components/Link/index.js";
 import {
@@ -19,9 +18,10 @@ import { getVersion } from "../server/packagejson.server.js";
 import type { IconType } from "react-icons";
 import { useLocation, useNavigate } from "react-router";
 import { Route } from "./+types/categories.$category.settings.about.js";
+import { styled } from "../../styled-system/jsx/factory.js";
 
 export const loader = () => {
-  return { version: getVersion() };
+  return { version: getVersion(), actualYear: new Date().getFullYear() };
 };
 
 export const ErrorBoundary = ({ error }: { error: Error }) => {
@@ -83,7 +83,7 @@ export const Links = styled("ul", {
 const focus: FocusElement = "settingsMain";
 
 export default function About({
-  loaderData: { version },
+  loaderData: { version, actualYear },
 }: Route.ComponentProps) {
   const { isInFocus, switchFocusBack, switchFocusBackMultiple } =
     useFocus<FocusElement>(focus);
@@ -175,7 +175,7 @@ export default function About({
                   <p>{version}</p>
 
                   <p>Copyright: </p>
-                  <p>2022 - {new Date().getFullYear()}</p>
+                  <p>2022 - {actualYear}</p>
 
                   <p>Author:</p>
                   <p>bmsuseluda</p>

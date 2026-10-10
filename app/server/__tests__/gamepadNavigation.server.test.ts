@@ -10,6 +10,10 @@ import type {
 } from "../gamepadNavigation.server.js";
 import { handleAxisMotionEvent } from "../gamepadNavigation.server.js";
 
+vi.mock("electron");
+vi.mock("@kmamal/sdl");
+vi.mock("@kmamal/sdl3");
+
 describe("gamepadNavigation.server", () => {
   describe("handleAxisMotionEvent", () => {
     beforeEach(() => {

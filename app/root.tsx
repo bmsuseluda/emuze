@@ -18,7 +18,7 @@ import {
 import type { ReactNode } from "react";
 
 import styles from "./index.css?url";
-import { styled } from "../styled-system/jsx/index.js";
+import { styled } from "../styled-system/jsx/factory.js";
 import { readGeneral } from "./server/settings.server.js";
 import { GamepadProvider } from "./provider/GamepadProvider/index.js";
 import { useFullscreen } from "./hooks/useFullscreen/index.js";

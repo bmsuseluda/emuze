@@ -5,7 +5,7 @@ import type {
   SyntheticEvent,
 } from "react";
 import { useEffect, useRef, useState } from "react";
-import { styled } from "../../../../../styled-system/jsx/index.js";
+import { styled } from "../../../../../styled-system/jsx/factory.js";
 
 interface Props extends ComponentProps<typeof Input> {
   id: string;

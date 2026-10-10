@@ -1,6 +1,8 @@
 import type { Result } from "../generateNameMappings.js";
 import { extractGames } from "../generateNameMappings.js";
 
+vi.mock("electron");
+
 describe("generateNameMappings", () => {
   describe("scummvm", () => {
     describe("extractGames", () => {

@@ -93,7 +93,7 @@ export default function Appearance({
     entriesRefCallback,
     selectedEntry,
     resetSelected,
-    updatePosition,
+    setSelectedEntry,
   } = useGamepadsOnGrid({
     onSelectEntry: selectEntry,
     isInFocus,
@@ -122,11 +122,10 @@ export default function Appearance({
     (event: MouseEvent<ComponentRef<"button">>) => {
       if (!isInFocus) {
         switchFocus(focus);
-        selectedEntry.current = event.currentTarget;
-        updatePosition();
+        setSelectedEntry(event.currentTarget);
       }
     },
-    [isInFocus, switchFocus, selectedEntry, updatePosition],
+    [isInFocus, switchFocus, setSelectedEntry],
   );
 
   useInputConfirmation(onToggle);

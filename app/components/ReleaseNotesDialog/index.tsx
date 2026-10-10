@@ -5,7 +5,7 @@ import remarkGfm from "remark-gfm";
 import { ListActionBarLayout } from "../layouts/ListActionBarLayout/index.js";
 import { SidebarMainLayout } from "../layouts/SidebarMainLayout/index.js";
 import type { ForwardedRef } from "react";
-import { styled } from "../../../styled-system/jsx/index.js";
+import { styled } from "../../../styled-system/jsx/factory.js";
 
 const ReleaseNotesContainer = styled("div", {
   base: {

@@ -4,7 +4,7 @@ import { log } from "../../../debug.server.js";
 import {
   DetectSdlGuidIndex,
   EmuzeController,
-  getControllers,
+  getControllersSdl3,
   getSdlGuidIndex,
 } from "../../../gamepad.server.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
@@ -148,17 +148,11 @@ const getVirtualGamepadDpad = (
   }
 };
 
-const guidOverwrites: Record<string, string> = {
-  "03008fe54c050000c405000000006800": "05008fe54c050000c405000000006800",
-  "030044f05e040000e002000000006800": "050044f05e040000e002000000006800",
-};
-
 export const createDeviceId = (
   { guid }: EmuzeController,
   guidIndex: number,
 ) => {
-  const guidConverted = guidOverwrites[guid];
-  return `${guidConverted || guid}/${guidIndex}`;
+  return `${guid}/${guidIndex}`;
 };
 
 export const getVirtualGamepad =
@@ -298,7 +292,7 @@ export const getVirtualGamepads = (
   systemId: SystemId,
   systemHasAnalogStick: boolean,
 ) => {
-  const gamepads = getControllers();
+  const gamepads = getControllersSdl3();
   const detectSdlGuidIndex = getSdlGuidIndex(gamepads);
 
   const virtualGamepads =

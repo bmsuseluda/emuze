@@ -1,7 +1,7 @@
 import { Ul } from "../../../../Ul/index.js";
 import { ListActionBarLayout } from "../../../ListActionBarLayout/index.js";
 import type { ReactNode } from "react";
-import { styled } from "../../../../../../styled-system/jsx/index.js";
+import { styled } from "../../../../../../styled-system/jsx/factory.js";
 import { Separator } from "../../../../Separator/index.js";
 
 const SidebarWrapper = styled("aside", {

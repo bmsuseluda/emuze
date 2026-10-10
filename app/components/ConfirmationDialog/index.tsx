@@ -1,5 +1,5 @@
 import { Dialog } from "../Dialog/index.js";
-import { styled } from "../../../styled-system/jsx/index.js";
+import { styled } from "../../../styled-system/jsx/factory.js";
 import { Headline } from "../Headline/index.js";
 import type { Props as ButtonProps } from "../Button/index.js";
 import { Button } from "../Button/index.js";
