@@ -35,17 +35,17 @@ const nameOverwrites: Partial<Record<SystemId, string>> = {
   dos: "Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json))",
 };
 
-const applicationsWithBiosNotHandled: ApplicationId[] = [
+const applicationsWithBiosNotHandled: Set<ApplicationId> = new Set([
   "rpcs3",
   "cemu",
   "ryujinx",
   "eden",
-];
+]);
 
 const checkIsBiosNeeded = (application: Application) =>
   (application.biosFiles && !application.bundledBiosOpenSource) ||
   application.otherRequiredFiles ||
-  applicationsWithBiosNotHandled.includes(application.id);
+  applicationsWithBiosNotHandled.has(application.id);
 
 const createSystemsTableRow = (
   category: Category,

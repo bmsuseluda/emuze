@@ -82,19 +82,21 @@ export const mednafen: Application = {
   bundledPath,
 };
 
-const highResolutionGames = [
-  "Dead or Alive",
-  "DecAthlete",
-  "Fighting Vipers",
-  "Fighters Megamix",
-  "Last Bronx",
-  "Virtua Fighter 2",
-  "Winter Heat",
-].map(normalizeString);
+const highResolutionGames = new Set(
+  [
+    "Dead or Alive",
+    "DecAthlete",
+    "Fighting Vipers",
+    "Fighters Megamix",
+    "Last Bronx",
+    "Virtua Fighter 2",
+    "Winter Heat",
+  ].map(normalizeString),
+);
 
 const fixInterlacingSaturn = (gameName: string) => {
   const gameNameNormalized = normalizeString(gameName);
-  if (highResolutionGames.includes(gameNameNormalized)) {
+  if (highResolutionGames.has(gameNameNormalized)) {
     return ["-video.deinterlacer", "bob_offset"];
   }
 

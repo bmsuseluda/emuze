@@ -51,7 +51,7 @@ interface Props extends Omit<LinkProps, "to"> {
 
 export const SettingsLink = ({
   isFullscreen = false,
-  to = "settings",
+  to = "settings/general",
   ...rest
 }: Props) => (
   <Link

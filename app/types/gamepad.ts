@@ -111,14 +111,14 @@ export const isXinputController = (
   controllerType: Sdl.Controller.ControllerType | null,
 ) => xinputControllerTypes.includes(controllerType);
 
-const dinputControllerTypes: Sdl.Controller.ControllerType[] = [
+const dinputControllerTypes: Set<Sdl.Controller.ControllerType> = new Set([
   "ps3",
   "ps4",
   "ps5",
-];
+]);
 export const isDinputController = (
   controllerType: Sdl.Controller.ControllerType | null,
-) => dinputControllerTypes.includes(controllerType);
+) => dinputControllerTypes.has(controllerType);
 
 export const isPs3Controller = ({ type }: Sdl.Controller.Device) =>
   type === "ps3";
