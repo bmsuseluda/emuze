@@ -3,7 +3,7 @@ import { Form } from "react-router";
 import { Button } from "../components/Button/index.js";
 import { FormBox } from "../components/FormBox/index.js";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
-import { readAppearance, writeAppearance } from "../server/settings.server.js";
+import { writeAppearance } from "../server/settings.server.js";
 import type { Appearance } from "../types/jsonFiles/settings/appearance.js";
 import { SettingsIcon } from "../components/SettingsIcon/index.js";
 import { useFullscreen } from "../hooks/useFullscreen/index.js";
@@ -18,12 +18,7 @@ import {
   useInputConfirmation,
 } from "../hooks/useDirectionalInput/index.js";
 import { CheckboxRow } from "../containers/CheckboxRow/index.js";
-import { Route } from "./+types/categories.$category.settings.appearance.js";
-
-export const loader = () => {
-  const appearance = readAppearance();
-  return appearance;
-};
+import { useAppearance } from "../hooks/useAppearance/index.js";
 
 const actionIds = {
   save: "save",
@@ -60,10 +55,9 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 const focus: FocusElement = "settingsMain";
 
-export default function Appearance({
-  loaderData: { alwaysGameNames, collapseSidebar },
-}: Route.ComponentProps) {
+export default function Appearance() {
   const fullscreen = useFullscreen();
+  const { alwaysGameNames, collapseSidebar } = useAppearance();
 
   const saveButtonRef = useRef<ComponentRef<"button">>(null);
   const { isInFocus, switchFocusBack, switchFocus } =

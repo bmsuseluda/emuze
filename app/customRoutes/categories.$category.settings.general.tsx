@@ -163,7 +163,7 @@ export const action = async ({ params, request }: Route.ActionArgs) => {
 
         if (categories?.length > 0) {
           return redirect(
-            `/categories/${findCategoryToRedirect(categories, systemId)}/settings/general`,
+            `/categories/${findCategoryToRedirect(categories, systemId)}/settings/general?revalidate=true`,
           );
         }
         if (!categories || categories?.length === 0) {
@@ -179,7 +179,7 @@ export const action = async ({ params, request }: Route.ActionArgs) => {
 
         if (categories?.length > 0) {
           return redirect(
-            `/categories/${findCategoryToRedirect(categories, systemId)}/settings/general/errorDialog`,
+            `/categories/${findCategoryToRedirect(categories, systemId)}/settings/general/errorDialog?revalidate=true`,
           );
         } else {
           throw error;
@@ -246,7 +246,7 @@ export const action = async ({ params, request }: Route.ActionArgs) => {
     }
   } catch (e) {
     log("error", "general action", e);
-    return redirect("errorDialog");
+    return redirect("errorDialog?revalidate=true");
   }
 
   return null;

@@ -6,7 +6,7 @@ import { GameGridDynamic } from "../components/GameGrid/index.js";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
-import { readAppearance, readGeneral } from "../server/settings.server.js";
+import { readGeneral } from "../server/settings.server.js";
 import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
 import { log } from "../server/debug.server.js";
 import { readLastPlayed } from "../server/lastPlayed.server.js";
@@ -19,12 +19,12 @@ import { importCategories } from "../server/categories.server.js";
 import { useLaunchButton } from "../hooks/useLaunchButton/index.js";
 import { SettingsLink } from "../containers/SettingsLink/index.js";
 import { Route } from "./+types/categories.lastPlayed.js";
+import { useAppearance } from "../hooks/useAppearance/index.js";
 
 export const loader = () => {
   const lastPlayed = readLastPlayed();
-  const { alwaysGameNames } = readAppearance();
 
-  return { lastPlayed, alwaysGameNames };
+  return { lastPlayed };
 };
 
 const importButtonId: ImportButtonId = "importGames";
@@ -86,9 +86,10 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 };
 
 export default function LastPlayed({
-  loaderData: { lastPlayed, alwaysGameNames },
+  loaderData: { lastPlayed },
 }: Route.ComponentProps) {
   const { launchButtonRef, onExecute } = useLaunchButton();
+  const { alwaysGameNames } = useAppearance();
 
   const { isInFocus, switchFocus, switchFocusBack, enableFocus } =
     useFocus<FocusElement>("main");

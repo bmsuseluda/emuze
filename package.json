@@ -12,7 +12,7 @@
     "clean": "del-cli dist build buildDesktop public/build coverage",
     "panda:codegen": "panda codegen --clean",
     "dev": "yarn clean && yarn panda:codegen && yarn transpileConfigs && react-router dev",
-    "dev:electron": "yarn clean && yarn panda:codegen && yarn build:electron && yarn transpileConfigs && cross-env NODE_ENV=development electron --ozone-platform=x11 ./buildDesktop/desktop/main.js",
+    "dev:electron": "yarn clean && yarn panda:codegen && yarn react-router typegen && yarn build:electron && yarn transpileConfigs && cross-env NODE_ENV=development electron --ozone-platform=x11 ./buildDesktop/desktop/main.js",
     "transpileConfigs": "tsc -p ./configsToTs/tsconfig.json && shx cp -r ./buildConfig/* .",
     "build": "yarn clean && cross-env NODE_ENV=production yarn panda:codegen && concurrently -c 'auto' --kill-others-on-fail 'yarn:build:*'",
     "build:remix": "yarn transpileConfigs && react-router build",

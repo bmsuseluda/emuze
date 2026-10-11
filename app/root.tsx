@@ -19,24 +19,26 @@ import type { ReactNode } from "react";
 
 import styles from "./index.css?url";
 import { styled } from "../styled-system/jsx/factory.js";
-import { readGeneral } from "./server/settings.server.js";
+import { readAppearance, readGeneral } from "./server/settings.server.js";
 import { GamepadProvider } from "./provider/GamepadProvider/index.js";
 import { useFullscreen } from "./hooks/useFullscreen/index.js";
 import { isWindows } from "./server/operationsystem.server.js";
+import { AppearanceProvider } from "./provider/AppearanceProvider/index.js";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export const loader = () => {
   const general = readGeneral();
+  const appearance = readAppearance();
   const focusDefault = getFocusDefault(general);
   const focusHistoryDefault = getFocusHistoryDefault(general);
   const windows = isWindows();
 
-  return { focusDefault, focusHistoryDefault, isWindows: windows };
+  return { focusDefault, focusHistoryDefault, isWindows: windows, appearance };
 };
 
 export default function App() {
-  const { focusDefault, focusHistoryDefault, isWindows } =
+  const { focusDefault, focusHistoryDefault, isWindows, appearance } =
     useLoaderData<typeof loader>();
 
   return (
@@ -49,7 +51,9 @@ export default function App() {
           >
             <GamepadProvider>
               <Titlebar />
-              <Outlet />
+              <AppearanceProvider appearance={appearance}>
+                <Outlet />
+              </AppearanceProvider>
             </GamepadProvider>
           </FocusProvider>
         </Layout>
