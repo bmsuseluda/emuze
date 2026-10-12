@@ -1,4 +1,5 @@
 import type { Sdl } from "@kmamal/sdl";
+import type { Sdl as Sdl3 } from "@kmamal/sdl3";
 
 export interface GamepadData {
   gamepadType: GamepadType;
@@ -8,6 +9,7 @@ export interface GamepadData {
 
 export type GamepadType = "Nintendo" | "XBox" | "PlayStation";
 
+// TODO: use SDL3 names
 export type ButtonId =
   | "dpadUp"
   | "dpadDown"
@@ -38,6 +40,38 @@ export type ButtonId =
   | "rightStickDown"
   | "rightStickLeft"
   | "rightStickRight";
+
+export const sdlGamepadEmuzeButtonIdMapping: Record<
+  Sdl3.Gamepad.Button,
+  ButtonId
+> = {
+  dpadUp: "dpadUp",
+  dpadDown: "dpadDown",
+  dpadLeft: "dpadLeft",
+  dpadRight: "dpadRight",
+  guide: "guide",
+  back: "back",
+  start: "start",
+  leftStick: "leftStick",
+  rightStick: "rightStick",
+  leftShoulder: "leftShoulder",
+  rightShoulder: "rightShoulder",
+  south: "a",
+  east: "b",
+  west: "x",
+  north: "y",
+  rightPaddle1: "paddle1",
+  leftPaddle1: "paddle2",
+  rightPaddle2: "paddle3",
+  leftPaddle2: "paddle4",
+  misc1: "guide",
+  misc2: "guide",
+  misc3: "guide",
+  misc4: "guide",
+  misc5: "guide",
+  misc6: "guide",
+  touchpad: "guide",
+};
 
 export type EmuzeButtonId = Exclude<
   ButtonId,
@@ -133,7 +167,7 @@ export const isSteamDeckController = ({
   vendor,
   product,
   name,
-}: Sdl.Joystick.Device) =>
+}: Sdl.Joystick.Device | Sdl3.Joystick.Device) =>
   vendor === steamDeckJoystick.vendor &&
   (product === steamDeckJoystick.product || !!name?.startsWith("Steam Deck"));
 
@@ -141,7 +175,7 @@ export const isSteamDeckControllerAlternative = ({
   vendor,
   product,
   name,
-}: Sdl.Joystick.Device) =>
+}: Sdl.Joystick.Device | Sdl3.Joystick.Device) =>
   vendor === steamDeckJoystick.vendor &&
   (product === steamDeckAlternativeJoystick.product ||
     !!name?.startsWith("Steam Deck"));
@@ -158,7 +192,9 @@ const findIndex = <T extends unknown>(
   return null;
 };
 
-export const sortSteamDeckLast = (joysticks: Sdl.Joystick.Device[]) => {
+export const sortSteamDeckLast = (
+  joysticks: Sdl.Joystick.Device[] | Sdl3.Joystick.Device[],
+) => {
   const steamDeckIndex =
     findIndex(joysticks, isSteamDeckController) ||
     findIndex(joysticks, isSteamDeckControllerAlternative);
@@ -180,7 +216,7 @@ export const isN64Controller = ({
   vendor,
   product,
   name,
-}: Sdl.Joystick.Device) =>
+}: Sdl.Joystick.Device | Sdl3.Joystick.Device) =>
   guid === gamepadN64.guid ||
   (vendor === gamepadN64.vendor && product === gamepadN64.product) ||
   !!name?.includes("N64");
@@ -587,7 +623,9 @@ export const retroShooterReaper = {
 
 const lightgunNames = ["Retro Shooter", "Sinden", "GUN4IR"];
 
-export const isLightgunConnected = (joysticks: Sdl.Joystick.Device[]) =>
+export const isLightgunConnected = (
+  joysticks: Sdl.Joystick.Device[] | Sdl3.Joystick.Device[],
+) =>
   !!joysticks.find(
     ({ name }) =>
       !!lightgunNames.find((lightgunName) =>

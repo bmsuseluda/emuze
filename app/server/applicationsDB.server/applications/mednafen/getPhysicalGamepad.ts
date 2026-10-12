@@ -1,5 +1,6 @@
 import { PhysicalGamepadSdl } from "./PhysicalGamepadSdl.js";
 import sdl from "@kmamal/sdl3";
+import type { Sdl } from "@kmamal/sdl3";
 import {
   DetectSdlGuidIndex,
   EmuzeController,
@@ -10,7 +11,9 @@ export const getPhysicalGamepad = (
   detectSdlGuidIndex: DetectSdlGuidIndex,
   index: number,
 ) => {
-  const { buttons } = sdl.joystick.openDevice(sdlJoystick);
+  const { buttons } = sdl.joystick.openDevice(
+    sdlJoystick as Sdl.Joystick.Device,
+  );
   const guidIndex = detectSdlGuidIndex(guid, index);
 
   return new PhysicalGamepadSdl(guid, guidIndex, mapping, buttons.length);

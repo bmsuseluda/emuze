@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "@kmamal/sdl": "0.11.13",
-    "@kmamal/sdl3": "github:bmsuseluda/node-sdl#v0.12.2",
+    "@kmamal/sdl3": "github:kmamal/node-sdl#v1.0.0-3",
     "@radix-ui/react-checkbox": "1.3.11",
     "@radix-ui/react-dialog": "1.1.23",
     "@radix-ui/react-label": "2.1.15",

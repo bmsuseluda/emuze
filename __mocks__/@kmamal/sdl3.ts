@@ -41,7 +41,7 @@ const getSteamHandle = (controller: Sdl.Controller.Device) => {
 };
 
 const sdlMock = {
-  controller: {
+  gamepad: {
     devices: controllerDevices,
     openDevice: (controller: Sdl.Controller.Device) => {
       return {

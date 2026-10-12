@@ -1,6 +1,10 @@
 import type { Sdl } from "@kmamal/sdl3";
 import { log } from "./debug.server.js";
-import type { ButtonId, GamepadData } from "../types/gamepad.js";
+import {
+  sdlGamepadEmuzeButtonIdMapping,
+  type ButtonId,
+  type GamepadData,
+} from "../types/gamepad.js";
 import type { AxisMotionEventFunction } from "./gamepadManager.server/index.js";
 import { gamepadManager } from "./gamepadManager.server/index.js";
 import { isGameRunning } from "./gameIsRunning.server.js";
@@ -26,7 +30,7 @@ export type AxisButtonsPressedForControllerId = Record<
 >;
 
 const getAxisButtonId = (
-  axis: Sdl.Controller.Axis,
+  axis: Sdl.Gamepad.Axis,
   value: number,
   axisButtonsPressed: AxisButtonsPressed,
 ): ButtonId => {
@@ -69,7 +73,7 @@ const getAxisButtonId = (
 };
 
 const getAxisButtonSisterId = (
-  axis: Sdl.Controller.Axis,
+  axis: Sdl.Gamepad.Axis,
   buttonId: ButtonId,
 ): ButtonId | undefined => {
   switch (axis) {
@@ -158,7 +162,7 @@ export const registerGamepadNavigationEvents = (sendEvent: SendEvent) => {
         log("debug", "buttonDown", event.button);
         sendEvent({
           gamepadType,
-          buttonId: event.button,
+          buttonId: sdlGamepadEmuzeButtonIdMapping[event.button],
           eventType: event.type,
         });
       }
@@ -172,7 +176,7 @@ export const registerGamepadNavigationEvents = (sendEvent: SendEvent) => {
         log("debug", "buttonUp", event.button);
         sendEvent({
           gamepadType,
-          buttonId: event.button,
+          buttonId: sdlGamepadEmuzeButtonIdMapping[event.button],
           eventType: event.type,
         });
       }
