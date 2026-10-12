@@ -1,4 +1,4 @@
-import { Outlet, redirect, ShouldRevalidateFunction } from "react-router";
+import { Outlet, redirect } from "react-router";
 import { readCategories } from "../server/categories.server.js";
 import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout/index.js";
 import { SidebarNavigationLink } from "../containers/SidebarNavigationLink/index.js";
@@ -21,6 +21,7 @@ import {
 import { CloseDialogContainer } from "../containers/CloseDialog/index.js";
 import type { Route } from "./+types/categories.js";
 import { useAppearance } from "../hooks/useAppearance/index.js";
+import { shouldRevalidateCategoriesRoute } from "./shouldRevalidateCategoriesRoute.js";
 
 export const loader = ({ params, request }: Route.LoaderArgs) => {
   const { category } = params;
@@ -79,21 +80,7 @@ const Name = styled(Typography, {
   },
 });
 
-export const shouldRevalidate: ShouldRevalidateFunction = ({
-  nextUrl,
-  actionResult,
-  defaultShouldRevalidate,
-}) => {
-  if (nextUrl.pathname.includes("/settings")) {
-    return false;
-  }
-
-  if (actionResult?.ok) {
-    return false;
-  }
-
-  return defaultShouldRevalidate;
-};
+export const shouldRevalidate = shouldRevalidateCategoriesRoute;
 
 export default function Categories({
   loaderData: { categoryLinks },

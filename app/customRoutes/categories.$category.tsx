@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import type { ActionFunction, ShouldRevalidateFunction } from "react-router";
+import type { ActionFunction } from "react-router";
 import { Form, Outlet, redirect } from "react-router";
 import { startGame } from "../server/execute.server.js";
 import { importCategories } from "../server/categories.server.js";
@@ -21,6 +21,7 @@ import { useLaunchButton } from "../hooks/useLaunchButton/index.js";
 import { SettingsLink } from "../containers/SettingsLink/index.js";
 import type { Route } from "./+types/categories.$category.js";
 import { useAppearance } from "../hooks/useAppearance/index.js";
+import { shouldRevalidateCategoriesRoute } from "./shouldRevalidateCategoriesRoute.js";
 
 export const loader = ({ params }: Route.LoaderArgs) => {
   const { category } = params;
@@ -106,25 +107,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
   );
 };
 
-export const shouldRevalidate: ShouldRevalidateFunction = ({
-  nextUrl,
-  actionResult,
-  defaultShouldRevalidate,
-}) => {
-  if (nextUrl.searchParams.get("revalidate") === "true") {
-    return true;
-  }
-
-  if (nextUrl.pathname.includes("/settings")) {
-    return false;
-  }
-
-  if (actionResult?.ok) {
-    return false;
-  }
-
-  return defaultShouldRevalidate;
-};
+export const shouldRevalidate = shouldRevalidateCategoriesRoute;
 
 const focus: FocusElement = "main";
 

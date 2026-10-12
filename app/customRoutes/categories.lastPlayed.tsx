@@ -20,6 +20,7 @@ import { useLaunchButton } from "../hooks/useLaunchButton/index.js";
 import { SettingsLink } from "../containers/SettingsLink/index.js";
 import { Route } from "./+types/categories.lastPlayed.js";
 import { useAppearance } from "../hooks/useAppearance/index.js";
+import { shouldRevalidateCategoriesRoute } from "./shouldRevalidateCategoriesRoute.js";
 
 export const loader = () => {
   const lastPlayed = readLastPlayed();
@@ -74,6 +75,8 @@ export const action: ActionFunction = async ({ request }) => {
 
   return null;
 };
+
+export const shouldRevalidate = shouldRevalidateCategoriesRoute;
 
 export const ErrorBoundary = ({ error }: { error: Error }) => {
   console.error(error);
