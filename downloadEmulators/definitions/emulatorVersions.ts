@@ -185,11 +185,11 @@ export const emulatorDownloads = {
   ryujinx: {
     Linux: {
       url: `https://git.ryujinx.app/projects/Ryubing/releases/download/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-x64.AppImage`,
-      hash: "",
+      hash: "b4511f46612276bb8490d7c30a017622854be75a06c1ca7a9728b71862d4822a",
     },
     Windows: {
       url: `https://git.ryujinx.app/projects/Ryubing/releases/download/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-win_x64.zip`,
-      hash: "",
+      hash: "50556677d4dd1b201d4dea4cf7d5586b5d83bf798402b704c5292e19e772a6de",
     },
   },
   scummvm: {
