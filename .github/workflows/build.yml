@@ -21,31 +21,10 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
-          name: emuze-nightly.AppImage
-          path: "dist/emuze*.AppImage"
-      - uses: actions/upload-artifact@v7
-        with:
-          name: emulators-linux.json
-          path: "emulators/emulators-linux.json"
-
-  build_windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v7
-      - name: Use Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: "24.13.0"
-      - name: Install dependencies
-        run: yarn
-      - name: Build
-        run: yarn app:distWindows --publish=never
-      - name: Upload artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: emuze-Setup-nightly.exe
-          path: "dist/emuze*.exe"
-      - uses: actions/upload-artifact@v7
-        with:
-          name: emulators-windows.json
-          path: "emulators/emulators-windows.json"
+          name: emuze-linux
+          if-no-files-found: error
+          retention-days: 1
+          path: |
+            dist/emuze*.AppImage
+            dist/emuze*.AppImage.zsync
+            emulators/emulators-linux.json

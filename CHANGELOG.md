@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.59.1 (15-10-2026)
+
+This release is mostly preparation work to greatly reduce the file size of the AppImage with release 0.60.0.
+Besides this fuse2 is not necessary anymore and Metainfos for AppImage Managers e.g. AM are included.
+
+Please let me know what you think of it in the [emuze discord](https://discord.gg/tCzK7kc6Y4).
+
+### 💥 Features
+- added AppImage Metainfos
+- AppImage works without fuse2
+- Preparation work to greatly reduce the file size of the AppImage
+
 ## 0.59.0 (09-08-2026)
 
 As you might now i love the simplicity of console gaming. You start the game and it just works. With emulation more often then not you have to provide more then just the game. You need things like a BIOS file, firmware or key files. I wanted to assist with this for a long time. With this release you can choose a folder where you can put your BIOS files and emuze will pick them up and configure the Emulators. Of course emuze will tell you if a required file is missing. On top of this emuze comes bundled with open source BIOS implementations for PlayStation, Game Boy Advance and NEO GEO. Of course you can use official BIOS files instead if you need by putting them in the BIOS folder. Sadly i was not able to achieve the same result for more complicated systems like PlayStation 3, WiiU and Switch. These systems require a installation of a firmware. I will try to tackle these in a future release.

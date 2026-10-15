@@ -16,6 +16,7 @@ const config: Configuration = {
   nsis: {
     oneClick: false,
     allowToChangeInstallationDirectory: true,
+    artifactName: "${productName}-Setup-${version}.${ext}",
   },
   linux: {
     target: [
@@ -31,6 +32,10 @@ const config: Configuration = {
       {
         from: ".github/scripts/emuze.metainfo.xml",
         to: "usr/share/metainfo/emuze.metainfo.xml",
+      },
+      {
+        from: ".github/scripts/emuze.metainfo.xml",
+        to: "usr/share/metainfo/emuze.appdata.xml",
       },
     ],
     // TODO: use when appimageupdate is in released bundle
