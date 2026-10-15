@@ -215,7 +215,7 @@ In general emuze should just detect your systems and games. If not please check 
 
 ### 🪟 Windows
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.59.1/emuze Setup 0.59.1.exe) the latest Version of emuze and install it
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.59.1/emuze.Setup.0.59.1.exe) the latest Version of emuze and install it
 
 2) Choose the [folder where your Roms are located](#roms-folder)
 
