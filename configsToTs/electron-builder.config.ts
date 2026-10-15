@@ -16,6 +16,7 @@ const config: Configuration = {
   nsis: {
     oneClick: false,
     allowToChangeInstallationDirectory: true,
+    artifactName: "${productName}-Setup-${version}.${ext}",
   },
   linux: {
     target: [
