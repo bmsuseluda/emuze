@@ -66,8 +66,8 @@ jobs:
         with:
           draft: true
           files: |
-            dist/emuze-Setup-*.exe
-            dist/emuze-Setup-*.exe.blockmap
+            dist/emuze Setup *.exe
+            dist/emuze Setup *.exe.blockmap
             dist/emuze-*.AppImage
             dist/latest.yml
             dist/latest-linux.yml
