@@ -215,13 +215,13 @@ In general emuze should just detect your systems and games. If not please check 
 
 ### 🪟 Windows
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.59.1/emuze.Setup.0.59.1.exe) the latest Version of emuze and install it
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.59.2/emuze-Setup-0.59.2.exe) the latest Version of emuze and install it
 
 2) Choose the [folder where your Roms are located](#roms-folder)
 
 ### 🐧 Linux
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.59.1/emuze-0.59.1.AppImage) the latest Version of emuze
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.59.2/emuze-0.59.2.AppImage) the latest Version of emuze
 
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
@@ -229,7 +229,7 @@ In general emuze should just detect your systems and games. If not please check 
 ### 🎮️ Steam Deck in Game mode
 
 1) Switch to Desktop
-2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.59.1/emuze-0.59.1.AppImage) the latest Version of emuze
+2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.59.2/emuze-0.59.2.AppImage) the latest Version of emuze
 
 3) Mark the AppImage as executable
 4) Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze`
