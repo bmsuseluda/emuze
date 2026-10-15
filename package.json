@@ -5,6 +5,10 @@
   "author": "bmsuseluda <gunslinger@sensonar.de>",
   "email": "gunslinger@sensonar.de",
   "url": "https://github.com/bmsuseluda/emuze",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bmsuseluda/emuze.git"
+  },
   "license": "GNU GPLv3",
   "desktopName": "emuze",
   "scripts": {
