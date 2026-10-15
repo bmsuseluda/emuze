@@ -38,11 +38,10 @@ const config: Configuration = {
         to: "usr/share/metainfo/emuze.appdata.xml",
       },
     ],
-    // TODO: use when appimageupdate is in released bundle
-    // publish: {
-    //   provider: "github",
-    //   publishAutoUpdate: false,
-    // },
+    publish: {
+      provider: "github",
+      publishAutoUpdate: false,
+    },
   },
   electronLanguages: ["en-US"],
   afterPack: "./afterPackScript.js",
