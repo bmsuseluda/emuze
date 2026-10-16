@@ -1,4 +1,4 @@
-import { styled } from "../../../styled-system/jsx/index.js";
+import { styled } from "../../../styled-system/jsx/factory.js";
 
 const Line = styled("span", {
   base: {

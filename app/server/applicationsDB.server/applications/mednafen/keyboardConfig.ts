@@ -1,5 +1,5 @@
-import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
+import type { Sdl } from "@kmamal/sdl3";
+import sdl from "@kmamal/sdl3";
 import type { EmuzeButtonId } from "../../../../types/gamepad.js";
 import { keyboardMapping } from "../../../../types/gamepad.js";
 

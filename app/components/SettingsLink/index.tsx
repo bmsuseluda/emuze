@@ -1,7 +1,7 @@
 import { Link as RemixLink } from "react-router";
 import type { LinkProps } from "react-router";
 import { VscSettingsGear } from "react-icons/vsc";
-import { styled } from "../../../styled-system/jsx/index.js";
+import { styled } from "../../../styled-system/jsx/factory.js";
 
 const Link = styled(RemixLink, {
   base: {
@@ -51,7 +51,7 @@ interface Props extends Omit<LinkProps, "to"> {
 
 export const SettingsLink = ({
   isFullscreen = false,
-  to = "settings",
+  to = "settings/general",
   ...rest
 }: Props) => (
   <Link

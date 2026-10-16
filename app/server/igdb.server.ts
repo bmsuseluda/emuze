@@ -65,8 +65,10 @@ export const normalizeString = (a: string) =>
     .replace(/[`~!@#$%^&*()_|+\-=?;:/'",. ]/gi, "")
     .trim();
 
-const findGameDataByName = (nameToFind: string, games: Game[]) =>
-  games.find(([name]) => normalizeString(nameToFind) === name);
+const findGameDataByName = (nameToFind: string, games: Game[]) => {
+  const nameToFindNormalized = normalizeString(nameToFind);
+  return games.find(([name]) => nameToFindNormalized === name);
+};
 
 const findGameDataByNameLoose = (nameToFind: string, games: Game[]) => {
   const foundGames = games.filter(([name]) =>

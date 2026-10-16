@@ -1,7 +1,7 @@
 import { Main } from "./components/Main/index.js";
 import { Sidebar } from "./components/Sidebar/index.js";
 import type { ReactNode } from "react";
-import { styled } from "../../../../styled-system/jsx/index.js";
+import { styled } from "../../../../styled-system/jsx/factory.js";
 
 interface Props {
   children: ReactNode;

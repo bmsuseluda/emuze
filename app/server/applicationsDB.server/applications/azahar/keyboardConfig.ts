@@ -1,4 +1,4 @@
-import type { Sdl } from "@kmamal/sdl";
+import type { Sdl } from "@kmamal/sdl3";
 import type { ParamToReplace } from "../../configFile.js";
 import type { EmuzeButtonId } from "../../../../types/gamepad.js";
 import { keyboardMapping } from "../../../../types/gamepad.js";

@@ -49,28 +49,10 @@ const downloadEmulator = (emulatorId: ApplicationId, downloadLink: string) => {
           emulatorFolderPath,
           bundledPath,
           () => removeRootFolderIfNecessary(emulatorFolderPath),
-          exitOnResponseCodeError,
+          exitOnResponseCodeError(downloadLink),
         );
       }
     }
-  }
-};
-
-export const downloadEmulators = () => {
-  if (existsSync(latestEmulatorsPath)) {
-    cpSync(latestEmulatorsPath, emulatorsFolderPath, {
-      recursive: true,
-      force: true,
-      preserveTimestamps: true,
-    });
-  } else {
-    Object.entries(emulatorDownloads).forEach(
-      ([emulatorId, emulatorDownload]) => {
-        const { url } = emulatorDownload[isWindows() ? "Windows" : "Linux"];
-
-        downloadEmulator(emulatorId as ApplicationId, url);
-      },
-    );
   }
 };
 
@@ -98,12 +80,13 @@ const downloadAndExtract7z = (
       });
     },
     () => {
-      exitOnResponseCodeError();
+      exitOnResponseCodeError(url)();
     },
   );
 };
 
-const exitOnResponseCodeError = () => {
+const exitOnResponseCodeError = (url: string) => () => {
+  console.error(`error downloading ${url}`);
   rmSync(emulatorsFolderPath, { recursive: true, force: true });
   process.exit(1);
 };
@@ -116,7 +99,7 @@ const downloadAppImage = (url: string, fileToCheck: string) => {
       makeFileExecutableLinux(fileToCheck);
     },
     () => {
-      exitOnResponseCodeError();
+      exitOnResponseCodeError(url)();
     },
   );
 };
@@ -153,7 +136,7 @@ const downloadExe = (
       }, 2000);
     },
     () => {
-      exitOnResponseCodeError();
+      exitOnResponseCodeError(url)();
     },
   );
 };
@@ -175,5 +158,23 @@ const removeRootFolderIfNecessary = (folder: string) => {
 
       removeFile(tempFolder);
     }
+  }
+};
+
+export const downloadEmulators = () => {
+  if (existsSync(latestEmulatorsPath)) {
+    cpSync(latestEmulatorsPath, emulatorsFolderPath, {
+      recursive: true,
+      force: true,
+      preserveTimestamps: true,
+    });
+  } else {
+    Object.entries(emulatorDownloads).forEach(
+      ([emulatorId, emulatorDownload]) => {
+        const { url } = emulatorDownload[isWindows() ? "Windows" : "Linux"];
+
+        downloadEmulator(emulatorId as ApplicationId, url);
+      },
+    );
   }
 };

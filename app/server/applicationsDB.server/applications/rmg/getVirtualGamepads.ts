@@ -17,7 +17,10 @@ import { keyboardConfig } from "./keyboardConfig.js";
 import type { ButtonDetailsFunction, RmgButtonId } from "./types.js";
 import { mapAndJoinEmuzeButtonIds, rmgButtonIds } from "./types.js";
 import { isWindows } from "../../../operationsystem.server.js";
-import { EmuzeController, getControllers } from "../../../gamepad.server.js";
+import {
+  EmuzeController,
+  getControllersSdl3,
+} from "../../../gamepad.server.js";
 import { normalizeNewLines } from "../../configFile.js";
 
 const getInputType =
@@ -203,7 +206,7 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
 
 export const getVirtualGamepads = () => {
   const xinputDevicePaths: { name: string }[] = [];
-  const gamepads = getControllers();
+  const gamepads = getControllersSdl3();
 
   const virtualGamepads =
     gamepads.length > 0

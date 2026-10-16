@@ -1,4 +1,4 @@
-import { styled } from "../../../styled-system/jsx/index.js";
+import { styled } from "../../../styled-system/jsx/factory.js";
 import type { Entry } from "../../types/jsonFiles/category.js";
 import { useGamepadsOnGrid } from "../../hooks/useGamepadsOnGrid/index.js";
 import type { ComponentRef, RefObject } from "react";
@@ -91,7 +91,7 @@ export const GameVersions = ({
     entriesRefs,
     entriesRefCallback,
     selectedEntry,
-    updatePosition,
+    setSelectedEntry,
   } = useGamepadsOnGrid({
     onSelectEntry: selectEntry,
     isInFocus,
@@ -119,8 +119,7 @@ export const GameVersions = ({
       {gameVersions.map(({ name, id }, index) => {
         const handleClick = () => {
           onGameClick();
-          selectedEntry.current = entriesRefs.current[index];
-          updatePosition();
+          setSelectedEntry(entriesRefs.current[index]);
         };
         const handleDoubleClick = () => {
           onExecute();

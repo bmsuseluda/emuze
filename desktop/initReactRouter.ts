@@ -36,6 +36,8 @@ const createViteDevServer = async () => {
   return `http://localhost:${listen.config.server.port}`;
 };
 
+const local = new Set(["localhost", "127.0.0.1"]);
+
 export const initReactRouter = async () => {
   const isDev = process.env.NODE_ENV === "development";
 
@@ -46,10 +48,7 @@ export const initReactRouter = async () => {
 
     protocol.handle("http", async (req) => {
       const url = new URL(req.url);
-      if (
-        !["localhost", "127.0.0.1"].includes(url.hostname) ||
-        (url.port && url.port !== "80")
-      ) {
+      if (!local.has(url.hostname) || (url.port && url.port !== "80")) {
         return await fetch(req);
       }
 
