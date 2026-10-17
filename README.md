@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/bmsuseluda/emuze/main/artwork/logo400x400.png" alt="Logo" />
+  <img src="https://raw.githubusercontent.com/bmsuseluda/emuze/main/artwork/logo400x400.webp" alt="Logo" />
 </p>
 
 
@@ -23,10 +23,10 @@ It automates the configuration of each emulator, including seamless gamepad inte
 <br>
 
 <p>
-  <img src="https://github.com/bmsuseluda/emuze/blob/main/screenshots/library.png?raw=true" alt="Library" />
+  <img src="https://github.com/bmsuseluda/emuze/blob/main/screenshots/library.webp?raw=true" alt="Library" />
 </p>
 <p>
-  <img src="https://github.com/bmsuseluda/emuze/blob/main/screenshots/library_collapsed.png?raw=true" alt="Library collapsed" />
+  <img src="https://github.com/bmsuseluda/emuze/blob/main/screenshots/library_collapsed.webp?raw=true" alt="Library collapsed" />
 </p>
 
 ## 🕹️ Supported Systems
