@@ -8,7 +8,7 @@ export const emulatorVersions = {
   dosboxpure: "1.0-preview6",
   duckstation: "0.1-7371",
   eden: "0.2.1",
-  flycast: "2.6",
+  flycast: "2.7",
   mame: "0.288",
   mednafen: "1.32.1",
   melonds: "1.1",
@@ -104,12 +104,12 @@ export const emulatorDownloads = {
   },
   flycast: {
     Linux: {
-      url: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-x86_64.AppImage`,
-      hash: "ba9bafb4527bbb7247c6b460dbf9ee39aba24c6cb69c22e9b021f7886eb40b1f",
+      url: `https://github.com/pkgforge-dev/Flycast-AppImage-Enhanced/releases/download/${emulatorVersions.flycast}%402026-10-01_1790875174/Flycast-${emulatorVersions.flycast}-anylinux-x86_64.AppImage`,
+      hash: "56407473faef14cf2a34d61c06419dbdca11fe1acebe729cdea4b70f8b169ecb",
     },
     Windows: {
       url: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-win64-${emulatorVersions.flycast}.zip`,
-      hash: "8bfca5c620df3c67599f14c46cb1567e776142f898a6f57b382a4506c94e7c43",
+      hash: "7edf489ba6b3053703a18ce8233767eb71a2d89e4bda0421b312c2167a739161",
     },
   },
   mame: {
@@ -124,12 +124,12 @@ export const emulatorDownloads = {
   },
   mednafen: {
     Linux: {
-      url: `https://github.com/pkgforge-dev/mednafen-appimage/releases/download/${emulatorVersions.mednafen}%402025-09-08_1757361413/mednafen-${emulatorVersions.mednafen}-anylinux-x86_64.AppImage`,
-      hash: "9a64a9075b4982c2f17f2885c05857a633e7138dfb725e63262f15a961c38a35",
+      url: `https://github.com/bmsuseluda/mednafen-sdl3/releases/download/v${emulatorVersions.mednafen}-1/mednafen-${emulatorVersions.mednafen}-1-x86_64.AppImage`,
+      hash: "7c5a0e2d4616d7166d9bc0ec831500e6e0a88c58a0eb5023cbc3cbc25ab6c4f2",
     },
     Windows: {
-      url: `https://mednafen.github.io/releases/files/mednafen-${emulatorVersions.mednafen}-win64.zip`,
-      hash: "3b680ce6b50a17bcbb2ac611e38962ee469e399b412cc435ffacd6e7f6fb1982",
+      url: `https://github.com/bmsuseluda/mednafen-sdl3/releases/download/v${emulatorVersions.mednafen}-1/mednafen-${emulatorVersions.mednafen}-1-x86_64.zip`,
+      hash: "6bfcafae7699ae2bf6f2d88b5f0038e2c68cd2549429a1e8518a4e6e1cc2a039",
     },
   },
   melonds: {

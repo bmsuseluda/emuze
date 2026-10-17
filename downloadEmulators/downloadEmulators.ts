@@ -1,7 +1,7 @@
 import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
 import { basename, join } from "node:path";
 
-import { emulatorDownloads } from "./definitions/emulatorVersions.js";
+import { Download, emulatorDownloads } from "./definitions/emulatorVersions.js";
 import {
   cpSync,
   existsSync,
@@ -149,10 +149,7 @@ const removeRootFolderIfNecessary = (folder: string) => {
     if (fileStats.isDirectory()) {
       const tempFolder = join(folder, "..", `${basename(folder)}TempFolder`);
 
-      // rename target folder to temp folder
       renameSync(folder, tempFolder);
-
-      // move and rename root folder to target folder
       const rootFolder = join(tempFolder, files[0]);
       moveSync(rootFolder, folder);
 
@@ -161,20 +158,36 @@ const removeRootFolderIfNecessary = (folder: string) => {
   }
 };
 
-export const downloadEmulators = () => {
-  if (existsSync(latestEmulatorsPath)) {
-    cpSync(latestEmulatorsPath, emulatorsFolderPath, {
-      recursive: true,
-      force: true,
-      preserveTimestamps: true,
-    });
-  } else {
-    Object.entries(emulatorDownloads).forEach(
-      ([emulatorId, emulatorDownload]) => {
-        const { url } = emulatorDownload[isWindows() ? "Windows" : "Linux"];
-
-        downloadEmulator(emulatorId as ApplicationId, url);
-      },
+export const downloadEmulators = async () => {
+  const operatingSystem = isWindows() ? "Windows" : "Linux";
+  const emulatorsManifestFromLatestArtifact: Record<ApplicationId, Download> =
+    await import(
+      join(
+        latestEmulatorsPath,
+        `emulators-${operatingSystem.toLowerCase()}.json`,
+      )
     );
-  }
+
+  Object.entries(emulatorDownloads).forEach(
+    ([emulatorId, emulatorDownload]) => {
+      const { url, hash } = emulatorDownload[operatingSystem];
+      const hashFromLatestArtifact =
+        emulatorsManifestFromLatestArtifact?.[emulatorId as ApplicationId].hash;
+
+      if (hash === hashFromLatestArtifact) {
+        console.log(`copy emulator from latest artifact: ${emulatorId}`);
+        cpSync(
+          join(latestEmulatorsPath, emulatorId),
+          join(emulatorsFolderPath, emulatorId),
+          {
+            recursive: true,
+            force: true,
+            preserveTimestamps: true,
+          },
+        );
+      } else {
+        downloadEmulator(emulatorId as ApplicationId, url);
+      }
+    },
+  );
 };

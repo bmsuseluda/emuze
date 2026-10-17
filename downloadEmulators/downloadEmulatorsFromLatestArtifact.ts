@@ -84,6 +84,29 @@ const getEmulatorsFromLatestArtifactWindows = (
     );
   });
 
+const getManifestFromLatestArtifact = (
+  latestReleaseId: string,
+  operatingSystem: "windows" | "linux",
+): Promise<void> =>
+  new Promise((resolve, reject) => {
+    const latestArtifactManifest = `https://github.com/bmsuseluda/emuze/releases/download/v${latestReleaseId}/emulators-${operatingSystem}.json`;
+    const outputFilePath = join(
+      latestEmulatorsPath,
+      latestArtifactManifest.split("/").at(-1) || "",
+    );
+
+    downloadFile(
+      latestArtifactManifest,
+      outputFilePath,
+      () => {
+        resolve();
+      },
+      () => {
+        reject(new Error(`Failed to download ${latestArtifactManifest}`));
+      },
+    );
+  });
+
 const getEmulatorsFromLatestArtifactLinux = (
   latestReleaseId: string,
 ): Promise<void> =>
@@ -135,8 +158,10 @@ export const getEmulatorsFromLatestArtifact = async () => {
     const latestReleaseId = await getLatestReleaseId();
 
     if (isWindows()) {
+      await getManifestFromLatestArtifact(latestReleaseId, "windows");
       await getEmulatorsFromLatestArtifactWindows(latestReleaseId);
     } else {
+      await getManifestFromLatestArtifact(latestReleaseId, "linux");
       await getEmulatorsFromLatestArtifactLinux(latestReleaseId);
     }
   }
