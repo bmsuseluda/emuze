@@ -1,5 +1,6 @@
 import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
 import { basename, join } from "node:path";
+import { pathToFileURL } from "node:url";
 
 import { Download, emulatorDownloads } from "./definitions/emulatorVersions.js";
 import {
@@ -160,13 +161,17 @@ const removeRootFolderIfNecessary = (folder: string) => {
 
 export const downloadEmulators = async () => {
   const operatingSystem = isWindows() ? "Windows" : "Linux";
-  const emulatorsManifestFromLatestArtifact: Record<ApplicationId, Download> =
-    await import(
+  const { default: emulatorsManifestFromLatestArtifact }: {
+    default: Record<ApplicationId, Download>;
+  } = await import(
+    pathToFileURL(
       join(
         latestEmulatorsPath,
         `emulators-${operatingSystem.toLowerCase()}.json`,
-      )
-    );
+      ),
+    ).href,
+    { with: { type: "json" } },
+  );
 
   Object.entries(emulatorDownloads).forEach(
     ([emulatorId, emulatorDownload]) => {
