@@ -17,20 +17,19 @@ export type ApplicationId =
   | "ryujinx"
   /** sdl2 */
   | "cemu"
-  /** sdl2 */
+  /** sdl3 */
   | "mednafen"
   /** sdl3 */
   | "mame"
   /** sdl3 */
   | "ares"
-  /** sdl2 */
+  /** sdl3 */
   | "flycast"
-  /** sdl2 */
   | "dosboxpure"
   /** sdl3 */
   | "rosaliesMupenGui"
   | "scummvm"
-  /** sdl2 */
+  /** sdl3 */
   | "xemu"
   /** sdl2 */
   | "eden";

@@ -1,6 +1,6 @@
 import nodepath from "node:path";
 import fs from "node:fs";
-import sdl from "@kmamal/sdl";
+import sdl from "@kmamal/sdl3";
 import type { ApplicationId } from "../../applicationId.js";
 import type { Application, DetectedRequiredFile } from "../../types.js";
 import { envPaths } from "../../../envPaths.server.js";

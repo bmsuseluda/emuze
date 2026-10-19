@@ -136,13 +136,12 @@ export const getNameIndex = (
   return nameCount;
 };
 
-const xinputControllerTypes: Sdl.Controller.ControllerType[] = [
-  "xbox360",
-  "xboxOne",
-  null,
-];
+const xinputControllerTypes: (
+  Sdl.Controller.ControllerType | Sdl3.Gamepad.GamepadType
+)[] = ["xbox360", "xboxOne", null];
 export const isXinputController = (
-  controllerType: Sdl.Controller.ControllerType | null,
+  controllerType:
+    Sdl.Controller.ControllerType | Sdl3.Gamepad.GamepadType | null,
 ) => xinputControllerTypes.includes(controllerType);
 
 const dinputControllerTypes: Set<Sdl.Controller.ControllerType> = new Set([
@@ -154,8 +153,9 @@ export const isDinputController = (
   controllerType: Sdl.Controller.ControllerType | null,
 ) => dinputControllerTypes.has(controllerType);
 
-export const isPs3Controller = ({ type }: Sdl.Controller.Device) =>
-  type === "ps3";
+export const isPs3Controller = ({
+  type,
+}: Sdl.Controller.Device | Sdl3.Gamepad.Device) => type === "ps3";
 
 export const isPs4Controller = ({ type }: Sdl.Controller.Device) =>
   type === "ps4";
@@ -192,9 +192,11 @@ const findIndex = <T extends unknown>(
   return null;
 };
 
-export const sortSteamDeckLast = (
-  joysticks: Sdl.Joystick.Device[] | Sdl3.Joystick.Device[],
-) => {
+export const sortSteamDeckLast = <
+  T extends Sdl.Joystick.Device[] | Sdl3.Joystick.Device[],
+>(
+  joysticks: T,
+): T => {
   const steamDeckIndex =
     findIndex(joysticks, isSteamDeckController) ||
     findIndex(joysticks, isSteamDeckControllerAlternative);
@@ -205,7 +207,7 @@ export const sortSteamDeckLast = (
       ...joysticks.slice(0, steamDeckIndex),
       ...joysticks.slice(steamDeckIndex + 1),
       steamDeckController,
-    ];
+    ] as T;
   }
 
   return joysticks;
