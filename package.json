@@ -49,6 +49,7 @@
     "app:distBase": "yarn download && yarn build && electron-builder --config electron-builder.config.js",
     "app:distLinux": "yarn app:distBase --linux",
     "app:distWindows": "yarn app:distBase --windows",
+    "app:distMac": "yarn app:distBase --mac",
     "app:dirLinux": "yarn app:distLinux --dir",
     "app:dirWindows": "yarn app:distWindows --dir",
     "storybook": "yarn clean && cross-env NODE_ENV=development yarn panda:codegen && storybook dev -p 6006 --no-open",

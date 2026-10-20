@@ -8,13 +8,13 @@ import { Game } from "./components/Game/index.js";
 import type { Result } from "../../hooks/useGamepadsOnGrid/index.js";
 import { useGamepadsOnGrid } from "../../hooks/useGamepadsOnGrid/index.js";
 import { styled } from "../../../styled-system/jsx/factory.js";
-import { useAddEntriesToRenderOnScrollEnd } from "../../hooks/useAddEntriesToRenderOnScrollEnd/index.js";
 import { SystemIcon } from "../SystemIcon/index.js";
 import {
   useInputBack,
   useInputConfirmation,
 } from "../../hooks/useDirectionalInput/index.js";
 import { useGamepadConnected } from "../../hooks/useGamepadConnected/index.js";
+import { useAddEntriesToRenderOnScrollEnd } from "../../hooks/useAddEntriesToRenderOnScrollEnd/index.js";
 
 interface Props extends ComponentPropsWithoutRef<"ul"> {
   games: GameType[] | GameTypeLastPlayed[];
@@ -127,9 +127,6 @@ export const GameGrid = ({
           onGameClick();
           setSelectedEntry(entriesRefs.current[index]);
         };
-        const handleDoubleClick = () => {
-          onExecute();
-        };
 
         return (
           <Game
@@ -141,7 +138,7 @@ export const GameGrid = ({
             imageUrl={metaData?.imageUrl}
             alwaysGameName={alwaysGameNames}
             onClick={handleClick}
-            onDoubleClick={handleDoubleClick}
+            onDoubleClick={onExecute}
             ref={entriesRefCallback(index)}
             key={id}
             isInFocus={isEnabled.current && isInFocus}

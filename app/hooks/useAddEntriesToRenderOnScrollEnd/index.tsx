@@ -1,6 +1,5 @@
 import type { ComponentRef } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useDeepCompareEffect } from "react-use";
 import type { Entry } from "../../types/jsonFiles/category.js";
 
 const entriesCountForChunk = 20;
@@ -10,7 +9,7 @@ export const useAddEntriesToRenderOnScrollEnd = (entries: Entry[]) => {
     entries.slice(0, entriesCountForChunk),
   );
 
-  useDeepCompareEffect(() => {
+  useEffect(() => {
     setEntriesToRender(
       entries.slice(
         0,
@@ -19,7 +18,7 @@ export const useAddEntriesToRenderOnScrollEnd = (entries: Entry[]) => {
           : entriesCountForChunk,
       ),
     );
-  }, [entries]);
+  }, [entries.length]);
 
   const addEntriesToRender = useCallback(() => {
     if (entriesToRender.length < entries.length) {
@@ -31,7 +30,7 @@ export const useAddEntriesToRenderOnScrollEnd = (entries: Entry[]) => {
         ),
       ]);
     }
-  }, [entries, entriesToRender]);
+  }, [entries.length, entriesToRender.length]);
 
   const inViewRef = useRef<ComponentRef<"div">>(null);
 
@@ -46,7 +45,9 @@ export const useAddEntriesToRenderOnScrollEnd = (entries: Entry[]) => {
 
   useEffect(() => {
     const inViewRefCopy = inViewRef;
-    const observer = new IntersectionObserver(intersectionCallback);
+    const observer = new IntersectionObserver(intersectionCallback, {
+      rootMargin: "800px 0px",
+    });
 
     if (inViewRefCopy.current) {
       observer.observe(inViewRefCopy.current);

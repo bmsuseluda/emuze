@@ -43,6 +43,9 @@ const config: Configuration = {
       publishAutoUpdate: false,
     },
   },
+  mac: {
+    target: [{ target: "default", arch: "arm64" }],
+  },
   electronLanguages: ["en-US"],
   afterPack: "./afterPackScript.js",
   nativeRebuilder: "legacy",
