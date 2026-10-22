@@ -11,8 +11,27 @@ export const useRefsGrid = <T extends HTMLElement>(
   const entriesRefsGrid = useRef<T[][]>([]);
   const entriesRefs = useRef<T[]>([]);
   const entryListRef = useRef<ComponentRef<"ul">>(null);
+  const gamesPerRowRef = useRef<number>(0);
+
+  const addEntryToRefsGrid = useCallback(
+    (entry: T, indexFromEntriesRef: number) => {
+      const rowIndex = Math.floor(
+        (indexFromEntriesRef + 1) / gamesPerRowRef.current,
+      );
+      const entryIndexPerRow =
+        ((indexFromEntriesRef + 1) % gamesPerRowRef.current) - 1;
+
+      if (!entriesRefsGrid.current[rowIndex]) {
+        entriesRefsGrid.current[rowIndex] = [];
+      }
+
+      entriesRefsGrid.current[rowIndex][entryIndexPerRow] = entry;
+    },
+    [gamesPerRowRef],
+  );
 
   const createRefsGrid = useCallback(() => {
+    gamesPerRowRef.current = 0;
     const entriesGrid: T[][] = [];
 
     const addToRow = (rowIndex: number, entry: T) => {
@@ -26,15 +45,27 @@ export const useRefsGrid = <T extends HTMLElement>(
     };
 
     let rowIndex = 0;
+
+    const addToNextRow = (entry: T) => {
+      rowIndex = rowIndex + 1;
+      addToRow(rowIndex, entry);
+    };
+
     entriesRefs.current.forEach((entry, index) => {
-      const top = entry?.getBoundingClientRect().top;
-      if (index > 0) {
-        const topPrevious =
-          entriesRefs.current[index - 1]?.getBoundingClientRect().top;
-        if (top && topPrevious && top > topPrevious) {
-          // nextRow
-          rowIndex = rowIndex + 1;
-          addToRow(rowIndex, entry);
+      if (!gamesPerRowRef.current) {
+        const top = entry?.getBoundingClientRect().top;
+        if (index > 0) {
+          const topPrevious =
+            entriesRefs.current[index - 1]?.getBoundingClientRect().top;
+          if (top && topPrevious && top > topPrevious) {
+            gamesPerRowRef.current = entriesGrid[rowIndex].length;
+            addToNextRow(entry);
+            return;
+          }
+        }
+      } else {
+        if (entriesGrid[rowIndex].length === gamesPerRowRef.current) {
+          addToNextRow(entry);
           return;
         }
       }
@@ -42,26 +73,31 @@ export const useRefsGrid = <T extends HTMLElement>(
     });
     entriesRefsGrid.current = entriesGrid;
     onCreateGrid(entriesRefsGrid)();
-  }, [entriesRefs, entriesRefsGrid, onCreateGrid]);
+  }, [entriesRefs, entriesRefsGrid, onCreateGrid, gamesPerRowRef]);
 
   useEffect(() => {
-    if (entryListRef.current) {
-      const resizeObserver = new ResizeObserver(
-        debounce(createRefsGrid, 200, { leading: false, trailing: true }),
-      );
-      resizeObserver.observe(entryListRef.current);
-
-      return () => {
-        resizeObserver.disconnect();
-      };
+    const entryListCopy = entryListRef.current;
+    if (!entryListCopy) {
+      return;
     }
+
+    const resizeObserver = new ResizeObserver(
+      debounce(createRefsGrid, 200, { leading: false, trailing: true }),
+    );
+    resizeObserver.observe(entryListCopy.parentElement!);
+
+    return () => {
+      resizeObserver.unobserve(entryListCopy.parentElement!);
+      resizeObserver.disconnect();
+    };
   }, [createRefsGrid, entryListRef]);
 
   const entriesRefCallback = useCallback(
     (index: number) => (ref: T) => {
+      addEntryToRefsGrid(ref, index);
       entriesRefs.current[index] = ref;
     },
-    [entriesRefs],
+    [entriesRefs, addEntryToRefsGrid],
   );
 
   return {

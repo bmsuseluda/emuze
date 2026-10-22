@@ -63,14 +63,14 @@ export const GameGrid = ({
 }: Props & { inViewRef?: RefObject<ComponentRef<"div"> | null> }) => {
   const { isEnabled } = useGamepadConnected();
 
-  const selectEntry = (game: ComponentRef<"input">) => {
+  const selectEntry = useCallback((game: ComponentRef<"input">) => {
     if (!game.checked) {
       game.checked = true;
     }
     if (document.activeElement !== game) {
       game.focus();
     }
-  };
+  }, []);
 
   const goBack = useCallback(
     (selectedGame: RefObject<ComponentRef<"input"> | undefined>) => {

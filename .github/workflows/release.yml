@@ -67,8 +67,8 @@ jobs:
           files: |
             dist/emuze-Setup-*.exe
             dist/emuze-Setup-*.exe.blockmap
-            dist/emuze-*.AppImage
             dist/latest.yml
-            dist/latest-linux.yml
             emulators/emulators-windows.json
+            dist/emuze-*.AppImage
+            dist/emuze-*.AppImage.zsync
             emulators/emulators-linux.json
