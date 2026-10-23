@@ -171,7 +171,7 @@ export const action = async ({ params, request }: Route.ActionArgs) => {
             revalidateCategories: true,
             errors: {
               categoriesPath:
-                "No supported Systems were found. The Roms need to be grouped by their System. E.g. 'Final Fantasy VII.chd' needs to be stored in a folder 'PlayStation'.",
+                "No supported Systems with Roms were found. The Roms need to be grouped by their System. E.g. 'Final Fantasy VII.chd' needs to be stored in a folder 'PlayStation'.",
             },
           };
         }

@@ -36,7 +36,6 @@ export const useAddEntriesToRenderOnScrollEnd = (entries: Entry[]) => {
     observer.observe(inViewRefCopy);
 
     return () => {
-      observer.unobserve(inViewRefCopy);
       observer.disconnect();
     };
   }, [addEntriesToRender]);
