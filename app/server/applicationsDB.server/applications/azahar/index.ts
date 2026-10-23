@@ -132,7 +132,9 @@ export const azahar: Application = {
 
     const optionParams = [];
     if (fullscreen) {
-      optionParams.push("--fullscreen");
+      // TODO: replace when issue is resolved https://github.com/azahar-emu/azahar/issues/2548
+      // optionParams.push("--fullscreen");
+      optionParams.push("-f");
     }
     return optionParams;
   },

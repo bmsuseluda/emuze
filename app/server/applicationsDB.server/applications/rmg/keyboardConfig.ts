@@ -1,5 +1,5 @@
 import { EOL } from "node:os";
-import sdl from "@kmamal/sdl";
+import sdl from "@kmamal/sdl3";
 import type { ButtonDetailsFunction, RmgButtonId } from "./types.js";
 import { mapAndJoinEmuzeButtonIds, rmgButtonIds } from "./types.js";
 import type { EmuzeButtonId } from "../../../../types/gamepad.js";

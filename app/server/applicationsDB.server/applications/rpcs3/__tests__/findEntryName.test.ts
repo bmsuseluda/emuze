@@ -3,6 +3,8 @@ import {
   findPlaystation3Serial,
 } from "../findEntryName.js";
 
+vi.mock("electron");
+
 describe("applicationsDB.rpcs3", () => {
   describe("findPlaystation3Serial", () => {
     it("Should return serial for digital game", () => {

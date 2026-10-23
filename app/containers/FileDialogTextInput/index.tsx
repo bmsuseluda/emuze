@@ -3,7 +3,7 @@ import { Label } from "../../components/Label/index.js";
 import { TextInput } from "../../components/TextInput/index.js";
 import { FaFolderOpen } from "react-icons/fa";
 import type { ComponentRef, MouseEvent } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface Props {
   id: string;
@@ -28,21 +28,17 @@ export const FileDialogInputField = ({
   openDialogButtonRef,
   onOpenFileDialog,
 }: Props) => {
+  const [prevNewValue, setPrevNewValue] = useState(newValue);
   const [value, setValue] = useState(defaultValue || "");
-  const [error, setError] = useState(defaultError);
 
-  useEffect(() => {
+  if (newValue !== prevNewValue) {
+    setPrevNewValue(newValue);
     if (newValue) {
       setValue(newValue);
-      setError(undefined);
     }
-  }, [newValue]);
+  }
 
-  useEffect(() => {
-    if (newError) {
-      setError(newError);
-    }
-  }, [newError]);
+  const error = newValue ? undefined : (newError ?? defaultError);
 
   return (
     <FormRow>

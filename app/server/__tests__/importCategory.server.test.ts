@@ -39,7 +39,9 @@ import { dosboxpure } from "../applicationsDB.server/applications/dosbox/index.j
 import { rpcs3 } from "../applicationsDB.server/applications/rpcs3/index.js";
 import { scummvm } from "../applicationsDB.server/applications/scummvm/index.js";
 
+vi.mock("electron");
 vi.mock("@kmamal/sdl");
+vi.mock("@kmamal/sdl3");
 vi.mock("../readWriteData.server");
 vi.mock("../applications.server");
 vi.mock("../openDialog.server.ts");

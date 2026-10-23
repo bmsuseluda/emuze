@@ -31,12 +31,19 @@ const config = {
                 from: ".github/scripts/emuze.metainfo.xml",
                 to: "usr/share/metainfo/emuze.metainfo.xml",
             },
+            {
+                from: ".github/scripts/emuze.metainfo.xml",
+                to: "usr/share/metainfo/emuze.appdata.xml",
+            },
         ],
-        // TODO: use when appimageupdate is in released bundle
-        // publish: {
-        //   provider: "github",
-        //   publishAutoUpdate: false,
-        // },
+        publish: {
+            provider: "github",
+            publishAutoUpdate: false,
+        },
+    },
+    mac: {
+        target: [{ target: "default", arch: "arm64" }],
+        icon: "public/icons/icon512x512.png",
     },
     electronLanguages: ["en-US"],
     afterPack: "./afterPackScript.js",

@@ -2,20 +2,20 @@ import { ApplicationId } from "../../app/server/applicationsDB.server/applicatio
 
 export const emulatorVersions = {
   ares: "148",
-  azahar: "2125.1.3",
+  azahar: "2126.1.2",
   cemu: "2.6",
-  dolphin: "2606",
-  dosboxpure: "1.0-preview6",
+  dolphin: "2609",
+  dosboxpure: "1.0-preview7",
   duckstation: "0.1-7371",
   eden: "0.2.1",
-  flycast: "2.6",
-  mame: "0.288",
+  flycast: "2.7",
+  mame: "0.289",
   mednafen: "1.32.1",
   melonds: "1.1",
-  pcsx2: "2.6.3",
+  pcsx2: "2.8.2",
   ppsspp: "1.20.4",
   rosaliesMupenGui: "0.9.0",
-  rpcs3: "0.0.42",
+  rpcs3: "0.0.43",
   ryujinx: "1.3.3",
   scummvm: "2026.3.0",
   xemu: "0.8.136",
@@ -44,18 +44,18 @@ export const emulatorDownloads = {
   },
   azahar: {
     Linux: {
-      url: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions.azahar}%402026-08-01_1785586204/Azahar-${emulatorVersions.azahar}-anylinux-x86_64.AppImage`,
-      hash: "86487a72cadede66e10c152328abbe9d9a8e89d1b68167c610f9dccd19fa7553",
+      url: `https://github.com/pkgforge-dev/Azahar-AppImage-Enhanced/releases/download/${emulatorVersions.azahar}%402026-10-01_1790876552/Azahar-${emulatorVersions.azahar}-anylinux-x86_64.AppImage`,
+      hash: "619e58b942e3ec9e0c618d70d062fa28d7f3c08cae621352e8eeaa65dc23f677",
     },
     Windows: {
       url: `https://github.com/azahar-emu/azahar/releases/download/${emulatorVersions.azahar}/azahar-windows-msys2-${emulatorVersions.azahar}.zip`,
-      hash: "6aabc16d7023a6d6bbe9b950591d1f128c1c543c1c8fffc3a337997353c9d980",
+      hash: "e18a162e2e992cef406eccaa9de85d1940f93b460d670070c4235e91baa98249",
     },
   },
   cemu: {
     Linux: {
-      url: `https://github.com/cemu-project/Cemu/releases/download/v${emulatorVersions.cemu}/Cemu-${emulatorVersions.cemu}-x86_64.AppImage`,
-      hash: "0c20c4aeb800bb13d9bab9474ef45a6f8fcde6402cad9b32ac2a1bbd03186313",
+      url: `https://github.com/pkgforge-dev/Cemu-AppImage-Enhanced/releases/download/2.6-4%402026-02-01_1769935971/Cemu-2.6-4-anylinux-x86_64.AppImage`,
+      hash: "4b9276df7fb56198c6a54dfaa3afba6b69f0fb33b09ddbbbd2db10508e311f04",
     },
     Windows: {
       url: `https://github.com/cemu-project/Cemu/releases/download/v${emulatorVersions.cemu}/cemu-${emulatorVersions.cemu}-windows-x64.zip`,
@@ -64,28 +64,28 @@ export const emulatorDownloads = {
   },
   dolphin: {
     Linux: {
-      url: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions.dolphin}%402026-08-01_1785586331/Dolphin_Emulator-${emulatorVersions.dolphin}-anylinux-x86_64.AppImage`,
-      hash: "9ef53557783ab094ec577d37f169f1d39b503e7fef7a1b2679c5eaa82c05f099",
+      url: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions.dolphin}%402026-10-01_1790876487/Dolphin_Emulator-${emulatorVersions.dolphin}-anylinux-x86_64.AppImage`,
+      hash: "d033d883870c3cd3224fa28b8b70ac932f464f4f6c3dea4e331f875c811d437a",
     },
     Windows: {
       url: `https://dl.dolphin-emu.org/releases/${emulatorVersions.dolphin}/dolphin-${emulatorVersions.dolphin}-x64.7z`,
-      hash: "c6ea821c820cdc5d52d9f4d315fdca629d51a1b9f4f7e671948b905c085d7f59",
+      hash: "1aa25785b7d4cb76259754c5fbcdd8856857b8e7bb4e523c57a8ac56665fba75",
     },
   },
   dosboxpure: {
     Linux: {
-      url: `https://github.com/schellingb/dosbox-pure-unleashed/releases/download/${emulatorVersions.dosboxpure}/dosbox_pure_unleashed-linux-x64-${emulatorVersions.dosboxpure}.zip`,
-      hash: "92e0c5699660181879d54d8fd833a3b0266c8299602ba03e116650ef7902abe1",
+      url: `https://github.com/pkgforge-dev/DOSBox-Pure-Unleashed-AppImage/releases/download/f0453b42b%402026-10-01_1790868062/DOSBox_Pure_Unleashed-f0453b42b-anylinux-x86_64.AppImage`,
+      hash: "c954eb201980bdbe866a2a0b5196127b8131f6ed99a41eb4a8927dcdd0cea462",
     },
     Windows: {
-      url: `https://github.com/schellingb/dosbox-pure-unleashed/releases/download/${emulatorVersions.dosboxpure}/dosbox_pure_unleashed-windows-64bit-${emulatorVersions.dosboxpure}.zip`,
-      hash: "1836e03190451f4cef80b760ea8ac6d8ff229f1eab44114f5a1203f91b145953",
+      url: `https://codeberg.org/schelling/dosbox-pure-unleashed/releases/download/${emulatorVersions.dosboxpure}/dosbox_pure_unleashed-windows-64bit-${emulatorVersions.dosboxpure}.zip`,
+      hash: "84985ae6ae3163dd3b94432e549b163e35add07276315f0f70bc6e87e845644a",
     },
   },
   duckstation: {
     Linux: {
-      url: `https://github.com/Kyuyrii/Duckstation-GPL3/releases/download/v${emulatorVersions.duckstation}/DuckStation-x64.AppImage`,
-      hash: "29c772a35fd78703e65554bc11290dbfeed5a84f7964b67c4127cf5dcca0b57a",
+      url: `https://github.com/pkgforge-dev/DuckStation-GPL-AppImage-Enhanced/releases/download/0.1.7465-7%402026-05-01_1777674496/DuckStation-0.1.7465-7-anylinux-x86_64.AppImage`,
+      hash: "sha256:3902115dbff11cdd44133b34c24c2dfbcac35cda092bab9c8e61604158304b2b",
     },
     Windows: {
       url: `https://github.com/Kyuyrii/Duckstation-GPL3/releases/download/v${emulatorVersions.duckstation}/duckstation-windows-x64-release.zip`,
@@ -104,38 +104,38 @@ export const emulatorDownloads = {
   },
   flycast: {
     Linux: {
-      url: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-x86_64.AppImage`,
-      hash: "ba9bafb4527bbb7247c6b460dbf9ee39aba24c6cb69c22e9b021f7886eb40b1f",
+      url: `https://github.com/pkgforge-dev/Flycast-AppImage-Enhanced/releases/download/${emulatorVersions.flycast}%402026-10-01_1790875174/Flycast-${emulatorVersions.flycast}-anylinux-x86_64.AppImage`,
+      hash: "56407473faef14cf2a34d61c06419dbdca11fe1acebe729cdea4b70f8b169ecb",
     },
     Windows: {
       url: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-win64-${emulatorVersions.flycast}.zip`,
-      hash: "8bfca5c620df3c67599f14c46cb1567e776142f898a6f57b382a4506c94e7c43",
+      hash: "7edf489ba6b3053703a18ce8233767eb71a2d89e4bda0421b312c2167a739161",
     },
   },
   mame: {
     Linux: {
-      url: `https://github.com/pkgforge-dev/MAME-AppImage/releases/download/0.288-1%402026-07-22_1784754526/MAME-0.288-1-anylinux-x86_64.AppImage`,
-      hash: "9529dadaa7dc4e9cce9dafadd63440b76d66210651dff606ba56e189aaf022f6",
+      url: `https://github.com/pkgforge-dev/MAME-AppImage/releases/download/0.289-1%402026-09-01_1788278259/MAME-0.289-1-anylinux-x86_64.AppImage`,
+      hash: "af7595453acdab0d290c90699ce3f999d653f1fa2820182ef628eb7dd2111b51",
     },
     Windows: {
-      url: `https://github.com/mamedev/mame/releases/download/mame0288/mame0288b_x64.exe`,
-      hash: "e4ae20a2359d716fb16824961b1b0fb28d8662ffd1298504edff39d368bb4a55",
+      url: `https://github.com/mamedev/mame/releases/download/mame0289/mame0289b_x64.exe`,
+      hash: "a1aa7912168c9d1b05e611906bc21b8b9be3935822aead36d12a1da363150b7d",
     },
   },
   mednafen: {
     Linux: {
-      url: `https://github.com/pkgforge-dev/mednafen-appimage/releases/download/${emulatorVersions.mednafen}%402025-09-08_1757361413/mednafen-${emulatorVersions.mednafen}-anylinux-x86_64.AppImage`,
-      hash: "9a64a9075b4982c2f17f2885c05857a633e7138dfb725e63262f15a961c38a35",
+      url: `https://github.com/bmsuseluda/mednafen-sdl3/releases/download/v${emulatorVersions.mednafen}-1/mednafen-${emulatorVersions.mednafen}-1-x86_64.AppImage`,
+      hash: "7c5a0e2d4616d7166d9bc0ec831500e6e0a88c58a0eb5023cbc3cbc25ab6c4f2",
     },
     Windows: {
-      url: `https://mednafen.github.io/releases/files/mednafen-${emulatorVersions.mednafen}-win64.zip`,
-      hash: "3b680ce6b50a17bcbb2ac611e38962ee469e399b412cc435ffacd6e7f6fb1982",
+      url: `https://github.com/bmsuseluda/mednafen-sdl3/releases/download/v${emulatorVersions.mednafen}-1/mednafen-${emulatorVersions.mednafen}-1-x86_64.zip`,
+      hash: "6bfcafae7699ae2bf6f2d88b5f0038e2c68cd2549429a1e8518a4e6e1cc2a039",
     },
   },
   melonds: {
     Linux: {
-      url: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions.melonds}/melonDS-${emulatorVersions.melonds}-appimage-x86_64.zip`,
-      hash: "bf377420a2e95f2cd2cdda17d5372b51c2534f858b038db9ec6d129554875124",
+      url: `https://github.com/pkgforge-dev/melonDS-AppImage-Enhanced/releases/download/1.1-2%402026-10-01_1790875607/melonDS-1.1-2-anylinux-x86_64.AppImage`,
+      hash: "41915deccde84e0dc65fdee3f45980e17249145a410497b68ecfa7b20d057eed",
     },
     Windows: {
       url: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions.melonds}/melonDS-${emulatorVersions.melonds}-windows-x86_64.zip`,
@@ -145,11 +145,11 @@ export const emulatorDownloads = {
   pcsx2: {
     Linux: {
       url: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions.pcsx2}/pcsx2-v${emulatorVersions.pcsx2}-linux-appimage-x64-Qt.AppImage`,
-      hash: "8ce7de8613c17b00b01028a512dd1b81998b6626ebbe93a067e0eb20aeedd5bf",
+      hash: "0c46bb6a88aa2782b10853a7b07cf3387ba99cbef2b966372cd2315b8571abea",
     },
     Windows: {
       url: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions.pcsx2}/pcsx2-v${emulatorVersions.pcsx2}-windows-x64-Qt.7z`,
-      hash: "963ae6c82bc858a09115c2455247feb76b453862c04f60d41ef80739d802ae60",
+      hash: "7dfc829ca1994cc1045ac49f05e39b6cf968b72e6a374c40e05c2a2b4ac200b4",
     },
   },
   ppsspp: {
@@ -174,12 +174,12 @@ export const emulatorDownloads = {
   },
   rpcs3: {
     Linux: {
-      url: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-daa437904edaddc746a466d7a3c76e415bba5c00/rpcs3-v${emulatorVersions.rpcs3}-19689-daa43790_linux64.AppImage`,
-      hash: "31282b3cb265b0d61028ea66c32d38b208dadcff7baf8129be3659b0909e52f0",
+      url: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-1b1b7dea308e8385a636ddf208c77498b01bc061/rpcs3-v${emulatorVersions.rpcs3}-20337-1b1b7dea_linux64.AppImage`,
+      hash: "541649AED66A70600B14B33BBB343F3C57A3BBE1FA08CFD62101CAC91C672A71",
     },
     Windows: {
-      url: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-daa437904edaddc746a466d7a3c76e415bba5c00/rpcs3-v${emulatorVersions.rpcs3}-19689-daa43790_win64_msvc.7z`,
-      hash: "767130296a50af40a465af8393f5db92df799f96af8cc7b59191fa0767926fa5",
+      url: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-1b1b7dea308e8385a636ddf208c77498b01bc061/rpcs3-v${emulatorVersions.rpcs3}-20337-1b1b7dea_win64_msvc.7z`,
+      hash: "30F6D961875BDD24E7D9C360B6AC2AEABB08CE94CF2A2F4C706CF894CF8A5CE0",
     },
   },
   ryujinx: {
@@ -204,8 +204,8 @@ export const emulatorDownloads = {
   },
   xemu: {
     Linux: {
-      url: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-${emulatorVersions.xemu}-x86_64.AppImage`,
-      hash: "ac77363a599109194ba2af3caa695348d199f515cf1d0fde091beb629e0c3103",
+      url: `https://github.com/pkgforge-dev/xemu-AppImage-Enhanced/releases/download/${emulatorVersions.xemu}%402026-10-01_1790871942/xemu-${emulatorVersions.xemu}-anylinux-x86_64.AppImage`,
+      hash: "0c20629575d007ca666dad4e0a24ef93b5c521dcf19363574706ab0784110d12",
     },
     Windows: {
       url: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-win-x86_64-release.zip`,

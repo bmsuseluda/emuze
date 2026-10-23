@@ -11,10 +11,10 @@ import {
 export interface Result<T> {
   selectedEntry: RefObject<T | undefined>;
   resetSelected: () => void;
-  updatePosition: () => void;
   entryListRef: RefObject<HTMLUListElement | null>;
   entriesRefs: RefObject<T[]>;
   entriesRefCallback: (index: number) => (ref: T) => void;
+  setSelectedEntry: (selectedEntryValue: T) => void;
   // TODO: only for tests for now. is it possible without?
   entriesRefsGrid: RefObject<T[][]>;
 }
@@ -140,6 +140,14 @@ export const useGamepadsOnGrid = <T extends HTMLElement>({
     selectedEntry.current = undefined;
   }, []);
 
+  const setSelectedEntry = useCallback(
+    (selectedEntryValue: T) => {
+      selectedEntry.current = selectedEntryValue;
+      updatePosition(entriesRefsGrid)();
+    },
+    [updatePosition, entriesRefsGrid],
+  );
+
   const createResult = useCallback(
     (): Result<T> => ({
       entriesRefCallback,
@@ -148,7 +156,7 @@ export const useGamepadsOnGrid = <T extends HTMLElement>({
       entryListRef,
       resetSelected,
       selectedEntry,
-      updatePosition: updatePosition(entriesRefsGrid),
+      setSelectedEntry,
     }),
     [
       entriesRefCallback,
@@ -157,7 +165,7 @@ export const useGamepadsOnGrid = <T extends HTMLElement>({
       entryListRef,
       resetSelected,
       selectedEntry,
-      updatePosition,
+      setSelectedEntry,
     ],
   );
 

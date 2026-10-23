@@ -1,4 +1,4 @@
-import { styled } from "../../../styled-system/jsx/index.js";
+import { styled } from "../../../styled-system/jsx/factory.js";
 
 export const Headline = styled("h2", {
   base: {

@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import sdl from "@kmamal/sdl";
+import sdl from "@kmamal/sdl3";
 import YAML from "yaml";
 import type { Application } from "../../types.js";
 import nodepath from "node:path";

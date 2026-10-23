@@ -14,7 +14,7 @@ get-debloated-pkgs --add-common --prefer-nano
 
 npm install -g corepack
 yarn
-yarn app:dirLinux
+yarn app:dirLinux --publish=never
 yarn shrinkBundleSize
 
 mkdir -p ./AppDir/bin

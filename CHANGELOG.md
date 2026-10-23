@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.59.1 (15-10-2026)
+## 0.59.2 (15-10-2026)
 
 This release is mostly preparation work to greatly reduce the file size of the AppImage with release 0.60.0.
 Besides this fuse2 is not necessary anymore and Metainfos for AppImage Managers e.g. AM are included.

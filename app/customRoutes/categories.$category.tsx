@@ -8,7 +8,7 @@ import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/i
 import { SystemIcon } from "../components/SystemIcon/index.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
-import { readAppearance, readGeneral } from "../server/settings.server.js";
+import { readGeneral } from "../server/settings.server.js";
 import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
 import fs from "node:fs";
 import type { SystemId } from "../server/categoriesDB.server/systemId.js";
@@ -20,6 +20,8 @@ import { readCategory } from "../server/categoryDataCache.server.js";
 import { useLaunchButton } from "../hooks/useLaunchButton/index.js";
 import { SettingsLink } from "../containers/SettingsLink/index.js";
 import type { Route } from "./+types/categories.$category.js";
+import { useAppearance } from "../hooks/useAppearance/index.js";
+import { shouldRevalidateCategoriesRoute } from "./shouldRevalidateCategoriesRoute.js";
 
 export const loader = ({ params }: Route.LoaderArgs) => {
   const { category } = params;
@@ -34,8 +36,7 @@ export const loader = ({ params }: Route.LoaderArgs) => {
     return redirect("/categories");
   }
 
-  const { alwaysGameNames } = readAppearance();
-  return { categoryData, alwaysGameNames };
+  return { categoryData };
 };
 
 const importButtonId: ImportButtonId = "importGames";
@@ -106,25 +107,15 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
   );
 };
 
-export const shouldRevalidate = ({
-  actionResult,
-  defaultShouldRevalidate,
-}: {
-  actionResult: { ok: boolean };
-  defaultShouldRevalidate: boolean;
-}) => {
-  if (actionResult?.ok) {
-    return false;
-  }
-  return defaultShouldRevalidate;
-};
+export const shouldRevalidate = shouldRevalidateCategoriesRoute;
 
 const focus: FocusElement = "main";
 
 export default function Category({
-  loaderData: { categoryData, alwaysGameNames },
+  loaderData: { categoryData },
 }: Route.ComponentProps) {
   const { launchButtonRef, onExecute } = useLaunchButton();
+  const { alwaysGameNames } = useAppearance();
 
   const { isInFocus, switchFocus, switchFocusBack, enableFocus } =
     useFocus<FocusElement>(focus);

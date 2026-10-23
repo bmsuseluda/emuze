@@ -1,4 +1,4 @@
-import { styled } from "../../../styled-system/jsx/index.js";
+import { styled } from "../../../styled-system/jsx/factory.js";
 import logo from "../../../artwork/logoPlain.svg";
 
 const Overlay = styled("div", {

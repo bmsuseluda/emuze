@@ -163,14 +163,15 @@ export const action = async ({ params, request }: Route.ActionArgs) => {
 
         if (categories?.length > 0) {
           return redirect(
-            `/categories/${findCategoryToRedirect(categories, systemId)}/settings/general`,
+            `/categories/${findCategoryToRedirect(categories, systemId)}/settings/general?revalidate=true`,
           );
         }
         if (!categories || categories?.length === 0) {
           return {
+            revalidateCategories: true,
             errors: {
               categoriesPath:
-                "No supported Systems were found. The Roms need to be grouped by their System. E.g. 'Final Fantasy VII.chd' needs to be stored in a folder 'PlayStation'.",
+                "No supported Systems with Roms were found. The Roms need to be grouped by their System. E.g. 'Final Fantasy VII.chd' needs to be stored in a folder 'PlayStation'.",
             },
           };
         }
@@ -179,7 +180,7 @@ export const action = async ({ params, request }: Route.ActionArgs) => {
 
         if (categories?.length > 0) {
           return redirect(
-            `/categories/${findCategoryToRedirect(categories, systemId)}/settings/general/errorDialog`,
+            `/categories/${findCategoryToRedirect(categories, systemId)}/settings/general/errorDialog?revalidate=true`,
           );
         } else {
           throw error;
@@ -246,7 +247,7 @@ export const action = async ({ params, request }: Route.ActionArgs) => {
     }
   } catch (e) {
     log("error", "general action", e);
-    return redirect("errorDialog");
+    return redirect("errorDialog?revalidate=true");
   }
 
   return null;
@@ -300,7 +301,7 @@ export default function General({
     entriesRefCallback,
     selectedEntry,
     resetSelected,
-    updatePosition,
+    setSelectedEntry,
   } = useGamepadsOnGrid({
     onSelectEntry: selectEntry,
     isInFocus,
@@ -333,12 +334,11 @@ export default function General({
     (event: MouseEvent<ComponentRef<"button">>) => {
       if (!isInFocus) {
         switchFocus(focus);
-        selectedEntry.current = event.currentTarget;
-        updatePosition();
+        setSelectedEntry(event.currentTarget);
       }
       disableGamepads();
     },
-    [disableGamepads, isInFocus, selectedEntry, switchFocus, updatePosition],
+    [disableGamepads, isInFocus, switchFocus, setSelectedEntry],
   );
 
   return (

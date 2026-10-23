@@ -1,4 +1,4 @@
-import { styled } from "../../../styled-system/jsx/index.js";
+import { styled } from "../../../styled-system/jsx/factory.js";
 import icon from "../../../artwork/icon.svg";
 
 const Wrapper = styled("div", {

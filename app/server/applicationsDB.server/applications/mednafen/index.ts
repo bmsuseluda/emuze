@@ -9,8 +9,8 @@ import { log } from "../../../debug.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { homedir } from "node:os";
 import { normalizeString } from "../../../igdb.server.js";
-import { getMappedGamepads } from "./initGamepadIDs.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
+import { getControllersSdl3 } from "../../../gamepad.server.js";
 
 const getSharedMednafenOptionParams: OptionParamFunction = ({
   settings: {
@@ -82,19 +82,21 @@ export const mednafen: Application = {
   bundledPath,
 };
 
-const hiresGames = [
-  "Dead or Alive",
-  "DecAthlete",
-  "Fighting Vipers",
-  "Fighters Megamix",
-  "Last Bronx",
-  "Virtua Fighter 2",
-  "Winter Heat",
-].map(normalizeString);
+const highResolutionGames = new Set(
+  [
+    "Dead or Alive",
+    "DecAthlete",
+    "Fighting Vipers",
+    "Fighters Megamix",
+    "Last Bronx",
+    "Virtua Fighter 2",
+    "Winter Heat",
+  ].map(normalizeString),
+);
 
 const fixInterlacingSaturn = (gameName: string) => {
   const gameNameNormalized = normalizeString(gameName);
-  if (hiresGames.includes(gameNameNormalized)) {
+  if (highResolutionGames.has(gameNameNormalized)) {
     return ["-video.deinterlacer", "bob_offset"];
   }
 
@@ -108,8 +110,8 @@ const saturnBiosTypes = {
 export const mednafenSaturn: Application = {
   ...mednafen,
   createOptionParams: (props) => {
-    const mappedGamepads = getMappedGamepads();
-    const virtualGamepadsSaturn = getVirtualGamepadsSaturn(mappedGamepads);
+    const gamepads = getControllersSdl3();
+    const virtualGamepadsSaturn = getVirtualGamepadsSaturn(gamepads);
     log("debug", "createOptionParams", virtualGamepadsSaturn);
     return [
       ...["-force_module", "ss"],
@@ -147,8 +149,8 @@ export const mednafenSaturn: Application = {
 export const mednafenPcEngineCD: Application = {
   ...mednafen,
   createOptionParams: (props) => {
-    const mappedGamepads = getMappedGamepads();
-    const virtualGamepadsPcEngine = getVirtualGamepadsPcEngine(mappedGamepads);
+    const gamepads = getControllersSdl3();
+    const virtualGamepadsPcEngine = getVirtualGamepadsPcEngine(gamepads);
     log("debug", "createOptionParams", virtualGamepadsPcEngine);
     return [
       ...["-force_module", "pce"],

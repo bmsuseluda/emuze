@@ -1,11 +1,6 @@
-import type {
-  ComponentProps,
-  ComponentRef,
-  ReactNode,
-  SyntheticEvent,
-} from "react";
+import type { ComponentProps, ComponentRef, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
-import { styled } from "../../../../../styled-system/jsx/index.js";
+import { styled } from "../../../../../styled-system/jsx/factory.js";
 
 interface Props extends ComponentProps<typeof Input> {
   id: string;
@@ -86,6 +81,16 @@ const Image = styled("img", {
     width: "100%",
     height: "100%",
   },
+  variants: {
+    visible: {
+      true: {
+        display: "initial",
+      },
+      false: {
+        display: "none",
+      },
+    },
+  },
 });
 
 const IconWrapper = styled("div", {
@@ -147,10 +152,10 @@ export const getDisplayedName = (
   name: string,
   alwaysGameName: boolean,
   isImage: boolean,
-  error: boolean,
+  loaded: boolean,
 ) => {
   const nameWithoutAdditionalInfo = name.split(" (")[0];
-  if (error) {
+  if (!loaded) {
     return nameWithoutAdditionalInfo;
   }
 
@@ -159,14 +164,6 @@ export const getDisplayedName = (
   }
 
   return nameWithoutAdditionalInfo;
-};
-
-const getImageSrc = ({ imageUrl }: { imageUrl?: string }) => {
-  if (!imageUrl) {
-    return fallbackImageUrl;
-  }
-
-  return imageUrl;
 };
 
 export const Game = ({
@@ -180,33 +177,25 @@ export const Game = ({
   isInFocus,
   ref,
 }: Props) => {
-  const [error, setError] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   // TODO: remove ref and useEffect if bug is resolved https://github.com/facebook/react/issues/15446
   const imageRef = useRef<ComponentRef<"img">>(null);
   useEffect(() => {
     if (imageRef && imageRef.current) {
       const { complete, naturalHeight } = imageRef.current;
-      const errorLoadingImgBeforeHydration = complete && naturalHeight === 0;
-
-      if (errorLoadingImgBeforeHydration) {
-        setError(true);
-        imageRef.current.src = fallbackImageUrl;
-      }
+      setLoaded(complete && naturalHeight > 0);
+    } else {
+      setLoaded(false);
     }
-  }, []);
+  }, [imageUrl]);
 
   const displayedName = getDisplayedName(
     name,
     alwaysGameName,
     !!imageUrl,
-    error,
+    loaded,
   );
-
-  const handleImageError = (event: SyntheticEvent<HTMLImageElement, Event>) => {
-    setError(true);
-    event.currentTarget.src = fallbackImageUrl;
-  };
 
   return (
     <Wrapper>
@@ -218,13 +207,29 @@ export const Game = ({
         <Input type="radio" name="game" value={id} ref={ref} />
         <ImageWrapper>
           {icon && <IconWrapper>{icon}</IconWrapper>}
-          <Image
-            src={getImageSrc({ imageUrl })}
-            alt={`${name} cover`}
-            draggable={false}
-            onError={handleImageError}
-            ref={imageRef}
-          />
+
+          {!!imageUrl && (
+            <Image
+              src={imageUrl}
+              alt={`${name} cover`}
+              ref={imageRef}
+              draggable={false}
+              onLoad={() => {
+                setLoaded(true);
+              }}
+              decoding="async"
+              visible={loaded}
+            />
+          )}
+
+          {!loaded && (
+            <Image
+              src={fallbackImageUrl}
+              alt={`${name} cover`}
+              draggable={false}
+            />
+          )}
+
           {displayedName && <Name>{displayedName}</Name>}
         </ImageWrapper>
       </Label>

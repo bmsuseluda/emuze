@@ -19,6 +19,7 @@ import { readCategory } from "../server/categoryDataCache.server.js";
 import { useLaunchButton } from "../hooks/useLaunchButton/index.js";
 import { Dialog } from "../components/Dialog/index.js";
 import type { Route } from "./+types/categories.$category.$gameId.js";
+import { shouldRevalidateCategoriesRoute } from "./shouldRevalidateCategoriesRoute.js";
 
 const getGameData = (category: SystemId, gameId: string) => {
   let systemId: SystemId | undefined;
@@ -124,18 +125,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
   );
 };
 
-export const shouldRevalidate = ({
-  actionResult,
-  defaultShouldRevalidate,
-}: {
-  actionResult: { ok: boolean };
-  defaultShouldRevalidate: boolean;
-}) => {
-  if (actionResult?.ok) {
-    return false;
-  }
-  return defaultShouldRevalidate;
-};
+export const shouldRevalidate = shouldRevalidateCategoriesRoute;
 
 const focus: FocusElement = "gameDialog";
 

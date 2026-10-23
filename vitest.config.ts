@@ -1,5 +1,5 @@
 import { defineConfig, mergeConfig } from "vitest/config";
-import viteConfig from "./vite.config";
+import viteConfig from "./vite.config.js";
 
 // This is intentional to remove plugins from testing
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -10,7 +10,8 @@ export default mergeConfig(
   defineConfig({
     test: {
       globals: true,
-      environment: "happy-dom",
+      environment: "node",
+      fsModuleCache: true,
     },
   }),
 );

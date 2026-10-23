@@ -1,7 +1,7 @@
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout/index.js";
 import { SidebarNavigationLink } from "../containers/SidebarNavigationLink/index.js";
-import { categories, readAppearance } from "../server/settings.server.js";
+import { categories } from "../server/settings.server.js";
 import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar/index.js";
 import { SettingsIcon } from "../components/SettingsIcon/index.js";
 import { useFocus } from "../hooks/useFocus/index.js";
@@ -18,17 +18,17 @@ import {
 import { CloseDialogContainer } from "../containers/CloseDialog/index.js";
 import { useCreateSystemFoldersButton } from "../containers/CreateSystemFoldersButton/useCreateSystemFoldersButton.js";
 import { Route } from "./+types/categories.$category.settings.js";
+import { useAppearance } from "../hooks/useAppearance/index.js";
 
 export const loader = () => {
-  const { collapseSidebar } = readAppearance();
-
-  return { categories, collapseSidebar };
+  return { categories };
 };
 
 export default function Index({
-  loaderData: { categories, collapseSidebar },
+  loaderData: { categories },
 }: Route.ComponentProps) {
   const { pathname } = useLocation();
+  const { collapseSidebar } = useAppearance();
 
   const closable = useMemo(() => !pathname.startsWith("/settings"), [pathname]);
 
