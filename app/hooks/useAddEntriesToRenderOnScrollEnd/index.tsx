@@ -11,7 +11,6 @@ export const useAddEntriesToRenderOnScrollEnd = (entries: Entry[]) => {
   const addEntriesToRender = useCallback(() => {
     setEntriesToRender((entriesToRender) => {
       if (entriesToRender.length < entries.length) {
-        console.log("addEntriesToRender", entriesToRender.length);
         return [
           ...entriesToRender,
           ...entries.slice(

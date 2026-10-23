@@ -2,6 +2,23 @@ import debounce from "lodash.debounce";
 import type { ComponentRef, RefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
 
+export const calculateRowIndex = (
+  indexFromEntriesRef: number,
+  gamesPerRow: number,
+) => Math.ceil((indexFromEntriesRef + 1) / gamesPerRow) - 1;
+
+export const calculateEntryIndexInRow = (
+  indexFromEntriesRef: number,
+  gamesPerRow: number,
+) => {
+  const remaining = (indexFromEntriesRef + 1) % gamesPerRow;
+  if (remaining === 0) {
+    return gamesPerRow - 1;
+  }
+
+  return remaining - 1;
+};
+
 /**
  * @param onCreateGrid callback when entriesRefsGrid will be created or updated
  **/
@@ -15,11 +32,14 @@ export const useRefsGrid = <T extends HTMLElement>(
 
   const addEntryToRefsGrid = useCallback(
     (entry: T, indexFromEntriesRef: number) => {
-      const rowIndex = Math.floor(
-        (indexFromEntriesRef + 1) / gamesPerRowRef.current,
+      const rowIndex = calculateRowIndex(
+        indexFromEntriesRef,
+        gamesPerRowRef.current,
       );
-      const entryIndexPerRow =
-        ((indexFromEntriesRef + 1) % gamesPerRowRef.current) - 1;
+      const entryIndexPerRow = calculateEntryIndexInRow(
+        indexFromEntriesRef,
+        gamesPerRowRef.current,
+      );
 
       if (!entriesRefsGrid.current[rowIndex]) {
         entriesRefsGrid.current[rowIndex] = [];
@@ -87,7 +107,6 @@ export const useRefsGrid = <T extends HTMLElement>(
     resizeObserver.observe(entryListCopy.parentElement!);
 
     return () => {
-      resizeObserver.unobserve(entryListCopy.parentElement!);
       resizeObserver.disconnect();
     };
   }, [createRefsGrid, entryListRef]);

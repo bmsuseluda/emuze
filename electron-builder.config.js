@@ -43,6 +43,7 @@ const config = {
     },
     mac: {
         target: [{ target: "default", arch: "arm64" }],
+        icon: "public/icons/icon512x512.png",
     },
     electronLanguages: ["en-US"],
     afterPack: "./afterPackScript.js",
