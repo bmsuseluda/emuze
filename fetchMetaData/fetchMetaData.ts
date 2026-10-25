@@ -1,4 +1,7 @@
-import { fetchMetaDataForSystem } from "./igdb.js";
+import {
+  fetchMultitapGamesForPlatformIds,
+  fetchNameAndCoverForPlatformIds,
+} from "./igdb.js";
 import { writeFile } from "../app/server/readWriteData.server.js";
 import nodepath from "node:path";
 import type { SystemId } from "../app/server/categoriesDB.server/systemId.js";
@@ -50,7 +53,7 @@ const addNormalizedIfNotExist = (
   }
 };
 
-export const fetchMetaData = async (systemId: SystemId) => {
+export const fetchNameAndCoverForSystem = async (systemId: SystemId) => {
   const filePath = nodepath.join(__dirname, "systems", `${systemId}.json`);
 
   if (!existsSync(filePath)) {
@@ -58,7 +61,10 @@ export const fetchMetaData = async (systemId: SystemId) => {
     const nameMapping = await getNameMapping(systemId);
     const maxReleaseDate = maxReleaseDates[systemId];
 
-    const result = await fetchMetaDataForSystem(platformIds, maxReleaseDate);
+    const result = await fetchNameAndCoverForPlatformIds(
+      platformIds,
+      maxReleaseDate,
+    );
 
     const entries: Record<string, string> = {};
 
@@ -100,10 +106,67 @@ export const fetchMetaData = async (systemId: SystemId) => {
   }
 };
 
+export const fetchMultitapGamesForSystem = async (systemId: SystemId) => {
+  const filePath = nodepath.join(
+    __dirname,
+    "multitapGames",
+    `${systemId}.json`,
+  );
+
+  if (!existsSync(filePath)) {
+    const platformIds = categories[systemId].igdbPlatformIds;
+
+    const result = await fetchMultitapGamesForPlatformIds(platformIds);
+
+    const entries = new Set();
+
+    for (const { name } of result) {
+      entries.add(normalizeString(name));
+    }
+
+    for (const { name, game_localizations, alternative_names } of result) {
+      game_localizations?.forEach((localization) => {
+        if (localization.name && localization.name !== name) {
+          entries.add(normalizeString(localization.name));
+        }
+      });
+      alternative_names?.forEach((alternativeName) => {
+        entries.add(normalizeString(alternativeName.name));
+      });
+    }
+
+    writeFile(Array.from(entries), filePath);
+  }
+};
+
+const multitapSystems: SystemId[] = [
+  "nintendoentertainmentsystem",
+  "supernintendo",
+  "segamastersystem",
+  "segamegadrive",
+  "segasaturn",
+  "sonyplaystation",
+  "sonyplaystation2",
+  "pcengine",
+  "pcenginecd",
+];
+
+export const fetchMultitapGamesForAllSystems = async () => {
+  for (const id of multitapSystems) {
+    await fetchMultitapGamesForSystem(id)
+      .then(() => {
+        console.log(`fetchMultitapGames completed for ${id}`);
+      })
+      .catch((error) => {
+        console.log(`error for ${id}`, error);
+      });
+  }
+};
+
 export const fetchMetaDataForAllSystems = async () => {
   for (const { id } of Object.values(categories)) {
     if (id !== "lastPlayed") {
-      await fetchMetaData(id)
+      await fetchNameAndCoverForSystem(id)
         .then(() => {
           console.log(`fetchMetaData completed for ${id}`);
         })
