@@ -1,3 +1,7 @@
-import { fetchMetaDataForAllSystems } from "./fetchMetaData.js";
+import {
+  fetchMetaDataForAllSystems,
+  fetchMultitapGamesForAllSystems,
+} from "./fetchMetaData.js";
 
 fetchMetaDataForAllSystems();
+fetchMultitapGamesForAllSystems();

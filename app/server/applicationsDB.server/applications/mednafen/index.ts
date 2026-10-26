@@ -11,6 +11,7 @@ import { homedir } from "node:os";
 import { normalizeString } from "../../../igdb.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { getControllersSdl3 } from "../../../gamepad.server.js";
+import multitapGamesSaturn from "../../../../../fetchMetaData/multitapGames/segasaturn.json" with { type: "json" };
 
 const getSharedMednafenOptionParams: OptionParamFunction = ({
   settings: {
@@ -103,6 +104,22 @@ const fixInterlacingSaturn = (gameName: string) => {
   return [];
 };
 
+const setMultitapSaturn = (gameName: string) => {
+  const gameNameNormalized = normalizeString(gameName);
+  const multitapGamesSet = new Set(multitapGamesSaturn);
+  const isMultitapGame = multitapGamesSet.has(gameNameNormalized);
+  const isDoubleMultitapGame =
+    isMultitapGame && gameNameNormalized.includes("bomberman");
+
+  const multitapModePort1 = isDoubleMultitapGame ? "1" : "0";
+  const multitapModePort2 = isMultitapGame ? "1" : "0";
+
+  return [
+    ...["-ss.input.sport1.multitap", multitapModePort1],
+    ...["-ss.input.sport2.multitap", multitapModePort2],
+  ];
+};
+
 const saturnBiosTypes = {
   us: "na_eu",
   japan: "jp",
@@ -120,6 +137,7 @@ export const mednafenSaturn: Application = {
         filePath,
       ]),
       ...fixInterlacingSaturn(props.entryData.name),
+      ...setMultitapSaturn(props.entryData.name),
       ...mednafen.createOptionParams!(props),
       ...virtualGamepadsSaturn,
     ];

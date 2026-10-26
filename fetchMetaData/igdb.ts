@@ -34,24 +34,20 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const getFilterMaxReleaseDate = (maxReleaseDate?: number) =>
   maxReleaseDate ? ` & first_release_date < ${maxReleaseDate}` : "";
 
-const fetchMetaDataForSystemWithOffset = async (
+const filterMultitap =
+  "& (multiplayer_modes.offlinemax > 2 | multiplayer_modes.offlinecoopmax > 2)";
+
+const fetchMetaDataForPlatformIdWithOffset = async (
   platformId: number,
+  fields: string | string[],
+  where: string | string[],
   offset: number,
-  maxReleaseDate?: number,
 ): Promise<Game[]> => {
   const gamesResponse = await retryPromise(
     () =>
       client
-        .fields([
-          "name",
-          "cover.image_id",
-          "alternative_names.name",
-          "game_localizations.name",
-          "game_localizations.cover.image_id",
-        ])
-        .where(
-          `platforms=(${platformId})${getFilterMaxReleaseDate(maxReleaseDate)}`,
-        )
+        .fields(fields)
+        .where(`platforms=(${platformId})${where}`)
         .limit(igdbResponseLimit)
         .offset(offset)
         .sort("id")
@@ -79,10 +75,11 @@ const fetchMetaDataForSystemWithOffset = async (
   if (gamesResponse.data.length === igdbResponseLimit) {
     return [
       ...gamesResponse.data,
-      ...(await fetchMetaDataForSystemWithOffset(
+      ...(await fetchMetaDataForPlatformIdWithOffset(
         platformId,
+        fields,
+        where,
         offset + igdbResponseLimit,
-        maxReleaseDate,
       )),
     ];
   }
@@ -90,21 +87,54 @@ const fetchMetaDataForSystemWithOffset = async (
   return gamesResponse.data;
 };
 
-export const fetchMetaDataForSystem = async (
+export const fetchMetaDataForPlatformId = async (
   platformIds: number[],
-  maxReleaseDate?: number,
+  fields: string | string[],
+  where: string | string[],
 ) => {
   const entriesWithMetaData: Game[] = [];
 
   for (const platformId of platformIds) {
     entriesWithMetaData.push(
-      ...(await fetchMetaDataForSystemWithOffset(
+      ...(await fetchMetaDataForPlatformIdWithOffset(
         platformId,
+        fields,
+        where,
         0,
-        maxReleaseDate,
       )),
     );
   }
 
   return entriesWithMetaData;
+};
+
+export const fetchNameAndCoverForPlatformIds = async (
+  platformIds: number[],
+  maxReleaseDate?: number,
+) => {
+  const fields = [
+    "name",
+    "cover.image_id",
+    "alternative_names.name",
+    "game_localizations.name",
+    "game_localizations.cover.image_id",
+  ];
+  const where = getFilterMaxReleaseDate(maxReleaseDate);
+
+  return fetchMetaDataForPlatformId(platformIds, fields, where);
+};
+
+export const fetchMultitapGamesForPlatformIds = async (
+  platformIds: number[],
+) => {
+  const fields = [
+    "name",
+    "alternative_names.name",
+    "game_localizations.name",
+    "multiplayer_modes.offlinemax",
+    "multiplayer_modes.offlinecoopmax",
+  ];
+  const where = filterMultitap;
+
+  return fetchMetaDataForPlatformId(platformIds, fields, where);
 };
