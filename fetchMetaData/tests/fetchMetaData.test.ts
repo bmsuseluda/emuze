@@ -2,7 +2,7 @@ import { fetchNameAndCoverForSystem } from "../fetchMetaData.js";
 import { writeFile } from "../../app/server/readWriteData.server.js";
 import { existsSync } from "node:fs";
 import type { Game } from "../igdb.js";
-import { fetchMetaDataForPlatformId } from "../igdb.js";
+import { fetchNameAndCoverForPlatformIds } from "../igdb.js";
 import type { SystemId } from "../../app/server/categoriesDB.server/systemId.js";
 import nodepath from "node:path";
 
@@ -41,7 +41,7 @@ describe("fetchMetaData", () => {
         ],
       },
     ];
-    vi.mocked(fetchMetaDataForPlatformId).mockResolvedValue(igdbResult);
+    vi.mocked(fetchNameAndCoverForPlatformIds).mockResolvedValue(igdbResult);
     vi.mocked(existsSync).mockReturnValue(false);
 
     const systemId = "nintendoentertainmentsystem";
@@ -75,7 +75,7 @@ describe("fetchMetaData", () => {
         ],
       },
     ];
-    vi.mocked(fetchMetaDataForPlatformId).mockResolvedValue(igdbResult);
+    vi.mocked(fetchNameAndCoverForPlatformIds).mockResolvedValue(igdbResult);
     vi.mocked(existsSync).mockReturnValue(false);
 
     const systemId = "segamegadrive";
@@ -102,7 +102,7 @@ describe("fetchMetaData", () => {
         name: "Teenage Mutant Ninja Turtles 3",
       },
     ];
-    vi.mocked(fetchMetaDataForPlatformId).mockResolvedValue(igdbResult);
+    vi.mocked(fetchNameAndCoverForPlatformIds).mockResolvedValue(igdbResult);
     vi.mocked(existsSync).mockReturnValue(false);
 
     const systemId = "nintendoentertainmentsystem";
@@ -138,7 +138,7 @@ describe("fetchMetaData", () => {
         ],
       },
     ];
-    vi.mocked(fetchMetaDataForPlatformId).mockResolvedValue(igdbResult);
+    vi.mocked(fetchNameAndCoverForPlatformIds).mockResolvedValue(igdbResult);
     vi.mocked(existsSync).mockReturnValue(false);
 
     const systemId = "nintendoentertainmentsystem";
@@ -162,7 +162,7 @@ describe("fetchMetaData", () => {
         },
       },
     ];
-    vi.mocked(fetchMetaDataForPlatformId).mockResolvedValue(igdbResult);
+    vi.mocked(fetchNameAndCoverForPlatformIds).mockResolvedValue(igdbResult);
     vi.mocked(existsSync).mockReturnValue(false);
 
     const systemId = "nintendoentertainmentsystem";
