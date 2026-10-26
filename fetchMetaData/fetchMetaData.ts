@@ -113,42 +113,38 @@ export const fetchMultitapGamesForSystem = async (systemId: SystemId) => {
     `${systemId}.json`,
   );
 
-  if (!existsSync(filePath)) {
-    const platformIds = categories[systemId].igdbPlatformIds;
+  const platformIds = categories[systemId].igdbPlatformIds;
 
-    const result = await fetchMultitapGamesForPlatformIds(platformIds);
+  const result = await fetchMultitapGamesForPlatformIds(platformIds);
 
-    const entries = new Set();
+  const entries = new Set();
 
-    for (const { name } of result) {
-      entries.add(normalizeString(name));
-    }
-
-    for (const { name, game_localizations, alternative_names } of result) {
-      game_localizations?.forEach((localization) => {
-        if (localization.name && localization.name !== name) {
-          entries.add(normalizeString(localization.name));
-        }
-      });
-      alternative_names?.forEach((alternativeName) => {
-        entries.add(normalizeString(alternativeName.name));
-      });
-    }
-
-    writeFile(Array.from(entries), filePath);
+  for (const { name } of result) {
+    entries.add(normalizeString(name));
   }
+
+  for (const { name, game_localizations, alternative_names } of result) {
+    game_localizations?.forEach((localization) => {
+      if (localization.name && localization.name !== name) {
+        entries.add(normalizeString(localization.name));
+      }
+    });
+    alternative_names?.forEach((alternativeName) => {
+      entries.add(normalizeString(alternativeName.name));
+    });
+  }
+
+  writeFile(Array.from(entries), filePath);
 };
 
 const multitapSystems: SystemId[] = [
   "nintendoentertainmentsystem",
   "supernintendo",
-  "segamastersystem",
   "segamegadrive",
   "segasaturn",
   "sonyplaystation",
   "sonyplaystation2",
   "pcengine",
-  "pcenginecd",
 ];
 
 export const fetchMultitapGamesForAllSystems = async () => {

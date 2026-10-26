@@ -34,7 +34,8 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const getFilterMaxReleaseDate = (maxReleaseDate?: number) =>
   maxReleaseDate ? ` & first_release_date < ${maxReleaseDate}` : "";
 
-const filterMultitap = "& multiplayer_modes.offlinemax > 2";
+const filterMultitap =
+  "& (multiplayer_modes.offlinemax > 2 | multiplayer_modes.offlinecoopmax > 2)";
 
 const fetchMetaDataForPlatformIdWithOffset = async (
   platformId: number,
@@ -131,6 +132,7 @@ export const fetchMultitapGamesForPlatformIds = async (
     "alternative_names.name",
     "game_localizations.name",
     "multiplayer_modes.offlinemax",
+    "multiplayer_modes.offlinecoopmax",
   ];
   const where = filterMultitap;
 
