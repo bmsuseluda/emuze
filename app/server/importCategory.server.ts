@@ -43,32 +43,6 @@ interface EntryWithoutSubEntries extends Entry {
   subEntries?: never;
 }
 
-/**
- * TODO: Remove after some releases
- */
-const migrateToIdBasedOnFindEntryName = (
-  oldEntry: Entry,
-  filename: string,
-  index: number,
-  findEntryName?: FindEntryNameFunction,
-) => {
-  if (findEntryName) {
-    const idToCheck = convertToId(
-      filterGameNameFromFileName(filename),
-      0,
-    ).slice(0, -1);
-    if (oldEntry.id.startsWith(idToCheck)) {
-      log("debug", "migrateId", oldEntry);
-      return {
-        ...oldEntry,
-        id: convertToId(oldEntry.name, index),
-      };
-    }
-  }
-
-  return oldEntry;
-};
-
 const createEntry = ({
   filename,
   categoryPath,
@@ -93,13 +67,7 @@ const createEntry = ({
   const oldMetaData = oldData?.metaData;
 
   if (oldMetaData && oldMetaData.expiresOn > now) {
-    const migratedOldData = migrateToIdBasedOnFindEntryName(
-      oldData,
-      filename,
-      index,
-      findEntryName,
-    );
-    return { ...migratedOldData, subEntries: undefined };
+    return { ...oldData, subEntries: undefined };
   }
 
   const name = filterGameNameFromFileName(filename);
@@ -157,7 +125,7 @@ const removeAdditionalInfo = (gameName: string) => gameName.split(" (")[0];
 const isSameBaseGame = (gameName: string, lastGameName?: string) =>
   lastGameName &&
   removeAdditionalInfo(gameName).toLowerCase().trim() ===
-    removeAdditionalInfo(lastGameName).toLowerCase().trim();
+  removeAdditionalInfo(lastGameName).toLowerCase().trim();
 
 // This is intentional to remove metaData
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
