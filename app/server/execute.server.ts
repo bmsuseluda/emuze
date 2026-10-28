@@ -78,7 +78,7 @@ const executeApplication = (file: string, args: string[]) => {
 
     registerCloseGameOnKeyboardEvent();
 
-    childProcess.on("close", () => {
+    childProcess.on("exit", () => {
       unregisterCloseGameOnKeyboardEvent();
 
       setTimeout(() => {
