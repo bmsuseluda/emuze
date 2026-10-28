@@ -4,7 +4,7 @@ export const emulatorVersions = {
   ares: "148",
   azahar: "2126.1.2",
   cemu: "2.6",
-  dolphin: "2609",
+  dolphin: "2609a",
   dosboxpure: "1.0-preview7",
   duckstation: "0.1-7371",
   eden: "0.2.1",
@@ -17,7 +17,7 @@ export const emulatorVersions = {
   rosaliesMupenGui: "0.9.0",
   rpcs3: "0.0.43",
   ryujinx: "1.3.3",
-  scummvm: "2026.3.0",
+  scummvm: "2026.4.0",
   xemu: "0.8.136",
 } satisfies Record<ApplicationId, string>;
 
@@ -64,12 +64,12 @@ export const emulatorDownloads = {
   },
   dolphin: {
     Linux: {
-      url: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions.dolphin}%402026-10-01_1790876487/Dolphin_Emulator-${emulatorVersions.dolphin}-anylinux-x86_64.AppImage`,
-      hash: "d033d883870c3cd3224fa28b8b70ac932f464f4f6c3dea4e331f875c811d437a",
+      url: `https://github.com/pkgforge-dev/Dolphin-emu-AppImage/releases/download/${emulatorVersions.dolphin}%402026-10-22_1792688909/Dolphin_Emulator-${emulatorVersions.dolphin}-anylinux-x86_64.AppImage`,
+      hash: "46f94dfea10e8a480e98ac128276a6ce2761cf0308e67f66b11be80fc48565df",
     },
     Windows: {
       url: `https://dl.dolphin-emu.org/releases/${emulatorVersions.dolphin}/dolphin-${emulatorVersions.dolphin}-x64.7z`,
-      hash: "1aa25785b7d4cb76259754c5fbcdd8856857b8e7bb4e523c57a8ac56665fba75",
+      hash: "bbfd13bf9e6d2a4164a15c392b1f32a9b18150e5136746b388704608fbb60f76",
     },
   },
   dosboxpure: {
@@ -85,7 +85,7 @@ export const emulatorDownloads = {
   duckstation: {
     Linux: {
       url: `https://github.com/pkgforge-dev/DuckStation-GPL-AppImage-Enhanced/releases/download/0.1.7465-7%402026-05-01_1777674496/DuckStation-0.1.7465-7-anylinux-x86_64.AppImage`,
-      hash: "sha256:3902115dbff11cdd44133b34c24c2dfbcac35cda092bab9c8e61604158304b2b",
+      hash: "3902115dbff11cdd44133b34c24c2dfbcac35cda092bab9c8e61604158304b2b",
     },
     Windows: {
       url: `https://github.com/Kyuyrii/Duckstation-GPL3/releases/download/v${emulatorVersions.duckstation}/duckstation-windows-x64-release.zip`,
@@ -194,12 +194,12 @@ export const emulatorDownloads = {
   },
   scummvm: {
     Linux: {
-      url: `https://github.com/pkgforge-dev/ScummVM-AppImage/releases/download/${emulatorVersions.scummvm}-1%402026-08-01_1785585620/ScummVM-${emulatorVersions.scummvm}-1-anylinux-x86_64.AppImage`,
-      hash: "7f80981cfa7e1956b83a6abb3c8aff1cade0fddef834b1bcb43804be6f80fa1f",
+      url: `https://github.com/pkgforge-dev/ScummVM-AppImage/releases/download/${emulatorVersions.scummvm}-1%402026-10-22_1792688032/ScummVM-${emulatorVersions.scummvm}-1-anylinux-x86_64.AppImage`,
+      hash: "650e40d4c5143eee19461d3f0bc450e527899944cfd1e3560b7873e235dc0bac",
     },
     Windows: {
       url: `https://downloads.scummvm.org/frs/scummvm/${emulatorVersions.scummvm}/scummvm-${emulatorVersions.scummvm}-win32-x86_64.zip`,
-      hash: "ba0af3fd6cf0d281c623d48b23c77a4b4775860d496195155e6ceb281e0fff95",
+      hash: "fb60cfc0828ed86ef24a60c04b9390676493ab85892d81c56d1de90367d56736",
     },
   },
   xemu: {
