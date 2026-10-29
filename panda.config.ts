@@ -1,4 +1,9 @@
-import { defineConfig, defineGlobalStyles, defineUtility } from "@pandacss/dev";
+import {
+  Config,
+  defineConfig,
+  defineGlobalStyles,
+  defineUtility,
+} from "@pandacss/dev";
 
 // TODO: round
 // TODO: use calc of base value instead of
@@ -49,20 +54,27 @@ const outlineRounded = defineUtility({
   },
 });
 
-export default defineConfig({
-  forceConsistentTypeExtension: true,
+const config: Config = {
+  forceImportExtension: true,
   preflight: true,
-  eject: true,
   // strictTokens: true,
   strictPropertyValues: true,
   presets: ["@pandacss/preset-base"],
   jsxFramework: "react",
   jsxStyleProps: "none",
   outExtension: "js",
-  watch: process.env.NODE_ENV !== "production",
   minify: process.env.NODE_ENV === "production",
   hash: process.env.NODE_ENV === "production",
-  include: ["./app/**/*.{ts,tsx}", "./.storybook/preview.tsx"],
+  optimize: {
+    removeUnusedTokens: true,
+    removeUnusedKeyframes: true,
+    smartCompoundVariants: true,
+    treeshakeDesignSystem: true,
+  },
+  include:
+    process.env.NODE_ENV === "production"
+      ? ["./app/**/*.{ts,tsx}"]
+      : ["./app/**/*.{ts,tsx}", "./.storybook/preview.tsx"],
   exclude: [],
 
   globalCss,
@@ -248,4 +260,6 @@ export default defineConfig({
   },
 
   outdir: "styled-system",
-});
+};
+
+export default defineConfig(config);

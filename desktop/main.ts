@@ -151,8 +151,7 @@ app.on("ready", async () => {
   });
 
   ipcMain.handle("closeEmuze", () => {
-    // app.quit();
-    app.exit();
+    app.quit();
   });
 
   window.webContents.on("before-input-event", (event, input) => {
