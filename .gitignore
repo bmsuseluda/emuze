@@ -21,3 +21,4 @@ coverage
 /biosOpenSource/
 .react-router/
 .yarn/install-state.gz
+.DS_Store
