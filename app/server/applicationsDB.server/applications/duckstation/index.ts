@@ -197,7 +197,7 @@ export const duckstation: Application = {
         },
         {
           filename: "openbios.bin",
-          hash: "ac81ad019d82a9a09dd8ccc06eac184ca11f3fe4b868685c046bf33a044ade51",
+          hash: "bc36eb489efc42a08559e50daf5d9307056fc6f31253f37b1b912ff28fb731c9",
         },
       ],
     },

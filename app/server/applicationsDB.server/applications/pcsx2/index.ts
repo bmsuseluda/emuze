@@ -216,6 +216,10 @@ export const pcsx2: Application = {
           filename: "PS2 Bios 30004R V6 Pal.bin",
           hash: "ee7ae4cc152588b7da1dab17494a321ceafafaf799769baea4e8a28afa5044b1",
         },
+        {
+          filename: "OpenPS2BIOS-0.5.bin",
+          hash: "e6d3b308ba10a8603bad929f59e50f8c023acc2c297aaa82ec0bd155e99b98fc",
+        },
       ],
     },
   ],
@@ -239,5 +243,6 @@ export const pcsx2: Application = {
     }
     return optionParams;
   },
+  bundledBiosOpenSource: true,
   bundledPath,
 };

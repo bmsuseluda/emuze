@@ -10,7 +10,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { biosOpenSourceHomeDirectory } from "../homeDirectory.server.js";
 
 const createHash = (filepath: string) =>
-  crypto.createHash("sha512").update(readFileSync(filepath)).digest("hex");
+  crypto.createHash("sha256").update(readFileSync(filepath)).digest("hex");
 
 const findFilenameOrHash =
   ({ filename, hash }: RequiredFile) =>
