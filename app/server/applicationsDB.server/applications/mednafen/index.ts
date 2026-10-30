@@ -150,6 +150,10 @@ export const mednafenSaturn: Application = {
           filename: "mpr-17933.bin",
           hash: "96e106f740ab448cf89f0dd49dfbac7fe5391cb6bd6e14ad5e3061c13330266f",
         },
+        {
+          filename: "boot.rom",
+          hash: "2bdb2d34aee13ba0a0d02362e59158aa325680a8b1e990dac6323f77a7bc8bac",
+        },
       ],
     },
     {
@@ -159,9 +163,14 @@ export const mednafenSaturn: Application = {
           filename: "sega_101.bin",
           hash: "dcfef4b99605f872b6c3b6d05c045385cdea3d1b702906a0ed930df7bcb7deac",
         },
+        {
+          filename: "boot.rom",
+          hash: "2bdb2d34aee13ba0a0d02362e59158aa325680a8b1e990dac6323f77a7bc8bac",
+        },
       ],
     },
   ],
+  bundledBiosOpenSource: true,
 };
 
 export const mednafenPcEngineCD: Application = {
