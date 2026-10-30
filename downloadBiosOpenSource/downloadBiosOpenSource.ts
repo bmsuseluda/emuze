@@ -42,6 +42,13 @@ export const emulatorsBios: BiosDownloadDefinition[] = [
     homepage: "https://github.com/TamaribaEmu/OpenPS2BIOS",
     path: "https://github.com/TamaribaEmu/OpenPS2BIOS/releases/download/v0.5/OpenPS2BIOS-0.5.bin",
   },
+  {
+    name: "saturn-open-bios",
+    system: "segasaturn",
+    homepage: "https://github.com/viruztt/saturn-open-bios",
+    path: "https://github.com/viruztt/saturn-open-bios/releases/download/v0.1.0/saturn-open-bios-v0.1.0.zip",
+    subPath: "boot.rom",
+  },
 ];
 
 const __dirname = import.meta.dirname;

@@ -99,8 +99,69 @@ export const replaceFilenamesConfig =
       { keyValue: `BIOS = ${nodepath.basename(biosFiles.at(0)!.filePath)}` },
     ]);
 
+// TODO: Remove when igdb is updated
+const multitapGamesFallback = [
+  "ATV Offroad Fury",
+  "ATV Offroad Fury 2",
+  "ATV Offroad Fury 3",
+  "ATV Offroad Fury 4",
+  "Crash Nitro Kart",
+  "Champions of Norrath",
+  "Champions: Return to Arms",
+  "Dead or Alive 2",
+  "Def Jam Vendetta",
+  "Def Jam: Fight for NY",
+  "Digimon Rumble Arena 2",
+  "Digimon World 4",
+  "F1 Championship Season 2000",
+  "Gauntlet Dark Legacy",
+  "Kung Fu Panda",
+  "Looney Tunes: Space Race",
+  "Marvel Super Hero Squad",
+  "Marvel: Ultimate Alliance",
+  "Mashed: Drive to Survive",
+  "Mashed: Fully Loaded",
+  "Monopoly Party",
+  "Nicktoons Unite!",
+  "Ratchet & Clank: Up Your Arsenal",
+  "Ratchet: Deadlocked",
+  "Rayman M",
+  "Rayman Raving Rabbids",
+  "Sega Classics Collection",
+  "Sega Superstars Tennis",
+  "The Simpsons: Hit & Run",
+  "Samurai Warriors 2",
+  "Shrek 2",
+  "Shrek SuperSlam",
+  "Sonic Riders",
+  "Sonic Riders: Zero Gravity",
+  "SpongeBob SquarePants: Lights, Camera, Pants!",
+  "The Grim Adventures of Billy & Mandy",
+  "Tekken Tag Tournament",
+  "TimeSplitters",
+  "TimeSplitters 2",
+  "TimeSplitters: Future Perfect",
+  "Twisted Metal: Black",
+  "Bombastic",
+  "Risk: Global Domination",
+  "WWE SmackDown! Shut Your Mouth",
+  "WWE SmackDown! Here Comes the Pain",
+  "WWE SmackDown! vs. RAW",
+  "WWE SmackDown! vs. RAW 2006",
+  "WWE SmackDown vs. RAW 2007",
+  "WWE SmackDown vs. Raw 2008",
+  "WWE SmackDown vs. Raw 2009",
+  "WWE SmackDown vs. Raw 2010",
+  "WWE SmackDown vs. Raw 2011",
+  "FIFA Football 2005",
+  "WWF SmackDown! Just Bring It",
+].map(normalizeString);
+
 const checkIsMultitapGame = (gameName: string) => {
-  const multitapGamesSet = new Set(multitapGames);
+  const multitapGamesSet = new Set([
+    ...multitapGames,
+    ...multitapGamesFallback,
+  ]);
   return multitapGamesSet.has(normalizeString(gameName));
 };
 

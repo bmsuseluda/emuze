@@ -141,6 +141,7 @@
     "madge": "8.0.0",
     "mmarkdown": "1.0.0",
     "oxlint": "1.90.0",
+    "postcss": "8.5.32",
     "prettier": "3.9.10",
     "prop-types": "15.8.1",
     "require-from-string": "2.0.2",
