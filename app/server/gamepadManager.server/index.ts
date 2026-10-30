@@ -1,28 +1,28 @@
-import type { Sdl } from "@kmamal/sdl";
-import sdl from "@kmamal/sdl";
+import type { Sdl, Events } from "@kmamal/sdl3";
+import sdl3 from "@kmamal/sdl3";
 import { log } from "../debug.server.js";
 import {
   eightBitDoPro2,
   gamepadPs4,
   type GamepadType,
 } from "../../types/gamepad.js";
-import { getJoystickFromController } from "../gamepad.server.js";
+import { getJoystickFromControllerSdl3 } from "../gamepad.server.js";
 
 type ButtonUpEventFunction = (
-  event: sdl.Events.Controller.ButtonUp,
-  controller: Sdl.Controller.ControllerInstance,
+  event: Events.Gamepad.ButtonUp,
+  controller: Sdl.Gamepad.GamepadInstance,
   gamepadType: GamepadType,
 ) => void;
 
 type ButtonDownEventFunction = (
-  event: sdl.Events.Controller.ButtonDown,
-  controller: Sdl.Controller.ControllerInstance,
+  event: Events.Gamepad.ButtonDown,
+  controller: Sdl.Gamepad.GamepadInstance,
   gamepadType: GamepadType,
 ) => void;
 
 export type AxisMotionEventFunction = (
-  event: sdl.Events.Controller.AxisMotion,
-  controller: Sdl.Controller.ControllerInstance,
+  event: Events.Gamepad.AxisMotion,
+  controller: Sdl.Gamepad.GamepadInstance,
   gamepadType: GamepadType,
 ) => void;
 
@@ -32,12 +32,12 @@ class GamepadManager {
   axisMotionEvents: Record<string, AxisMotionEventFunction> = {};
 
   constructor() {
-    log("info", "sdl version", sdl.info.version);
-    sdl.controller.on("deviceAdd", (event) => {
+    log("info", "sdl version", sdl3.info.version);
+    sdl3.gamepad.on("deviceAdd", (event) => {
       this.registerEventsForDevice(event.device);
     });
 
-    const devices = sdl.controller.devices;
+    const devices = sdl3.gamepad.devices;
     if (devices.length > 0) {
       devices.forEach((device) => {
         this.registerEventsForDevice(device);
@@ -45,12 +45,12 @@ class GamepadManager {
     }
   }
 
-  private registerEventsForDevice(device: Sdl.Controller.Device) {
-    const joystick = getJoystickFromController(device);
+  private registerEventsForDevice(device: Sdl.Gamepad.Device) {
+    const joystick = getJoystickFromControllerSdl3(device);
     log("debug", "registerEvents", device, joystick?.name);
 
     try {
-      const controller = sdl.controller.openDevice(device);
+      const controller = sdl3.gamepad.openDevice(device);
       const gamepadType = this.getGamepadType(device, joystick);
 
       controller.on("buttonUp", (event) => {
@@ -100,7 +100,7 @@ class GamepadManager {
   }
 
   getGamepadType = (
-    controller: Sdl.Controller.Device,
+    controller: Sdl.Gamepad.Device,
     joystick?: Sdl.Joystick.Device,
   ): GamepadType => {
     if (controller.type) {

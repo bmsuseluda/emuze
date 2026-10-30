@@ -4,7 +4,6 @@ import { readGeneral, writeGeneral } from "../../app/server/settings.server.js";
 import { log } from "../../app/server/debug.server.js";
 import { platform } from "node:os";
 import { spawn } from "node:child_process";
-import { existsSync } from "node:fs";
 
 const showReleaseNotesOnStart = () => {
   const general = readGeneral();
@@ -93,14 +92,6 @@ export const update = () => {
   if (platform() === "win32") {
     updateWithElectronUpdater();
   } else {
-    // TODO: Remove when appimageupdate is in released bundle
-    if (
-      existsSync(
-        nodepath.join(process.env.APPDIR || "", "resources", "app-update.yml"),
-      )
-    ) {
-      updateWithElectronUpdater();
-    }
     updateAppImageUpdate();
   }
 };

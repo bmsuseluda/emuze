@@ -77,9 +77,7 @@ export const importCategories = async () => {
 
     cleanupRemovedCategories(categoryImportDataList);
 
-    for (const categoryImportData of categoryImportDataList) {
-      await importCategory(categoryImportData);
-    }
+    await Promise.all(categoryImportDataList.map(importCategory));
 
     writeCategories(
       categoryImportDataList.filter(

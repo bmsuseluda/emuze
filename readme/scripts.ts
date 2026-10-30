@@ -20,7 +20,7 @@ const homepages: Record<ApplicationId, string> = {
   flycast: "https://github.com/flyinghead/flycast",
   azahar: "https://github.com/azahar-emu/azahar",
   mame: "https://github.com/mamedev/mame",
-  mednafen: "https://mednafen.github.io/",
+  mednafen: "https://github.com/bmsuseluda/mednafen-sdl3",
   melonds: "https://github.com/melonDS-emu/melonDS",
   pcsx2: "https://github.com/PCSX2/pcsx2",
   ppsspp: "https://github.com/hrydgard/ppsspp",
@@ -35,17 +35,17 @@ const nameOverwrites: Partial<Record<SystemId, string>> = {
   dos: "Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json))",
 };
 
-const applicationsWithBiosNotHandled: ApplicationId[] = [
+const applicationsWithBiosNotHandled: Set<ApplicationId> = new Set([
   "rpcs3",
   "cemu",
   "ryujinx",
   "eden",
-];
+]);
 
 const checkIsBiosNeeded = (application: Application) =>
   (application.biosFiles && !application.bundledBiosOpenSource) ||
   application.otherRequiredFiles ||
-  applicationsWithBiosNotHandled.includes(application.id);
+  applicationsWithBiosNotHandled.has(application.id);
 
 const createSystemsTableRow = (
   category: Category,

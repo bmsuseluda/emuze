@@ -4,6 +4,7 @@ import { appendFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { homeDirectory } from "./homeDirectory.server.js";
 import { commandLineOptions } from "./commandLine.server.js";
 import { getLogFilePath, logFileName } from "./log.server.js";
+import isCi from "is-ci";
 
 export const isDebug = () => {
   const electron = importElectron();
@@ -52,14 +53,15 @@ export const log = (
 ) => {
   if (isDebug()) {
     try {
-      //   TODO: Check which file type would be best
-      texts.forEach((text) => {
-        if (typeof text === "object" && type !== "error") {
-          appendLogFile(type, JSON.stringify(text));
-        } else {
-          appendLogFile(type, text);
-        }
-      });
+      if (!isCi) {
+        texts.forEach((text) => {
+          if (typeof text === "object" && type !== "error") {
+            appendLogFile(type, JSON.stringify(text));
+          } else {
+            appendLogFile(type, text);
+          }
+        });
+      }
       console.log(type, texts);
     } catch (e) {
       appendLogFile("error", "There was an unexpected error while logging");

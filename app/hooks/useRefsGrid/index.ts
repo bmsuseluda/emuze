@@ -2,6 +2,23 @@ import debounce from "lodash.debounce";
 import type { ComponentRef, RefObject } from "react";
 import { useCallback, useEffect, useRef } from "react";
 
+export const calculateRowIndex = (
+  indexFromEntriesRef: number,
+  gamesPerRow: number,
+) => Math.ceil((indexFromEntriesRef + 1) / gamesPerRow) - 1;
+
+export const calculateEntryIndexInRow = (
+  indexFromEntriesRef: number,
+  gamesPerRow: number,
+) => {
+  const remaining = (indexFromEntriesRef + 1) % gamesPerRow;
+  if (remaining === 0) {
+    return gamesPerRow - 1;
+  }
+
+  return remaining - 1;
+};
+
 /**
  * @param onCreateGrid callback when entriesRefsGrid will be created or updated
  **/
@@ -11,8 +28,30 @@ export const useRefsGrid = <T extends HTMLElement>(
   const entriesRefsGrid = useRef<T[][]>([]);
   const entriesRefs = useRef<T[]>([]);
   const entryListRef = useRef<ComponentRef<"ul">>(null);
+  const gamesPerRowRef = useRef<number>(0);
+
+  const addEntryToRefsGrid = useCallback(
+    (entry: T, indexFromEntriesRef: number) => {
+      const rowIndex = calculateRowIndex(
+        indexFromEntriesRef,
+        gamesPerRowRef.current,
+      );
+      const entryIndexPerRow = calculateEntryIndexInRow(
+        indexFromEntriesRef,
+        gamesPerRowRef.current,
+      );
+
+      if (!entriesRefsGrid.current[rowIndex]) {
+        entriesRefsGrid.current[rowIndex] = [];
+      }
+
+      entriesRefsGrid.current[rowIndex][entryIndexPerRow] = entry;
+    },
+    [gamesPerRowRef],
+  );
 
   const createRefsGrid = useCallback(() => {
+    gamesPerRowRef.current = 0;
     const entriesGrid: T[][] = [];
 
     const addToRow = (rowIndex: number, entry: T) => {
@@ -26,15 +65,27 @@ export const useRefsGrid = <T extends HTMLElement>(
     };
 
     let rowIndex = 0;
+
+    const addToNextRow = (entry: T) => {
+      rowIndex = rowIndex + 1;
+      addToRow(rowIndex, entry);
+    };
+
     entriesRefs.current.forEach((entry, index) => {
-      const top = entry?.getBoundingClientRect().top;
-      if (index > 0) {
-        const topPrevious =
-          entriesRefs.current[index - 1]?.getBoundingClientRect().top;
-        if (top && topPrevious && top > topPrevious) {
-          // nextRow
-          rowIndex = rowIndex + 1;
-          addToRow(rowIndex, entry);
+      if (!gamesPerRowRef.current) {
+        const top = entry?.getBoundingClientRect().top;
+        if (index > 0) {
+          const topPrevious =
+            entriesRefs.current[index - 1]?.getBoundingClientRect().top;
+          if (top && topPrevious && top > topPrevious) {
+            gamesPerRowRef.current = entriesGrid[rowIndex].length;
+            addToNextRow(entry);
+            return;
+          }
+        }
+      } else {
+        if (entriesGrid[rowIndex].length === gamesPerRowRef.current) {
+          addToNextRow(entry);
           return;
         }
       }
@@ -42,26 +93,30 @@ export const useRefsGrid = <T extends HTMLElement>(
     });
     entriesRefsGrid.current = entriesGrid;
     onCreateGrid(entriesRefsGrid)();
-  }, [entriesRefs, entriesRefsGrid, onCreateGrid]);
+  }, [entriesRefs, entriesRefsGrid, onCreateGrid, gamesPerRowRef]);
 
   useEffect(() => {
-    if (entryListRef.current) {
-      const resizeObserver = new ResizeObserver(
-        debounce(createRefsGrid, 200, { leading: false, trailing: true }),
-      );
-      resizeObserver.observe(entryListRef.current);
-
-      return () => {
-        resizeObserver.disconnect();
-      };
+    const entryListCopy = entryListRef.current;
+    if (!entryListCopy) {
+      return;
     }
+
+    const resizeObserver = new ResizeObserver(
+      debounce(createRefsGrid, 200, { leading: false, trailing: true }),
+    );
+    resizeObserver.observe(entryListCopy.parentElement!);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
   }, [createRefsGrid, entryListRef]);
 
   const entriesRefCallback = useCallback(
     (index: number) => (ref: T) => {
+      addEntryToRefsGrid(ref, index);
       entriesRefs.current[index] = ref;
     },
-    [entriesRefs],
+    [entriesRefs, addEntryToRefsGrid],
   );
 
   return {

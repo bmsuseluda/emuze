@@ -1,11 +1,14 @@
-import { fetchMetaData } from "../fetchMetaData.js";
+import { fetchNameAndCoverForSystem } from "../fetchMetaData.js";
 import { writeFile } from "../../app/server/readWriteData.server.js";
 import { existsSync } from "node:fs";
 import type { Game } from "../igdb.js";
-import { fetchMetaDataForSystem } from "../igdb.js";
+import { fetchNameAndCoverForPlatformIds } from "../igdb.js";
 import type { SystemId } from "../../app/server/categoriesDB.server/systemId.js";
 import nodepath from "node:path";
 
+vi.mock("electron");
+vi.mock("@kmamal/sdl");
+vi.mock("@kmamal/sdl3");
 vi.mock("../igdb");
 vi.mock("../../app/server/readWriteData.server");
 vi.mock("node:fs");
@@ -38,11 +41,11 @@ describe("fetchMetaData", () => {
         ],
       },
     ];
-    vi.mocked(fetchMetaDataForSystem).mockResolvedValue(igdbResult);
+    vi.mocked(fetchNameAndCoverForPlatformIds).mockResolvedValue(igdbResult);
     vi.mocked(existsSync).mockReturnValue(false);
 
     const systemId = "nintendoentertainmentsystem";
-    await fetchMetaData(systemId);
+    await fetchNameAndCoverForSystem(systemId);
 
     expect(writeFile).toHaveBeenCalledWith(
       [
@@ -72,11 +75,11 @@ describe("fetchMetaData", () => {
         ],
       },
     ];
-    vi.mocked(fetchMetaDataForSystem).mockResolvedValue(igdbResult);
+    vi.mocked(fetchNameAndCoverForPlatformIds).mockResolvedValue(igdbResult);
     vi.mocked(existsSync).mockReturnValue(false);
 
     const systemId = "segamegadrive";
-    await fetchMetaData(systemId);
+    await fetchNameAndCoverForSystem(systemId);
 
     expect(writeFile).toHaveBeenCalledWith(
       [
@@ -99,11 +102,11 @@ describe("fetchMetaData", () => {
         name: "Teenage Mutant Ninja Turtles 3",
       },
     ];
-    vi.mocked(fetchMetaDataForSystem).mockResolvedValue(igdbResult);
+    vi.mocked(fetchNameAndCoverForPlatformIds).mockResolvedValue(igdbResult);
     vi.mocked(existsSync).mockReturnValue(false);
 
     const systemId = "nintendoentertainmentsystem";
-    await fetchMetaData(systemId);
+    await fetchNameAndCoverForSystem(systemId);
 
     expect(writeFile).toHaveBeenCalledWith(
       [["teenagemutantninjaturtles", "ddsada"]],
@@ -135,11 +138,11 @@ describe("fetchMetaData", () => {
         ],
       },
     ];
-    vi.mocked(fetchMetaDataForSystem).mockResolvedValue(igdbResult);
+    vi.mocked(fetchNameAndCoverForPlatformIds).mockResolvedValue(igdbResult);
     vi.mocked(existsSync).mockReturnValue(false);
 
     const systemId = "nintendoentertainmentsystem";
-    await fetchMetaData(systemId);
+    await fetchNameAndCoverForSystem(systemId);
 
     expect(writeFile).toHaveBeenCalledWith(
       [
@@ -159,11 +162,11 @@ describe("fetchMetaData", () => {
         },
       },
     ];
-    vi.mocked(fetchMetaDataForSystem).mockResolvedValue(igdbResult);
+    vi.mocked(fetchNameAndCoverForPlatformIds).mockResolvedValue(igdbResult);
     vi.mocked(existsSync).mockReturnValue(false);
 
     const systemId = "nintendoentertainmentsystem";
-    await fetchMetaData(systemId);
+    await fetchNameAndCoverForSystem(systemId);
 
     expect(writeFile).toHaveBeenCalledWith(
       [["teenagemutantninjaturtles2000", "ddsada"]],

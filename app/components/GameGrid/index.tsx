@@ -7,14 +7,14 @@ import { Ul } from "../Ul/index.js";
 import { Game } from "./components/Game/index.js";
 import type { Result } from "../../hooks/useGamepadsOnGrid/index.js";
 import { useGamepadsOnGrid } from "../../hooks/useGamepadsOnGrid/index.js";
-import { styled } from "../../../styled-system/jsx/index.js";
-import { useAddEntriesToRenderOnScrollEnd } from "../../hooks/useAddEntriesToRenderOnScrollEnd/index.js";
+import { styled } from "../../../styled-system/jsx/factory.js";
 import { SystemIcon } from "../SystemIcon/index.js";
 import {
   useInputBack,
   useInputConfirmation,
 } from "../../hooks/useDirectionalInput/index.js";
 import { useGamepadConnected } from "../../hooks/useGamepadConnected/index.js";
+import { useAddEntriesToRenderOnScrollEnd } from "../../hooks/useAddEntriesToRenderOnScrollEnd/index.js";
 
 interface Props extends ComponentPropsWithoutRef<"ul"> {
   games: GameType[] | GameTypeLastPlayed[];
@@ -63,14 +63,14 @@ export const GameGrid = ({
 }: Props & { inViewRef?: RefObject<ComponentRef<"div"> | null> }) => {
   const { isEnabled } = useGamepadConnected();
 
-  const selectEntry = (game: ComponentRef<"input">) => {
+  const selectEntry = useCallback((game: ComponentRef<"input">) => {
     if (!game.checked) {
       game.checked = true;
     }
     if (document.activeElement !== game) {
       game.focus();
     }
-  };
+  }, []);
 
   const goBack = useCallback(
     (selectedGame: RefObject<ComponentRef<"input"> | undefined>) => {
@@ -94,7 +94,7 @@ export const GameGrid = ({
     entriesRefs,
     entriesRefCallback,
     selectedEntry,
-    updatePosition,
+    setSelectedEntry,
   } = useGamepadsOnGrid({
     onSelectEntry: selectEntry,
     isInFocus,
@@ -125,11 +125,7 @@ export const GameGrid = ({
         // TODO: think about if this should be a callback from useGamepadsOnGrid
         const handleClick = () => {
           onGameClick();
-          selectedEntry.current = entriesRefs.current[index];
-          updatePosition();
-        };
-        const handleDoubleClick = () => {
-          onExecute();
+          setSelectedEntry(entriesRefs.current[index]);
         };
 
         return (
@@ -142,7 +138,7 @@ export const GameGrid = ({
             imageUrl={metaData?.imageUrl}
             alwaysGameName={alwaysGameNames}
             onClick={handleClick}
-            onDoubleClick={handleDoubleClick}
+            onDoubleClick={onExecute}
             ref={entriesRefCallback(index)}
             key={id}
             isInFocus={isEnabled.current && isInFocus}

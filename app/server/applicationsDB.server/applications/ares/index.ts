@@ -41,7 +41,8 @@ export const getSharedAresOptionParams: OptionParamFunction = ({
     "--no-file-prompt",
   ];
   if (fullscreen) {
-    optionParams.push("--fullscreen");
+    optionParams.push("--kiosk");
+    optionParams.push("--pseudofullscreen");
   }
   return optionParams;
 };

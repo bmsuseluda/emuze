@@ -49,7 +49,11 @@ const execFileCallback =
         !isWindows() &&
         error.signal !== "SIGKILL" &&
         error.signal !== "SIGABRT" &&
-        error.signal !== "SIGHUP"
+        error.signal !== "SIGHUP" &&
+        !(
+          error.signal === null &&
+          stderr.includes("FUSE loop exited with error: 1")
+        )
       ) {
         reject(error);
       }
@@ -74,7 +78,7 @@ const executeApplication = (file: string, args: string[]) => {
 
     registerCloseGameOnKeyboardEvent();
 
-    childProcess.on("close", () => {
+    childProcess.on("exit", () => {
       unregisterCloseGameOnKeyboardEvent();
 
       setTimeout(() => {

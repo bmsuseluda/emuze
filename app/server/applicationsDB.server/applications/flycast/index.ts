@@ -1,6 +1,6 @@
 import nodepath from "node:path";
 import fs from "node:fs";
-import sdl from "@kmamal/sdl";
+import sdl from "@kmamal/sdl3";
 import type { ApplicationId } from "../../applicationId.js";
 import type { Application } from "../../types.js";
 import { envPaths } from "../../../envPaths.server.js";
@@ -18,7 +18,7 @@ import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.j
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { getKeyboardButtonMappings } from "./keyboardConfig.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
-import { getControllers } from "../../../gamepad.server.js";
+import { getControllersSdl3 } from "../../../gamepad.server.js";
 
 const applicationId: ApplicationId = "flycast";
 const bundledPath = isWindows()
@@ -81,7 +81,7 @@ const replaceKeyboardConfigFile = () => {
 };
 
 const getJoystickBindIndices = () => {
-  const gamepads = getControllers().slice(0, 3);
+  const gamepads = getControllersSdl3().slice(0, 3);
   log("debug", "flycast", gamepads);
 
   return gamepads.flatMap(({ player }, sdlIndex) => [

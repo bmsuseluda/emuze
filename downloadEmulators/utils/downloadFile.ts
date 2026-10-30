@@ -40,8 +40,13 @@ export const downloadFile = (
       }
     })
     .on("error", (err) => {
-      console.error(`Error downloading the file: ${err.message}`);
-      log("error", `Error downloading the file: ${err.message}`);
+      console.error(
+        `Error downloading the file ${url} with error: ${err.message}`,
+      );
+      log(
+        "error",
+        `Error downloading the file ${url} with error: ${err.message}`,
+      );
       onError?.();
     });
 };
@@ -95,7 +100,9 @@ export const downloadAndExtract = (
       });
     })
     .on("error", (err) => {
-      console.error(`Error downloading the file: ${err.message}`);
+      console.error(
+        `Error downloading the file ${url} with error: ${err.message}`,
+      );
       process.exit(1);
     });
 };

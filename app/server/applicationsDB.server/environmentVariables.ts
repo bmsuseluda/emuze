@@ -4,9 +4,6 @@ export const sdlJoystickEnvironmentVariables = {
   SDL_HIDAPI_UDEV: "1",
   /** sdl2 */
   SDL_HIDAPI_JOYSTICK_DISABLE_UDEV: "1",
-  SDL_HIDAPI_LIBUSB: "0",
-  /** sdl2 */
-  SDL_HIDAPI_DISABLE_LIBUSB: "0",
   SDL_JOYSTICK_HIDAPI: "1",
   SDL_JOYSTICK_HIDAPI_PS3: "1",
   SDL_JOYSTICK_HIDAPI_PS4: "1",

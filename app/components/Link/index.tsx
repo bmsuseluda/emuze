@@ -1,4 +1,4 @@
-import { styled } from "../../../styled-system/jsx/index.js";
+import { styled } from "../../../styled-system/jsx/factory.js";
 import type { IconType } from "react-icons";
 import { IconChildrenWrapper } from "../IconChildrenWrapper/index.js";
 import type { ComponentProps } from "react";

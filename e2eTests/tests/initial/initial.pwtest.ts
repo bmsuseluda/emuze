@@ -41,6 +41,7 @@ test("Should import all", async ({ page, libraryPage, settingsPage }) => {
   await expect(
     page.getByRole("heading", { name: libraryPage.initialSystem }),
   ).toBeVisible();
+  await expect(page).toHaveScreenshot();
 
   await libraryPage.press("Escape");
   await libraryPage.expectIsInitialSystem();

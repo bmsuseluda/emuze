@@ -1,13 +1,13 @@
 import sdl from "@kmamal/sdl";
+import sdl3 from "@kmamal/sdl3";
 import type { Sdl } from "@kmamal/sdl";
-import { isSteamOs, isWindows } from "./operationsystem.server.js";
+import type { Sdl as Sdl3 } from "@kmamal/sdl3";
+import { isSteamOs } from "./operationsystem.server.js";
 import {
   createSdlMappingObject,
-  isXinputController,
   SdlButtonMapping,
   sortSteamDeckLast,
   steamDeckJoystick,
-  xbox360Joystick,
 } from "../types/gamepad.js";
 import HID from "node-hid";
 import { log } from "./debug.server.js";
@@ -32,13 +32,31 @@ export const getDeviceNameFromHid = (
   return undefined;
 };
 
+export const getDeviceNameFromHidSdl3 = (
+  controller: Sdl3.Gamepad.Device,
+  steamHandleIndex: number,
+) => {
+  if (isSteamHandleSdl3(controller)) {
+    return `${steamInputHandleFromHid} ${steamHandleIndex}`;
+  }
+
+  const { vendor, product } = controller;
+  if (vendor && product) {
+    const hidDevices = HID.devices(vendor, product);
+    log("debug", "hid object", hidDevices.at(0));
+    return hidDevices.at(0)?.product;
+  }
+
+  return undefined;
+};
+
 export interface EmuzeController {
   id: number;
   name: string;
   joystickName: string;
   nameOsSpecific: string;
   hidName?: string;
-  type: Sdl.Controller.ControllerType;
+  type: Sdl.Controller.ControllerType | Sdl3.Gamepad.GamepadType;
   guid: string;
   vendor: number;
   product: number;
@@ -46,9 +64,9 @@ export interface EmuzeController {
   mapping: string;
   mappingObject: SdlButtonMapping;
   hasSteamHandle: boolean;
-  sdlJoystick: Sdl.Joystick.Device;
-  sdlController: Sdl.Controller.Device;
-  serialNumber: string;
+  sdlJoystick: Sdl.Joystick.Device | Sdl3.Joystick.Device;
+  sdlController: Sdl.Controller.Device | Sdl3.Gamepad.Device;
+  serialNumber: string | null;
   path: string | null;
 }
 
@@ -72,14 +90,14 @@ export const createEmuzeController = ({
   hidName,
   serialNumber,
 }: {
-  controller: Sdl.Controller.Device;
-  joystick: Sdl.Joystick.Device;
+  controller: Sdl.Controller.Device | Sdl3.Gamepad.Device;
+  joystick: Sdl.Joystick.Device | Sdl3.Joystick.Device;
   playerIndex: number;
   hasSteamHandle: boolean;
   steamGUID: string | null;
   hidName?: string;
-  serialNumber: string;
-}) => {
+  serialNumber: string | null;
+}): EmuzeController | null => {
   const {
     id,
     guid,
@@ -103,7 +121,7 @@ export const createEmuzeController = ({
     return {
       id,
       guid: steamGUID || guid,
-      name,
+      name: name!,
       joystickName,
       nameOsSpecific,
       type,
@@ -120,6 +138,8 @@ export const createEmuzeController = ({
       sdlController: controller,
     };
   }
+
+  return null;
 };
 
 const getSteamGUID = (hasSteamHandle: boolean, steamHandleIndex: number) => {
@@ -129,6 +149,58 @@ const getSteamGUID = (hasSteamHandle: boolean, steamHandleIndex: number) => {
   }
 
   return null;
+};
+
+export const getControllersSdl3 = (
+  joysticks: Sdl3.Joystick.Device[] = sdl3.joystick.devices,
+) => {
+  const emuzeControllers: EmuzeController[] = [];
+
+  let steamHandleIndex = 0;
+
+  const joystickSorted = sortSteamDeckLast(joysticks);
+
+  let playerIndex = 0;
+  joystickSorted.forEach((joystick) => {
+    const controller = getControllerFromJoystickSdl3(joystick);
+    if (controller) {
+      const hasSteamHandle = isSteamHandleSdl3(controller);
+      const hidName = getDeviceNameFromHidSdl3(controller, steamHandleIndex);
+      const steamGUID = getSteamGUID(hasSteamHandle, steamHandleIndex);
+      const serialNumber = sdl3.gamepad.openDevice(controller).serialNumber;
+
+      const emuzeController = createEmuzeController({
+        controller,
+        joystick,
+        playerIndex,
+        hasSteamHandle,
+        steamGUID,
+        hidName,
+        serialNumber,
+      });
+
+      if (hasSteamHandle) {
+        steamHandleIndex++;
+      }
+
+      if (emuzeController) {
+        emuzeControllers.push(emuzeController);
+        playerIndex++;
+      } else {
+        log(
+          "debug",
+          "controller is not suitable",
+          controller,
+          joystick,
+          hidName,
+          hasSteamHandle,
+          steamGUID,
+        );
+      }
+    }
+  });
+
+  return emuzeControllers;
 };
 
 export const getControllers = (
@@ -147,7 +219,7 @@ export const getControllers = (
       const hasSteamHandle = isSteamHandle(controller);
       const hidName = getDeviceNameFromHid(controller, steamHandleIndex);
       const steamGUID = getSteamGUID(hasSteamHandle, steamHandleIndex);
-      const serialNumber = sdl.joystick.openDevice(joystick).serialNumber;
+      const serialNumber = sdl.controller.openDevice(controller).serialNumber;
 
       const emuzeController = createEmuzeController({
         controller,
@@ -184,22 +256,14 @@ export const getControllers = (
 };
 
 const getNameOsSpecific = (
-  joystick: Sdl.Joystick.Device,
-  controller: Sdl.Controller.Device,
+  joystick: Sdl.Joystick.Device | Sdl3.Joystick.Device,
+  controller: Sdl.Controller.Device | Sdl3.Gamepad.Device,
 ) => {
-  if (isWindows() && isXinputController(controller.type)) {
-    return `XInput Controller`;
-  }
-
-  if (
-    isSteamOs() &&
-    joystick.vendor !== xbox360Joystick.vendor &&
-    joystick.product !== xbox360Joystick.product
-  ) {
+  if (isSteamOs()) {
     return joystick.name!;
   }
 
-  return controller.name;
+  return controller.name!;
 };
 
 export const getJoystickFromController = (
@@ -207,8 +271,16 @@ export const getJoystickFromController = (
 ): Sdl.Joystick.Device =>
   sdl.joystick.devices.find(({ id }) => controller.id === id)!;
 
+export const getJoystickFromControllerSdl3 = (
+  controller: Sdl3.Gamepad.Device,
+): Sdl3.Joystick.Device =>
+  sdl3.joystick.devices.find(({ id }) => controller.id === id)!;
+
 export const getControllerFromJoystick = (joystick: Sdl.Joystick.Device) =>
   sdl.controller.devices.find(({ id }) => joystick.id === id);
+
+export const getControllerFromJoystickSdl3 = (joystick: Sdl3.Joystick.Device) =>
+  sdl3.gamepad.devices.find(({ id }) => joystick.id === id);
 
 /**
  * check all devices until sdlIndex (current index) for name. count how much and return accordingly
@@ -259,6 +331,18 @@ export const isSteamHandle = (controller: Sdl.Controller.Device): boolean => {
   try {
     return (
       !!sdl.controller.openDevice(controller).steamHandle ||
+      controller.vendor === steamDeckJoystick.vendor ||
+      controller.name === "Steam Virtual Gamepad"
+    );
+  } catch {
+    return false;
+  }
+};
+
+export const isSteamHandleSdl3 = (controller: Sdl3.Gamepad.Device): boolean => {
+  try {
+    return (
+      !!sdl3.gamepad.openDevice(controller).steamHandle ||
       controller.vendor === steamDeckJoystick.vendor ||
       controller.name === "Steam Virtual Gamepad"
     );

@@ -3,7 +3,7 @@ import { MdErrorOutline } from "react-icons/md";
 import { ListActionBarLayout } from "../layouts/ListActionBarLayout/index.js";
 import { SidebarMainLayout } from "../layouts/SidebarMainLayout/index.js";
 import type { ForwardedRef } from "react";
-import { styled } from "../../../styled-system/jsx/index.js";
+import { styled } from "../../../styled-system/jsx/factory.js";
 
 const Stacktrace = styled("p", {
   base: {

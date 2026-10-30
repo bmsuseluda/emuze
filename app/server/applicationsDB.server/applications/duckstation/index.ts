@@ -18,6 +18,8 @@ import { envPaths } from "../../../envPaths.server.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
+import multitapGames from "../../../../../fetchMetaData/multitapGames/sonyplaystation.json" with { type: "json" };
+import { normalizeString } from "../../../igdb.server.js";
 
 const applicationId: ApplicationId = "duckstation";
 const bundledPath = isWindows()
@@ -93,15 +95,17 @@ export const replaceBiosConfig =
       },
     ]);
 
-/**
- * TODO: Check which game is compatible with multitap
- * TODO: set multitap only if more than 2 controller
- * @param sections
- */
-export const replaceControllerPortsConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[ControllerPorts]", [
-    { keyValue: "MultitapMode = Port1Only" },
-  ]);
+export const replaceControllerPortsConfig =
+  (gameName: string): SectionReplacement =>
+  (sections) => {
+    const multitapGamesSet = new Set(multitapGames);
+    const isMultitapGame = multitapGamesSet.has(normalizeString(gameName));
+    const multitapMode = isMultitapGame ? "Port1Only" : "Disabled";
+
+    return replaceSection(sections, "[ControllerPorts]", [
+      { keyValue: `MultitapMode = ${multitapMode}` },
+    ]);
+  };
 
 const getConfigFilePath = () =>
   nodepath.join(emulatorsConfigDirectory, applicationId, configFileName);
@@ -133,7 +137,7 @@ export const replaceConfigSections = (
   const fileContentNew = chainSectionReplacements(
     sections,
     replaceInputSourcesConfig,
-    // replaceControllerPortsConfig,
+    replaceControllerPortsConfig(gameName),
     replaceMainConfig,
     replaceBiosConfig(biosFiles),
     replaceGamepadConfig(gameName),
@@ -193,7 +197,7 @@ export const duckstation: Application = {
         },
         {
           filename: "openbios.bin",
-          hash: "ac81ad019d82a9a09dd8ccc06eac184ca11f3fe4b868685c046bf33a044ade51",
+          hash: "bc36eb489efc42a08559e50daf5d9307056fc6f31253f37b1b912ff28fb731c9",
         },
       ],
     },

@@ -2,7 +2,10 @@ import type { ParamToReplace } from "../../configFile.js";
 import { removeVendorFromGuid } from "../../../../types/gamepad.js";
 import { log } from "../../../debug.server.js";
 import { keyboardConfig } from "./keyboardConfig.js";
-import { EmuzeController, getControllers } from "../../../gamepad.server.js";
+import {
+  EmuzeController,
+  getControllersSdl3,
+} from "../../../gamepad.server.js";
 
 const getVirtualGamepad = (
   emuzeController: EmuzeController,
@@ -21,7 +24,7 @@ const getVirtualGamepad = (
 };
 
 export const getVirtualGamepads = () => {
-  const gamepads = getControllers();
+  const gamepads = getControllersSdl3();
 
   const virtualGamepads =
     gamepads.length > 0 ? gamepads.flatMap(getVirtualGamepad) : keyboardConfig;

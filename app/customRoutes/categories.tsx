@@ -5,12 +5,12 @@ import { SidebarNavigationLink } from "../containers/SidebarNavigationLink/index
 import { Header } from "../containers/Header/index.js";
 import { SystemIcon } from "../components/SystemIcon/index.js";
 import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar/index.js";
-import { readAppearance, readGeneral } from "../server/settings.server.js";
+import { readGeneral } from "../server/settings.server.js";
 import { useCallback } from "react";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
 import { Typography } from "../components/Typography/index.js";
-import { styled } from "../../styled-system/jsx/index.js";
+import { styled } from "../../styled-system/jsx/factory.js";
 import { readLastPlayed } from "../server/lastPlayed.server.js";
 import { useOpenSettings } from "../containers/SettingsLink/useOpenSettings.js";
 import { useImportButton } from "../containers/ImportButton/useImportButton.js";
@@ -20,10 +20,11 @@ import {
 } from "../hooks/useDirectionalInput/index.js";
 import { CloseDialogContainer } from "../containers/CloseDialog/index.js";
 import type { Route } from "./+types/categories.js";
+import { useAppearance } from "../hooks/useAppearance/index.js";
+import { shouldRevalidateCategoriesRoute } from "./shouldRevalidateCategoriesRoute.js";
 
 export const loader = ({ params, request }: Route.LoaderArgs) => {
   const { category } = params;
-  const { collapseSidebar } = readAppearance();
   const categories = readCategories();
 
   if (categories?.length > 0) {
@@ -55,7 +56,6 @@ export const loader = ({ params, request }: Route.LoaderArgs) => {
 
     return {
       categoryLinks,
-      collapseSidebar,
     };
   }
 
@@ -80,11 +80,14 @@ const Name = styled(Typography, {
   },
 });
 
+export const shouldRevalidate = shouldRevalidateCategoriesRoute;
+
 export default function Categories({
-  loaderData: { categoryLinks, collapseSidebar },
+  loaderData: { categoryLinks },
 }: Route.ComponentProps) {
   const { isInFocus, switchFocus, enableFocus } =
     useFocus<FocusElement>("sidebar");
+  const { collapseSidebar } = useAppearance();
 
   const { categoryLinksRefCallback } = useGamepadsOnSidebar(
     isInFocus,

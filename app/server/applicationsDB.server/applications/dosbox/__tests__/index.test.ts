@@ -1,5 +1,7 @@
 import { excludeDosSecondaryFiles } from "../index.js";
 
+vi.mock("electron");
+
 describe("applicationsDB.dosbox", () => {
   describe("excludeDosSecondaryFiles", () => {
     it("Should return files that are not named like the folder", () => {

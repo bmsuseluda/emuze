@@ -15,6 +15,7 @@ import { parseData, removeSubTitle } from "../igdb.server.js";
 import { getExpiresOn } from "../getExpiresOn.server.js";
 import type { Entry } from "../../types/jsonFiles/category.js";
 
+vi.mock("electron");
 vi.mock("../getExpiresOn.server.ts", () => {
   const getFutureDate = () => {
     const now = new Date();

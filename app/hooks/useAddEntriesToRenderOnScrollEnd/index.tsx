@@ -1,63 +1,44 @@
 import type { ComponentRef } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useDeepCompareEffect } from "react-use";
 import type { Entry } from "../../types/jsonFiles/category.js";
 
-const entriesCountForChunk = 20;
+const entriesCountForChunk = 40;
 
 export const useAddEntriesToRenderOnScrollEnd = (entries: Entry[]) => {
-  const [entriesToRender, setEntriesToRender] = useState(
-    entries.slice(0, entriesCountForChunk),
-  );
-
-  useDeepCompareEffect(() => {
-    setEntriesToRender(
-      entries.slice(
-        0,
-        entriesCountForChunk < entriesToRender.length
-          ? entriesToRender.length
-          : entriesCountForChunk,
-      ),
-    );
-  }, [entries]);
-
-  const addEntriesToRender = useCallback(() => {
-    if (entriesToRender.length < entries.length) {
-      setEntriesToRender((entriesToRender) => [
-        ...entriesToRender,
-        ...entries.slice(
-          entriesToRender.length,
-          entriesToRender.length + entriesCountForChunk,
-        ),
-      ]);
-    }
-  }, [entries, entriesToRender]);
-
+  const [entriesToRender, setEntriesToRender] = useState(entries.slice(0, 60));
   const inViewRef = useRef<ComponentRef<"div">>(null);
 
-  const intersectionCallback: IntersectionObserverCallback = useCallback(
-    (entries) => {
-      if (entries.length === 1 && entries[0].isIntersecting) {
-        addEntriesToRender();
+  const addEntriesToRender = useCallback(() => {
+    setEntriesToRender((entriesToRender) => {
+      if (entriesToRender.length < entries.length) {
+        return [
+          ...entriesToRender,
+          ...entries.slice(
+            entriesToRender.length,
+            entriesToRender.length + entriesCountForChunk,
+          ),
+        ];
       }
-    },
-    [addEntriesToRender],
-  );
+      return entriesToRender;
+    });
+  }, [entries]);
 
   useEffect(() => {
-    const inViewRefCopy = inViewRef;
-    const observer = new IntersectionObserver(intersectionCallback);
-
-    if (inViewRefCopy.current) {
-      observer.observe(inViewRefCopy.current);
+    const inViewRefCopy = inViewRef.current;
+    if (!inViewRefCopy) {
+      return;
     }
+    const observer = new IntersectionObserver(([intersectionEntry]) => {
+      if (intersectionEntry?.isIntersecting) {
+        addEntriesToRender();
+      }
+    });
+    observer.observe(inViewRefCopy);
 
     return () => {
-      if (inViewRefCopy.current) {
-        observer.unobserve(inViewRefCopy.current);
-      }
+      observer.disconnect();
     };
-  }, [intersectionCallback, inViewRef]);
+  }, [addEntriesToRender]);
 
   return {
     entriesToRender,

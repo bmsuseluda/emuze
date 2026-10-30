@@ -1,4 +1,4 @@
-import type { Sdl } from "@kmamal/sdl";
+import type { Sdl } from "@kmamal/sdl3";
 import {
   eightBitDoPro2,
   gamepadPs4,
@@ -9,6 +9,10 @@ import type {
   SendEvent,
 } from "../gamepadNavigation.server.js";
 import { handleAxisMotionEvent } from "../gamepadNavigation.server.js";
+
+vi.mock("electron");
+vi.mock("@kmamal/sdl");
+vi.mock("@kmamal/sdl3");
 
 describe("gamepadNavigation.server", () => {
   describe("handleAxisMotionEvent", () => {
@@ -24,7 +28,7 @@ describe("gamepadNavigation.server", () => {
 
       handleAxisMotionEvent(sendEvent, axisButtonsPressed)(
         { axis: "leftStickY", type: "axisMotion", value: 0.8 },
-        { device: eightBitDoPro2 } as Sdl.Controller.ControllerInstance,
+        { device: eightBitDoPro2 } as Sdl.Gamepad.GamepadInstance,
         gamepadType,
       );
 
@@ -47,7 +51,7 @@ describe("gamepadNavigation.server", () => {
 
       handleAxisMotionEvent(sendEvent, axisButtonsPressed)(
         { axis: "leftStickY", type: "axisMotion", value: -0.2 },
-        { device: eightBitDoPro2 } as Sdl.Controller.ControllerInstance,
+        { device: eightBitDoPro2 } as Sdl.Gamepad.GamepadInstance,
         gamepadType,
       );
 
@@ -68,7 +72,7 @@ describe("gamepadNavigation.server", () => {
 
       handleAxisMotionEvent(sendEvent, axisButtonsPressed)(
         { axis: "leftStickY", type: "axisMotion", value: 0.1 },
-        { device: eightBitDoPro2 } as Sdl.Controller.ControllerInstance,
+        { device: eightBitDoPro2 } as Sdl.Gamepad.GamepadInstance,
         gamepadType,
       );
 
@@ -94,7 +98,7 @@ describe("gamepadNavigation.server", () => {
 
       handleAxisMotionEvent(sendEvent, axisButtonsPressed)(
         { axis: "leftStickY", type: "axisMotion", value: 0.3 },
-        { device: eightBitDoPro2 } as Sdl.Controller.ControllerInstance,
+        { device: eightBitDoPro2 } as Sdl.Gamepad.GamepadInstance,
         gamepadType,
       );
 

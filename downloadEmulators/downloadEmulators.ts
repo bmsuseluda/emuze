@@ -1,7 +1,8 @@
 import type { ApplicationId } from "../app/server/applicationsDB.server/applicationId.js";
 import { basename, join } from "node:path";
+import { pathToFileURL } from "node:url";
 
-import { emulatorDownloads } from "./definitions/emulatorVersions.js";
+import { Download, emulatorDownloads } from "./definitions/emulatorVersions.js";
 import {
   cpSync,
   existsSync,
@@ -49,28 +50,10 @@ const downloadEmulator = (emulatorId: ApplicationId, downloadLink: string) => {
           emulatorFolderPath,
           bundledPath,
           () => removeRootFolderIfNecessary(emulatorFolderPath),
-          exitOnResponseCodeError,
+          exitOnResponseCodeError(downloadLink),
         );
       }
     }
-  }
-};
-
-export const downloadEmulators = () => {
-  if (existsSync(latestEmulatorsPath)) {
-    cpSync(latestEmulatorsPath, emulatorsFolderPath, {
-      recursive: true,
-      force: true,
-      preserveTimestamps: true,
-    });
-  } else {
-    Object.entries(emulatorDownloads).forEach(
-      ([emulatorId, emulatorDownload]) => {
-        const { url } = emulatorDownload[isWindows() ? "Windows" : "Linux"];
-
-        downloadEmulator(emulatorId as ApplicationId, url);
-      },
-    );
   }
 };
 
@@ -98,12 +81,13 @@ const downloadAndExtract7z = (
       });
     },
     () => {
-      exitOnResponseCodeError();
+      exitOnResponseCodeError(url)();
     },
   );
 };
 
-const exitOnResponseCodeError = () => {
+const exitOnResponseCodeError = (url: string) => () => {
+  console.error(`error downloading ${url}`);
   rmSync(emulatorsFolderPath, { recursive: true, force: true });
   process.exit(1);
 };
@@ -116,7 +100,7 @@ const downloadAppImage = (url: string, fileToCheck: string) => {
       makeFileExecutableLinux(fileToCheck);
     },
     () => {
-      exitOnResponseCodeError();
+      exitOnResponseCodeError(url)();
     },
   );
 };
@@ -153,7 +137,7 @@ const downloadExe = (
       }, 2000);
     },
     () => {
-      exitOnResponseCodeError();
+      exitOnResponseCodeError(url)();
     },
   );
 };
@@ -166,14 +150,49 @@ const removeRootFolderIfNecessary = (folder: string) => {
     if (fileStats.isDirectory()) {
       const tempFolder = join(folder, "..", `${basename(folder)}TempFolder`);
 
-      // rename target folder to temp folder
       renameSync(folder, tempFolder);
-
-      // move and rename root folder to target folder
       const rootFolder = join(tempFolder, files[0]);
       moveSync(rootFolder, folder);
 
       removeFile(tempFolder);
     }
   }
+};
+
+export const downloadEmulators = async () => {
+  const operatingSystem = isWindows() ? "Windows" : "Linux";
+  const { default: emulatorsManifestFromLatestArtifact }: {
+    default: Record<ApplicationId, Download>;
+  } = await import(
+    pathToFileURL(
+      join(
+        latestEmulatorsPath,
+        `emulators-${operatingSystem.toLowerCase()}.json`,
+      ),
+    ).href,
+    { with: { type: "json" } },
+  );
+
+  Object.entries(emulatorDownloads).forEach(
+    ([emulatorId, emulatorDownload]) => {
+      const { url, hash } = emulatorDownload[operatingSystem];
+      const hashFromLatestArtifact =
+        emulatorsManifestFromLatestArtifact?.[emulatorId as ApplicationId].hash;
+
+      if (hash === hashFromLatestArtifact) {
+        console.log(`copy emulator from latest artifact: ${emulatorId}`);
+        cpSync(
+          join(latestEmulatorsPath, emulatorId),
+          join(emulatorsFolderPath, emulatorId),
+          {
+            recursive: true,
+            force: true,
+            preserveTimestamps: true,
+          },
+        );
+      } else {
+        downloadEmulator(emulatorId as ApplicationId, url);
+      }
+    },
+  );
 };

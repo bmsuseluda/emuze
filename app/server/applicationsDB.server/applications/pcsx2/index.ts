@@ -18,6 +18,8 @@ import { envPaths } from "../../../envPaths.server.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
+import multitapGames from "../../../../../fetchMetaData/multitapGames/sonyplaystation2.json" with { type: "json" };
+import { normalizeString } from "../../../igdb.server.js";
 
 const applicationId: ApplicationId = "pcsx2";
 const bundledPath = isWindows()
@@ -26,8 +28,10 @@ const bundledPath = isWindows()
 const configFileName = "PCSX2.ini";
 const configFilePathRelative = nodepath.join("inis", configFileName);
 
-export const replaceGamepadConfig = (): SectionReplacement => {
-  const virtualGamepads = getVirtualGamepads();
+export const replaceGamepadConfig = (
+  isMultitapGame: boolean,
+): SectionReplacement => {
+  const virtualGamepads = getVirtualGamepads(isMultitapGame);
 
   return replaceGamepadConfigSection(
     virtualGamepads,
@@ -95,13 +99,21 @@ export const replaceFilenamesConfig =
       { keyValue: `BIOS = ${nodepath.basename(biosFiles.at(0)!.filePath)}` },
     ]);
 
-/**
- * TODO: Check which game is compatible with multitap
- * TODO: set multitap only if more than 2 controller
- * @param sections
- */
-export const replacePadConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[Pad]", [{ keyValue: "MultitapPort1 = true" }]);
+const checkIsMultitapGame = (gameName: string) => {
+  const multitapGamesSet = new Set(multitapGames);
+  return multitapGamesSet.has(normalizeString(gameName));
+};
+
+export const replacePadConfig =
+  (isMultitapGame: boolean): SectionReplacement =>
+  (sections) => {
+    const multitapMode = isMultitapGame ? "true" : "false";
+
+    return replaceSection(sections, "[Pad]", [
+      { keyValue: `MultitapPort1 = ${multitapMode}` },
+      { keyValue: `MultitapPort2 = false` },
+    ]);
+  };
 
 const readConfigFile = (filePath: string) => {
   try {
@@ -126,6 +138,7 @@ const getConfigFilePath = () =>
 
 export const replaceConfigSections = (
   ps2RomsPath: string,
+  gameName: string,
   biosFiles: DetectedRequiredFile[],
 ) => {
   const filePath = getConfigFilePath();
@@ -133,15 +146,17 @@ export const replaceConfigSections = (
 
   const sections = splitConfigBySection(fileContent);
 
+  const isMultitapGame = checkIsMultitapGame(gameName);
+
   const fileContentNew = chainSectionReplacements(
     sections,
     replaceUiConfig,
     replaceFoldersConfig(biosFiles),
     replaceFilenamesConfig(biosFiles),
     replaceInputSourcesConfig,
-    // replacePadConfig,
+    replacePadConfig(isMultitapGame),
     replaceHotkeyConfig,
-    replaceGamepadConfig(),
+    replaceGamepadConfig(isMultitapGame),
     replaceAutoUpdaterConfig,
     replaceGameListConfig(ps2RomsPath),
   ).join(EOL);
@@ -201,6 +216,10 @@ export const pcsx2: Application = {
           filename: "PS2 Bios 30004R V6 Pal.bin",
           hash: "ee7ae4cc152588b7da1dab17494a321ceafafaf799769baea4e8a28afa5044b1",
         },
+        {
+          filename: "OpenPS2BIOS-0.5.bin",
+          hash: "e6d3b308ba10a8603bad929f59e50f8c023acc2c297aaa82ec0bd155e99b98fc",
+        },
       ],
     },
   ],
@@ -210,10 +229,11 @@ export const pcsx2: Application = {
       general: { categoriesPath },
     },
     categoryData,
+    entryData,
     biosFiles,
   }) => {
     const ps2RomsPath = nodepath.join(categoriesPath, categoryData.name);
-    replaceConfigSections(ps2RomsPath, biosFiles!);
+    replaceConfigSections(ps2RomsPath, entryData.name, biosFiles!);
 
     const optionParams = [];
     if (fullscreen) {
@@ -223,5 +243,6 @@ export const pcsx2: Application = {
     }
     return optionParams;
   },
+  bundledBiosOpenSource: true,
   bundledPath,
 };
