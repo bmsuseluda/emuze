@@ -15,10 +15,10 @@ export const emulatorVersions = {
   pcsx2: "2.8.2",
   ppsspp: "1.20.4",
   rosaliesMupenGui: "0.9.0",
-  rpcs3: "0.0.43",
+  rpcs3: "0.0.43-20541",
   ryujinx: "1.3.3",
   scummvm: "2026.4.0",
-  xemu: "0.8.136",
+  xemu: "0.8.139",
 } satisfies Record<ApplicationId, string>;
 
 export type OperatingSystem = "Windows" | "Linux";
@@ -174,12 +174,12 @@ export const emulatorDownloads = {
   },
   rpcs3: {
     Linux: {
-      url: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-1b1b7dea308e8385a636ddf208c77498b01bc061/rpcs3-v${emulatorVersions.rpcs3}-20337-1b1b7dea_linux64.AppImage`,
-      hash: "541649AED66A70600B14B33BBB343F3C57A3BBE1FA08CFD62101CAC91C672A71",
+      url: `https://github.com/RPCS3/rpcs3-binaries-linux/releases/download/build-4c17bf7589b2b894e71fe69e849b41761fc686cf/rpcs3-v${emulatorVersions.rpcs3}-4c17bf75_linux64.AppImage`,
+      hash: "E5D36AFC54868B0DAB297BCF265C94AA156B44803D998DA43026FD8140DB2089",
     },
     Windows: {
-      url: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-1b1b7dea308e8385a636ddf208c77498b01bc061/rpcs3-v${emulatorVersions.rpcs3}-20337-1b1b7dea_win64_msvc.7z`,
-      hash: "30F6D961875BDD24E7D9C360B6AC2AEABB08CE94CF2A2F4C706CF894CF8A5CE0",
+      url: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-4c17bf7589b2b894e71fe69e849b41761fc686cf/rpcs3-v${emulatorVersions.rpcs3}-4c17bf75_win64_msvc.7z`,
+      hash: "7C52D6E9D3EF43F48D7D58F8C390B275C6809928AC139CD3CB3292A1F8B5BEC7",
     },
   },
   ryujinx: {
@@ -204,12 +204,12 @@ export const emulatorDownloads = {
   },
   xemu: {
     Linux: {
-      url: `https://github.com/pkgforge-dev/xemu-AppImage-Enhanced/releases/download/${emulatorVersions.xemu}%402026-10-01_1790871942/xemu-${emulatorVersions.xemu}-anylinux-x86_64.AppImage`,
-      hash: "0c20629575d007ca666dad4e0a24ef93b5c521dcf19363574706ab0784110d12",
+      url: `https://github.com/pkgforge-dev/xemu-AppImage-Enhanced/releases/download/${emulatorVersions.xemu}%402026-10-22_1792688280/xemu-0.8.139-anylinux-x86_64.AppImage`,
+      hash: "26620644f013d37c728e970276a0dd2f1b06a2f79eb96226d87cbfa7e0a98745",
     },
     Windows: {
       url: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-win-x86_64-release.zip`,
-      hash: "b25a6c24a2c2c36a0843a153cd9ee59ca6833ef87bdcd855ba0824930e4ddd1d",
+      hash: "fbb14dd7ea08120ca9ec99c955758786645af16a5058250553b3b7d7592e8701",
     },
   },
 } satisfies Partial<EmulatorDownloads>;
