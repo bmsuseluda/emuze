@@ -2,7 +2,11 @@ import type { ApplicationId } from "../app/server/applicationsDB.server/applicat
 import { basename, join } from "node:path";
 import { pathToFileURL } from "node:url";
 
-import { Download, emulatorDownloads } from "./definitions/emulatorVersions.js";
+import {
+  Download,
+  emulatorDownloads,
+  getOperatingsSystem,
+} from "./definitions/emulatorVersions.js";
 import {
   cpSync,
   existsSync,
@@ -15,7 +19,6 @@ import {
 import _7z from "7zip-min";
 import { moveSync } from "fs-extra/esm";
 
-import { isWindows } from "../app/server/operationsystem.server.js";
 import { downloadAndExtract, downloadFile } from "./utils/downloadFile.js";
 import { removeFile } from "../app/server/readWriteData.server.js";
 import { applications } from "./definitions/applications.js";
@@ -44,6 +47,8 @@ const downloadEmulator = (emulatorId: ApplicationId, downloadLink: string) => {
         downloadAndExtract7z(downloadLink, emulatorFolderPath, bundledPath);
       } else if (downloadLink.toLowerCase().endsWith(".exe")) {
         downloadExe(downloadLink, emulatorFolderPath, bundledPath);
+      } else if (downloadLink.toLowerCase().endsWith(".dmg")) {
+        downloadAndExtractDmg(downloadLink, emulatorFolderPath, bundledPath);
       } else {
         downloadAndExtract(
           downloadLink,
@@ -55,6 +60,51 @@ const downloadEmulator = (emulatorId: ApplicationId, downloadLink: string) => {
       }
     }
   }
+};
+
+const extractDmg = (dmgFilePath: string, outputFolder: string) => {
+  const output = executeWithLogs("hdiutil", [
+    "attach",
+    "-nobrowse",
+    "-readonly",
+    dmgFilePath,
+  ]);
+
+  const mountName = output.split("/Volumes/").at(-1)!;
+  const mountPath = join("Volumes", mountName);
+  cpSync(mountPath, outputFolder, {
+    recursive: true,
+    force: true,
+    preserveTimestamps: true,
+  });
+
+  executeWithLogs("hdiutil", ["detach", "-nobrowse", mountPath]);
+};
+
+const downloadAndExtractDmg = (
+  url: string,
+  outputFolder: string,
+  fileToCheck: string,
+) => {
+  const dmgFilePath = join(outputFolder, url.split("/").at(-1) || "");
+
+  downloadFile(
+    url,
+    dmgFilePath,
+    () => {
+      extractDmg(outputFolder, outputFolder);
+      rmSync(dmgFilePath, { recursive: true, force: true });
+      removeRootFolderIfNecessary(outputFolder);
+      if (!existsSync(fileToCheck)) {
+        console.error(`${fileToCheck} does not exist`);
+        process.exit(1);
+      }
+      console.log(`${url} extracted`);
+    },
+    () => {
+      exitOnResponseCodeError(url)();
+    },
+  );
 };
 
 const downloadAndExtract7z = (
@@ -160,8 +210,10 @@ const removeRootFolderIfNecessary = (folder: string) => {
 };
 
 export const downloadEmulators = async () => {
-  const operatingSystem = isWindows() ? "Windows" : "Linux";
-  const { default: emulatorsManifestFromLatestArtifact }: {
+  const operatingSystem = getOperatingsSystem();
+  const {
+    default: emulatorsManifestFromLatestArtifact,
+  }: {
     default: Record<ApplicationId, Download>;
   } = await import(
     pathToFileURL(
@@ -170,7 +222,7 @@ export const downloadEmulators = async () => {
         `emulators-${operatingSystem.toLowerCase()}.json`,
       ),
     ).href,
-    { with: { type: "json" } },
+    { with: { type: "json" } }
   );
 
   Object.entries(emulatorDownloads).forEach(

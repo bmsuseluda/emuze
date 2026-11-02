@@ -6,6 +6,8 @@ export const isWindows = () =>
   (process.env.EMUZE_IS_WINDOWS && process.env.EMUZE_IS_WINDOWS === "true") ||
   platform() === "win32";
 
+export const isMac = () => platform() === "darwin";
+
 export const isSteamOs = () => {
   if (platform() === "linux") {
     try {

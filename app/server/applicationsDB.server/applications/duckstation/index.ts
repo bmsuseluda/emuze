@@ -2,7 +2,7 @@ import type { Application, DetectedRequiredFile } from "../../types.js";
 import { log } from "../../../debug.server.js";
 import fs from "node:fs";
 import { EOL, homedir } from "node:os";
-import { isWindows } from "../../../operationsystem.server.js";
+import { isMac, isWindows } from "../../../operationsystem.server.js";
 import type { SectionReplacement } from "../../configFile.js";
 import {
   chainSectionReplacements,
@@ -22,9 +22,25 @@ import multitapGames from "../../../../../fetchMetaData/multitapGames/sonyplayst
 import { normalizeString } from "../../../igdb.server.js";
 
 const applicationId: ApplicationId = "duckstation";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "duckstation-qt-x64-ReleaseLTCG.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const getBundledPath = () => {
+  if (isWindows()) {
+    return nodepath.join(applicationId, "duckstation-qt-x64-ReleaseLTCG.exe");
+  }
+
+  if (isMac()) {
+    return nodepath.join(
+      applicationId,
+      "DuckStation 2.app",
+      "Contents",
+      "MacOS",
+      "DuckStation",
+    );
+  }
+
+  return nodepath.join(applicationId, `${applicationId}.AppImage`);
+};
+const bundledPath = getBundledPath();
 
 const configFileName = "settings.ini";
 

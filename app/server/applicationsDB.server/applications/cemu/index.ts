@@ -1,7 +1,7 @@
 import nodepath from "node:path";
 import type { Application } from "../../types.js";
 import type { ApplicationId } from "../../applicationId.js";
-import { isWindows } from "../../../operationsystem.server.js";
+import { isMac, isWindows } from "../../../operationsystem.server.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import XMLBuilder from "fast-xml-builder";
 import { log } from "../../../debug.server.js";
@@ -17,9 +17,25 @@ import { findWiiUGameName } from "./findEntryName.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const applicationId: ApplicationId = "cemu";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "Cemu.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const getBundledPath = () => {
+  if (isWindows()) {
+    return nodepath.join(applicationId, "Cemu.exe");
+  }
+
+  if (isMac()) {
+    return nodepath.join(
+      applicationId,
+      "Cemu.app",
+      "Contents",
+      "MacOS",
+      "Cemu",
+    );
+  }
+
+  return nodepath.join(applicationId, `${applicationId}.AppImage`);
+};
+const bundledPath = getBundledPath();
 
 const defaultConfigFileName = "settings.xml";
 

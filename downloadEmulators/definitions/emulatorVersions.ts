@@ -1,4 +1,5 @@
 import { ApplicationId } from "../../app/server/applicationsDB.server/applicationId.js";
+import { isMac, isWindows } from "../../app/server/operationsystem.server.js";
 
 export const emulatorVersions = {
   ares: "148",
@@ -21,7 +22,7 @@ export const emulatorVersions = {
   xemu: "0.8.139",
 } satisfies Record<ApplicationId, string>;
 
-export type OperatingSystem = "Windows" | "Linux";
+export type OperatingSystem = "Windows" | "Linux" | "Mac";
 export interface Download {
   url: string;
   hash: string;
@@ -41,6 +42,10 @@ export const emulatorDownloads = {
       url: `https://github.com/ares-emulator/ares/releases/download/v${emulatorVersions.ares}/ares-windows-x64.zip`,
       hash: "fa97958e1d359e3fe254353f87b6508f2762a959d7eb264c69965ad002037298",
     },
+    Mac: {
+      url: `https://github.com/ares-emulator/ares/releases/download/v${emulatorVersions.ares}/ares-macos-universal.zip`,
+      hash: "1ae232ab6de341210f171f51d84b311527eb1399060706589334a8a7de136bb0",
+    },
   },
   azahar: {
     Linux: {
@@ -51,6 +56,10 @@ export const emulatorDownloads = {
       url: `https://github.com/azahar-emu/azahar/releases/download/${emulatorVersions.azahar}/azahar-windows-msys2-${emulatorVersions.azahar}.zip`,
       hash: "e18a162e2e992cef406eccaa9de85d1940f93b460d670070c4235e91baa98249",
     },
+    Mac: {
+      url: `https://github.com/azahar-emu/azahar/releases/download/${emulatorVersions.azahar}/azahar-macos-arm64-${emulatorVersions.azahar}.zip`,
+      hash: "c24dec2bd5111b7d79513d686c5aece6612cdbf9737b2e6ea99cfc426f1d4aef",
+    },
   },
   cemu: {
     Linux: {
@@ -60,6 +69,10 @@ export const emulatorDownloads = {
     Windows: {
       url: `https://github.com/cemu-project/Cemu/releases/download/v${emulatorVersions.cemu}/cemu-${emulatorVersions.cemu}-windows-x64.zip`,
       hash: "a6bcc2bc42a362d10213819948f3152fae7d47f70067f25939b51d3ddcfb0896",
+    },
+    Mac: {
+      url: `https://github.com/cemu-project/Cemu/releases/download/v${emulatorVersions.cemu}/cemu-${emulatorVersions.cemu}-macos-12-x64.dmg`,
+      hash: "698c4b298f94983e4d6c30e9687ba8ff05094dd3930837c5104cddc0b0a49e4e",
     },
   },
   dolphin: {
@@ -90,6 +103,10 @@ export const emulatorDownloads = {
     Windows: {
       url: `https://github.com/Kyuyrii/Duckstation-GPL3/releases/download/v${emulatorVersions.duckstation}/duckstation-windows-x64-release.zip`,
       hash: "b1036ea9dbf91609cef77daf03bdf2efce19b03ed3d6b4ea7c5c3396f5fc3b96",
+    },
+    Mac: {
+      url: `https://github.com/Kyuyrii/Duckstation-GPL/releases/download/v${emulatorVersions.duckstation}/duckstation-mac-release.zip`,
+      hash: "ba43916d31b495922c5089e4127c8f07df8fc05c712b985b823f43ead8ce1006",
     },
   },
   eden: {
@@ -213,3 +230,15 @@ export const emulatorDownloads = {
     },
   },
 } satisfies Partial<EmulatorDownloads>;
+
+export const getOperatingsSystem = (): OperatingSystem => {
+  if (isWindows()) {
+    return "Windows";
+  }
+
+  if (isMac()) {
+    return "Mac";
+  }
+
+  return "Linux";
+};

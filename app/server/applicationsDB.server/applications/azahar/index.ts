@@ -14,16 +14,32 @@ import {
 import fs from "node:fs";
 import { defaultSettings } from "./defaultSettings.js";
 import { envPaths } from "../../../envPaths.server.js";
-import { isWindows } from "../../../operationsystem.server.js";
+import { isMac, isWindows } from "../../../operationsystem.server.js";
 import { disableSetting, getSetting } from "./getSettings.js";
 import { getGamepad, getVirtualGamepad } from "./getVirtualGamepad.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const applicationId: ApplicationId = "azahar";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "azahar.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const getBundledPath = () => {
+  if (isWindows()) {
+    return nodepath.join(applicationId, "azahar.exe");
+  }
+
+  if (isMac()) {
+    return nodepath.join(
+      applicationId,
+      "Azahar.app",
+      "Contents",
+      "MacOS",
+      "Azahar",
+    );
+  }
+
+  return nodepath.join(applicationId, `${applicationId}.AppImage`);
+};
+const bundledPath = getBundledPath();
 
 const configFileName = "qt-config.ini";
 

@@ -7,7 +7,11 @@ import {
   emulatorsManifestWindowsPath,
 } from "../app/server/bundledEmulatorsPath.server.js";
 import { writeFileSync } from "node:fs";
-import { Download, emulatorDownloads } from "./definitions/emulatorVersions.js";
+import {
+  Download,
+  emulatorDownloads,
+  getOperatingsSystem,
+} from "./definitions/emulatorVersions.js";
 
 const __dirname = import.meta.dirname;
 
@@ -29,7 +33,7 @@ export const createEmulatorsManifestFile = () => {
     emulatorDownloads,
   ).reduce<EmulatorsManifestFile>(
     (accumulator, [emulatorId, emulatorDownload]) => {
-      const { url, hash } = emulatorDownload[isWindows() ? "Windows" : "Linux"];
+      const { url, hash } = emulatorDownload[getOperatingsSystem()];
 
       accumulator[emulatorId as ApplicationId] = {
         url,
