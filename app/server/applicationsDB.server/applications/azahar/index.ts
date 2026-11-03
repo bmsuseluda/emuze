@@ -14,7 +14,7 @@ import {
 import fs from "node:fs";
 import { defaultSettings } from "./defaultSettings.js";
 import { envPaths } from "../../../envPaths.server.js";
-import { isMac, isWindows } from "../../../operationsystem.server.js";
+import { handleOperatingSystem } from "../../../operationsystem.server.js";
 import { disableSetting, getSetting } from "./getSettings.js";
 import { getGamepad, getVirtualGamepad } from "./getVirtualGamepad.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
@@ -22,29 +22,20 @@ import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const applicationId: ApplicationId = "azahar";
 
-const getBundledPath = () => {
-  if (isWindows()) {
-    return nodepath.join(applicationId, "azahar.exe");
-  }
-
-  if (isMac()) {
-    return nodepath.join(
-      applicationId,
-      "Azahar.app",
-      "Contents",
-      "MacOS",
-      "Azahar",
-    );
-  }
-
-  return nodepath.join(applicationId, `${applicationId}.AppImage`);
-};
-const bundledPath = getBundledPath();
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "azahar.exe"),
+  mac: nodepath.join(applicationId, "Azahar.app"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
 
 const configFileName = "qt-config.ini";
+const configPathRelative = handleOperatingSystem({
+  mac: nodepath.join("config", configFileName),
+  linux: nodepath.join(configFileName),
+});
 
 const getConfigFilePath = () =>
-  nodepath.join(emulatorsConfigDirectory, applicationId, configFileName);
+  nodepath.join(emulatorsConfigDirectory, applicationId, configPathRelative);
 
 export const replaceGamepadConfig: SectionReplacement = (sections) => {
   const gamepad = getGamepad();
@@ -117,15 +108,20 @@ export const replaceConfigSections = (n3dsRomsPath: string) => {
   writeConfig(filePath, fileContentNew);
 };
 
-const getConfigFileBasePath = () => {
-  if (isWindows()) {
+const getConfigFileBasePath = handleOperatingSystem({
+  windows: () => {
     const { config } = envPaths("Azahar", { suffix: "" });
     return nodepath.join(config);
-  } else {
+  },
+  mac: () => {
+    const { data } = envPaths("Azahar", { suffix: "" });
+    return nodepath.join(data);
+  },
+  linux: () => {
     const { config } = envPaths("azahar", { suffix: "emu" });
     return nodepath.join(config);
-  }
-};
+  },
+});
 
 export const azahar: Application = {
   id: applicationId,
@@ -134,7 +130,7 @@ export const azahar: Application = {
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {
     basePath: getConfigFileBasePath(),
-    files: [configFileName],
+    files: [configPathRelative],
   },
   createOptionParams: ({
     settings: {

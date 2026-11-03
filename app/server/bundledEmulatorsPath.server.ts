@@ -15,6 +15,11 @@ export const emulatorsManifestLinuxPath = nodepath.join(
   "emulators-linux.json",
 );
 
+export const emulatorsManifestMacPath = nodepath.join(
+  bundledEmulatorsPathBase,
+  "emulators-mac.json",
+);
+
 export const emulatorsManifestWindowsPath = nodepath.join(
   bundledEmulatorsPathBase,
   "emulators-windows.json",

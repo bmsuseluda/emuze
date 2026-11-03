@@ -1,4 +1,4 @@
-import { isWindows } from "../../../operationsystem.server.js";
+import { isMac, isWindows } from "../../../operationsystem.server.js";
 import nodepath from "node:path";
 import fs from "node:fs";
 import type { ApplicationId } from "../../applicationId.js";
@@ -170,6 +170,8 @@ export const rosaliesMupenGui: Application = {
   },
   bundledPath,
 };
+
+export const isRmgSupported = () => !isMac();
 
 export const isRmgForN64 = () => {
   const rmg = readAdvanced()?.rmg;

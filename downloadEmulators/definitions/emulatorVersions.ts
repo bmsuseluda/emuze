@@ -29,7 +29,7 @@ export interface Download {
 }
 type EmulatorDownloads = Record<
   ApplicationId,
-  Record<OperatingSystem, Download>
+  Record<OperatingSystem, Download | null>
 >;
 
 export const emulatorDownloads = {
@@ -63,7 +63,7 @@ export const emulatorDownloads = {
   },
   cemu: {
     Linux: {
-      url: `https://github.com/pkgforge-dev/Cemu-AppImage-Enhanced/releases/download/2.6-4%402026-02-01_1769935971/Cemu-2.6-4-anylinux-x86_64.AppImage`,
+      url: `https://github.com/pkgforge-dev/Cemu-AppImage-Enhanced/releases/download/${emulatorVersions.cemu}-4%402026-02-01_1769935971/Cemu-${emulatorVersions.cemu}-4-anylinux-x86_64.AppImage`,
       hash: "4b9276df7fb56198c6a54dfaa3afba6b69f0fb33b09ddbbbd2db10508e311f04",
     },
     Windows: {
@@ -84,6 +84,10 @@ export const emulatorDownloads = {
       url: `https://dl.dolphin-emu.org/releases/${emulatorVersions.dolphin}/dolphin-${emulatorVersions.dolphin}-x64.7z`,
       hash: "bbfd13bf9e6d2a4164a15c392b1f32a9b18150e5136746b388704608fbb60f76",
     },
+    Mac: {
+      url: `https://dl.dolphin-emu.org/releases/${emulatorVersions.dolphin}/dolphin-${emulatorVersions.dolphin}-universal.dmg`,
+      hash: "9a810043538f21b53cf8f8f747b1672df74895d3d6eb30940d96042823f20ecb",
+    },
   },
   dosboxpure: {
     Linux: {
@@ -94,6 +98,7 @@ export const emulatorDownloads = {
       url: `https://codeberg.org/schelling/dosbox-pure-unleashed/releases/download/${emulatorVersions.dosboxpure}/dosbox_pure_unleashed-windows-64bit-${emulatorVersions.dosboxpure}.zip`,
       hash: "84985ae6ae3163dd3b94432e549b163e35add07276315f0f70bc6e87e845644a",
     },
+    Mac: null,
   },
   duckstation: {
     Linux: {
@@ -118,6 +123,7 @@ export const emulatorDownloads = {
       url: `https://stable.eden-emu.dev/v${emulatorVersions.eden}/Eden-Windows-v${emulatorVersions.eden}-amd64-clang-pgo.zip`,
       hash: "6c1b53ce325170a026cc0f87098380027dc6170d94ba95f913aab7596fd097cb",
     },
+    Mac: null,
   },
   flycast: {
     Linux: {
@@ -128,6 +134,7 @@ export const emulatorDownloads = {
       url: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-win64-${emulatorVersions.flycast}.zip`,
       hash: "7edf489ba6b3053703a18ce8233767eb71a2d89e4bda0421b312c2167a739161",
     },
+    Mac: null,
   },
   mame: {
     Linux: {
@@ -138,6 +145,7 @@ export const emulatorDownloads = {
       url: `https://github.com/mamedev/mame/releases/download/mame0289/mame0289b_x64.exe`,
       hash: "a1aa7912168c9d1b05e611906bc21b8b9be3935822aead36d12a1da363150b7d",
     },
+    Mac: null,
   },
   mednafen: {
     Linux: {
@@ -148,6 +156,7 @@ export const emulatorDownloads = {
       url: `https://github.com/bmsuseluda/mednafen-sdl3/releases/download/v${emulatorVersions.mednafen}-1/mednafen-${emulatorVersions.mednafen}-1-x86_64.zip`,
       hash: "6bfcafae7699ae2bf6f2d88b5f0038e2c68cd2549429a1e8518a4e6e1cc2a039",
     },
+    Mac: null,
   },
   melonds: {
     Linux: {
@@ -158,6 +167,7 @@ export const emulatorDownloads = {
       url: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions.melonds}/melonDS-${emulatorVersions.melonds}-windows-x86_64.zip`,
       hash: "9f3f8a244103be20b5b657af5b0ed1b2a66bb20a7181476a6d294c9a53d4f8c8",
     },
+    Mac: null,
   },
   pcsx2: {
     Linux: {
@@ -168,6 +178,7 @@ export const emulatorDownloads = {
       url: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions.pcsx2}/pcsx2-v${emulatorVersions.pcsx2}-windows-x64-Qt.7z`,
       hash: "7dfc829ca1994cc1045ac49f05e39b6cf968b72e6a374c40e05c2a2b4ac200b4",
     },
+    Mac: null,
   },
   ppsspp: {
     Linux: {
@@ -178,6 +189,7 @@ export const emulatorDownloads = {
       url: `https://www.ppsspp.org/files/${emulatorVersions.ppsspp.replaceAll(".", "_")}/ppsspp_win.zip`,
       hash: "a60f04ebdb0b5f1655422bd7f88349a46999b17ad5115d6ddb290c3934bd5163",
     },
+    Mac: null,
   },
   rosaliesMupenGui: {
     Linux: {
@@ -188,6 +200,7 @@ export const emulatorDownloads = {
       url: `https://github.com/Rosalie241/RMG/releases/download/v${emulatorVersions.rosaliesMupenGui}/RMG-Portable-Windows64-v${emulatorVersions.rosaliesMupenGui}.zip`,
       hash: "f81640a0ae7474c0915f263d1acac20cf816ac8666f897cbf3710cd485a9027d",
     },
+    Mac: null,
   },
   rpcs3: {
     Linux: {
@@ -198,6 +211,7 @@ export const emulatorDownloads = {
       url: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-4c17bf7589b2b894e71fe69e849b41761fc686cf/rpcs3-v${emulatorVersions.rpcs3}-4c17bf75_win64_msvc.7z`,
       hash: "7C52D6E9D3EF43F48D7D58F8C390B275C6809928AC139CD3CB3292A1F8B5BEC7",
     },
+    Mac: null,
   },
   ryujinx: {
     Linux: {
@@ -208,6 +222,7 @@ export const emulatorDownloads = {
       url: `https://git.ryujinx.app/projects/Ryubing/releases/download/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-win_x64.zip`,
       hash: "50556677d4dd1b201d4dea4cf7d5586b5d83bf798402b704c5292e19e772a6de",
     },
+    Mac: null,
   },
   scummvm: {
     Linux: {
@@ -218,6 +233,7 @@ export const emulatorDownloads = {
       url: `https://downloads.scummvm.org/frs/scummvm/${emulatorVersions.scummvm}/scummvm-${emulatorVersions.scummvm}-win32-x86_64.zip`,
       hash: "fb60cfc0828ed86ef24a60c04b9390676493ab85892d81c56d1de90367d56736",
     },
+    Mac: null,
   },
   xemu: {
     Linux: {
@@ -228,6 +244,7 @@ export const emulatorDownloads = {
       url: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-win-x86_64-release.zip`,
       hash: "fbb14dd7ea08120ca9ec99c955758786645af16a5058250553b3b7d7592e8701",
     },
+    Mac: null,
   },
 } satisfies Partial<EmulatorDownloads>;
 

@@ -8,6 +8,29 @@ export const isWindows = () =>
 
 export const isMac = () => platform() === "darwin";
 
+/**
+ * linux is the default
+ */
+export const handleOperatingSystem = <T extends unknown>({
+  windows,
+  mac,
+  linux,
+}: {
+  windows?: T;
+  mac?: T;
+  linux: T;
+}) => {
+  if (isWindows() && windows) {
+    return windows;
+  }
+
+  if (isMac() && mac) {
+    return mac;
+  }
+
+  return linux;
+};
+
 export const isSteamOs = () => {
   if (platform() === "linux") {
     try {

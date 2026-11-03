@@ -2,7 +2,7 @@ import type { Application, OptionParamFunction } from "../../types.js";
 import type { ApplicationId } from "../../applicationId.js";
 import nodepath from "node:path";
 import { getKeyboardKey } from "./keyboardConfig.js";
-import { isMac, isWindows } from "../../../operationsystem.server.js";
+import { handleOperatingSystem } from "../../../operationsystem.server.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
@@ -11,24 +11,11 @@ import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const applicationId: ApplicationId = "ares";
 
-const getBundledPath = () => {
-  if (isWindows()) {
-    return nodepath.join(applicationId, "ares.exe");
-  }
-
-  if (isMac()) {
-    return nodepath.join(
-      applicationId,
-      "ares.app",
-      "Contents",
-      "MacOS",
-      "ares",
-    );
-  }
-
-  return nodepath.join(applicationId, `${applicationId}.AppImage`);
-};
-const bundledPath = getBundledPath();
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "ares.exe"),
+  mac: nodepath.join(applicationId, "ares.app"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
 
 export const getSharedAresOptionParams: OptionParamFunction = ({
   settings: {
@@ -70,7 +57,10 @@ const getConfigFileBasePath = () => {
   );
   const { data } = envPaths("ares", { suffix: "" });
 
-  return isWindows() ? nodepath.join(windowsConfigFolder) : nodepath.join(data);
+  return handleOperatingSystem({
+    windows: nodepath.join(windowsConfigFolder),
+    linux: nodepath.join(data),
+  });
 };
 
 export const ares: Application = {

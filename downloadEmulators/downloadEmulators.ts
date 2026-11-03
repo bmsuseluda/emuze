@@ -6,6 +6,7 @@ import {
   Download,
   emulatorDownloads,
   getOperatingsSystem,
+  OperatingSystem,
 } from "./definitions/emulatorVersions.js";
 import {
   cpSync,
@@ -24,6 +25,7 @@ import { removeFile } from "../app/server/readWriteData.server.js";
 import { applications } from "./definitions/applications.js";
 import { executeWithLogs } from "./utils/executeWithLogs.js";
 import { makeFileExecutableLinux } from "./utils/makeFileExecutableLinux.js";
+import { isMac } from "../app/server/operationsystem.server.js";
 
 const __dirname = import.meta.dirname;
 const projectPath = join(__dirname, "..");
@@ -70,15 +72,31 @@ const extractDmg = (dmgFilePath: string, outputFolder: string) => {
     dmgFilePath,
   ]);
 
-  const mountName = output.split("/Volumes/").at(-1)!;
-  const mountPath = join("Volumes", mountName);
-  cpSync(mountPath, outputFolder, {
-    recursive: true,
-    force: true,
-    preserveTimestamps: true,
-  });
+  const mountName = output
+    .split("/Volumes/")
+    .at(-1)!
+    .replace(/(\r\n|\n|\r)/gm, "");
+  const mountPath = join("/Volumes", mountName);
 
-  executeWithLogs("hdiutil", ["detach", "-nobrowse", mountPath]);
+  try {
+    cpSync(mountPath, outputFolder, {
+      recursive: true,
+      force: true,
+      preserveTimestamps: true,
+      filter: (source) => {
+        if (source.startsWith(join(mountPath, "Applications"))) {
+          return false;
+        }
+        return true;
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    executeWithLogs("hdiutil", ["detach", mountPath]);
+    throw err;
+  }
+
+  executeWithLogs("hdiutil", ["detach", mountPath]);
 };
 
 const downloadAndExtractDmg = (
@@ -92,9 +110,8 @@ const downloadAndExtractDmg = (
     url,
     dmgFilePath,
     () => {
-      extractDmg(outputFolder, outputFolder);
+      extractDmg(dmgFilePath, outputFolder);
       rmSync(dmgFilePath, { recursive: true, force: true });
-      removeRootFolderIfNecessary(outputFolder);
       if (!existsSync(fileToCheck)) {
         console.error(`${fileToCheck} does not exist`);
         process.exit(1);
@@ -195,7 +212,7 @@ const downloadExe = (
 const removeRootFolderIfNecessary = (folder: string) => {
   const files = readdirSync(folder);
 
-  if (files.length === 1) {
+  if (files.length === 1 && !folder.endsWith(".app")) {
     const fileStats = statSync(join(folder, files[0]));
     if (fileStats.isDirectory()) {
       const tempFolder = join(folder, "..", `${basename(folder)}TempFolder`);
@@ -209,41 +226,59 @@ const removeRootFolderIfNecessary = (folder: string) => {
   }
 };
 
+const getEmulatorsManifestFromLatestArtifact = async (
+  operatingSystem: OperatingSystem,
+) => {
+  // TODO: remove after first mac release
+  if (!isMac()) {
+    const {
+      default: emulatorsManifestFromLatestArtifact,
+    }: {
+      default: Record<ApplicationId, Download>;
+    } = await import(
+      pathToFileURL(
+        join(
+          latestEmulatorsPath,
+          `emulators-${operatingSystem.toLowerCase()}.json`,
+        ),
+      ).href,
+      { with: { type: "json" } }
+    );
+
+    return emulatorsManifestFromLatestArtifact;
+  }
+
+  return null;
+};
+
 export const downloadEmulators = async () => {
   const operatingSystem = getOperatingsSystem();
-  const {
-    default: emulatorsManifestFromLatestArtifact,
-  }: {
-    default: Record<ApplicationId, Download>;
-  } = await import(
-    pathToFileURL(
-      join(
-        latestEmulatorsPath,
-        `emulators-${operatingSystem.toLowerCase()}.json`,
-      ),
-    ).href,
-    { with: { type: "json" } }
-  );
+  const emulatorsManifestFromLatestArtifact =
+    await getEmulatorsManifestFromLatestArtifact(operatingSystem);
 
   Object.entries(emulatorDownloads).forEach(
     ([emulatorId, emulatorDownload]) => {
-      const { url, hash } = emulatorDownload[operatingSystem];
-      const hashFromLatestArtifact =
-        emulatorsManifestFromLatestArtifact?.[emulatorId as ApplicationId].hash;
+      const donwloadManifest = emulatorDownload[operatingSystem];
+      if (donwloadManifest) {
+        const { url, hash } = donwloadManifest;
+        const hashFromLatestArtifact =
+          emulatorsManifestFromLatestArtifact?.[emulatorId as ApplicationId]
+            .hash;
 
-      if (hash === hashFromLatestArtifact) {
-        console.log(`copy emulator from latest artifact: ${emulatorId}`);
-        cpSync(
-          join(latestEmulatorsPath, emulatorId),
-          join(emulatorsFolderPath, emulatorId),
-          {
-            recursive: true,
-            force: true,
-            preserveTimestamps: true,
-          },
-        );
-      } else {
-        downloadEmulator(emulatorId as ApplicationId, url);
+        if (hash === hashFromLatestArtifact) {
+          console.log(`copy emulator from latest artifact: ${emulatorId}`);
+          cpSync(
+            join(latestEmulatorsPath, emulatorId),
+            join(emulatorsFolderPath, emulatorId),
+            {
+              recursive: true,
+              force: true,
+              preserveTimestamps: true,
+            },
+          );
+        } else {
+          downloadEmulator(emulatorId as ApplicationId, url);
+        }
       }
     },
   );

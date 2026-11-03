@@ -19,10 +19,12 @@ import {
 import { readAdvanced, writeAdvanced } from "../server/settings.server.js";
 import type { Advanced } from "../types/jsonFiles/settings/advanced.js";
 import { Route } from "./+types/categories.$category.settings.advanced.js";
+import { isRmgSupported } from "../server/applicationsDB.server/applications/rmg/index.js";
 
 export const loader = () => {
   const advanced = readAdvanced();
-  return advanced;
+  const rmgSupported = isRmgSupported();
+  return { ...advanced, rmgSupported };
 };
 
 const actionIds = {
@@ -59,7 +61,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 const focus: FocusElement = "settingsMain";
 
 export default function General({
-  loaderData: { eden, rmg },
+  loaderData: { eden, rmg, rmgSupported },
 }: Route.ComponentProps) {
   const saveButtonRef = useRef<ComponentRef<"button">>(null);
   const { isInFocus, switchFocusBack, switchFocus } =
@@ -151,17 +153,19 @@ export default function General({
                     aria-label="Use Eden instead of Ryujinx to play Nintendo Switch"
                   />
                 </li>
-                <li>
-                  <CheckboxRow
-                    id="rmg"
-                    name="rmg"
-                    defaultChecked={rmg}
-                    ref={entriesRefCallback(1)}
-                    onCheckedChange={onSave}
-                    onClick={onClick}
-                    aria-label="Use RMG instead of ares to play Nintendo 64"
-                  />
-                </li>
+                {rmgSupported && (
+                  <li>
+                    <CheckboxRow
+                      id="rmg"
+                      name="rmg"
+                      defaultChecked={rmg}
+                      ref={entriesRefCallback(1)}
+                      onCheckedChange={onSave}
+                      onClick={onClick}
+                      aria-label="Use RMG instead of ares to play Nintendo 64"
+                    />
+                  </li>
+                )}
               </FormBox>
             }
           />

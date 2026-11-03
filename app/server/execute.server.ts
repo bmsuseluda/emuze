@@ -13,7 +13,7 @@ import { readCategory } from "./categoryDataCache.server.js";
 import { log } from "./debug.server.js";
 import { setErrorDialog } from "./errorDialog.server.js";
 import { addToLastPlayedCached } from "./lastPlayed.server.js";
-import { isWindows } from "./operationsystem.server.js";
+import { isMac, isWindows } from "./operationsystem.server.js";
 import {
   readAdvanced,
   readAppearance,
@@ -66,14 +66,23 @@ const execFileCallback =
 const executeApplication = (file: string, args: string[]) => {
   return new Promise<void>((resolve, reject) => {
     log("debug", "params", args);
-    const childProcess = execFile(
-      file,
-      args,
-      {
-        encoding: "utf8",
-      },
-      execFileCallback(reject),
-    );
+    const childProcess = !isMac()
+      ? execFile(
+          file,
+          args,
+          {
+            encoding: "utf8",
+          },
+          execFileCallback(reject),
+        )
+      : execFile(
+          "open",
+          ["-W", file, "--args", ...args],
+          {
+            encoding: "utf8",
+          },
+          execFileCallback(reject),
+        );
     setGameIsRunningChildProcess(childProcess);
 
     registerCloseGameOnKeyboardEvent();
