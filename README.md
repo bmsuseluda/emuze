@@ -41,37 +41,37 @@ The following systems are supported:
 | Sega 32X | [ares](https://github.com/ares-emulator/ares) v148 | No | 
 | Sega CD | [ares](https://github.com/ares-emulator/ares) v148 | Yes | 
 | Mega LD | [ares](https://github.com/ares-emulator/ares) v148 | Yes | 
-| Sega Saturn | [Mednafen](https://mednafen.github.io/) v1.32.1 | Yes | 
-| Sega Dreamcast | [Flycast](https://github.com/flyinghead/flycast) v2.6 | No | 
+| Sega Saturn | [Mednafen](https://github.com/bmsuseluda/mednafen-sdl3) v1.32.1 | No | 
+| Sega Dreamcast | [Flycast](https://github.com/flyinghead/flycast) v2.7 | No | 
 | Nintendo Entertainment System | [ares](https://github.com/ares-emulator/ares) v148 | No | 
 | Super Nintendo Entertainment System | [ares](https://github.com/ares-emulator/ares) v148 | No | 
 | Nintendo Game Boy | [ares](https://github.com/ares-emulator/ares) v148 | No | 
 | Nintendo Game Boy Color | [ares](https://github.com/ares-emulator/ares) v148 | No | 
 | Nintendo Game Boy Advance | [ares](https://github.com/ares-emulator/ares) v148 | No | 
 | Nintendo DS | [melonDS](https://github.com/melonDS-emu/melonDS) v1.1 | No | 
-| Nintendo 3DS | [Azahar](https://github.com/azahar-emu/azahar) v2125.1.3 | No | 
+| Nintendo 3DS | [Azahar](https://github.com/azahar-emu/azahar) v2126.1.2 | No | 
 | Nintendo 64 | [ares](https://github.com/ares-emulator/ares) v148 | No | 
-|  | [Rosalie's Mupen GUI](https://github.com/Rosalie241/RMG) v0.9.0 | No | 
-| Nintendo GameCube | [Dolphin](https://github.com/dolphin-emu/dolphin) v2606 | No | 
-| Nintendo Wii | [Dolphin](https://github.com/dolphin-emu/dolphin) v2606 | No | 
+|  | [Rosalie's Mupen GUI](https://github.com/Rosalie241/RMG) v0.9.1 | No | 
+| Nintendo GameCube | [Dolphin](https://github.com/dolphin-emu/dolphin) v2609a | No | 
+| Nintendo Wii | [Dolphin](https://github.com/dolphin-emu/dolphin) v2609a | No | 
 | Nintendo Wii U | [Cemu](https://github.com/cemu-project/Cemu) v2.6 | Yes | 
 | Nintendo Switch | [Ryujinx](https://git.ryujinx.app/ryubing/ryujinx) v1.3.3 | Yes | 
 |  | [Eden](https://git.eden-emu.dev/eden-emu/eden/releases) v0.2.1 | Yes | 
-| Sony PlayStation | [DuckStation (Legacy)](https://github.com/stenzek/duckstation) v0.1-7371 | No | 
-| Sony PlayStation 2 | [PCSX2](https://github.com/PCSX2/pcsx2) v2.6.3 | Yes | 
-| Sony PlayStation 3 | [RPCS3](https://github.com/RPCS3/rpcs3) v0.0.42 | Yes | 
+| Sony PlayStation | [DuckStation (Legacy)](https://github.com/Kyuyrii/Duckstation-GPL3) v0.1-7371 | No | 
+| Sony PlayStation 2 | [PCSX2](https://github.com/PCSX2/pcsx2) v2.8.2 | No | 
+| Sony PlayStation 3 | [RPCS3](https://github.com/RPCS3/rpcs3) v0.0.43-20541 | Yes | 
 | Sony PlayStation Portable | [PPSSPP](https://github.com/hrydgard/ppsspp) v1.20.4 | No | 
 | NEC PC Engine | [ares](https://github.com/ares-emulator/ares) v148 | No | 
-| NEC PC Engine CD | [Mednafen](https://mednafen.github.io/) v1.32.1 | Yes | 
+| NEC PC Engine CD | [Mednafen](https://github.com/bmsuseluda/mednafen-sdl3) v1.32.1 | Yes | 
 | NEC PC Engine SuperGrafx | [ares](https://github.com/ares-emulator/ares) v148 | No | 
-| Arcade | [MAME](https://github.com/mamedev/mame) v0.288 | No | 
-| SNK Neo Geo | [MAME](https://github.com/mamedev/mame) v0.288 | No | 
-| SNK Neo Geo CD | [MAME](https://github.com/mamedev/mame) v0.288 | Yes | 
+| Arcade | [MAME](https://github.com/mamedev/mame) v0.289 | No | 
+| SNK Neo Geo | [MAME](https://github.com/mamedev/mame) v0.289 | No | 
+| SNK Neo Geo CD | [MAME](https://github.com/mamedev/mame) v0.289 | Yes | 
 | SNK Neo Geo Pocket | [ares](https://github.com/ares-emulator/ares) v148 | Yes | 
 | SNK Neo Geo Pocket Color | [ares](https://github.com/ares-emulator/ares) v148 | Yes | 
-| Scumm | [ScummVM](https://github.com/scummvm/scummvm) v2026.3.0 | No | 
-| Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json)) | [DOSBox Pure Unleashed](https://github.com/schellingb/dosbox-pure-unleashed) v1.0-preview6 | No | 
-| Microsoft XBOX | [xemu](https://github.com/xemu-project/xemu) v0.8.136 | Yes | 
+| Scumm | [ScummVM](https://github.com/scummvm/scummvm) v2026.4.0 | No | 
+| Dos ([Supported Games](https://github.com/bmsuseluda/emuze/blob/main/app/server/applicationsDB.server/applications/dosbox/nameMapping/dos.json)) | [DOSBox Pure Unleashed](https://codeberg.org/schelling/dosbox-pure-unleashed) v1.0-preview7 | No | 
+| Microsoft XBOX | [xemu](https://github.com/xemu-project/xemu) v0.8.139 | Yes | 
 
 > [!IMPORTANT]  
 > ❤️ Many thanks to all emulator developers. Without you and your awesome work this wouldn't be possible.
@@ -152,6 +152,8 @@ For some emulators a open source BIOS implementation is bundled with emuze:
 | SNK Neo Geo | [neogeo-bios](https://github.com/neogeo-projects/neogeo-bios) |
 | Nintendo Game Boy Advance | [gba-bios](https://github.com/ez-me/gba-bios) |
 | Sony PlayStation | [PCSX Redux Openbios](https://pcsx-redux.consoledev.net/openbios/) |
+| Sony PlayStation 2 | [OpenPS2BIOS](https://github.com/TamaribaEmu/OpenPS2BIOS) |
+| Sega Saturn | [saturn-open-bios](https://github.com/viruztt/saturn-open-bios) |
 
 > [!IMPORTANT]  
 > ❤️ Many thanks to the creators. Your work is a big step forward simplifing emulation.
