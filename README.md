@@ -56,7 +56,7 @@ The following systems are supported:
 | Nintendo Wii | [Dolphin](https://github.com/dolphin-emu/dolphin) v2609a | No | 
 | Nintendo Wii U | [Cemu](https://github.com/cemu-project/Cemu) v2.6 | Yes | 
 | Nintendo Switch | [Ryujinx](https://git.ryujinx.app/ryubing/ryujinx) v1.3.3 | Yes | 
-|  | [Eden](https://git.eden-emu.dev/eden-emu/eden/releases) v0.2.1 | Yes | 
+|  | [Eden](https://git.eden-emu.dev/eden-emu/eden) v0.2.1 | Yes | 
 | Sony PlayStation | [DuckStation (Legacy)](https://github.com/Kyuyrii/Duckstation-GPL3) v0.1-7371 | No | 
 | Sony PlayStation 2 | [PCSX2](https://github.com/PCSX2/pcsx2) v2.8.2 | No | 
 | Sony PlayStation 3 | [RPCS3](https://github.com/RPCS3/rpcs3) v0.0.43-20541 | Yes | 
@@ -217,13 +217,13 @@ In general emuze should just detect your systems and games. If not please check 
 
 ### 🪟 Windows
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.59.2/emuze-Setup-0.59.2.exe) the latest Version of emuze and install it
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.60.0/emuze-Setup-0.60.0.exe) the latest Version of emuze and install it
 
 2) Choose the [folder where your Roms are located](#roms-folder)
 
 ### 🐧 Linux
 
-1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.59.2/emuze-0.59.2.AppImage) the latest Version of emuze
+1) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.60.0/emuze-0.60.0.AppImage) the latest Version of emuze
 
 2) Mark the AppImage as executable and start emuze
 3) Choose the [folder where your Roms are located](#roms-folder)
@@ -231,7 +231,7 @@ In general emuze should just detect your systems and games. If not please check 
 ### 🎮️ Steam Deck in Game mode
 
 1) Switch to Desktop
-2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.59.2/emuze-0.59.2.AppImage) the latest Version of emuze
+2) [Download](https://github.com/bmsuseluda/emuze/releases/download/v0.60.0/emuze-0.60.0.AppImage) the latest Version of emuze
 
 3) Mark the AppImage as executable
 4) Add it via `Add a Non-Steam Game` to Steam and rename it to `emuze`
