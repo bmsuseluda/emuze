@@ -33,7 +33,7 @@ export const emulatorsBios: BiosDownloadDefinition[] = [
     name: "PCSX Redux Openbios",
     system: "sonyplaystation",
     homepage: "https://pcsx-redux.consoledev.net/openbios/",
-    path: "https://distrib.app/storage/assets/a1b/ab2/14a/e445e7db99e7dafa74add2e354f1cd9f355198d0e7bbf8cfb7aea95/pcsx-redux-nightly-30141.20261101.10-x64.zip",
+    path: "https://distrib.app/storage/assets/e94/349/db2/7521797c72642a294d3668f2e2af78b9770c1188e1fc843a8196b2b/pcsx-redux-nightly-30273.20261104.2-x64.zip",
     subPath: "openbios.bin",
   },
   {

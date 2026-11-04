@@ -5,8 +5,9 @@ import type {
 } from "../../../../types/gamepad.js";
 import {
   emuzeToSdlButtonId,
-  getButtonIndex, isAnalog,
-  isDpadHat
+  getButtonIndex,
+  isAnalog,
+  isDpadHat,
 } from "../../../../types/gamepad.js";
 import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js";
 import { log } from "../../../debug.server.js";
@@ -14,68 +15,70 @@ import { keyboardConfig } from "./keyboardConfig.js";
 import type { ButtonDetailsFunction, RmgButtonId } from "./types.js";
 import { mapAndJoinEmuzeButtonIds, rmgButtonIds } from "./types.js";
 import {
+  DetectSdlGuidIndex,
   EmuzeController,
   getControllersSdl3,
+  getSdlGuidIndex,
 } from "../../../gamepad.server.js";
 import { normalizeNewLines } from "../../configFile.js";
 
 const getInputType =
   (mappingObject: SdlButtonMapping): ButtonDetailsFunction =>
-    (buttonId: EmuzeButtonId) => {
-      if (isAnalog(mappingObject, emuzeToSdlButtonId[buttonId].sdlButtonId)) {
-        return 3;
-      }
+  (buttonId: EmuzeButtonId) => {
+    if (isAnalog(mappingObject, emuzeToSdlButtonId[buttonId].sdlButtonId)) {
+      return 3;
+    }
 
-      if (isDpadHat(mappingObject, emuzeToSdlButtonId[buttonId].sdlButtonId)) {
-        return 4;
-      }
+    if (isDpadHat(mappingObject, emuzeToSdlButtonId[buttonId].sdlButtonId)) {
+      return 4;
+    }
 
-      return 2;
-    };
+    return 2;
+  };
 
 const getName =
   (mappingObject: SdlButtonMapping): ButtonDetailsFunction =>
-    (buttonId: EmuzeButtonId) => {
-      const sdlButtonId = emuzeToSdlButtonId[buttonId].sdlButtonId;
-      const buttonIndex = getButtonIndex(mappingObject, sdlButtonId);
+  (buttonId: EmuzeButtonId) => {
+    const sdlButtonId = emuzeToSdlButtonId[buttonId].sdlButtonId;
+    const buttonIndex = getButtonIndex(mappingObject, sdlButtonId);
 
-      if (isAnalog(mappingObject, sdlButtonId)) {
-        const { qualifier } = emuzeToSdlButtonId[buttonId];
-        return `axis ${buttonIndex}${qualifier || ""}`;
-      }
+    if (isAnalog(mappingObject, sdlButtonId)) {
+      const { qualifier } = emuzeToSdlButtonId[buttonId];
+      return `axis ${buttonIndex}${qualifier || ""}`;
+    }
 
-      if (isDpadHat(mappingObject, sdlButtonId)) {
-        return `hat ${buttonIndex?.split(".").join(":")}`;
-      }
+    if (isDpadHat(mappingObject, sdlButtonId)) {
+      return `hat ${buttonIndex?.split(".").join(":")}`;
+    }
 
-      return `button ${buttonIndex}`;
-    };
+    return `button ${buttonIndex}`;
+  };
 
 const getData =
   (mappingObject: SdlButtonMapping): ButtonDetailsFunction =>
-    (buttonId: EmuzeButtonId) => {
-      const sdlButtonId = emuzeToSdlButtonId[buttonId].sdlButtonId;
-      const buttonIndex = getButtonIndex(mappingObject, sdlButtonId);
+  (buttonId: EmuzeButtonId) => {
+    const sdlButtonId = emuzeToSdlButtonId[buttonId].sdlButtonId;
+    const buttonIndex = getButtonIndex(mappingObject, sdlButtonId);
 
-      if (isDpadHat(mappingObject, sdlButtonId)) {
-        return buttonIndex?.split(".").at(0);
-      }
+    if (isDpadHat(mappingObject, sdlButtonId)) {
+      return buttonIndex?.split(".").at(0);
+    }
 
-      return buttonIndex;
-    };
+    return buttonIndex;
+  };
 
 const getExtraData =
   (mappingObject: SdlButtonMapping): ButtonDetailsFunction =>
-    (buttonId: EmuzeButtonId) => {
-      const sdlButtonId = emuzeToSdlButtonId[buttonId].sdlButtonId;
-      if (isDpadHat(mappingObject, sdlButtonId)) {
-        const buttonIndex = getButtonIndex(mappingObject, sdlButtonId);
-        return buttonIndex?.split(".").at(1);
-      }
+  (buttonId: EmuzeButtonId) => {
+    const sdlButtonId = emuzeToSdlButtonId[buttonId].sdlButtonId;
+    if (isDpadHat(mappingObject, sdlButtonId)) {
+      const buttonIndex = getButtonIndex(mappingObject, sdlButtonId);
+      return buttonIndex?.split(".").at(1);
+    }
 
-      const { qualifier } = emuzeToSdlButtonId[buttonId];
-      return qualifier === "+" ? 1 : 0;
-    };
+    const { qualifier } = emuzeToSdlButtonId[buttonId];
+    return qualifier === "+" ? 1 : 0;
+  };
 
 const getRmgButtonMapping = (
   mappingObject: SdlButtonMapping,
@@ -139,18 +142,27 @@ DpadRight_ExtraData = "2;${getExtraData(mappingObject)("dpadRight")}"`),
   ];
 };
 
+export const createDeviceGuid = (
+  { guid }: EmuzeController,
+  guidIndex: number,
+) => {
+  return `${guid}/${guidIndex}`;
+};
+
 export const getVirtualGamepad =
+  (detectSdlGuidIndex: DetectSdlGuidIndex) =>
   (emuzeController: EmuzeController, index: number) => {
     log("debug", "gamepad", { index, emuzeController });
-    const { serialNumber, nameOsSpecific, path } = emuzeController;
+    const { nameOsSpecific, guid } = emuzeController;
+    const guidIndex = detectSdlGuidIndex(guid, index);
+    const deviceGuid = createDeviceGuid(emuzeController, guidIndex);
 
     return [
       `[Rosalie's Mupen GUI - Input Plugin Profile ${index}]`,
       `PluggedIn = True`,
       `DeviceName = "${nameOsSpecific}"`,
+      `DeviceGuid = "${deviceGuid}"`,
       `DeviceType = 4`,
-      `DevicePath = "${path}"`,
-      `DeviceSerial = "${serialNumber || ""}"`,
       `Deadzone = 9`,
       `Sensitivity = 100`,
       `Pak = 0`,
@@ -167,6 +179,7 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
     `[Rosalie's Mupen GUI - Input Plugin Profile ${gamepadIndex}]`,
     `PluggedIn = False`,
     `DeviceName = "None"`,
+    `DeviceGuid = ""`,
     `DeviceType = 0`,
     `DevicePath = ""`,
     `DeviceSerial = ""`,
@@ -174,10 +187,11 @@ const getVirtualGamepadReset = (gamepadIndex: number) =>
 
 export const getVirtualGamepads = () => {
   const gamepads = getControllersSdl3();
+  const detectSdlGuidIndex = getSdlGuidIndex(gamepads);
 
   const virtualGamepads =
     gamepads.length > 0
-      ? gamepads.map(getVirtualGamepad)
+      ? gamepads.map(getVirtualGamepad(detectSdlGuidIndex))
       : [keyboardConfig];
 
   return [

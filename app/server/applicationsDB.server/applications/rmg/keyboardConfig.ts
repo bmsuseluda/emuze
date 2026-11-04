@@ -38,6 +38,7 @@ export const keyboardConfig =
   normalizeNewLines(`[Rosalie's Mupen GUI - Input Plugin Profile 0]
 PluggedIn = True
 DeviceName = "Keyboard"
+DeviceGuid = ""
 DeviceType = 3
 DevicePath = ""
 DeviceSerial = ""

@@ -14,7 +14,7 @@ export const emulatorVersions = {
   melonds: "1.1",
   pcsx2: "2.8.2",
   ppsspp: "1.20.4",
-  rosaliesMupenGui: "0.9.0",
+  rosaliesMupenGui: "0.9.1",
   rpcs3: "0.0.43-20541",
   ryujinx: "1.3.3",
   scummvm: "2026.4.0",
@@ -164,12 +164,12 @@ export const emulatorDownloads = {
   },
   rosaliesMupenGui: {
     Linux: {
-      url: `https://github.com/pkgforge-dev/RMG-AppImage-Enhanced/releases/download/${emulatorVersions.rosaliesMupenGui}-1%402026-08-01_1785586196/RMG-${emulatorVersions.rosaliesMupenGui}-1-anylinux-x86_64.AppImage`,
-      hash: "d695e1006478d6655d9d7e273b5d7ecca319bc155bf0ff716286a6cf3b4a3539",
+      url: `https://github.com/pkgforge-dev/RMG-AppImage-Enhanced/releases/download/${emulatorVersions.rosaliesMupenGui}-1%402026-11-04_1793785333/RMG-${emulatorVersions.rosaliesMupenGui}-1-anylinux-x86_64.AppImage`,
+      hash: "46639c5a6d8bf0bde9889ee9edb53bff7423c19a836c2ab38fb21b507ecf6654",
     },
     Windows: {
       url: `https://github.com/Rosalie241/RMG/releases/download/v${emulatorVersions.rosaliesMupenGui}/RMG-Portable-Windows64-v${emulatorVersions.rosaliesMupenGui}.zip`,
-      hash: "f81640a0ae7474c0915f263d1acac20cf816ac8666f897cbf3710cd485a9027d",
+      hash: "5c81292e5c17ed40381cbe1aea1b6fd61d7ef6be4307857f6135cbd3bacd297d",
     },
   },
   rpcs3: {

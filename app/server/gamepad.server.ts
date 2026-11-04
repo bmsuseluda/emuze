@@ -66,7 +66,6 @@ export interface EmuzeController {
   hasSteamHandle: boolean;
   sdlJoystick: Sdl.Joystick.Device | Sdl3.Joystick.Device;
   sdlController: Sdl.Controller.Device | Sdl3.Gamepad.Device;
-  serialNumber: string | null;
   path: string | null;
 }
 
@@ -88,7 +87,6 @@ export const createEmuzeController = ({
   hasSteamHandle,
   steamGUID,
   hidName,
-  serialNumber,
 }: {
   controller: Sdl.Controller.Device | Sdl3.Gamepad.Device;
   joystick: Sdl.Joystick.Device | Sdl3.Joystick.Device;
@@ -96,7 +94,6 @@ export const createEmuzeController = ({
   hasSteamHandle: boolean;
   steamGUID: string | null;
   hidName?: string;
-  serialNumber: string | null;
 }): EmuzeController | null => {
   const {
     id,
@@ -132,7 +129,6 @@ export const createEmuzeController = ({
       mapping,
       mappingObject: createSdlMappingObject(mapping),
       hasSteamHandle,
-      serialNumber,
       path,
       sdlJoystick: joystick,
       sdlController: controller,
@@ -167,7 +163,6 @@ export const getControllersSdl3 = (
       const hasSteamHandle = isSteamHandleSdl3(controller);
       const hidName = getDeviceNameFromHidSdl3(controller, steamHandleIndex);
       const steamGUID = getSteamGUID(hasSteamHandle, steamHandleIndex);
-      const serialNumber = sdl3.gamepad.openDevice(controller).serialNumber;
 
       const emuzeController = createEmuzeController({
         controller,
@@ -176,7 +171,6 @@ export const getControllersSdl3 = (
         hasSteamHandle,
         steamGUID,
         hidName,
-        serialNumber,
       });
 
       if (hasSteamHandle) {
@@ -219,7 +213,6 @@ export const getControllers = (
       const hasSteamHandle = isSteamHandle(controller);
       const hidName = getDeviceNameFromHid(controller, steamHandleIndex);
       const steamGUID = getSteamGUID(hasSteamHandle, steamHandleIndex);
-      const serialNumber = sdl.controller.openDevice(controller).serialNumber;
 
       const emuzeController = createEmuzeController({
         controller,
@@ -228,7 +221,6 @@ export const getControllers = (
         hasSteamHandle,
         steamGUID,
         hidName,
-        serialNumber,
       });
 
       if (hasSteamHandle) {
