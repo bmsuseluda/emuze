@@ -2,9 +2,8 @@
 
 set -eu
 
-# use version number on release only
-# VERSION=$(node -p "require('./package.json').version")
-VERSION="nightly"
+VERSION=$(node -p "require('./package.json').version")
+
 export VERSION
 export OUTNAME=emuze-"$VERSION".AppImage
 export OUTPATH=./dist
