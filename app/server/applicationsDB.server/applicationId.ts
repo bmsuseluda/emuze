@@ -7,7 +7,7 @@ export type ApplicationId =
   | "rpcs3"
   /** sdl2 */
   | "ppsspp"
-  /** sdl3 */
+  /** sdl2 */
   | "azahar"
   /** sdl2 */
   | "melonds"

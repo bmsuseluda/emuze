@@ -14,11 +14,11 @@ import {
 } from "../../../../types/gamepad.js";
 import {
   EmuzeController,
-  getControllersSdl3,
+  getControllers,
 } from "../../../gamepad.server.js";
 
 export const getGamepad = () => {
-  const gamepads = getControllersSdl3();
+  const gamepads = getControllers();
 
   return gamepads.at(0);
 };

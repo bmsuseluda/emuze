@@ -1,5 +1,50 @@
 # Changelog
 
+## 0.60.0 (04-11-2026)
+
+This release is special for me. I build emuze with web technologies because that’s where I have the most experience, and I’m really proud of what I’ve achieved over the years. I’ve always wanted to help out in this wonderful emulation community, but aside from testing, I couldn’t do much to help with the emulators I love because I struggled with C++ code, which most emulators are written in. But sometimes you feel forced to try and try again. Since v0.59.0, I’ve successfully added a [change to RMG](https://github.com/Rosalie241/RMG/pull/518) to use the SDL GUID to identify a gamepad more reliably, and I forked Mednafen with [mednafen-sdl3](https://github.com/bmsuseluda/mednafen-sdl3) to greatly expand gamepad support. Those changes are just baby steps in the grand scheme of things, but they felt great, and I hope I can build on them in the future.
+
+Those who have read some of my older release notes already know about [samueru-sama](https://github.com/Samueru-sama). He is part of the [Package Forge Dev Team](https://github.com/pkgforge-dev) and has helped me a lot in the past with creating AppImages for emulators. For this release, he guided me on how to use [quick-sharun](https://github.com/pkgforge-dev/Anylinux-AppImages/blob/main/useful-tools/quick-sharun.sh) to bundle the emulators much more efficiently. This resulted in an emuze AppImage that is much smaller and compatible with more Linux distributions than before.
+
+With 0.59.0, I bundled open-source implementations for several BIOS files. With this release, I added [saturn-open-bios](https://github.com/viruztt/saturn-open-bios) for the Sega Saturn and [OpenPS2BIOS](https://github.com/TamaribaEmu/OpenPS2BIOS) for the PlayStation 2. Both are quite new and won’t work with every game, but they’re great if you don’t have an official BIOS.
+
+As a kid, it felt magical to play games with more than one friend at a time. More often than not, we played Mario Kart 64 rather than Crash Team Racing, even though we thought Crash Team Racing was the better game. Of course, there was a solution back then in the form of a multitap, but we didn’t have one or the money to buy one. With this release, emuze will configure a multitap for supported games for the Sony PlayStation, Sony PlayStation 2, and Sega Saturn.
+
+Please let me know what you think of it in the [emuze discord](https://discord.gg/tCzK7kc6Y4).
+
+### 💥 Features
+- bundle [mednafen-sdl3](https://github.com/bmsuseluda/mednafen-sdl3) to use sdl3 to greatly expand gamepad support for Sega Saturn and PC Engine CD
+- greatly reduce the file size of the AppImage by using [quick-sharun](https://github.com/pkgforge-dev/Anylinux-AppImages/blob/main/useful-tools/quick-sharun.sh): A big thank you to [samueru-sama](https://github.com/Samueru-sama) for figuring out how to use it with the bundled emulator AppImages
+- activate Multitap for supported games for Sony PlayStation, Sony PlayStation 2 and Sega Saturn
+- optimize scrolling on game grid
+- optimize import
+- reduce wait time after a game was closed on linux
+
+### 💫 Updates / Bundles
+- update sdl to [v3.4.14](https://github.com/libsdl-org/SDL/releases/tag/release-3.4.14)
+  - improves Hotplug support for controllers
+  - add support for wired Nintendo Switch 2 Controllers
+  - improves compatibility with most emulators e.g. Dolphin, RMG and RPCS3
+- bundle OpenPS2BIOS [v0.5](https://github.com/TamaribaEmu/OpenPS2BIOS/releases/tag/v0.5)
+- bundle saturn-open-bios [v0.1.0](https://github.com/viruztt/saturn-open-bios/releases/tag/v0.1.0)
+- update bundled Azahar to [v2126.1.2](https://github.com/azahar-emu/azahar/releases/tag/2126.1.2)
+- update bundled Dolphin to [v2609a](https://de.dolphin-emu.org/blog/2026/09/24/dolphin-progress-report-release-2609/)
+- update bundled DOSBox Pure Unleashed to [v1.0-preview7](https://codeberg.org/schelling/dosbox-pure-unleashed/releases/tag/1.0-preview7)
+- update bundled Flycast to [v2.7](https://github.com/flyinghead/flycast/releases/tag/v2.7)
+- update bundled MAME to [v0.289](https://github.com/mamedev/mame/releases/tag/mame0289)
+- update bundled PCSX2 to [v2.8.2](https://github.com/PCSX2/pcsx2/releases/tag/v2.8.2)
+- update bundled RMG to [v0.9.1](https://github.com/Rosalie241/RMG/releases/tag/v0.9.1)
+- update bundled RPCS3 to [v0.0.43-20541](https://github.com/RPCS3/rpcs3/releases/tag/v0.0.43)
+- update bundled ScummVM to [v2026.4.0](https://github.com/scummvm/scummvm/releases/tag/v2026.4.0)
+- update bundled xemu to [v0.8.136](https://github.com/xemu-project/xemu/releases#release-v0.8.136)
+- update bundled openbios to the latest rolling release
+
+### 🪲 Bug Fixes
+- fixed dualshock 4 on Mednafen
+- on game grid the fallback image will be shown until the game cover is loaded
+- fixed ares fullscreen on Steam Deck which is broken since the last SteamOS System Update
+- fixed rare cases where gamepad mapping did not work in RMG with Steam Input
+
 ## 0.59.2 (15-10-2026)
 
 This release is mostly preparation work to greatly reduce the file size of the AppImage with release 0.60.0.
