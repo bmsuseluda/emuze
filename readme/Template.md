@@ -63,7 +63,7 @@ return scripts.createKeyboardMapping()
 </details>
 <br>
 
-#### Hotkeys
+#### Hotkeys while in game
 The following Hotkeys are set:
 - Open Emulator Menu (if supported from emulator): `F2`
 - Save State: `F1`

@@ -4,6 +4,7 @@ import { readGeneral, writeGeneral } from "../../app/server/settings.server.js";
 import { log } from "../../app/server/debug.server.js";
 import { platform } from "node:os";
 import { spawn } from "node:child_process";
+import { existsSync } from "node:fs";
 
 const showReleaseNotesOnStart = () => {
   const general = readGeneral();
@@ -40,8 +41,14 @@ const updateWithElectronUpdater = () => {
   });
 };
 
+// TODO: Can be removed when migration from electron builder to sharun was successful
+const appImageUpdateInformation = [
+  "--update-info",
+  "gh-releases-zsync|bmsuseluda|emuze|latest|*.AppImage.zsync",
+];
+
 const executeAppimageUpdater = (args: string[]) =>
-  spawn(bundledAppimageUpdaterPath, args, {
+  spawn(bundledAppimageUpdaterPath, [...appImageUpdateInformation, ...args], {
     stdio: ["inherit", "pipe", "inherit"],
   });
 
@@ -54,7 +61,11 @@ export const bundledAppimageUpdaterPath = nodepath.join(
 
 const downloadUpdateLinux = () => {
   log("info", "download update");
-  const appimageUpdater = executeAppimageUpdater(["-Or", appImagePath]);
+  const appimageUpdater = executeAppimageUpdater([
+    "--overwrite",
+    "--remove-old",
+    appImagePath,
+  ]);
 
   appimageUpdater.stdout.on("data", (data) => {
     log("info", "download update", "stdout", data);
@@ -70,20 +81,25 @@ const downloadUpdateLinux = () => {
 
 const updateAppImageUpdate = () => {
   if (appImagePath.length > 0) {
-    log("info", "check for updates");
+    log("info", "check for updates", appImagePath);
 
-    const appimageUpdater = executeAppimageUpdater(["-j", appImagePath]);
+    const appimageUpdater = executeAppimageUpdater([
+      "--check-for-update",
+      appImagePath,
+    ]);
 
     appimageUpdater.stdout.on("data", (data) => {
       log("info", "check for updates", "stdout", data);
-
-      if (data === "1") {
-        downloadUpdateLinux();
-      }
     });
 
     appimageUpdater.on("close", (code) => {
       log("info", "check for updates", "close", code);
+
+      if (code === 1) {
+        downloadUpdateLinux();
+      } else {
+        log("info", "check for updates", "no update available");
+      }
     });
   }
 };
@@ -92,6 +108,15 @@ export const update = () => {
   if (platform() === "win32") {
     updateWithElectronUpdater();
   } else {
+    // TODO: Remove when appimageupdate is in released bundle
+    if (
+      existsSync(
+        nodepath.join(process.env.APPDIR || "", "resources", "app-update.yml"),
+      )
+    ) {
+      updateWithElectronUpdater();
+    }
+
     updateAppImageUpdate();
   }
 };
