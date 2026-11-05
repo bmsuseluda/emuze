@@ -70,20 +70,22 @@ const downloadUpdateLinux = () => {
 
 const updateAppImageUpdate = () => {
   if (appImagePath.length > 0) {
-    log("info", "check for updates");
+    log("info", "check for updates", appImagePath);
 
     const appimageUpdater = executeAppimageUpdater(["-j", appImagePath]);
 
     appimageUpdater.stdout.on("data", (data) => {
       log("info", "check for updates", "stdout", data);
-
-      if (data === "1") {
-        downloadUpdateLinux();
-      }
     });
 
     appimageUpdater.on("close", (code) => {
       log("info", "check for updates", "close", code);
+
+      if (code === 1) {
+        downloadUpdateLinux();
+      } else {
+        log("info", "check for updates", "no update available");
+      }
     });
   }
 };
