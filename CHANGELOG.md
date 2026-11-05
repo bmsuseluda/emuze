@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.60.1 (05-11-2026)
+
+There was a bug in the AppImage Updater Code. To fix this i have to revert to the old AppImage build and wait several weeks to ensure a smooth update process.
+
 ## 0.60.0 (04-11-2026)
 
 This release is special for me. I build emuze with web technologies because that’s where I have the most experience, and I’m really proud of what I’ve achieved over the years. I’ve always wanted to help out in this wonderful emulation community, but aside from testing, I couldn’t do much to help with the emulators I love because I struggled with C++ code, which most emulators are written in. But sometimes you feel forced to try and try again. Since v0.59.0, I’ve successfully added a [change to RMG](https://github.com/Rosalie241/RMG/pull/518) to use the SDL GUID to identify a gamepad more reliably, and I forked Mednafen with [mednafen-sdl3](https://github.com/bmsuseluda/mednafen-sdl3) to greatly expand gamepad support. Those changes are just baby steps in the grand scheme of things, but they felt great, and I hope I can build on them in the future.

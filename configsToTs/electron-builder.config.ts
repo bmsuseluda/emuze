@@ -38,10 +38,11 @@ const config: Configuration = {
         to: "usr/share/metainfo/emuze.appdata.xml",
       },
     ],
-    publish: {
-      provider: "github",
-      publishAutoUpdate: false,
-    },
+    // TODO: comment in when old build is released
+    // publish: {
+    //   provider: "github",
+    //   publishAutoUpdate: false,
+    // },
   },
   mac: {
     target: [{ target: "default", arch: "arm64" }],
