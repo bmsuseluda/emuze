@@ -30,15 +30,16 @@ jobs:
 
   build_linux:
     runs-on: ubuntu-latest
-    container: ghcr.io/pkgforge-dev/archlinux:latest
     steps:
       - uses: actions/checkout@v7
-      - name: Preparing Container
-        uses: pkgforge-dev/anylinux-setup-action@v6
-      - name: Install Dependencies
-        run: /bin/sh ./.github/scripts/get-dependencies.sh
-      - name: Make AppImage
-        run: /bin/sh ./.github/scripts/make-appimage.sh
+      - name: Use Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24.22.1"
+      - name: Install dependencies
+        run: yarn
+      - name: Build
+        run: yarn app:distLinux --publish=never
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
@@ -47,7 +48,7 @@ jobs:
           retention-days: 1
           path: |
             dist/emuze*.AppImage
-            dist/emuze*.AppImage.zsync
+            dist/latest-linux.yml
             emulators/emulators-linux.json
 
   release:
@@ -70,5 +71,5 @@ jobs:
             dist/latest.yml
             emulators/emulators-windows.json
             dist/emuze-*.AppImage
-            dist/emuze-*.AppImage.zsync
+            dist/latest-linux.yml
             emulators/emulators-linux.json
