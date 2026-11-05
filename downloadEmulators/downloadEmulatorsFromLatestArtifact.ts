@@ -107,7 +107,7 @@ const getManifestFromLatestArtifact = (
     );
   });
 
-const getEmulatorsFromLatestArtifactLinux = (
+export const getEmulatorsFromLatestArtifactLinux = (
   latestReleaseId: string,
 ): Promise<void> =>
   new Promise((resolve, reject) => {
