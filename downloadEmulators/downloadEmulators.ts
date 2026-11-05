@@ -161,7 +161,9 @@ const removeRootFolderIfNecessary = (folder: string) => {
 
 export const downloadEmulators = async () => {
   const operatingSystem = isWindows() ? "Windows" : "Linux";
-  const { default: emulatorsManifestFromLatestArtifact }: {
+  const {
+    default: emulatorsManifestFromLatestArtifact,
+  }: {
     default: Record<ApplicationId, Download>;
   } = await import(
     pathToFileURL(
@@ -170,7 +172,7 @@ export const downloadEmulators = async () => {
         `emulators-${operatingSystem.toLowerCase()}.json`,
       ),
     ).href,
-    { with: { type: "json" } },
+    { with: { type: "json" } }
   );
 
   Object.entries(emulatorDownloads).forEach(
@@ -179,7 +181,7 @@ export const downloadEmulators = async () => {
       const hashFromLatestArtifact =
         emulatorsManifestFromLatestArtifact?.[emulatorId as ApplicationId].hash;
 
-      if (hash === hashFromLatestArtifact) {
+      if (hash === hashFromLatestArtifact && isWindows()) {
         console.log(`copy emulator from latest artifact: ${emulatorId}`);
         cpSync(
           join(latestEmulatorsPath, emulatorId),
