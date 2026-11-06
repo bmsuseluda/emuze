@@ -9,7 +9,7 @@ import { findGameNameById } from "../../nameMappings/findGameNameById.js";
 import mameGames from "./nameMapping/mame.json" with { type: "json" };
 import nodepath from "node:path";
 import type { ApplicationId } from "../../applicationId.js";
-import { isWindows } from "../../../operationsystem.server.js";
+import { handleOperatingSystem } from "../../../operationsystem.server.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { XMLParser } from "fast-xml-parser";
 import XMLBuilder from "fast-xml-builder";
@@ -21,9 +21,12 @@ import type { SystemId } from "../../../categoriesDB.server/systemId.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const applicationId: ApplicationId = "mame";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "mame.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "mame.exe"),
+  mac: nodepath.join(applicationId, "mame"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
 
 const defaultConfigFileName = "default.cfg";
 const mameConfigFileName = "mame.ini";

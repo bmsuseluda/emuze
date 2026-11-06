@@ -3,7 +3,7 @@ import nodepath from "node:path";
 import fs from "node:fs";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import type { ApplicationId } from "../../applicationId.js";
-import { isWindows } from "../../../operationsystem.server.js";
+import { handleOperatingSystem } from "../../../operationsystem.server.js";
 import { findEntryName } from "./findEntryName.js";
 import { excludeFiles } from "./excludeFiles.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
@@ -24,9 +24,12 @@ import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { readAdvanced } from "../../../settings.server.js";
 
 const applicationId: ApplicationId = "eden";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "Eden.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "Eden.exe"),
+  mac: nodepath.join(applicationId, "eden.app"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
 
 const configFolderPath = nodepath.join(emulatorsConfigDirectory, applicationId);
 const configFileName = "qt-config.ini";
@@ -87,15 +90,16 @@ export const replaceConfigSections = (switchRomsPath: string) => {
   writeConfig(filePath, fileContentNew);
 };
 
-const getKeyBasePath = () => {
-  if (isWindows()) {
+const getKeyBasePath = handleOperatingSystem({
+  windows: () => {
     const { config } = envPaths("Eden", { suffix: "" });
     return nodepath.join(config, "..");
-  } else {
+  },
+  linux: () => {
     const { data } = envPaths("eden", { suffix: "" });
     return nodepath.join(data);
-  }
-};
+  },
+});
 
 const copyKeyFiles = (keyFiles: DetectedRequiredFile[]) => {
   keyFiles.forEach((keyFile) => {
@@ -112,15 +116,16 @@ const requiredFileTypes = {
   titleKeys: "title.keys",
 };
 
-const getConfigFileBasePath = () => {
-  if (isWindows()) {
+const getConfigFileBasePath = handleOperatingSystem({
+  windows: () => {
     const { config } = envPaths("Eden", { suffix: "" });
     return nodepath.join(config);
-  } else {
+  },
+  linux: () => {
     const { config } = envPaths("eden", { suffix: "" });
     return nodepath.join(config);
-  }
-};
+  },
+});
 
 export const eden: Application = {
   id: applicationId,

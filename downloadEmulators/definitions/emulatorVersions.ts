@@ -98,7 +98,10 @@ export const emulatorDownloads = {
       url: `https://codeberg.org/schelling/dosbox-pure-unleashed/releases/download/${emulatorVersions.dosboxpure}/dosbox_pure_unleashed-windows-64bit-${emulatorVersions.dosboxpure}.zip`,
       hash: "84985ae6ae3163dd3b94432e549b163e35add07276315f0f70bc6e87e845644a",
     },
-    Mac: null,
+    Mac: {
+      url: `https://codeberg.org/schelling/dosbox-pure-unleashed/releases/download/${emulatorVersions.dosboxpure}/dosbox_pure_unleashed-macos-arm64-${emulatorVersions.dosboxpure}.zip`,
+      hash: "ea97a438f272dae4c9617dc656ec8f6a2c4a4cd7f222e2fc9dffa4965ecf947b",
+    },
   },
   duckstation: {
     Linux: {
@@ -123,7 +126,10 @@ export const emulatorDownloads = {
       url: `https://stable.eden-emu.dev/v${emulatorVersions.eden}/Eden-Windows-v${emulatorVersions.eden}-amd64-clang-pgo.zip`,
       hash: "6c1b53ce325170a026cc0f87098380027dc6170d94ba95f913aab7596fd097cb",
     },
-    Mac: null,
+    Mac: {
+      url: `https://stable.eden-emu.dev/v${emulatorVersions.eden}/Eden-macOS-v${emulatorVersions.eden}.dmg`,
+      hash: "40575fc79a61550fbb9e332cbae94ccd20f5de20ff61b4b60fe1d42f2525c0b5",
+    },
   },
   flycast: {
     Linux: {
@@ -134,7 +140,10 @@ export const emulatorDownloads = {
       url: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-win64-${emulatorVersions.flycast}.zip`,
       hash: "7edf489ba6b3053703a18ce8233767eb71a2d89e4bda0421b312c2167a739161",
     },
-    Mac: null,
+    Mac: {
+      url: `https://github.com/flyinghead/flycast/releases/download/v${emulatorVersions.flycast}/flycast-macOS-${emulatorVersions.flycast}.zip`,
+      hash: "dbd59cb88f52a95ea4de90693bb4ac156530452d5457f2cc4f656fdfd242fc26",
+    },
   },
   mame: {
     Linux: {
@@ -145,7 +154,10 @@ export const emulatorDownloads = {
       url: `https://github.com/mamedev/mame/releases/download/mame0289/mame0289b_x64.exe`,
       hash: "a1aa7912168c9d1b05e611906bc21b8b9be3935822aead36d12a1da363150b7d",
     },
-    Mac: null,
+    Mac: {
+      url: `https://sdlmame.lngn.net/stable/mame0289-arm64.zip`,
+      hash: "f1918569d10e214c57249ba2f784f6cc85e566c25bf15c50b693a8f43ce7e2d8",
+    },
   },
   mednafen: {
     Linux: {
@@ -167,7 +179,10 @@ export const emulatorDownloads = {
       url: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions.melonds}/melonDS-${emulatorVersions.melonds}-windows-x86_64.zip`,
       hash: "9f3f8a244103be20b5b657af5b0ed1b2a66bb20a7181476a6d294c9a53d4f8c8",
     },
-    Mac: null,
+    Mac: {
+      url: `https://github.com/melonDS-emu/melonDS/releases/download/${emulatorVersions.melonds}/melonDS-${emulatorVersions.melonds}-macOS-universal.zip`,
+      hash: "79843a5e5cab93188bd11942bff5440b9505ee91c6f526f7e90c22e3cff6718d",
+    },
   },
   pcsx2: {
     Linux: {
@@ -178,7 +193,10 @@ export const emulatorDownloads = {
       url: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions.pcsx2}/pcsx2-v${emulatorVersions.pcsx2}-windows-x64-Qt.7z`,
       hash: "7dfc829ca1994cc1045ac49f05e39b6cf968b72e6a374c40e05c2a2b4ac200b4",
     },
-    Mac: null,
+    Mac: {
+      url: `https://github.com/PCSX2/pcsx2/releases/download/v${emulatorVersions.pcsx2}/pcsx2-v${emulatorVersions.pcsx2}-macos-Qt.tar.xz`,
+      hash: "3ed9eb40a33eae67134142c24255a079be444f0616ca29575a04a37981f7d426",
+    },
   },
   ppsspp: {
     Linux: {

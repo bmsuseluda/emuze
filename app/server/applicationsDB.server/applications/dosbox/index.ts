@@ -10,6 +10,7 @@ import nodepath from "node:path";
 import { readFilenames } from "../../../readWriteData.server.js";
 import type { ApplicationId } from "../../applicationId.js";
 import {
+  handleOperatingSystem,
   isWindows,
   replaceToPosixPathing,
 } from "../../../operationsystem.server.js";
@@ -21,9 +22,12 @@ import { writeConfig } from "../../configFile.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 
 const applicationId: ApplicationId = "dosboxpure";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "DOSBoxPure.exe")
-  : nodepath.join(applicationId, "DOSBoxPure.AppImage");
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "DOSBoxPure.exe"),
+  mac: nodepath.join(applicationId, "DOSBoxPure.app"),
+  linux: nodepath.join(applicationId, "DOSBoxPure.AppImage"),
+});
 
 const configFolderPath = nodepath.join(emulatorsConfigDirectory, applicationId);
 const configFileName = "DOSBoxPure.cfg";
@@ -194,15 +198,16 @@ const createOptionParams: OptionParamFunction = ({
   return optionParams;
 };
 
-const getConfigFileBasePath = () => {
-  if (isWindows()) {
+const getConfigFileBasePath = handleOperatingSystem({
+  windows: () => {
     const { config } = envPaths("DOSBoxPure", { suffix: "" });
     return nodepath.join(config, "..");
-  } else {
+  },
+  linux: () => {
     const { config } = envPaths("DOSBoxPure", { suffix: "" });
     return nodepath.join(config);
-  }
-};
+  },
+});
 
 export const dosboxpure: Application = {
   id: applicationId,
