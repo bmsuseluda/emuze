@@ -25,7 +25,7 @@ const applicationId: ApplicationId = "duckstation";
 
 const bundledPath = handleOperatingSystem({
   windows: nodepath.join(applicationId, "duckstation-qt-x64-ReleaseLTCG.exe"),
-  mac: nodepath.join(applicationId, "DuckStation 2.app"),
+  mac: nodepath.join(applicationId, "DuckStation.app"),
   linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
 });
 

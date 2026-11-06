@@ -17,7 +17,7 @@ export const downloadFile = (
   console.log(`Download of ${url} started`);
 
   return followRedirects.https
-    .get(url, async (response) => {
+    .get(url, { timeout: 30000 }, async (response) => {
       try {
         if (
           typeof response.statusCode !== "undefined" &&

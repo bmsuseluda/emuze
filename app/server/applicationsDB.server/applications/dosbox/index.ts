@@ -25,7 +25,7 @@ const applicationId: ApplicationId = "dosboxpure";
 
 const bundledPath = handleOperatingSystem({
   windows: nodepath.join(applicationId, "DOSBoxPure.exe"),
-  mac: nodepath.join(applicationId, "DOSBoxPure.app"),
+  mac: nodepath.join(applicationId, "DOSBoxPure.app.zip"),
   linux: nodepath.join(applicationId, "DOSBoxPure.AppImage"),
 });
 

@@ -212,7 +212,7 @@ const downloadExe = (
 const removeRootFolderIfNecessary = (folder: string) => {
   const files = readdirSync(folder);
 
-  if (files.length === 1 && !folder.endsWith(".app")) {
+  if (files.length === 1 && !files[0].endsWith(".app")) {
     const fileStats = statSync(join(folder, files[0]));
     if (fileStats.isDirectory()) {
       const tempFolder = join(folder, "..", `${basename(folder)}TempFolder`);

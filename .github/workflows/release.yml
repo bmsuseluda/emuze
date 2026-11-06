@@ -28,6 +28,30 @@ jobs:
             dist/latest.yml
             emulators/emulators-windows.json
 
+  build_mac:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v7
+      - name: Use Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24.22.1"
+      - name: Install dependencies
+        run: yarn
+      - name: Build
+        run: yarn app:distMac --publish=never
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: emuze-mac
+          if-no-files-found: error
+          retention-days: 1
+          path: |
+            dist/emuze*.dmg
+            dist/emuze*.dmg.blockmap
+            dist/latest-mac.yml
+            emulators/emulators-mac.json
+
   build_linux:
     runs-on: ubuntu-latest
     container: ghcr.io/pkgforge-dev/archlinux:latest
@@ -72,3 +96,7 @@ jobs:
             dist/emuze-*.AppImage
             dist/emuze-*.AppImage.zsync
             emulators/emulators-linux.json
+            dist/emuze-*.dmg
+            dist/emuze-*.dmg.blockmap
+            dist/latest-mac.yml
+            emulators/emulators-mac.json
