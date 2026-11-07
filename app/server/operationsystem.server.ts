@@ -1,6 +1,8 @@
 import { readFileSync } from "node:fs";
 import { platform } from "node:os";
 import { log } from "./debug.server.js";
+import { join, resolve } from "node:path";
+import { importElectron } from "./importElectron.server.js";
 
 export const EMUZE_IS_WINDOWS = "EMUZE_IS_WINDOWS";
 export const EMUZE_IS_MAC = "EMUZE_IS_MAC";
@@ -49,6 +51,15 @@ export const handleOperatingSystem = <T extends unknown>({
 
   return linux;
 };
+
+const electronApp = importElectron()?.app;
+
+const isDev = !electronApp?.isPackaged;
+
+export const extraFilesPath = handleOperatingSystem({
+  mac: isDev ? join("") : resolve(electronApp?.getPath("exe"), "..", ".."),
+  linux: join(process.env.APPDIR || ""),
+});
 
 export const isSteamOs = () => {
   if (platform() === "linux") {

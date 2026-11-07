@@ -1,7 +1,8 @@
 import nodepath from "node:path";
+import { extraFilesPath } from "./operationsystem.server.js";
 
 export const bundledEmulatorsPathBase = nodepath.join(
-  process.env.APPDIR || "",
+  extraFilesPath,
   "emulators",
 );
 
@@ -26,6 +27,6 @@ export const emulatorsManifestWindowsPath = nodepath.join(
 );
 
 export const bundledBiosOpenSourcePath = nodepath.join(
-  process.env.APPDIR || "",
+  extraFilesPath,
   "biosOpenSource",
 );
