@@ -1,7 +1,7 @@
 import type { ExecFileException } from "node:child_process";
 import { execFile } from "node:child_process";
 import { existsSync } from "node:fs";
-import nodepath from "node:path";
+import nodepath, { resolve } from "node:path";
 import type { Category, Entry } from "../types/jsonFiles/category.js";
 import { createAbsoluteEntryPath } from "../types/jsonFiles/category.js";
 import { isGeneralConfigured } from "../types/jsonFiles/settings/general.js";
@@ -13,7 +13,7 @@ import { readCategory } from "./categoryDataCache.server.js";
 import { log } from "./debug.server.js";
 import { setErrorDialog } from "./errorDialog.server.js";
 import { addToLastPlayedCached } from "./lastPlayed.server.js";
-import { isMac, isWindows } from "./operationsystem.server.js";
+import { handleOperatingSystem, isWindows } from "./operationsystem.server.js";
 import {
   readAdvanced,
   readAppearance,
@@ -30,7 +30,10 @@ import {
   syncFromEmulatorFolderToEmuzeFolder,
   syncFromEmuzeFolderToEmulatorFolder,
 } from "./syncSettings.server.js";
-import { setFocusOnElectronWindow } from "./importElectron.server.js";
+import {
+  importElectron,
+  setFocusOnElectronWindow,
+} from "./importElectron.server.js";
 import { getRequiredFiles } from "./applicationsDB.server/checkRequiredFiles.js";
 import { createRequiredSystemFolderStructure } from "./createSystemFolders.server.js";
 
@@ -63,26 +66,47 @@ const execFileCallback =
     }
   };
 
+const isDev = process.env.NODE_ENV === "development";
+
+const getFilePath = (file: string) =>
+  handleOperatingSystem({
+    mac: isDev
+      ? file
+      : resolve(importElectron()?.app?.getPath("exe"), "..", "..", file),
+    linux: file,
+  });
+
+const executeMacAppFile = (
+  file: string,
+  args: string[],
+  reject: () => void,
+) => {
+  const filePath = getFilePath(file);
+
+  return execFile(
+    "open",
+    ["-W", filePath, "--args", ...args],
+    {
+      encoding: "utf8",
+    },
+    execFileCallback(reject),
+  );
+};
+
 const executeApplication = (file: string, args: string[]) => {
   return new Promise<void>((resolve, reject) => {
     log("debug", "params", args);
-    const childProcess = !isMac()
-      ? execFile(
-          file,
+    const childProcess = file.endsWith(".app")
+      ? executeMacAppFile(file, args, reject)
+      : execFile(
+          getFilePath(file),
           args,
           {
             encoding: "utf8",
           },
           execFileCallback(reject),
-        )
-      : execFile(
-          "open",
-          ["-W", file, "--args", ...args],
-          {
-            encoding: "utf8",
-          },
-          execFileCallback(reject),
         );
+
     setGameIsRunningChildProcess(childProcess);
 
     registerCloseGameOnKeyboardEvent();
