@@ -19,6 +19,9 @@ import {
 import { readAdvanced, writeAdvanced } from "../server/settings.server.js";
 import type { Advanced } from "../types/jsonFiles/settings/advanced.js";
 import { Route } from "./+types/categories.$category.settings.advanced.js";
+import { FormRow } from "../components/FormRow/index.js";
+import { Label } from "../components/Label/index.js";
+import { Select } from "../components/Select/index.js";
 
 export const loader = () => {
   const advanced = readAdvanced();
@@ -161,6 +164,24 @@ export default function General({
                     onClick={onClick}
                     aria-label="Use RMG instead of ares to play Nintendo 64"
                   />
+                </li>
+                <li>
+                  <FormRow>
+                    <Label>Resolution</Label>
+                    <Select.Root name="fruit" value="grapes">
+                      <Select.Trigger
+                        placeholder="Select a fruit…"
+                        ref={entriesRefCallback(2)}
+                      ></Select.Trigger>
+                      <Select.Content>
+                        <Select.Item value="apple">Apple</Select.Item>
+                        <Select.Item value="banana">Banana</Select.Item>
+                        <Select.Item value="blueberry">Blueberry</Select.Item>
+                        <Select.Item value="grapes">Grapes</Select.Item>
+                        <Select.Item value="pineapple">Pineapple</Select.Item>
+                      </Select.Content>
+                    </Select.Root>
+                  </FormRow>
                 </li>
               </FormBox>
             }

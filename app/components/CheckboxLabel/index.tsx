@@ -3,12 +3,12 @@ import { styled } from "../../../styled-system/jsx/factory.js";
 
 export const CheckboxLabel = styled(LabelPrimitive.Root, {
   base: {
-    display: "inline-flex",
+    display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     gap: "1",
     margin: 0,
-    width: "fit-content",
     outlineRounded: true,
     outline: "outlineInitial",
     outlineOffset: 1,

@@ -9,8 +9,8 @@ export const CheckboxRow = ({
 }: ComponentProps<typeof Checkbox>) => (
   <FormRow>
     <CheckboxLabel>
-      <Checkbox {...rest} />
       {ariaLabel}
+      <Checkbox {...rest} />
     </CheckboxLabel>
   </FormRow>
 );
