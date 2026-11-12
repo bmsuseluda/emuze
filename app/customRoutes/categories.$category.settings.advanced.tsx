@@ -19,9 +19,7 @@ import {
 import { readAdvanced, writeAdvanced } from "../server/settings.server.js";
 import type { Advanced } from "../types/jsonFiles/settings/advanced.js";
 import { Route } from "./+types/categories.$category.settings.advanced.js";
-import { FormRow } from "../components/FormRow/index.js";
-import { Label } from "../components/Label/index.js";
-import { Select } from "../components/Select/index.js";
+import { SelectRow } from "../containers/SelectRow/index.js";
 
 export const loader = () => {
   const advanced = readAdvanced();
@@ -97,6 +95,7 @@ export default function General({
     onSelectEntry: selectEntry,
     isInFocus,
     onLeftOverTheEdge,
+    loop: true,
   });
 
   const onBack = useCallback(() => {
@@ -166,22 +165,20 @@ export default function General({
                   />
                 </li>
                 <li>
-                  <FormRow>
-                    <Label>Resolution</Label>
-                    <Select.Root name="fruit" value="grapes">
-                      <Select.Trigger
-                        placeholder="Select a fruit…"
-                        ref={entriesRefCallback(2)}
-                      ></Select.Trigger>
-                      <Select.Content>
-                        <Select.Item value="apple">Apple</Select.Item>
-                        <Select.Item value="banana">Banana</Select.Item>
-                        <Select.Item value="blueberry">Blueberry</Select.Item>
-                        <Select.Item value="grapes">Grapes</Select.Item>
-                        <Select.Item value="pineapple">Pineapple</Select.Item>
-                      </Select.Content>
-                    </Select.Root>
-                  </FormRow>
+                  <SelectRow
+                    label="Internal Resolution"
+                    defaultSelectedOption={{
+                      name: "Default",
+                      value: "default",
+                    }}
+                    options={[
+                      { name: "Native", value: "native" },
+                      { name: "Default", value: "default" },
+                      { name: "2x", value: "2x" },
+                      { name: "3x", value: "3x" },
+                    ]}
+                    ref={entriesRefCallback(2)}
+                  />
                 </li>
               </FormBox>
             }

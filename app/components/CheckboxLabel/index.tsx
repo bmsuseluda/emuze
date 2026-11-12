@@ -1,6 +1,7 @@
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { styled } from "../../../styled-system/jsx/factory.js";
 
+// TODO: rename to use it for SelectRow as well
 export const CheckboxLabel = styled(LabelPrimitive.Root, {
   base: {
     display: "flex",

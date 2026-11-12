@@ -141,6 +141,7 @@ export default function About({
       onSelectEntry: selectEntry,
       isInFocus,
       onLeftOverTheEdge,
+      loop: true,
     });
 
   const onConfirmation = useCallback(() => {

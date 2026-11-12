@@ -1,8 +1,7 @@
 import { styled } from "../../../styled-system/jsx/factory.js";
-import type { Entry } from "../../types/jsonFiles/category.js";
 import { useGamepadsOnGrid } from "../../hooks/useGamepadsOnGrid/index.js";
 import type { ComponentRef, RefObject } from "react";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import {
   useInputBack,
   useInputConfirmation,
@@ -34,13 +33,17 @@ const Label = styled("label", {
     outline: "outlineInitial",
     transition: "outline-color 0.1s ease-in-out",
 
+    "&:hover": {
+      cursor: "pointer",
+    },
+
     "&:has(*:checked)": {
       outlineColor: "accent",
     },
   },
 });
 
-const GameVersion = styled("input", {
+const Option = styled("input", {
   base: {
     position: "absolute",
     top: 0,
@@ -52,39 +55,64 @@ const GameVersion = styled("input", {
   },
 });
 
-interface Props {
-  gameVersions: Entry[];
-  isInFocus: boolean;
-  onBack: () => void;
-  onGameClick: () => void;
-  onExecute: () => void;
+export interface Option {
+  name: string;
+  value: string;
 }
 
-export const GameVersions = ({
-  gameVersions,
+interface Props {
+  options: Option[];
+  defaultSelectedOption?: Option;
+  groupName: string;
+  isInFocus: boolean;
+  onBack: () => void;
+  onOptionClick: () => void;
+  onSelectOption?: (option: Option) => void;
+  onConfirmation: () => void;
+}
+
+export const OptionList = ({
+  options,
+  defaultSelectedOption,
+  groupName,
   isInFocus,
-  onExecute,
-  onGameClick,
+  onConfirmation,
+  onOptionClick,
+  onSelectOption,
   onBack,
 }: Props) => {
-  const selectEntry = (game: ComponentRef<"input">) => {
-    if (!game.checked) {
-      game.checked = true;
+  const selectEntry = (option: ComponentRef<"input">) => {
+    if (!option.checked) {
+      option.checked = true;
+      onSelectOption?.({ name: option.value, value: option.value });
     }
-    if (document.activeElement !== game) {
-      game.focus();
+    if (document.activeElement !== option) {
+      option.focus();
     }
   };
 
   const goBack = useCallback(
-    (selectedGame: RefObject<ComponentRef<"input"> | undefined>) => {
-      if (selectedGame.current) {
-        selectedGame.current.checked = false;
+    (selectedOption: RefObject<ComponentRef<"input"> | undefined>) => {
+      if (selectedOption.current) {
+        selectedOption.current.checked = false;
       }
       onBack();
     },
     [onBack],
   );
+
+  const selectedYDefault = useMemo<number>(() => {
+    if (defaultSelectedOption?.value) {
+      const index = options.findIndex(
+        (option) => option.value === defaultSelectedOption?.value,
+      );
+      if (index > 0) {
+        return index;
+      }
+    }
+
+    return 0;
+  }, [options, defaultSelectedOption]);
 
   const {
     entryListRef,
@@ -95,6 +123,9 @@ export const GameVersions = ({
   } = useGamepadsOnGrid({
     onSelectEntry: selectEntry,
     isInFocus,
+    loop: true,
+    selectedXDefault: 0,
+    selectedYDefault,
   });
 
   const handleBack = useCallback(() => {
@@ -103,35 +134,38 @@ export const GameVersions = ({
     }
   }, [isInFocus, selectedEntry, goBack]);
 
-  const handleExecute = useCallback(() => {
+  const handleConfirmation = useCallback(() => {
     if (isInFocus) {
       if (selectedEntry.current) {
-        onExecute();
+        onConfirmation();
       }
     }
-  }, [isInFocus, selectedEntry, onExecute]);
+  }, [isInFocus, selectedEntry, onConfirmation]);
 
-  useInputConfirmation(handleExecute);
+  useInputConfirmation(handleConfirmation);
   useInputBack(handleBack);
 
   return (
     <List ref={entryListRef}>
-      {gameVersions.map(({ name, id }, index) => {
+      {options.map((option, index) => {
+        const { name, value } = option;
         const handleClick = () => {
-          onGameClick();
+          onSelectOption?.(option);
+          onOptionClick();
           setSelectedEntry(entriesRefs.current[index]);
         };
         const handleDoubleClick = () => {
-          onExecute();
+          onConfirmation();
         };
 
         return (
-          <Wrapper key={id}>
+          <Wrapper key={value}>
             <Label onClick={handleClick} onDoubleClick={handleDoubleClick}>
-              <GameVersion
+              <Option
                 type="radio"
-                name="gameVersion"
-                value={id}
+                name={groupName}
+                value={value}
+                defaultChecked={option === defaultSelectedOption}
                 ref={entriesRefCallback(index)}
               />
               {name}
