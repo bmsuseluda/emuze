@@ -1,7 +1,7 @@
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout/index.js";
 import { SidebarNavigationLink } from "../containers/SidebarNavigationLink/index.js";
-import { categories } from "../server/settings.server.js";
+import { categories as settings } from "../server/settings.server.js";
 import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar/index.js";
 import { SettingsIcon } from "../components/SettingsIcon/index.js";
 import { useFocus } from "../hooks/useFocus/index.js";
@@ -19,13 +19,24 @@ import { CloseDialogContainer } from "../containers/CloseDialog/index.js";
 import { useCreateSystemFoldersButton } from "../containers/CreateSystemFoldersButton/useCreateSystemFoldersButton.js";
 import { Route } from "./+types/categories.$category.settings.js";
 import { useAppearance } from "../hooks/useAppearance/index.js";
+import { SystemId } from "../server/categoriesDB.server/systemId.js";
+import { categories } from "../server/categoriesDB.server/index.js";
 
-export const loader = () => {
-  return { categories };
+export const loader = ({ params }: Route.LoaderArgs) => {
+  const { category } = params;
+  if (category) {
+    const systemId = category as SystemId;
+
+    if (categories[systemId].settings) {
+      return { settings };
+    }
+  }
+
+  return { settings: settings.filter(({ id }) => id !== "advanced") };
 };
 
 export default function Index({
-  loaderData: { categories },
+  loaderData: { settings },
 }: Route.ComponentProps) {
   const { pathname } = useLocation();
   const { collapseSidebar } = useAppearance();
@@ -102,7 +113,7 @@ export default function Index({
           headline="Settings"
           collapse={collapseSidebar}
         >
-          {categories.map(({ id, name }, index) => (
+          {settings.map(({ id, name }, index) => (
             <li key={id}>
               <SidebarNavigationLink
                 to={id}

@@ -35,7 +35,7 @@ const DialogContent = styled("div", {
   variants: {
     size: {
       small: {
-        maxWidth: "min(43.75rem, 90vw)",
+        maxWidth: "min(45rem, 90vw)",
       },
       medium: {
         maxWidth: "min(56.25rem, 90vw)",

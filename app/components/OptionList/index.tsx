@@ -84,7 +84,13 @@ export const OptionList = ({
   const selectEntry = (option: ComponentRef<"input">) => {
     if (!option.checked) {
       option.checked = true;
-      onSelectOption?.({ name: option.value, value: option.value });
+
+      if (onSelectOption) {
+        const name =
+          options.find(({ value }) => value === option.value)?.name ||
+          option.value;
+        onSelectOption({ name, value: option.value });
+      }
     }
     if (document.activeElement !== option) {
       option.focus();

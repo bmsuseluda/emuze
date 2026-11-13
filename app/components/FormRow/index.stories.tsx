@@ -1,5 +1,4 @@
 import { FormRow } from "./index.js";
-import { Label } from "../Label/index.js";
 import { TextInput } from "../TextInput/index.js";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
@@ -19,7 +18,7 @@ export const Basic: Story = {
   args: {
     children: (
       <>
-        <Label htmlFor="firstname">firstname</Label>
+        <label htmlFor="firstname">firstname</label>
         <TextInput.Input name="firstname" id="firstname" />
       </>
     ),

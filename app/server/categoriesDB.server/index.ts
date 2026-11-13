@@ -222,6 +222,16 @@ export const nintendoswitch: Category = {
   igdbPlatformIds: [130],
   getApplication: () => (isEdenForSwitch() ? eden : ryujinx),
   hasAnalogStick: true,
+  settings: [
+    {
+      id: "emulator",
+      label: "Emulator",
+      options: [
+        { name: "Ryujinx", value: "ryujinx" },
+        { name: "Eden", value: "eden" },
+      ],
+    },
+  ],
 };
 
 export const nintendoentertainmentsystem: Category = {
@@ -242,6 +252,34 @@ export const nintendo64: Category = {
   id: "nintendo64",
   names: ["Nintendo 64", "N64"],
   igdbPlatformIds: [4],
+  settings: [
+    {
+      id: "emulator",
+      label: "Emulator",
+      options: [
+        { name: "ares", value: "ares" },
+        { name: "RMG", value: "rmg" },
+      ],
+    },
+    {
+      id: "resolution",
+      label: "Internal Resolution",
+      options: [
+        { name: "Native", value: "native" },
+        { name: "2x", value: "2x" },
+        { name: "3x", value: "3x" },
+      ],
+    },
+    {
+      id: "shader",
+      label: "Shader",
+      options: [
+        { name: "Off", value: "off" },
+        { name: "CRT Royale", value: "crtroyale" },
+        { name: "CRT Beam", value: "crtbeam" },
+      ],
+    },
+  ],
   getApplication: () => (isRmgForN64() ? rosaliesMupenGui : aresNintendo64),
   hasAnalogStick: true,
 };

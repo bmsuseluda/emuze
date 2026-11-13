@@ -19,6 +19,7 @@ interface Props {
     title: string;
     icon?: ReactNode;
   };
+  onClose?: () => void;
 }
 
 export const SelectDialog = ({
@@ -28,13 +29,15 @@ export const SelectDialog = ({
   selectedOption,
   setSelectedOption,
   headline,
+  onClose,
 }: Props) => {
   const { isInFocus, switchFocusBack } = useFocus<FocusElement>(focus);
 
   const handleClose = useCallback(() => {
     setOpen(false);
     switchFocusBack();
-  }, [switchFocusBack, setOpen]);
+    onClose?.();
+  }, [switchFocusBack, setOpen, onClose]);
 
   const onSelectOption = useCallback(
     (option: Option) => {

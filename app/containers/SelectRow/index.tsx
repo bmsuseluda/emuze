@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ComponentProps, MouseEventHandler, ReactNode, useState } from "react";
 import { createPortal } from "react-dom";
 import { FormRow } from "../../components/FormRow/index.js";
 import { SelectDialog, focus } from "../../components/SelectDialog/index.js";
@@ -6,27 +6,37 @@ import type { Option } from "../../components/OptionList/index.js";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { useFocus } from "../../hooks/useFocus/index.js";
 import { FocusElement } from "../../types/focusElement.js";
-import { CheckboxLabel } from "../../components/CheckboxLabel/index.js";
-import { SettingsIcon } from "../../components/SettingsIcon/index.js";
+import { Label } from "../../components/Label/index.js";
 
-interface Props {
+interface Props extends Omit<ComponentProps<"button">, "onChange"> {
   label: string;
+  icon: ReactNode;
   options: Option[];
-  defaultSelectedOption: Option;
-  ref: (ref: HTMLButtonElement) => void;
+  defaultValue?: string;
+  onChange?: () => void;
 }
 
 export const SelectRow = ({
+  id,
   label,
+  icon,
   options,
-  defaultSelectedOption,
+  defaultValue,
   ref,
+  onClick,
+  onChange,
 }: Props) => {
   const { enableFocus } = useFocus<FocusElement>(focus);
   const [open, setOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<Option>(
-    defaultSelectedOption,
+    options.find(({ value }) => value === defaultValue) || options[0],
   );
+
+  const handleClick: MouseEventHandler<HTMLButtonElement> = (event) => {
+    onClick?.(event);
+    setOpen(true);
+    enableFocus();
+  };
 
   return (
     <FormRow>
@@ -36,30 +46,32 @@ export const SelectRow = ({
             open={open}
             setOpen={setOpen}
             options={options}
+            onClose={onChange}
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
             headline={{
               title: label,
-              icon: <SettingsIcon id="general" />,
+              icon,
             }}
           />,
           document.body,
         )}
-      <CheckboxLabel>
+      <input
+        type="text"
+        name={id}
+        id={id}
+        value={selectedOption.value}
+        style={{ display: "none" }}
+      />
+      <Label>
         {label}
         <div>
-          {selectedOption.name}
-          <button
-            ref={ref}
-            onClick={() => {
-              setOpen(true);
-              enableFocus();
-            }}
-          >
+          <button ref={ref} onClick={handleClick} style={{ opacity: 0 }}>
             <TiArrowSortedDown />
           </button>
+          {selectedOption.name}
         </div>
-      </CheckboxLabel>
+      </Label>
     </FormRow>
   );
 };

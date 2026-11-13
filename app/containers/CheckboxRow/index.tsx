@@ -1,6 +1,6 @@
 import { FormRow } from "../../components/FormRow/index.js";
 import { Checkbox } from "../../components/Checkbox/index.js";
-import { CheckboxLabel } from "../../components/CheckboxLabel/index.js";
+import { Label } from "../../components/Label/index.js";
 import type { ComponentProps } from "react";
 
 export const CheckboxRow = ({
@@ -8,9 +8,9 @@ export const CheckboxRow = ({
   ...rest
 }: ComponentProps<typeof Checkbox>) => (
   <FormRow>
-    <CheckboxLabel>
+    <Label>
       {ariaLabel}
       <Checkbox {...rest} />
-    </CheckboxLabel>
+    </Label>
   </FormRow>
 );

@@ -11,7 +11,7 @@ import type { Result } from "../hooks/useGamepadsOnGrid/index.js";
 import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid/index.js";
 import { CreateSystemFoldersDialogContainer } from "../containers/CreateSystemFoldersDialog/index.js";
 import { Button } from "../components/Button/index.js";
-import { CheckboxRow } from "../containers/CheckboxRow/index.js";
+import { GiUpgrade } from "react-icons/gi";
 import {
   useInputBack,
   useInputConfirmation,
@@ -20,28 +20,54 @@ import { readAdvanced, writeAdvanced } from "../server/settings.server.js";
 import type { Advanced } from "../types/jsonFiles/settings/advanced.js";
 import { Route } from "./+types/categories.$category.settings.advanced.js";
 import { SelectRow } from "../containers/SelectRow/index.js";
+import { SystemId } from "../server/categoriesDB.server/systemId.js";
+import { categories } from "../server/categoriesDB.server/index.js";
 
-export const loader = () => {
-  const advanced = readAdvanced();
-  return advanced;
+export const loader = ({ params }: Route.LoaderArgs) => {
+  const { category } = params;
+  if (category) {
+    const systemId = category as SystemId;
+    const { settings } = categories[systemId];
+
+    const defaults = readAdvanced()[systemId];
+
+    return {
+      settings,
+      defaults,
+    };
+  }
+
+  return {};
 };
 
 const actionIds = {
   save: "save",
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({ request, params }) => {
   const form = await request.formData();
   const _actionId = form.get("_actionId");
-  const eden = form.get("eden") === "on";
-  const rmg = form.get("rmg") === "on";
 
   if (_actionId === actionIds.save) {
-    const fields: Advanced = {
-      eden,
-      rmg,
-    };
-    writeAdvanced(fields);
+    const { category } = params;
+    if (category) {
+      const systemId = category as SystemId;
+      const { settings } = categories[systemId];
+
+      const fields: Advanced = {
+        ...readAdvanced(),
+        [systemId]: settings?.reduce<Record<string, string>>(
+          (accumulator, { id }) => {
+            const value = form.get(id) as string;
+            accumulator[id] = value;
+
+            return accumulator;
+          },
+          {} as Record<string, string>,
+        ),
+      };
+      writeAdvanced(fields);
+    }
   }
 
   return null;
@@ -59,8 +85,8 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 const focus: FocusElement = "settingsMain";
 
-export default function General({
-  loaderData: { eden, rmg },
+export default function Advanced({
+  loaderData: { settings, defaults },
 }: Route.ComponentProps) {
   const saveButtonRef = useRef<ComponentRef<"button">>(null);
   const { isInFocus, switchFocusBack, switchFocus } =
@@ -111,10 +137,8 @@ export default function General({
   }, [isInFocus, selectedEntry]);
 
   const onSave = useCallback(() => {
-    if (isInFocus) {
-      saveButtonRef.current?.click();
-    }
-  }, [isInFocus]);
+    saveButtonRef.current?.click();
+  }, []);
 
   const onClick = useCallback(
     (event: MouseEvent<ComponentRef<"button">>) => {
@@ -142,44 +166,20 @@ export default function General({
             scrollSmooth
             list={
               <FormBox ref={entryListRef}>
-                <li>
-                  <CheckboxRow
-                    id="eden"
-                    name="eden"
-                    defaultChecked={eden}
-                    ref={entriesRefCallback(0)}
-                    onCheckedChange={onSave}
-                    onClick={onClick}
-                    aria-label="Use Eden instead of Ryujinx to play Nintendo Switch"
-                  />
-                </li>
-                <li>
-                  <CheckboxRow
-                    id="rmg"
-                    name="rmg"
-                    defaultChecked={rmg}
-                    ref={entriesRefCallback(1)}
-                    onCheckedChange={onSave}
-                    onClick={onClick}
-                    aria-label="Use RMG instead of ares to play Nintendo 64"
-                  />
-                </li>
-                <li>
-                  <SelectRow
-                    label="Internal Resolution"
-                    defaultSelectedOption={{
-                      name: "Default",
-                      value: "default",
-                    }}
-                    options={[
-                      { name: "Native", value: "native" },
-                      { name: "Default", value: "default" },
-                      { name: "2x", value: "2x" },
-                      { name: "3x", value: "3x" },
-                    ]}
-                    ref={entriesRefCallback(2)}
-                  />
-                </li>
+                {settings?.map(({ id, label, options, icon }, index) => (
+                  <li key={id}>
+                    <SelectRow
+                      id={id}
+                      label={label}
+                      icon={<GiUpgrade />}
+                      defaultValue={defaults?.[id]}
+                      options={options}
+                      ref={entriesRefCallback(index)}
+                      onClick={onClick}
+                      onChange={onSave}
+                    />
+                  </li>
+                ))}
               </FormBox>
             }
           />

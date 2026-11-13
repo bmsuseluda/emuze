@@ -172,7 +172,7 @@ export const eden: Application = {
 };
 
 export const isEdenForSwitch = () => {
-  const eden = readAdvanced()?.eden;
+  const eden = readAdvanced()?.["nintendoswitch"]?.["emulator"] === "eden";
 
   return eden || false;
 };

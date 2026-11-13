@@ -1,4 +1,3 @@
-export interface Advanced {
-  eden?: boolean;
-  rmg?: boolean;
-}
+import { SystemId } from "../../../server/categoriesDB.server/systemId.js";
+
+export type Advanced = Partial<Record<SystemId, Record<string, string>>>;

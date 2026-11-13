@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Dialog } from "./index.js";
 import { Checkbox } from "../Checkbox/index.js";
-import { Label } from "../Label/index.js";
 import { useState } from "react";
 import { Button } from "../Button/index.js";
 
@@ -25,7 +24,7 @@ export const Basic: Story = {
           name="alwaysGameNames"
           defaultChecked={true}
         />
-        <Label htmlFor="alwaysGameNames">Always show game names</Label>
+        <label htmlFor="alwaysGameNames">Always show game names</label>
       </>
     ),
   },
@@ -44,7 +43,7 @@ const TriggerDialog = () => {
           name="alwaysGameNames"
           defaultChecked={true}
         />
-        <Label htmlFor="alwaysGameNames">Always show game names</Label>
+        <label htmlFor="alwaysGameNames">Always show game names</label>
       </Dialog>
     </>
   );
