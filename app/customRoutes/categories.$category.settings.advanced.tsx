@@ -4,36 +4,46 @@ import type { ActionFunction } from "react-router";
 import { Form, Outlet } from "react-router";
 import { FormBox } from "../components/FormBox/index.js";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
-import { SettingsIcon } from "../components/SettingsIcon/index.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
 import type { Result } from "../hooks/useGamepadsOnGrid/index.js";
 import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid/index.js";
 import { CreateSystemFoldersDialogContainer } from "../containers/CreateSystemFoldersDialog/index.js";
 import { Button } from "../components/Button/index.js";
-import { GiUpgrade } from "react-icons/gi";
 import {
   useInputBack,
   useInputConfirmation,
 } from "../hooks/useDirectionalInput/index.js";
 import { readAdvanced, writeAdvanced } from "../server/settings.server.js";
-import type { Advanced } from "../types/jsonFiles/settings/advanced.js";
+import type {
+  Advanced,
+  SystemSettingsId,
+} from "../types/jsonFiles/settings/advanced.js";
 import { Route } from "./+types/categories.$category.settings.advanced.js";
 import { SelectRow } from "../containers/SelectRow/index.js";
 import { SystemId } from "../server/categoriesDB.server/systemId.js";
 import { categories } from "../server/categoriesDB.server/index.js";
+import { SystemIcon } from "../components/SystemIcon/index.js";
+import { SystemSettingsIcon } from "../components/SystemSettingsIcon/index.js";
 
 export const loader = ({ params }: Route.LoaderArgs) => {
   const { category } = params;
   if (category) {
     const systemId = category as SystemId;
-    const { settings } = categories[systemId];
-
-    const defaults = readAdvanced()[systemId];
+    const advanced = readAdvanced();
+    const { settings, getApplication } = categories[systemId];
+    const defaults = advanced[systemId] || {};
+    const { settings: applicationSettings, id: applicationId } =
+      getApplication();
+    const applicationDefaults = advanced[applicationId] || {};
 
     return {
-      settings,
-      defaults,
+      systemId,
+      settings: [...(settings || []), ...(applicationSettings || [])],
+      defaults: {
+        ...defaults,
+        ...applicationDefaults,
+      } as Record<SystemSettingsId, string>,
     };
   }
 
@@ -52,11 +62,22 @@ export const action: ActionFunction = async ({ request, params }) => {
     const { category } = params;
     if (category) {
       const systemId = category as SystemId;
-      const { settings } = categories[systemId];
+      const { settings, getApplication } = categories[systemId];
+      const { settings: applicationSettings, id: applicationId } =
+        getApplication();
 
       const fields: Advanced = {
         ...readAdvanced(),
         [systemId]: settings?.reduce<Record<string, string>>(
+          (accumulator, { id }) => {
+            const value = form.get(id) as string;
+            accumulator[id] = value;
+
+            return accumulator;
+          },
+          {} as Record<string, string>,
+        ),
+        [applicationId]: applicationSettings?.reduce<Record<string, string>>(
           (accumulator, { id }) => {
             const value = form.get(id) as string;
             accumulator[id] = value;
@@ -86,7 +107,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 const focus: FocusElement = "settingsMain";
 
 export default function Advanced({
-  loaderData: { settings, defaults },
+  loaderData: { systemId, settings, defaults },
 }: Route.ComponentProps) {
   const saveButtonRef = useRef<ComponentRef<"button">>(null);
   const { isInFocus, switchFocusBack, switchFocus } =
@@ -158,7 +179,7 @@ export default function Advanced({
       <ListActionBarLayout
         headline={{
           title: "Advanced",
-          icon: <SettingsIcon id="advanced" />,
+          icon: <SystemIcon id={systemId!} />,
         }}
       >
         <Form method="POST">
@@ -166,12 +187,12 @@ export default function Advanced({
             scrollSmooth
             list={
               <FormBox ref={entryListRef}>
-                {settings?.map(({ id, label, options, icon }, index) => (
+                {settings?.map(({ id, label, options }, index) => (
                   <li key={id}>
                     <SelectRow
                       id={id}
                       label={label}
-                      icon={<GiUpgrade />}
+                      icon={<SystemSettingsIcon id={id} />}
                       defaultValue={defaults?.[id]}
                       options={options}
                       ref={entriesRefCallback(index)}

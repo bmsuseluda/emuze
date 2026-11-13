@@ -50,4 +50,15 @@ export const aresNintendo64: Application = {
     ...["--system", "Nintendo 64"],
     ...getN64GamepadsReset(),
   ],
+  settings: [
+    {
+      id: "shader",
+      label: "Shader",
+      options: [
+        { name: "Off", value: "off" },
+        { name: "CRT Royale", value: "crtroyale" },
+        { name: "CRT Beam", value: "crtbeam" },
+      ],
+    },
+  ],
 };

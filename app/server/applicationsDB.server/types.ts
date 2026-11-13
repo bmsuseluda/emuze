@@ -5,6 +5,7 @@ import type { GeneralConfigured } from "../../types/jsonFiles/settings/general.j
 import type { Appearance } from "../../types/jsonFiles/settings/appearance.js";
 import type { ApplicationId } from "./applicationId.js";
 import type { Advanced } from "../../types/jsonFiles/settings/advanced.js";
+import { SystemSetting } from "../settings.server.js";
 
 export interface Settings {
   general: GeneralConfigured;
@@ -93,18 +94,6 @@ export interface RequiredFiles {
   instructionMessage?: string;
 }
 
-export interface Option {
-  name: string;
-  value: string;
-}
-
-export interface Setting {
-  id: string;
-  label: string;
-  icon?: string;
-  options: Option[];
-}
-
 export interface Application {
   id: ApplicationId;
   name: string;
@@ -124,5 +113,5 @@ export interface Application {
   biosFiles?: RequiredFiles[];
   /** if they are defined, all of them are necessary to run the applciation */
   otherRequiredFiles?: RequiredFiles[];
-  settings?: Setting[];
+  settings?: SystemSetting[];
 }

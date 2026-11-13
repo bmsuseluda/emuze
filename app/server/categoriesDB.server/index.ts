@@ -227,8 +227,8 @@ export const nintendoswitch: Category = {
       id: "emulator",
       label: "Emulator",
       options: [
-        { name: "Ryujinx", value: "ryujinx" },
-        { name: "Eden", value: "eden" },
+        { name: ryujinx.name, value: ryujinx.id },
+        { name: eden.name, value: eden.name },
       ],
     },
   ],
@@ -257,8 +257,8 @@ export const nintendo64: Category = {
       id: "emulator",
       label: "Emulator",
       options: [
-        { name: "ares", value: "ares" },
-        { name: "RMG", value: "rmg" },
+        { name: aresNintendo64.name, value: aresNintendo64.id },
+        { name: rosaliesMupenGui.name, value: rosaliesMupenGui.id },
       ],
     },
     {
@@ -268,15 +268,6 @@ export const nintendo64: Category = {
         { name: "Native", value: "native" },
         { name: "2x", value: "2x" },
         { name: "3x", value: "3x" },
-      ],
-    },
-    {
-      id: "shader",
-      label: "Shader",
-      options: [
-        { name: "Off", value: "off" },
-        { name: "CRT Royale", value: "crtroyale" },
-        { name: "CRT Beam", value: "crtbeam" },
       ],
     },
   ],

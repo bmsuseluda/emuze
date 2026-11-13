@@ -21,6 +21,7 @@ import { Route } from "./+types/categories.$category.settings.js";
 import { useAppearance } from "../hooks/useAppearance/index.js";
 import { SystemId } from "../server/categoriesDB.server/systemId.js";
 import { categories } from "../server/categoriesDB.server/index.js";
+import { SystemIcon } from "../components/SystemIcon/index.js";
 
 export const loader = ({ params }: Route.LoaderArgs) => {
   const { category } = params;
@@ -28,7 +29,7 @@ export const loader = ({ params }: Route.LoaderArgs) => {
     const systemId = category as SystemId;
 
     if (categories[systemId].settings) {
-      return { settings };
+      return { settings, systemId };
     }
   }
 
@@ -36,7 +37,7 @@ export const loader = ({ params }: Route.LoaderArgs) => {
 };
 
 export default function Index({
-  loaderData: { settings },
+  loaderData: { settings, systemId },
 }: Route.ComponentProps) {
   const { pathname } = useLocation();
   const { collapseSidebar } = useAppearance();
@@ -113,20 +114,29 @@ export default function Index({
           headline="Settings"
           collapse={collapseSidebar}
         >
-          {settings.map(({ id, name }, index) => (
-            <li key={id}>
-              <SidebarNavigationLink
-                to={id}
-                icon={<SettingsIcon id={id} />}
-                aria-label={name}
-                ref={categoryLinksRefCallback(index)}
-                onClick={onLinkClick}
-                isFocused={isInFocus}
-              >
-                {collapseSidebar ? undefined : name}
-              </SidebarNavigationLink>
-            </li>
-          ))}
+          {settings.map(({ id, name }, index) => {
+            const icon =
+              id === "advanced" ? (
+                <SystemIcon id={systemId!} />
+              ) : (
+                <SettingsIcon id={id} />
+              );
+
+            return (
+              <li key={id}>
+                <SidebarNavigationLink
+                  to={id}
+                  icon={icon}
+                  aria-label={name}
+                  ref={categoryLinksRefCallback(index)}
+                  onClick={onLinkClick}
+                  isFocused={isInFocus}
+                >
+                  {collapseSidebar ? undefined : name}
+                </SidebarNavigationLink>
+              </li>
+            );
+          })}
         </SidebarMainLayout.Sidebar>
         <SidebarMainLayout.Main>
           <Outlet />

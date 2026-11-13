@@ -1,18 +1,6 @@
-import { ReactNode } from "react";
 import type { Application } from "../applicationsDB.server/types.js";
 import type { SystemId } from "./systemId.js";
-
-export interface Option {
-  name: string;
-  value: string;
-}
-
-export interface Setting {
-  id: string;
-  label: string;
-  icon?: ReactNode;
-  options: Option[];
-}
+import { SystemSetting } from "../settings.server.js";
 
 export interface Category {
   id: SystemId;
@@ -20,5 +8,5 @@ export interface Category {
   igdbPlatformIds: number[];
   getApplication: () => Application;
   hasAnalogStick: boolean;
-  settings?: Setting[];
+  settings?: SystemSetting[];
 }

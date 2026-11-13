@@ -1,0 +1,37 @@
+import { icons, SystemSettingsIcon } from "./index.js";
+
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { styled } from "../../../styled-system/jsx/factory.js";
+import { IconChildrenWrapper } from "../IconChildrenWrapper/index.js";
+import { Typography } from "../Typography/index.js";
+
+const meta = {
+  component: SystemSettingsIcon,
+} satisfies Meta<typeof SystemSettingsIcon>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+const Wrapper = styled("div", {
+  base: {
+    display: "flex",
+    gap: "0.625rem",
+    flexDirection: "column",
+  },
+});
+
+export const Default: Story = {
+  args: {
+    id: "emulator",
+  },
+  render: () => {
+    const setingsIcons = Object.keys(icons).map((id) => (
+      <IconChildrenWrapper iconSize="medium" key={id}>
+        <SystemSettingsIcon id={id as keyof typeof icons} />
+        <Typography>{id}</Typography>
+      </IconChildrenWrapper>
+    ));
+
+    return <Wrapper>{setingsIcons}</Wrapper>;
+  },
+};

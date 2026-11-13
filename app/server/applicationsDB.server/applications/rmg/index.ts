@@ -172,7 +172,7 @@ export const rosaliesMupenGui: Application = {
 };
 
 export const isRmgForN64 = () => {
-  const rmg = readAdvanced()?.["nintendo64"]?.["emulator"] === "rmg";
+  const rmg = readAdvanced()?.["nintendo64"]?.["emulator"] === applicationId;
 
   return rmg;
 };
