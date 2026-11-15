@@ -169,6 +169,18 @@ export const rosaliesMupenGui: Application = {
     return optionParams;
   },
   bundledPath,
+  settings: [
+    {
+      id: "resolution",
+      label: "Internal Resolution",
+      options: [
+        { name: "Native", value: "native" },
+        { name: "2x", value: "2x" },
+        { name: "4x", value: "4x" },
+        { name: "6x", value: "6x" },
+      ],
+    },
+  ],
 };
 
 export const isRmgForN64 = () => {

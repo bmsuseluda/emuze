@@ -1,6 +1,6 @@
 import { resetUnusedVirtualGamepads } from "../../../resetUnusedVirtualGamepads.js";
 import { Application } from "../../../types.js";
-import { ares, getSharedAresOptionParams } from "../index.js";
+import { ares, getSharedAresOptionParams, shaderCrtSetting } from "../index.js";
 import { getSystemGamepadButtonReset } from "../systemSpecificGamepadReset.js";
 
 const getSuperGrafxGamepadReset = (gamepadIndex: number) => {
@@ -34,4 +34,5 @@ export const aresSuperGrafx: Application = {
     ...["--system", "SuperGrafx"],
     ...getSuperGrafxGamepadsReset(),
   ],
+  settings: [shaderCrtSetting],
 };

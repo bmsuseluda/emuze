@@ -261,15 +261,6 @@ export const nintendo64: Category = {
         { name: rosaliesMupenGui.name, value: rosaliesMupenGui.id },
       ],
     },
-    {
-      id: "resolution",
-      label: "Internal Resolution",
-      options: [
-        { name: "Native", value: "native" },
-        { name: "2x", value: "2x" },
-        { name: "3x", value: "3x" },
-      ],
-    },
   ],
   getApplication: () => (isRmgForN64() ? rosaliesMupenGui : aresNintendo64),
   hasAnalogStick: true,

@@ -1,6 +1,6 @@
 import { resetUnusedVirtualGamepads } from "../../../resetUnusedVirtualGamepads.js";
 import { Application } from "../../../types.js";
-import { ares, getSharedAresOptionParams } from "../index.js";
+import { ares, getSharedAresOptionParams, shaderCrtSetting } from "../index.js";
 import { getSystemGamepadButtonReset } from "../systemSpecificGamepadReset.js";
 
 const getMasterSystemGamepadReset = (gamepadIndex: number) => {
@@ -31,4 +31,5 @@ export const aresMasterSystem: Application = {
     ...["--system", "Master System"],
     ...getMasterSystemGamepadsReset(),
   ],
+  settings: [shaderCrtSetting],
 };

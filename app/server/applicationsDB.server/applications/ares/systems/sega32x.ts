@@ -1,6 +1,6 @@
 import { resetUnusedVirtualGamepads } from "../../../resetUnusedVirtualGamepads.js";
 import { Application } from "../../../types.js";
-import { ares, getSharedAresOptionParams } from "../index.js";
+import { ares, getSharedAresOptionParams, shaderCrtSetting } from "../index.js";
 import { getSystemGamepadButtonReset } from "../systemSpecificGamepadReset.js";
 
 const getSega32xGamepadReset = (gamepadIndex: number) => {
@@ -37,4 +37,5 @@ export const aresSega32x: Application = {
     ...["--system", "Mega 32X"],
     ...getSega32xGamepadsReset(),
   ],
+  settings: [shaderCrtSetting],
 };

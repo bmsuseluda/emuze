@@ -1,6 +1,6 @@
 import { resetUnusedVirtualGamepads } from "../../../resetUnusedVirtualGamepads.js";
 import { Application } from "../../../types.js";
-import { ares, getSharedAresOptionParams } from "../index.js";
+import { ares, getSharedAresOptionParams, shaderCrtSetting } from "../index.js";
 import { getSystemGamepadButtonReset } from "../systemSpecificGamepadReset.js";
 
 const getN64GamepadReset = (gamepadIndex: number) => {
@@ -42,22 +42,31 @@ const getN64GamepadReset = (gamepadIndex: number) => {
 export const getN64GamepadsReset = () =>
   resetUnusedVirtualGamepads(4, 0, getN64GamepadReset).flat();
 
+const defaultResolution = "SD";
+
 export const aresNintendo64: Application = {
   ...ares,
   fileExtensions: [".z64", ".n64", ".v64"],
-  createOptionParams: (props) => [
-    ...getSharedAresOptionParams(props),
-    ...["--system", "Nintendo 64"],
-    ...getN64GamepadsReset(),
-  ],
+  createOptionParams: (props) => {
+    const resolution =
+      props.settings.advanced["nintendo64/ares"]?.resolution ||
+      defaultResolution;
+    return [
+      ...getSharedAresOptionParams(props),
+      ...["--system", "Nintendo 64"],
+      ...["--setting", `Video/Quality=${resolution}`],
+      ...getN64GamepadsReset(),
+    ];
+  },
   settings: [
+    shaderCrtSetting,
     {
-      id: "shader",
-      label: "Shader",
+      id: "resolution",
+      label: "Internal Resolution",
       options: [
-        { name: "Off", value: "off" },
-        { name: "CRT Royale", value: "crtroyale" },
-        { name: "CRT Beam", value: "crtbeam" },
+        { name: "Native", value: defaultResolution },
+        { name: "2x", value: "HD" },
+        { name: "4x", value: "UHD" },
       ],
     },
   ],

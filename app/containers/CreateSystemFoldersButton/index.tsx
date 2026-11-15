@@ -29,6 +29,7 @@ export const CreateSystemFoldersButton = ({ isInFocus, id }: Props) => {
         id={id}
         name="_actionId"
         value={id}
+        disabled={isCreatingFolders}
         icon={
           gamepadType ? (
             <GamepadButtonIcon

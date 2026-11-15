@@ -8,15 +8,29 @@ import { envPaths } from "../../../envPaths.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { getMouse } from "./mouseConfig.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
+import { SystemSetting } from "../../../settings.server.js";
 
 const applicationId: ApplicationId = "ares";
 const bundledPath = isWindows()
   ? nodepath.join(applicationId, "ares.exe")
   : nodepath.join(applicationId, `${applicationId}.AppImage`);
 
+const defaultShader = "None";
+
+export const shaderCrtSetting = {
+  id: "shader",
+  label: "Shader",
+  options: [
+    { name: "Off", value: defaultShader },
+    { name: "CRT Royale", value: "crt/crt-royale" },
+    { name: "CRT Geom", value: "crt/crt-geom" },
+  ],
+} satisfies SystemSetting;
+
 export const getSharedAresOptionParams: OptionParamFunction = ({
   settings: {
     appearance: { fullscreen },
+    advanced,
   },
   categoryData: { id },
   hasAnalogStick,
@@ -29,6 +43,10 @@ export const getSharedAresOptionParams: OptionParamFunction = ({
   const hotkeyLoad = ["--setting", `Hotkey/LoadState=${getKeyboardKey("F3")}`];
   const inputSDL = ["--setting", "Input/Driver=SDL"];
   const autoSaveMemory = ["--setting", "General/AutoSaveMemory=true"];
+  const shader = [
+    "--shader",
+    advanced[`${id}/${applicationId}`]?.shader || defaultShader,
+  ];
 
   const optionParams = [
     ...hotkeyFullscreen,
@@ -36,6 +54,7 @@ export const getSharedAresOptionParams: OptionParamFunction = ({
     ...hotkeyLoad,
     ...inputSDL,
     ...autoSaveMemory,
+    ...shader,
     ...getVirtualGamepads(id, hasAnalogStick),
     ...getMouse(),
     "--no-file-prompt",

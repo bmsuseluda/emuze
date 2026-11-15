@@ -25,20 +25,23 @@ import { SystemId } from "../server/categoriesDB.server/systemId.js";
 import { categories } from "../server/categoriesDB.server/index.js";
 import { SystemIcon } from "../components/SystemIcon/index.js";
 import { SystemSettingsIcon } from "../components/SystemSettingsIcon/index.js";
+import { readCategory } from "../server/categoryDataCache.server.js";
 
 export const loader = ({ params }: Route.LoaderArgs) => {
   const { category } = params;
   if (category) {
     const systemId = category as SystemId;
     const advanced = readAdvanced();
+    const name = readCategory(systemId)?.name || "Advanced";
     const { settings, getApplication } = categories[systemId];
     const defaults = advanced[systemId] || {};
     const { settings: applicationSettings, id: applicationId } =
       getApplication();
-    const applicationDefaults = advanced[applicationId] || {};
+    const applicationDefaults = advanced[`${systemId}/${applicationId}`] || {};
 
     return {
       systemId,
+      name,
       settings: [...(settings || []), ...(applicationSettings || [])],
       defaults: {
         ...defaults,
@@ -77,7 +80,9 @@ export const action: ActionFunction = async ({ request, params }) => {
           },
           {} as Record<string, string>,
         ),
-        [applicationId]: applicationSettings?.reduce<Record<string, string>>(
+        [`${systemId}/${applicationId}`]: applicationSettings?.reduce<
+          Record<string, string>
+        >(
           (accumulator, { id }) => {
             const value = form.get(id) as string;
             accumulator[id] = value;
@@ -107,7 +112,7 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 const focus: FocusElement = "settingsMain";
 
 export default function Advanced({
-  loaderData: { systemId, settings, defaults },
+  loaderData: { systemId, name, settings, defaults },
 }: Route.ComponentProps) {
   const saveButtonRef = useRef<ComponentRef<"button">>(null);
   const { isInFocus, switchFocusBack, switchFocus } =
@@ -178,7 +183,7 @@ export default function Advanced({
     <>
       <ListActionBarLayout
         headline={{
-          title: "Advanced",
+          title: name!,
           icon: <SystemIcon id={systemId!} />,
         }}
       >
