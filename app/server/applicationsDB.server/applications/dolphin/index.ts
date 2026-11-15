@@ -19,6 +19,7 @@ import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { getControllers } from "../../../gamepad.server.js";
 import { defaultDolphinSettings } from "./defaultDolphinSettings.js";
+import { defaultGfx } from "./defaultGfx.js";
 
 const applicationId: ApplicationId = "dolphin";
 const bundledPath = isWindows()
@@ -41,6 +42,7 @@ const hotkeysConfigFileName = nodepath.join(
   "Config",
   "Hotkeys.ini",
 );
+const gfxConfigFileName = nodepath.join(configFolderPath, "Config", "GFX.ini");
 
 export const replaceGamepadConfigSections: SectionReplacement = (sections) => [
   ...sections,
@@ -90,6 +92,22 @@ export const replaceHotkeysFile = () =>
     replaceHotkeysSection,
   );
 
+export const replaceGfxSection =
+  (resolution: string): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[Settings]", [
+      {
+        keyValue: `InternalResolution = ${resolution}`,
+      },
+    ]);
+
+export const replaceGfxFile = (resolution: string) =>
+  replaceConfigSections(
+    gfxConfigFileName,
+    defaultGfx,
+    replaceGfxSection(resolution),
+  );
+
 const setDeviceToStandardController = (index: number): ParamToReplace => ({
   keyValue: `SIDevice${index} = 6`,
 });
@@ -136,6 +154,8 @@ export const replaceConfigSections = (
   writeConfig(filePath, fileContentNew);
 };
 
+const defaultResolution = "1";
+
 export const dolphin: Application = {
   id: applicationId,
   name: "Dolphin",
@@ -145,11 +165,17 @@ export const dolphin: Application = {
     settings: {
       appearance: { fullscreen },
       general: { categoriesPath },
+      advanced,
     },
+    categoryData: { id },
   }) => {
+    const resolution =
+      advanced[`${id}/dolphin`]?.resolution || defaultResolution;
+
     replaceDolphinFile();
     replaceGamepadConfigFile();
     replaceHotkeysFile();
+    replaceGfxFile(resolution);
 
     const optionParams = [
       `--user=${configFolderPath}`,
@@ -171,4 +197,18 @@ export const dolphin: Application = {
     return optionParams;
   },
   bundledPath,
+  settings: [
+    {
+      id: "resolution",
+      label: "Internal Resolution",
+      options: [
+        { name: "Native", value: defaultResolution },
+        { name: "2x (1280x1056)", value: "2" },
+        { name: "3x (1920x1584)", value: "3" },
+        { name: "4x (2560x2112)", value: "4" },
+        { name: "5x (3200x2640)", value: "5" },
+        { name: "6x (3840x3168)", value: "6" },
+      ],
+    },
+  ],
 };

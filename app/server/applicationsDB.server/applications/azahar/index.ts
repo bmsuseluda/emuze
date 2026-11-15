@@ -85,7 +85,17 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
-export const replaceConfigSections = (n3dsRomsPath: string) => {
+export const replaceRendererConfig =
+  (resolution: string): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[Renderer]", [
+      ...getSetting("resolution_factor", resolution),
+    ]);
+
+export const replaceConfigSections = (
+  n3dsRomsPath: string,
+  resolution: string,
+) => {
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
 
@@ -96,6 +106,7 @@ export const replaceConfigSections = (n3dsRomsPath: string) => {
     replaceUiConfig(n3dsRomsPath),
     replaceGamepadConfig,
     replaceMiscellaneousConfig,
+    replaceRendererConfig(resolution),
   ).join(EOL);
 
   writeConfig(filePath, fileContentNew);
@@ -111,6 +122,8 @@ const getConfigFileBasePath = () => {
   }
 };
 
+const defaultResolution = "1";
+
 export const azahar: Application = {
   id: applicationId,
   name: "Azahar",
@@ -124,11 +137,14 @@ export const azahar: Application = {
     settings: {
       appearance: { fullscreen },
       general: { categoriesPath },
+      advanced,
     },
     categoryData,
   }) => {
+    const resolution =
+      advanced["nintendo3ds/azahar"]?.resolution || defaultResolution;
     const n3dsRomsPath = nodepath.join(categoriesPath, categoryData.name);
-    replaceConfigSections(n3dsRomsPath);
+    replaceConfigSections(n3dsRomsPath, resolution);
 
     const optionParams = [];
     if (fullscreen) {
@@ -139,4 +155,20 @@ export const azahar: Application = {
     return optionParams;
   },
   bundledPath,
+  settings: [
+    {
+      id: "resolution",
+      label: "Internal Resolution",
+      options: [
+        { name: "Native", value: defaultResolution },
+        { name: "2x (800x480)", value: "2" },
+        { name: "3x (1200x720)", value: "3" },
+        { name: "4x (1600x960)", value: "4" },
+        { name: "5x (2000x1200)", value: "5" },
+        { name: "6x (2400x1440)", value: "6" },
+        { name: "7x (2800x1680)", value: "7" },
+        { name: "8x (3200x1920)", value: "8" },
+      ],
+    },
+  ],
 };

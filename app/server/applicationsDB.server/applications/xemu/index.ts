@@ -79,9 +79,19 @@ const replaceSysFilesConfig =
       })),
     ]);
 
+const replaceDisplayQualityConfig =
+  (resolution: string): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[display.quality]", [
+      { keyValue: `surface_scale = ${resolution}` },
+    ]);
+
+const defaultResolution = "1";
+
 const replaceConfigFile = (
   biosFiles: DetectedRequiredFile[],
   otherRequiredFiles: DetectedRequiredFile[],
+  resolution: string,
 ) => {
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
@@ -94,6 +104,7 @@ const replaceConfigFile = (
     replaceGeneralUpdatesConfig,
     replaceInputBindingsConfig,
     replaceKeyboardControllerConfig,
+    replaceDisplayQualityConfig(resolution),
     replaceSysFilesConfig(biosFiles, otherRequiredFiles),
   ).join(EOL);
 
@@ -128,12 +139,15 @@ export const xemu: Application = {
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
+      advanced,
     },
     absoluteEntryPath,
     biosFiles,
     otherRequiredFiles,
   }) => {
-    replaceConfigFile(biosFiles!, otherRequiredFiles!);
+    const resolution = advanced["xbox/xemu"]?.resolution || defaultResolution;
+
+    replaceConfigFile(biosFiles!, otherRequiredFiles!, resolution);
 
     const optionParams = [];
     if (fullscreen) {
@@ -171,6 +185,18 @@ export const xemu: Application = {
     {
       type: requiredFileTypes.hdd,
       requiredFiles: [{ filename: "xbox_hdd.qcow2" }],
+    },
+  ],
+  settings: [
+    {
+      id: "resolution",
+      label: "Internal Resolution",
+      options: [
+        { name: "Native", value: defaultResolution },
+        { name: "2x", value: "2" },
+        { name: "3x", value: "3" },
+        { name: "4x", value: "4" },
+      ],
     },
   ],
 };
