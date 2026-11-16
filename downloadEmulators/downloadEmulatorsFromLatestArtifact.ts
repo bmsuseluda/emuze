@@ -163,7 +163,7 @@ export const getEmulatorsFromLatestArtifact = async () => {
       await getEmulatorsFromLatestArtifactWindows(latestReleaseId);
     } else {
       await getManifestFromLatestArtifact(latestReleaseId, "linux");
-      // await getEmulatorsFromLatestArtifactLinux(latestReleaseId);
+      await getEmulatorsFromLatestArtifactLinux(latestReleaseId);
     }
   }
 };
