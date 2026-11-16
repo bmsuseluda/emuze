@@ -1,7 +1,7 @@
 import type { Application, DetectedRequiredFile } from "../../types.js";
 import fs from "node:fs";
 import { EOL, homedir } from "os";
-import { isWindows } from "../../../operationsystem.server.js";
+import { handleOperatingSystem } from "../../../operationsystem.server.js";
 import nodepath from "node:path";
 import type { SectionReplacement } from "../../configFile.js";
 import {
@@ -22,9 +22,13 @@ import multitapGames from "../../../../../fetchMetaData/multitapGames/sonyplayst
 import { normalizeString } from "../../../igdb.server.js";
 
 const applicationId: ApplicationId = "pcsx2";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "pcsx2-qt.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "pcsx2-qt.exe"),
+  mac: nodepath.join(applicationId, "PCSX2-v2.8.2.app"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
+
 const configFileName = "PCSX2.ini";
 const configFilePathRelative = nodepath.join("inis", configFileName);
 
@@ -225,14 +229,15 @@ export const replaceConfigSections = (
   writeConfig(filePath, fileContentNew);
 };
 
-const getConfigFileBasePath = () => {
-  if (isWindows()) {
+const getConfigFileBasePath = handleOperatingSystem({
+  windows: () => {
     return nodepath.join(homedir(), "Documents", "PCSX2");
-  } else {
+  },
+  linux: () => {
     const { config } = envPaths("PCSX2", { suffix: "" });
     return nodepath.join(config);
-  }
-};
+  },
+});
 
 export const pcsx2: Application = {
   id: applicationId,

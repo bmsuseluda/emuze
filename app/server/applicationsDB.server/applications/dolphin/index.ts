@@ -14,7 +14,7 @@ import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js"
 import { defaultHotkeys } from "./defaultHotkeys.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
-import { isWindows } from "../../../operationsystem.server.js";
+import { handleOperatingSystem } from "../../../operationsystem.server.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { getControllers } from "../../../gamepad.server.js";
@@ -22,9 +22,12 @@ import { defaultDolphinSettings } from "./defaultDolphinSettings.js";
 import { defaultGfx } from "./defaultGfx.js";
 
 const applicationId: ApplicationId = "dolphin";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "Dolphin.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "Dolphin.exe"),
+  mac: nodepath.join(applicationId, "Dolphin.app"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
 
 const configFolderPath = nodepath.join(emulatorsConfigDirectory, applicationId);
 const dolphinConfigFileName = nodepath.join(

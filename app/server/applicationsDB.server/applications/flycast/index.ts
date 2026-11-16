@@ -13,7 +13,7 @@ import {
   writeConfig,
 } from "../../configFile.js";
 import { EOL } from "node:os";
-import { isWindows } from "../../../operationsystem.server.js";
+import { handleOperatingSystem } from "../../../operationsystem.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { getKeyboardButtonMappings } from "./keyboardConfig.js";
@@ -21,9 +21,12 @@ import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { getControllersSdl3 } from "../../../gamepad.server.js";
 
 const applicationId: ApplicationId = "flycast";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "flycast.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "flycast.exe"),
+  mac: nodepath.join(applicationId, "Flycast.app"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
 
 const keyboardConfigFileName = "SDL_Keyboard.cfg";
 const keyboardConfigPathRelative = nodepath.join(
@@ -103,9 +106,10 @@ const getConfigFileBasePath = () => {
   );
   const { config } = envPaths("flycast", { suffix: "" });
 
-  return isWindows()
-    ? nodepath.join(windowsConfigFolder)
-    : nodepath.join(config);
+  return handleOperatingSystem({
+    windows: nodepath.join(windowsConfigFolder),
+    linux: nodepath.join(config),
+  });
 };
 
 export const flycast: Application = {

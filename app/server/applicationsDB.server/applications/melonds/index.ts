@@ -3,7 +3,7 @@ import fs from "node:fs";
 import type { ApplicationId } from "../../applicationId.js";
 import type { Application } from "../../types.js";
 import { envPaths } from "../../../envPaths.server.js";
-import { isWindows } from "../../../operationsystem.server.js";
+import { handleOperatingSystem } from "../../../operationsystem.server.js";
 import { EOL } from "node:os";
 import { log } from "../../../debug.server.js";
 import type { SectionReplacement } from "../../configFile.js";
@@ -23,9 +23,12 @@ import { EmuzeController, getControllers } from "../../../gamepad.server.js";
 import { gamepadPs4Joystick } from "../../../../types/gamepad.js";
 
 const applicationId: ApplicationId = "melonds";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "melonDS.exe")
-  : nodepath.join(applicationId, "melonDS-x86_64.AppImage");
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "melonDS.exe"),
+  mac: nodepath.join(applicationId, "melonDS.app"),
+  linux: nodepath.join(applicationId, `melonDS-x86_64.AppImage`),
+});
 
 const configFileName = "melonDS.toml";
 
@@ -86,14 +89,15 @@ const replaceConfigFile = () => {
   writeConfig(filePath, fileContentNew);
 };
 
-const getConfigFileBasePath = () => {
-  if (isWindows()) {
+const getConfigFileBasePath = handleOperatingSystem({
+  windows: () => {
     return nodepath.join(bundledEmulatorsPathBase, applicationId);
-  } else {
+  },
+  linux: () => {
     const { config } = envPaths("melonDS", { suffix: "" });
     return nodepath.join(config);
-  }
-};
+  },
+});
 
 export const melonds: Application = {
   id: applicationId,

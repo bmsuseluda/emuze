@@ -2,7 +2,7 @@ import type { Application, DetectedRequiredFile } from "../../types.js";
 import { log } from "../../../debug.server.js";
 import fs from "node:fs";
 import { EOL, homedir } from "node:os";
-import { isWindows } from "../../../operationsystem.server.js";
+import { handleOperatingSystem } from "../../../operationsystem.server.js";
 import type { SectionReplacement } from "../../configFile.js";
 import {
   chainSectionReplacements,
@@ -22,9 +22,12 @@ import multitapGames from "../../../../../fetchMetaData/multitapGames/sonyplayst
 import { normalizeString } from "../../../igdb.server.js";
 
 const applicationId: ApplicationId = "duckstation";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "duckstation-qt-x64-ReleaseLTCG.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "duckstation-qt-x64-ReleaseLTCG.exe"),
+  mac: nodepath.join(applicationId, "DuckStation.app"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
 
 const configFileName = "settings.ini";
 
@@ -475,14 +478,13 @@ export const replaceConfigSections = (
   writeConfig(filePath, fileContentNew);
 };
 
-const getConfigFileBasePath = () => {
-  if (isWindows()) {
-    return nodepath.join(homedir(), "Documents", "DuckStation");
-  } else {
+const getConfigFileBasePath = handleOperatingSystem({
+  windows: () => nodepath.join(homedir(), "Documents", "DuckStation"),
+  linux: () => {
     const { data } = envPaths("duckstation", { suffix: "" });
     return nodepath.join(data);
-  }
-};
+  },
+});
 
 export const duckstation: Application = {
   id: applicationId,
