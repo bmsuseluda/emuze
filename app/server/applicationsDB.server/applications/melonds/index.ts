@@ -125,11 +125,10 @@ export const melonds: Application = {
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
-      advanced,
     },
+    emulatorSettings,
   }) => {
-    const resolution =
-      advanced["nintendods/melonds"]?.resolution || defaultResolution;
+    const resolution = emulatorSettings?.resolution || defaultResolution;
 
     replaceConfigFile(resolution);
 

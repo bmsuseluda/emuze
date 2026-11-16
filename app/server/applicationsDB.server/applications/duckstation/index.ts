@@ -588,20 +588,19 @@ export const duckstation: Application = {
     settings: {
       appearance: { fullscreen },
       general: { categoriesPath },
-      advanced,
     },
     categoryData,
     entryData,
     biosFiles,
+    emulatorSettings,
   }) => {
-    const advancedSettings = advanced["sonyplaystation/duckstation"];
     const psxRomsPath = nodepath.join(categoriesPath, categoryData.name);
 
     replaceConfigSections(
       psxRomsPath,
       entryData.name,
       biosFiles!,
-      advancedSettings,
+      emulatorSettings,
     );
 
     const optionParams = [];

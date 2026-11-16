@@ -149,12 +149,11 @@ export const azahar: Application = {
     settings: {
       appearance: { fullscreen },
       general: { categoriesPath },
-      advanced,
     },
     categoryData,
+    emulatorSettings,
   }) => {
-    const resolution =
-      advanced["nintendo3ds/azahar"]?.resolution || defaultResolution;
+    const resolution = emulatorSettings?.resolution || defaultResolution;
     const n3dsRomsPath = nodepath.join(categoriesPath, categoryData.name);
     replaceConfigSections(n3dsRomsPath, resolution);
 

@@ -218,6 +218,9 @@ export const startGame = async (
           allRequired: true,
         });
 
+        const emulatorSettings =
+          settings.advanced?.[`${categoryData.id}/${applicationData.id}`];
+
         createRequiredSystemFolderStructure(
           systemFolderPath,
           requiredSystemFolderStructure,
@@ -234,6 +237,7 @@ export const startGame = async (
                 applicationPath,
                 biosFiles,
                 otherRequiredFiles,
+                emulatorSettings,
               })
             : [];
 

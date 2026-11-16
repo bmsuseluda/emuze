@@ -168,12 +168,10 @@ export const dolphin: Application = {
     settings: {
       appearance: { fullscreen },
       general: { categoriesPath },
-      advanced,
     },
-    categoryData: { id },
+    emulatorSettings,
   }) => {
-    const resolution =
-      advanced[`${id}/dolphin`]?.resolution || defaultResolution;
+    const resolution = emulatorSettings?.resolution || defaultResolution;
 
     replaceDolphinFile();
     replaceGamepadConfigFile();

@@ -43,10 +43,10 @@ export const shaderLcdSetting = {
 export const getSharedAresOptionParams: OptionParamFunction = ({
   settings: {
     appearance: { fullscreen },
-    advanced,
   },
   categoryData: { id },
   hasAnalogStick,
+  emulatorSettings,
 }) => {
   const hotkeyFullscreen = [
     "--setting",
@@ -56,10 +56,7 @@ export const getSharedAresOptionParams: OptionParamFunction = ({
   const hotkeyLoad = ["--setting", `Hotkey/LoadState=${getKeyboardKey("F3")}`];
   const inputSDL = ["--setting", "Input/Driver=SDL"];
   const autoSaveMemory = ["--setting", "General/AutoSaveMemory=true"];
-  const shader = [
-    "--shader",
-    advanced[`${id}/${applicationId}`]?.shader || defaultShader,
-  ];
+  const shader = ["--shader", emulatorSettings?.shader || defaultShader];
 
   const optionParams = [
     ...hotkeyFullscreen,

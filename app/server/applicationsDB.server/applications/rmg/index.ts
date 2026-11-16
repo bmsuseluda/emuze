@@ -176,13 +176,12 @@ export const rosaliesMupenGui: Application = {
     settings: {
       appearance: { fullscreen },
       general: { categoriesPath },
-      advanced,
     },
     categoryData,
+    emulatorSettings,
   }) => {
     const n64RomsPath = nodepath.join(categoriesPath, categoryData.name);
-    const resolution =
-      advanced["nintendo64/rosaliesMupenGui"]?.resolution || defaultResolution;
+    const resolution = emulatorSettings?.resolution || defaultResolution;
     replaceConfigSections(n64RomsPath, resolution);
 
     const optionParams = [];
@@ -211,7 +210,7 @@ export const rosaliesMupenGui: Application = {
 export const isRmgSupported = () => !isMac();
 
 export const isRmgForN64 = () => {
-  const rmg = readAdvanced()?.["nintendo64"]?.["emulator"] === applicationId;
+  const rmg = readAdvanced()?.["nintendo64"]?.emulator === applicationId;
 
   return rmg;
 };

@@ -139,13 +139,13 @@ export const xemu: Application = {
   createOptionParams: ({
     settings: {
       appearance: { fullscreen },
-      advanced,
     },
     absoluteEntryPath,
     biosFiles,
     otherRequiredFiles,
+    emulatorSettings,
   }) => {
-    const resolution = advanced["xbox/xemu"]?.resolution || defaultResolution;
+    const resolution = emulatorSettings?.resolution || defaultResolution;
 
     replaceConfigFile(biosFiles!, otherRequiredFiles!, resolution);
 

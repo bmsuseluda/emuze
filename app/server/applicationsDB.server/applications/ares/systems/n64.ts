@@ -48,9 +48,7 @@ export const aresNintendo64: Application = {
   ...ares,
   fileExtensions: [".z64", ".n64", ".v64"],
   createOptionParams: (props) => {
-    const resolution =
-      props.settings.advanced["nintendo64/ares"]?.resolution ||
-      defaultResolution;
+    const resolution = props.emulatorSettings?.resolution || defaultResolution;
     return [
       ...getSharedAresOptionParams(props),
       ...["--system", "Nintendo 64"],
