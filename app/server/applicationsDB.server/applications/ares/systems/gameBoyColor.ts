@@ -1,5 +1,5 @@
 import { Application } from "../../../types.js";
-import { ares, getSharedAresOptionParams } from "../index.js";
+import { ares, getSharedAresOptionParams, shaderLcdSetting } from "../index.js";
 import { getSystemGamepadButtonReset } from "../systemSpecificGamepadReset.js";
 
 export const getGameboyColorGamepadReset = () => {
@@ -31,5 +31,15 @@ export const aresGameBoyColor: Application = {
     ...getSharedAresOptionParams(props),
     ...["--system", "Game Boy Color"],
     ...getGameboyColorGamepadReset(),
+  ],
+  settings: [
+    {
+      ...shaderLcdSetting,
+      options: [
+        ...shaderLcdSetting.options,
+        { name: "Game Boy", value: "handheld/gameboy" },
+        { name: "Game Boy Pocket", value: "handheld/gameboy-pocket" },
+      ],
+    },
   ],
 };

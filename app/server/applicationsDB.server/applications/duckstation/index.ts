@@ -20,6 +20,7 @@ import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import multitapGames from "../../../../../fetchMetaData/multitapGames/sonyplaystation.json" with { type: "json" };
 import { normalizeString } from "../../../igdb.server.js";
+import { AdvancedSettings } from "../../../../types/jsonFiles/settings/advanced.js";
 
 const applicationId: ApplicationId = "duckstation";
 
@@ -452,11 +453,57 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
+export const replaceGpuConfig =
+  (advancedSettings?: AdvancedSettings): SectionReplacement =>
+  (sections) => {
+    const resolution = advancedSettings?.resolution || defaultResolution;
+    const perspectiveCorrection =
+      advancedSettings?.perspectiveCorrection || defaultPerspectiveCorrection;
+    const ntscTimings = advancedSettings?.ntscTimings || defaultNtscTimings;
+
+    return replaceSection(sections, "[GPU]", [
+      {
+        keyValue: `ResolutionScale = ${resolution}`,
+      },
+      {
+        keyValue: `ForceNTSCTimings = ${ntscTimings}`,
+      },
+      {
+        keyValue: `PGXPEnable = ${perspectiveCorrection}`,
+      },
+      { keyValue: "PGXPCulling = true" },
+      { keyValue: "PGXPTextureCorrection = true" },
+      { keyValue: "PGXPDepthBuffer = true" },
+    ]);
+  };
+
+export const replacePostProcessingConfig =
+  (shader: string): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[PostProcessing]", [
+      {
+        keyValue: `Enabled = ${shader !== defaultShader}`,
+      },
+      { keyValue: "StageCount = 1" },
+    ]);
+
+export const replacePostProcessingStage1Config =
+  (shader: string): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[PostProcessing/Stage1]", [
+      {
+        keyValue: `ShaderName = ${shader}`,
+      },
+    ]);
+
 export const replaceConfigSections = (
   psxRomsPath: string,
   gameName: string,
   biosFiles: DetectedRequiredFile[],
+  advancedSettings?: AdvancedSettings,
 ) => {
+  const shader = advancedSettings?.shader || defaultShader;
+
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
 
@@ -467,12 +514,15 @@ export const replaceConfigSections = (
     replaceInputSourcesConfig,
     replaceControllerPortsConfig(gameName),
     replaceMainConfig,
+    replaceGpuConfig(advancedSettings),
     replaceBiosConfig(biosFiles),
     replaceGamepadConfig(gameName),
     replaceHotkeyConfig,
     replaceAutoUpdaterConfig,
     replaceGameListConfig(psxRomsPath),
     replaceUiConfig,
+    replacePostProcessingConfig(shader),
+    replacePostProcessingStage1Config(shader),
   ).join(EOL);
 
   writeConfig(filePath, fileContentNew);
@@ -485,6 +535,11 @@ const getConfigFileBasePath = handleOperatingSystem({
     return nodepath.join(data);
   },
 });
+
+const defaultResolution = "1";
+const defaultPerspectiveCorrection = "false";
+const defaultNtscTimings = "false";
+const defaultShader = "false";
 
 export const duckstation: Application = {
   id: applicationId,
@@ -533,13 +588,21 @@ export const duckstation: Application = {
     settings: {
       appearance: { fullscreen },
       general: { categoriesPath },
+      advanced,
     },
     categoryData,
     entryData,
     biosFiles,
   }) => {
+    const advancedSettings = advanced["sonyplaystation/duckstation"];
     const psxRomsPath = nodepath.join(categoriesPath, categoryData.name);
-    replaceConfigSections(psxRomsPath, entryData.name, biosFiles!);
+
+    replaceConfigSections(
+      psxRomsPath,
+      entryData.name,
+      biosFiles!,
+      advancedSettings,
+    );
 
     const optionParams = [];
     if (fullscreen) {
@@ -551,4 +614,47 @@ export const duckstation: Application = {
   },
   bundledBiosOpenSource: true,
   bundledPath,
+  settings: [
+    {
+      id: "resolution",
+      label: "Internal Resolution",
+      options: [
+        { name: "Native", value: defaultResolution },
+        { name: "2x (1280x896)", value: "2" },
+        { name: "3x (1920x1344)", value: "3" },
+        { name: "4x (2560x1792)", value: "4" },
+        { name: "5x (3200x2240)", value: "5" },
+        { name: "6x (3840x2688)", value: "6" },
+        { name: "7x (4480x3136)", value: "7" },
+        { name: "8x (5120x3584)", value: "8" },
+        { name: "9x (5760x4032)", value: "9" },
+      ],
+    },
+    {
+      id: "perspectiveCorrection",
+      label: "PGXP Perspective Correction",
+      options: [
+        { name: "Off", value: defaultPerspectiveCorrection },
+        { name: "On", value: "true" },
+      ],
+    },
+    {
+      id: "ntscTimings",
+      label: "Force NTSC Timings",
+      options: [
+        { name: "Off", value: defaultNtscTimings },
+        { name: "On", value: "true" },
+      ],
+    },
+    {
+      id: "shader",
+      label: "Shader",
+      options: [
+        { name: "Off", value: defaultShader },
+        { name: "CRT Lottes 2", value: "CRTLottes2" },
+        { name: "CRT Hyllian", value: "dolphinfx/crt/CRT-HYLLIAN" },
+        { name: "CRT New Pixie", value: "CRT-NewPixie" },
+      ],
+    },
+  ],
 };

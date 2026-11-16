@@ -30,6 +30,16 @@ export const shaderCrtSetting = {
   ],
 } satisfies SystemSetting;
 
+export const shaderLcdSetting = {
+  id: "shader",
+  label: "Shader",
+  options: [
+    { name: "Off", value: defaultShader },
+    { name: "LCD 3x", value: "handheld/lcd3x" },
+    { name: "Bevel", value: "handheld/bevel" },
+  ],
+} satisfies SystemSetting;
+
 export const getSharedAresOptionParams: OptionParamFunction = ({
   settings: {
     appearance: { fullscreen },
