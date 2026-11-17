@@ -207,7 +207,10 @@ export const emulatorDownloads = {
       url: `https://www.ppsspp.org/files/${emulatorVersions.ppsspp.replaceAll(".", "_")}/ppsspp_win.zip`,
       hash: "a60f04ebdb0b5f1655422bd7f88349a46999b17ad5115d6ddb290c3934bd5163",
     },
-    Mac: null,
+    Mac: {
+      url: `https://www.ppsspp.org/files/${emulatorVersions.ppsspp.replaceAll(".", "_")}/PPSSPP_macOS.dmg`,
+      hash: "bad86fc544a2c2fc5795d6a5832a8925d6db43e5789fe507f742305aaa357e17",
+    },
   },
   rosaliesMupenGui: {
     Linux: {
@@ -240,7 +243,10 @@ export const emulatorDownloads = {
       url: `https://git.ryujinx.app/projects/Ryubing/releases/download/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-win_x64.zip`,
       hash: "50556677d4dd1b201d4dea4cf7d5586b5d83bf798402b704c5292e19e772a6de",
     },
-    Mac: null,
+    Mac: {
+      url: `https://git.ryujinx.app/projects/Ryubing/releases/download/${emulatorVersions.ryujinx}/ryujinx-${emulatorVersions.ryujinx}-macos_universal.app.tar.gz`,
+      hash: "e4818bb84c98e0d3120691821e90772099e46101273d3f145ffdb10eee2c0dbb",
+    },
   },
   scummvm: {
     Linux: {

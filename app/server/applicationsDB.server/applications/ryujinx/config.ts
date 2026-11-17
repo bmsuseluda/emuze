@@ -92,6 +92,7 @@ export interface Config {
   game_dirs?: string[];
   autoload_dirs?: string[];
   input_config?: InputConfig[];
+  res_scale?: number;
 }
 
 export const defaultInputConfig: InputConfig = {

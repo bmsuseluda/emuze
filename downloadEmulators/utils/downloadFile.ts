@@ -6,6 +6,8 @@ import decompress from "decompress";
 import decompressTarxz from "@felipecrs/decompress-tarxz";
 // @ts-ignore
 import decompressUnzip from "decompress-unzip";
+// @ts-ignore
+import decompressTarGz from "decompress-targz";
 import { log } from "../../app/server/debug.server.js";
 
 export const downloadFile = (
@@ -82,7 +84,7 @@ export const downloadAndExtract = (
         try {
           await decompress(buffer, outputFolder, {
             filter: (file) => !file.path.endsWith("/"),
-            plugins: [decompressTarxz(), decompressUnzip()],
+            plugins: [decompressTarxz(), decompressUnzip(), decompressTarGz()],
           });
           console.log(`Download of ${url} complete`);
           console.log(`${url} extracted`);

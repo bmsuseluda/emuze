@@ -12,6 +12,8 @@ import { normalizeString } from "../../../igdb.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { getControllersSdl3 } from "../../../gamepad.server.js";
 import multitapGamesSaturn from "../../../../../fetchMetaData/multitapGames/segasaturn.json" with { type: "json" };
+import { SystemSetting } from "../../../settings.server.js";
+import { AdvancedSettings } from "../../../../types/jsonFiles/settings/advanced.js";
 
 const getSharedMednafenOptionParams: OptionParamFunction = ({
   settings: {
@@ -83,6 +85,27 @@ export const mednafen: Application = {
   bundledPath,
 };
 
+const defaultShader = "none";
+
+export const shaderSetting = {
+  id: "shader",
+  label: "Shader",
+  options: [
+    { name: "Off", value: defaultShader },
+    { name: "SABR", value: "sabr" },
+    { name: "CRT Goat", value: "goat" },
+  ],
+} satisfies SystemSetting;
+
+const getShaderOptionParams = (
+  system: "-pce" | "-ss",
+  emulatorSettings?: AdvancedSettings,
+) => {
+  const shader = emulatorSettings?.shader || defaultShader;
+
+  return [`${system}.shader`, shader];
+};
+
 const highResolutionGames = new Set(
   [
     "Dead or Alive",
@@ -130,6 +153,7 @@ export const mednafenSaturn: Application = {
     const gamepads = getControllersSdl3();
     const virtualGamepadsSaturn = getVirtualGamepadsSaturn(gamepads);
     log("debug", "createOptionParams", virtualGamepadsSaturn);
+
     return [
       ...["-force_module", "ss"],
       ...props.biosFiles!.flatMap(({ type, filePath }) => [
@@ -140,6 +164,7 @@ export const mednafenSaturn: Application = {
       ...setMultitapSaturn(props.entryData.name),
       ...mednafen.createOptionParams!(props),
       ...virtualGamepadsSaturn,
+      ...getShaderOptionParams("-ss", props.emulatorSettings),
     ];
   },
   biosFiles: [
@@ -171,6 +196,7 @@ export const mednafenSaturn: Application = {
     },
   ],
   bundledBiosOpenSource: true,
+  settings: [shaderSetting],
 };
 
 export const mednafenPcEngineCD: Application = {
@@ -187,6 +213,7 @@ export const mednafenPcEngineCD: Application = {
       ...["-pce.adpcmvolume", "50"], // explosions
       ...mednafen.createOptionParams!(props),
       ...virtualGamepadsPcEngine,
+      ...getShaderOptionParams("-pce", props.emulatorSettings),
     ];
   },
   biosFiles: [
@@ -220,4 +247,5 @@ export const mednafenPcEngineCD: Application = {
       ],
     },
   ],
+  settings: [shaderSetting],
 };

@@ -20,6 +20,7 @@ import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import multitapGames from "../../../../../fetchMetaData/multitapGames/sonyplaystation2.json" with { type: "json" };
 import { normalizeString } from "../../../igdb.server.js";
+import { AdvancedSettings } from "../../../../types/jsonFiles/settings/advanced.js";
 
 const applicationId: ApplicationId = "pcsx2";
 
@@ -201,10 +202,22 @@ const getConfigFilePath = () =>
     configFilePathRelative,
   );
 
+export const replaceEmuCoreGsConfig =
+  (emulatorSettings?: AdvancedSettings): SectionReplacement =>
+  (sections) => {
+    const resolution = emulatorSettings?.resolution || defaultResolution;
+    const shader = emulatorSettings?.shader || defaultShader;
+    return replaceSection(sections, "[EmuCore/GS]", [
+      { keyValue: `upscale_multiplier = ${resolution}` },
+      { keyValue: `TVShader = ${shader}` },
+    ]);
+  };
+
 export const replaceConfigSections = (
   ps2RomsPath: string,
   gameName: string,
   biosFiles: DetectedRequiredFile[],
+  emulatorSettings?: AdvancedSettings,
 ) => {
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
@@ -217,6 +230,7 @@ export const replaceConfigSections = (
     sections,
     replaceUiConfig,
     replaceFoldersConfig(biosFiles),
+    replaceEmuCoreGsConfig(emulatorSettings),
     replaceFilenamesConfig(biosFiles),
     replaceInputSourcesConfig,
     replacePadConfig(isMultitapGame),
@@ -238,6 +252,9 @@ const getConfigFileBasePath = handleOperatingSystem({
     return nodepath.join(config);
   },
 });
+
+const defaultResolution = "1";
+const defaultShader = "0";
 
 export const pcsx2: Application = {
   id: applicationId,
@@ -297,9 +314,15 @@ export const pcsx2: Application = {
     categoryData,
     entryData,
     biosFiles,
+    emulatorSettings,
   }) => {
     const ps2RomsPath = nodepath.join(categoriesPath, categoryData.name);
-    replaceConfigSections(ps2RomsPath, entryData.name, biosFiles!);
+    replaceConfigSections(
+      ps2RomsPath,
+      entryData.name,
+      biosFiles!,
+      emulatorSettings,
+    );
 
     const optionParams = [];
     if (fullscreen) {
@@ -311,4 +334,28 @@ export const pcsx2: Application = {
   },
   bundledBiosOpenSource: true,
   bundledPath,
+  settings: [
+    {
+      id: "resolution",
+      label: "Internal Resolution",
+      options: [
+        { name: "Native", value: defaultResolution },
+        { name: "2x (1280x896) for HD", value: "2" },
+        { name: "3x (1920x1344) for FHD", value: "3" },
+        { name: "4x (2560x1792) for QHD", value: "4" },
+        { name: "5x (3200x2240) for QHD+", value: "5" },
+        { name: "6x (3840x2688) for 4K UHD", value: "6" },
+      ],
+    },
+    {
+      id: "shader",
+      label: "Shader",
+      options: [
+        { name: "Off", value: defaultShader },
+        { name: "Scanline Filter", value: "1" },
+        { name: "Wave Filter", value: "4" },
+        { name: "CRT Lottes", value: "5" },
+      ],
+    },
+  ],
 };

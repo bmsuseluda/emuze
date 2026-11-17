@@ -112,6 +112,8 @@ const getConfigFileBasePath = () => {
   });
 };
 
+const defaultResolution = "480";
+
 export const flycast: Application = {
   id: applicationId,
   name: "Flycast",
@@ -127,10 +129,15 @@ export const flycast: Application = {
       general: { categoriesPath },
     },
     categoryData,
+    emulatorSettings,
   }) => {
     replaceKeyboardConfigFile();
 
     const keyboardBindIndex = ["--config", `input:maple_sdl_keyboard=0`];
+    const resolution = [
+      "--config",
+      `config:rend.Resolution=${emulatorSettings?.resolution || defaultResolution}`,
+    ];
 
     const contentPath = [
       "--config",
@@ -141,6 +148,7 @@ export const flycast: Application = {
       ...contentPath,
       ...getJoystickBindIndices(),
       ...keyboardBindIndex,
+      ...resolution,
     ];
     if (fullscreen) {
       optionParams.push("--config");
@@ -149,4 +157,16 @@ export const flycast: Application = {
     return optionParams;
   },
   bundledPath,
+  settings: [
+    {
+      id: "resolution",
+      label: "Internal Resolution",
+      options: [
+        { name: "Native", value: defaultResolution },
+        { name: "2x (1280x960)", value: "960" },
+        { name: "3x (1920x1440)", value: "1440" },
+        { name: "4x (2560x1920)", value: "1920" },
+      ],
+    },
+  ],
 };

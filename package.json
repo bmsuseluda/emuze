@@ -128,6 +128,7 @@
     "concurrently": "10.0.6",
     "cross-env": "10.1.0",
     "decompress": "4.2.1",
+    "decompress-targz": "^4.1.1",
     "decompress-unzip": "4.0.1",
     "del-cli": "7.0.0",
     "electron": "45.1.0",
