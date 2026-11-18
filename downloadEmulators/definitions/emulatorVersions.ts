@@ -232,7 +232,10 @@ export const emulatorDownloads = {
       url: `https://github.com/RPCS3/rpcs3-binaries-win/releases/download/build-4c17bf7589b2b894e71fe69e849b41761fc686cf/rpcs3-v${emulatorVersions.rpcs3}-4c17bf75_win64_msvc.7z`,
       hash: "7C52D6E9D3EF43F48D7D58F8C390B275C6809928AC139CD3CB3292A1F8B5BEC7",
     },
-    Mac: null,
+    Mac: {
+      url: `https://github.com/RPCS3/rpcs3-binaries-mac-arm64/releases/download/build-0ebb63697666a54b44a4de69ef222c4ecee0001a/rpcs3-v0.0.43-20623-0ebb6369_macos_aarch64.7z`,
+      hash: "5a52a5237025b8b17abf9917ec8c0bf517f580bee5bfcbcbe52d95ce1f90161d",
+    },
   },
   ryujinx: {
     Linux: {
@@ -257,7 +260,10 @@ export const emulatorDownloads = {
       url: `https://downloads.scummvm.org/frs/scummvm/${emulatorVersions.scummvm}/scummvm-${emulatorVersions.scummvm}-win32-x86_64.zip`,
       hash: "fb60cfc0828ed86ef24a60c04b9390676493ab85892d81c56d1de90367d56736",
     },
-    Mac: null,
+    Mac: {
+      url: `https://downloads.scummvm.org/frs/scummvm/${emulatorVersions.scummvm}/scummvm-${emulatorVersions.scummvm}-macosx.dmg`,
+      hash: " 5614527fa57ffce14773c69923b96eeb7b1b135bcd96bfe74640ca341cad4598",
+    },
   },
   xemu: {
     Linux: {
@@ -268,7 +274,10 @@ export const emulatorDownloads = {
       url: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-win-x86_64-release.zip`,
       hash: "fbb14dd7ea08120ca9ec99c955758786645af16a5058250553b3b7d7592e8701",
     },
-    Mac: null,
+    Mac: {
+      url: `https://github.com/xemu-project/xemu/releases/download/v${emulatorVersions.xemu}/xemu-${emulatorVersions.xemu}-macos-universal.zip`,
+      hash: "9817aaa5e187a698416271a6ddc083a40d7ff5e09c3231cff32a692638c7427d",
+    },
   },
 } satisfies Partial<EmulatorDownloads>;
 
