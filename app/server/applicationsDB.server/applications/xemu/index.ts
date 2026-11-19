@@ -13,16 +13,22 @@ import {
   writeConfig,
 } from "../../configFile.js";
 import { EOL, homedir } from "node:os";
-import { isWindows } from "../../../operationsystem.server.js";
+import {
+  handleOperatingSystem,
+  isWindows,
+} from "../../../operationsystem.server.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { getKeyboardButtonMappings } from "./keyboardConfig.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const applicationId: ApplicationId = "xemu";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "xemu.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "xemu.exe"),
+  mac: nodepath.join(applicationId, "xemu.app"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
 
 const configFileName = "xemu.toml";
 const getConfigFilePath = () =>

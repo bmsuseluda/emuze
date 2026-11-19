@@ -1,14 +1,17 @@
 import nodepath from "node:path";
 
-import { isWindows } from "../../../operationsystem.server.js";
+import { handleOperatingSystem } from "../../../operationsystem.server.js";
 import type { Application } from "../../types.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const applicationId: ApplicationId = "scummvm";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "scummvm.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "scummvm.exe"),
+  mac: nodepath.join(applicationId, "ScummVM.app"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
 
 export const scummvm: Application = {
   id: applicationId,

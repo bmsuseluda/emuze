@@ -33,14 +33,14 @@ export const emulatorsBios: BiosDownloadDefinition[] = [
     name: "PCSX Redux Openbios",
     system: "sonyplaystation",
     homepage: "https://pcsx-redux.consoledev.net/openbios/",
-    path: "https://distrib.app/storage/assets/e94/349/db2/7521797c72642a294d3668f2e2af78b9770c1188e1fc843a8196b2b/pcsx-redux-nightly-30273.20261104.2-x64.zip",
+    path: "https://distrib.app/storage/assets/c6a/973/af2/677fea99e14a905e1e8b3c3a26207124e167ece22dad71c158bb9ad/pcsx-redux-nightly-31966.20261118.22-x64.zip",
     subPath: "openbios.bin",
   },
   {
     name: "OpenPS2BIOS",
     system: "sonyplaystation2",
     homepage: "https://github.com/TamaribaEmu/OpenPS2BIOS",
-    path: "https://github.com/TamaribaEmu/OpenPS2BIOS/releases/download/v0.5/OpenPS2BIOS-0.5.bin",
+    path: "https://github.com/TamaribaEmu/OpenPS2BIOS/releases/download/v0.6/OpenPS2BIOS-0.6.bin",
   },
   {
     name: "saturn-open-bios",
