@@ -473,7 +473,8 @@ export const replaceGpuConfig =
       },
       { keyValue: "PGXPCulling = true" },
       { keyValue: "PGXPTextureCorrection = true" },
-      { keyValue: "PGXPDepthBuffer = true" },
+      { keyValue: "PGXPColorCorrection = true" },
+      { keyValue: "PGXPPreserveProjFP = true" },
     ]);
   };
 
@@ -490,11 +491,17 @@ export const replacePostProcessingConfig =
 export const replacePostProcessingStage1Config =
   (shader: string): SectionReplacement =>
   (sections) =>
-    replaceSection(sections, "[PostProcessing/Stage1]", [
-      {
-        keyValue: `ShaderName = ${shader}`,
-      },
-    ]);
+    replaceSection(
+      sections,
+      "[PostProcessing/Stage1]",
+      shader !== defaultShader
+        ? [
+            {
+              keyValue: `ShaderName = ${shader}`,
+            },
+          ]
+        : [],
+    );
 
 export const replaceConfigSections = (
   psxRomsPath: string,

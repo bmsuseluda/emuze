@@ -27,6 +27,11 @@ export interface Category {
 
 export const categories = [
   {
+    id: "advanced",
+    name: "Advanced",
+    to: "advanced",
+  },
+  {
     id: "general",
     name: "General",
     to: "general",
@@ -35,11 +40,6 @@ export const categories = [
     id: "appearance",
     name: "Appearance",
     to: "appearance",
-  },
-  {
-    id: "advanced",
-    name: "Advanced",
-    to: "advanced",
   },
   {
     id: "about",

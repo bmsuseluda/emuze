@@ -27,6 +27,8 @@ export const shaderCrtSetting = {
     { name: "Off", value: defaultShader },
     { name: "CRT Royale", value: "crt/crt-royale" },
     { name: "CRT Geom", value: "crt/crt-geom" },
+    { name: "CRT Lottes", value: "crt/crt-lottes" },
+    { name: "CRT Guest Advanced", value: "crt/crt-guest-advanced" },
   ],
 } satisfies SystemSetting;
 

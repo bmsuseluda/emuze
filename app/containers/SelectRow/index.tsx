@@ -61,6 +61,7 @@ export const SelectRow = ({
         name={id}
         id={id}
         value={selectedOption.value}
+        onChange={onChange}
         style={{ display: "none" }}
       />
       <Label>

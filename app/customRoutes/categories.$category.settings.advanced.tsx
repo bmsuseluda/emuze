@@ -163,7 +163,9 @@ export default function Advanced({
   }, [isInFocus, selectedEntry]);
 
   const onSave = useCallback(() => {
-    saveButtonRef.current?.click();
+    setTimeout(() => {
+      saveButtonRef.current?.click();
+    }, 0);
   }, []);
 
   const onClick = useCallback(
