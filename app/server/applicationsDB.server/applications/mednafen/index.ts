@@ -23,9 +23,15 @@ const getSharedMednafenOptionParams: OptionParamFunction = ({
   const hotkeySave = ["-command.save_state", getKeyboardKey("F1")];
   const hotkeyLoad = ["-command.load_state", getKeyboardKey("F3")];
   const hotkeyHelp = ["-command.toggle_help", getKeyboardKey("F2")];
-  const hotkeyCommandKey = ["-command.input_configc", getKeyboardKey("F4")];
-  const hotkeySyncAnalog = ["-command.input_config_abd", getKeyboardKey("F5")];
+  const hotkeyRewind = ["-command.state_rewind", getKeyboardKey("F4")];
+  const hotkeyFastForward = ["-command.fast_forward", getKeyboardKey("F5")];
+  // TODO: need to be pressed on startup
+  const hotkeyActivateRewindToggle = [
+    "-command.toggle_state_rewind",
+    getKeyboardKey("F6"),
+  ];
   const hotkeyFullscreen = ["-command.toggle_fs", getKeyboardKey("F11")];
+  const fastForwardAsToggle = ["-fftoggle", "1"];
   const disabledHotkeys = [
     "-command.togglenetview",
     "",
@@ -35,6 +41,10 @@ const getSharedMednafenOptionParams: OptionParamFunction = ({
     "",
     "-command.9",
     "",
+    "-command.input_configc",
+    "",
+    "-command.input_config_abd",
+    "",
   ];
   const soundDevice = !isWindows()
     ? ["-sound.device", "sexyal-literal-default"]
@@ -43,14 +53,16 @@ const getSharedMednafenOptionParams: OptionParamFunction = ({
 
   return [
     ...hotkeyHelp,
-    ...hotkeyCommandKey,
     ...hotkeyFullscreen,
-    ...hotkeySyncAnalog,
     ...disabledHotkeys,
     ...hotkeySave,
     ...hotkeyLoad,
+    ...hotkeyRewind,
+    ...hotkeyFastForward,
+    ...hotkeyActivateRewindToggle,
     ...soundDevice,
     ...setFullscreen,
+    ...fastForwardAsToggle,
   ];
 };
 

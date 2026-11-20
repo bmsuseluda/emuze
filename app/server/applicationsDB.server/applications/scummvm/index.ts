@@ -25,6 +25,11 @@ export const scummvm: Application = {
     },
     absoluteEntryPath,
   }) => {
+    /**
+     * TODO: set scummvm.ini with
+     * [keymapper]
+     * keymap_global_MENU=C+F5 F2 JOY_START
+     */
     const optionParams = [];
     if (fullscreen) {
       optionParams.push("--fullscreen");

@@ -64,6 +64,10 @@ export const replaceHotkeyConfig: SectionReplacement = (sections) =>
       keyValue: "LoadStateFromSlot = Keyboard/F3",
       disableParamWithSameValue: true,
     },
+    {
+      keyValue: "ToggleTurbo = Keyboard/F5",
+      disableParamWithSameValue: true,
+    },
   ]);
 
 export const replaceAutoUpdaterConfig: SectionReplacement = (sections) =>
@@ -83,6 +87,9 @@ export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
     { keyValue: "SDL = true" },
     { keyValue: "SDLControllerEnhancedMode = true" },
   ]);
+
+export const replaceFramerateConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[Framerate]", [{ keyValue: "TurboScalar = 3" }]);
 
 export const replaceUiConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[UI]", [
@@ -232,6 +239,7 @@ export const replaceConfigSections = (
     replaceFoldersConfig(biosFiles),
     replaceEmuCoreGsConfig(emulatorSettings),
     replaceFilenamesConfig(biosFiles),
+    replaceFramerateConfig,
     replaceInputSourcesConfig,
     replacePadConfig(isMultitapGame),
     replaceHotkeyConfig,

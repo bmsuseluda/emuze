@@ -5904,6 +5904,7 @@ __metadata:
     husky: "npm:9.1.7"
     is-ci: "npm:4.1.0"
     isbot: "npm:5.2.2"
+    kimetra: "npm:^2.2.0"
     lint-staged: "npm:17.6.0"
     lodash.debounce: "npm:4.0.8"
     madge: "npm:8.0.0"
@@ -7775,6 +7776,16 @@ __metadata:
   dependencies:
     json-buffer: "npm:3.0.1"
   checksum: 10/167eb6ef64cc84b6fa0780ee50c9de456b422a1e18802209234f7c2cf7eae648c7741f32e50d7e24ccb22b24c13154070b01563d642755b156c357431a191e75
+  languageName: node
+  linkType: hard
+
+"kimetra@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "kimetra@npm:2.2.0"
+  bin:
+    kimetra: bin/cli.js
+  checksum: 10/f7886e5394ca8d894dd6c485c760f2b530f6094539da9053f1c1f215992a7426cceb970f8baaf8704551636db3d86018b5c57bb63c79d4adf9abb4606394030a
+  conditions: (os=win32 | os=darwin | os=linux)
   languageName: node
   linkType: hard
 

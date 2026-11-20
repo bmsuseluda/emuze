@@ -28,7 +28,7 @@ export const shaderCrtSetting = {
     { name: "CRT Royale", value: "crt/crt-royale" },
     { name: "CRT Geom", value: "crt/crt-geom" },
     { name: "CRT Lottes", value: "crt/crt-lottes" },
-    { name: "CRT Guest Advanced", value: "crt/crt-guest-advanced" },
+    { name: "CRT Guest Advanced", value: "crt/crt-guest-advanced-hd" },
   ],
 } satisfies SystemSetting;
 
@@ -50,12 +50,24 @@ export const getSharedAresOptionParams: OptionParamFunction = ({
   hasAnalogStick,
   emulatorSettings,
 }) => {
+  /**
+   * Hotkey/ToggleFastForward
+Hotkey/Rewind
+   */
   const hotkeyFullscreen = [
     "--setting",
     `Hotkey/ToggleFullscreen=${getKeyboardKey("F2")}`,
   ];
   const hotkeySave = ["--setting", `Hotkey/SaveState=${getKeyboardKey("F1")}`];
   const hotkeyLoad = ["--setting", `Hotkey/LoadState=${getKeyboardKey("F3")}`];
+  const hotkeyRewind = [
+    "--setting",
+    `Hotkey/ToggleFastForward=${getKeyboardKey("F4")}`,
+  ];
+  const hotkeyFastForward = [
+    "--setting",
+    `Hotkey/ToggleFastForward=${getKeyboardKey("F5")}`,
+  ];
   const inputSDL = ["--setting", "Input/Driver=SDL"];
   const autoSaveMemory = ["--setting", "General/AutoSaveMemory=true"];
   const shader = ["--shader", emulatorSettings?.shader || defaultShader];
@@ -64,6 +76,8 @@ export const getSharedAresOptionParams: OptionParamFunction = ({
     ...hotkeyFullscreen,
     ...hotkeySave,
     ...hotkeyLoad,
+    ...hotkeyRewind,
+    ...hotkeyFastForward,
     ...inputSDL,
     ...autoSaveMemory,
     ...shader,

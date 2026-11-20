@@ -60,6 +60,14 @@ export const replaceHotkeyConfig: SectionReplacement = (sections) =>
       keyValue: "LoadSelectedSaveState = Keyboard/F3",
       disableParamWithSameValue: true,
     },
+    {
+      keyValue: "Rewind = Keyboard/F4",
+      disableParamWithSameValue: true,
+    },
+    {
+      keyValue: "ToggleFastForward = Keyboard/F5",
+      disableParamWithSameValue: true,
+    },
   ]);
 
 export const replaceAutoUpdaterConfig: SectionReplacement = (sections) =>
@@ -71,6 +79,8 @@ export const replaceMainConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Main]", [
     { keyValue: "ConfirmPowerOff = false" },
     { keyValue: "SetupWizardIncomplete = false" },
+    { keyValue: "RewindEnable = true" },
+    { keyValue: "FastForwardSpeed = 3" },
   ]);
 
 export const replaceGameListConfig =

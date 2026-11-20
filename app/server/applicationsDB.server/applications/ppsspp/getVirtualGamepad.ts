@@ -119,5 +119,7 @@ export const getVirtualGamepad = (): ParamToReplace[] => [
   },
   { keyValue: `Save State = ${getKeyboardKey("F1")}` },
   { keyValue: `Load State = ${getKeyboardKey("F3")}` },
+  { keyValue: `Rewind = ${getKeyboardKey("F4")}` },
+  { keyValue: `SpeedToggle = ${getKeyboardKey("F5")}` },
   { keyValue: `Toggle Fullscreen = ${getKeyboardKey("F11")}` },
 ];

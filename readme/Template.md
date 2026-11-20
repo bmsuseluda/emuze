@@ -66,8 +66,10 @@ return scripts.createKeyboardMapping()
 #### Hotkeys while in game
 The following Hotkeys are set:
 - Open Emulator Menu (if supported from emulator): `F2`
-- Save State: `F1`
-- Load State: `F3`
+- Save State: `F1` or `select + L1`
+- Load State: `F3` or `select + R1`
+- Rewind: `F4` or `select + square`
+- Fast Forward: `F5` or `select + circle`
 - Fullscreen: `F11`
 
 #### Close a Game

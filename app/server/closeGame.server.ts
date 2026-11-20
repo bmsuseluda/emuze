@@ -2,6 +2,7 @@ import kill from "tree-kill";
 import { log } from "./debug.server.js";
 import { importElectron } from "./importElectron.server.js";
 import { gamepadManager } from "./gamepadManager.server/index.js";
+import { Kimetra } from "kimetra";
 import {
   gameIsRunningChildProcess,
   isGameRunning,
@@ -21,15 +22,52 @@ const killChildProcess = () => {
   }
 };
 
+// TODO: maybe move to another file
 const registerCloseGameOnGamepadEvent = () => {
-  gamepadManager.addButtonUpEvent("closeGame", (event, controller) => {
-    if (
-      isGameRunning() &&
-      event.button === "south" &&
-      controller.buttons.back
-    ) {
-      log("debug", "buttons", controller.buttons);
-      killChildProcess();
+  gamepadManager.addButtonDownEvent("inGame", async (event, controller) => {
+    if (isGameRunning() && controller.buttons.back) {
+      const kimetra = Kimetra();
+
+      // rewind
+      if (event.button === "west") {
+        log("debug", "rewind down");
+        kimetra.keyDown("f4");
+        // await kimetra.pressKey("f4", 10000);
+      }
+    }
+  });
+
+  gamepadManager.addButtonUpEvent("inGame", async (event, controller) => {
+    if (isGameRunning() && controller.buttons.back) {
+      log("debug", "buttons", event.button);
+      const kimetra = Kimetra();
+
+      // close game
+      if (event.button === "south") {
+        killChildProcess();
+      }
+
+      // game menu
+      if (event.button === "north") {
+        await kimetra.pressKey("f2");
+      }
+
+      // fast forward
+      if (event.button === "east") {
+        await kimetra.pressKey("f5");
+      }
+
+      // save state
+      if (event.button === "leftShoulder") {
+        await kimetra.pressKey("f1");
+      }
+
+      // load state
+      if (event.button === "rightShoulder") {
+        await kimetra.pressKey("f3");
+      }
+
+      kimetra.cleanup();
     }
   });
 };

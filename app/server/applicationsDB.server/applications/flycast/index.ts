@@ -60,6 +60,7 @@ const replaceKeyboardDigitalConfig: SectionReplacement = (sections) =>
     { keyValue: `bind15 = ${sdl.keyboard.SCANCODE.F1}:btn_quick_save` },
     { keyValue: `bind16 = ${sdl.keyboard.SCANCODE.F2}:btn_menu` },
     { keyValue: `bind17 = ${sdl.keyboard.SCANCODE.F3}:btn_jump_state` },
+    { keyValue: `bind18 = ${sdl.keyboard.SCANCODE.F5}:btn_fforward` },
   ]);
 
 const replaceKeyboardEmulatorConfig: SectionReplacement = (sections) =>

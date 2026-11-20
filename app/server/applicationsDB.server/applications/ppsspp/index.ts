@@ -85,6 +85,7 @@ export const replaceGeneralConfig =
       { keyValue: `FirstRun = False` },
       { keyValue: `CurrentDirectory = ${pspRomsPath}` },
       { keyValue: `CheckForNewVersion = False` },
+      { keyValue: `RewindSnapshotInterval = 5` },
     ]);
 
 export const replaceGraphicsConfig =

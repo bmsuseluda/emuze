@@ -80,6 +80,7 @@
     "fast-xml-parser": "5.11.2",
     "is-ci": "4.1.0",
     "isbot": "5.2.2",
+    "kimetra": "^2.2.0",
     "lodash.debounce": "4.0.8",
     "mime": "4.1.2",
     "node-hid": "3.4.0",
