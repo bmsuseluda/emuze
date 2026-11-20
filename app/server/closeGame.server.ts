@@ -30,14 +30,32 @@ const registerCloseGameOnGamepadEvent = () => {
 
       // rewind
       if (event.button === "west") {
-        log("debug", "rewind down");
         kimetra.keyDown("f4");
-        // await kimetra.pressKey("f4", 10000);
+      }
+
+      // game menu
+      if (event.button === "north") {
+        kimetra.keyDown("f2");
+      }
+
+      // fast forward
+      if (event.button === "east") {
+        kimetra.keyDown("f5");
+      }
+
+      // save state
+      if (event.button === "leftShoulder") {
+        kimetra.keyDown("f1");
+      }
+
+      // load state
+      if (event.button === "rightShoulder") {
+        kimetra.keyDown("f3");
       }
     }
   });
 
-  gamepadManager.addButtonUpEvent("inGame", async (event, controller) => {
+  gamepadManager.addButtonUpEvent("inGame", (event, controller) => {
     if (isGameRunning() && controller.buttons.back) {
       log("debug", "buttons", event.button);
       const kimetra = Kimetra();
@@ -45,26 +63,6 @@ const registerCloseGameOnGamepadEvent = () => {
       // close game
       if (event.button === "south") {
         killChildProcess();
-      }
-
-      // game menu
-      if (event.button === "north") {
-        await kimetra.pressKey("f2");
-      }
-
-      // fast forward
-      if (event.button === "east") {
-        await kimetra.pressKey("f5");
-      }
-
-      // save state
-      if (event.button === "leftShoulder") {
-        await kimetra.pressKey("f1");
-      }
-
-      // load state
-      if (event.button === "rightShoulder") {
-        await kimetra.pressKey("f3");
       }
 
       kimetra.cleanup();

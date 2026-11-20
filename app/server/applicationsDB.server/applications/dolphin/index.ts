@@ -86,6 +86,13 @@ export const replaceHotkeysSection: SectionReplacement = (sections) =>
       keyValue: "Load State/Load State Slot 1 = F3",
       disableParamWithSameValue: true,
     },
+    {
+      keyValue: "Emulation Speed/Disable Emulation Speed Limit = F5",
+      disableParamWithSameValue: true,
+    },
+    {
+      keyValue: "Load State/Load State Slot 4 =",
+    },
   ]);
 
 export const replaceHotkeysFile = () =>

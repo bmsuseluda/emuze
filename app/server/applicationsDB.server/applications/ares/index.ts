@@ -50,24 +50,18 @@ export const getSharedAresOptionParams: OptionParamFunction = ({
   hasAnalogStick,
   emulatorSettings,
 }) => {
-  /**
-   * Hotkey/ToggleFastForward
-Hotkey/Rewind
-   */
   const hotkeyFullscreen = [
     "--setting",
     `Hotkey/ToggleFullscreen=${getKeyboardKey("F2")}`,
   ];
   const hotkeySave = ["--setting", `Hotkey/SaveState=${getKeyboardKey("F1")}`];
   const hotkeyLoad = ["--setting", `Hotkey/LoadState=${getKeyboardKey("F3")}`];
-  const hotkeyRewind = [
-    "--setting",
-    `Hotkey/ToggleFastForward=${getKeyboardKey("F4")}`,
-  ];
+  const hotkeyRewind = ["--setting", `Hotkey/Rewind=${getKeyboardKey("F4")}`];
   const hotkeyFastForward = [
     "--setting",
     `Hotkey/ToggleFastForward=${getKeyboardKey("F5")}`,
   ];
+  const activateRewind = ["--setting", "General/Rewind=true"];
   const inputSDL = ["--setting", "Input/Driver=SDL"];
   const autoSaveMemory = ["--setting", "General/AutoSaveMemory=true"];
   const shader = ["--shader", emulatorSettings?.shader || defaultShader];
@@ -78,6 +72,7 @@ Hotkey/Rewind
     ...hotkeyLoad,
     ...hotkeyRewind,
     ...hotkeyFastForward,
+    ...activateRewind,
     ...inputSDL,
     ...autoSaveMemory,
     ...shader,
