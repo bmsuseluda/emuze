@@ -32,8 +32,8 @@ jobs:
             dist/latest.yml
             emulators/emulators-windows.json
 
-  build_linux:
-    runs-on: ubuntu-latest
+  build_mac:
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v7
       - name: Use Node.js
@@ -43,7 +43,30 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Build
-        run: yarn app:distLinux --publish=never
+        run: yarn app:distMac --publish=never
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: emuze-mac
+          if-no-files-found: error
+          retention-days: 1
+          path: |
+            dist/emuze*.dmg
+            dist/emuze*.dmg.blockmap
+            dist/latest-mac.yml
+            emulators/emulators-mac.json
+
+  build_linux:
+    runs-on: ubuntu-latest
+    container: ghcr.io/pkgforge-dev/archlinux:latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Preparing Container
+        uses: pkgforge-dev/anylinux-setup-action@v6
+      - name: Install Dependencies
+        run: /bin/sh ./.github/scripts/get-dependencies.sh
+      - name: Make AppImage
+        run: /bin/sh ./.github/scripts/make-appimage.sh
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
@@ -52,13 +75,13 @@ jobs:
           retention-days: 1
           path: |
             dist/emuze*.AppImage
-            dist/latest-linux.yml
+            dist/emuze*.AppImage.zsync
             emulators/emulators-linux.json
 
   release:
     if: github.ref_type == 'tag'
     runs-on: ubuntu-latest
-    needs: [build_windows, build_linux]
+    needs: [build_windows, build_linux, build_mac]
     permissions: write-all
     steps:
       - uses: actions/checkout@v7
@@ -75,5 +98,10 @@ jobs:
             dist/latest.yml
             emulators/emulators-windows.json
             dist/emuze-*.AppImage
-            dist/latest-linux.yml
+            dist/emuze-*.AppImage.zsync
             emulators/emulators-linux.json
+
+# dist/emuze-*.dmg
+# dist/emuze-*.dmg.blockmap
+# dist/latest-mac.yml
+# emulators/emulators-mac.json

@@ -14,21 +14,28 @@ import {
 import fs from "node:fs";
 import { defaultSettings } from "./defaultSettings.js";
 import { envPaths } from "../../../envPaths.server.js";
-import { isWindows } from "../../../operationsystem.server.js";
+import { handleOperatingSystem } from "../../../operationsystem.server.js";
 import { disableSetting, getSetting } from "./getSettings.js";
 import { getGamepad, getVirtualGamepad } from "./getVirtualGamepad.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const applicationId: ApplicationId = "azahar";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "azahar.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "azahar.exe"),
+  mac: nodepath.join(applicationId, "Azahar.app"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
 
 const configFileName = "qt-config.ini";
+const configPathRelative = handleOperatingSystem({
+  mac: nodepath.join("config", configFileName),
+  linux: nodepath.join(configFileName),
+});
 
 const getConfigFilePath = () =>
-  nodepath.join(emulatorsConfigDirectory, applicationId, configFileName);
+  nodepath.join(emulatorsConfigDirectory, applicationId, configPathRelative);
 
 export const replaceGamepadConfig: SectionReplacement = (sections) => {
   const gamepad = getGamepad();
@@ -85,7 +92,17 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
-export const replaceConfigSections = (n3dsRomsPath: string) => {
+export const replaceRendererConfig =
+  (resolution: string): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[Renderer]", [
+      ...getSetting("resolution_factor", resolution),
+    ]);
+
+export const replaceConfigSections = (
+  n3dsRomsPath: string,
+  resolution: string,
+) => {
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
 
@@ -96,20 +113,28 @@ export const replaceConfigSections = (n3dsRomsPath: string) => {
     replaceUiConfig(n3dsRomsPath),
     replaceGamepadConfig,
     replaceMiscellaneousConfig,
+    replaceRendererConfig(resolution),
   ).join(EOL);
 
   writeConfig(filePath, fileContentNew);
 };
 
-const getConfigFileBasePath = () => {
-  if (isWindows()) {
+const getConfigFileBasePath = handleOperatingSystem({
+  windows: () => {
     const { config } = envPaths("Azahar", { suffix: "" });
     return nodepath.join(config);
-  } else {
+  },
+  mac: () => {
+    const { data } = envPaths("Azahar", { suffix: "" });
+    return nodepath.join(data);
+  },
+  linux: () => {
     const { config } = envPaths("azahar", { suffix: "emu" });
     return nodepath.join(config);
-  }
-};
+  },
+});
+
+const defaultResolution = "1";
 
 export const azahar: Application = {
   id: applicationId,
@@ -118,7 +143,7 @@ export const azahar: Application = {
   defineEnvironmentVariables: () => ({ ...sdlGameControllerConfig }),
   configFile: {
     basePath: getConfigFileBasePath(),
-    files: [configFileName],
+    files: [configPathRelative],
   },
   createOptionParams: ({
     settings: {
@@ -126,9 +151,11 @@ export const azahar: Application = {
       general: { categoriesPath },
     },
     categoryData,
+    emulatorSettings,
   }) => {
+    const resolution = emulatorSettings?.resolution || defaultResolution;
     const n3dsRomsPath = nodepath.join(categoriesPath, categoryData.name);
-    replaceConfigSections(n3dsRomsPath);
+    replaceConfigSections(n3dsRomsPath, resolution);
 
     const optionParams = [];
     if (fullscreen) {
@@ -139,4 +166,20 @@ export const azahar: Application = {
     return optionParams;
   },
   bundledPath,
+  settings: [
+    {
+      id: "resolution",
+      label: "Internal Resolution",
+      options: [
+        { name: "Native", value: defaultResolution },
+        { name: "2x (800x480)", value: "2" },
+        { name: "3x (1200x720)", value: "3" },
+        { name: "4x (1600x960)", value: "4" },
+        { name: "5x (2000x1200)", value: "5" },
+        { name: "6x (2400x1440)", value: "6" },
+        { name: "7x (2800x1680)", value: "7" },
+        { name: "8x (3200x1920)", value: "8" },
+      ],
+    },
+  ],
 };

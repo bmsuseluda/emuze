@@ -14,7 +14,7 @@ import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout/index
 import { readLastPlayed } from "../server/lastPlayed.server.js";
 import type { Entry } from "../types/jsonFiles/category.js";
 import { useInputSettings } from "../hooks/useDirectionalInput/index.js";
-import { GameVersions } from "../components/GameVersions/index.js";
+import { OptionList } from "../components/OptionList/index.js";
 import { readCategory } from "../server/categoryDataCache.server.js";
 import { useLaunchButton } from "../hooks/useLaunchButton/index.js";
 import { Dialog } from "../components/Dialog/index.js";
@@ -185,13 +185,17 @@ export default function Index({
                 paddingSide={false}
                 list={
                   subEntries && (
-                    <GameVersions
+                    <OptionList
                       key={id + subEntries.length}
-                      gameVersions={subEntries}
-                      onExecute={onExecute}
+                      options={subEntries.map(({ id, name }) => ({
+                        name,
+                        value: id,
+                      }))}
+                      groupName="gameVersion"
+                      onConfirmation={onExecute}
                       onBack={onBack}
                       isInFocus={isInFocus}
-                      onGameClick={onEntryClick}
+                      onOptionClick={onEntryClick}
                     />
                   )
                 }

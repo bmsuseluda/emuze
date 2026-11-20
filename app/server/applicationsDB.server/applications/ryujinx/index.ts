@@ -7,17 +7,21 @@ import type { Config } from "./config.js";
 import { defaultConfig } from "./config.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import type { ApplicationId } from "../../applicationId.js";
-import { isWindows } from "../../../operationsystem.server.js";
+import { handleOperatingSystem } from "../../../operationsystem.server.js";
 import { findEntryName } from "./findEntryName.js";
 import { excludeFiles } from "./excludeFiles.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { copy } from "../../../readWriteData.server.js";
+import { AdvancedSettings } from "../../../../types/jsonFiles/settings/advanced.js";
 
 const applicationId: ApplicationId = "ryujinx";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "Ryujinx.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "Ryujinx.exe"),
+  mac: nodepath.join(applicationId, "Ryujinx.app"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
 
 const configFolderPath = nodepath.join(emulatorsConfigDirectory, applicationId);
 const configFileName = "Config.json";
@@ -46,9 +50,13 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
-const replaceConfig = (switchRomsPath: string) => {
+const replaceConfig = (
+  switchRomsPath: string,
+  emulatorSettings?: AdvancedSettings,
+) => {
   const oldConfig = readConfigFile(configFilePath);
   const virtualGamepads = getVirtualGamepads();
+  const resolution = Number(emulatorSettings?.resolution || defaultResolution);
 
   const newConfig: Config = {
     ...oldConfig,
@@ -64,6 +72,7 @@ const replaceConfig = (switchRomsPath: string) => {
     game_dirs: [switchRomsPath],
     autoload_dirs: [switchRomsPath],
     input_config: virtualGamepads,
+    res_scale: resolution,
   };
   writeConfig(configFilePath, JSON.stringify(newConfig));
 };
@@ -73,6 +82,8 @@ const requiredFileTypes = {
   prodKeys: "prod.keys",
   titleKeys: "title.keys",
 };
+
+const defaultResolution = "1";
 
 export const ryujinx: Application = {
   id: applicationId,
@@ -86,9 +97,10 @@ export const ryujinx: Application = {
     },
     categoryData,
     otherRequiredFiles,
+    emulatorSettings,
   }) => {
     const switchRomsPath = nodepath.join(categoriesPath, categoryData.name);
-    replaceConfig(switchRomsPath);
+    replaceConfig(switchRomsPath, emulatorSettings);
     copyKeyFiles(otherRequiredFiles!);
 
     const optionParams = ["--root-data-dir", configFolderPath];
@@ -114,6 +126,18 @@ export const ryujinx: Application = {
     {
       type: requiredFileTypes.titleKeys,
       requiredFiles: [{ filename: requiredFileTypes.titleKeys }],
+    },
+  ],
+  settings: [
+    {
+      id: "resolution",
+      label: "Internal Resolution",
+      options: [
+        { name: "Native", value: defaultResolution },
+        { name: "2x (1440p/2160p)", value: "2" },
+        { name: "3x (2160p/3240p)", value: "3" },
+        { name: "4x (2880p/4320p)", value: "4" },
+      ],
     },
   ],
 };

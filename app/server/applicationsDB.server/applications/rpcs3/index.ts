@@ -24,6 +24,7 @@ import type {
   VfsConfigFile,
 } from "./config.js";
 import {
+  handleOperatingSystem,
   isWindows,
   replaceToPosixPathing,
 } from "../../../operationsystem.server.js";
@@ -39,9 +40,12 @@ import { isLightgunConnected } from "../../../../types/gamepad.js";
 import { removeFile } from "../../../readWriteData.server.js";
 
 const applicationId: ApplicationId = "rpcs3";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "rpcs3.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "rpcs3.exe"),
+  mac: nodepath.join(applicationId, "RPCS3.app"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
 
 const guiConfigFileName = "CurrentSettings.ini";
 const vfsConfigFileName = "vfs.yml";

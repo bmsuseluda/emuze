@@ -4,7 +4,11 @@ import type { Category, Entry } from "../../types/jsonFiles/category.js";
 import type { GeneralConfigured } from "../../types/jsonFiles/settings/general.js";
 import type { Appearance } from "../../types/jsonFiles/settings/appearance.js";
 import type { ApplicationId } from "./applicationId.js";
-import type { Advanced } from "../../types/jsonFiles/settings/advanced.js";
+import type {
+  Advanced,
+  AdvancedSettings,
+} from "../../types/jsonFiles/settings/advanced.js";
+import { SystemSetting } from "../settings.server.js";
 
 export interface Settings {
   general: GeneralConfigured;
@@ -29,6 +33,7 @@ export type OptionParamFunction = ({
   hasAnalogStick,
   biosFiles,
   otherRequiredFiles,
+  emulatorSettings,
 }: {
   entryData: Entry;
   categoryData: Category;
@@ -38,6 +43,7 @@ export type OptionParamFunction = ({
   hasAnalogStick: boolean;
   biosFiles?: DetectedRequiredFile[];
   otherRequiredFiles?: DetectedRequiredFile[];
+  emulatorSettings?: AdvancedSettings;
 }) => string[];
 
 export type EnvironmentVariableFunction = ({
@@ -112,4 +118,5 @@ export interface Application {
   biosFiles?: RequiredFiles[];
   /** if they are defined, all of them are necessary to run the applciation */
   otherRequiredFiles?: RequiredFiles[];
+  settings?: SystemSetting[];
 }

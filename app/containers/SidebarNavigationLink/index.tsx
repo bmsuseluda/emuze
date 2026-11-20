@@ -2,6 +2,7 @@ import { NavLink } from "react-router";
 import type { ComponentProps, ReactNode } from "react";
 import { IconChildrenWrapper } from "../../components/IconChildrenWrapper/index.js";
 import { styled } from "../../../styled-system/jsx/factory.js";
+import { Typography } from "../../components/Typography/index.js";
 
 interface Props extends ComponentProps<typeof StyledNavLink> {
   isFocused?: boolean;
@@ -62,6 +63,14 @@ const LinkSpan = styled(IconChildrenWrapper, {
   ],
 });
 
+const Name = styled(Typography, {
+  base: {
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+  },
+});
+
 export const SidebarNavigationLink = ({
   to,
   children,
@@ -78,7 +87,7 @@ export const SidebarNavigationLink = ({
         iconSize="medium"
       >
         {icon}
-        {children}
+        {children && <Name>{children}</Name>}
       </LinkSpan>
     )}
   </StyledNavLink>

@@ -92,6 +92,7 @@ export default function Appearance() {
     onSelectEntry: selectEntry,
     isInFocus,
     onLeftOverTheEdge,
+    loop: true,
   });
 
   const onBack = useCallback(() => {

@@ -10,6 +10,11 @@ lightgun                  1
 multikeyboard             0
 multimouse                1
 
+video              auto
+# video              bgfx
+bgfx_backend       auto
+bgfx_screen_chains crt-geom
+
 #
 # CORE INPUT AUTOMATIC ENABLE OPTIONS
 #

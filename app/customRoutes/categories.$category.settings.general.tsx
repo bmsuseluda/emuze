@@ -306,6 +306,7 @@ export default function General({
     onSelectEntry: selectEntry,
     isInFocus,
     onLeftOverTheEdge,
+    loop: true,
   });
 
   const onBack = useCallback(() => {

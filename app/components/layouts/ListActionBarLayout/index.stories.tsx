@@ -1,6 +1,5 @@
 import { ListActionBarLayout } from "./index.js";
 import { Button } from "../../Button/index.js";
-import { Label } from "../../Label/index.js";
 import { TextInput } from "../../TextInput/index.js";
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
@@ -35,34 +34,34 @@ export const ManyElements: Story = {
           <ListActionBarLayout.ListActionBarContainer
             list={
               <>
-                <Label>
+                <label>
                   firstname
                   <TextInput.Input name="firstname" />
-                </Label>
-                <Label>
+                </label>
+                <label>
                   firstname
                   <TextInput.Input name="firstname" />
-                </Label>
-                <Label>
+                </label>
+                <label>
                   firstname
                   <TextInput.Input name="firstname" />
-                </Label>
-                <Label>
+                </label>
+                <label>
                   firstname
                   <TextInput.Input name="firstname" />
-                </Label>
-                <Label>
+                </label>
+                <label>
                   firstname
                   <TextInput.Input name="firstname" />
-                </Label>
-                <Label>
+                </label>
+                <label>
                   firstname
                   <TextInput.Input name="firstname" />
-                </Label>
-                <Label>
+                </label>
+                <label>
                   firstname
                   <TextInput.Input name="firstname" />
-                </Label>
+                </label>
               </>
             }
             actions={
@@ -92,10 +91,10 @@ export const OneElement: Story = {
           <ListActionBarLayout.ListActionBarContainer
             list={
               <>
-                <Label>
+                <label>
                   firstname
                   <TextInput.Input name="firstname" />
-                </Label>
+                </label>
               </>
             }
             actions={

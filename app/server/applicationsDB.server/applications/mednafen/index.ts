@@ -12,6 +12,8 @@ import { normalizeString } from "../../../igdb.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { getControllersSdl3 } from "../../../gamepad.server.js";
 import multitapGamesSaturn from "../../../../../fetchMetaData/multitapGames/segasaturn.json" with { type: "json" };
+import { SystemSetting } from "../../../settings.server.js";
+import { AdvancedSettings } from "../../../../types/jsonFiles/settings/advanced.js";
 
 const getSharedMednafenOptionParams: OptionParamFunction = ({
   settings: {
@@ -21,9 +23,15 @@ const getSharedMednafenOptionParams: OptionParamFunction = ({
   const hotkeySave = ["-command.save_state", getKeyboardKey("F1")];
   const hotkeyLoad = ["-command.load_state", getKeyboardKey("F3")];
   const hotkeyHelp = ["-command.toggle_help", getKeyboardKey("F2")];
-  const hotkeyCommandKey = ["-command.input_configc", getKeyboardKey("F4")];
-  const hotkeySyncAnalog = ["-command.input_config_abd", getKeyboardKey("F5")];
+  const hotkeyRewind = ["-command.state_rewind", getKeyboardKey("F4")];
+  const hotkeyFastForward = ["-command.fast_forward", getKeyboardKey("F5")];
+  // TODO: need to be pressed on startup
+  const hotkeyActivateRewindToggle = [
+    "-command.toggle_state_rewind",
+    getKeyboardKey("F6"),
+  ];
   const hotkeyFullscreen = ["-command.toggle_fs", getKeyboardKey("F11")];
+  const fastForwardAsToggle = ["-fftoggle", "1"];
   const disabledHotkeys = [
     "-command.togglenetview",
     "",
@@ -33,6 +41,10 @@ const getSharedMednafenOptionParams: OptionParamFunction = ({
     "",
     "-command.9",
     "",
+    "-command.input_configc",
+    "",
+    "-command.input_config_abd",
+    "",
   ];
   const soundDevice = !isWindows()
     ? ["-sound.device", "sexyal-literal-default"]
@@ -41,14 +53,16 @@ const getSharedMednafenOptionParams: OptionParamFunction = ({
 
   return [
     ...hotkeyHelp,
-    ...hotkeyCommandKey,
     ...hotkeyFullscreen,
-    ...hotkeySyncAnalog,
     ...disabledHotkeys,
     ...hotkeySave,
     ...hotkeyLoad,
+    ...hotkeyRewind,
+    ...hotkeyFastForward,
+    ...hotkeyActivateRewindToggle,
     ...soundDevice,
     ...setFullscreen,
+    ...fastForwardAsToggle,
   ];
 };
 
@@ -81,6 +95,27 @@ export const mednafen: Application = {
   },
   createOptionParams: getSharedMednafenOptionParams,
   bundledPath,
+};
+
+const defaultShader = "none";
+
+export const shaderSetting = {
+  id: "shader",
+  label: "Shader",
+  options: [
+    { name: "Off", value: defaultShader },
+    { name: "SABR", value: "sabr" },
+    { name: "CRT Goat", value: "goat" },
+  ],
+} satisfies SystemSetting;
+
+const getShaderOptionParams = (
+  system: "-pce" | "-ss",
+  emulatorSettings?: AdvancedSettings,
+) => {
+  const shader = emulatorSettings?.shader || defaultShader;
+
+  return [`${system}.shader`, shader];
 };
 
 const highResolutionGames = new Set(
@@ -130,6 +165,7 @@ export const mednafenSaturn: Application = {
     const gamepads = getControllersSdl3();
     const virtualGamepadsSaturn = getVirtualGamepadsSaturn(gamepads);
     log("debug", "createOptionParams", virtualGamepadsSaturn);
+
     return [
       ...["-force_module", "ss"],
       ...props.biosFiles!.flatMap(({ type, filePath }) => [
@@ -140,6 +176,7 @@ export const mednafenSaturn: Application = {
       ...setMultitapSaturn(props.entryData.name),
       ...mednafen.createOptionParams!(props),
       ...virtualGamepadsSaturn,
+      ...getShaderOptionParams("-ss", props.emulatorSettings),
     ];
   },
   biosFiles: [
@@ -171,6 +208,7 @@ export const mednafenSaturn: Application = {
     },
   ],
   bundledBiosOpenSource: true,
+  settings: [shaderSetting],
 };
 
 export const mednafenPcEngineCD: Application = {
@@ -187,6 +225,7 @@ export const mednafenPcEngineCD: Application = {
       ...["-pce.adpcmvolume", "50"], // explosions
       ...mednafen.createOptionParams!(props),
       ...virtualGamepadsPcEngine,
+      ...getShaderOptionParams("-pce", props.emulatorSettings),
     ];
   },
   biosFiles: [
@@ -220,4 +259,5 @@ export const mednafenPcEngineCD: Application = {
       ],
     },
   ],
+  settings: [shaderSetting],
 };

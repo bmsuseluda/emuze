@@ -13,16 +13,22 @@ import {
   writeConfig,
 } from "../../configFile.js";
 import { EOL, homedir } from "node:os";
-import { isWindows } from "../../../operationsystem.server.js";
+import {
+  handleOperatingSystem,
+  isWindows,
+} from "../../../operationsystem.server.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { getKeyboardButtonMappings } from "./keyboardConfig.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 
 const applicationId: ApplicationId = "xemu";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "xemu.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "xemu.exe"),
+  mac: nodepath.join(applicationId, "xemu.app"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
 
 const configFileName = "xemu.toml";
 const getConfigFilePath = () =>
@@ -79,9 +85,19 @@ const replaceSysFilesConfig =
       })),
     ]);
 
+const replaceDisplayQualityConfig =
+  (resolution: string): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[display.quality]", [
+      { keyValue: `surface_scale = ${resolution}` },
+    ]);
+
+const defaultResolution = "1";
+
 const replaceConfigFile = (
   biosFiles: DetectedRequiredFile[],
   otherRequiredFiles: DetectedRequiredFile[],
+  resolution: string,
 ) => {
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
@@ -94,6 +110,7 @@ const replaceConfigFile = (
     replaceGeneralUpdatesConfig,
     replaceInputBindingsConfig,
     replaceKeyboardControllerConfig,
+    replaceDisplayQualityConfig(resolution),
     replaceSysFilesConfig(biosFiles, otherRequiredFiles),
   ).join(EOL);
 
@@ -132,8 +149,11 @@ export const xemu: Application = {
     absoluteEntryPath,
     biosFiles,
     otherRequiredFiles,
+    emulatorSettings,
   }) => {
-    replaceConfigFile(biosFiles!, otherRequiredFiles!);
+    const resolution = emulatorSettings?.resolution || defaultResolution;
+
+    replaceConfigFile(biosFiles!, otherRequiredFiles!, resolution);
 
     const optionParams = [];
     if (fullscreen) {
@@ -171,6 +191,18 @@ export const xemu: Application = {
     {
       type: requiredFileTypes.hdd,
       requiredFiles: [{ filename: "xbox_hdd.qcow2" }],
+    },
+  ],
+  settings: [
+    {
+      id: "resolution",
+      label: "Internal Resolution",
+      options: [
+        { name: "Native", value: defaultResolution },
+        { name: "2x", value: "2" },
+        { name: "3x", value: "3" },
+        { name: "4x", value: "4" },
+      ],
     },
   ],
 };

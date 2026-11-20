@@ -2,7 +2,12 @@ import type { ApplicationId } from "../app/server/applicationsDB.server/applicat
 import { basename, join } from "node:path";
 import { pathToFileURL } from "node:url";
 
-import { Download, emulatorDownloads } from "./definitions/emulatorVersions.js";
+import {
+  Download,
+  emulatorDownloads,
+  getOperatingsSystem,
+  OperatingSystem,
+} from "./definitions/emulatorVersions.js";
 import {
   cpSync,
   existsSync,
@@ -15,12 +20,12 @@ import {
 import _7z from "7zip-min";
 import { moveSync } from "fs-extra/esm";
 
-import { isWindows } from "../app/server/operationsystem.server.js";
 import { downloadAndExtract, downloadFile } from "./utils/downloadFile.js";
 import { removeFile } from "../app/server/readWriteData.server.js";
 import { applications } from "./definitions/applications.js";
 import { executeWithLogs } from "./utils/executeWithLogs.js";
 import { makeFileExecutableLinux } from "./utils/makeFileExecutableLinux.js";
+import { isMac } from "../app/server/operationsystem.server.js";
 
 const __dirname = import.meta.dirname;
 const projectPath = join(__dirname, "..");
@@ -44,6 +49,8 @@ const downloadEmulator = (emulatorId: ApplicationId, downloadLink: string) => {
         downloadAndExtract7z(downloadLink, emulatorFolderPath, bundledPath);
       } else if (downloadLink.toLowerCase().endsWith(".exe")) {
         downloadExe(downloadLink, emulatorFolderPath, bundledPath);
+      } else if (downloadLink.toLowerCase().endsWith(".dmg")) {
+        downloadAndExtractDmg(downloadLink, emulatorFolderPath, bundledPath);
       } else {
         downloadAndExtract(
           downloadLink,
@@ -55,6 +62,66 @@ const downloadEmulator = (emulatorId: ApplicationId, downloadLink: string) => {
       }
     }
   }
+};
+
+const extractDmg = (dmgFilePath: string, outputFolder: string) => {
+  const output = executeWithLogs("hdiutil", [
+    "attach",
+    "-nobrowse",
+    "-readonly",
+    dmgFilePath,
+  ]);
+
+  const mountName = output
+    .split("/Volumes/")
+    .at(-1)!
+    .replace(/(\r\n|\n|\r)/gm, "");
+  const mountPath = join("/Volumes", mountName);
+
+  try {
+    cpSync(mountPath, outputFolder, {
+      recursive: true,
+      force: true,
+      preserveTimestamps: true,
+      filter: (source) => {
+        if (source.startsWith(join(mountPath, "Applications"))) {
+          return false;
+        }
+        return true;
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    executeWithLogs("hdiutil", ["detach", mountPath]);
+    throw err;
+  }
+
+  executeWithLogs("hdiutil", ["detach", mountPath]);
+};
+
+const downloadAndExtractDmg = (
+  url: string,
+  outputFolder: string,
+  fileToCheck: string,
+) => {
+  const dmgFilePath = join(outputFolder, url.split("/").at(-1) || "");
+
+  downloadFile(
+    url,
+    dmgFilePath,
+    () => {
+      extractDmg(dmgFilePath, outputFolder);
+      rmSync(dmgFilePath, { recursive: true, force: true });
+      if (!existsSync(fileToCheck)) {
+        console.error(`${fileToCheck} does not exist`);
+        process.exit(1);
+      }
+      console.log(`${url} extracted`);
+    },
+    () => {
+      exitOnResponseCodeError(url)();
+    },
+  );
 };
 
 const downloadAndExtract7z = (
@@ -145,7 +212,7 @@ const downloadExe = (
 const removeRootFolderIfNecessary = (folder: string) => {
   const files = readdirSync(folder);
 
-  if (files.length === 1) {
+  if (files.length === 1 && !files[0].endsWith(".app")) {
     const fileStats = statSync(join(folder, files[0]));
     if (fileStats.isDirectory()) {
       const tempFolder = join(folder, "..", `${basename(folder)}TempFolder`);
@@ -159,41 +226,59 @@ const removeRootFolderIfNecessary = (folder: string) => {
   }
 };
 
+const getEmulatorsManifestFromLatestArtifact = async (
+  operatingSystem: OperatingSystem,
+) => {
+  // TODO: remove after first mac release
+  if (!isMac()) {
+    const {
+      default: emulatorsManifestFromLatestArtifact,
+    }: {
+      default: Record<ApplicationId, Download>;
+    } = await import(
+      pathToFileURL(
+        join(
+          latestEmulatorsPath,
+          `emulators-${operatingSystem.toLowerCase()}.json`,
+        ),
+      ).href,
+      { with: { type: "json" } }
+    );
+
+    return emulatorsManifestFromLatestArtifact;
+  }
+
+  return null;
+};
+
 export const downloadEmulators = async () => {
-  const operatingSystem = isWindows() ? "Windows" : "Linux";
-  const {
-    default: emulatorsManifestFromLatestArtifact,
-  }: {
-    default: Record<ApplicationId, Download>;
-  } = await import(
-    pathToFileURL(
-      join(
-        latestEmulatorsPath,
-        `emulators-${operatingSystem.toLowerCase()}.json`,
-      ),
-    ).href,
-    { with: { type: "json" } }
-  );
+  const operatingSystem = getOperatingsSystem();
+  const emulatorsManifestFromLatestArtifact =
+    await getEmulatorsManifestFromLatestArtifact(operatingSystem);
 
   Object.entries(emulatorDownloads).forEach(
     ([emulatorId, emulatorDownload]) => {
-      const { url, hash } = emulatorDownload[operatingSystem];
-      const hashFromLatestArtifact =
-        emulatorsManifestFromLatestArtifact?.[emulatorId as ApplicationId].hash;
+      const donwloadManifest = emulatorDownload[operatingSystem];
+      if (donwloadManifest) {
+        const { url, hash } = donwloadManifest;
+        const hashFromLatestArtifact =
+          emulatorsManifestFromLatestArtifact?.[emulatorId as ApplicationId]
+            .hash;
 
-      if (hash === hashFromLatestArtifact && isWindows()) {
-        console.log(`copy emulator from latest artifact: ${emulatorId}`);
-        cpSync(
-          join(latestEmulatorsPath, emulatorId),
-          join(emulatorsFolderPath, emulatorId),
-          {
-            recursive: true,
-            force: true,
-            preserveTimestamps: true,
-          },
-        );
-      } else {
-        downloadEmulator(emulatorId as ApplicationId, url);
+        if (hash === hashFromLatestArtifact) {
+          console.log(`copy emulator from latest artifact: ${emulatorId}`);
+          cpSync(
+            join(latestEmulatorsPath, emulatorId),
+            join(emulatorsFolderPath, emulatorId),
+            {
+              recursive: true,
+              force: true,
+              preserveTimestamps: true,
+            },
+          );
+        } else {
+          downloadEmulator(emulatorId as ApplicationId, url);
+        }
       }
     },
   );

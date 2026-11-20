@@ -4,43 +4,96 @@ import type { ActionFunction } from "react-router";
 import { Form, Outlet } from "react-router";
 import { FormBox } from "../components/FormBox/index.js";
 import { ListActionBarLayout } from "../components/layouts/ListActionBarLayout/index.js";
-import { SettingsIcon } from "../components/SettingsIcon/index.js";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
 import type { Result } from "../hooks/useGamepadsOnGrid/index.js";
 import { useGamepadsOnGrid } from "../hooks/useGamepadsOnGrid/index.js";
 import { CreateSystemFoldersDialogContainer } from "../containers/CreateSystemFoldersDialog/index.js";
 import { Button } from "../components/Button/index.js";
-import { CheckboxRow } from "../containers/CheckboxRow/index.js";
 import {
   useInputBack,
   useInputConfirmation,
 } from "../hooks/useDirectionalInput/index.js";
 import { readAdvanced, writeAdvanced } from "../server/settings.server.js";
-import type { Advanced } from "../types/jsonFiles/settings/advanced.js";
+import type {
+  Advanced,
+  SystemSettingsId,
+} from "../types/jsonFiles/settings/advanced.js";
 import { Route } from "./+types/categories.$category.settings.advanced.js";
+import { SelectRow } from "../containers/SelectRow/index.js";
+import { SystemId } from "../server/categoriesDB.server/systemId.js";
+import { categories } from "../server/categoriesDB.server/index.js";
+import { SystemIcon } from "../components/SystemIcon/index.js";
+import { SystemSettingsIcon } from "../components/SystemSettingsIcon/index.js";
+import { readCategory } from "../server/categoryDataCache.server.js";
 
-export const loader = () => {
-  const advanced = readAdvanced();
-  return advanced;
+export const loader = ({ params }: Route.LoaderArgs) => {
+  const { category } = params;
+  if (category) {
+    const systemId = category as SystemId;
+    const advanced = readAdvanced();
+    const name = readCategory(systemId)?.name || "Advanced";
+    const { settings, getApplication } = categories[systemId];
+    const defaults = advanced[systemId] || {};
+    const { settings: applicationSettings, id: applicationId } =
+      getApplication();
+    const applicationDefaults = advanced[`${systemId}/${applicationId}`] || {};
+
+    return {
+      systemId,
+      name,
+      settings: [...(settings || []), ...(applicationSettings || [])],
+      defaults: {
+        ...defaults,
+        ...applicationDefaults,
+      } as Record<SystemSettingsId, string>,
+    };
+  }
+
+  return {};
 };
 
 const actionIds = {
   save: "save",
 };
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({ request, params }) => {
   const form = await request.formData();
   const _actionId = form.get("_actionId");
-  const eden = form.get("eden") === "on";
-  const rmg = form.get("rmg") === "on";
 
   if (_actionId === actionIds.save) {
-    const fields: Advanced = {
-      eden,
-      rmg,
-    };
-    writeAdvanced(fields);
+    const { category } = params;
+    if (category) {
+      const systemId = category as SystemId;
+      const { settings, getApplication } = categories[systemId];
+      const { settings: applicationSettings, id: applicationId } =
+        getApplication();
+
+      const fields: Advanced = {
+        ...readAdvanced(),
+        [systemId]: settings?.reduce<Record<string, string>>(
+          (accumulator, { id }) => {
+            const value = form.get(id) as string;
+            accumulator[id] = value;
+
+            return accumulator;
+          },
+          {} as Record<string, string>,
+        ),
+        [`${systemId}/${applicationId}`]: applicationSettings?.reduce<
+          Record<string, string>
+        >(
+          (accumulator, { id }) => {
+            const value = form.get(id) as string;
+            accumulator[id] = value;
+
+            return accumulator;
+          },
+          {} as Record<string, string>,
+        ),
+      };
+      writeAdvanced(fields);
+    }
   }
 
   return null;
@@ -58,8 +111,8 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 
 const focus: FocusElement = "settingsMain";
 
-export default function General({
-  loaderData: { eden, rmg },
+export default function Advanced({
+  loaderData: { systemId, name, settings, defaults },
 }: Route.ComponentProps) {
   const saveButtonRef = useRef<ComponentRef<"button">>(null);
   const { isInFocus, switchFocusBack, switchFocus } =
@@ -94,6 +147,7 @@ export default function General({
     onSelectEntry: selectEntry,
     isInFocus,
     onLeftOverTheEdge,
+    loop: true,
   });
 
   const onBack = useCallback(() => {
@@ -109,10 +163,10 @@ export default function General({
   }, [isInFocus, selectedEntry]);
 
   const onSave = useCallback(() => {
-    if (isInFocus) {
+    setTimeout(() => {
       saveButtonRef.current?.click();
-    }
-  }, [isInFocus]);
+    }, 0);
+  }, []);
 
   const onClick = useCallback(
     (event: MouseEvent<ComponentRef<"button">>) => {
@@ -131,8 +185,8 @@ export default function General({
     <>
       <ListActionBarLayout
         headline={{
-          title: "Advanced",
-          icon: <SettingsIcon id="advanced" />,
+          title: name!,
+          icon: <SystemIcon id={systemId!} />,
         }}
       >
         <Form method="POST">
@@ -140,28 +194,20 @@ export default function General({
             scrollSmooth
             list={
               <FormBox ref={entryListRef}>
-                <li>
-                  <CheckboxRow
-                    id="eden"
-                    name="eden"
-                    defaultChecked={eden}
-                    ref={entriesRefCallback(0)}
-                    onCheckedChange={onSave}
-                    onClick={onClick}
-                    aria-label="Use Eden instead of Ryujinx to play Nintendo Switch"
-                  />
-                </li>
-                <li>
-                  <CheckboxRow
-                    id="rmg"
-                    name="rmg"
-                    defaultChecked={rmg}
-                    ref={entriesRefCallback(1)}
-                    onCheckedChange={onSave}
-                    onClick={onClick}
-                    aria-label="Use RMG instead of ares to play Nintendo 64"
-                  />
-                </li>
+                {settings?.map(({ id, label, options }, index) => (
+                  <li key={id}>
+                    <SelectRow
+                      id={id}
+                      label={label}
+                      icon={<SystemSettingsIcon id={id} />}
+                      defaultValue={defaults?.[id]}
+                      options={options}
+                      ref={entriesRefCallback(index)}
+                      onClick={onClick}
+                      onChange={onSave}
+                    />
+                  </li>
+                ))}
               </FormBox>
             }
           />

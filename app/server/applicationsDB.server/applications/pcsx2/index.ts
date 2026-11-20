@@ -1,7 +1,7 @@
 import type { Application, DetectedRequiredFile } from "../../types.js";
 import fs from "node:fs";
 import { EOL, homedir } from "os";
-import { isWindows } from "../../../operationsystem.server.js";
+import { handleOperatingSystem } from "../../../operationsystem.server.js";
 import nodepath from "node:path";
 import type { SectionReplacement } from "../../configFile.js";
 import {
@@ -20,11 +20,16 @@ import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import multitapGames from "../../../../../fetchMetaData/multitapGames/sonyplaystation2.json" with { type: "json" };
 import { normalizeString } from "../../../igdb.server.js";
+import { AdvancedSettings } from "../../../../types/jsonFiles/settings/advanced.js";
 
 const applicationId: ApplicationId = "pcsx2";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "pcsx2-qt.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "pcsx2-qt.exe"),
+  mac: nodepath.join(applicationId, "PCSX2-v2.8.2.app"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
+
 const configFileName = "PCSX2.ini";
 const configFilePathRelative = nodepath.join("inis", configFileName);
 
@@ -59,6 +64,10 @@ export const replaceHotkeyConfig: SectionReplacement = (sections) =>
       keyValue: "LoadStateFromSlot = Keyboard/F3",
       disableParamWithSameValue: true,
     },
+    {
+      keyValue: "ToggleTurbo = Keyboard/F5",
+      disableParamWithSameValue: true,
+    },
   ]);
 
 export const replaceAutoUpdaterConfig: SectionReplacement = (sections) =>
@@ -78,6 +87,9 @@ export const replaceInputSourcesConfig: SectionReplacement = (sections) =>
     { keyValue: "SDL = true" },
     { keyValue: "SDLControllerEnhancedMode = true" },
   ]);
+
+export const replaceFramerateConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[Framerate]", [{ keyValue: "TurboScalar = 3" }]);
 
 export const replaceUiConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[UI]", [
@@ -197,10 +209,22 @@ const getConfigFilePath = () =>
     configFilePathRelative,
   );
 
+export const replaceEmuCoreGsConfig =
+  (emulatorSettings?: AdvancedSettings): SectionReplacement =>
+  (sections) => {
+    const resolution = emulatorSettings?.resolution || defaultResolution;
+    const shader = emulatorSettings?.shader || defaultShader;
+    return replaceSection(sections, "[EmuCore/GS]", [
+      { keyValue: `upscale_multiplier = ${resolution}` },
+      { keyValue: `TVShader = ${shader}` },
+    ]);
+  };
+
 export const replaceConfigSections = (
   ps2RomsPath: string,
   gameName: string,
   biosFiles: DetectedRequiredFile[],
+  emulatorSettings?: AdvancedSettings,
 ) => {
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
@@ -213,7 +237,9 @@ export const replaceConfigSections = (
     sections,
     replaceUiConfig,
     replaceFoldersConfig(biosFiles),
+    replaceEmuCoreGsConfig(emulatorSettings),
     replaceFilenamesConfig(biosFiles),
+    replaceFramerateConfig,
     replaceInputSourcesConfig,
     replacePadConfig(isMultitapGame),
     replaceHotkeyConfig,
@@ -225,14 +251,18 @@ export const replaceConfigSections = (
   writeConfig(filePath, fileContentNew);
 };
 
-const getConfigFileBasePath = () => {
-  if (isWindows()) {
+const getConfigFileBasePath = handleOperatingSystem({
+  windows: () => {
     return nodepath.join(homedir(), "Documents", "PCSX2");
-  } else {
+  },
+  linux: () => {
     const { config } = envPaths("PCSX2", { suffix: "" });
     return nodepath.join(config);
-  }
-};
+  },
+});
+
+const defaultResolution = "1";
+const defaultShader = "0";
 
 export const pcsx2: Application = {
   id: applicationId,
@@ -278,8 +308,8 @@ export const pcsx2: Application = {
           hash: "ee7ae4cc152588b7da1dab17494a321ceafafaf799769baea4e8a28afa5044b1",
         },
         {
-          filename: "OpenPS2BIOS-0.5.bin",
-          hash: "e6d3b308ba10a8603bad929f59e50f8c023acc2c297aaa82ec0bd155e99b98fc",
+          filename: "OpenPS2BIOS-0.6.bin",
+          hash: "3702baa508ff40498fab4a95429a2ae1f903d11f5bbcdd4e1a87dbe9f5d21a84",
         },
       ],
     },
@@ -292,9 +322,15 @@ export const pcsx2: Application = {
     categoryData,
     entryData,
     biosFiles,
+    emulatorSettings,
   }) => {
     const ps2RomsPath = nodepath.join(categoriesPath, categoryData.name);
-    replaceConfigSections(ps2RomsPath, entryData.name, biosFiles!);
+    replaceConfigSections(
+      ps2RomsPath,
+      entryData.name,
+      biosFiles!,
+      emulatorSettings,
+    );
 
     const optionParams = [];
     if (fullscreen) {
@@ -306,4 +342,28 @@ export const pcsx2: Application = {
   },
   bundledBiosOpenSource: true,
   bundledPath,
+  settings: [
+    {
+      id: "resolution",
+      label: "Internal Resolution",
+      options: [
+        { name: "Native", value: defaultResolution },
+        { name: "2x (1280x896) for HD", value: "2" },
+        { name: "3x (1920x1344) for FHD", value: "3" },
+        { name: "4x (2560x1792) for QHD", value: "4" },
+        { name: "5x (3200x2240) for QHD+", value: "5" },
+        { name: "6x (3840x2688) for 4K UHD", value: "6" },
+      ],
+    },
+    {
+      id: "shader",
+      label: "Shader",
+      options: [
+        { name: "Off", value: defaultShader },
+        { name: "Scanline Filter", value: "1" },
+        { name: "Wave Filter", value: "4" },
+        { name: "CRT Lottes", value: "5" },
+      ],
+    },
+  ],
 };

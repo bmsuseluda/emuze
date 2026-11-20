@@ -18,6 +18,7 @@ import { bundledEmulatorsPathBase } from "../bundledEmulatorsPath.server.js";
 import { mednafen } from "../applicationsDB.server/applications/mednafen/index.js";
 import type { DetectedRequiredFile } from "../applicationsDB.server/types.js";
 import { getRequiredFiles } from "../applicationsDB.server/checkRequiredFiles.js";
+import { EMUZE_IS_LINUX, EMUZE_IS_WINDOWS } from "../operationsystem.server.js";
 
 vi.mock("electron");
 vi.mock("@kmamal/sdl");
@@ -57,7 +58,7 @@ describe("execute.server", () => {
     ];
     describe("executeApplicationOnWindows", () => {
       beforeEach(() => {
-        vi.stubEnv("EMUZE_IS_WINDOWS", "true");
+        vi.stubEnv(EMUZE_IS_WINDOWS, "true");
         vi.mocked(readGeneral).mockReturnValue({
           ...general,
         });
@@ -116,7 +117,7 @@ describe("execute.server", () => {
 
     describe("executeApplicationOnLinux", () => {
       beforeEach(() => {
-        vi.stubEnv("EMUZE_IS_WINDOWS", "false");
+        vi.stubEnv(EMUZE_IS_LINUX, "true");
         vi.mocked(readGeneral).mockReturnValue({
           ...general,
         });

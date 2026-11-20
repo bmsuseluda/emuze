@@ -196,11 +196,13 @@ FastForward = Keyboard/Tab
 TogglePause = Keyboard/Space
 Screenshot = Keyboard/F10
 SelectPreviousSaveStateSlot =
-SelectNextSaveStateSlot = Keyboard/F4
+SelectNextSaveStateSlot =
 OpenPauseMenu = Keyboard/F2
 ToggleFullscreen = Keyboard/F11
 SaveSelectedSaveState = Keyboard/F1
 LoadSelectedSaveState = Keyboard/F3
+Rewind = Keyboard/F4
+ToggleFastForward = Keyboard/F5
 
 
 `);
@@ -209,7 +211,9 @@ export const hotkeysConfiguredNew = normalizeNewLines(`[Hotkeys]
 OpenPauseMenu = Keyboard/F2
 ToggleFullscreen = Keyboard/F11
 SaveSelectedSaveState = Keyboard/F1
-LoadSelectedSaveState = Keyboard/F3`);
+LoadSelectedSaveState = Keyboard/F3
+Rewind = Keyboard/F4
+ToggleFastForward = Keyboard/F5`);
 
 export const pad1 = normalizeNewLines(`[Pad1]
 Type = AnalogController

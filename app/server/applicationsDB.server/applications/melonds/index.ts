@@ -3,7 +3,7 @@ import fs from "node:fs";
 import type { ApplicationId } from "../../applicationId.js";
 import type { Application } from "../../types.js";
 import { envPaths } from "../../../envPaths.server.js";
-import { isWindows } from "../../../operationsystem.server.js";
+import { handleOperatingSystem } from "../../../operationsystem.server.js";
 import { EOL } from "node:os";
 import { log } from "../../../debug.server.js";
 import type { SectionReplacement } from "../../configFile.js";
@@ -23,9 +23,12 @@ import { EmuzeController, getControllers } from "../../../gamepad.server.js";
 import { gamepadPs4Joystick } from "../../../../types/gamepad.js";
 
 const applicationId: ApplicationId = "melonds";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "melonDS.exe")
-  : nodepath.join(applicationId, "melonDS-x86_64.AppImage");
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "melonDS.exe"),
+  mac: nodepath.join(applicationId, "melonDS.app"),
+  linux: nodepath.join(applicationId, `melonDS-x86_64.AppImage`),
+});
 
 const configFileName = "melonDS.toml";
 
@@ -68,7 +71,17 @@ const replaceInstanceConfig =
     ]);
   };
 
-const replaceConfigFile = () => {
+const replace3dGlConfig =
+  (resolution: string): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[3D.GL]", [
+      { keyValue: `ScaleFactor = ${resolution}` },
+    ]);
+
+export const replace3dConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[3D]", [{ keyValue: "Renderer = 2" }]);
+
+const replaceConfigFile = (resolution: string) => {
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
 
@@ -78,6 +91,8 @@ const replaceConfigFile = () => {
 
   const fileContentNew = chainSectionReplacements(
     sections,
+    replace3dConfig,
+    replace3dGlConfig(resolution),
     replaceInstanceConfig(emuzeController),
     replaceKeyboardConfig,
     replaceJoystickConfig(emuzeController),
@@ -86,14 +101,17 @@ const replaceConfigFile = () => {
   writeConfig(filePath, fileContentNew);
 };
 
-const getConfigFileBasePath = () => {
-  if (isWindows()) {
+const getConfigFileBasePath = handleOperatingSystem({
+  windows: () => {
     return nodepath.join(bundledEmulatorsPathBase, applicationId);
-  } else {
+  },
+  linux: () => {
     const { config } = envPaths("melonDS", { suffix: "" });
     return nodepath.join(config);
-  }
-};
+  },
+});
+
+const defaultResolution = "1";
 
 export const melonds: Application = {
   id: applicationId,
@@ -108,8 +126,11 @@ export const melonds: Application = {
     settings: {
       appearance: { fullscreen },
     },
+    emulatorSettings,
   }) => {
-    replaceConfigFile();
+    const resolution = emulatorSettings?.resolution || defaultResolution;
+
+    replaceConfigFile(resolution);
 
     const optionParams = [];
     if (fullscreen) {
@@ -118,4 +139,22 @@ export const melonds: Application = {
     return optionParams;
   },
   bundledPath,
+  settings: [
+    {
+      id: "resolution",
+      label: "Internal Resolution",
+      options: [
+        { name: "Native", value: defaultResolution },
+        { name: "2x (512x384)", value: "2" },
+        { name: "3x (768x576)", value: "3" },
+        { name: "4x (1024x768)", value: "4" },
+        { name: "5x (1280x960)", value: "5" },
+        { name: "6x (1536x1152)", value: "6" },
+        { name: "7x (1792x1344)", value: "7" },
+        { name: "8x (2048x1536)", value: "8" },
+        { name: "9x (2304x1728)", value: "9" },
+        { name: "10x (2560x1920)", value: "10" },
+      ],
+    },
+  ],
 };

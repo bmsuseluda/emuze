@@ -1,7 +1,21 @@
 import type { General } from "../types/jsonFiles/settings/general.js";
 import type { Appearance } from "../types/jsonFiles/settings/appearance.js";
 import { FileDataCache } from "./FileDataCache.server.js";
-import type { Advanced } from "../types/jsonFiles/settings/advanced.js";
+import type {
+  Advanced,
+  SystemSettingsId,
+} from "../types/jsonFiles/settings/advanced.js";
+
+export interface SystemSettingOption {
+  name: string;
+  value: string;
+}
+
+export interface SystemSetting {
+  id: SystemSettingsId;
+  label: string;
+  options: SystemSettingOption[];
+}
 
 export type SettingsID = "general" | "appearance" | "advanced" | "about";
 
@@ -13,6 +27,11 @@ export interface Category {
 
 export const categories = [
   {
+    id: "advanced",
+    name: "Advanced",
+    to: "advanced",
+  },
+  {
     id: "general",
     name: "General",
     to: "general",
@@ -21,11 +40,6 @@ export const categories = [
     id: "appearance",
     name: "Appearance",
     to: "appearance",
-  },
-  {
-    id: "advanced",
-    name: "Advanced",
-    to: "advanced",
   },
   {
     id: "about",

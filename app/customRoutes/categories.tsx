@@ -9,8 +9,6 @@ import { readGeneral } from "../server/settings.server.js";
 import { useCallback } from "react";
 import { useFocus } from "../hooks/useFocus/index.js";
 import type { FocusElement } from "../types/focusElement.js";
-import { Typography } from "../components/Typography/index.js";
-import { styled } from "../../styled-system/jsx/factory.js";
 import { readLastPlayed } from "../server/lastPlayed.server.js";
 import { useOpenSettings } from "../containers/SettingsLink/useOpenSettings.js";
 import { useImportButton } from "../containers/ImportButton/useImportButton.js";
@@ -72,14 +70,6 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
   );
 };
 
-const Name = styled(Typography, {
-  base: {
-    overflow: "hidden",
-    whiteSpace: "nowrap",
-    textOverflow: "ellipsis",
-  },
-});
-
 export const shouldRevalidate = shouldRevalidateCategoriesRoute;
 
 export default function Categories({
@@ -127,7 +117,7 @@ export default function Categories({
               onClick={onLinkClick}
               isFocused={isInFocus}
             >
-              {collapseSidebar ? undefined : <Name>{name}</Name>}
+              {collapseSidebar ? undefined : name}
             </SidebarNavigationLink>
           </li>
         ))}

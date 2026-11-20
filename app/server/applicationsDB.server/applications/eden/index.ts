@@ -3,7 +3,7 @@ import nodepath from "node:path";
 import fs from "node:fs";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import type { ApplicationId } from "../../applicationId.js";
-import { isWindows } from "../../../operationsystem.server.js";
+import { handleOperatingSystem } from "../../../operationsystem.server.js";
 import { findEntryName } from "./findEntryName.js";
 import { excludeFiles } from "./excludeFiles.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
@@ -22,11 +22,15 @@ import { defaultSettings } from "./defaultSettings.js";
 import { disableSetting, getSetting } from "./getSettings.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { readAdvanced } from "../../../settings.server.js";
+import { AdvancedSettings } from "../../../../types/jsonFiles/settings/advanced.js";
 
 const applicationId: ApplicationId = "eden";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "Eden.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "Eden.exe"),
+  mac: nodepath.join(applicationId, "eden.app"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
 
 const configFolderPath = nodepath.join(emulatorsConfigDirectory, applicationId);
 const configFileName = "qt-config.ini";
@@ -72,7 +76,19 @@ export const replaceGamepadConfig: SectionReplacement = (sections) => {
   return replaceSection(sections, "[Controls]", virtualGamepads);
 };
 
-export const replaceConfigSections = (switchRomsPath: string) => {
+export const replaceRendererConfig =
+  (emulatorSettings?: AdvancedSettings): SectionReplacement =>
+  (sections) => {
+    const resolution = emulatorSettings?.resolution || defaultResolution;
+    return replaceSection(sections, "[Renderer]", [
+      ...getSetting("resolution_setup", resolution),
+    ]);
+  };
+
+export const replaceConfigSections = (
+  switchRomsPath: string,
+  emulatorSettings?: AdvancedSettings,
+) => {
   const filePath = configFilePath;
   const fileContent = readConfigFile(filePath);
 
@@ -80,22 +96,24 @@ export const replaceConfigSections = (switchRomsPath: string) => {
 
   const fileContentNew = chainSectionReplacements(
     sections,
-    replaceUiConfig(switchRomsPath),
     replaceGamepadConfig,
+    replaceRendererConfig(emulatorSettings),
+    replaceUiConfig(switchRomsPath),
   ).join(EOL);
 
   writeConfig(filePath, fileContentNew);
 };
 
-const getKeyBasePath = () => {
-  if (isWindows()) {
+const getKeyBasePath = handleOperatingSystem({
+  windows: () => {
     const { config } = envPaths("Eden", { suffix: "" });
     return nodepath.join(config, "..");
-  } else {
+  },
+  linux: () => {
     const { data } = envPaths("eden", { suffix: "" });
     return nodepath.join(data);
-  }
-};
+  },
+});
 
 const copyKeyFiles = (keyFiles: DetectedRequiredFile[]) => {
   keyFiles.forEach((keyFile) => {
@@ -112,15 +130,18 @@ const requiredFileTypes = {
   titleKeys: "title.keys",
 };
 
-const getConfigFileBasePath = () => {
-  if (isWindows()) {
+const getConfigFileBasePath = handleOperatingSystem({
+  windows: () => {
     const { config } = envPaths("Eden", { suffix: "" });
     return nodepath.join(config);
-  } else {
+  },
+  linux: () => {
     const { config } = envPaths("eden", { suffix: "" });
     return nodepath.join(config);
-  }
-};
+  },
+});
+
+const defaultResolution = "3";
 
 export const eden: Application = {
   id: applicationId,
@@ -138,9 +159,10 @@ export const eden: Application = {
     },
     categoryData,
     otherRequiredFiles,
+    emulatorSettings,
   }) => {
     const switchRomsPath = nodepath.join(categoriesPath, categoryData.name);
-    replaceConfigSections(switchRomsPath);
+    replaceConfigSections(switchRomsPath, emulatorSettings);
     copyKeyFiles(otherRequiredFiles!);
 
     const optionParams = [];
@@ -169,10 +191,22 @@ export const eden: Application = {
       requiredFiles: [{ filename: requiredFileTypes.titleKeys }],
     },
   ],
+  settings: [
+    {
+      id: "resolution",
+      label: "Internal Resolution",
+      options: [
+        { name: "Native", value: defaultResolution },
+        { name: "2x (1440p/2160p)", value: "6" },
+        { name: "3x (2160p/3240p)", value: "7" },
+        { name: "4x (2880p/4320p)", value: "8" },
+      ],
+    },
+  ],
 };
 
 export const isEdenForSwitch = () => {
-  const eden = readAdvanced()?.eden;
+  const eden = readAdvanced()?.["nintendoswitch"]?.emulator === applicationId;
 
   return eden || false;
 };
