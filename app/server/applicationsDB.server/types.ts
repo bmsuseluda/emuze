@@ -9,6 +9,7 @@ import type {
   AdvancedSettings,
 } from "../../types/jsonFiles/settings/advanced.js";
 import { SystemSetting } from "../settings.server.js";
+import { ApplicationHotkeys } from "../../types/hotkeys.js";
 
 export interface Settings {
   general: GeneralConfigured;
@@ -119,4 +120,5 @@ export interface Application {
   /** if they are defined, all of them are necessary to run the applciation */
   otherRequiredFiles?: RequiredFiles[];
   settings?: SystemSetting[];
+  hotkeys?: ApplicationHotkeys;
 }

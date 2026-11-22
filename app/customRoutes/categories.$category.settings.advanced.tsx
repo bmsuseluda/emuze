@@ -26,6 +26,8 @@ import { categories } from "../server/categoriesDB.server/index.js";
 import { SystemIcon } from "../components/SystemIcon/index.js";
 import { SystemSettingsIcon } from "../components/SystemSettingsIcon/index.js";
 import { readCategory } from "../server/categoryDataCache.server.js";
+import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
+import { hotkeysDefinition, InputDevice } from "../types/hotkeys.js";
 
 export const loader = ({ params }: Route.LoaderArgs) => {
   const { category } = params;
@@ -35,8 +37,11 @@ export const loader = ({ params }: Route.LoaderArgs) => {
     const name = readCategory(systemId)?.name || "Advanced";
     const { settings, getApplication } = categories[systemId];
     const defaults = advanced[systemId] || {};
-    const { settings: applicationSettings, id: applicationId } =
-      getApplication();
+    const {
+      settings: applicationSettings,
+      id: applicationId,
+      hotkeys,
+    } = getApplication();
     const applicationDefaults = advanced[`${systemId}/${applicationId}`] || {};
 
     return {
@@ -47,6 +52,7 @@ export const loader = ({ params }: Route.LoaderArgs) => {
         ...defaults,
         ...applicationDefaults,
       } as Record<SystemSettingsId, string>,
+      hotkeys,
     };
   }
 
@@ -112,11 +118,13 @@ export const ErrorBoundary = ({ error }: { error: Error }) => {
 const focus: FocusElement = "settingsMain";
 
 export default function Advanced({
-  loaderData: { systemId, name, settings, defaults },
+  loaderData: { systemId, name, settings, defaults, hotkeys },
 }: Route.ComponentProps) {
   const saveButtonRef = useRef<ComponentRef<"button">>(null);
   const { isInFocus, switchFocusBack, switchFocus } =
     useFocus<FocusElement>(focus);
+
+  const { gamepadType } = useGamepadConnected();
 
   const selectEntry = useCallback((entry: ComponentRef<"button">) => {
     entry.focus();
@@ -208,6 +216,22 @@ export default function Advanced({
                     />
                   </li>
                 ))}
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                  }}
+                >
+                  {hotkeys?.map((hotkey) => {
+                    const inputDevice: InputDevice = gamepadType || "keyboard";
+                    const hotkeyButtons =
+                      hotkeysDefinition[hotkey][inputDevice];
+                    const hotkeyString = `${hotkey}: ${hotkeyButtons}`;
+
+                    return <div key={hotkey}>{hotkeyString}</div>;
+                  })}
+                </div>
               </FormBox>
             }
           />

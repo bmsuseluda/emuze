@@ -33,6 +33,7 @@ import {
 import { setFocusOnElectronWindow } from "./importElectron.server.js";
 import { getRequiredFiles } from "./applicationsDB.server/checkRequiredFiles.js";
 import { createRequiredSystemFolderStructure } from "./createSystemFolders.server.js";
+import { registerHotkeysOnGamepadEvents } from "./hotkeys.server.js";
 
 type ExecFileCallback = (
   error: ExecFileException | null,
@@ -243,6 +244,7 @@ export const startGame = async (
 
         environmentVariables();
         const optionParams = getOptionParams();
+        registerHotkeysOnGamepadEvents(applicationData.hotkeys);
         syncFromEmuzeFolderToEmulatorFolder(id, configFile);
 
         await executeBundledApplication({

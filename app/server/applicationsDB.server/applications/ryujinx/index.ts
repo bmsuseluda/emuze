@@ -68,6 +68,7 @@ const replaceConfig = (
       ...oldConfig.hotkeys,
       show_ui: "F2",
       toggle_mute: "F6",
+      // TODO: toggle vsync mode is equal to toggle fast forward -> F5
     },
     game_dirs: [switchRomsPath],
     autoload_dirs: [switchRomsPath],

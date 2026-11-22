@@ -228,7 +228,7 @@ export const nintendoswitch: Category = {
       label: "Emulator",
       options: [
         { name: ryujinx.name, value: ryujinx.id },
-        { name: eden.name, value: eden.name },
+        { name: eden.name, value: eden.id },
       ],
     },
   ],

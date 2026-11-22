@@ -111,4 +111,5 @@ export const ares: Application = {
   },
   createOptionParams: getSharedAresOptionParams,
   bundledPath,
+  hotkeys: ["rewind", "fast forward", "load state", "save state", "fullscreen"],
 };
