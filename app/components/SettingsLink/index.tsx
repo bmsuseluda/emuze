@@ -54,15 +54,43 @@ export const SettingsLink = ({
   to = "settings",
   ...rest
 }: Props) => (
-  <Link
-    {...rest}
-    to={to}
-    aria-label="Settings"
-    title="Settings"
-    prefetch="render"
-    draggable={false}
-    isFullscreen={isFullscreen}
-  >
-    <VscSettingsGear />
-  </Link>
+  <>
+    <Link
+      {...rest}
+      to={to}
+      aria-label="Settings"
+      title="Settings"
+      prefetch="render"
+      draggable={false}
+      isFullscreen={isFullscreen}
+    >
+      <VscSettingsGear />
+    </Link>
+    <Link
+      {...rest}
+      id="openSettingsGeneral"
+      to="settings/general"
+      aria-label="Settings"
+      title="Settings"
+      prefetch="render"
+      draggable={false}
+      isFullscreen={isFullscreen}
+      style={{ display: "none" }}
+    >
+      <VscSettingsGear />
+    </Link>
+    <Link
+      {...rest}
+      id="openSettingsAdvanced"
+      to="settings/advanced"
+      aria-label="Settings"
+      title="Settings"
+      prefetch="render"
+      draggable={false}
+      isFullscreen={isFullscreen}
+      style={{ display: "none" }}
+    >
+      <VscSettingsGear />
+    </Link>
+  </>
 );

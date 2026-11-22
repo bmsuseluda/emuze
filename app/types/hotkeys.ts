@@ -10,12 +10,18 @@ export type Hotkey =
   | "fullscreen"
   | "swap screen";
 
-export type ApplicationHotkeys = Hotkey[];
+export type ApplicationHotkeys = Partial<Record<Hotkey, string>>;
 
 export type InputDevice = "keyboard" | GamepadType;
 
+type Extends<T, U extends T> = U;
+export type HotkeyKeyboard = Extends<
+  Sdl.Keyboard.ScancodeNames,
+  "F1" | "F2" | "F3" | "F4" | "F5" | "F6" | "F11"
+>;
+
 export interface HotkeyDefintion extends Record<InputDevice, string> {
-  keyboard: Sdl.Keyboard.ScancodeNames;
+  keyboard: HotkeyKeyboard;
   XBox: string;
   PlayStation: string;
   Nintendo: string;
@@ -68,7 +74,7 @@ export const hotkeysDefinition = {
     gamepadSdl: "start",
   },
   "swap screen": {
-    keyboard: "F7",
+    keyboard: "F6",
     XBox: "back + Right Stick",
     PlayStation: "select + R3",
     Nintendo: "select + Right Stick",

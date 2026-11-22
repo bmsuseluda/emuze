@@ -2,7 +2,11 @@ import { Sdl } from "@kmamal/sdl3";
 import { gamepadManager } from "./gamepadManager.server/index.js";
 import { isGameRunning } from "./gameIsRunning.server.js";
 import { KeyInput, Kimetra } from "kimetra";
-import { ApplicationHotkeys, hotkeysDefinition } from "../types/hotkeys.js";
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../types/hotkeys.js";
 
 const kimetraSdlMapping = {
   F1: "f1",
@@ -23,8 +27,8 @@ export const registerHotkeysOnGamepadEvents = (
       if (isGameRunning() && controller.buttons.back) {
         const kimetra = Kimetra();
 
-        applicationHotkeys.forEach((hotkey) => {
-          const { gamepadSdl, keyboard } = hotkeysDefinition[hotkey];
+        Object.keys(applicationHotkeys).forEach((hotkey) => {
+          const { gamepadSdl, keyboard } = hotkeysDefinition[hotkey as Hotkey];
           if (event.button === gamepadSdl) {
             kimetra.keyDown(kimetraSdlMapping[keyboard]);
           }

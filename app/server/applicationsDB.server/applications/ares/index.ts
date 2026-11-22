@@ -9,6 +9,11 @@ import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.j
 import { getMouse } from "./mouseConfig.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { SystemSetting } from "../../../settings.server.js";
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../../../../types/hotkeys.js";
 
 const applicationId: ApplicationId = "ares";
 
@@ -42,6 +47,20 @@ export const shaderLcdSetting = {
   ],
 } satisfies SystemSetting;
 
+const hotkeys: ApplicationHotkeys = {
+  rewind: "Rewind",
+  "fast forward": "ToggleFastForward",
+  "load state": "LoadState",
+  "save state": "SaveState",
+  fullscreen: "ToggleFullscreen",
+};
+
+const getHotkeyParams = () =>
+  Object.entries(hotkeys).flatMap(([key, value]) => [
+    "--setting",
+    `Hotkey/${value}=${getKeyboardKey(hotkeysDefinition[key as Hotkey].keyboard)}`,
+  ]);
+
 export const getSharedAresOptionParams: OptionParamFunction = ({
   settings: {
     appearance: { fullscreen },
@@ -50,28 +69,13 @@ export const getSharedAresOptionParams: OptionParamFunction = ({
   hasAnalogStick,
   emulatorSettings,
 }) => {
-  const hotkeyFullscreen = [
-    "--setting",
-    `Hotkey/ToggleFullscreen=${getKeyboardKey("F2")}`,
-  ];
-  const hotkeySave = ["--setting", `Hotkey/SaveState=${getKeyboardKey("F1")}`];
-  const hotkeyLoad = ["--setting", `Hotkey/LoadState=${getKeyboardKey("F3")}`];
-  const hotkeyRewind = ["--setting", `Hotkey/Rewind=${getKeyboardKey("F4")}`];
-  const hotkeyFastForward = [
-    "--setting",
-    `Hotkey/ToggleFastForward=${getKeyboardKey("F5")}`,
-  ];
   const activateRewind = ["--setting", "General/Rewind=true"];
   const inputSDL = ["--setting", "Input/Driver=SDL"];
   const autoSaveMemory = ["--setting", "General/AutoSaveMemory=true"];
   const shader = ["--shader", emulatorSettings?.shader || defaultShader];
 
   const optionParams = [
-    ...hotkeyFullscreen,
-    ...hotkeySave,
-    ...hotkeyLoad,
-    ...hotkeyRewind,
-    ...hotkeyFastForward,
+    ...getHotkeyParams(),
     ...activateRewind,
     ...inputSDL,
     ...autoSaveMemory,
@@ -111,5 +115,5 @@ export const ares: Application = {
   },
   createOptionParams: getSharedAresOptionParams,
   bundledPath,
-  hotkeys: ["rewind", "fast forward", "load state", "save state", "fullscreen"],
+  hotkeys,
 };

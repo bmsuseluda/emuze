@@ -27,7 +27,7 @@ import { SystemIcon } from "../components/SystemIcon/index.js";
 import { SystemSettingsIcon } from "../components/SystemSettingsIcon/index.js";
 import { readCategory } from "../server/categoryDataCache.server.js";
 import { useGamepadConnected } from "../hooks/useGamepadConnected/index.js";
-import { hotkeysDefinition, InputDevice } from "../types/hotkeys.js";
+import { Hotkey, hotkeysDefinition, InputDevice } from "../types/hotkeys.js";
 
 export const loader = ({ params }: Route.LoaderArgs) => {
   const { category } = params;
@@ -223,14 +223,30 @@ export default function Advanced({
                     gap: "10px",
                   }}
                 >
-                  {hotkeys?.map((hotkey) => {
-                    const inputDevice: InputDevice = gamepadType || "keyboard";
-                    const hotkeyButtons =
-                      hotkeysDefinition[hotkey][inputDevice];
-                    const hotkeyString = `${hotkey}: ${hotkeyButtons}`;
+                  {hotkeys &&
+                    Object.keys(hotkeys).map((hotkey, index) => {
+                      const inputDevice: InputDevice =
+                        gamepadType || "keyboard";
+                      const hotkeyButtons =
+                        hotkeysDefinition[hotkey as Hotkey][inputDevice];
 
-                    return <div key={hotkey}>{hotkeyString}</div>;
-                  })}
+                      return (
+                        <li key={hotkey}>
+                          <SelectRow
+                            id={hotkey}
+                            label={hotkey}
+                            icon={<></>}
+                            defaultValue={hotkeyButtons}
+                            options={[
+                              { name: hotkeyButtons, value: hotkeyButtons },
+                            ]}
+                            ref={entriesRefCallback(settings.length + index)}
+                            onClick={() => {}}
+                            onChange={() => {}}
+                          />
+                        </li>
+                      );
+                    })}
                 </div>
               </FormBox>
             }

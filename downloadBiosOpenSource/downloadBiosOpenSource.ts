@@ -40,7 +40,7 @@ export const emulatorsBios: BiosDownloadDefinition[] = [
     name: "OpenPS2BIOS",
     system: "sonyplaystation2",
     homepage: "https://github.com/TamaribaEmu/OpenPS2BIOS",
-    path: "https://github.com/TamaribaEmu/OpenPS2BIOS/releases/download/v0.6/OpenPS2BIOS-0.6.bin",
+    path: "https://github.com/TamaribaEmu/OpenPS2BIOS/releases/download/v0.7/OpenPS2BIOS-0.7.bin",
   },
   {
     name: "saturn-open-bios",

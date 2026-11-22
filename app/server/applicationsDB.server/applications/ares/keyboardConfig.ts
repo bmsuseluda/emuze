@@ -38,6 +38,8 @@ export const scancodes = {
   F3: 3,
   F4: 4,
   F5: 5,
+  F6: 6,
+  F11: 11,
   T: 54,
   G: 41,
   F: 40,
