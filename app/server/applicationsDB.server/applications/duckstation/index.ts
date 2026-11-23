@@ -48,12 +48,12 @@ export const replaceGamepadConfig = (gameName: string): SectionReplacement => {
 };
 
 const hotkeys: ApplicationHotkeys = {
+  "Emulator Menu": "OpenPauseMenu",
+  Fullscreen: "ToggleFullscreen",
+  "Save State": "SaveSelectedSaveState",
+  "Load State": "LoadSelectedSaveState",
   Rewind: "Rewind",
   "Fast Forward": "ToggleFastForward",
-  "Load State": "LoadSelectedSaveState",
-  "Save State": "SaveSelectedSaveState",
-  Fullscreen: "ToggleFullscreen",
-  "Emulator Menu": "OpenPauseMenu",
 };
 
 const getHotkeyParams = () =>
