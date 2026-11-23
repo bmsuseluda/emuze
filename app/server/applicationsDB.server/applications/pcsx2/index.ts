@@ -308,8 +308,8 @@ export const pcsx2: Application = {
           hash: "ee7ae4cc152588b7da1dab17494a321ceafafaf799769baea4e8a28afa5044b1",
         },
         {
-          filename: "OpenPS2BIOS-0.6.bin",
-          hash: "3702baa508ff40498fab4a95429a2ae1f903d11f5bbcdd4e1a87dbe9f5d21a84",
+          filename: "OpenPS2BIOS-0.7.bin",
+          hash: "062e563879f6bf12504cef125a4edeea2d5528f0e3c2cf49928942124eb6f150",
         },
       ],
     },
