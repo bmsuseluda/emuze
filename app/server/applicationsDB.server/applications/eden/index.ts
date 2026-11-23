@@ -23,6 +23,11 @@ import { disableSetting, getSetting } from "./getSettings.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { readAdvanced } from "../../../settings.server.js";
 import { AdvancedSettings } from "../../../../types/jsonFiles/settings/advanced.js";
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../../../../types/hotkeys.js";
 
 const applicationId: ApplicationId = "eden";
 
@@ -50,21 +55,38 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
+const hotkeys: ApplicationHotkeys = {
+  "Fast Forward": "Toggle%20Framerate%20Limit",
+  Fullscreen: "Fullscreen",
+};
+
+const getHotkeyParams = () =>
+  Object.entries(hotkeys).flatMap(([key, value]) => [
+    ...getSetting(
+      `Shortcuts\\Main%20Window\\${value}\\KeySeq`,
+      hotkeysDefinition[key as Hotkey].keyboard,
+      false,
+    ),
+  ]);
+
 export const replaceUiConfig =
   (switchRomsPath: string): SectionReplacement =>
   (sections) =>
     replaceSection(sections, "[UI]", [
+      ...getHotkeyParams(),
+
+      ...disableSetting("Shortcuts\\Main%20Window\\Load%20Amiibo\\KeySeq"),
+      ...disableSetting("Shortcuts\\Main%20Window\\Remove%20Amiibo\\KeySeq"),
+      ...disableSetting(
+        "Shortcuts\\Main%20Window\\Continue\\Pause%20Emulation",
+      ),
+      ...disableSetting("Shortcuts\\Main%20Window\\Restart%20Emulation"),
+      ...disableSetting("Shortcuts\\Main%20Window\\Stop%20Emulation"),
+
       ...getSetting("firstStart", false),
       ...getSetting("confirmStop", 2),
       ...getSetting("disableControllerApplet", true),
       ...getSetting("check_for_updates", false),
-      ...getSetting(
-        "Shortcuts\\Main%20Window\\Fullscreen\\KeySeq",
-        "F2",
-        false,
-      ),
-      ...disableSetting("Shortcuts\\Main%20Window\\Load%20Amiibo\\KeySeq"),
-      ...disableSetting("Shortcuts\\Main%20Window\\Remove%20Amiibo\\KeySeq"),
       { keyValue: `Paths\\gamedirs\\4\\path=${switchRomsPath}` },
       { keyValue: `Paths\\external_content_dirs\\1\\path=${switchRomsPath}` },
       { keyValue: "fullscreen\\default=true" },
@@ -203,6 +225,7 @@ export const eden: Application = {
       ],
     },
   ],
+  hotkeys,
 };
 
 export const isEdenForSwitch = () => {

@@ -20,6 +20,11 @@ import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { getControllers } from "../../../gamepad.server.js";
 import { defaultDolphinSettings } from "./defaultDolphinSettings.js";
 import { defaultGfx } from "./defaultGfx.js";
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../../../../types/hotkeys.js";
 
 const applicationId: ApplicationId = "dolphin";
 
@@ -72,24 +77,24 @@ export const replaceGamepadConfigFile = () => {
   writeConfig(gamepadConfigFileName, fileContentNew);
 };
 
+const hotkeys: ApplicationHotkeys = {
+  "Fast Forward": "Emulation Speed/Disable Emulation Speed Limit",
+  "Load State": "Load State/Load State Slot 1",
+  "Save State": "Save State/Save State Slot 1",
+  Fullscreen: "General/Toggle Fullscreen",
+};
+
+const getHotkeyParams = () =>
+  Object.entries(hotkeys).flatMap<ParamToReplace>(([key, value]) => [
+    {
+      keyValue: `${value} = ${hotkeysDefinition[key as Hotkey].keyboard}`,
+      disableParamWithSameValue: true,
+    },
+  ]);
+
 export const replaceHotkeysSection: SectionReplacement = (sections) =>
   replaceSection(sections, "[Hotkeys]", [
-    {
-      keyValue: "General/Toggle Fullscreen = F2",
-      disableParamWithSameValue: true,
-    },
-    {
-      keyValue: "Save State/Save State Slot 1 = F1",
-      disableParamWithSameValue: true,
-    },
-    {
-      keyValue: "Load State/Load State Slot 1 = F3",
-      disableParamWithSameValue: true,
-    },
-    {
-      keyValue: "Emulation Speed/Disable Emulation Speed Limit = F5",
-      disableParamWithSameValue: true,
-    },
+    ...getHotkeyParams(),
     {
       keyValue: "Load State/Load State Slot 4 =",
     },
@@ -219,4 +224,5 @@ export const dolphin: Application = {
       ],
     },
   ],
+  hotkeys,
 };

@@ -7,7 +7,7 @@ import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.j
 import { envPaths } from "../../../envPaths.server.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { log } from "../../../debug.server.js";
-import type { SectionReplacement } from "../../configFile.js";
+import type { ParamToReplace, SectionReplacement } from "../../configFile.js";
 import {
   chainSectionReplacements,
   replaceGamepadConfigSection,
@@ -19,6 +19,11 @@ import { EOL } from "node:os";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { readAdvanced } from "../../../settings.server.js";
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../../../../types/hotkeys.js";
 
 const applicationId: ApplicationId = "rosaliesMupenGui";
 const bundledPath = isWindows()
@@ -68,11 +73,22 @@ export const replaceGuiCoreConfig: SectionReplacement = (sections) =>
     { keyValue: `RSP_Plugin = "mupen64plus-rsp-parallel.so"` },
   ]);
 
+const hotkeys: ApplicationHotkeys = {
+  "Load State": "LoadState",
+  "Save State": "SaveState",
+  Fullscreen: "Fullscreen",
+};
+
+const getHotkeyParams = () =>
+  Object.entries(hotkeys).flatMap<ParamToReplace>(([key, value]) => [
+    {
+      keyValue: `${value} = "${hotkeysDefinition[key as Hotkey].keyboard}"`,
+    },
+  ]);
+
 export const replaceKeyBindingsConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Rosalie's Mupen GUI KeyBindings]", [
-    { keyValue: `SaveState = "F1"` },
-    { keyValue: `Fullscreen = "F2"` },
-    { keyValue: `LoadState = "F3"` },
+    ...getHotkeyParams(),
     { keyValue: `SoftReset = ""` },
     { keyValue: `Resume = ""` },
     { keyValue: `Screenshot = ""` },
@@ -205,6 +221,7 @@ export const rosaliesMupenGui: Application = {
       ],
     },
   ],
+  hotkeys,
 };
 
 export const isRmgSupported = () => !isMac();

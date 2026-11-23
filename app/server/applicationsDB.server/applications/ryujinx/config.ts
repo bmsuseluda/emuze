@@ -80,15 +80,20 @@ export interface InputConfig {
   player_index: `Player${number}`;
 }
 
+export interface Hotkeys {
+  toggle_vsync_mode?: string;
+  screenshot?: string;
+  pause?: string;
+  show_ui?: string;
+  toggle_mute?: string;
+}
+
 export interface Config {
   check_updates_on_start?: boolean;
   update_checker_type?: "Off" | "PromptAtStartup";
   show_confirm_exit?: boolean;
   skip_user_profiles?: boolean;
-  hotkeys?: {
-    show_ui?: string;
-    toggle_mute?: string;
-  };
+  hotkeys?: Hotkeys;
   game_dirs?: string[];
   autoload_dirs?: string[];
   input_config?: InputConfig[];

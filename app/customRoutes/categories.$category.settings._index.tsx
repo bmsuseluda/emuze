@@ -10,7 +10,7 @@ export const loader: LoaderFunction = ({ params }) => {
     const system = categories[systemId];
     const application = system.getApplication();
 
-    if (system.settings || application.settings) {
+    if (system.settings || application.settings || application.hotkeys) {
       throw redirect("advanced");
     }
   }

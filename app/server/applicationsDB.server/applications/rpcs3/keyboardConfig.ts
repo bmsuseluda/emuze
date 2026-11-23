@@ -1,3 +1,4 @@
+import { hotkeysDefinition } from "../../../../types/hotkeys.js";
 import type { PlayerInput, GlobalDefaultInputConfigFile } from "./config.js";
 import {
   globalDefaultInputConfigFileReset,
@@ -18,7 +19,7 @@ export const playerSpecificKeyboardConfig: PlayerInput = {
     "Right Stick Up": "Up",
     Start: "Return",
     Select: "Backspace",
-    "PS Button": "F2",
+    "PS Button": hotkeysDefinition["Emulator Menu"].keyboard,
     Square: "U",
     Cross: "J",
     Circle: "K",

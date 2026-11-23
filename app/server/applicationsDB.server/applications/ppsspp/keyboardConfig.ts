@@ -11,6 +11,7 @@ export const scancodes = {
   F3: 133,
   F4: 134,
   F5: 135,
+  F6: 136,
   F11: 141,
   T: 48,
   G: 35,

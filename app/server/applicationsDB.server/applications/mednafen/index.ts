@@ -14,23 +14,38 @@ import { getControllersSdl3 } from "../../../gamepad.server.js";
 import multitapGamesSaturn from "../../../../../fetchMetaData/multitapGames/segasaturn.json" with { type: "json" };
 import { SystemSetting } from "../../../settings.server.js";
 import { AdvancedSettings } from "../../../../types/jsonFiles/settings/advanced.js";
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../../../../types/hotkeys.js";
+
+const hotkeys: ApplicationHotkeys = {
+  "Fast Forward": "fast_forward",
+  "Load State": "load_state",
+  "Save State": "save_state",
+  "Emulator Menu": "toggle_help",
+  Fullscreen: "toggle_fs",
+  // TODO: add if hotkeyActivateRewindToggle can be activated on startup
+  // Rewind: "state_rewind"
+};
+
+const getHotkeyParams = () =>
+  Object.entries(hotkeys).flatMap(([key, value]) => [
+    `-command.${value}`,
+    getKeyboardKey(hotkeysDefinition[key as Hotkey].keyboard),
+  ]);
 
 const getSharedMednafenOptionParams: OptionParamFunction = ({
   settings: {
     appearance: { fullscreen },
   },
 }) => {
-  const hotkeySave = ["-command.save_state", getKeyboardKey("F1")];
-  const hotkeyLoad = ["-command.load_state", getKeyboardKey("F3")];
-  const hotkeyHelp = ["-command.toggle_help", getKeyboardKey("F2")];
-  const hotkeyRewind = ["-command.state_rewind", getKeyboardKey("F4")];
-  const hotkeyFastForward = ["-command.fast_forward", getKeyboardKey("F5")];
   // TODO: need to be pressed on startup
   const hotkeyActivateRewindToggle = [
     "-command.toggle_state_rewind",
     getKeyboardKey("F6"),
   ];
-  const hotkeyFullscreen = ["-command.toggle_fs", getKeyboardKey("F11")];
   const fastForwardAsToggle = ["-fftoggle", "1"];
   const disabledHotkeys = [
     "-command.togglenetview",
@@ -52,14 +67,9 @@ const getSharedMednafenOptionParams: OptionParamFunction = ({
   const setFullscreen = fullscreen ? ["-video.fs", "1"] : ["-video.fs", "0"];
 
   return [
-    ...hotkeyHelp,
-    ...hotkeyFullscreen,
-    ...disabledHotkeys,
-    ...hotkeySave,
-    ...hotkeyLoad,
-    ...hotkeyRewind,
-    ...hotkeyFastForward,
+    ...getHotkeyParams(),
     ...hotkeyActivateRewindToggle,
+    ...disabledHotkeys,
     ...soundDevice,
     ...setFullscreen,
     ...fastForwardAsToggle,
@@ -95,6 +105,7 @@ export const mednafen: Application = {
   },
   createOptionParams: getSharedMednafenOptionParams,
   bundledPath,
+  hotkeys,
 };
 
 const defaultShader = "none";

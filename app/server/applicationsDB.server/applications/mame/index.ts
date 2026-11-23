@@ -14,11 +14,21 @@ import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { XMLParser } from "fast-xml-parser";
 import XMLBuilder from "fast-xml-builder";
 import { log } from "../../../debug.server.js";
-import { createPorts, defaultConfig, type ConfigFile } from "./config.js";
+import {
+  createPorts,
+  defaultConfig,
+  PortConfig,
+  PortType,
+  type ConfigFile,
+} from "./config.js";
 import { writeConfig } from "../../configFile.js";
 import { mameDefaultConfig } from "./mameDefaultConfig.js";
-import type { SystemId } from "../../../categoriesDB.server/systemId.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../../../../types/hotkeys.js";
 
 const applicationId: ApplicationId = "mame";
 
@@ -63,7 +73,21 @@ const readXmlConfigFile = (filePath: string) => {
 const readDefaultConfigFile = () =>
   readXmlConfigFile(getDefaultConfigFilePath()) as ConfigFile;
 
-const replaceDefaultConfigFile = (systemId: SystemId) => {
+const hotkeys: ApplicationHotkeys = {
+  "Fast Forward": "UI_FAST_FORWARD",
+  "Load State": "UI_LOAD_STATE_QUICK",
+  "Save State": "UI_SAVE_STATE_QUICK",
+  "Emulator Menu": "UI_MENU",
+  Fullscreen: "TOGGLE_FULLSCREEN",
+};
+
+const getHotkeyParams = () =>
+  Object.entries(hotkeys).flatMap<PortConfig>(([key, value]) => [
+    value as PortType,
+    `KEYCODE_${hotkeysDefinition[key as Hotkey].keyboard}`,
+  ]);
+
+const replaceDefaultConfigFile = () => {
   const fileContent = readDefaultConfigFile();
 
   const fileContentNew: ConfigFile = {
@@ -75,15 +99,8 @@ const replaceDefaultConfigFile = (systemId: SystemId) => {
         input: {
           ...fileContent?.mameconfig?.system?.input,
           port: createPorts([
-            ["UI_MENU", "KEYCODE_F2"],
-            ["UI_SAVE_STATE_QUICK", "KEYCODE_F1"],
-            ["UI_LOAD_STATE_QUICK", "KEYCODE_F3"],
-            ["TOGGLE_FULLSCREEN", "KEYCODE_F11"],
+            ...getHotkeyParams(),
             ["SERVICE", "JOYCODE_1_BUTTON2 JOYCODE_1_SELECT OR KEYCODE_TAB"],
-            [
-              "UI_FAST_FORWARD",
-              systemId === "neogeocd" ? "JOYCODE_1_SLIDER1_NEG_SWITCH" : "NONE",
-            ],
             ["UI_HELP", "NONE"],
             ["POWER_ON", "NONE"],
             ["POWER_OFF", "NONE"],
@@ -118,7 +135,7 @@ const createBiosRompath = (biosFiles?: DetectedRequiredFile[]) =>
   biosFiles ? `${nodepath.dirname(biosFiles.at(0)!.filePath)};` : "";
 
 const getSharedMameOptionParams: OptionParamFunction = ({
-  categoryData: { id, name },
+  categoryData: { name },
   settings: {
     general: { categoriesPath },
     appearance: { fullscreen },
@@ -126,7 +143,7 @@ const getSharedMameOptionParams: OptionParamFunction = ({
   biosFiles,
 }) => {
   replaceMameConfigFile();
-  replaceDefaultConfigFile(id);
+  replaceDefaultConfigFile();
 
   const entryDirname = nodepath.join(categoriesPath, name);
   const optionParams = [];
@@ -161,6 +178,7 @@ export const mame: Application = {
   createOptionParams: getSharedMameOptionParams,
   findEntryName: findMameArcadeGameName,
   bundledPath,
+  hotkeys,
 };
 
 export const mameNeoGeo: Application = {

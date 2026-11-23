@@ -3,7 +3,7 @@ import fs from "node:fs";
 import { EOL, homedir } from "os";
 import { handleOperatingSystem } from "../../../operationsystem.server.js";
 import nodepath from "node:path";
-import type { SectionReplacement } from "../../configFile.js";
+import type { ParamToReplace, SectionReplacement } from "../../configFile.js";
 import {
   chainSectionReplacements,
   replaceGamepadConfigSection,
@@ -21,6 +21,11 @@ import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import multitapGames from "../../../../../fetchMetaData/multitapGames/sonyplaystation2.json" with { type: "json" };
 import { normalizeString } from "../../../igdb.server.js";
 import { AdvancedSettings } from "../../../../types/jsonFiles/settings/advanced.js";
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../../../../types/hotkeys.js";
 
 const applicationId: ApplicationId = "pcsx2";
 
@@ -46,29 +51,24 @@ export const replaceGamepadConfig = (
   );
 };
 
-export const replaceHotkeyConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[Hotkeys]", [
+const hotkeys: ApplicationHotkeys = {
+  "Fast Forward": "ToggleTurbo",
+  "Load State": "LoadStateFromSlot",
+  "Save State": "SaveStateToSlot",
+  Fullscreen: "ToggleFullscreen",
+  "Emulator Menu": "OpenPauseMenu",
+};
+
+const getHotkeyParams = () =>
+  Object.entries(hotkeys).flatMap<ParamToReplace>(([key, value]) => [
     {
-      keyValue: "OpenPauseMenu = Keyboard/F2",
-      disableParamWithSameValue: true,
-    },
-    {
-      keyValue: "ToggleFullscreen = Keyboard/F11",
-      disableParamWithSameValue: true,
-    },
-    {
-      keyValue: "SaveStateToSlot = Keyboard/F1",
-      disableParamWithSameValue: true,
-    },
-    {
-      keyValue: "LoadStateFromSlot = Keyboard/F3",
-      disableParamWithSameValue: true,
-    },
-    {
-      keyValue: "ToggleTurbo = Keyboard/F5",
+      keyValue: `${value} = Keyboard/${hotkeysDefinition[key as Hotkey].keyboard}`,
       disableParamWithSameValue: true,
     },
   ]);
+
+export const replaceHotkeyConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[Hotkeys]", getHotkeyParams());
 
 export const replaceAutoUpdaterConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[AutoUpdater]", [
@@ -366,4 +366,5 @@ export const pcsx2: Application = {
       ],
     },
   ],
+  hotkeys,
 };

@@ -1,3 +1,8 @@
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../../../../types/hotkeys.js";
 import type { ParamToReplace } from "../../configFile.js";
 import {
   getKeyboardKey,
@@ -65,6 +70,21 @@ const getMappingString = (buttonId: PpssppButtonId) =>
     getButtonId(controller360idWindows, buttonId, buttonMappingXinput),
   ].join(",");
 
+export const hotkeys: ApplicationHotkeys = {
+  "Fast Forward": "SpeedToggle",
+  "Load State": "Load State",
+  "Save State": "Save State",
+  Fullscreen: "Toggle Fullscreen",
+  "Emulator Menu": "Pause",
+};
+
+const getHotkeyParams = () =>
+  Object.entries(hotkeys).flatMap<ParamToReplace>(([key, value]) => [
+    {
+      keyValue: `${value} = ${getKeyboardKey(hotkeysDefinition[key as Hotkey].keyboard)}`,
+    },
+  ]);
+
 export const getVirtualGamepad = (): ParamToReplace[] => [
   {
     keyValue: `Up = ${getMappingString("dpadUp")}`,
@@ -114,12 +134,5 @@ export const getVirtualGamepad = (): ParamToReplace[] => [
   {
     keyValue: `An.Right = ${getMappingString("leftStickRight")}`,
   },
-  {
-    keyValue: `Pause = ${getKeyboardKey("F2")},${getButtonId(controller1id, "leftTrigger")},${getButtonId(controller2id, "leftTrigger")},${getButtonId(controller360idWindows, "leftTrigger", buttonMappingXinput)}`,
-  },
-  { keyValue: `Save State = ${getKeyboardKey("F1")}` },
-  { keyValue: `Load State = ${getKeyboardKey("F3")}` },
-  { keyValue: `Rewind = ${getKeyboardKey("F4")}` },
-  { keyValue: `SpeedToggle = ${getKeyboardKey("F5")}` },
-  { keyValue: `Toggle Fullscreen = ${getKeyboardKey("F11")}` },
+  ...getHotkeyParams(),
 ];

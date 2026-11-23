@@ -20,7 +20,7 @@ import {
 } from "../../../operationsystem.server.js";
 import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
-import { getVirtualGamepad } from "./getVirtualGamepad.js";
+import { getVirtualGamepad, hotkeys } from "./getVirtualGamepad.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { AdvancedSettings } from "../../../../types/jsonFiles/settings/advanced.js";
 
@@ -243,4 +243,5 @@ export const ppsspp: Application = {
       ],
     },
   ],
+  hotkeys,
 };

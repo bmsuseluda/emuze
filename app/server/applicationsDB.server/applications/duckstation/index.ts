@@ -3,7 +3,7 @@ import { log } from "../../../debug.server.js";
 import fs from "node:fs";
 import { EOL, homedir } from "node:os";
 import { handleOperatingSystem } from "../../../operationsystem.server.js";
-import type { SectionReplacement } from "../../configFile.js";
+import type { ParamToReplace, SectionReplacement } from "../../configFile.js";
 import {
   chainSectionReplacements,
   replaceGamepadConfigSection,
@@ -21,6 +21,11 @@ import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import multitapGames from "../../../../../fetchMetaData/multitapGames/sonyplaystation.json" with { type: "json" };
 import { normalizeString } from "../../../igdb.server.js";
 import { AdvancedSettings } from "../../../../types/jsonFiles/settings/advanced.js";
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../../../../types/hotkeys.js";
 
 const applicationId: ApplicationId = "duckstation";
 
@@ -42,33 +47,25 @@ export const replaceGamepadConfig = (gameName: string): SectionReplacement => {
   );
 };
 
-export const replaceHotkeyConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[Hotkeys]", [
+const hotkeys: ApplicationHotkeys = {
+  Rewind: "Rewind",
+  "Fast Forward": "ToggleFastForward",
+  "Load State": "LoadSelectedSaveState",
+  "Save State": "SaveSelectedSaveState",
+  Fullscreen: "ToggleFullscreen",
+  "Emulator Menu": "OpenPauseMenu",
+};
+
+const getHotkeyParams = () =>
+  Object.entries(hotkeys).flatMap<ParamToReplace>(([key, value]) => [
     {
-      keyValue: "OpenPauseMenu = Keyboard/F2",
-      disableParamWithSameValue: true,
-    },
-    {
-      keyValue: "ToggleFullscreen = Keyboard/F11",
-      disableParamWithSameValue: true,
-    },
-    {
-      keyValue: "SaveSelectedSaveState = Keyboard/F1",
-      disableParamWithSameValue: true,
-    },
-    {
-      keyValue: "LoadSelectedSaveState = Keyboard/F3",
-      disableParamWithSameValue: true,
-    },
-    {
-      keyValue: "Rewind = Keyboard/F4",
-      disableParamWithSameValue: true,
-    },
-    {
-      keyValue: "ToggleFastForward = Keyboard/F5",
+      keyValue: `${value} = Keyboard/${hotkeysDefinition[key as Hotkey].keyboard}`,
       disableParamWithSameValue: true,
     },
   ]);
+
+export const replaceHotkeyConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[Hotkeys]", getHotkeyParams());
 
 export const replaceAutoUpdaterConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[AutoUpdater]", [
@@ -673,4 +670,5 @@ export const duckstation: Application = {
       ],
     },
   ],
+  hotkeys,
 };

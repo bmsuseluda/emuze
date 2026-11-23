@@ -3,7 +3,7 @@ import nodepath from "node:path";
 import { writeConfig } from "../../configFile.js";
 import fs from "node:fs";
 import { log } from "../../../debug.server.js";
-import type { Config } from "./config.js";
+import type { Config, Hotkeys } from "./config.js";
 import { defaultConfig } from "./config.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import type { ApplicationId } from "../../applicationId.js";
@@ -14,6 +14,11 @@ import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { copy } from "../../../readWriteData.server.js";
 import { AdvancedSettings } from "../../../../types/jsonFiles/settings/advanced.js";
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../../../../types/hotkeys.js";
 
 const applicationId: ApplicationId = "ryujinx";
 
@@ -50,6 +55,20 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
+const hotkeys: ApplicationHotkeys = {
+  Fullscreen: "show_ui",
+  "Fast Forward": "toggle_vsync_mode",
+};
+
+const getHotkeyParams = () =>
+  Object.entries(hotkeys).reduce(
+    (accumulator, [key, value]) => ({
+      ...accumulator,
+      [value]: hotkeysDefinition[key as Hotkey].keyboard,
+    }),
+    {} as Hotkeys,
+  );
+
 const replaceConfig = (
   switchRomsPath: string,
   emulatorSettings?: AdvancedSettings,
@@ -66,9 +85,10 @@ const replaceConfig = (
     skip_user_profiles: true,
     hotkeys: {
       ...oldConfig.hotkeys,
-      show_ui: "F2",
-      toggle_mute: "F6",
-      // TODO: toggle vsync mode is equal to toggle fast forward -> F5
+      screenshot: "Unbound",
+      pause: "Unbound",
+      toggle_mute: "Unbound",
+      ...getHotkeyParams(),
     },
     game_dirs: [switchRomsPath],
     autoload_dirs: [switchRomsPath],
@@ -141,4 +161,5 @@ export const ryujinx: Application = {
       ],
     },
   ],
+  hotkeys,
 };

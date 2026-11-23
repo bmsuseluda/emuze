@@ -7,7 +7,7 @@ import { log } from "../../../debug.server.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { defaultGuiSettings } from "./defaultGuiSettings.js";
 import { envPaths } from "../../../envPaths.server.js";
-import type { SectionReplacement } from "../../configFile.js";
+import type { ParamToReplace, SectionReplacement } from "../../configFile.js";
 import {
   chainSectionReplacements,
   replaceSection,
@@ -38,6 +38,11 @@ import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { isLightgunConnected } from "../../../../types/gamepad.js";
 import { removeFile } from "../../../readWriteData.server.js";
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../../../../types/hotkeys.js";
 
 const applicationId: ApplicationId = "rpcs3";
 
@@ -163,14 +168,23 @@ const replaceMainWindowConfig: SectionReplacement = (sections) =>
     { keyValue: "infoBoxEnabledWelcome=false" },
   ]);
 
-const replaceShortcutsConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[Shortcuts]", [
-    { keyValue: "game_window_savestate=F1", disableParamWithSameValue: true },
-    { keyValue: "gw_home_menu=F2" },
+const hotkeys: ApplicationHotkeys = {
+  "Save State": "game_window_savestate",
+  Fullscreen: "game_window_toggle_fullscreen",
+  "Emulator Menu": "gw_home_menu",
+};
+
+const getHotkeyParams = () =>
+  Object.entries(hotkeys).flatMap<ParamToReplace>(([key, value]) => [
     {
-      keyValue: "game_window_toggle_fullscreen=F11",
+      keyValue: `${value}=${hotkeysDefinition[key as Hotkey].keyboard}`,
       disableParamWithSameValue: true,
     },
+  ]);
+
+const replaceShortcutsConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[Shortcuts]", [
+    ...getHotkeyParams(),
     {
       keyValue: "game_window_toggle_recording=",
     },
@@ -414,4 +428,5 @@ export const rpcs3: Application = {
   },
   excludeFiles: excludePlaystationFiles,
   bundledPath,
+  hotkeys,
 };

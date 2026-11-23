@@ -32,7 +32,7 @@ export const loader = ({ params }: Route.LoaderArgs) => {
     const system = categories[systemId];
     const application = system.getApplication();
 
-    if (system.settings || application.settings) {
+    if (system.settings || application.settings || application.hotkeys) {
       return { categoryName, settings, systemId };
     }
   }

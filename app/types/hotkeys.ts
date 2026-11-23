@@ -2,13 +2,13 @@ import { Sdl } from "@kmamal/sdl3";
 import { GamepadType } from "./gamepad.js";
 
 export type Hotkey =
-  | "menu"
-  | "save state"
-  | "load state"
-  | "rewind"
-  | "fast forward"
-  | "fullscreen"
-  | "swap screen";
+  | "Emulator Menu"
+  | "Save State"
+  | "Load State"
+  | "Rewind"
+  | "Fast Forward"
+  | "Fullscreen"
+  | "Swap Screen";
 
 export type ApplicationHotkeys = Partial<Record<Hotkey, string>>;
 
@@ -31,49 +31,49 @@ export interface HotkeyDefintion extends Record<InputDevice, string> {
 type HotkeysDefinition = Record<Hotkey, HotkeyDefintion>;
 
 export const hotkeysDefinition = {
-  menu: {
+  "Emulator Menu": {
     keyboard: "F2",
     XBox: "back + y",
     PlayStation: "select + triangle",
     Nintendo: "select + x",
     gamepadSdl: "north",
   },
-  "save state": {
+  "Save State": {
     keyboard: "F1",
     XBox: "back + Left Shoulder",
     PlayStation: "select + L1",
     Nintendo: "select + Left Bumper",
     gamepadSdl: "leftShoulder",
   },
-  "load state": {
+  "Load State": {
     keyboard: "F3",
     XBox: "back + Right Shoulder",
     PlayStation: "select + R1",
     Nintendo: "select + Right Bumper",
     gamepadSdl: "rightShoulder",
   },
-  rewind: {
+  Rewind: {
     keyboard: "F4",
     XBox: "back + x",
     PlayStation: "select + square",
     Nintendo: "select + y",
     gamepadSdl: "west",
   },
-  "fast forward": {
+  "Fast Forward": {
     keyboard: "F5",
     XBox: "back + b",
     PlayStation: "select + circle",
     Nintendo: "select + a",
     gamepadSdl: "east",
   },
-  fullscreen: {
+  Fullscreen: {
     keyboard: "F11",
     XBox: "back + start",
     PlayStation: "select + start",
     Nintendo: "select + start",
     gamepadSdl: "start",
   },
-  "swap screen": {
+  "Swap Screen": {
     keyboard: "F6",
     XBox: "back + Right Stick",
     PlayStation: "select + R3",

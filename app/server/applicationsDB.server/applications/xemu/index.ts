@@ -21,6 +21,11 @@ import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { getKeyboardButtonMappings } from "./keyboardConfig.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../../../../types/hotkeys.js";
 
 const applicationId: ApplicationId = "xemu";
 
@@ -56,13 +61,24 @@ const replaceGeneralUpdatesConfig: SectionReplacement = (sections) =>
     { keyValue: "check = false" },
   ]);
 
+const hotkeys: ApplicationHotkeys = {
+  "Emulator Menu": "guide",
+};
+
+const getHotkeyParams = () =>
+  Object.entries(hotkeys).flatMap<ParamToReplace>(([key, value]) => [
+    {
+      keyValue: `${value} = ${sdl.keyboard.SCANCODE[hotkeysDefinition[key as Hotkey].keyboard]}`,
+    },
+  ]);
+
 const replaceInputBindingsConfig: SectionReplacement = (sections) => {
   const virtualGamepads = getVirtualGamepads();
 
   return replaceSection(
     sections,
     "[input.bindings]",
-    [...virtualGamepads, { keyValue: `guide = ${sdl.keyboard.SCANCODE.F2}` }],
+    [...virtualGamepads, ...getHotkeyParams()],
     true,
   );
 };
@@ -205,4 +221,5 @@ export const xemu: Application = {
       ],
     },
   ],
+  hotkeys,
 };

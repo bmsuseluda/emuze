@@ -19,6 +19,11 @@ import { disableSetting, getSetting } from "./getSettings.js";
 import { getGamepad, getVirtualGamepad } from "./getVirtualGamepad.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../../../../types/hotkeys.js";
 
 const applicationId: ApplicationId = "azahar";
 
@@ -49,29 +54,39 @@ export const replaceMiscellaneousConfig: SectionReplacement = (sections) =>
     ...getSetting("check_for_update_on_start", false),
   ]);
 
+const hotkeys: ApplicationHotkeys = {
+  "Fast Forward": "Toggle%20Per-Application%20Speed",
+  "Load State": "Quick%20Load",
+  "Save State": "Quick%20Save",
+  Fullscreen: "Fullscreen",
+  "Swap Screen": "Swap%20Screens",
+};
+
+const getHotkeyParams = () =>
+  Object.entries(hotkeys).flatMap(([key, value]) => [
+    ...getSetting(
+      `Shortcuts\\Main%20Window\\${value}\\KeySeq`,
+      hotkeysDefinition[key as Hotkey].keyboard,
+      false,
+    ),
+  ]);
+
 // TODO: implement `disable param with same value` with setting the default value
 export const replaceUiConfig =
   (n3dsRomsPath: string): SectionReplacement =>
   (sections) =>
     replaceSection(sections, "[UI]", [
-      ...getSetting("confirmClose", false),
-      ...getSetting(
-        "Shortcuts\\Main%20Window\\Fullscreen\\KeySeq",
-        "F2",
-        false,
-      ),
-      ...getSetting(
-        "Shortcuts\\Main%20Window\\Quick%20Save\\KeySeq",
-        "F1",
-        false,
-      ),
-      ...getSetting(
-        "Shortcuts\\Main%20Window\\Quick%20Load\\KeySeq",
-        "F3",
-        false,
-      ),
+      ...getHotkeyParams(),
+
       ...disableSetting("Shortcuts\\Main%20Window\\Load%20Amiibo\\KeySeq"),
       ...disableSetting("Shortcuts\\Main%20Window\\Remove%20Amiibo\\KeySeq"),
+      ...disableSetting(
+        "Shortcuts\\Main%20Window\\Continue\\Pause%20Emulation",
+      ),
+      ...disableSetting("Shortcuts\\Main%20Window\\Restart%20Emulation"),
+      ...disableSetting("Shortcuts\\Main%20Window\\Stop%20Emulation"),
+
+      ...getSetting("confirmClose", false),
       ...getSetting("firstStart", false),
       ...getSetting("saveStateWarning", false),
       { keyValue: `Paths\\romsPath=${n3dsRomsPath}` },
@@ -182,4 +197,5 @@ export const azahar: Application = {
       ],
     },
   ],
+  hotkeys,
 };

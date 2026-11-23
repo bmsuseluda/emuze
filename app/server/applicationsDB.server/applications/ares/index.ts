@@ -48,11 +48,11 @@ export const shaderLcdSetting = {
 } satisfies SystemSetting;
 
 const hotkeys: ApplicationHotkeys = {
-  rewind: "Rewind",
-  "fast forward": "ToggleFastForward",
-  "load state": "LoadState",
-  "save state": "SaveState",
-  fullscreen: "ToggleFullscreen",
+  Rewind: "Rewind",
+  "Fast Forward": "ToggleFastForward",
+  "Load State": "LoadState",
+  "Save State": "SaveState",
+  Fullscreen: "ToggleFullscreen",
 };
 
 const getHotkeyParams = () =>

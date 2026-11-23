@@ -5,7 +5,7 @@ import type { ApplicationId } from "../../applicationId.js";
 import type { Application } from "../../types.js";
 import { envPaths } from "../../../envPaths.server.js";
 import { log } from "../../../debug.server.js";
-import type { SectionReplacement } from "../../configFile.js";
+import type { ParamToReplace, SectionReplacement } from "../../configFile.js";
 import {
   chainSectionReplacements,
   replaceSection,
@@ -19,6 +19,11 @@ import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { getKeyboardButtonMappings } from "./keyboardConfig.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { getControllersSdl3 } from "../../../gamepad.server.js";
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../../../../types/hotkeys.js";
 
 const applicationId: ApplicationId = "flycast";
 
@@ -54,14 +59,27 @@ const readKeyboardConfigFile = (filePath: string) => {
   }
 };
 
-const replaceKeyboardDigitalConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[digital]", [
-    ...getKeyboardButtonMappings(),
-    { keyValue: `bind15 = ${sdl.keyboard.SCANCODE.F1}:btn_quick_save` },
-    { keyValue: `bind16 = ${sdl.keyboard.SCANCODE.F2}:btn_menu` },
-    { keyValue: `bind17 = ${sdl.keyboard.SCANCODE.F3}:btn_jump_state` },
-    { keyValue: `bind18 = ${sdl.keyboard.SCANCODE.F5}:btn_fforward` },
+const hotkeys: ApplicationHotkeys = {
+  "Fast Forward": "fforward",
+  "Load State": "jump_state",
+  "Save State": "quick_save",
+  "Emulator Menu": "menu",
+};
+
+const getHotkeyParams = (baseIndex: number) =>
+  Object.entries(hotkeys).flatMap<ParamToReplace>(([key, value], index) => [
+    {
+      keyValue: `bind${baseIndex + index} = ${sdl.keyboard.SCANCODE[hotkeysDefinition[key as Hotkey].keyboard]}:btn_${value}`,
+    },
   ]);
+
+const replaceKeyboardDigitalConfig: SectionReplacement = (sections) => {
+  const keyboardButtonMappings = getKeyboardButtonMappings();
+  return replaceSection(sections, "[digital]", [
+    ...keyboardButtonMappings,
+    ...getHotkeyParams(keyboardButtonMappings.length),
+  ]);
+};
 
 const replaceKeyboardEmulatorConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[emulator]", [
@@ -170,4 +188,5 @@ export const flycast: Application = {
       ],
     },
   ],
+  hotkeys,
 };
