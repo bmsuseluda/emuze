@@ -14,16 +14,25 @@ import { resetUnusedVirtualGamepads } from "../../resetUnusedVirtualGamepads.js"
 import { defaultHotkeys } from "./defaultHotkeys.js";
 import type { ApplicationId } from "../../applicationId.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
-import { isWindows } from "../../../operationsystem.server.js";
+import { handleOperatingSystem } from "../../../operationsystem.server.js";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { getControllers } from "../../../gamepad.server.js";
 import { defaultDolphinSettings } from "./defaultDolphinSettings.js";
+import { defaultGfx } from "./defaultGfx.js";
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../../../../types/hotkeys.js";
 
 const applicationId: ApplicationId = "dolphin";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "Dolphin.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "Dolphin.exe"),
+  mac: nodepath.join(applicationId, "Dolphin.app"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
 
 const configFolderPath = nodepath.join(emulatorsConfigDirectory, applicationId);
 const dolphinConfigFileName = nodepath.join(
@@ -41,6 +50,7 @@ const hotkeysConfigFileName = nodepath.join(
   "Config",
   "Hotkeys.ini",
 );
+const gfxConfigFileName = nodepath.join(configFolderPath, "Config", "GFX.ini");
 
 export const replaceGamepadConfigSections: SectionReplacement = (sections) => [
   ...sections,
@@ -67,19 +77,26 @@ export const replaceGamepadConfigFile = () => {
   writeConfig(gamepadConfigFileName, fileContentNew);
 };
 
+const hotkeys: ApplicationHotkeys = {
+  "Fast Forward": "Emulation Speed/Disable Emulation Speed Limit",
+  "Load State": "Load State/Load State Slot 1",
+  "Save State": "Save State/Save State Slot 1",
+  Fullscreen: "General/Toggle Fullscreen",
+};
+
+const getHotkeyParams = () =>
+  Object.entries(hotkeys).flatMap<ParamToReplace>(([key, value]) => [
+    {
+      keyValue: `${value} = ${hotkeysDefinition[key as Hotkey].keyboard}`,
+      disableParamWithSameValue: true,
+    },
+  ]);
+
 export const replaceHotkeysSection: SectionReplacement = (sections) =>
   replaceSection(sections, "[Hotkeys]", [
+    ...getHotkeyParams(),
     {
-      keyValue: "General/Toggle Fullscreen = F2",
-      disableParamWithSameValue: true,
-    },
-    {
-      keyValue: "Save State/Save State Slot 1 = F1",
-      disableParamWithSameValue: true,
-    },
-    {
-      keyValue: "Load State/Load State Slot 1 = F3",
-      disableParamWithSameValue: true,
+      keyValue: "Load State/Load State Slot 4 =",
     },
   ]);
 
@@ -88,6 +105,22 @@ export const replaceHotkeysFile = () =>
     hotkeysConfigFileName,
     defaultHotkeys,
     replaceHotkeysSection,
+  );
+
+export const replaceGfxSection =
+  (resolution: string): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[Settings]", [
+      {
+        keyValue: `InternalResolution = ${resolution}`,
+      },
+    ]);
+
+export const replaceGfxFile = (resolution: string) =>
+  replaceConfigSections(
+    gfxConfigFileName,
+    defaultGfx,
+    replaceGfxSection(resolution),
   );
 
 const setDeviceToStandardController = (index: number): ParamToReplace => ({
@@ -136,6 +169,8 @@ export const replaceConfigSections = (
   writeConfig(filePath, fileContentNew);
 };
 
+const defaultResolution = "1";
+
 export const dolphin: Application = {
   id: applicationId,
   name: "Dolphin",
@@ -146,10 +181,14 @@ export const dolphin: Application = {
       appearance: { fullscreen },
       general: { categoriesPath },
     },
+    emulatorSettings,
   }) => {
+    const resolution = emulatorSettings?.resolution || defaultResolution;
+
     replaceDolphinFile();
     replaceGamepadConfigFile();
     replaceHotkeysFile();
+    replaceGfxFile(resolution);
 
     const optionParams = [
       `--user=${configFolderPath}`,
@@ -171,4 +210,19 @@ export const dolphin: Application = {
     return optionParams;
   },
   bundledPath,
+  settings: [
+    {
+      id: "resolution",
+      label: "Internal Resolution",
+      options: [
+        { name: "Native", value: defaultResolution },
+        { name: "2x (1280x1056) for HD", value: "2" },
+        { name: "3x (1920x1584) for FHD", value: "3" },
+        { name: "4x (2560x2112) for QHD", value: "4" },
+        { name: "5x (3200x2640) for QHD+", value: "5" },
+        { name: "6x (3840x3168) for 4K UHD", value: "6" },
+      ],
+    },
+  ],
+  hotkeys,
 };

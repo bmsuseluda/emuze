@@ -1,9 +1,21 @@
 import { FormRow } from "../../components/FormRow/index.js";
-import { Label } from "../../components/Label/index.js";
 import { TextInput } from "../../components/TextInput/index.js";
 import { FaFolderOpen } from "react-icons/fa";
 import type { ComponentRef, MouseEvent } from "react";
 import { useState } from "react";
+import { styled } from "../../../styled-system/jsx/factory.js";
+import * as LabelPrimitive from "@radix-ui/react-label";
+
+const Label = styled(LabelPrimitive.Root, {
+  base: {
+    color: "color",
+    fontSize: "small",
+
+    "&:hover": {
+      cursor: "pointer",
+    },
+  },
+});
 
 interface Props {
   id: string;

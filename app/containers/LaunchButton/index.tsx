@@ -26,7 +26,7 @@ export const LaunchButton = ({ disabled, launchButtonRef }: Props) => {
       <Button
         type="submit"
         name="_actionId"
-        disabled={disabled}
+        disabled={disabled || isGameLaunching}
         value={launchId}
         ref={launchButtonRef}
         icon={

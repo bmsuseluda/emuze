@@ -23,13 +23,13 @@ const killChildProcess = () => {
 
 const registerCloseGameOnGamepadEvent = () => {
   gamepadManager.addButtonUpEvent("closeGame", (event, controller) => {
-    if (
-      isGameRunning() &&
-      event.button === "south" &&
-      controller.buttons.back
-    ) {
-      log("debug", "buttons", controller.buttons);
-      killChildProcess();
+    if (isGameRunning() && controller.buttons.back) {
+      log("debug", "buttons", event.button);
+
+      // close game
+      if (event.button === "south") {
+        killChildProcess();
+      }
     }
   });
 };

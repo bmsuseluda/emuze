@@ -31,7 +31,10 @@ import {
   isEdenForSwitch,
 } from "../applicationsDB.server/applications/eden/index.js";
 import { aresNintendo64 } from "../applicationsDB.server/applications/ares/systems/n64.js";
-import { aresGameBoyColor } from "../applicationsDB.server/applications/ares/systems/gameBoyColor.js";
+import {
+  aresGameBoy,
+  aresGameBoyColor,
+} from "../applicationsDB.server/applications/ares/systems/gameBoyColor.js";
 import { aresGameGear } from "../applicationsDB.server/applications/ares/systems/gameGear.js";
 import { aresSuperNintendo } from "../applicationsDB.server/applications/ares/systems/snes.js";
 import { aresNES } from "../applicationsDB.server/applications/ares/systems/nes.js";
@@ -222,6 +225,16 @@ export const nintendoswitch: Category = {
   igdbPlatformIds: [130],
   getApplication: () => (isEdenForSwitch() ? eden : ryujinx),
   hasAnalogStick: true,
+  settings: [
+    {
+      id: "emulator",
+      label: "Emulator",
+      options: [
+        { name: ryujinx.name, value: ryujinx.id },
+        { name: eden.name, value: eden.id },
+      ],
+    },
+  ],
 };
 
 export const nintendoentertainmentsystem: Category = {
@@ -242,6 +255,16 @@ export const nintendo64: Category = {
   id: "nintendo64",
   names: ["Nintendo 64", "N64"],
   igdbPlatformIds: [4],
+  settings: [
+    {
+      id: "emulator",
+      label: "Emulator",
+      options: [
+        { name: aresNintendo64.name, value: aresNintendo64.id },
+        { name: rosaliesMupenGui.name, value: rosaliesMupenGui.id },
+      ],
+    },
+  ],
   getApplication: () => (isRmgForN64() ? rosaliesMupenGui : aresNintendo64),
   hasAnalogStick: true,
 };
@@ -250,7 +273,7 @@ export const nintendogameboy: Category = {
   id: "nintendogameboy",
   names: ["Nintendo Game Boy", "Game Boy", "GB"],
   igdbPlatformIds: [33],
-  getApplication: () => aresGameBoyColor,
+  getApplication: () => aresGameBoy,
   hasAnalogStick: false,
 };
 

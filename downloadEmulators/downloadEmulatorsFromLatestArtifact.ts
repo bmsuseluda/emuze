@@ -1,6 +1,6 @@
 import { cpSync, existsSync, mkdirSync } from "node:fs";
 import _7z from "7zip-min";
-import { isWindows } from "../app/server/operationsystem.server.js";
+import { isMac, isWindows } from "../app/server/operationsystem.server.js";
 import { downloadFile } from "./utils/downloadFile.js";
 import { executeWithLogs } from "./utils/executeWithLogs.js";
 import { join } from "node:path";
@@ -153,7 +153,8 @@ export const getEmulatorsFromLatestArtifactLinux = (
   });
 
 export const getEmulatorsFromLatestArtifact = async () => {
-  if (!existsSync(latestEmulatorsPath)) {
+  // TODO: remove ` && !isMac()` after first mac release
+  if (!existsSync(latestEmulatorsPath) && !isMac()) {
     mkdirSync(latestEmulatorsPath, { recursive: true });
     const latestReleaseId = await getLatestReleaseId();
 
@@ -162,7 +163,7 @@ export const getEmulatorsFromLatestArtifact = async () => {
       await getEmulatorsFromLatestArtifactWindows(latestReleaseId);
     } else {
       await getManifestFromLatestArtifact(latestReleaseId, "linux");
-      // await getEmulatorsFromLatestArtifactLinux(latestReleaseId);
+      await getEmulatorsFromLatestArtifactLinux(latestReleaseId);
     }
   }
 };

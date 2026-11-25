@@ -2,8 +2,8 @@ import type { Application, DetectedRequiredFile } from "../../types.js";
 import { log } from "../../../debug.server.js";
 import fs from "node:fs";
 import { EOL, homedir } from "node:os";
-import { isWindows } from "../../../operationsystem.server.js";
-import type { SectionReplacement } from "../../configFile.js";
+import { handleOperatingSystem } from "../../../operationsystem.server.js";
+import type { ParamToReplace, SectionReplacement } from "../../configFile.js";
 import {
   chainSectionReplacements,
   replaceGamepadConfigSection,
@@ -20,11 +20,20 @@ import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import multitapGames from "../../../../../fetchMetaData/multitapGames/sonyplaystation.json" with { type: "json" };
 import { normalizeString } from "../../../igdb.server.js";
+import { AdvancedSettings } from "../../../../types/jsonFiles/settings/advanced.js";
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../../../../types/hotkeys.js";
 
 const applicationId: ApplicationId = "duckstation";
-const bundledPath = isWindows()
-  ? nodepath.join(applicationId, "duckstation-qt-x64-ReleaseLTCG.exe")
-  : nodepath.join(applicationId, `${applicationId}.AppImage`);
+
+const bundledPath = handleOperatingSystem({
+  windows: nodepath.join(applicationId, "duckstation-qt-x64-ReleaseLTCG.exe"),
+  mac: nodepath.join(applicationId, "DuckStation.app"),
+  linux: nodepath.join(applicationId, `${applicationId}.AppImage`),
+});
 
 const configFileName = "settings.ini";
 
@@ -38,25 +47,25 @@ export const replaceGamepadConfig = (gameName: string): SectionReplacement => {
   );
 };
 
-export const replaceHotkeyConfig: SectionReplacement = (sections) =>
-  replaceSection(sections, "[Hotkeys]", [
+const hotkeys: ApplicationHotkeys = {
+  "Emulator Menu": "OpenPauseMenu",
+  Fullscreen: "ToggleFullscreen",
+  "Save State": "SaveSelectedSaveState",
+  "Load State": "LoadSelectedSaveState",
+  Rewind: "Rewind",
+  "Fast Forward": "ToggleFastForward",
+};
+
+const getHotkeyParams = () =>
+  Object.entries(hotkeys).flatMap<ParamToReplace>(([key, value]) => [
     {
-      keyValue: "OpenPauseMenu = Keyboard/F2",
-      disableParamWithSameValue: true,
-    },
-    {
-      keyValue: "ToggleFullscreen = Keyboard/F11",
-      disableParamWithSameValue: true,
-    },
-    {
-      keyValue: "SaveSelectedSaveState = Keyboard/F1",
-      disableParamWithSameValue: true,
-    },
-    {
-      keyValue: "LoadSelectedSaveState = Keyboard/F3",
+      keyValue: `${value} = Keyboard/${hotkeysDefinition[key as Hotkey].keyboard}`,
       disableParamWithSameValue: true,
     },
   ]);
+
+export const replaceHotkeyConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[Hotkeys]", getHotkeyParams());
 
 export const replaceAutoUpdaterConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[AutoUpdater]", [
@@ -67,6 +76,8 @@ export const replaceMainConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Main]", [
     { keyValue: "ConfirmPowerOff = false" },
     { keyValue: "SetupWizardIncomplete = false" },
+    { keyValue: "RewindEnable = true" },
+    { keyValue: "FastForwardSpeed = 3" },
   ]);
 
 export const replaceGameListConfig =
@@ -449,11 +460,64 @@ const readConfigFile = (filePath: string) => {
   }
 };
 
+export const replaceGpuConfig =
+  (advancedSettings?: AdvancedSettings): SectionReplacement =>
+  (sections) => {
+    const resolution = advancedSettings?.resolution || defaultResolution;
+    const perspectiveCorrection =
+      advancedSettings?.perspectiveCorrection || defaultPerspectiveCorrection;
+    const ntscTimings = advancedSettings?.ntscTimings || defaultNtscTimings;
+
+    return replaceSection(sections, "[GPU]", [
+      {
+        keyValue: `ResolutionScale = ${resolution}`,
+      },
+      {
+        keyValue: `ForceNTSCTimings = ${ntscTimings}`,
+      },
+      {
+        keyValue: `PGXPEnable = ${perspectiveCorrection}`,
+      },
+      { keyValue: "PGXPCulling = true" },
+      { keyValue: "PGXPTextureCorrection = true" },
+      { keyValue: "PGXPColorCorrection = true" },
+      { keyValue: "PGXPPreserveProjFP = true" },
+    ]);
+  };
+
+export const replacePostProcessingConfig =
+  (shader: string): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[PostProcessing]", [
+      {
+        keyValue: `Enabled = ${shader !== defaultShader}`,
+      },
+      { keyValue: "StageCount = 1" },
+    ]);
+
+export const replacePostProcessingStage1Config =
+  (shader: string): SectionReplacement =>
+  (sections) =>
+    replaceSection(
+      sections,
+      "[PostProcessing/Stage1]",
+      shader !== defaultShader
+        ? [
+            {
+              keyValue: `ShaderName = ${shader}`,
+            },
+          ]
+        : [],
+    );
+
 export const replaceConfigSections = (
   psxRomsPath: string,
   gameName: string,
   biosFiles: DetectedRequiredFile[],
+  advancedSettings?: AdvancedSettings,
 ) => {
+  const shader = advancedSettings?.shader || defaultShader;
+
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
 
@@ -464,25 +528,32 @@ export const replaceConfigSections = (
     replaceInputSourcesConfig,
     replaceControllerPortsConfig(gameName),
     replaceMainConfig,
+    replaceGpuConfig(advancedSettings),
     replaceBiosConfig(biosFiles),
     replaceGamepadConfig(gameName),
     replaceHotkeyConfig,
     replaceAutoUpdaterConfig,
     replaceGameListConfig(psxRomsPath),
     replaceUiConfig,
+    replacePostProcessingConfig(shader),
+    replacePostProcessingStage1Config(shader),
   ).join(EOL);
 
   writeConfig(filePath, fileContentNew);
 };
 
-const getConfigFileBasePath = () => {
-  if (isWindows()) {
-    return nodepath.join(homedir(), "Documents", "DuckStation");
-  } else {
+const getConfigFileBasePath = handleOperatingSystem({
+  windows: () => nodepath.join(homedir(), "Documents", "DuckStation"),
+  linux: () => {
     const { data } = envPaths("duckstation", { suffix: "" });
     return nodepath.join(data);
-  }
-};
+  },
+});
+
+const defaultResolution = "1";
+const defaultPerspectiveCorrection = "false";
+const defaultNtscTimings = "false";
+const defaultShader = "false";
 
 export const duckstation: Application = {
   id: applicationId,
@@ -522,7 +593,7 @@ export const duckstation: Application = {
         },
         {
           filename: "openbios.bin",
-          hash: "bc36eb489efc42a08559e50daf5d9307056fc6f31253f37b1b912ff28fb731c9",
+          hash: "8a8925807952965c4a116239a21903476c5c585387a1d4778a90b9b9c01804ee",
         },
       ],
     },
@@ -535,9 +606,16 @@ export const duckstation: Application = {
     categoryData,
     entryData,
     biosFiles,
+    emulatorSettings,
   }) => {
     const psxRomsPath = nodepath.join(categoriesPath, categoryData.name);
-    replaceConfigSections(psxRomsPath, entryData.name, biosFiles!);
+
+    replaceConfigSections(
+      psxRomsPath,
+      entryData.name,
+      biosFiles!,
+      emulatorSettings,
+    );
 
     const optionParams = [];
     if (fullscreen) {
@@ -549,4 +627,48 @@ export const duckstation: Application = {
   },
   bundledBiosOpenSource: true,
   bundledPath,
+  settings: [
+    {
+      id: "resolution",
+      label: "Internal Resolution",
+      options: [
+        { name: "Native", value: defaultResolution },
+        { name: "2x (1280x896)", value: "2" },
+        { name: "3x (1920x1344)", value: "3" },
+        { name: "4x (2560x1792)", value: "4" },
+        { name: "5x (3200x2240)", value: "5" },
+        { name: "6x (3840x2688)", value: "6" },
+        { name: "7x (4480x3136)", value: "7" },
+        { name: "8x (5120x3584)", value: "8" },
+        { name: "9x (5760x4032)", value: "9" },
+      ],
+    },
+    {
+      id: "perspectiveCorrection",
+      label: "PGXP Perspective Correction",
+      options: [
+        { name: "Off", value: defaultPerspectiveCorrection },
+        { name: "On", value: "true" },
+      ],
+    },
+    {
+      id: "ntscTimings",
+      label: "Force NTSC Timings",
+      options: [
+        { name: "Off", value: defaultNtscTimings },
+        { name: "On", value: "true" },
+      ],
+    },
+    {
+      id: "shader",
+      label: "Shader",
+      options: [
+        { name: "Off", value: defaultShader },
+        { name: "CRT Lottes 2", value: "CRTLottes2" },
+        { name: "CRT Hyllian", value: "dolphinfx/crt/CRT-HYLLIAN" },
+        { name: "CRT New Pixie", value: "CRT-NewPixie" },
+      ],
+    },
+  ],
+  hotkeys,
 };

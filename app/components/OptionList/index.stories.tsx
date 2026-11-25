@@ -1,25 +1,26 @@
-import { GameVersions } from "./index.js";
+import { OptionList } from "./index.js";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { gameVersions } from "./testData.js";
 
 const meta = {
-  component: GameVersions,
-} satisfies Meta<typeof GameVersions>;
+  component: OptionList,
+} satisfies Meta<typeof OptionList>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
   args: {
-    gameVersions,
-    onExecute: () => {
+    options: gameVersions,
+    groupName: "gameVersion",
+    onConfirmation: () => {
       alert("launch");
     },
     isInFocus: true,
     onBack: () => {
       alert("back");
     },
-    onGameClick: () => {
+    onOptionClick: () => {
       alert("game click");
     },
   },

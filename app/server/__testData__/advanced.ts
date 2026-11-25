@@ -1,6 +1,6 @@
 import type { Advanced } from "../../types/jsonFiles/settings/advanced.js";
 
 export const advanced = {
-  eden: false,
-  rmg: false,
+  nintendoswitch: { emulator: "ryujinx" },
+  nintendo64: { emulator: "ares" },
 } satisfies Advanced;

@@ -33,6 +33,7 @@ import {
 import { setFocusOnElectronWindow } from "./importElectron.server.js";
 import { getRequiredFiles } from "./applicationsDB.server/checkRequiredFiles.js";
 import { createRequiredSystemFolderStructure } from "./createSystemFolders.server.js";
+import { registerHotkeysOnGamepadEvents } from "./hotkeys.server.js";
 
 type ExecFileCallback = (
   error: ExecFileException | null,
@@ -63,17 +64,30 @@ const execFileCallback =
     }
   };
 
+const executeMacAppFile = (file: string, args: string[], reject: () => void) =>
+  execFile(
+    "open",
+    ["-W", file, "--args", ...args],
+    {
+      encoding: "utf8",
+    },
+    execFileCallback(reject),
+  );
+
 const executeApplication = (file: string, args: string[]) => {
   return new Promise<void>((resolve, reject) => {
     log("debug", "params", args);
-    const childProcess = execFile(
-      file,
-      args,
-      {
-        encoding: "utf8",
-      },
-      execFileCallback(reject),
-    );
+    const childProcess = file.endsWith(".app")
+      ? executeMacAppFile(file, args, reject)
+      : execFile(
+          file,
+          args,
+          {
+            encoding: "utf8",
+          },
+          execFileCallback(reject),
+        );
+
     setGameIsRunningChildProcess(childProcess);
 
     registerCloseGameOnKeyboardEvent();
@@ -205,6 +219,9 @@ export const startGame = async (
           allRequired: true,
         });
 
+        const emulatorSettings =
+          settings.advanced?.[`${categoryData.id}/${applicationData.id}`];
+
         createRequiredSystemFolderStructure(
           systemFolderPath,
           requiredSystemFolderStructure,
@@ -221,11 +238,13 @@ export const startGame = async (
                 applicationPath,
                 biosFiles,
                 otherRequiredFiles,
+                emulatorSettings,
               })
             : [];
 
         environmentVariables();
         const optionParams = getOptionParams();
+        registerHotkeysOnGamepadEvents(applicationData.hotkeys);
         syncFromEmuzeFolderToEmulatorFolder(id, configFile);
 
         await executeBundledApplication({

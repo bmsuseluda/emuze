@@ -7,6 +7,7 @@ import type { MelonDsButtonId } from "./types.js";
 
 export const scancodes = {
   F2: 16777265,
+  // TODO: add scancodes for remaining hotkeys
   T: 84,
   G: 71,
   F: 70,
@@ -62,6 +63,18 @@ const getKeyboardButtonMappings = (): ParamToReplace[] =>
       keyValue: `${melonDsButtonId} = ${sdlScancode}`,
     };
   });
+
+// const hotkeys: ApplicationHotkeys = {
+//   Fullscreen: "HK_FullscreenToggle",
+//   "Swap Screen": "HK_SwapScreens",
+// };
+
+// const getHotkeyParams = () =>
+//   Object.entries(hotkeys).flatMap<ParamToReplace>(([key, value]) => [
+//     {
+//       keyValue: `${value} = ${hotkeysDefinition[key as Hotkey].keyboard}`,
+//     },
+//   ]);
 
 export const replaceKeyboardConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Instance0.Keyboard]", [

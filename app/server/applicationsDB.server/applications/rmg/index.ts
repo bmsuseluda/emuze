@@ -1,4 +1,4 @@
-import { isWindows } from "../../../operationsystem.server.js";
+import { isMac, isWindows } from "../../../operationsystem.server.js";
 import nodepath from "node:path";
 import fs from "node:fs";
 import type { ApplicationId } from "../../applicationId.js";
@@ -7,7 +7,7 @@ import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.j
 import { envPaths } from "../../../envPaths.server.js";
 import { emulatorsConfigDirectory } from "../../../homeDirectory.server.js";
 import { log } from "../../../debug.server.js";
-import type { SectionReplacement } from "../../configFile.js";
+import type { ParamToReplace, SectionReplacement } from "../../configFile.js";
 import {
   chainSectionReplacements,
   replaceGamepadConfigSection,
@@ -19,6 +19,11 @@ import { EOL } from "node:os";
 import { getVirtualGamepads } from "./getVirtualGamepads.js";
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { readAdvanced } from "../../../settings.server.js";
+import {
+  ApplicationHotkeys,
+  Hotkey,
+  hotkeysDefinition,
+} from "../../../../types/hotkeys.js";
 
 const applicationId: ApplicationId = "rosaliesMupenGui";
 const bundledPath = isWindows()
@@ -62,11 +67,28 @@ export const replaceMainConfig: SectionReplacement = (sections) =>
     { keyValue: "CheckForUpdates = False" },
   ]);
 
+export const replaceGuiCoreConfig: SectionReplacement = (sections) =>
+  replaceSection(sections, "[Rosalie's Mupen GUI Core]", [
+    { keyValue: `GFX_Plugin = "mupen64plus-video-parallel.so"` },
+    { keyValue: `RSP_Plugin = "mupen64plus-rsp-parallel.so"` },
+  ]);
+
+const hotkeys: ApplicationHotkeys = {
+  "Load State": "LoadState",
+  "Save State": "SaveState",
+  Fullscreen: "Fullscreen",
+};
+
+const getHotkeyParams = () =>
+  Object.entries(hotkeys).flatMap<ParamToReplace>(([key, value]) => [
+    {
+      keyValue: `${value} = "${hotkeysDefinition[key as Hotkey].keyboard}"`,
+    },
+  ]);
+
 export const replaceKeyBindingsConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[Rosalie's Mupen GUI KeyBindings]", [
-    { keyValue: `SaveState = "F1"` },
-    { keyValue: `Fullscreen = "F2"` },
-    { keyValue: `LoadState = "F3"` },
+    ...getHotkeyParams(),
     { keyValue: `SoftReset = ""` },
     { keyValue: `Resume = ""` },
     { keyValue: `Screenshot = ""` },
@@ -104,7 +126,19 @@ export const replaceGamepadConfig = (): SectionReplacement => {
   );
 };
 
-export const replaceConfigSections = (n64RomsPath: string) => {
+export const replaceVideoParallelConfig =
+  (resolution: string): SectionReplacement =>
+  (sections) =>
+    replaceSection(sections, "[Video-Parallel]", [
+      {
+        keyValue: `Upscaling = ${resolution}`,
+      },
+    ]);
+
+export const replaceConfigSections = (
+  n64RomsPath: string,
+  resolution: string,
+) => {
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
 
@@ -115,8 +149,10 @@ export const replaceConfigSections = (n64RomsPath: string) => {
     replaceMainConfig,
     replaceInputConfig,
     replaceGamepadConfig(),
+    replaceGuiCoreConfig,
     replaceKeyBindingsConfig,
     replaceRomBrowserConfig(n64RomsPath),
+    replaceVideoParallelConfig(resolution),
   ).join(EOL);
 
   writeConfig(filePath, fileContentNew);
@@ -133,6 +169,8 @@ const getConfigFileBasePath = () => {
     ? nodepath.join(windowsConfigFolder)
     : nodepath.join(config);
 };
+
+const defaultResolution = "1";
 
 export const rosaliesMupenGui: Application = {
   id: applicationId,
@@ -156,9 +194,11 @@ export const rosaliesMupenGui: Application = {
       general: { categoriesPath },
     },
     categoryData,
+    emulatorSettings,
   }) => {
     const n64RomsPath = nodepath.join(categoriesPath, categoryData.name);
-    replaceConfigSections(n64RomsPath);
+    const resolution = emulatorSettings?.resolution || defaultResolution;
+    replaceConfigSections(n64RomsPath, resolution);
 
     const optionParams = [];
 
@@ -169,10 +209,25 @@ export const rosaliesMupenGui: Application = {
     return optionParams;
   },
   bundledPath,
+  settings: [
+    {
+      id: "resolution",
+      label: "Internal Resolution",
+      options: [
+        { name: "Native", value: defaultResolution },
+        { name: "2x", value: "2" },
+        { name: "4x", value: "4" },
+        { name: "8x", value: "8" },
+      ],
+    },
+  ],
+  hotkeys,
 };
 
-export const isRmgForN64 = () => {
-  const rmg = readAdvanced()?.rmg;
+export const isRmgSupported = () => !isMac();
 
-  return rmg || false;
+export const isRmgForN64 = () => {
+  const rmg = readAdvanced()?.["nintendo64"]?.emulator === applicationId;
+
+  return rmg;
 };

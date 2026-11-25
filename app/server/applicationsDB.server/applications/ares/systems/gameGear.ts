@@ -1,5 +1,5 @@
 import { Application } from "../../../types.js";
-import { ares, getSharedAresOptionParams } from "../index.js";
+import { ares, getSharedAresOptionParams, shaderLcdSetting } from "../index.js";
 import { getSystemGamepadButtonReset } from "../systemSpecificGamepadReset.js";
 
 export const getGameGearGamepadReset = () => {
@@ -29,4 +29,5 @@ export const aresGameGear: Application = {
     ...["--system", "Game Gear"],
     ...getGameGearGamepadReset(),
   ],
+  settings: [shaderLcdSetting],
 };

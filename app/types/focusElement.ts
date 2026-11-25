@@ -9,6 +9,7 @@ export type FocusElement =
   | "gameDialog"
   | "releaseNotesDialog"
   | "createSystemFoldersDialog"
+  | "selectDialog"
   | "closeDialog";
 
 export const getFocusDefault = (general: General | null): FocusElement => {

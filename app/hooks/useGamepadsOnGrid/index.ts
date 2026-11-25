@@ -26,6 +26,9 @@ interface Props<T> {
   onRightOverTheEdge?: (props: Result<T>) => void;
   onTopOverTheEdge?: (props: Result<T>) => void;
   onBottomOverTheEdge?: (props: Result<T>) => void;
+  loop?: boolean;
+  selectedXDefault?: number;
+  selectedYDefault?: number;
 }
 
 export const useGamepadsOnGrid = <T extends HTMLElement>({
@@ -35,9 +38,12 @@ export const useGamepadsOnGrid = <T extends HTMLElement>({
   onRightOverTheEdge,
   onTopOverTheEdge,
   onBottomOverTheEdge,
+  loop = false,
+  selectedXDefault = 0,
+  selectedYDefault = 0,
 }: Props<T>): Result<T> => {
-  const selectedX = useRef<number>(undefined);
-  const selectedY = useRef<number>(undefined);
+  const selectedX = useRef<number>(selectedXDefault);
+  const selectedY = useRef<number>(selectedYDefault);
   const selectedEntry = useRef<T>(undefined);
 
   const handleSelectEntry = useCallback(
@@ -68,44 +74,50 @@ export const useGamepadsOnGrid = <T extends HTMLElement>({
 
   const updatePosition = useCallback(
     (entriesRefsGrid: RefObject<T[][]>) => () => {
-      if (selectedEntry.current) {
-        const selectedEntryInGrid = entriesRefsGrid.current.find(
-          (row, indexY) => {
-            const indexX = row.findIndex(
-              (entry) => entry === selectedEntry.current,
-            );
-            if (indexX >= 0) {
-              selectedX.current = indexX;
-              selectedY.current = indexY;
-              return true;
-            }
-            return false;
-          },
-        );
+      if (isInFocus) {
+        if (selectedEntry.current) {
+          const selectedEntryInGrid = entriesRefsGrid.current.find(
+            (row, indexY) => {
+              const indexX = row.findIndex(
+                (entry) => entry === selectedEntry.current,
+              );
+              if (indexX >= 0) {
+                selectedX.current = indexX;
+                selectedY.current = indexY;
+                return true;
+              }
+              return false;
+            },
+          );
 
-        // entry is not in the grid anymore
-        if (!selectedEntryInGrid) {
-          // select entry in the old position if possible, else select first entry
-          if (
-            selectedX.current &&
-            selectedY.current &&
-            entriesRefsGrid.current[selectedY.current] &&
-            entriesRefsGrid.current[selectedY.current][selectedX.current]
-          ) {
-            handleSelectEntry(
-              entriesRefsGrid,
-              selectedX.current,
-              selectedY.current,
-            );
-          } else {
-            selectFirstEntry(entriesRefsGrid);
+          // entry is not in the grid anymore
+          if (!selectedEntryInGrid) {
+            // select entry in the old position if possible, else select first entry
+            if (
+              selectedX.current &&
+              selectedY.current &&
+              entriesRefsGrid.current[selectedY.current] &&
+              entriesRefsGrid.current[selectedY.current][selectedX.current]
+            ) {
+              handleSelectEntry(
+                entriesRefsGrid,
+                selectedX.current,
+                selectedY.current,
+              );
+            } else {
+              selectFirstEntry(entriesRefsGrid);
+            }
           }
+        } else {
+          handleSelectEntry(
+            entriesRefsGrid,
+            selectedX.current,
+            selectedY.current,
+          );
         }
-      } else {
-        selectFirstEntry(entriesRefsGrid);
       }
     },
-    [selectFirstEntry, handleSelectEntry],
+    [selectFirstEntry, handleSelectEntry, isInFocus],
   );
 
   const { entriesRefsGrid, entryListRef, entriesRefs, entriesRefCallback } =
@@ -113,19 +125,7 @@ export const useGamepadsOnGrid = <T extends HTMLElement>({
 
   useEffect(() => {
     if (isInFocus) {
-      if (
-        typeof selectedX.current === "undefined" ||
-        typeof selectedY.current === "undefined" ||
-        typeof selectedEntry.current === "undefined"
-      ) {
-        selectFirstEntry(entriesRefsGrid);
-      } else {
-        handleSelectEntry(
-          entriesRefsGrid,
-          selectedX.current,
-          selectedY.current,
-        );
-      }
+      handleSelectEntry(entriesRefsGrid, selectedX.current, selectedY.current);
     }
   }, [isInFocus, handleSelectEntry, selectFirstEntry, entriesRefsGrid]);
 
@@ -135,8 +135,8 @@ export const useGamepadsOnGrid = <T extends HTMLElement>({
   );
 
   const resetSelected = useCallback(() => {
-    selectedX.current = undefined;
-    selectedY.current = undefined;
+    selectedX.current = 0;
+    selectedY.current = 0;
     selectedEntry.current = undefined;
   }, []);
 
@@ -247,8 +247,18 @@ export const useGamepadsOnGrid = <T extends HTMLElement>({
             selectedX.current,
             selectedY.current,
           );
-        } else if (selectedY.current === lastIndex && onBottomOverTheEdge) {
-          onBottomOverTheEdge(createResult());
+        } else if (selectedY.current === lastIndex) {
+          onBottomOverTheEdge?.(createResult());
+
+          if (loop) {
+            selectedY.current = 0;
+
+            handleSelectEntry(
+              entriesRefsGrid,
+              selectedX.current,
+              selectedY.current,
+            );
+          }
         }
       }
     }
@@ -259,6 +269,7 @@ export const useGamepadsOnGrid = <T extends HTMLElement>({
     isInFocus,
     onBottomOverTheEdge,
     createResult,
+    loop,
   ]);
 
   const onUp = useCallback(() => {
@@ -275,8 +286,19 @@ export const useGamepadsOnGrid = <T extends HTMLElement>({
             selectedX.current,
             selectedY.current,
           );
-        } else if (selectedY.current === 0 && onTopOverTheEdge) {
-          onTopOverTheEdge(createResult());
+        } else if (selectedY.current === 0) {
+          onTopOverTheEdge?.(createResult());
+
+          if (loop) {
+            const lastIndex = getLastIndex(entriesRefsGrid.current);
+            selectedY.current = lastIndex;
+
+            handleSelectEntry(
+              entriesRefsGrid,
+              selectedX.current,
+              selectedY.current,
+            );
+          }
         }
       }
     }
@@ -286,6 +308,8 @@ export const useGamepadsOnGrid = <T extends HTMLElement>({
     isInFocus,
     onTopOverTheEdge,
     createResult,
+    getLastIndex,
+    loop,
   ]);
 
   useDirectionalInputUp(onUp);

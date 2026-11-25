@@ -1,5 +1,4 @@
 import { FormBox } from "./index.js";
-import { Label } from "../Label/index.js";
 import { TextInput } from "../TextInput/index.js";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
@@ -19,18 +18,18 @@ export const Basic: Story = {
   args: {
     children: (
       <>
-        <Label>
+        <label>
           firstname
           <TextInput.Input name="firstname" />
-        </Label>
-        <Label>
+        </label>
+        <label>
           lastname
           <TextInput.Input name="lastname" />
-        </Label>
-        <Label>
+        </label>
+        <label>
           address
           <TextInput.Input name="address" />
-        </Label>
+        </label>
       </>
     ),
   },

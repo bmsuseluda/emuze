@@ -27,6 +27,7 @@ export const ImportButton = ({ isInFocus, id }: Props) => {
         id={id}
         name="_actionId"
         value={id}
+        disabled={isImporting}
         icon={
           gamepadType ? (
             <GamepadButtonIcon

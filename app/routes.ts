@@ -23,9 +23,9 @@ const createGameDialog = (id: string) => [
   ),
 ];
 
-const createSettingsRoutes = (id: string) => [
+const createSettingsRoutes = (id: string, pathPrefix: string = "") => [
   route(
-    "settings",
+    `${pathPrefix}settings`,
     "customRoutes/categories.$category.settings.tsx",
     {
       id: `${id}Settings`,
@@ -34,6 +34,13 @@ const createSettingsRoutes = (id: string) => [
       index("customRoutes/categories.$category.settings._index.tsx", {
         id: `${id}SettingsIndex`,
       }),
+      route(
+        "advanced",
+        "customRoutes/categories.$category.settings.advanced.tsx",
+        {
+          id: `${id}SettingsAdvanced`,
+        },
+      ),
       route(
         "general",
         "customRoutes/categories.$category.settings.general.tsx",
@@ -47,13 +54,6 @@ const createSettingsRoutes = (id: string) => [
         "customRoutes/categories.$category.settings.appearance.tsx",
         {
           id: `${id}SettingsAppearance`,
-        },
-      ),
-      route(
-        "advanced",
-        "customRoutes/categories.$category.settings.advanced.tsx",
-        {
-          id: `${id}SettingsAdvanced`,
         },
       ),
       route("about", "customRoutes/categories.$category.settings.about.tsx", {
@@ -76,6 +76,7 @@ const createCategoriesRoutes = () => [
         [...createErrorDialog(`${id}GameDialog`)],
       ),
       ...createSettingsRoutes(id),
+      ...createSettingsRoutes(`${id}WithCategory`, ":category/"),
       ...createErrorDialog(id),
       ...createReleaseNotesDialog(id),
     ]),

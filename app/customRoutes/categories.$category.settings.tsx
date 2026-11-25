@@ -1,7 +1,7 @@
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { SidebarMainLayout } from "../components/layouts/SidebarMainLayout/index.js";
 import { SidebarNavigationLink } from "../containers/SidebarNavigationLink/index.js";
-import { categories } from "../server/settings.server.js";
+import { categories as settings } from "../server/settings.server.js";
 import { useGamepadsOnSidebar } from "../hooks/useGamepadsOnSidebar/index.js";
 import { SettingsIcon } from "../components/SettingsIcon/index.js";
 import { useFocus } from "../hooks/useFocus/index.js";
@@ -19,13 +19,29 @@ import { CloseDialogContainer } from "../containers/CloseDialog/index.js";
 import { useCreateSystemFoldersButton } from "../containers/CreateSystemFoldersButton/useCreateSystemFoldersButton.js";
 import { Route } from "./+types/categories.$category.settings.js";
 import { useAppearance } from "../hooks/useAppearance/index.js";
+import { SystemId } from "../server/categoriesDB.server/systemId.js";
+import { categories } from "../server/categoriesDB.server/index.js";
+import { SystemIcon } from "../components/SystemIcon/index.js";
+import { readCategory } from "../server/categoryDataCache.server.js";
 
-export const loader = () => {
-  return { categories };
+export const loader = ({ params }: Route.LoaderArgs) => {
+  const { category } = params;
+  if (category) {
+    const systemId = category as SystemId;
+    const categoryName = readCategory(systemId)?.name;
+    const system = categories[systemId];
+    const application = system.getApplication();
+
+    if (system.settings || application.settings || application.hotkeys) {
+      return { categoryName, settings, systemId };
+    }
+  }
+
+  return { settings: settings.filter(({ id }) => id !== "advanced") };
 };
 
 export default function Index({
-  loaderData: { categories },
+  loaderData: { settings, systemId, categoryName },
 }: Route.ComponentProps) {
   const { pathname } = useLocation();
   const { collapseSidebar } = useAppearance();
@@ -102,20 +118,31 @@ export default function Index({
           headline="Settings"
           collapse={collapseSidebar}
         >
-          {categories.map(({ id, name }, index) => (
-            <li key={id}>
-              <SidebarNavigationLink
-                to={id}
-                icon={<SettingsIcon id={id} />}
-                aria-label={name}
-                ref={categoryLinksRefCallback(index)}
-                onClick={onLinkClick}
-                isFocused={isInFocus}
-              >
-                {collapseSidebar ? undefined : name}
-              </SidebarNavigationLink>
-            </li>
-          ))}
+          {settings.map(({ id, name }, index) => {
+            const icon =
+              id === "advanced" ? (
+                <SystemIcon id={systemId!} />
+              ) : (
+                <SettingsIcon id={id} />
+              );
+
+            const label = id === "advanced" ? categoryName || name : name;
+
+            return (
+              <li key={id}>
+                <SidebarNavigationLink
+                  to={id}
+                  icon={icon}
+                  aria-label={label}
+                  ref={categoryLinksRefCallback(index)}
+                  onClick={onLinkClick}
+                  isFocused={isInFocus}
+                >
+                  {collapseSidebar ? undefined : label}
+                </SidebarNavigationLink>
+              </li>
+            );
+          })}
         </SidebarMainLayout.Sidebar>
         <SidebarMainLayout.Main>
           <Outlet />
