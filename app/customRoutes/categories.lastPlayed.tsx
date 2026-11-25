@@ -17,10 +17,15 @@ import { ImportButton } from "../containers/ImportButton/index.js";
 import type { ImportButtonId } from "../containers/ImportButton/importButtonId.js";
 import { importCategories } from "../server/categories.server.js";
 import { useLaunchButton } from "../hooks/useLaunchButton/index.js";
-import { SettingsLink } from "../containers/SettingsLink/index.js";
 import { Route } from "./+types/categories.lastPlayed.js";
 import { useAppearance } from "../hooks/useAppearance/index.js";
 import { shouldRevalidateCategoriesRoute } from "./shouldRevalidateCategoriesRoute.js";
+import { Button } from "../components/Button/index.js";
+import {
+  openSettingsId,
+  useOpenSettings,
+} from "../containers/SettingsLink/useOpenSettings.js";
+import { SettingsLink } from "../containers/SettingsLink/index.js";
 
 export const loader = () => {
   const lastPlayed = readLastPlayed();
@@ -33,6 +38,7 @@ const importButtonId: ImportButtonId = "importGames";
 const actionIds = {
   launch: "launch",
   import: importButtonId,
+  openSettings: "openSettings",
 };
 
 export const action: ActionFunction = async ({ request }) => {
@@ -67,6 +73,19 @@ export const action: ActionFunction = async ({ request }) => {
 
     if (_actionId === actionIds.import) {
       await importCategories();
+    }
+
+    if (_actionId === actionIds.openSettings) {
+      const game = form.get("game");
+      if (typeof game === "string") {
+        const entryData = lastPlayed.find((value) => value.id === game);
+
+        if (entryData) {
+          return redirect(`${entryData.systemId}/settings`);
+        }
+      }
+
+      return redirect("settings");
     }
   } catch (e) {
     log("error", "lastPlayed action", e);
@@ -112,6 +131,8 @@ export default function LastPlayed({
     }
   }, [isInFocus, enableGamepads, enableFocus]);
 
+  useOpenSettings(isInFocus);
+
   return (
     <>
       <ListActionBarLayout
@@ -144,6 +165,16 @@ export default function LastPlayed({
                 />
 
                 <ImportButton isInFocus={isInFocus} id={actionIds.import} />
+
+                <Button
+                  type="submit"
+                  name="_actionId"
+                  id={openSettingsId}
+                  value={actionIds.openSettings}
+                  style={{ display: "none" }}
+                >
+                  open Settings
+                </Button>
               </>
             }
           />

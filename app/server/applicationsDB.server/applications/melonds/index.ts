@@ -21,6 +21,7 @@ import { bundledEmulatorsPathBase } from "../../../bundledEmulatorsPath.server.j
 import { sdlGameControllerConfig } from "../../environmentVariables.js";
 import { EmuzeController, getControllers } from "../../../gamepad.server.js";
 import { gamepadPs4Joystick } from "../../../../types/gamepad.js";
+import { AdvancedSettings } from "../../../../types/jsonFiles/settings/advanced.js";
 
 const applicationId: ApplicationId = "melonds";
 
@@ -72,16 +73,30 @@ const replaceInstanceConfig =
   };
 
 const replace3dGlConfig =
-  (resolution: string): SectionReplacement =>
-  (sections) =>
-    replaceSection(sections, "[3D.GL]", [
+  (emulatorSettings?: AdvancedSettings): SectionReplacement =>
+  (sections) => {
+    const resolution = emulatorSettings?.resolution || defaultResolution;
+
+    return replaceSection(sections, "[3D.GL]", [
       { keyValue: `ScaleFactor = ${resolution}` },
     ]);
+  };
 
 export const replace3dConfig: SectionReplacement = (sections) =>
   replaceSection(sections, "[3D]", [{ keyValue: "Renderer = 2" }]);
 
-const replaceConfigFile = (resolution: string) => {
+const replaceWindowConfig = (
+  emulatorSettings?: AdvancedSettings,
+): SectionReplacement => {
+  const screenLayout = emulatorSettings?.screenLayout || defaultScreenLayout;
+
+  return (sections) =>
+    replaceSection(sections, "[Instance0.Window0]", [
+      { keyValue: `ScreenLayout = ${screenLayout}` },
+    ]);
+};
+
+const replaceConfigFile = (emulatorSettings?: AdvancedSettings) => {
   const filePath = getConfigFilePath();
   const fileContent = readConfigFile(filePath);
 
@@ -92,10 +107,11 @@ const replaceConfigFile = (resolution: string) => {
   const fileContentNew = chainSectionReplacements(
     sections,
     replace3dConfig,
-    replace3dGlConfig(resolution),
+    replace3dGlConfig(emulatorSettings),
     replaceInstanceConfig(emuzeController),
-    replaceKeyboardConfig,
     replaceJoystickConfig(emuzeController),
+    replaceKeyboardConfig,
+    replaceWindowConfig(emulatorSettings),
   ).join(EOL);
 
   writeConfig(filePath, fileContentNew);
@@ -112,6 +128,7 @@ const getConfigFileBasePath = handleOperatingSystem({
 });
 
 const defaultResolution = "1";
+const defaultScreenLayout = "0";
 
 export const melonds: Application = {
   id: applicationId,
@@ -128,9 +145,7 @@ export const melonds: Application = {
     },
     emulatorSettings,
   }) => {
-    const resolution = emulatorSettings?.resolution || defaultResolution;
-
-    replaceConfigFile(resolution);
+    replaceConfigFile(emulatorSettings);
 
     const optionParams = [];
     if (fullscreen) {
@@ -154,6 +169,16 @@ export const melonds: Application = {
         { name: "8x (2048x1536)", value: "8" },
         { name: "9x (2304x1728)", value: "9" },
         { name: "10x (2560x1920)", value: "10" },
+      ],
+    },
+    {
+      id: "screenLayout",
+      label: "Screen Layout",
+      options: [
+        { name: "Natural", value: defaultScreenLayout },
+        { name: "Vertical", value: "1" },
+        { name: "Horizontal", value: "2" },
+        { name: "Hybrid", value: "3" },
       ],
     },
   ],

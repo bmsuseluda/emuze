@@ -31,7 +31,10 @@ import {
   isEdenForSwitch,
 } from "../applicationsDB.server/applications/eden/index.js";
 import { aresNintendo64 } from "../applicationsDB.server/applications/ares/systems/n64.js";
-import { aresGameBoyColor } from "../applicationsDB.server/applications/ares/systems/gameBoyColor.js";
+import {
+  aresGameBoy,
+  aresGameBoyColor,
+} from "../applicationsDB.server/applications/ares/systems/gameBoyColor.js";
 import { aresGameGear } from "../applicationsDB.server/applications/ares/systems/gameGear.js";
 import { aresSuperNintendo } from "../applicationsDB.server/applications/ares/systems/snes.js";
 import { aresNES } from "../applicationsDB.server/applications/ares/systems/nes.js";
@@ -270,7 +273,7 @@ export const nintendogameboy: Category = {
   id: "nintendogameboy",
   names: ["Nintendo Game Boy", "Game Boy", "GB"],
   igdbPlatformIds: [33],
-  getApplication: () => aresGameBoyColor,
+  getApplication: () => aresGameBoy,
   hasAnalogStick: false,
 };
 

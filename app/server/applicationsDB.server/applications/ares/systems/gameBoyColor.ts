@@ -24,6 +24,35 @@ export const getGameboyColorGamepadReset = () => {
   ];
 };
 
+const defaultEmulator = "Game Boy";
+
+export const aresGameBoy: Application = {
+  ...ares,
+  fileExtensions: [".gb", ".zip"],
+  createOptionParams: (props) => {
+    const emulator =
+      props.settings.advanced["nintendogameboy/ares"]?.emulator ||
+      defaultEmulator;
+
+    return [
+      ...getSharedAresOptionParams(props),
+      ...["--system", emulator],
+      ...getGameboyColorGamepadReset(),
+    ];
+  },
+  settings: [
+    {
+      id: "emulator",
+      label: "Emulator",
+      options: [
+        { name: "ares Game Boy", value: defaultEmulator },
+        { name: "ares Game Boy Color", value: "Game Boy Color" },
+      ],
+    },
+    shaderLcdSetting,
+  ],
+};
+
 export const aresGameBoyColor: Application = {
   ...ares,
   fileExtensions: [".gb", ".gbc", ".zip"],
@@ -32,14 +61,5 @@ export const aresGameBoyColor: Application = {
     ...["--system", "Game Boy Color"],
     ...getGameboyColorGamepadReset(),
   ],
-  settings: [
-    {
-      ...shaderLcdSetting,
-      options: [
-        ...shaderLcdSetting.options,
-        { name: "Game Boy", value: "handheld/gameboy" },
-        { name: "Game Boy Pocket", value: "handheld/gameboy-pocket" },
-      ],
-    },
-  ],
+  settings: [shaderLcdSetting],
 };

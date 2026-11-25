@@ -33,25 +33,16 @@ const Link = styled(RemixLink, {
       backgroundColor: "#3d3c40b3",
     },
   },
-
-  variants: {
-    isFullscreen: {
-      true: {
-        top: 0,
-        right: 0,
-      },
-    },
-  },
 });
 
 interface Props extends Omit<LinkProps, "to"> {
-  isFullscreen?: boolean;
   to?: string;
+  visible?: boolean;
 }
 
 export const SettingsLink = ({
-  isFullscreen = false,
   to = "settings",
+  visible = true,
   ...rest
 }: Props) => (
   <>
@@ -62,7 +53,7 @@ export const SettingsLink = ({
       title="Settings"
       prefetch="render"
       draggable={false}
-      isFullscreen={isFullscreen}
+      style={{ display: visible ? "block" : "none" }}
     >
       <VscSettingsGear />
     </Link>
@@ -74,7 +65,6 @@ export const SettingsLink = ({
       title="Settings"
       prefetch="render"
       draggable={false}
-      isFullscreen={isFullscreen}
       style={{ display: "none" }}
     >
       <VscSettingsGear />
@@ -87,7 +77,6 @@ export const SettingsLink = ({
       title="Settings"
       prefetch="render"
       draggable={false}
-      isFullscreen={isFullscreen}
       style={{ display: "none" }}
     >
       <VscSettingsGear />
